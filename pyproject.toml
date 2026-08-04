@@ -3,8 +3,10 @@ name = "usaaio-tools"
 version = "0.1.0"
 description = "Verification and build tooling for USAAIO mock tests and teaching materials"
 requires-python = ">=3.12"
-dependencies = []
-# pyyaml arrives with plan 004 (manifest parsing) — no unused deps at scaffold time.
+dependencies = [
+    "nbformat",
+    "pyyaml",
+]
 
 [project.scripts]
 usaaio-tools = "tools.cli:main"
