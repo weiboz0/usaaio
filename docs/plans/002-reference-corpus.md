@@ -392,3 +392,47 @@ Round 1:
    compressed for starter-code-heavy entries; overlap-scan routes through pdftotext.
 - `[NOTED]` Reviewer verified: all problem/point structure, style notes, R2 figures,
   10 index spot-checks, git hygiene, and blueprint implications 2–4.
+
+### Review 4 — [glm] GLM 5.2 (2026-08-04)
+
+- **Verdict**: Approved with suggestions
+
+1. `[FIXED]` Roster completion enforced before merge (this section records all four).
+2. `[FIXED]` Stale 6-page plan note — already amended (raced the reviewer's read).
+3. `[NOTED]` Leak-guard regex verified correct; guard runs clean; no corpus in diff.
+4. `[NOTED]` Fetch-script deviation confirmed well-documented; implementation otherwise
+   matches the gate-approved plan exactly.
+5. `[NOTED]` Structural problem-number references and meta-instruction paraphrases fall
+   under the short-technical-terms carve-out; no leaks. Independently re-verified all
+   arithmetic (37/300 partition, R2 sums, 8 MCQs).
+
+**GATE RESULT: PASS — 4/4** — [codex] Approved (re-verdict on a86cdb5);
+[opus] Approved (re-verified all fixes at a86cdb5; withdrew its own 23-atom count in favor
+of 24); [glm] + [claude-self] Approved with suggestions, all findings resolved.
+No open findings.
+
+## Post-execution report (2026-08-04)
+
+**Shipped:** `scripts/fetch-reference.sh` (idempotent, atomic, structural PDF validation,
+Drive-interstitial fallback — live-verified 4/4 with no-op re-run);
+local-only corpus (r1-2026 paper 24pp + r2-2026 day1/day2/rationale) with per-problem
+indexes: r1-2026 = 37 sub-parts / 300 pts (indexed inline), r2-2026 = 26 sub-parts /
+300 pts incl. per-problem design intent from the rationale doc (indexed by subagent);
+committed `reference/analysis.md` (sources, R1 format, topic partition summing 37/300,
+difficulty vs the Calc AB baseline, style notes for fidelity review, implications for
+plans 003/004, R2 shape); `pre-merge-guard.sh` reference-leak whitelist check
+(negative-tested).
+
+**2025 sets:** structure captured from forum thread metadata (3 problems, ≥39 visible
+parts); full text requires ~35+ per-thread manual exports — recorded in
+`analysis.md ## Sources` as the follow-up path if plan 003 wants n=2.
+
+**Deviations from plan:** `local tmp=` split to its own line (set -u expansion-order bug
+found at execution); analysis went through two arithmetic-correction commits during the
+content gate (sub-part count 24→37 and derived claims) — the reviewers' race with those
+commits produced the round-2 verdicts, all converged Approved at a86cdb5.
+
+**Known limitations:** n=1 fully-indexed R1 paper (mitigated by 2025 structural metadata
++ explicit printed-vs-inferred marking); index `text:` fields compress starter-code-heavy
+entries (overlap-scan must extract from PDFs via pdftotext — contract recorded in
+analysis implication 5).
