@@ -106,7 +106,7 @@ practice:
   set: C
   type: integrative
   difficulty: core
-  concepts: [gram-matrices, matrix-multiplication, linear-independence-span]
+  concepts: [gram-matrices, matrix-multiplication, linear-independence-span, rank]
   path: practice/p14.ipynb
   solution_path: practice/p14_solution.ipynb
 - id: F3-p15

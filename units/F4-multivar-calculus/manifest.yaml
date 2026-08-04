@@ -48,7 +48,7 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [gradient]
+  concepts: [gradient, partial-derivatives]
   path: practice/p06.ipynb
   solution_path: practice/p06_solution.ipynb
 - id: F4-p07
