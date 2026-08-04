@@ -77,6 +77,30 @@ Answer-check asserts (ci confirms 217/217 repo-wide). Full ci-local: **ALL GREEN
 
 009 (C7+C8, torchvision/gensim), 010 (F6+C9+C10), 011 mock test, 012 course map. Training/autograd (never taught in this curriculum — the exam is inference-only for torch).
 
+## Post-Execution Report (2026-08-04)
+
+**Shipped:** C5-neural-networks and C6-pytorch at the v2 bar — 10 of 16 syllabus units now live.
+- Per unit: 3 lesson sessions + overview + review.ipynb + 20 practice problems (A/B/C sets,
+  v2 floors met, every concept ≥3 via exactly 3 flagged dual-tags) + solutions.
+- **Deps:** torch **2.13.0+cpu** via `[[tool.uv.index]]` name=pytorch `explicit=true` +
+  `[tool.uv.sources]` pin (deviation from the plan's literal command, which failed on the
+  index shadowing PyPI's numpy; strictly stronger durability — pyproject carries both sections).
+- **Split-author protocol:** Fable drafters (statements + outlines) + gpt-5.6-sol blind solvers;
+  reconciliation 40/40 agreement, zero amendments, zero re-solves. Cumulative project record
+  now 179/179. One outline-only slip (C6 p12 negative root) caught at self-review — the shipped
+  solution was independently correct, validating the blind-solve separation.
+- **Corpus duty:** PASS — no isomorphs of the r1-2026 P7 arc (verdict block above).
+- **Verification:** five checks PASS; accessibility sweep clean (torch vocab C6-only after one
+  prose fix; neural vocab C5+); ci-local ALL GREEN twice (217 solution notebooks; final run
+  post-gate-fixes).
+- **Content gate:** 4/4 after 2 codex + 2 opus rounds; 21 distinct findings, 20 FIXED
+  (2 Must Fix: pinned-notation variance answer, np.inner ban-register regression) +
+  1 WONTFIX-with-reason (set-split tolerance). Notable: opus's re-verdict caught a defect
+  introduced BY a fix (stale bias prose after the repin) — the re-verify-after-fix loop works.
+- **Known SKIPs:** PDF build + answer-key reproduction remain PENDING plan 011 (by design).
+
+**Next:** plan 009 (C7-cnn-transfer + C8-embeddings; needs torchvision + gensim deps).
+
 ## Plan Review
 
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
