@@ -128,3 +128,18 @@ scope-note carve-out; plain-Python-first inheritance. Re-verdict requested.
    root as −56/4 = −14; true value −50/4 = −25/2. The SHIPPED solution was already correct —
    the blind-solve protocol prevented inheritance. Outline corrected in place. Priority: n/a
    (never student-visible).
+
+### Review 2 — [codex] GPT-5.6-terra (2026-08-04)
+
+- **Verdict**: Changes requested → fixes applied, re-verdict pending
+- Blind-solve: 6/6 agree (C5 p01/p11/p13, C6 p01/p11/p13 — MC keys, W_eff/b_eff, count 59,
+  module outputs all match).
+1. `[FIXED]` [codex] Must Fix: prose "PyTorch engineering cluster" survived the C5 scrub in
+   lessons/03 cell 24. → Response: reworded to "framework-engineering cluster (unit
+   `C6-pytorch`'s territory)". All other flagged matches are the literal unit id `C6-pytorch`
+   in plan-mandated by-id forward pointers — asserted non-violations, put to codex for
+   confirmation in the re-verdict.
+2. `[FIXED]` [codex] Must Fix: could not execute lessons (sandbox lacks uv/torch/matplotlib
+   tempdir). → Response: orchestrator's own execution stands (8/8 PASS, 17-anchor
+   narration check); executed notebooks staged local-only in .gate8-executed/ for codex to
+   audit narration-vs-output directly; re-verdict requested on that evidence.
