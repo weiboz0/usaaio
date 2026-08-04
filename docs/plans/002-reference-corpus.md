@@ -45,27 +45,35 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+try_download() {  # try_download <url> <dest>
+  curl -fsSL --retry 3 --max-time 120 "$1" -o "$2"
+}
+
+valid_pdf() {  # header AND trailer: a truncated stream passes `file` (header-only) but
+               # loses the %%EOF trailer, so require both.
+  file "$1" 2>/dev/null | grep -q 'PDF document' \
+    && tail -c 1024 "$1" 2>/dev/null | grep -q '%%EOF'
+}
+
 fetch() {  # fetch <drive-file-id> <dest-path>
-  local id="$1" dest="$2" tmp
-  if [[ -s "$dest" ]]; then
+  local id="$1" dest="$2" tmp="${dest}.tmp"
+  if [[ -s "$dest" ]] && valid_pdf "$dest"; then
     echo "exists: $dest"
     return 0
   fi
+  rm -f "$dest"   # cached file failed validation — refetch
   mkdir -p "$(dirname "$dest")"
-  tmp="${dest}.tmp"
-  # -f: fail on HTTP errors instead of saving the error body; tmp+mv: no truncated files
-  # survive an interruption (a truncated PDF would pass the magic check and be kept forever).
-  curl -fsSL --retry 3 --max-time 120 \
-    "https://drive.google.com/uc?export=download&id=${id}" -o "$tmp" || true
-  if ! file "$tmp" 2>/dev/null | grep -q 'PDF document'; then
+  # Acceptance requires BOTH curl success (-f, no error bodies) AND structural validity;
+  # tmp+mv means $dest only ever holds a validated PDF.
+  if ! { try_download "https://drive.google.com/uc?export=download&id=${id}" "$tmp" \
+         && valid_pdf "$tmp"; }; then
     # Large/flagged files get an HTML interstitial; retry via the usercontent endpoint.
-    curl -fsSL --retry 3 --max-time 120 \
-      "https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t" -o "$tmp" || true
-  fi
-  if ! file "$tmp" 2>/dev/null | grep -q 'PDF document'; then
-    echo "FAIL: $dest is not a PDF (download blocked or link rotated; try gdown)" >&2
-    rm -f "$tmp"
-    return 1
+    if ! { try_download "https://drive.usercontent.google.com/download?id=${id}&export=download&confirm=t" "$tmp" \
+           && valid_pdf "$tmp"; }; then
+      echo "FAIL: $dest — no complete PDF obtained (blocked, truncated, or link rotated; try gdown)" >&2
+      rm -f "$tmp"
+      return 1
+    fi
   fi
   mv "$tmp" "$dest"
   echo "fetched: $dest ($(file -b "$dest"))"
@@ -199,6 +207,22 @@ git commit -m "docs: reference corpus analysis (format, topics, difficulty, styl
 
 ### Task 4: Verification + ship
 
+- [ ] **Step 0: Executable reference-leak guard.** Extend `scripts/pre-merge-guard.sh`
+      (after the conflict-marker check) so a forced `git add` of corpus material fails the
+      guard, not just review:
+
+```bash
+leaks=$(git ls-files reference/ | grep -vE '^reference/(\.gitkeep|analysis\.md)$' || true)
+if [[ -n "$leaks" ]]; then
+  echo "FAIL: tracked files under reference/ beyond the public whitelist:"
+  printf '%s\n' "$leaks"
+  fail=1
+fi
+```
+
+Negative-test it (throwaway): `git add -f` a dummy `reference/x.pdf`, run the guard,
+expect the FAIL message; `git rm --cached` + delete the dummy afterwards.
+
 - [ ] **Step 1:** `bash scripts/ci-local.sh` → ALL GREEN.
 - [ ] **Step 2:** `git ls-files reference/` → exactly `.gitkeep` + `analysis.md`.
 - [ ] **Step 3:** Content-review gate (4-way per `docs/content-review-gate.md`; duties here:
@@ -283,8 +307,21 @@ git commit -m "docs: reference corpus analysis (format, topics, difficulty, styl
 
 ### Review 4 — [codex] Codex GPT-5.5 (2026-08-03)
 
-- **Verdict**: REJECT (round 1, reviewed commit prior to cross-reviewer fixes)
-  → all three blockers were fixed in the same round; re-verdict requested
+- **Verdict**: REJECT (round 1, reviewed commit prior to cross-reviewer fixes);
+  REJECT (round 2, two sharper findings, both fixed below); re-verdict requested
+
+Round 2:
+
+1. `[FIXED]` BLOCKER: truncation can survive the header-only `file` check (`%PDF` lands,
+   stream truncates; `|| true` masked curl's failure before acceptance).
+   → Response: `valid_pdf()` requires header AND `%%EOF` trailer; acceptance requires
+   curl success AND structural validity (no `|| true` on the accept path); the exists-skip
+   re-validates cached files and refetches on failure.
+2. `[FIXED]` Reference-leak protection was detection-only. → Response: Task 4 Step 0 adds
+   an executable whitelist check to `pre-merge-guard.sh` (fails on any tracked file under
+   `reference/` beyond `.gitkeep`/`analysis.md`), with a negative test.
+
+Round 1:
 
 1. `[FIXED]` Non-idempotent against partial downloads — same as [fable] #1 / [glm] #5.
 2. `[FIXED]` Interstitial unhandled — same as [fable] #2.
