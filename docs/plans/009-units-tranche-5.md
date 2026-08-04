@@ -133,6 +133,23 @@ block choices; no isomorph-with-renamed-numbers of the layer3[2] bottleneck coun
 layer3[4]/5-class build), and C8's full arc vs p05-1..7 (fresh texts, fresh query words, dedup
 device on different content; generic-skill overlap fine). Verdict recorded in this plan.
 
+> **CORPUS VERDICT (orchestrator, 2026-08-05): PASS — no isomorphs.**
+> - C7-01 vs p06: hierarchy taught via synthetic activation statistics (act-frac/roughness on
+>   seeded maps) — no image, no figure-matching; the reasoning register is the shared skill.
+> - C7 p14 vs p08-3: general formula proof P(m) = 17m² + 12m (BN INCLUDED as stated fact, plus
+>   a plain-alternative comparison part) vs the exam's conv-only numeric count of layer3[2];
+>   anchors on layer1/layer2/layer4 blocks — never layer3. Different deliverable, scope, blocks.
+> - C7 p11 vs p08-4: cut at the first six children (through layer2), 9 classes, hand-count
+>   part + named-attribute contract (fresh name Transfer9) vs the exam's layer3[4]/5-class
+>   build. Different cut, count, and structure. p08 vs p08-2: inspection-only 6-deliverable
+>   architecture read with forward passes BANNED vs a single shape question.
+> - C8 p06 vs p05-1/2: the dedup device INVERTED — sets are banned and first-occurrence order
+>   must be preserved (dict.fromkeys idiom) on fresh text; teaches the exam's trap by
+>   prohibition rather than reproduction. p08 vs p05-4: deliverables are row statistics +
+>   centroid-of-unit-rows (register overlap only). p10 vs p05-6/7: computes S then mines
+>   extremes via masked argmax/divmod — beyond the exam's express-and-compute ask; fresh words
+>   throughout (drafter also scrubbed a torch-substring hazard word from candidates).
+
 Shared: A/B/C sets; v2 floors (≥4 MC w/ ≥1 numeric normal-form — bottleneck/param-count and
 similarity-range normal-forms fit; ≥6 constrained coding with exact contracts + ban clauses;
 ≥2 proof (C7: receptive-field growth formula + bottleneck parameter formula; C8: S = W Wᵀ
