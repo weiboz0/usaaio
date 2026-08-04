@@ -111,3 +111,15 @@ the 3–2 vote squeaker; the peek-vs-honest 0.1333 gap; the standardization-does
 challenge). Zero ambiguity findings from either solver. Both sandboxes lacked kernel
 sockets; ALL 38 solutions re-executed LOCALLY exit 0. coverage-check now PASSES
 repo-wide (56/56 tranche-3 pairs). Tranche reconciliation total: **56/56**.
+
+## Verification record (Task 7, 2026-08-04)
+
+- prereq / coverage / hygiene / blueprint / overlap: all PASS — overlap-scan now
+  covering unit practice per the Task 1b extension (nbformat deprecation warning noted,
+  cosmetic).
+- ci-local ALL GREEN: 177 solution notebooks executed (65+56+56), permanent assert scan
+  clean, PENDING plan-011 line present.
+- Accessibility sweep: 1 hit — C4's Going Deeper prose used "embedding vectors" (C8
+  vocabulary) beside the allowed unit-id pointer → rephrased; re-sweep clean.
+- Reconciliation: 56/56 tranche-wide (18+18+20), one statement clarification (C2 p04
+  indexing, solver assumption == intent), zero re-solves required.
