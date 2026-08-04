@@ -1004,8 +1004,9 @@ adopted workflow, a passing gate authorizes implementation.
    matching the gate doc's duty 1.
 8. `[FIXED]` TODO 001 "(this plan)" had no referent. → Response: replaced with the path.
 
-**GATE RESULT: PASS pending [codex] re-verdict** — [claude-self], [glm], [opus] approve;
-all [codex] findings fixed and committed.
+**GATE RESULT: PASS — 4/4** — [claude-self], [glm], [opus] approved with suggestions
+(all actionable findings fixed); [codex] re-verdict on d8d6541: **Approved**.
+No open findings.
 
 ## Post-execution report (2026-08-03)
 
