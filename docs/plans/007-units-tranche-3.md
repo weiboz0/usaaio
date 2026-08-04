@@ -136,3 +136,15 @@ repo-wide (56/56 tranche-3 pairs). Tranche reconciliation total: **56/56**.
    fixed pre-gate; reviewers should hunt siblings.
 3. `[NOTED]` The C2 p04 indexing clarification is the tranche's only statement
    amendment; recorded with the identity-re-solve rationale.
+
+### Review 2 — [glm] GLM 5.2 (2026-08-04): **Approved**
+6/6 blind solves matched (incl. all three unit proofs); v2 floors + concept coverage
+verified; NO C2↔C3 notation drift (MSE 1/n, explicit b, η); datasets regenerated
+byte-identical; overlap extension matches spec. Two cosmetic NITs only.
+
+### Review 3 — [codex] GPT-5.6-terra (2026-08-04): Changes requested → fix landed
+9/9 blind solves + 3/3 normal-forms matched; fitting-fence scan clean; manifests/tags
+verified; lesson spot-checks consistent. BLOCKER: overlap-scan silently dropped corpus
+parts with failed pdftotext conversion → `[FIXED]` failures channel + loud warnings +
+`test_overlap_partial_pdftotext_failure_warns`; 61 tests green, ruff clean, real-repo
+scan PASS. Re-verdict requested.
