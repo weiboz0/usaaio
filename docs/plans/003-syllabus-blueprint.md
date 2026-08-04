@@ -320,3 +320,44 @@ constraints:
 6. `[FIXED]` Nits: bias-variance forward-promise reworded; unsupported "~30 points"
    dropped; covariance added to F5; python-inheritance added to C6.
    Final vocabulary: 105 concepts (supersedes the "100" in Review 1's note).
+
+### Review 4 — [codex] Codex GPT-5.5 (2026-08-04)
+
+- **Verdict**: Changes requested (×2) → **Approved**
+1. `[FIXED]` BLOCKER: instantiation non-deterministic for a fresh session → deterministic
+   default rule (anchor points 50/45/90/65/50, arc rotation by NNN mod 3, fixed difficulty
+   draw, problem count 9); deviations must be recorded generation_parameters entries.
+2. `[FIXED]` Problem specs lived only in plan files → permanent `spec:` field per manifest
+   problem entry.
+3. `[FIXED]` Manifest example section_points contradicted the new defaults → aligned
+   (verified by reviewer: doc lines match exactly).
+
+**GATE RESULT: PASS — 4/4** ([claude-self], [glm], [opus], [codex]); no open findings.
+
+## Post-execution report (2026-08-04)
+
+**Shipped:** `syllabus.md` — Calc AB + Python baseline allowlist (14 ids), 105-concept
+vocabulary across 11 clusters (+ numpy distribution bucket), 16-unit DAG (F1–F6 foundation
+incl. double-length F6, C1–C10 core) inside a sentinel-marked canonical YAML fence with
+per-track narrative and a programmatically-verified suggested order;
+`mocktests/blueprint.yaml` v1 — texture invariants, five ordered sections with 2026 anchors
+reconstructing 300 exactly, points-based topic distribution {target,min,max} summing to 300,
+cluster fold/alias maps, difficulty bands, style/provenance rules;
+`docs/mocktest-generation.md` — five-stage pipeline with deterministic default
+instantiation, full manifest schema (specs, answer keys, generator seeds), drafting rules,
+verification map.
+
+**Deviations:** vocabulary grew 100 → 105 during the content gate (relu-activation,
+orthogonality-orthonormality, linear-independence-span, covariance, python-inheritance) —
+all reviewer-driven, recorded above. numpy added to the cluster namespace as a fold bucket
+(caught by the Task 4 consistency script).
+
+**Gate history:** plan gate round 1 = 3 REJECT + self APPROVE-WITH-NITS (real catches:
+kNN-without-vectors, closed-form-without-inverse, pandas gap, 1.01 distribution) → round 2
+PASS 4/4. Content gate: 2 blockers from [opus] (C4/variance ordering, 285-sum anchors) +
+determinism blocker from [codex], all fixed → PASS 4/4.
+
+**Follow-ups owed to plan 004:** prereq-check closure semantics are transitive; overlap-scan
+SKIPS LOUDLY without local corpus; syllabus parser keys on the sentinel (exactly one literal
+occurrence); blueprint-check reads {target,min,max} points and applies cluster_fold before
+accounting; F6 `length: double` field available to tooling.

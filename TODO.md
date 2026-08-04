@@ -3,7 +3,7 @@
 - [x] 000 — project design (docs/designs/000-project-design.md)
 - [x] 001 — scaffold repo (docs/plans/001-scaffold-repo.md)
 - [x] 002 — reference corpus (docs/plans/002-reference-corpus.md)
-- [ ] 003 — syllabus + blueprint + mocktest-generation.md; Calc AB baseline allowlist
+- [x] 003 — syllabus + blueprint (docs/plans/003-syllabus-blueprint.md)
 - [ ] 004 — verification tooling: blueprint-check, overlap-scan, prereq-check, coverage-check, hygiene-check, new-mocktest
 - [ ] 005 — first teaching unit (foundation track)
 - [ ] 006 — first full mock test r1-001 through the pipeline
