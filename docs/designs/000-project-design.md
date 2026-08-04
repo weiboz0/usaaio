@@ -172,7 +172,10 @@ so a future session can reproduce or extend the test without reverse-engineering
   Human/model: content-gate reviewers independently note any past problem a mock problem
   resembles, checked against the provenance tags.
 
-### Content-review gate (replaces the code-review gate, same 4-way roster)
+### Content-review gate (replaces the code-review gate, same 4-way roster shape)
+
+Following the PowerMarket convention, the two Claude slots run **Fable for plan review**
+and **Opus for the content-review gate** (Codex and GLM fill the other two slots in both).
 
 Reviewers receive the student-facing materials plus the answer key and must:
 
@@ -245,7 +248,8 @@ committing student data or personal information.
    including the foundation track and the Calc AB + Python baseline concept allowlist;
    derive `mocktests/blueprint.yaml`; write `docs/mocktest-generation.md`.
 4. **004** — verification tooling: `blueprint-check` + `overlap-scan` + `prereq-check`
-   + `coverage-check` + `new-mocktest` scaffolder.
+   + `coverage-check` + `hygiene-check` (student-notebook solution-leakage lint, §3.2)
+   + `new-mocktest` scaffolder.
 5. **005** — first teaching unit (foundation track first: lesson + practice).
 6. **006** — first full mock test `r1-001` through the full pipeline.
 

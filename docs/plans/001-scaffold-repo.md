@@ -157,8 +157,9 @@ while the named plan is unshipped.
 - Every `gh` command needs `GH_TOKEN=$(cat .gh-token)` (file is gitignored).
 - Git identity: Weibo Zhou <weibo.zhou6fe@gmail.com>.
 - Never commit directly to `main`; feature branch + PR via `gh pr create`.
-- Before any merge: `bash scripts/pre-merge-guard.sh --pr <number>` — catches plan-number and
-  unit/mocktest-ID collisions from parallel sessions.
+- Before any merge: `bash scripts/pre-merge-guard.sh --pr` — catches plan-number and
+  unit/mocktest-ID collisions from parallel sessions (`--pr` adds the origin/main union;
+  the script takes no PR number).
 - Commit messages: what changed and why. Batch related small fixes into one logical commit.
 
 ## Plan-review gate (mandatory — 4-way)
@@ -279,7 +280,7 @@ Evaluate findings rigorously — push back with reasoning rather than agreeing p
 1. Post-execution report in the plan file (deviations, limitations, follow-ups).
 2. Update `decisions.md` and `TODO.md`.
 3. Final `scripts/ci-local.sh` run — must be green.
-4. Push; `GH_TOKEN=$(cat .gh-token) gh pr create`; `bash scripts/pre-merge-guard.sh --pr <n>`;
+4. Push; `GH_TOKEN=$(cat .gh-token) gh pr create`; `bash scripts/pre-merge-guard.sh --pr`;
    squash-merge.
 
 ## Session Handoff
@@ -420,7 +421,7 @@ validates. Schema is owned by `tools/` (plan 004); design 000 §1 lists the requ
 - [ ] 001 — scaffold repo (this plan)
 - [ ] 002 — reference corpus: ingest past tests (local-only), per-problem index, analysis.md
 - [ ] 003 — syllabus + blueprint + mocktest-generation.md; Calc AB baseline allowlist
-- [ ] 004 — verification tooling: blueprint-check, overlap-scan, prereq-check, coverage-check, new-mocktest
+- [ ] 004 — verification tooling: blueprint-check, overlap-scan, prereq-check, coverage-check, hygiene-check, new-mocktest
 - [ ] 005 — first teaching unit (foundation track)
 - [ ] 006 — first full mock test r1-001 through the pipeline
 ```
@@ -456,9 +457,8 @@ name = "usaaio-tools"
 version = "0.1.0"
 description = "Verification and build tooling for USAAIO mock tests and teaching materials"
 requires-python = ">=3.12"
-dependencies = [
-    "pyyaml>=6.0",
-]
+dependencies = []
+# pyyaml arrives with plan 004 (manifest parsing) — no unused deps at scaffold time.
 
 [project.scripts]
 usaaio-tools = "tools.cli:main"
@@ -524,7 +524,9 @@ def test_unimplemented_subcommand_exits_2():
 - [ ] **Step 3: Run test to verify it fails**
 
 Run: `uv run pytest tests/test_cli.py -v`
-Expected: FAIL (ModuleNotFoundError: tools / ImportError SUBCOMMANDS)
+Expected: FAIL — either a build/sync error (hatchling cannot package the not-yet-created
+`tools/` directory) or, if the env resolves, ModuleNotFoundError / ImportError.
+Both count as the red step; proceed.
 
 - [ ] **Step 4: Implement** `tools/__init__.py`:
 
@@ -551,6 +553,7 @@ SUBCOMMANDS = {
     "overlap-scan": ("flag problems too similar to the reference corpus", "plan 004"),
     "prereq-check": ("verify the unit DAG and concept closure", "plan 004"),
     "coverage-check": ("verify every taught concept has a practice problem", "plan 004"),
+    "hygiene-check": ("verify student notebooks contain no solutions or outputs", "plan 004"),
     "new-mocktest": ("scaffold a mock test from the blueprint", "plan 004"),
 }
 
@@ -632,7 +635,8 @@ collect() {  # collect <git-ref-or-WORKTREE> <glob-dir>
 check_dupes() {  # check_dupes <label> <newline-separated names> <prefix-regex>
   local label="$1" names="$2" regex="$3"
   local dupes
-  dupes=$(printf '%s\n' "$names" | grep -oE "$regex" | sort | uniq -d)
+  # `|| true`: grep exits 1 on no match, which pipefail would otherwise turn fatal
+  dupes=$(printf '%s\n' "$names" | grep -oE "$regex" | sort | uniq -d || true)
   if [[ -n "$dupes" ]]; then
     echo "FAIL: duplicate ${label} number(s): $(echo "$dupes" | tr '\n' ' ')"
     fail=1
@@ -641,8 +645,11 @@ check_dupes() {  # check_dupes <label> <newline-separated names> <prefix-regex>
 
 refs=(WORKTREE)
 if [[ "$MODE" == "--pr"* ]]; then
-  git fetch -q origin main
-  refs+=(origin/main)
+  if git fetch -q origin main 2>/dev/null; then
+    refs+=(origin/main)
+  else
+    echo "note: origin/main not reachable — checking worktree only"
+  fi
 fi
 
 for dir in docs/proposals docs/designs docs/plans docs/reviews; do
@@ -660,7 +667,7 @@ done
 
 if git grep -nE '^(<{7}|={7}|>{7})( |$)' -- ':!scripts/pre-merge-guard.sh' >/dev/null 2>&1; then
   echo "FAIL: conflict markers found:"
-  git grep -nE '^(<{7}|={7}|>{7})( |$)' -- ':!scripts/pre-merge-guard.sh' | head
+  git grep -nE '^(<{7}|={7}|>{7})( |$)' -- ':!scripts/pre-merge-guard.sh' | head || true
   fail=1
 fi
 
@@ -710,6 +717,7 @@ echo "SKIP blueprint-check          (plan 004)"
 echo "SKIP overlap-scan             (plan 004)"
 echo "SKIP prereq-check             (plan 004)"
 echo "SKIP coverage-check           (plan 004)"
+echo "SKIP hygiene-check            (plan 004)"
 
 step "5/6 PDF build (quarto)"
 echo "SKIP (plan 006)"
@@ -730,13 +738,19 @@ ships notebooks — the empty-find branch keeps this green.)
 
 - [ ] **Step 4: Negative test of the guard** (throwaway, not committed)
 
+Assert the MESSAGE, not just the exit code — a crash also exits non-zero and must not
+count as a pass:
+
 ```bash
 touch docs/plans/001-fake-collision.md
-bash scripts/pre-merge-guard.sh && echo "BUG: should have failed" || echo "guard correctly failed"
+out=$(bash scripts/pre-merge-guard.sh 2>&1 || true)
+echo "$out" | grep -q 'duplicate docs/plans' \
+  && echo "guard correctly detected the collision" \
+  || { echo "BUG: guard did not report the collision. Output was:"; echo "$out"; }
 rm docs/plans/001-fake-collision.md
 ```
 
-Expected: "guard correctly failed".
+Expected: "guard correctly detected the collision".
 
 - [ ] **Step 5: Commit**
 
@@ -751,6 +765,7 @@ git commit -m "feat: ci-local + pre-merge-guard scripts"
 
 **Files:**
 - Modify: `.gitignore`
+- Create: `reference/.gitkeep`
 - Modify: `docs/plans/001-scaffold-repo.md` (post-execution report)
 - Modify: `TODO.md` (mark 001 done)
 
@@ -759,19 +774,36 @@ git commit -m "feat: ci-local + pre-merge-guard scripts"
 
 - [ ] **Step 1: Gitignore the reference corpus raw material** (public-repo policy, decisions §2)
 
-Append to `.gitignore`:
+Create the directory and append to the existing `.gitignore`
+(it already exists with `.gh-token` + `build/` entries from the design commits):
+
+```bash
+mkdir -p reference && touch reference/.gitkeep
+```
 
 ```
 # Public repo: raw past-test papers stay local-only (copyright).
 # Only reference/analysis.md and other original derived work are committed.
 reference/*
+!reference/.gitkeep
 !reference/analysis.md
 ```
+
+Then verify all ignore rules actually hold:
+
+```bash
+git check-ignore .gh-token build/x reference/some-paper.pdf && echo "ignore rules OK"
+git check-ignore reference/.gitkeep && echo "BUG: .gitkeep must be committed" || true
+```
+
+Expected: "ignore rules OK" and no BUG line.
 
 - [ ] **Step 2: Full verification**
 
 Run: `bash scripts/ci-local.sh`
 Expected: ALL GREEN.
+Precondition check for the ship step: `git ls-remote -q origin >/dev/null && echo "origin OK"`
+(the GitHub repo weiboz0/usaaio was already created in the design session; this just confirms it).
 
 - [ ] **Step 3: Content-review gate**
 
@@ -785,7 +817,7 @@ Write `## Post-execution report` in this plan file (deviations, limitations, fol
 tick 001 in `TODO.md`.
 
 ```bash
-git add docs/plans/001-scaffold-repo.md TODO.md .gitignore
+git add docs/plans/001-scaffold-repo.md TODO.md .gitignore reference/.gitkeep
 git commit -m "docs: plan 001 post-execution report"
 ```
 
@@ -818,7 +850,85 @@ GH_TOKEN=$(cat .gh-token) gh pr merge --squash --delete-branch
 
 ## Plan Review
 
-(4-way gate verdicts land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-03)
+
+- **Verdict**: APPROVE WITH NITS
+
+1. `[FIXED]` Task 5 Step 3 predicted ImportError, but with `packages = ["tools"]` in
+   pyproject and no `tools/` dir yet, `uv run` fails at build/sync time.
+   → Response: expected-output text corrected to accept either failure mode.
+2. `[NIT]` `ci-local.sh` step 3 relies on `jupyter execute` which is not a declared
+   dependency; acceptable because the empty-find branch keeps it unreachable until a plan
+   ships notebooks, and that plan must add the dependency. Called out in Task 6 Step 3.
+3. Checked: pre-merge-guard dedupe unions names across refs with `sort -u` before
+   prefix-dupe detection (same file on both refs is not a collision); conflict-marker
+   regex does not self-trigger on the plan file or the script's own source; pytest tests
+   match the CLI implementation (argparse `--version` exit 0, subcommand exit 2 with
+   "plan 004" on stderr).
+
+Spec-coverage check: every milestone-001 deliverable maps to a task
+(docs skeleton T1, CLAUDE.md T2, workflow T3, gate/stub/decisions/TODO T4,
+pyproject+tools T5, scripts T6, public-repo gitignore + ship T7).
+Verification-phase exemption for a docs+tooling plan is legitimate per design §2
+and stated in `## Out of scope`.
+
+### Review 2 — [codex] Codex GPT-5.5 via codex-rescue (2026-08-03)
+
+- **Verdict**: REJECT (round 1) → fixes applied, re-review requested
+
+1. `[FIXED]` BLOCKER: `check_dupes` grep exits 1 on no match; under `set -euo pipefail`
+   the guard aborts on any dir without numbered names (e.g. `.gitkeep`-only).
+   → Response: `|| true` added inside the command substitution.
+2. `[FIXED]` `--pr <number>` documented but the script ignores the argument.
+   → Response: docs (CLAUDE.md, workflow, ship steps) now uniformly use plain `--pr`.
+3. `[FIXED]` `reference/` dir never created despite gitignore rules for it.
+   → Response: Task 7 Step 1 now creates `reference/.gitkeep` with a `!` negation.
+4. `[NOTED]` Verification-phase exemption confirmed legitimate.
+
+### Review 3 — [fable] Independent Fable 5, fresh context (2026-08-03)
+
+- **Verdict**: REJECT (round 1) → fixes applied, re-review requested
+
+1. `[FIXED]` Same grep/pipefail BLOCKER as [codex] #1, plus the observation that the
+   negative test would "pass" on the crash rather than the detection.
+   → Response: `|| true` fix; negative test now asserts the "duplicate docs/plans"
+   message, not just the exit code.
+2. `[FIXED]` Content-gate roster (Opus) contradicted design §2 "same 4-way roster".
+   → Response: design clarified to the PowerMarket convention — Fable slots for
+   plan review, Opus slots for content review; CLAUDE.md/gate doc already match.
+3. `[FIXED]` Student-notebook hygiene check (design §3.2) had no SKIP line, no
+   subcommand, and no owning milestone.
+   → Response: `hygiene-check` added to SUBCOMMANDS, ci-local SKIP list,
+   TODO 004, and design milestone 004.
+4. `[FIXED]` Milestone says "GitHub repo" but no task creates the remote.
+   → Response: remote was created in the design session (repo exists, public);
+   Task 7 Step 2 now has an explicit `git ls-remote` precondition check.
+5. `[FIXED]` `.gitignore`/`.gh-token` entries assumed, not verified.
+   → Response: Task 7 Step 1 now runs `git check-ignore` assertions for
+   `.gh-token`, `build/`, and `reference/` rules.
+6. `[FIXED]` `--pr <number>` doc/interface mismatch — same as [codex] #2.
+7. `[WONTFIX]` Conflict-marker regex could false-positive on a 7-`=` setext H1
+   underline. → Response: project docs use ATX headings and semantic line breaks;
+   a false positive would be visible and trivially resolved, while loosening the
+   regex risks missing real `=======` conflict separators.
+
+### Review 4 — [glm] GLM 5.2 via opencode-review (2026-08-03)
+
+- **Verdict**: APPROVE WITH NITS
+
+1. `[FIXED]` Content-gate roster divergence from design — same as [fable] #2
+   (resolved by clarifying the design, the direction GLM listed as acceptable).
+2. `[FIXED]` `--pr` fetch hard-fails when origin/main is absent.
+   → Response: fetch wrapped with a graceful "worktree only" fallback.
+3. `[FIXED]` `--pr <number>` doc mismatch — same as [codex] #2.
+4. `[FIXED]` Unused `pyyaml` runtime dep. → Response: removed; plan 004 adds it.
+5. `[FIXED]` `| head` SIGPIPE brittleness under pipefail in the conflict-marker
+   diagnostic. → Response: `|| true` appended.
+6. `[WONTFIX]` Seed `units/`/`mocktests/` with `.gitkeep`. → Response: the guard and
+   ci-local handle their absence; the dirs appear with the plans that fill them (YAGNI).
+7. `[WONTFIX]` docs/README lifecycle line compresses the gate order. → Response: the
+   line already names `ci-local.sh` at its verification position; CLAUDE.md is the
+   authoritative ordering.
 
 ## Content Review
 
