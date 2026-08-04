@@ -68,7 +68,7 @@ Core track:
 11. `C5-neural-networks` — [C3, F5] — perceptron, activations (threshold, tanh + its derivative, ReLU), MLP as function composition, geometric decision boundaries (half-planes/intersections), variance-preserving weight initialization.
 12. `C6-pytorch` — [C5] — tensors, nn.Module subclassing, custom layers, manual weights, requires_grad, parameter counting.
 13. `C7-cnn-transfer` — [C6] — convolution, feature maps and depth hierarchy, receptive fields, ResNet blocks (bottleneck arithmetic), truncation/freezing, transfer learning.
-14. `C8-embeddings` — [F2, F1] — tokenization, word embeddings, embedding matrices, similarity matrices, nearest neighbors, gensim usage.
+14. `C8-embeddings` — [F2, F3, F1] — tokenization, word embeddings, embedding matrices, similarity (Gram) matrices, nearest neighbors, gensim usage. (F3 required: similarity matrix = Gram matrix W·Wᵀ.)
 15. `C9-dimensionality-reduction` — [F6, C8] — PCA as projection, truncated SVD in practice, UMAP conceptually, when local vs global structure matters.
 16. `C10-competition-craft` — [C4] — notebook discipline (run-clean top-to-bottom), hidden-test protocols, prediction-function contracts, metric-driven iteration, write-up quality.
 
@@ -120,16 +120,19 @@ sections:                              # required test texture, order fixed
     style: Kaggle-style hidden-test task, single model-family constraint,
            run-clean notebook + written summary required
     draws_on_clusters: [applied-ml, competition-craft]
-topic_distribution:                    # share of total points per cluster, tolerance ±0.07
-  linear-algebra: 0.20                 # 2026: 60/300
-  ml-concepts: 0.17
-  numpy: 0.18
-  pytorch: 0.17
-  applied-ml: 0.17
-  cnn-vision: 0.03
-  nlp-embeddings: 0.05
-  probability-statistics: 0.02
-  calculus-multivar: 0.02
+topic_distribution:                    # POINTS per cluster (must sum to total_points),
+                                       # tolerance ±20 pts per cluster; values = 2026 observed
+  linear-algebra: 60
+  ml-concepts: 50
+  numpy: 55
+  pytorch: 50
+  applied-ml: 50
+  cnn-vision: 10
+  nlp-embeddings: 15
+  probability-statistics: 5
+  calculus-multivar: 5
+  # sums to 300 exactly; points not shares — shares rounded to 2dp sum to 1.01 (checkable
+  # integers beat drifting floats)
 difficulty_mix:                        # by points, from analysis difficulty profile
   intro: {min: 0.15, max: 0.30}        # baseline-reachable ~70/300 = 0.23
   core: {min: 0.35, max: 0.55}
@@ -170,7 +173,7 @@ constraints:
 
 ### Task 4: Cross-consistency verification + ship
 
-- [ ] Scratchpad Python check (not shipped): parse syllabus.md's fenced YAML + blueprint.yaml; assert (a) unit DAG acyclic, all refs resolve; (b) every concept taught exactly once; (c) all baseline/taught concept ids unique; (d) every blueprint cluster reference exists in the syllabus cluster set; (e) topic_distribution sums to 1.0 ± 0.001; (f) section point mins ≤ maxes and min-sums ≤ 300 ≤ max-sums.
+- [ ] Scratchpad Python check (not shipped): parse syllabus.md's fenced YAML + blueprint.yaml; assert (a) unit DAG acyclic, all refs resolve; (b) every concept taught exactly once; (c) all baseline/taught concept ids unique; (d) every blueprint cluster reference exists in the syllabus cluster set; (e) topic_distribution points sum to exactly total_points; (f) section point mins ≤ maxes and min-sums ≤ 300 ≤ max-sums; (g) transitive prereq closure — for each unit, its teaches-set may only rely on baseline + union of ancestors' teaches (verified per the concepts-used lists that unit manifests will declare later; here assert edge sanity: C8 includes F3, C5 reaches F3 via C2, C6 reaches F1 via C1).
 - [ ] `bash scripts/ci-local.sh` → ALL GREEN.
 - [ ] Content-review gate (4-way): duties — curriculum soundness (sequencing, unit scoping, nothing untaught-but-used, Calc AB accessibility of F-track entry points), blueprint fidelity to analysis.md (spot-check cited numbers), generation-doc completeness (could a fresh session produce r1-001 from it?).
 - [ ] Post-execution report; tick TODO 003; final ci-local; push; PR; `pre-merge-guard.sh --pr`; squash-merge.
@@ -185,7 +188,18 @@ constraints:
 
 ## Plan Review
 
-(4-way gate verdicts land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS
+
+1. `[FIXED]` topic_distribution as 2-decimal shares summed to 1.01 — switched to integer
+   points per cluster (sums to exactly 300; matches how tooling should check it).
+2. `[FIXED]` `C8-embeddings` used Gram matrices without declaring `F3-matrices` — edge added.
+3. `[NOTED]` Verified transitive reachability for other suspected gaps: C5 reaches F3 via
+   C2; C6 reaches F1 via C1's prereq; section min-sums 230 ≤ 300 ≤ max-sums 355.
+4. `[NOTED]` Embedded-fenced-YAML choice accepted deliberately: one file, no drift; plan
+   004 parses the first ```yaml fence; risk of a second stray fence handled by convention
+   ("the FIRST fence is canonical") to be stated in syllabus.md itself.
 
 ## Content Review
 
