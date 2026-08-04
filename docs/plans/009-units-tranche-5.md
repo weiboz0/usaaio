@@ -199,6 +199,10 @@ Input-side float32 boundary-cast pin added (float64 default × float32 pretraine
 empirical tolerance verification mandated; Task 6 assert scan now names the exception cells;
 Task 0 records the resolved torch↔torchvision pair + gensim ≥4.3.3.
 
+**GATE RESULT: PASS — 4/4** (claude-self AWN pre-empted; fable AWN→resolved; glm AWN→resolved;
+codex REJECT→REJECT→APPROVE clean across three rounds — final round caught the cross-constraint
+recipe collision). Implementation may begin.
+
 ### Review 4b — [codex] GPT-5.6-sol re-verdict (2026-08-04): REJECT → fixed
 Caught a cross-constraint collision introduced by the fable-round recipe: the combined
 TORCH_HOME+GENSIM header would put torch strings into C8 notebooks, tripping C8's torch-free
