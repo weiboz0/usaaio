@@ -93,3 +93,12 @@ Accessibility allowlists: F3 owns "matrix"; F4 may use F2 vector vocabulary; F5 
 ## Content Review
 
 (Pre-PR gate findings land here.)
+
+## Reconciliation record (Task 6, incremental)
+
+### F4-multivar-calculus (2026-08-04)
+Solver (gpt-5.6-sol, blind) vs drafter outline: **18/18 agreement** — every MC letter
+(p01 B, p02 B, p03 B, p04 B with value −6 and normal-form 5), every numeric result
+(gradients, anchors, w_final ≈ (46.85, 4.51)), both proof anchors. One non-blocking
+ambiguity (p18 tied minima at (±3, 0)); solver's row-major argmin assumption matches the
+drafter's note. All 18 solutions execute exit 0. No statement amendments needed.
