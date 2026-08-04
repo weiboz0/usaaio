@@ -201,31 +201,38 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
     return result
 
 
+def _problem_from(item: dict[str, Any]) -> ManifestProblem:
+    return ManifestProblem(
+        id=item["id"],
+        section=item["section"],
+        units=list(item.get("units", [])),
+        concepts=list(item.get("concepts", [])),
+        points=int(item.get("points", 0)),
+        difficulty=item.get("difficulty", ""),
+        type=item.get("type", ""),
+        answer_form=item.get("answer_form", ""),
+        provenance=item.get("provenance", ""),
+        adapted_from=item.get("adapted-from") or item.get("adapted_from"),
+        spec=item.get("spec", ""),
+        answer_key=item.get("answer_key"),
+        data=item.get("data"),
+        cluster=item.get("cluster"),
+        files=list(item.get("files", [])),
+    )
+
+
 def load_mock_manifests(root: str | Path) -> list[MockManifest]:
     result: list[MockManifest] = []
     for path in sorted(Path(root).glob("mocktests/r1-*/manifest.yaml")):
         raw = _read_manifest(path)
         problems = []
-        for item in raw.get("problems") or []:
-            problems.append(
-                ManifestProblem(
-                    id=item["id"],
-                    section=item["section"],
-                    units=list(item.get("units", [])),
-                    concepts=list(item.get("concepts", [])),
-                    points=int(item.get("points", 0)),
-                    difficulty=item.get("difficulty", ""),
-                    type=item.get("type", ""),
-                    answer_form=item.get("answer_form", ""),
-                    provenance=item.get("provenance", ""),
-                    adapted_from=item.get("adapted-from") or item.get("adapted_from"),
-                    spec=item.get("spec", ""),
-                    answer_key=item.get("answer_key"),
-                    data=item.get("data"),
-                    cluster=item.get("cluster"),
-                    files=list(item.get("files", [])),
-                )
-            )
+        for index, item in enumerate(raw.get("problems") or []):
+            try:
+                problems.append(_problem_from(item))
+            except KeyError as exc:
+                raise ValueError(
+                    f"{path}: problems[{index}] missing required field {exc}"
+                ) from exc
         result.append(
             MockManifest(
                 test=raw["test"],
