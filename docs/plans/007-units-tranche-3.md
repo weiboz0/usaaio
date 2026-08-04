@@ -89,3 +89,15 @@ opportunity passed to the tooling task.
 ## Content Review
 
 (Pre-PR gate findings land here.)
+
+## Reconciliation record (Task 6, incremental)
+
+### C2-linear-models (2026-08-04)
+Solver (gpt-5.6-sol, blind) vs drafter outline: **18/18 agreement** — all letters
+(C/B/C/C), the soft-threshold and ridge closed forms with anchors, path zero-counts,
+scenario numbers ($4080 saved), the p18 parabola argument. One non-blocking ambiguity:
+p04's w₁ indexing — solver assumed zero-based, which IS the drafter's intent (outline
+uses row X_i1=(2,0)); statement clarified post-hoc ("zero-based: w[1]"), and since the
+solver's stated assumption equals the clarified text, its solution stands as the valid
+solve of the amended statement (re-solve rule satisfied by identity). Solver sandbox
+lacked kernel sockets; all 18 re-executed LOCALLY exit 0.
