@@ -238,3 +238,47 @@ Content gate (4-way; duties: solve practice blind, verify solutions, accessibili
    on future tranches.
 5. `[NOTED]` All 6 blind solves matched; concept ≥3 recount clean; difficulty tags honest
    in all 6 sampled; constrained-coding contracts verified real in 5 sampled problems.
+
+### Review 4 — [opus] Independent Opus, fresh context (2026-08-04)
+
+- **Verdict**: Changes requested → all fixed → **Approved** (re-executed the corrected
+  demo cell; every narrated claim now visible in output)
+1. `[FIXED]` MUST FIX: C1 lessons/02 §5 demo contradicted its narration → train/test
+   pairs printed for all three rules; story rewritten around the 1.00-vs-~0.4 gap;
+   checkpoint question + answer corrected.
+2. `[FIXED]` bincount + OO-matplotlib closure glosses added.
+3. `[FIXED]` Per-session vs unit-wide sections → standards clarified (unit-wide).
+4. `[FIXED]` C1 review redo pointer corrected (p05/p08/p13(c)/p18).
+5. `[FIXED]` p11 zero-diagonal nan guarantee tightened.
+6. `[FIXED]` F2 §3 mixed message → correct spike-vs-spread divergence demo (reviewer:
+   "materially better than my finding asked") + new checkpoint.
+7. `[FIXED]` 62.5% wording.
+- `[NOTED]` All 9 blind solves matched; all 5 integrative problems genuinely chain;
+  review notebooks accurate; pedagogy judged genuinely semester-grade.
+
+**GATE RESULT: PASS — 4/4** ([claude-self], [codex] terra, [glm], [opus]);
+24/24 blind-solved problems matched solutions across three independent reviewers;
+no open findings.
+
+## Post-execution report (2026-08-04)
+
+**Shipped:** three semester-grade units (F1-scientific-python, F2-vectors,
+C1-ml-fundamentals): 9 session lessons + 3 overviews + 3 reviews + 65 practice
+problems (21/21/23) in A/B/C sets with full v2 type-mix compliance, all manifests
+tagged (set/difficulty/type), every solution ending in answer-check asserts.
+Deps: jupyter/nbclient/ipykernel/numpy/matplotlib.
+
+**Deviations:** the v2 standard and the multi-semester course context arrived
+mid-plan as user directives — recorded as the Task 4b amendment; two benign
+accessibility-sweep hits allowlisted (vectorization substring; "confusion matrix"
+compound); C1-p06 retagged intro at the gate; kernelspec/cell-order drift accepted
+as cosmetic (conventions rule future tranches).
+
+**Gate history:** plan gate PASS 4/4 (rounds incl. a design-clause clarification for
+units, recorded openly). Content gate PASS 4/4 with one pedagogical must-fix (demo
+contradicting its own output — caught by a reviewer RUNNING the lesson), one
+difficulty rebalance, and manifest-verifiability backfills.
+
+**Ownership reassignment (recorded per gate):** answer-key reproduction and PDF build
+move from "plan 006" to **plan 011** (the mock-test plan) — ci-local strings updated in
+this plan's ship step; plan 004's doc remains history.
