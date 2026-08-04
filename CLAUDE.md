@@ -105,7 +105,8 @@ all `[OPEN]` resolve before merge.
 | Work | Dispatch |
 |------|----------|
 | Planning, review orchestration, test assembly | Orchestrator Claude inline |
-| Problem / lesson drafting | `general-purpose` subagents (parallel per unit/problem) |
+| Lesson / narrative content writing | `general-purpose` subagents on Fable 5 (parallel per unit) |
+| Practice + mock-test problems & solutions | `codex:codex-rescue` (GPT-5.6-terra) |
 | Blind independent solving (content gate) | Gate roster (all four reviewers solve blind) |
 | Tooling code (`tools/`, `scripts/`) | `codex:codex-rescue` (GPT-5.6-terra) |
 | Trivially-scoped edits | Inline |
