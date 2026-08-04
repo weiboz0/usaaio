@@ -2,14 +2,14 @@ unit: C5-neural-networks
 concepts_taught: [perceptron, activation-functions, threshold-activation, relu-activation,
   mlp-architecture, decision-boundaries-geometric, weight-init-variance]
 concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting, vectorization,
-  aggregation-axis, random-seeding, matplotlib-basics, vectors-and-norms, dot-product,
+  aggregation-axis, random-seeding, gaussian-distribution, matplotlib-basics, vectors-and-norms, dot-product,
   partial-derivatives, gradient, tanh-derivative, gradient-descent, loss-surfaces, learning-rate,
   random-variables, expectation, variance, independence, variance-of-sums, sampling-simulation]
 prereq_units: [C3-gradient-descent, F5-probability]
 estimated_minutes:
   lesson: 250
   lesson_sessions: [80, 85, 85]
-  practice: 470
+  practice: 500
   review: 45
 practice:
 - id: C5-p01

@@ -2,7 +2,7 @@ unit: C6-pytorch
 concepts_taught: [python-inheritance, torch-tensors, nn-module, custom-layers, manual-weights,
   requires-grad, parameter-counting]
 concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting, vectorization,
-  aggregation-axis, random-seeding, dot-product, perceptron, activation-functions,
+  aggregation-axis, random-seeding, gaussian-distribution, dot-product, perceptron, activation-functions,
   threshold-activation, relu-activation, mlp-architecture, decision-boundaries-geometric,
   weight-init-variance]
 prereq_units: [C5-neural-networks]
