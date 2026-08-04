@@ -26,20 +26,11 @@ the content gate's reviewers enforce the qualitative parts against this document
   - Set C — integration + challenge (multi-part arcs, scenarios, advanced tier).
   File layout stays flat in `practice/` (pNN + pNN_solution); the manifest orders
   problems and a `set:` tag (A/B/C) records the grouping.
-- **Scaled type mix** (each unit includes at least): 4 exam-style MC (≥1 numeric
-  normal-form), 6 constrained coding tasks, 2 proof/derivation, 2 integrative
-  multi-part, 2 scenario analyses, 2 challenge problems.
-- **Mandated type mix** (each unit includes at least):
-  - 2 exam-style MC items — exactly five options A–E; numeric MC uses normal-form
-    constraints (gcd/sign) where applicable, matching the blueprint style rules.
-  - 3 constrained coding tasks — exact function/identifier contracts, shape contracts,
-    and API bans with the zero-points clause register (the exam's signature move).
-  - 1 by-hand derivation or proof-style problem ("Reasoning is required" register).
-  - 1 integrative multi-part problem (a/b/c parts, later parts consume earlier results —
-    miniature of the exam's arc texture).
-  - 1 scenario/application analysis (interpretation and judgment, not just computation).
-  - 1 challenge problem (advanced tier; stretches past the lesson without leaving the
-    unit's concept closure).
+- **Type mix** (each unit includes at least): 4 exam-style MC (exactly five options A–E;
+  ≥1 numeric normal-form with gcd/sign constraints), 6 constrained coding tasks (exact
+  function/identifier contracts, shape contracts, API bans with the zero-points register),
+  2 proof/derivation ("Reasoning is required"), 2 integrative multi-part (parts consume
+  earlier results), 2 scenario analyses, 2 challenge problems (advanced, within closure).
 - **Difficulty spread:** roughly 30% intro / 45% core / 25% advanced, tagged per problem
   in the manifest (`difficulty:` informational field).
 - Every taught concept exercised by **≥3 problems** (coverage-check enforces ≥1;
