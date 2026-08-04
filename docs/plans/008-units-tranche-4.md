@@ -49,6 +49,13 @@ Shared: A/B/C sets; v2 floors (≥4 MC w/ ≥1 numeric normal-form — parameter
 6. Verification phase (NAMED): five checks PASS, ci-local ALL GREEN executing ALL solutions incl. tranches 1-3 (NOTE: run with extended timeout or background — suite now >10 min), assert scan, accessibility sweep (C5/C6 allowlists; "neural" legal in C5+, torch vocabulary C6-only), estimated_minutes.
 7. Ship: content gate (self + codex 5.6-terra + opus + glm; blind-solve ≥3/unit incl ≥1 proof; execute-lessons duty), post-exec report, TODO tick, PR, guard, squash-merge.
 
+**RECONCILIATION — C5 (2026-08-04): 20/20 AGREE.** Blind solver (gpt-5.6-sol, independent, outlines unread)
+matches the drafter outline on every problem: MC keys p01 B / p02 C / p03 B / p04 B; all numeric
+anchors within tolerance (e.g. p10 finals 1.478e-16 / 0.9411 / 8.6e7; p12 var_est 0.99750;
+p17 frac 0.372); boundary convention step(0)=1 agreed everywhere incl. p15's referee verdict
+and p20's exact-zero corner. Zero statement ambiguities flagged. All 20 solutions re-executed
+locally via jupyter execute: 20/20 PASS. No amendments needed — re-solve rule not triggered.
+
 ## Out of scope
 
 009 (C7+C8, torchvision/gensim), 010 (F6+C9+C10), 011 mock test, 012 course map. Training/autograd (never taught in this curriculum — the exam is inference-only for torch).
