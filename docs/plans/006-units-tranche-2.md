@@ -112,3 +112,22 @@ p09's inclusive-|z| reading yields 0.732 vs the drafter's rough ≈0.68 note (bi
 discreteness, not a disagreement — the statement's compare-in-one-sentence task stands).
 Solver sandbox lacked kernel sockets; ALL 18 solutions re-executed LOCALLY exit 0.
 No statement amendments needed.
+
+### F3-matrices (2026-08-04)
+Solver (gpt-5.6-sol, blind) vs drafter outline: **20/20 agreement** — all letters
+(A/B/B/C), the probe-reconstructed M and Z (exact column match incl. the zero column
+→ rank 2, not invertible), collision vector (−2,1,1), minimal I_min=2 decomposition,
+family detection {0,1,2}/3 families, drills. Two non-blocking ambiguities (p09
+zero-denominator fill; p12 left-vs-right null framing) — both assumptions valid and
+consistent with the drafter's intent. Solver sandbox lacked kernel sockets; ALL 20
+solutions re-executed LOCALLY exit 0. Coverage-check PASSES repo-wide (56/56 pairs).
+
+### F3 structural-overlap corpus check (orchestrator, corpus-holder duty)
+Compared every F3 matrix-from-action item (p04, p08, p13, p15, p17, p18 + lesson
+examples pending) against the local index's real exam sub-parts. The real paper's
+version uses a 3×4 map with a full-rank action and asks reconstruction + a minimal
+outer-product decomposition (I=3). F3's items: p04 is 2×3 with a different action form
+and a normal-form entry-sum question; p13 is 3×3 rank-1 single-product; p17 is 4×4
+rank-2 with a proof part ("why can't fewer work") — different dimensions, ranks,
+actions, and asks in every case. VERDICT: generic-skill overlap only (which the
+syllabus mandates); no structural isomorph with renamed numbers. PASS.
