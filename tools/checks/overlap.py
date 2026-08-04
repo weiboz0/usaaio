@@ -8,6 +8,8 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+import nbformat
+
 from tools.model import Report, _parse_yaml, load_mock_manifests
 
 SHINGLE_SIZE = 8
@@ -23,6 +25,20 @@ def _words(text: str) -> list[str]:
 def _shingles(text: str) -> set[tuple[str, ...]]:
     words = _words(text)
     return {tuple(words[i : i + SHINGLE_SIZE]) for i in range(max(0, len(words) - SHINGLE_SIZE + 1))}
+
+
+def _without_boilerplate(text: str) -> str:
+    lines = []
+    for line in text.splitlines():
+        stripped = line.lstrip()
+        if (
+            stripped.startswith(("import ", "from "))
+            or "default_rng" in line
+            or "SEED =" in line
+        ):
+            continue
+        lines.append(line)
+    return "\n".join(lines)
 
 
 def _tf(text: str) -> Counter[str]:
@@ -122,6 +138,15 @@ def _problem_text(root: Path, manifest_path: Path, problem) -> tuple[str, list[s
     return "\n".join(texts), warnings
 
 
+def _notebook_text(path: Path) -> str:
+    notebook = nbformat.read(path, as_version=4)
+    return "\n".join(
+        str(cell.get("source", ""))
+        for cell in notebook.get("cells", [])
+        if cell.get("cell_type") in {"markdown", "code"}
+    )
+
+
 def check_overlap(root: str | Path) -> Report:
     root = Path(root)
     corpus, skipped = _corpus(root)
@@ -139,6 +164,7 @@ def check_overlap(root: str | Path) -> Report:
         for problem in manifest.problems:
             text, text_warnings = _problem_text(root, manifest.path, problem)
             warnings.extend(text_warnings)
+            text = _without_boilerplate(text)
             problem_shingles = _shingles(text)
             for label, reference_text, reference_shingles in corpus_shingles:
                 overlap = len(problem_shingles & reference_shingles)
@@ -150,4 +176,12 @@ def check_overlap(root: str | Path) -> Report:
                     else:
                         errors.append(hit)
                     break
+    for path in sorted(root.glob("units/*/practice/*.ipynb")):
+        text = _without_boilerplate(_notebook_text(path))
+        notebook_shingles = _shingles(text)
+        for label, _, reference_shingles in corpus_shingles:
+            overlap = len(notebook_shingles & reference_shingles)
+            if overlap >= SHINGLE_THRESHOLD:
+                errors.append(f"{path} overlaps {label} (shingles={overlap})")
+                break
     return Report(name="overlap-scan", ok=not errors, errors=errors, warnings=warnings)
