@@ -131,3 +131,15 @@ and a normal-form entry-sum question; p13 is 3×3 rank-1 single-product; p17 is 
 rank-2 with a proof part ("why can't fewer work") — different dimensions, ranks,
 actions, and asks in every case. VERDICT: generic-skill overlap only (which the
 syllabus mandates); no structural isomorph with renamed numbers. PASS.
+
+## Verification record (Task 7, 2026-08-04)
+
+- prereq / coverage / hygiene / blueprint / overlap: all PASS.
+- ci-local ALL GREEN: 121 solution notebooks executed (65 tranche-1 + 56 tranche-2),
+  permanent assert scan 121/121; PENDING plan-011 line present.
+- Lessons: F4 (4 notebooks) + F3 (5) execute exit 0 per drafters (verified twice each);
+  F5's lesson layer committed pre-interruption and re-verified in ci runs.
+- Accessibility sweep (closure-aware surface forms): 0 unallowed hits across all three
+  units' lesson layers.
+- Reconciliation (recorded above): 56/56 blind-solve agreements, zero statement
+  amendments — the split-author protocol's first full run required no re-solves.
