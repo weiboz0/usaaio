@@ -26,7 +26,7 @@
 
 Practice maps (id → concepts, the load-bearing coverage decisions):
 
-F1 (8 concepts): p01 [numpy-arrays, array-indexing-slicing]; p02 [elementwise-ops, broadcasting]; p03 [broadcasting, vectorization]; p04 [aggregation-axis]; p05 [random-seeding, sampling-free intro]; p06 [matplotlib-basics]; p07 [vectorization, aggregation-axis] (integrative: loops-banned rewrite).
+F1 (8 concepts): p01 [numpy-arrays, array-indexing-slicing]; p02 [elementwise-ops, broadcasting]; p03 [broadcasting, vectorization]; p04 [aggregation-axis]; p05 [random-seeding]; p06 [matplotlib-basics]; p07 [vectorization, aggregation-axis] (integrative: loops-banned rewrite).
 - concepts_used: baseline python only.
 
 F2 (8 concepts): p01 [vectors-and-norms]; p02 [distance-metrics, vectors-and-norms]; p03 [dot-product, cosine-similarity]; p04 [unit-vectors, orthogonality-orthonormality]; p05 [projection, residuals]; p06 [projection, cosine-similarity] (NumPy implementation, no-loops constraint); p07 [orthogonality-orthonormality, dot-product] (by-hand proof-style).
@@ -50,7 +50,7 @@ Lesson: vectors as data points (ties to F1 arrays); norms/distance (why √Σx²
 
 ### Task 4: Draft C1 (dispatch subagent 3, parallel)
 
-Lesson: the learning-from-data framing; supervised vs unsupervised vs clustering; train/test discipline (why holding out data matters); overfitting (polynomial-degree demo with numpy polyfit); bias-variance INTUITIVE treatment (explicit scope note); metrics — accuracy, precision, recall, F1, macro-F1 (confusion-matrix arithmetic, worked examples); class imbalance (why accuracy lies; the 99%-negative demo). MC practice items use exactly five options A-E.
+Lesson: the learning-from-data framing; supervised vs unsupervised vs clustering; train/test discipline (why holding out data matters); overfitting (memorization-vs-simple-rule demo: a lookup-table classifier vs a single threshold on seeded 1-D data, train/test scores computed with plain numpy — deliberately NO curve-fitting API, keeping the closure free of regression concepts); bias-variance INTUITIVE treatment (explicit scope note); metrics — accuracy, precision, recall, F1, macro-F1 (confusion-matrix arithmetic, worked examples); class imbalance (why accuracy lies; the 99%-negative demo). MC practice items use exactly five options A-E; the student notebook records the choice as a variable (e.g. `answer_p01 = "?"`) with the correct letter appearing ONLY in the solution notebook (hygiene-safe capture).
 
 ---
 
