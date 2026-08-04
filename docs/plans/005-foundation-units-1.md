@@ -67,6 +67,21 @@ Lesson: the learning-from-data framing; supervised vs unsupervised vs clustering
 
 ---
 
+### Task 4b: Enrichment pass (USER-DIRECTED scope amendment, 2026-08-04)
+
+Mid-plan the user directed increased practice variety and lesson depth; the bar is now
+codified in `docs/unit-standards.md` (created by this amendment) and applies here
+retroactively. For EACH of F1/F2/C1, a follow-up drafting pass must:
+1. Extend practice to 10-14 problems meeting the mandated type mix (≥2 exam-style MC,
+   ≥3 constrained coding, ≥1 proof-style, ≥1 integrative multi-part, ≥1 scenario,
+   ≥1 challenge) with difficulty tags; update the manifest maps accordingly
+   (prereq/coverage checks re-run after).
+2. Deepen lessons: add Common Pitfalls, Exam Connections, Going Deeper sections and
+   ≥2 fully worked exam-style examples; raise checkpoints to ≥2 per section.
+3. Update estimated_minutes.
+This amendment is user-authorized scope expansion (recorded verbatim in the gate record);
+the content gate reviews the ENRICHED units against docs/unit-standards.md.
+
 ### Task 5: Verification phase (NAMED — design §2 rule)
 
 **Scenarios:** all five checks × three units; solution execution; accessibility sweep.
