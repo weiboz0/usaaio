@@ -66,6 +66,13 @@ prompt — C6 statements never had them; solutions close with their own Answer-c
 All 20 solutions re-executed locally via jupyter execute: 20/20 PASS. No amendments — re-solve
 rule not triggered. Cumulative tranche-4 record: 40/40.
 
+**VERIFICATION PHASE (Task 6, 2026-08-04): COMPLETE.** Five checks PASS (prereq, coverage,
+hygiene, blueprint, overlap). Accessibility sweep clean: zero torch vocabulary outside C6
+(all grep hits are the literal unit id "C6-pytorch" in forward pointers); zero
+neural/perceptron/MLP vocabulary before C5. Assert scan: 40/40 new solutions carry
+Answer-check asserts (ci confirms 217/217 repo-wide). Full ci-local: **ALL GREEN**
+(all 217 solution notebooks executed, PDF build SKIP plan 011 as designed, pre-merge-guard OK).
+
 ## Out of scope
 
 009 (C7+C8, torchvision/gensim), 010 (F6+C9+C10), 011 mock test, 012 course map. Training/autograd (never taught in this curriculum — the exam is inference-only for torch).
