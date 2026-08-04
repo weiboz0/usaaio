@@ -140,6 +140,15 @@ Content gate (4-way; duties: solve practice blind, verify solutions, accessibili
    papers — clarified in designs/000 (not a governance file) to say so explicitly.
    Units are notebook-native; mock-test plans carry the PDF obligation.
 
+### Review 3 round 3 — [codex]
+
+- **Verdict**: APPROVE WITH NITS
+- `[NOTED]` Process concern recorded openly: the design's §2 PDF clause was clarified
+  mid-review to resolve a live blocker. Mitigants: the amendment matches the design's own
+  §1/§3.4 scope (reviewer-verified consistency), designs/000 is not governance-protected,
+  and the change is visible in this plan's gate record + the PR diff for the user to see.
+- `[NOTED]` ci-local plan-006→011 strings: planned in Task 6, correctly not yet landed.
+
 ### Review 4 — [glm] GLM 5.2 (2026-08-04)
 
 - **Verdict**: REJECT (raced fixes; its #1/#3 already fixed) → re-verdict requested
