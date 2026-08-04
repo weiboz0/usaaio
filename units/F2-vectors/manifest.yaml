@@ -4,7 +4,7 @@ concepts_taught: [vectors-and-norms, distance-metrics, dot-product, cosine-simil
 concepts_used: [numpy-arrays, elementwise-ops, broadcasting, vectorization, aggregation-axis,
                 random-seeding, matplotlib-basics]
 prereq_units: [F1-scientific-python]
-estimated_minutes: {lesson_sessions: [75, 75, 80], practice: 390, review: 45}
+estimated_minutes: {lesson: 230, lesson_sessions: [75, 75, 80], practice: 390, review: 45}
 practice:
   # Set A — fundamentals (drills, one per core skill)
   - {id: F2-p01, concepts: [vectors-and-norms], path: practice/p01.ipynb, solution_path: practice/p01_solution.ipynb,
