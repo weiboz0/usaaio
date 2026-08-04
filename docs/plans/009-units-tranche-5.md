@@ -265,7 +265,7 @@ property (no remote runner exists; the gate is ci-local.sh). Re-verdict requeste
 
 ### Review 2 — [codex] GPT-5.6-terra (2026-08-05)
 
-- **Verdict**: Changes requested → fix applied, re-verdict pending
+- **Verdict**: Changes requested → **Approved** (re-verdict: p13 fix verified, no remaining findings)
 - Blind-solve: 6/6 agree (C7 p04/p13/p14, C8 p04/p11/p12). All other gate checks reported
   clean (manifests, torch-free C8, bans, float32 convention, construction-only, staged
   narration audit).
