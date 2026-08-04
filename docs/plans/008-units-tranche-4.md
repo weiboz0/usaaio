@@ -115,6 +115,10 @@ scope-note carve-out; plain-Python-first inheritance. Re-verdict requested.
 
 ## Content Review
 
+**GATE RESULT: PASS — 4/4** (claude-self Approved; codex Changes-requested → Approved;
+glm Approved-with-suggestions, all items resolved 2×FIXED + 1×WONTFIX-with-reason;
+opus Changes-requested ×2 → Approved). All [OPEN] items resolved.
+
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
 
 - **Verdict**: Approved
@@ -146,7 +150,9 @@ scope-note carve-out; plain-Python-first inheritance. Re-verdict requested.
 
 ### Review 4 — [opus] Independent Opus (2026-08-04)
 
-- **Verdict**: Changes requested → all findings fixed at commit `3359f14`, re-verdict pending
+- **Verdict**: Changes requested → **Approved** (re-verdict 1 caught one fix-introduced defect —
+  stale bias prose in p10/p15/p18 solutions — fixed at `4099409`; final re-verdict: Approved,
+  no remaining findings; all 16 original findings verified fixed incl. the no-re-solve judgment)
 - Duties: 6 lessons + 2 reviews + 40 solutions executed clean; 40/40 blind-solve agreement
   (incl. all four proofs); type mix, dual-tags, difficulty spread verified.
 1. `[FIXED]` [opus] Must Fix: C5 L03 Checkpoint 6.2 read N(0.5, 0.01)'s second argument as σ
