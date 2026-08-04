@@ -150,6 +150,52 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 3. `[NOTED]` ci-local rc-capture snippet verified correct under `set -euo pipefail`
    (the `||` compound guards the non-zero exit; only rc==3 is tolerated).
 
+### Review 2 — [fable] Independent Fable 5, fresh context (2026-08-04)
+
+- **Verdict**: REJECT → all findings fixed, re-review requested
+1. `[FIXED]` Split-attribution blocker → explicit per-problem `cluster:` field (dominant,
+   post-fold), validated ∈ fold(clusters(concepts)); schema updated via Task 7.
+2. `[FIXED]` Mock closure excludes baseline → baseline ∪ closure, with baseline-only
+   problems allowed (intro band anchor); attribution for them defined via the explicit
+   cluster field.
+3. `[FIXED]` `*student*` glob dead code → filename-contains-`solution` convention pinned in
+   the Task 1 schema, hygiene globs updated (raced my self-review fix; superseded).
+4. `[FIXED]` Answer-key reproduction unowned → explicitly owned by plan 006 in Out of
+   scope, with a PENDING line in ci-local until then.
+5. `[FIXED]` status:draft semantics → absent=final; draft LOUD-skip (blueprint only);
+   schema/prereq/coverage/hygiene still run.
+6. `[FIXED]` Thin blueprint tests → four share/band/provenance breach tests +
+   parametric remaining-invariants test added.
+7. `[FIXED]` Integration test asserts per-check explicit status; rotation wrap test added.
+8. `[FIXED]` Hardcoded counts → structural invariants.
+
+### Review 3 — [codex] Codex GPT-5.5 (2026-08-04)
+
+- **Verdict**: REJECT → all findings fixed, re-review requested
+1. `[FIXED]` Answer-key gap — same as [fable] #4: plan-006 ownership + per-run PENDING
+   line + blueprint-check already fails final manifests lacking answer_key. Nothing to
+   compare exists before 006's notebooks.
+2. `[FIXED]` Draft bypass — same as [fable] #5 + `test_ci_flags_draft_manifest_loudly`
+   named; a lingering draft shouts in every CI run and cannot pass the content gate.
+3. `[FIXED]` Draft-bypass test gap — the named test above.
+4. `[NOTED]` Dominant-cluster attribution endorsed (now via explicit field).
+
+### Review 4 — [glm] GLM 5.2 (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS (1 blocker within) → all fixed
+1. `[FIXED]` Rotation off-by-one vs canonical example → `(NNN-1) mod 3`; r1-001 → first
+   entry; scaffold tests updated; Task 7 fixes the doc prose.
+2. `[FIXED]` MockManifest gains `generated`, `status`, `time_budget` fields.
+3. `[FIXED]` Parametric invariant tests added.
+4. `[FIXED]` Section draws_on_clusters now enforced (dominant cluster ∈ section set).
+5. `[FIXED]` Problem→file linkage: optional `files:` manifest field; spec-only + warning
+   fallback.
+6. `[FIXED]` `status` documented in the schema via Task 7.
+7. `[FIXED]` Unit manifest keys unified to snake_case.
+8. `[NOTED]` ci-local snippet verified; per-check echo adopted.
+9. `[NOTED]` Overlap thresholds accepted; Report logs the hitting metric.
+10. `[FIXED]` time_budget-sums-to-duration check added (cheap).
+
 ## Content Review
 
 (Code review findings land here.)
