@@ -200,4 +200,13 @@ Content gate (4-way; duties: solve practice blind, verify solutions, accessibili
 
 ## Content Review
 
-(Pre-PR gate findings land here.)
+### Review 1 — [claude-self] inline (2026-08-04)
+
+- **Verdict**: Approved with suggestions
+1. Verification record above is the evidence base (all checks PASS, 65/65 solutions
+   execute with asserts, accessibility sweep clean after two justified allowlist entries).
+2. `[NOTED]` F1's constrained-coding floor relies on dual-counting two challenge
+   problems — deferred to the external reviewers' judgment as flagged by the drafter.
+3. `[NOTED]` The three units were drafted before the Fable-statements/sol-solutions
+   split took effect; the gate's blind-solving compensates for the missing
+   independent-solution-author property this once.
