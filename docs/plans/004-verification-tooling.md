@@ -258,3 +258,26 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 7. `[FIXED]` Stray dead blueprint load in `write_repo` removed.
 8. `[NOTED]` O(n²) TF-IDF acceptable at corpus scale; `adapted-from`/`adapted_from`
    loader leniency kept as a deliberate schema bridge.
+
+### Review 4 — [opus] Independent Opus, fresh context (2026-08-04)
+
+- **Verdict**: Changes requested → all fixed, re-verdict requested
+  (behavioral probes all passed: exit codes, draft semantics, rotation, hygiene,
+  overlap remedy, baseline escape)
+
+1. `[FIXED]` BLOCKER: five-point-atom share computed as POINTS share (0.40 for the real
+   2026 texture) where blueprint/analysis define a COUNT share (24/37=0.65) — the gate
+   rejected the artifact it was derived from. → count share;
+   `test_atom_share_is_count_share_not_points_share`.
+2. `[FIXED]` Arc rotation unsatisfiable for 2 of 3 rotations (static blueprint list) →
+   integrative-arc validates against the manifest's declared `arc_clusters` (fallback:
+   blueprint list); `test_arc_clusters_validated_from_manifest_rotation` covers both
+   reject-static and accept-declared paths.
+3. `[FIXED]` Raw tracebacks from CLI on loader failures → try/except → `ERROR <cmd>:` +
+   exit 1; `data:`-as-list guarded with a proper error.
+4. `[FIXED]` Flake record corrected: [codex]'s CWD mechanism disproved (uniform
+   FileNotFoundError, not a single-case miss; 30+ runs incl. hash-seed variation and
+   18-way concurrency all green) — recorded as UNREPRODUCED, not explained.
+5. `[FIXED]` NITs: overlap dfs/shingle precompute hoisted out of the per-problem loop
+   (~17s → sub-second); duration_minutes-vs-blueprint check added;
+   `adapted_requires_tag` read from provenance_rules. Suite: 56 tests green.
