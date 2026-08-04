@@ -210,3 +210,31 @@ Content gate (4-way; duties: solve practice blind, verify solutions, accessibili
 3. `[NOTED]` The three units were drafted before the Fable-statements/sol-solutions
    split took effect; the gate's blind-solving compensates for the missing
    independent-solution-author property this once.
+
+### Review 2 — [codex] Codex GPT-5.6-terra (2026-08-04)
+
+- **Verdict**: Changes requested → fixed, re-verdict requested
+1. `[FIXED]` C1 difficulty spread 26/52/22 (core-heavy) → honest retag of C1-p06
+   (macro-F1 from a GIVEN table = mechanical drill, comparable to intro p04) →
+   30/48/22, matching the F1/F2 profile the reviewer accepted.
+2. `[NOTED]` All 9 blind solves matched official solutions; all 4 numeric normal-form
+   MCs recomputed and matched; worked examples + pitfalls hand-traced clean in three
+   sampled sessions; F1 dual-counting judged acceptable.
+3. `[NOTED]` Reviewer's sandbox lacked the gitignored corpus + jupyter — verbatim
+   comparison and notebook execution are covered by the local verification record
+   (overlap-scan PASS against the real corpus; 65/65 solutions executed by ci-local).
+
+### Review 3 — [glm] GLM 5.2 (2026-08-04)
+
+- **Verdict**: Approved with suggestions
+1. `[FIXED]` F1/C1 manifests lacked `type:` tags (floors drafter-asserted only) →
+   backfilled on all 44 entries from the drafter rosters; F2 already had them.
+2. `[FIXED]` estimated_minutes lesson totals added to F2/C1 (F1 already had one).
+3. `[FIXED]` C1 review summary row now uses the `bias-variance-intuition` syllabus id;
+   review.ipynb re-executed clean.
+4. `[WONTFIX]` Kernelspec display-name drift ("Python 3 (ipykernel)" vs "Python 3") and
+   C1's statement-before-imports cell order — cosmetic; all notebooks execute clean;
+   normalizing 100+ notebooks risks churn for zero behavior change. Convention doc rules
+   on future tranches.
+5. `[NOTED]` All 6 blind solves matched; concept ≥3 recount clean; difficulty tags honest
+   in all 6 sampled; constrained-coding contracts verified real in 5 sampled problems.
