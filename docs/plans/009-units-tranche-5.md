@@ -21,8 +21,14 @@ cached under `reference/cache/` (gitignored): set `TORCH_HOME=reference/cache/to
 in the header cell BEFORE the torch/gensim import). First ci run downloads (~100MB resnet50 +
 ~130MB glove-wiki-gigaword-100); later runs are warm. Determinism pin: resnet50 loads
 `weights=ResNet50_Weights.IMAGENET1K_V1` EXPLICITLY (never `pretrained=True` — deprecated and
-ambiguous); GloVe artifact `glove-wiki-gigaword-100` is a fixed file — asserts on its vectors
-are deterministic and safe.
+ambiguous) **and is put in `model.eval()` immediately after loading, in every notebook that
+runs a forward pass** (self-review amendment: train-mode BatchNorm uses batch statistics —
+nondeterministic across batch composition AND it mutates running buffers; eval() is the
+single switch that makes forward passes reproducible). GloVe artifact `glove-wiki-gigaword-100`
+is a fixed file — asserts on its vectors are deterministic — **but gensim returns float32:
+C8 casts to float64 at the load boundary (`np.asarray(vecs, dtype=np.float64)`) once, in the
+same cell as the load, so all downstream arithmetic sits in the course's float64 register
+(self-review amendment)**.
 
 ## Units
 
@@ -47,11 +53,12 @@ transfer-learning)
   device extends: "training the head needs the machinery beyond this course; the exam grades
   the construction"; worked generic build with a FRESH cut point and class count (never the
   exam's layer3[4]/5-class combo)).
-- 20 problems. Torch + torchvision allowed; autograd/training BANNED (construction-only, incl.
+- **22 problems** (the v2 range is 16-24; a 9-concept unit earns the top half — self-review
+  amendment). Torch + torchvision allowed; autograd/training BANNED (construction-only, incl.
   transfer heads — asserts inspect shapes/requires_grad/param counts, never fitted values).
-  NOTE: 9 concepts × 3 = 27 instances vs 20 problems ⇒ **7 dual-tags ARITHMETICALLY REQUIRED** —
-  flag every one in the manifest for gate judgment (008 policy, larger count is the price of a
-  9-concept unit; reviewers judge pairings for pedagogical honesty).
+  NOTE: 9 concepts × 3 = 27 instances vs 22 problems ⇒ **5 dual-tags ARITHMETICALLY REQUIRED** —
+  flag every one in the manifest for gate judgment (008 policy); floors total 18, the 4 extra
+  slots go to drills/constrained-coding at intro/core.
 - Ban registers: counting problems ban `numel` (+ `sum(p.numel())` idiom, `torchsummary`,
   `state_dict` size reads) where the point is hand arithmetic; shape problems ban running the
   model where the point is tracing (verification cell separate); per-problem closers as needed.
@@ -127,7 +134,20 @@ weights themselves; no HuggingFace pulls). SVD/low-rank (C9's — C8 stops at th
 
 ## Plan Review
 
-(4-way gate verdicts land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS (amendments applied pre-gate)
+1. `[FIXED-pre-gate]` C7 raised 20 → 22 problems: 7 dual-tags at 20 was the heaviest load yet;
+   22 (inside the 16-24 band) brings it to 5 and funds 4 extra intro/core slots for a
+   9-concept unit.
+2. `[FIXED-pre-gate]` model.eval() determinism pin added — train-mode BatchNorm both consumes
+   batch statistics and mutates running buffers; without the pin, forward-pass asserts are
+   batch-composition-dependent.
+3. `[FIXED-pre-gate]` GloVe float32 → float64 boundary-cast pin added for C8 (gensim artifacts
+   are float32; the course asserts live in float64).
+4. `[NOTED]` First-ci-run download cost (~230MB) accepted and documented; cache under
+   gitignored reference/cache/ keeps subsequent runs warm and keeps artifacts out of the
+   public repo.
 
 ## Content Review
 
