@@ -1,0 +1,15 @@
+unit: F2-vectors
+concepts_taught: [vectors-and-norms, distance-metrics, dot-product, cosine-similarity,
+                  projection, residuals, unit-vectors, orthogonality-orthonormality]
+concepts_used: [numpy-arrays, elementwise-ops, broadcasting, vectorization, aggregation-axis,
+                random-seeding, matplotlib-basics]
+prereq_units: [F1-scientific-python]
+estimated_minutes: {lesson: 100, practice: 130}
+practice:
+  - {id: F2-p01, concepts: [vectors-and-norms], path: practice/p01.ipynb, solution_path: practice/p01_solution.ipynb}
+  - {id: F2-p02, concepts: [distance-metrics, vectors-and-norms], path: practice/p02.ipynb, solution_path: practice/p02_solution.ipynb}
+  - {id: F2-p03, concepts: [dot-product, cosine-similarity], path: practice/p03.ipynb, solution_path: practice/p03_solution.ipynb}
+  - {id: F2-p04, concepts: [unit-vectors, orthogonality-orthonormality], path: practice/p04.ipynb, solution_path: practice/p04_solution.ipynb}
+  - {id: F2-p05, concepts: [projection, residuals], path: practice/p05.ipynb, solution_path: practice/p05_solution.ipynb}
+  - {id: F2-p06, concepts: [projection, cosine-similarity], path: practice/p06.ipynb, solution_path: practice/p06_solution.ipynb}
+  - {id: F2-p07, concepts: [orthogonality-orthonormality, dot-product], path: practice/p07.ipynb, solution_path: practice/p07_solution.ipynb}

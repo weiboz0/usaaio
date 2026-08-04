@@ -1,0 +1,14 @@
+unit: F1-scientific-python
+concepts_taught: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization,
+                  elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics]
+concepts_used: []   # baseline python only
+prereq_units: []
+estimated_minutes: {lesson: 90, practice: 120}
+practice:
+  - {id: F1-p01, concepts: [numpy-arrays, array-indexing-slicing], path: practice/p01.ipynb, solution_path: practice/p01_solution.ipynb}
+  - {id: F1-p02, concepts: [elementwise-ops, broadcasting], path: practice/p02.ipynb, solution_path: practice/p02_solution.ipynb}
+  - {id: F1-p03, concepts: [broadcasting, vectorization], path: practice/p03.ipynb, solution_path: practice/p03_solution.ipynb}
+  - {id: F1-p04, concepts: [aggregation-axis], path: practice/p04.ipynb, solution_path: practice/p04_solution.ipynb}
+  - {id: F1-p05, concepts: [random-seeding], path: practice/p05.ipynb, solution_path: practice/p05_solution.ipynb}
+  - {id: F1-p06, concepts: [matplotlib-basics], path: practice/p06.ipynb, solution_path: practice/p06_solution.ipynb}
+  - {id: F1-p07, concepts: [vectorization, aggregation-axis], path: practice/p07.ipynb, solution_path: practice/p07_solution.ipynb}
