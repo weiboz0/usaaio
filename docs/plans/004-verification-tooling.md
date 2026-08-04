@@ -66,7 +66,7 @@ Naming convention (hygiene relies on it): any notebook whose filename contains
 2. Per unit manifest: `concepts_taught` == syllabus unit's teaches (exact set); `prereq_units` == syllabus prereqs; every id in `concepts_used` ∈ baseline ∪ teaches(transitive ancestors).
 3. Per mock manifest: every problem `concepts` id ∈ **baseline ∪** ⋃ teaches(units listed in the problem's `units`, including transitive prereqs) — tested-only-if-taught with pure-baseline questions allowed (they anchor the intro difficulty band); every listed unit has a shipped manifest in `units/`.
 
-**coverage-check rules:** per unit manifest, every id in `concepts_taught` appears in ≥1 practice problem's `concepts`; every practice `path` exists; practice concept ids ∈ vocabulary.
+**coverage-check rules:** per unit manifest, every id in `concepts_taught` appears in ≥1 practice problem's `concepts`; every practice `path` AND `solution_path` exists; practice concept ids ∈ vocabulary.
 
 **Tests:** `test_prereq_pass_on_real_syllabus`, `test_prereq_detects_cycle`, `test_prereq_detects_untaught_use`, `test_prereq_detects_manifest_syllabus_drift`, `test_mock_tested_only_if_taught`, `test_coverage_pass_and_gap`, `test_coverage_missing_practice_file`.
 
@@ -104,7 +104,7 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 
 ### Task 6: new-mocktest scaffolder (`tools/checks/new_mocktest.py` or `tools/scaffold.py`)
 
-`usaaio-tools new-mocktest r1-NNN`: refuses to overwrite; creates the directory skeleton per `docs/mocktest-generation.md` (test.md front-matter stub, empty `theory/ problems/ solutions/ data/`, `rubric.md` stub) and a `manifest.yaml` pre-filled by the DETERMINISTIC default rule (anchors 50/45/90/65/50, arc clusters by `(NNN-1) mod 3` rotation (r1-001 → index 0, the first entry — matching the canonical example; Task 7 fixes the ambiguous "index 1 ⇒ first entry" prose in mocktest-generation.md), difficulty draw {0.23,0.45,0.32}, problem_count 9, blueprint_version from blueprint, generated date from `--date YYYY-MM-DD` required arg — no clock access convention) with empty `problems: []` and `status: draft`. Semantics: absent `status` == `final` (a manifest can never dodge checking by omission); `status: draft` makes blueprint-check LOUD-skip that manifest (exit-3-style report line naming the manifest, never silent) while schema validation, prereq, coverage, and hygiene still run in full; `status: final` enables everything.
+`usaaio-tools new-mocktest r1-NNN`: refuses to overwrite; creates the directory skeleton per `docs/mocktest-generation.md` (test.md front-matter stub, empty `theory/ problems/ solutions/ data/`, `rubric.md` stub) and a `manifest.yaml` pre-filled by the DETERMINISTIC default rule (anchors 50/45/90/65/50, arc clusters by `(NNN-1) mod 3` rotation (r1-001 → index 0, the first entry — matching the canonical example; Task 7 fixes the ambiguous "index 1 ⇒ first entry" prose in mocktest-generation.md), difficulty draw {0.23,0.45,0.32}, problem_count 9, blueprint_version from blueprint, generated date from `--date YYYY-MM-DD` required arg — no clock access convention) with empty `problems: []` and `status: draft`. Semantics: absent `status` == `final` (a manifest can never dodge checking by omission); `status: draft` makes blueprint-check emit a LOUD warning line naming the manifest (never silent) while schema validation, prereq, coverage, and hygiene still run in full; `status: final` enables everything. Exit semantics with mixed manifests: blueprint-check's exit code is determined solely by the FINAL manifests' results (fail=1 beats all; all-pass with ≥1 draft = 0 with the warning line; no final manifests and ≥1 draft = 3).
 
 **Tests:** `test_new_mocktest_scaffolds_defaults` (r1-002 → rotation index 1, second entry), `test_new_mocktest_rotation_wraps` (r1-004 → index 0, first entry), `test_new_mocktest_refuses_overwrite`, `test_draft_manifest_loud_skipped_by_blueprint_check`, `test_absent_status_treated_as_final`, `test_scaffold_time_budget_sums_to_duration`.
 
@@ -113,7 +113,7 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 ### Task 7: CLI wiring + ci-local integration + integration tests
 
 1. `tools/cli.py`: SUBCOMMANDS map to real functions; each prints its Report (errors→stderr) and exits 0/1/3; `--root` arg (default `.`) for tests.
-2. `scripts/ci-local.sh` step 4 becomes real invocations (manifest validation happens inside prereq/blueprint checks):
+2. `scripts/ci-local.sh`: **step 3's execution glob narrows to solutions only** — `*/solutions/*.ipynb` plus `*/practice/*solution*.ipynb` (student-facing notebooks contain TODO cells by design and must not be executed; hygiene checks them instead), and adds the `PENDING (plan 006): answer-key reproduction` line; step 4 becomes real invocations (manifest validation happens inside prereq/blueprint checks):
    ```bash
    for c in prereq-check coverage-check hygiene-check blueprint-check overlap-scan; do
      uv run usaaio-tools "$c" || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
