@@ -66,12 +66,26 @@ Lesson: the learning-from-data framing; supervised vs unsupervised vs clustering
 ### Task 5: Verification phase (NAMED — design §2 rule)
 
 **Scenarios:** all five checks × three units; solution execution; accessibility sweep.
+
+Design-§2 clause mapping for UNITS (the clause's wording targets mock tests; each item is
+satisfied in unit-appropriate form or explicitly deferred — never silently dropped):
+- *solutions reproduce the answer key* → every solution notebook ends with an
+  `### Answer check` assert cell verifying its computed results against expected values;
+  execution passing = answers reproduced (units have no manifest answer_key field).
+- *manifests validate* → prereq/coverage checks below (they load and validate manifests).
+- *PDF builds* → mock-test papers only; remains `SKIP (plan 011)` in ci-local — explicit
+  deferral, stated here per the design's exemption pattern.
+- *difficulty/timing budget stated* → each unit manifest gains an informational
+  `estimated_minutes: {lesson: N, practice: N}` field (loader ignores unknown keys;
+  documented as advisory for the tutor).
+
 **Acceptance criteria (exact):**
 1. `uv run usaaio-tools prereq-check` → PASS (no drift, no untaught use).
 2. `uv run usaaio-tools coverage-check` → PASS (was RED after Task 1; GREEN proves every taught concept has practice + all files exist).
 3. `uv run usaaio-tools hygiene-check` → PASS (student notebooks clean).
 4. `uv run usaaio-tools blueprint-check` / `overlap-scan` → vacuous-pass / PASS (no mocktests yet; overlap runs on corpus).
-5. `bash scripts/ci-local.sh` → ALL GREEN, executing every `*_solution.ipynb` (21-24 notebooks) top-to-bottom (this plan adds `jupyter`+`nbclient` deps and un-defers ci-local step 3 reality).
+5. `bash scripts/ci-local.sh` → ALL GREEN, executing every `*_solution.ipynb` (22 notebooks) top-to-bottom including their `### Answer check` assert cells (this plan adds `jupyter`+`nbclient` deps and un-defers ci-local step 3 reality).
+5b. Scripted spot check: every solution notebook contains ≥1 `assert` in its final cell (`grep`-level scan) — the unit-form answer-key reproduction criterion.
 6. Accessibility sweep (scripted): lessons scanned with an id→surface-form map (e.g. `dot-product` → "dot product") for mentions outside baseline ∪ prereq-closure ∪ own-teaches, with a documented per-unit allowlist for deliberate colloquial uses (C1 may say "variance"/"varies" in the bias-variance scope note — the allowlist entry cites the scope note). Zero UNALLOWED hits. Substrings of own concept ids (e.g. "variance" inside bias-variance-intuition's own section) are excluded by the map construction. The formal check remains reviewer duty 8.
 **Fixtures:** none beyond the real repo; the units ARE the fixtures for the tooling's first live run.
 
