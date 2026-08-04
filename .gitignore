@@ -1,0 +1,11 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Build outputs (rendered PDFs etc.)
+build/
+
+# OS / editor
+.DS_Store
