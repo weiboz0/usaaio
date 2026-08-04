@@ -59,5 +59,12 @@ if git grep -nE '^(<{7}|={7}|>{7})( |$)' -- ':!scripts/pre-merge-guard.sh' >/dev
   fail=1
 fi
 
+leaks=$(git ls-files reference/ | grep -vE '^reference/(\.gitkeep|analysis\.md)$' || true)
+if [[ -n "$leaks" ]]; then
+  echo "FAIL: tracked files under reference/ beyond the public whitelist:"
+  printf '%s\n' "$leaks"
+  fail=1
+fi
+
 if [[ $fail -eq 0 ]]; then echo "pre-merge-guard: OK"; fi
 exit $fail
