@@ -101,3 +101,13 @@ uses row X_i1=(2,0)); statement clarified post-hoc ("zero-based: w[1]"), and sin
 solver's stated assumption equals the clarified text, its solution stands as the valid
 solve of the amended statement (re-solve rule satisfied by identity). Solver sandbox
 lacked kernel sockets; all 18 re-executed LOCALLY exit 0.
+
+### C3-gradient-descent + C4-classical-ml-practice (2026-08-04)
+C3 solver vs outline: **18/18 agreement** (all letters A/B/B/C-109; contraction and
+expected-batch-gradient proofs with exact anchors; the η=1/3 perpetual-bounce edge case;
+divergence traces; schedule floors). C4 solver vs outline: **20/20 agreement** (all
+letters B/B/B/D; both load-bearing tie-breaks — best_k=1 and best_k=7 smallest-wins;
+the 3–2 vote squeaker; the peek-vs-honest 0.1333 gap; the standardization-does-NOT-flip
+challenge). Zero ambiguity findings from either solver. Both sandboxes lacked kernel
+sockets; ALL 38 solutions re-executed LOCALLY exit 0. coverage-check now PASSES
+repo-wide (56/56 tranche-3 pairs). Tranche reconciliation total: **56/56**.
