@@ -13,6 +13,7 @@ dependencies = [
     "pandas>=3.0.5",
     "pyyaml",
     "scikit-learn>=1.9.0",
+    "torch>=2.13.0",
 ]
 
 [project.scripts]
@@ -23,6 +24,16 @@ dev = [
     "pytest>=8.0",
     "ruff>=0.6",
 ]
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"
+# explicit: only source-pinned packages resolve here — the pytorch index also
+# hosts stale numpy builds that would otherwise shadow PyPI (first-index-wins)
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch" }
 
 [build-system]
 requires = ["hatchling"]

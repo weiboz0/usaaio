@@ -13,6 +13,8 @@
 
 `uv add torch --index pytorch=https://download.pytorch.org/whl/cpu` — the NAMED-index form, which persists `[[tool.uv.index]]` + `[tool.uv.sources]` in pyproject so re-locks keep the CPU-only guarantee (URL-only --index resolves once but does not persist — gate finding). VERIFY pyproject gains both sections, `python -c "import torch"` works, and pin the version in the post-exec report.
 
+> **Executed (deviation note):** the literal named-index add failed — the pytorch index also hosts stale numpy that shadows PyPI under first-index-wins. Fix: `[[tool.uv.index]]` written with **`explicit = true`** (only source-pinned packages resolve there) + `[tool.uv.sources] torch = {index = "pytorch"}`, then `uv add torch`. Result: **torch 2.13.0+cpu**, import verified, both sections present. Strictly stronger durability than the planned form.
+
 ## Units
 
 **C5-neural-networks** (prereqs [C3-gradient-descent, F5-probability]; teaches: perceptron, activation-functions, threshold-activation, relu-activation, mlp-architecture, decision-boundaries-geometric, weight-init-variance)
