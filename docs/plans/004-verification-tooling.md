@@ -29,7 +29,7 @@
 @dataclass Blueprint: raw dict access + typed: total_points, texture, sections, topic_distribution,
                       cluster_fold, difficulty_mix, provenance_rules
 @dataclass UnitManifest: unit_id, concepts_taught, concepts_used, prereq_units, practice: list[PracticeProblem(id, concepts, path)]
-@dataclass MockManifest: test id, blueprint_version, generation_parameters, problems: list[ManifestProblem(id, section, units, concepts, points, difficulty, type, answer_form, provenance, adapted_from, spec, answer_key, data)]
+@dataclass MockManifest: test id, blueprint_version, generated, status ('draft'|'final', absent=final), generation_parameters, time_budget, problems: list[ManifestProblem(id, section, units, concepts, points, difficulty, type, answer_form, provenance, adapted_from, spec, answer_key, data)]
 load_syllabus(root) -> Syllabus       # sentinel-fence parse; ValueError if sentinel count != 1
 load_blueprint(root) -> Blueprint
 load_unit_manifests(root) -> list[UnitManifest]     # units/*/manifest.yaml, [] if none
@@ -40,9 +40,10 @@ load_mock_manifests(root) -> list[MockManifest]     # mocktests/r1-*/manifest.ya
 Unit manifest schema (defined HERE, used by plan 005+ units):
 ```yaml
 unit: F1-scientific-python
-concepts-taught: [numpy-arrays, ...]      # must equal syllabus teaches for this unit
-concepts-used: [variables-and-types, ...] # baseline or taught-by-ancestor ids
-prereq-units: [..]                        # must equal syllabus prereqs for this unit
+concepts_taught: [numpy-arrays, ...]      # must equal syllabus teaches for this unit
+concepts_used: [variables-and-types, ...] # baseline or taught-by-ancestor ids
+prereq_units: [..]                        # must equal syllabus prereqs for this unit
+# snake_case keys throughout (matches the mock manifest + dataclasses)
 practice:
   - id: F1-p01
     concepts: [broadcasting, vectorization]   # exercised concepts
@@ -54,7 +55,7 @@ Naming convention (hygiene relies on it): any notebook whose filename contains
 `solution` is a solutions notebook; every other notebook under `practice/` or
 `problems/` is student-facing.
 
-**Tests (exact names):** `test_load_syllabus_real_repo` (16 units, 105 concepts), `test_sentinel_must_be_unique`, `test_load_blueprint_real_repo` (targets sum 300), `test_missing_dirs_yield_empty_lists`, `test_unit_manifest_roundtrip` (tmp fixture).
+**Tests (exact names):** `test_load_syllabus_real_repo` (structural invariants, not hardcoded counts: >=16 units, >=100 concepts, taught-exactly-once bijection holds), `test_sentinel_must_be_unique`, `test_load_blueprint_real_repo` (targets sum to total_points), `test_missing_dirs_yield_empty_lists`, `test_unit_manifest_roundtrip` (tmp fixture).
 
 ---
 
@@ -62,10 +63,10 @@ Naming convention (hygiene relies on it): any notebook whose filename contains
 
 **prereq-check rules:**
 1. Syllabus self-consistency: DAG acyclic; teaches/prereq refs resolve; every concept taught exactly once; concept clusters ∈ clusters.
-2. Per unit manifest: `concepts-taught` == syllabus unit's teaches (exact set); `prereq-units` == syllabus prereqs; every id in `concepts-used` ∈ baseline ∪ teaches(transitive ancestors).
-3. Per mock manifest: every problem `concepts` id ∈ ⋃ teaches(units listed in the problem's `units`, including transitive prereqs) — tested-only-if-taught; every listed unit has a shipped manifest in `units/`.
+2. Per unit manifest: `concepts_taught` == syllabus unit's teaches (exact set); `prereq_units` == syllabus prereqs; every id in `concepts_used` ∈ baseline ∪ teaches(transitive ancestors).
+3. Per mock manifest: every problem `concepts` id ∈ **baseline ∪** ⋃ teaches(units listed in the problem's `units`, including transitive prereqs) — tested-only-if-taught with pure-baseline questions allowed (they anchor the intro difficulty band); every listed unit has a shipped manifest in `units/`.
 
-**coverage-check rules:** per unit manifest, every id in `concepts-taught` appears in ≥1 practice problem's `concepts`; every practice `path` exists; practice concept ids ∈ vocabulary.
+**coverage-check rules:** per unit manifest, every id in `concepts_taught` appears in ≥1 practice problem's `concepts`; every practice `path` exists; practice concept ids ∈ vocabulary.
 
 **Tests:** `test_prereq_pass_on_real_syllabus`, `test_prereq_detects_cycle`, `test_prereq_detects_untaught_use`, `test_prereq_detects_manifest_syllabus_drift`, `test_mock_tested_only_if_taught`, `test_coverage_pass_and_gap`, `test_coverage_missing_practice_file`.
 
@@ -84,16 +85,16 @@ Rules (student-facing notebooks: `mocktests/*/problems/*.ipynb` and `units/*/pra
 
 ### Task 4: blueprint-check (`tools/checks/blueprint.py`)
 
-Per mock manifest, against the blueprint: points sum == total_points; per-section sums within `sections[].points` ranges (+ arc subparts range); subpart count within texture range; five-point-atom share ≥ min; programming share (points of `type: programming`) within range; problem_count within range; topic accounting — **dominant-concept attribution**: each problem's points go entirely to the folded cluster of its FIRST-listed concept (`concepts[0]` is the declared dominant concept — matching how `reference/analysis.md` assigned each sub-part to one dominant cluster, which is where the targets came from; split-attribution would drift from the targets' derivation); per-cluster point totals within `{min,max}`; difficulty bands (share of points per difficulty within band bounds); provenance — original share ≥ min, `adapted` requires `adapted-from`; every problem carries non-empty `spec` + `answer_key`; `data` entries name existing `generator_script` files.
+Per mock manifest, against the blueprint: points sum == total_points; per-section sums within `sections[].points` ranges (+ arc subparts range); subpart count within texture range; five-point-atom share ≥ min; programming share (points of `type: programming`) within range; problem_count within range; topic accounting — **explicit dominant-cluster attribution**: each manifest problem carries a `cluster:` field (dominant cluster, post-fold — Task 7 adds it to the schema in docs/mocktest-generation.md); all the problem's points go to it, matching analysis.md's dominant-cluster methodology that produced the targets. blueprint-check validates `cluster ∈ fold(clusters(problem.concepts))` — for baseline-only problems (no clustered concepts) any distribution cluster is accepted; per-cluster point totals within `{min,max}`; difficulty bands (share of points per difficulty within band bounds); provenance — original share ≥ min, `adapted` requires `adapted-from`; every problem carries non-empty `spec` + `answer_key`; `data` entries name existing `generator_script` files; each problem's dominant `cluster` (post-fold) ∈ its section's `draws_on_clusters` (post-fold); `time_budget` values sum to `duration_minutes`.
 
-**Tests:** `test_blueprint_pass_on_fixture_test`, `test_blueprint_flags_section_out_of_range`, `test_blueprint_flags_topic_distribution_breach`, `test_blueprint_flags_missing_adapted_tag`, `test_blueprint_vacuous_without_mocktests`.
+**Tests:** `test_blueprint_pass_on_fixture_test`, `test_blueprint_flags_section_out_of_range`, `test_blueprint_flags_topic_distribution_breach`, `test_blueprint_flags_missing_adapted_tag`, `test_blueprint_flags_atom_share_breach`, `test_blueprint_flags_programming_share_breach`, `test_blueprint_flags_difficulty_band_breach`, `test_blueprint_flags_provenance_share_breach`, `test_blueprint_flags_invalid_dominant_cluster`, `test_blueprint_flags_section_cluster_violation`, `test_blueprint_flags_remaining_invariants_parametric` (subpart count, problem_count, missing spec/answer_key, missing generator_script, time-budget sum — one parametrized test, one broken fixture per invariant), `test_blueprint_vacuous_without_mocktests`.
 
 ---
 
 ### Task 5: overlap-scan (`tools/checks/overlap.py`)
 
 1. Corpus: for each `reference/*/` dir with PDFs, extract text via `pdftotext` (subprocess) at scan time; also read `index.yaml` `text:` fields when present. Missing corpus/pdftotext → `Report.skipped` = remedy naming `bash scripts/fetch-reference.sh` (exit 3).
-2. Mock problem text: concatenate manifest `spec` + student notebook/theory sources per problem.
+2. Mock problem text: concatenate manifest `spec` + the problem's `files:` list (optional manifest field, paths relative to the test dir, e.g. [problems/p05.ipynb, theory/p01.md] — Task 7 adds it to the schema); missing `files` ⇒ spec-only comparison with a warning.
 3. Similarity: (a) 8-word shingle overlap count; (b) TF-IDF cosine (stdlib impl) between problem text and each reference sub-part text. Flag when shingles ≥ 2 OR cosine ≥ 0.35 (tunable constants at module top).
 4. A flagged problem without `provenance: adapted` + matching `adapted-from` → error; with tag → warning (informational).
 
@@ -103,9 +104,9 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 
 ### Task 6: new-mocktest scaffolder (`tools/checks/new_mocktest.py` or `tools/scaffold.py`)
 
-`usaaio-tools new-mocktest r1-NNN`: refuses to overwrite; creates the directory skeleton per `docs/mocktest-generation.md` (test.md front-matter stub, empty `theory/ problems/ solutions/ data/`, `rubric.md` stub) and a `manifest.yaml` pre-filled by the DETERMINISTIC default rule (anchors 50/45/90/65/50, arc clusters by `NNN mod 3` rotation, difficulty draw {0.23,0.45,0.32}, problem_count 9, blueprint_version from blueprint, generated date from `--date YYYY-MM-DD` required arg — no clock access convention) with empty `problems: []` and a `# TODO drafts` note that ci-local's manifest validation reports as incomplete-but-not-failing until problems land (`status: draft` field; blueprint-check skips manifests marked `status: draft`, validates when `status: final`).
+`usaaio-tools new-mocktest r1-NNN`: refuses to overwrite; creates the directory skeleton per `docs/mocktest-generation.md` (test.md front-matter stub, empty `theory/ problems/ solutions/ data/`, `rubric.md` stub) and a `manifest.yaml` pre-filled by the DETERMINISTIC default rule (anchors 50/45/90/65/50, arc clusters by `(NNN-1) mod 3` rotation (r1-001 → index 0, the first entry — matching the canonical example; Task 7 fixes the ambiguous "index 1 ⇒ first entry" prose in mocktest-generation.md), difficulty draw {0.23,0.45,0.32}, problem_count 9, blueprint_version from blueprint, generated date from `--date YYYY-MM-DD` required arg — no clock access convention) with empty `problems: []` and `status: draft`. Semantics: absent `status` == `final` (a manifest can never dodge checking by omission); `status: draft` makes blueprint-check LOUD-skip that manifest (exit-3-style report line naming the manifest, never silent) while schema validation, prereq, coverage, and hygiene still run in full; `status: final` enables everything.
 
-**Tests:** `test_new_mocktest_scaffolds_defaults` (r1-002 → rotation index 2), `test_new_mocktest_refuses_overwrite`, `test_draft_manifest_skipped_by_blueprint_check`.
+**Tests:** `test_new_mocktest_scaffolds_defaults` (r1-002 → rotation index 1, second entry), `test_new_mocktest_rotation_wraps` (r1-004 → index 0, first entry), `test_new_mocktest_refuses_overwrite`, `test_draft_manifest_loud_skipped_by_blueprint_check`, `test_absent_status_treated_as_final`, `test_scaffold_time_budget_sums_to_duration`.
 
 ---
 
@@ -119,8 +120,8 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
    done
    ```
    (exit 3 = loud skip tolerated; step prints each report line.)
-3. **Integration tests phase (named):** `tests/test_integration.py` — `test_ci_checks_green_on_current_repo` (runs all five checks against the real repo root, expects pass/vacuous/skip-3, never 1), `test_cli_exit_codes` (0/1/3 paths via fixtures), `test_full_pipeline_on_synthetic_test` (fixture mini-syllabus + scaffolded mocktest + one drafted problem → prereq+coverage+hygiene+blueprint all evaluated).
-4. Update `docs/mocktest-generation.md` verification-map table (drop "plan 004" SKIPs), `CLAUDE.md` untouched (governance — no changes needed; SKIP language already says "until plan 004 ships").
+3. **Integration tests phase (named):** `tests/test_integration.py` — `test_ci_checks_green_on_current_repo` (runs all five checks against the real repo root and asserts each check's EXPLICIT status — pass, vacuous, or skip-3 with remedy — never 1, so silent errors can't hide), `test_cli_exit_codes` (0/1/3 paths via fixtures), `test_full_pipeline_on_synthetic_test` (fixture mini-syllabus + scaffolded mocktest + one drafted problem → prereq+coverage+hygiene+blueprint all evaluated), `test_ci_flags_draft_manifest_loudly` (a scaffolded-but-draft mocktest in a fixture repo produces the named loud-skip line from blueprint-check — the draft state is impossible to miss in CI output).
+4. Update `docs/mocktest-generation.md`: verification-map table (drop "plan 004" SKIPs), manifest schema gains the per-problem `cluster:` field (dominant, post-fold) and documents the `status:` semantics; `CLAUDE.md` untouched (governance — no changes needed; SKIP language already says "until plan 004 ships").
 
 **Acceptance criteria:** all named tests above exist and pass; `bash scripts/ci-local.sh` ALL GREEN on the repo (overlap-scan exit 3 loud-skip acceptable only when corpus absent — on THIS machine the corpus exists, so it must actually run and pass); ruff clean.
 
@@ -129,6 +130,7 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 ## Out of scope
 
 - Quarto/PDF build (plan 006). Embedding-model similarity beyond TF-IDF (revisit only if TF-IDF proves insufficient during plan 006's gate — recorded here as the concrete trigger, not an unfiled deferral).
+- **Answer-key reproduction** (design §3.1 second half: solution outputs must equal manifest `answer_key`) is OWNED BY PLAN 006, which ships the first solution notebooks (there is nothing to compare until then — blueprint-check already fails any final manifest lacking `answer_key`). Until 006 lands, ci-local step 3 prints an explicit `PENDING (plan 006): answer-key reproduction` line so the gap is visible in every CI run, and the verification map marks it pending. A wrong solution therefore cannot merge silently once notebooks exist: 006's named acceptance tests include the comparator.
 - Unit content (plan 005+). No governance-doc edits.
 - **Verification-phase exemption:** not exempt — Task 7 IS the named integration-tests phase (this plan ships tooling; its tests are the verification).
 
