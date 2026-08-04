@@ -1,13 +1,34 @@
-# Unit Standards
+# Unit Standards (v2 — semester-grade)
 
-The depth-and-variety bar every teaching unit must meet
-(user directive, 2026-08-04; applies to plan 005's units retroactively and all later tranches).
+The bar every teaching unit must meet
+(user directives, 2026-08-04 ×2: materials constitute a FORMAL MULTI-SEMESTER TRAINING
+COURSE; depth, coverage, and variety must reach that level — not tutoring notes).
+Applies to plan 005's units retroactively and all later tranches.
 Verification: coverage/hygiene/prereq checks enforce the mechanical parts;
 the content gate's reviewers enforce the qualitative parts against this document.
 
+## Lessons are session-structured
+
+- Each unit's lesson splits into **2–4 class-session notebooks** in `lessons/`
+  (`lessons/01-<slug>.ipynb`, …), each sized to one course session (60–90 min:
+  ~6–10 sections with worked examples and checkpoints).
+  A root `lesson.ipynb` remains as the unit overview/index (goals, session map,
+  prerequisites recap, how-to-study guidance).
+- Double-length units (F6) use 4–6 sessions.
+- `estimated_minutes` in the manifest lists per-session lesson minutes plus practice.
+
 ## Practice sets
 
-- **Count:** 10–14 problems per unit (double-length units like F6: 14–18).
+- **Count:** 16–24 problems per unit (double-length units: 24–30), organized as
+  **problem sets** mirroring homework cadence:
+  - Set A — fundamentals (drills per concept, intro/core),
+  - Set B — exam register (constrained coding, normal-form MC, reasoning-required),
+  - Set C — integration + challenge (multi-part arcs, scenarios, advanced tier).
+  File layout stays flat in `practice/` (pNN + pNN_solution); the manifest orders
+  problems and a `set:` tag (A/B/C) records the grouping.
+- **Scaled type mix** (each unit includes at least): 4 exam-style MC (≥1 numeric
+  normal-form), 6 constrained coding tasks, 2 proof/derivation, 2 integrative
+  multi-part, 2 scenario analyses, 2 challenge problems.
 - **Mandated type mix** (each unit includes at least):
   - 2 exam-style MC items — exactly five options A–E; numeric MC uses normal-form
     constraints (gcd/sign) where applicable, matching the blueprint style rules.
@@ -21,7 +42,15 @@ the content gate's reviewers enforce the qualitative parts against this document
     unit's concept closure).
 - **Difficulty spread:** roughly 30% intro / 45% core / 25% advanced, tagged per problem
   in the manifest (`difficulty:` informational field).
-- Every taught concept exercised by ≥2 problems where feasible (coverage-check enforces ≥1).
+- Every taught concept exercised by **≥3 problems** (coverage-check enforces ≥1;
+  reviewers enforce the rest).
+
+## Per-unit review material
+
+- `review.ipynb` at the unit root: concept summary table, formula/idiom sheet,
+  a 10–15-item self-quiz spanning every taught concept (answers in a collapsed
+  section at the end — lesson-style, not hygiene-scoped), and pointers to which
+  practice problems to redo for each weak spot.
 
 ## Lessons
 
