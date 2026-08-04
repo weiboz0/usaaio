@@ -53,7 +53,7 @@ units:
 **Unit roster to encode** (id / prereqs / teaches-summary — the load-bearing decision, reviewers judge this):
 
 Foundation track (F1 comes first; math-unit practice mixes by-hand and NumPy work, so
-NumPy-heavy units declare F1):
+NumPy-heavy units declare or transitively reach F1):
 1. `F1-scientific-python` — [] — NumPy arrays, indexing, broadcasting, vectorization, aggregation, seeding, matplotlib.
 2. `F2-vectors` — [F1] — vectors, norms, distance, dot product, cosine similarity, projection, residuals, unit vectors.
 3. `F3-matrices` — [F2] — matrices as linear maps, matmul, rank, invertibility (via rank), outer products, matrix reconstruction from action, Gram matrices.
@@ -147,7 +147,7 @@ cluster_aliases:                       # analysis.md topic-table row -> canonica
   "NumPy implementation": numpy
   "PyTorch engineering": pytorch
   "Probability/statistics": probability-statistics
-  "Calculus": calculus-multivar
+  "Calculus": calculus-multivar   # bucket spans 1-D + multivariable calculus items
   "CNN representations": cnn-vision
   "NLP/embeddings context": nlp-embeddings
   "Applied tabular ML": applied-ml
