@@ -18,7 +18,7 @@
 - 18–20 problems (the v2 type floors sum to 18 disjoint; dual-type tagging allowed but must be flagged in the manifest and judged at the gate). Constrained-coding tasks = implement gradients component-wise + finite-difference checkers (no autograd). **Drafting bans:** the word "matrix", the `@` operator, "Jacobian" — component/indexed-sum forms only.
 
 **F3-matrices** (prereqs [F2-vectors]; teaches: matrices-as-linear-maps, matrix-multiplication, rank, invertibility-via-rank, outer-products, matrix-from-action, gram-matrices, linear-independence-span)
-- Sessions: `01-matrices-as-maps` (matrix as a machine acting on vectors; reconstructing a matrix FROM its action — the exam's signature pattern, taught generically without copying any specific past problem), `02-multiplication-and-gram-matrices` (row·col by hand → `@` in NumPy; the exam sometimes BANS `@` — practice both registers. **Banned-`@` register, exactly:** each such problem's zero-points clause names its banned identifiers from {`@`, `np.matmul`, `np.dot`, `.T`, loops}; the permitted route is elementwise multiply + broadcasting + axis sums (`(A[:, :, None] * B[None, :, :]).sum(axis=1)` style), mirroring the real exam's ban lists. Gram matrix W·Wᵀ as all-pairs dot products), `03-rank-independence-and-outer-products` (linear independence/span operationally; rank as independent-direction count; invertibility-via-rank; outer products as rank-1 building blocks and minimal decompositions).
+- Sessions: `01-matrices-as-maps` (matrix as a machine acting on vectors; reconstructing a matrix FROM its action — the exam's signature pattern, taught generically without copying any specific past problem), `02-multiplication-and-gram-matrices` (row·col by hand → `@` in NumPy; the exam sometimes BANS `@` — practice both registers. **Banned-`@` register:** each such problem's zero-points clause names its banned identifiers — the CORE set {`@`, `np.matmul`, `np.dot`, `.T`, loops} mirroring the exam, PLUS per-problem workaround-closing additions where the core set leaves a trivial bypass (`np.einsum`, `np.tensordot`, `np.outer`) — amendment recorded at the content gate ([codex] finding): the core set is a minimum, not exhaustive. The permitted route is elementwise multiply + broadcasting + axis sums (`(A[:, :, None] * B[None, :, :]).sum(axis=1)` style), mirroring the real exam's ban lists. Gram matrix W·Wᵀ as all-pairs dot products), `03-rank-independence-and-outer-products` (linear independence/span operationally; rank as independent-direction count; invertibility-via-rank; outer products as rank-1 building blocks and minimal decompositions).
 - 18–22 problems.
 
 **F5-probability** (prereqs [F1-scientific-python]; teaches: random-variables, expectation, variance, independence, variance-of-sums, gaussian-distribution, sampling-simulation, covariance)
@@ -158,3 +158,14 @@ syllabus mandates); no structural isomorph with renamed numbers. PASS.
    against the same manifest, but verify).
 3. `[NOTED]` Commit `4f9cc81`'s message contains a stray non-English artifact from a
    tooling fallback — cosmetic; squash-merge erases branch messages.
+
+### Unit-overlap corpus scan (orchestrator, [codex] gate finding, 2026-08-04)
+[codex] correctly noted `overlap-scan` covers mock manifests only, so tranche units never
+got a corpus comparison. Manual local scan run: 8-word shingles of ALL 56 tranche-2
+student+solution notebooks against pdftotext of the full local corpus. Result: the ONLY
+hits are the universal `import numpy as np` / `import matplotlib.pyplot as plt` starter
+boilerplate (present in the real paper's starter code and in effectively all Python ML
+material) — zero content overlap. VERDICT: PASS.
+**Filed follow-up (concrete, not deferred):** plan 007's tooling touch extends
+`check_overlap` to scan `units/*/practice/*.ipynb` sources with a starter-boilerplate
+exemption list, making this scan permanent CI.
