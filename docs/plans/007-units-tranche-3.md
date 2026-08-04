@@ -148,3 +148,19 @@ verified; lesson spot-checks consistent. BLOCKER: overlap-scan silently dropped 
 parts with failed pdftotext conversion → `[FIXED]` failures channel + loud warnings +
 `test_overlap_partial_pdftotext_failure_warns`; 61 tests green, ruff clean, real-repo
 scan PASS. Re-verdict requested.
+
+### Review 4 — [opus] Independent Opus (2026-08-04): Changes requested → fixes in flight
+12/12 blind solves matched (incl. C4 p15's bit-exact three-way tie and C3's 84/25→109);
+fitting fence + C4/C10 boundary verified clean; narration-output fidelity otherwise
+excellent (reviewer recomputed even unprinted assertions). Findings:
+1. `[OPEN→fixing]` BLOCKER: lessons/02 §8 Pitfall 2 grid clips the true minimizer at its
+   boundary (printed 14.0/36.27 vs true 13.335/44.70) — third occurrence of the
+   printed-output defect class, again caught by a reviewer executing the lesson.
+2. `[OPEN→fixing]` §4 argmin rigor gaps (existence, f″>0, kink-test globalization).
+3. `[OPEN→fixing]` §8 Pitfall 1 demo doesn't visibly break — re-engineering to a genuine
+   ranking inversion.
+4. `[OPEN→fixing]` p13(c) wording presupposes asymmetry; solution already correct.
+5. `[OPEN→fixing]` review.ipynb wrap-up prose after </details>.
+6. `[WONTFIX]` C3 p14(c) cost constants not consumed from earlier parts — chaining
+   genuine in 5/6 audited integratives; the constants are the problem's given
+   parameters, not derived quantities.
