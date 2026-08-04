@@ -32,7 +32,9 @@ tailored for content development rather than software.
   *fidelity* (similar enough in structure, topic mix, difficulty, style) and
   *overlap* (no problem near-duplicates a specific past problem unless tagged `adapted-from`).
 - **Process:** full PowerMarket adoption, tailored (gates retargeted at content correctness).
-- **Git:** private GitHub repo; PR workflow via `gh`.
+- **Git:** public GitHub repo (github.com/weiboz0/usaaio); PR workflow via `gh`.
+  Because the repo is public, raw past-test papers and any student data are never committed —
+  only original material and our own derived analysis.
 
 ## 1. Repo structure
 
@@ -48,9 +50,12 @@ usaaio/
 │       └── manifest.yaml      # concepts-taught, concepts-used, prerequisite units,
 │                              # per-problem concept tags
 │                              # (drives the prereq-closure + practice-coverage checks, §3)
-├── reference/                 # corpus of real past USAAIO/IOAI tests (private use only)
-│   ├── r1-2025/ r1-2026/ …    # real test papers + per-problem structured index (index.yaml)
-│   └── analysis.md            # observed format, topic distribution, difficulty notes
+├── reference/                 # corpus of real past USAAIO/IOAI tests
+│   ├── r1-2025/ r1-2026/ …    # real test papers + per-problem index (index.yaml) —
+│   │                          # GITIGNORED: the repo is public; raw papers and verbatim
+│   │                          # problem text stay local-only (copyright)
+│   └── analysis.md            # committed: our own analysis — format, topic distribution,
+│                              # difficulty notes; no verbatim problem text
 ├── mocktests/                 # one dir per mock test
 │   ├── blueprint.yaml         # canonical R1 test blueprint derived from reference/ (versioned)
 │   └── r1-001/
