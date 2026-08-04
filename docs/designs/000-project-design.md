@@ -12,7 +12,11 @@ tailored for content development rather than software.
 
 ## Requirements (settled during brainstorming)
 
-- **Audience:** the author's own student(s); simple delivery (notebooks, printable PDFs).
+- **Audience:** originally the author's own student(s); updated 2026-08-04 — the materials
+  form the curriculum of a **formal training course running across multiple semesters**
+  (units as course texts, practices as homework, mock tests as midterm/final instruments;
+  unit `estimated_minutes` feeds week-level pacing; a course-structure doc maps units to
+  semesters on the post-tranche roadmap). Delivery remains notebooks + printable PDFs.
 - **Target stage:** Round 1 first — the 3-hour proctored exam with theory questions (Markdown + math notation)
   and Python/NumPy/ML programming problems. Round 2 / camp material may follow later.
 - **Format:** notebooks as the source of truth, with a build step rendering printable PDF test papers (Quarto).
