@@ -115,4 +115,16 @@ scope-note carve-out; plain-Python-first inheritance. Re-verdict requested.
 
 ## Content Review
 
-(Pre-PR gate findings land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
+
+- **Verdict**: Approved
+- Duties executed: all 6 lessons + 2 review notebooks executed via nbclient — 8/8 PASS;
+  narration-vs-output cross-check on 17 outline anchors (C5: 0.28025 quadrilateral frac,
+  0.97875 broken-region frac, width sweep 1.3076/0.9090/0.9480; C6: seeded randn digits,
+  float32 sum 100000.0078, bench 26 scalars, MC p+q=27, inverse 151) — every anchor present
+  in output AND consistent in narration. Independent recompute of 6 problems (C5 p04/p11/p13,
+  C6 p04/p12/p20 incl. both proof anchors): all agree with shipped solutions.
+1. `[FIXED]` [claude-self] The C6 outline (gitignored, non-shipping) misquoted p12's negative
+   root as −56/4 = −14; true value −50/4 = −25/2. The SHIPPED solution was already correct —
+   the blind-solve protocol prevented inheritance. Outline corrected in place. Priority: n/a
+   (never student-visible).
