@@ -29,12 +29,15 @@ check_dupes() {  # check_dupes <label> <newline-separated names> <prefix-regex>
 }
 
 refs=(WORKTREE)
-if [[ "$MODE" == "--pr"* ]]; then
+if [[ "$MODE" == "--pr" ]]; then
   if git fetch -q origin main 2>/dev/null; then
     refs+=(origin/main)
   else
     echo "note: origin/main not reachable — checking worktree only"
   fi
+elif [[ -n "$MODE" ]]; then
+  echo "usage: pre-merge-guard.sh [--pr]   (unknown argument: $MODE)" >&2
+  exit 2
 fi
 
 for dir in docs/proposals docs/designs docs/plans docs/reviews; do

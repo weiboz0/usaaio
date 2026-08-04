@@ -106,7 +106,7 @@ all `[OPEN]` resolve before merge.
 |------|----------|
 | Planning, review orchestration, test assembly | Orchestrator Claude inline |
 | Problem / lesson drafting | `general-purpose` subagents (parallel per unit/problem) |
-| Blind independent solving (content gate) | Gate roster (Codex + GLM solve blind) |
+| Blind independent solving (content gate) | Gate roster (all four reviewers solve blind) |
 | Tooling code (`tools/`, `scripts/`) | `codex:codex-rescue` |
 | Trivially-scoped edits | Inline |
 

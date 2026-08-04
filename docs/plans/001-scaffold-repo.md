@@ -961,3 +961,71 @@ adopted workflow, a passing gate authorizes implementation.
    seeded plan-number collision by message; per-path `check-ignore` assertions clean;
    `git ls-remote origin` OK; all doc cross-references (CLAUDE.md → workflow/gate/
    decisions/design paths) resolve; no secrets or reference material staged.
+
+### Review 2 — [glm] GLM 5.2 (2026-08-03)
+
+- **Verdict**: Approved with suggestions
+
+1. `[FIXED]` `reference/.gitkeep` + `.gitignore` stanza uncommitted.
+   → Response: committed with the review records.
+2. `[FIXED]` Ship steps (TODO tick, post-exec report) pending. → Response: shipped below.
+3. `[WONTFIX]` `find 2>/dev/null` swallows real errors. → Response: revisit when plan 005
+   ships notebooks (same milestone that adds the jupyter dependency).
+4. `[WONTFIX]` `import tools` style — reviewer noted no change needed.
+5. `[NOTED]` Cross-references verified consistent.
+
+### Review 3 — [codex] Codex GPT-5.5 (2026-08-03)
+
+- **Verdict**: Changes requested (round 1) → all findings fixed, re-verdict requested
+
+1. `[FIXED]` BLOCKER: public-reference ignore rules + `.gitkeep` only in worktree.
+   → Response: committed (chore commit after round 1).
+2. `[FIXED]` TODO.md 001 unticked. → Response: ticked in ship commit.
+3. `[FIXED]` Content-review records uncommitted. → Response: committed.
+
+### Review 4 — [opus] Independent Opus, fresh context (2026-08-03)
+
+- **Verdict**: Approved with suggestions
+  (behavioral verification: guard failure modes in a scratch clone, gitignore matrix in an
+  isolated repo, ci-local end-to-end — all as documented)
+
+1. `[FIXED]` Same uncommitted-worktree concern as [glm]/[codex]. → Response: committed.
+2. `[FIXED]` `--pr` glob match accepted `--prfoo`; unknown args silently degraded.
+   → Response: exact-match `--pr` + usage error (exit 2) on unknown arguments; verified.
+3. `[WONTFIX]` `find -printf` is GNU-only. → Response: project toolchain is Linux.
+4. `[WONTFIX]` `git grep` misses untracked conflict markers. → Response: reviewer's own
+   assessment — real conflicts are tracked.
+5. `[WONTFIX]` ci-local step-3 title vs practice-notebook glob. → Response: reconcile in
+   plan 005, which introduces the first notebooks and the jupyter dependency.
+6. `[FIXED]` No in-process coverage of `main()`. → Response: two in-process tests added
+   (`main([]) == 0` help path, `main(["blueprint-check"]) == 2`); suite now 5 tests.
+7. `[FIXED]` Blind-solving duty inconsistency (all reviewers vs Codex+GLM).
+   → Response: CLAUDE.md dispatch row aligned to "all four reviewers solve blind",
+   matching the gate doc's duty 1.
+8. `[FIXED]` TODO 001 "(this plan)" had no referent. → Response: replaced with the path.
+
+**GATE RESULT: PASS pending [codex] re-verdict** — [claude-self], [glm], [opus] approve;
+all [codex] findings fixed and committed.
+
+## Post-execution report (2026-08-03)
+
+**Shipped:** full scaffold per plan — lifecycle docs (`docs/README.md`, workflow, content-review
+gate, generation stub, decisions log), `CLAUDE.md`, `TODO.md`, uv-managed `tools` package
+(`usaaio-tools` CLI, six plan-004 subcommand stubs, 5 passing tests, ruff clean),
+`scripts/ci-local.sh` + `scripts/pre-merge-guard.sh` (both verified green + negative-tested),
+`reference/` with public-repo ignore rules.
+
+**Deviations from plan:**
+- `tests/test_cli.py`: `check=False` added (ruff PLW1510); two in-process `main()` tests
+  added from [opus] review — both behavior-preserving additions.
+- `pre-merge-guard.sh`: `--pr` exact-match + unknown-arg usage error ([opus] #2).
+- CLAUDE.md dispatch row: blind solving assigned to all four reviewers ([opus] #7).
+- TODO 001 line references the plan path ([opus] #8).
+
+**Known limitations / follow-ups:** content checks and PDF build are SKIP stubs owned by
+plans 004/006; `jupyter` dependency + practice-notebook glob reconciliation owed to plan 005;
+`find -printf` is GNU-only (accepted — Linux toolchain).
+
+**Gate history:** plan-review round 1 (2 REJECT / 2 APPROVE-WITH-NITS) → fixes → round 2
+PASS 4/4. Content review: 3× approved-with-suggestions + 1 changes-requested, all findings
+fixed; re-verdict from [codex] recorded above this line lands before merge.

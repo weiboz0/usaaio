@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 import tools
-from tools.cli import SUBCOMMANDS
+from tools.cli import SUBCOMMANDS, main
 
 
 def run_cli(*args):
@@ -31,3 +31,13 @@ def test_unimplemented_subcommand_exits_2():
     proc = run_cli("blueprint-check")
     assert proc.returncode == 2
     assert "plan 004" in proc.stderr
+
+
+def test_main_no_subcommand_prints_help(capsys):
+    assert main([]) == 0
+    assert "usage: usaaio-tools" in capsys.readouterr().out
+
+
+def test_main_unimplemented_subcommand_in_process(capsys):
+    assert main(["blueprint-check"]) == 2
+    assert "plan 004" in capsys.readouterr().err
