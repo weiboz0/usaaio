@@ -183,6 +183,21 @@ Content gate (4-way; duties: solve practice blind, verify solutions, accessibili
 
 **GATE RESULT: PASS — 4/4** ([claude-self], [fable], [codex], [glm]); no open blockers.
 
+## Verification record (Task 5, 2026-08-04)
+
+- prereq / coverage / hygiene / blueprint / overlap: all PASS.
+- ci-local ALL GREEN executing all 65 solution notebooks (+9 session, 3 overview,
+  3 review notebooks verified by drafters); assert scan: 65/65 solutions end with
+  answer-check asserts (criterion 5b).
+- Accessibility sweep (id→surface-form map, closure-aware): 2 hits, both benign and
+  allowlisted with justification — F1 "vector" = substring of its own
+  "vectorization" concept; C1 "matrix" = the fixed compound "confusion matrix"
+  (metrics domain, no linear algebra used). Zero unallowed hits.
+- v2 type-mix compliance per drafter reports: F1 21 / F2 21 / C1 23 problems, every
+  floor met (F1's constrained-coding count reaches 6 via two honestly-flagged
+  dual-counted challenge problems — gate to judge); difficulty spreads ≈30/45/25;
+  every concept ≥3 problems.
+
 ## Content Review
 
 (Pre-PR gate findings land here.)
