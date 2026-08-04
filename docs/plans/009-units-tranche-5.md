@@ -17,6 +17,12 @@ the pytorch index shadows PyPI numpy). `gensim` from PyPI (`uv add gensim`).
 Verify both import; pin versions in the post-exec report **including the resolved
 torch↔torchvision pair (uv add must not bump torch; gensim needs ≥4.3.3 for numpy 2.x —
 record both).**
+
+> **Executed (Task 0):** torch **2.13.0+cpu** (unchanged) · torchvision **0.28.0+cpu**
+> (resolved from the pinned explicit pytorch index) · gensim **4.4.0** (≥4.3.3 ✓).
+> Caches warmed at reference/cache/: resnet50 IMAGENET1K_V1 (total params 25,557,032 —
+> matches the canonical figure) and glove-wiki-gigaword-100 (400k vocab × 100 dim).
+> Both covered by the `reference/*` gitignore; tree clean.
 **Download/cache pin:** pretrained weights and corpora are fetched at first execution and
 cached under `reference/cache/` (gitignored). **Path resolution pin (gate finding — notebooks
 execute with cwd = the notebook's own directory, so a relative cache path would scatter caches
