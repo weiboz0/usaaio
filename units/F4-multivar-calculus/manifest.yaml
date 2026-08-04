@@ -1,0 +1,137 @@
+unit: F4-multivar-calculus
+concepts_taught: [partial-derivatives, gradient, multivar-chain-rule, sum-of-squares-gradients, tanh-derivative]
+concepts_used: [vectors-and-norms, dot-product, unit-vectors, numpy-arrays, elementwise-ops, broadcasting,
+  vectorization, aggregation-axis, random-seeding, matplotlib-basics]
+prereq_units: [F2-vectors]
+estimated_minutes:
+  lesson: 170
+  lesson_sessions: [80, 90]
+  practice: 400
+  review: 40
+practice:
+- id: F4-p01
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [partial-derivatives]
+  path: practice/p01.ipynb
+  solution_path: practice/p01_solution.ipynb
+- id: F4-p02
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [gradient, multivar-chain-rule]
+  path: practice/p02.ipynb
+  solution_path: practice/p02_solution.ipynb
+- id: F4-p03
+  set: B
+  type: mc
+  difficulty: intro
+  concepts: [tanh-derivative]
+  path: practice/p03.ipynb
+  solution_path: practice/p03_solution.ipynb
+- id: F4-p04
+  set: B
+  type: mc-normal-form
+  difficulty: core
+  concepts: [sum-of-squares-gradients]
+  path: practice/p04.ipynb
+  solution_path: practice/p04_solution.ipynb
+- id: F4-p05
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [partial-derivatives]
+  path: practice/p05.ipynb
+  solution_path: practice/p05_solution.ipynb
+- id: F4-p06
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [gradient]
+  path: practice/p06.ipynb
+  solution_path: practice/p06_solution.ipynb
+- id: F4-p07
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [sum-of-squares-gradients]
+  path: practice/p07.ipynb
+  solution_path: practice/p07_solution.ipynb
+- id: F4-p08
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [multivar-chain-rule]
+  path: practice/p08.ipynb
+  solution_path: practice/p08_solution.ipynb
+- id: F4-p09
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [tanh-derivative, gradient]
+  path: practice/p09.ipynb
+  solution_path: practice/p09_solution.ipynb
+- id: F4-p10
+  set: B
+  type: constrained-coding
+  difficulty: advanced
+  concepts: [sum-of-squares-gradients, gradient]
+  path: practice/p10.ipynb
+  solution_path: practice/p10_solution.ipynb
+- id: F4-p11
+  set: B
+  type: proof
+  difficulty: advanced
+  concepts: [tanh-derivative]
+  path: practice/p11.ipynb
+  solution_path: practice/p11_solution.ipynb
+- id: F4-p12
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [multivar-chain-rule, partial-derivatives]
+  path: practice/p12.ipynb
+  solution_path: practice/p12_solution.ipynb
+- id: F4-p13
+  set: C
+  type: integrative
+  difficulty: core
+  concepts: [partial-derivatives, gradient, sum-of-squares-gradients]
+  path: practice/p13.ipynb
+  solution_path: practice/p13_solution.ipynb
+- id: F4-p14
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [multivar-chain-rule, sum-of-squares-gradients, gradient]
+  path: practice/p14.ipynb
+  solution_path: practice/p14_solution.ipynb
+- id: F4-p15
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [gradient, partial-derivatives]
+  path: practice/p15.ipynb
+  solution_path: practice/p15_solution.ipynb
+- id: F4-p16
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [tanh-derivative, multivar-chain-rule]
+  path: practice/p16.ipynb
+  solution_path: practice/p16_solution.ipynb
+- id: F4-p17
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [sum-of-squares-gradients, multivar-chain-rule]
+  path: practice/p17.ipynb
+  solution_path: practice/p17_solution.ipynb
+- id: F4-p18
+  set: C
+  type: challenge
+  difficulty: core
+  concepts: [gradient, partial-derivatives, tanh-derivative]
+  path: practice/p18.ipynb
+  solution_path: practice/p18_solution.ipynb
