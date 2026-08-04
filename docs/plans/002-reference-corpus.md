@@ -332,6 +332,32 @@ Round 1:
    defense-in-depth.
 5. `[NOTED]` Exemption confirmed legitimate.
 
+### Round 3 — [codex] re-review of 5cfdfc1
+
+- **Verdict**: APPROVE WITH NITS — truncation fix verified as described; noted the leak
+  guard is specified (with negative test) but lands in the script during Task 4 Step 0,
+  which is the plan's intent.
+
+**GATE RESULT: PASS — 4/4 APPROVE WITH NITS**
+([claude-self], [fable], [glm], [codex] round 3); no open blockers.
+
 ## Content Review
 
-(Pre-PR gate findings land here.)
+### Review 1 — [claude-self] inline (2026-08-03)
+
+- **Verdict**: Approved with suggestions
+
+1. `[FIXED]` Self-caught arithmetic errors in analysis.md: sub-part count stated as 24
+   (conflated with the paper's page count) where the index holds 37; MC count 9 → 8;
+   topic-cluster table didn't sum to 300. All recounted directly from the index and
+   corrected; table now totals 37 sub-parts / 300 points exactly.
+2. `[FIXED]` Scripted 6-word shingle leak check found one verbatim hit (a quoted
+   five-word distractor phrase in the style notes) — paraphrased; re-run reports 0 hits.
+3. `[NOTED]` Deviation: fetch script splits `local tmp=` onto its own line — the plan's
+   one-line form expands `${dest}` before assignment under `set -u` (real bash bug found
+   at execution).
+4. Verified: 4/4 PDFs fetched + validated, idempotent re-run; leak guard negative-tested
+   ("beyond the public whitelist" message); `git ls-files reference/` = `.gitkeep` +
+   `analysis.md` only; 2025 forum structure captured without content scraping;
+   R2 index (26 sub-parts, verified point sums 90/70/50/40/50) written by subagent that
+   independently caught the initial wrong page counts.
