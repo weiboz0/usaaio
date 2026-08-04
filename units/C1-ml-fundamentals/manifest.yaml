@@ -16,7 +16,7 @@ practice:
   - {id: C1-p03, set: A, concepts: [overfitting, bias-variance-intuition], difficulty: core, path: practice/p03.ipynb, solution_path: practice/p03_solution.ipynb}
   - {id: C1-p04, set: A, concepts: [accuracy-precision-recall], difficulty: intro, path: practice/p04.ipynb, solution_path: practice/p04_solution.ipynb}
   - {id: C1-p05, set: A, concepts: [f1-score, class-imbalance], difficulty: core, path: practice/p05.ipynb, solution_path: practice/p05_solution.ipynb}
-  - {id: C1-p06, set: A, concepts: [f1-macro], difficulty: core, path: practice/p06.ipynb, solution_path: practice/p06_solution.ipynb}
+  - {id: C1-p06, set: A, concepts: [f1-macro], difficulty: intro, path: practice/p06.ipynb, solution_path: practice/p06_solution.ipynb}
   - {id: C1-p15, set: A, concepts: [supervised-vs-unsupervised], difficulty: intro, path: practice/p15.ipynb, solution_path: practice/p15_solution.ipynb}
   # --- Set B: exam register ---
   - {id: C1-p07, set: B, concepts: [bias-variance-intuition, overfitting], difficulty: core, path: practice/p07.ipynb, solution_path: practice/p07_solution.ipynb}
