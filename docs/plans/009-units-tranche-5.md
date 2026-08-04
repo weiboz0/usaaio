@@ -187,6 +187,17 @@ if a specific anchor needs it.**
    execute-lessons duty; **network-denied reviewer sandboxes get the 008 device pre-named:
    orchestrator stages executed notebooks in a local-only `.gate9-executed/` dir**), post-exec report, TODO tick, PR, guard, squash-merge.
 
+**RECONCILIATION (2026-08-05): 42/42 AGREE.** C7 blind solver matches the outline on all 22
+(MC B/C/B/D/A; anchors incl. RF chain 11/35, freeze splits 14,999,569/8,543,296, block counts
+280,064/4,462,592/6,039,552, resnet total 25,557,032). C8 matches on all 20 (MC B/C/B/D;
+GloVe anchors to 8dp — p11 0.0709294514, p13 gap 1.07e-8, p18 lantern rank 18,755). Cumulative
+project record 221/221. Three solver-flagged ambiguities resolved as ANSWER-PRESERVING
+statement amendments codifying the solver's own stated interpretations (no re-solve triggered;
+content gate judges): C7 p13 now STATES the standing assumption J≤r its proof needs (solver
+identified and proved under exactly it); C8 p14 group label "strings"→"concert hall" (flute);
+C8 p18(c) rephrased to the pool-vs-displayed-top-5 form. All 42 solutions re-executed locally
+(sweep below).
+
 ## Out of scope
 
 010 (F6+C9+C10), 011 mock test, 012 course map. Training/fine-tuning of any kind (construction
