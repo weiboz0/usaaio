@@ -123,3 +123,16 @@ repo-wide (56/56 tranche-3 pairs). Tranche reconciliation total: **56/56**.
   vocabulary) beside the allowed unit-id pointer → rephrased; re-sweep clean.
 - Reconciliation: 56/56 tranche-wide (18+18+20), one statement clarification (C2 p04
   indexing, solver assumption == intent), zero re-solves required.
+
+## Content Review
+
+### Review 1 — [claude-self] inline (2026-08-04)
+
+- **Verdict**: Approved with suggestions
+1. Evidence base: verification record + 56/56 reconciliation; the fitting-fence and
+   notation-pin were the design risks and both drafters' reports show compliance —
+   external reviewers asked to audit both adversarially.
+2. `[NOTED]` One accessibility leak (C4 "embedding vectors") caught by my sweep and
+   fixed pre-gate; reviewers should hunt siblings.
+3. `[NOTED]` The C2 p04 indexing clarification is the tranche's only statement
+   amendment; recorded with the identity-re-solve rationale.
