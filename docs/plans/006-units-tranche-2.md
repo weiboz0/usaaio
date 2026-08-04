@@ -42,7 +42,20 @@ Accessibility allowlists: F3 owns "matrix"; F4 may use F2 vector vocabulary; F5 
 
 ## Plan Review
 
-(4-way gate verdicts land here; Codex slot on gpt-5.6-sol.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS
+1. `[NOTED]` Blind-solve mechanics for MC: the sol agent derives its own answer and
+   asserts ITS letter — divergence from the drafter's intended key is precisely what
+   reconciliation (Task 6) detects. Proof-style: solver writes reasoning + numeric
+   asserts. Scenario prose: solver writes model answers; reconciliation compares
+   substance. Well-defined for all v2 types.
+2. `[NOTED]` F5's Gaussian stays at AB level by design: simulation-first, density as
+   "the histogram's limiting shape", no continuous E[X] integrals — discrete-first
+   ordering carries the formal load. Reviewers asked to probe this.
+3. `[NOTED]` F3 matrix-from-action originality line: teach the generic skill; the
+   overlap-scan + fidelity duty police specific-problem resemblance, same as all
+   exam-register training content.
 
 ## Content Review
 
