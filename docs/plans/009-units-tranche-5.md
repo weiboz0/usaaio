@@ -16,15 +16,27 @@ to `[tool.uv.sources]`, then `uv add torchvision` — the 008 pattern; NEVER a b
 the pytorch index shadows PyPI numpy). `gensim` from PyPI (`uv add gensim`).
 Verify both import; pin versions in the post-exec report.
 **Download/cache pin:** pretrained weights and corpora are fetched at first execution and
-cached under `reference/cache/` (gitignored): set `TORCH_HOME=reference/cache/torch` and
-`GENSIM_DATA_DIR=reference/cache/gensim` in every notebook that loads them (os.environ line
-in the header cell BEFORE the torch/gensim import). First ci run downloads (~100MB resnet50 +
+cached under `reference/cache/` (gitignored). **Path resolution pin (gate finding — notebooks
+execute with cwd = the notebook's own directory, so a relative cache path would scatter caches
+into unit dirs and re-download per notebook): every loading notebook's header cell runs, BEFORE
+the torch/gensim import, exactly:**
+
+```python
+import os, pathlib
+_root = next(p for p in [pathlib.Path.cwd(), *pathlib.Path.cwd().parents]
+             if (p / "pyproject.toml").exists())
+os.environ["TORCH_HOME"] = str(_root / "reference" / "cache" / "torch")
+os.environ["GENSIM_DATA_DIR"] = str(_root / "reference" / "cache" / "gensim")
+``` First ci run downloads (~100MB resnet50 +
 ~130MB glove-wiki-gigaword-100); later runs are warm. Determinism pin: resnet50 loads
 `weights=ResNet50_Weights.IMAGENET1K_V1` EXPLICITLY (never `pretrained=True` — deprecated and
 ambiguous) **and is put in `model.eval()` immediately after loading, in every notebook that
 runs a forward pass** (self-review amendment: train-mode BatchNorm uses batch statistics —
 nondeterministic across batch composition AND it mutates running buffers; eval() is the
-single switch that makes forward passes reproducible). GloVe artifact `glove-wiki-gigaword-100`
+single switch that makes forward passes reproducible). **All forward passes additionally run
+under `torch.inference_mode()` (gate finding: fresh-head parameters default to
+requires_grad=True, so without it autograd graphs silently build even in a no-training
+course — and it's the honest engineering register).** GloVe artifact `glove-wiki-gigaword-100`
 is a fixed file — asserts on its vectors are deterministic — **but gensim returns float32:
 C8 casts to float64 at the load boundary (`np.asarray(vecs, dtype=np.float64)`) once, in the
 same cell as the load, so all downstream arithmetic sits in the course's float64 register
@@ -78,6 +90,9 @@ word-embeddings, embedding-matrices, similarity-matrices, nearest-neighbor-searc
   similarity from unit rows; the similarity matrix S = W Wᵀ as a Gram matrix (F3's matrix-product
   meaning revisited); symmetry + unit diagonal verified), `03-neighbors-and-retrieval`
   (nearest-neighbor search over similarity rows — argsort descending, self-exclusion, top-k;
+  **`np.argsort` is UNTAUGHT in C8's prereq chain — C8-03 teaches it inline (one gloss + one
+  checkpoint exercise), and `keepdims` gets a one-line gloss at first use in C8-02 (gate
+  finding, the 008 np.roll precedent);**
   manual result cross-checked against `most_similar` (gensim-usage depth); similarity pitfalls
   (frequency/hubness noted as a stated fact); a small retrieval mini-pipeline: query → tokenize →
   filter → embed → rank on FRESH seeded text).
@@ -124,7 +139,8 @@ state this exception in the C7 drafter prompt verbatim).
    first-run downloads make this longer), assert scan, accessibility sweep (C7 torch-legal,
    C8 torch-free; gensim vocabulary C8-only), estimated_minutes.
 7. Ship: content gate (self + codex 5.6-terra + opus + glm; blind-solve ≥3/unit incl ≥1 proof;
-   execute-lessons duty), post-exec report, TODO tick, PR, guard, squash-merge.
+   execute-lessons duty; **network-denied reviewer sandboxes get the 008 device pre-named:
+   orchestrator stages executed notebooks in a local-only `.gate9-executed/` dir**), post-exec report, TODO tick, PR, guard, squash-merge.
 
 ## Out of scope
 
@@ -148,6 +164,13 @@ weights themselves; no HuggingFace pulls). SVD/low-rank (C9's — C8 stops at th
 4. `[NOTED]` First-ci-run download cost (~230MB) accepted and documented; cache under
    gitignored reference/cache/ keeps subsequent runs warm and keeps artifacts out of the
    public repo.
+
+### Review 2 — [fable] Independent Fable 5 (2026-08-04): APPROVE WITH NITS → all resolved
+Its MAJOR (model.eval()) and NIT-4 (22 problems) raced the self-review commit — both already
+in. New fixes from its round: torch.inference_mode() around all forwards (silent-graph point);
+absolute repo-root cache-path recipe (relative TORCH_HOME would scatter caches per-notebook —
+real bug); np.argsort taught inline in C8-03 + keepdims gloss in C8-02; .gate9-executed/
+staging pre-named for network-denied gate reviewers.
 
 ## Content Review
 
