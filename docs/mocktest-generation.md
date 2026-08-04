@@ -24,9 +24,20 @@ Design rationale: `docs/designs/000-project-design.md §2b`.
    └── manifest.yaml    # see schema below
    ```
 
-   The instantiation step chooses, within blueprint ranges, and records in the manifest:
-   section point allocations, the arc's rotated clusters, problem count, and the
-   difficulty draw.
+   **Default instantiation rule (deterministic):** unless the test's plan records a
+   deliberate deviation, use exactly —
+   - section points = the blueprint's 2026 anchors:
+     concept-block 50, math-computation 45, integrative-arc 90, engineering 65,
+     open-ended-notebook 50 (sums to 300);
+   - arc clusters = position `NNN mod 3` in the rotation list
+     `[[nlp-embeddings, linear-algebra, numpy], [cnn-vision, pytorch, numpy],
+     [applied-ml, probability-statistics, numpy]]` (r1-001 → index 1 ⇒ the first entry);
+   - difficulty draw = the analysis-observed `{intro: 0.23, core: 0.45, advanced: 0.32}`;
+   - problem count = 9.
+
+   A fresh session generating `r1-NNN` from this doc + `blueprint.yaml` alone therefore
+   has zero free choices at instantiation; any deviation is a recorded
+   `generation_parameters` entry with a one-line reason.
 3. **Draft** — write problems + solutions per spec (drafting rules below).
    Dispatch per `CLAUDE.md ## Agent dispatch`; parallel per-problem subagents are the norm.
 4. **Verify** — `bash scripts/ci-local.sh` (verification map below).
@@ -65,6 +76,9 @@ problems:
     answer_form: multiple-choice
     provenance: original        # original | adapted
     # adapted-from: r1-2026-p01-1   # required when provenance: adapted
+    spec: >                     # the one-paragraph slot spec this problem was drafted from
+      10-pt intro MC testing supervised-vs-unsupervised via task-identification
+      distractors; five options; no code.
     answer_key: "C"             # value the solution notebook / answers.md must reproduce
     # For data-backed problems:
     # data:
@@ -85,7 +99,10 @@ Field rules:
 
 - **Problem specs first.** Each slot from instantiation gets a one-paragraph spec
   (section, units, concepts, points, difficulty, answer form, provenance mode) before any
-  prose is written; specs live in the plan file of the test's plan.
+  prose is written. Specs are drafted in the test's plan file and then **recorded
+  permanently as a `spec:` field on each manifest problem entry**, so the manifest alone
+  reconstructs what each slot was asked to be — the plan file is process history, not the
+  source of truth.
 - **Student/solution separation.** Student-facing notebooks contain no solutions and no
   executed outputs (hygiene-check). Solutions are separate notebooks that run
   top-to-bottom clean with `random-seeding` fixed.
