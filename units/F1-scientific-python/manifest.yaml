@@ -1,0 +1,31 @@
+unit: F1-scientific-python
+concepts_taught: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization,
+                  elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics]
+concepts_used: []   # baseline python only
+prereq_units: []
+estimated_minutes: {lesson: 240, lesson_sessions: [75, 90, 75], practice: 420}
+practice:
+  # --- Set A: fundamentals ---
+  - {id: F1-p01, type: drill, concepts: [numpy-arrays, array-indexing-slicing], path: practice/p01.ipynb, solution_path: practice/p01_solution.ipynb, set: A, difficulty: intro}
+  - {id: F1-p02, type: drill, concepts: [elementwise-ops, broadcasting], path: practice/p02.ipynb, solution_path: practice/p02_solution.ipynb, set: A, difficulty: intro}
+  - {id: F1-p04, type: drill, concepts: [aggregation-axis], path: practice/p04.ipynb, solution_path: practice/p04_solution.ipynb, set: A, difficulty: core}
+  - {id: F1-p05, type: drill, concepts: [random-seeding], path: practice/p05.ipynb, solution_path: practice/p05_solution.ipynb, set: A, difficulty: intro}
+  - {id: F1-p06, type: drill, concepts: [matplotlib-basics], path: practice/p06.ipynb, solution_path: practice/p06_solution.ipynb, set: A, difficulty: core}
+  - {id: F1-p15, type: drill, concepts: [vectorization, elementwise-ops], path: practice/p15.ipynb, solution_path: practice/p15_solution.ipynb, set: A, difficulty: intro}
+  # --- Set B: exam register ---
+  - {id: F1-p03, type: constrained-coding, concepts: [broadcasting, vectorization], path: practice/p03.ipynb, solution_path: practice/p03_solution.ipynb, set: B, difficulty: core}
+  - {id: F1-p08, type: mc, concepts: [broadcasting, numpy-arrays], path: practice/p08.ipynb, solution_path: practice/p08_solution.ipynb, set: B, difficulty: core}
+  - {id: F1-p09, type: mc-normal-form, concepts: [array-indexing-slicing, elementwise-ops], path: practice/p09.ipynb, solution_path: practice/p09_solution.ipynb, set: B, difficulty: intro}
+  - {id: F1-p10, type: constrained-coding, concepts: [vectorization, aggregation-axis, broadcasting], path: practice/p10.ipynb, solution_path: practice/p10_solution.ipynb, set: B, difficulty: core}
+  - {id: F1-p14, type: proof, concepts: [broadcasting, numpy-arrays], path: practice/p14.ipynb, solution_path: practice/p14_solution.ipynb, set: B, difficulty: advanced}
+  - {id: F1-p16, type: mc, concepts: [random-seeding], path: practice/p16.ipynb, solution_path: practice/p16_solution.ipynb, set: B, difficulty: intro}
+  - {id: F1-p17, type: constrained-coding, concepts: [elementwise-ops, vectorization], path: practice/p17.ipynb, solution_path: practice/p17_solution.ipynb, set: B, difficulty: core}
+  - {id: F1-p18, type: mc, concepts: [array-indexing-slicing, aggregation-axis], path: practice/p18.ipynb, solution_path: practice/p18_solution.ipynb, set: B, difficulty: core}
+  - {id: F1-p19, type: proof, concepts: [broadcasting, elementwise-ops], path: practice/p19.ipynb, solution_path: practice/p19_solution.ipynb, set: B, difficulty: advanced}
+  # --- Set C: integration + challenge ---
+  - {id: F1-p07, type: integrative-constrained, concepts: [vectorization, aggregation-axis], path: practice/p07.ipynb, solution_path: practice/p07_solution.ipynb, set: C, difficulty: advanced}
+  - {id: F1-p11, type: integrative, concepts: [random-seeding, aggregation-axis, matplotlib-basics], path: practice/p11.ipynb, solution_path: practice/p11_solution.ipynb, set: C, difficulty: core}
+  - {id: F1-p12, type: scenario, concepts: [random-seeding, aggregation-axis], path: practice/p12.ipynb, solution_path: practice/p12_solution.ipynb, set: C, difficulty: core}
+  - {id: F1-p13, type: challenge-constrained, concepts: [vectorization, array-indexing-slicing, elementwise-ops], path: practice/p13.ipynb, solution_path: practice/p13_solution.ipynb, set: C, difficulty: advanced}
+  - {id: F1-p20, type: scenario, concepts: [matplotlib-basics, random-seeding], path: practice/p20.ipynb, solution_path: practice/p20_solution.ipynb, set: C, difficulty: core}
+  - {id: F1-p21, type: challenge-constrained, concepts: [broadcasting, vectorization, matplotlib-basics], path: practice/p21.ipynb, solution_path: practice/p21_solution.ipynb, set: C, difficulty: advanced}

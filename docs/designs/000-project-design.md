@@ -12,7 +12,11 @@ tailored for content development rather than software.
 
 ## Requirements (settled during brainstorming)
 
-- **Audience:** the author's own student(s); simple delivery (notebooks, printable PDFs).
+- **Audience:** originally the author's own student(s); updated 2026-08-04 — the materials
+  form the curriculum of a **formal training course running across multiple semesters**
+  (units as course texts, practices as homework, mock tests as midterm/final instruments;
+  unit `estimated_minutes` feeds week-level pacing; a course-structure doc maps units to
+  semesters on the post-tranche roadmap). Delivery remains notebooks + printable PDFs.
 - **Target stage:** Round 1 first — the 3-hour proctored exam with theory questions (Markdown + math notation)
   and Python/NumPy/ML programming problems. Round 2 / camp material may follow later.
 - **Format:** notebooks as the source of truth, with a build step rendering printable PDF test papers (Quarto).
@@ -101,7 +105,12 @@ independent fresh-context Fable via `Agent` (read-only),
 GLM via `opencode:opencode-review` (read-only).
 The PowerMarket "integration-tests phase" rule becomes a **verification phase** rule:
 every plan that ships problems or lessons MUST include a named verification phase specifying
-that solutions execute and reproduce the answer key, PDFs build, manifests validate,
+that solutions execute and reproduce the answer key
+(assert-based self-checks for unit practice; manifest `answer_key` comparison for mock tests),
+manifests validate,
+PDFs build for any mock-test papers shipped
+(PDF rendering targets printable test papers per §1 and §3.4 —
+unit lessons are notebook-native and carry no PDF obligation),
 and the difficulty/timing budget is stated.
 Exempt categories (docs-only, tooling-only refactors, plan-design plans) must say so in "Out of scope".
 

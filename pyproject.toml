@@ -4,7 +4,12 @@ version = "0.1.0"
 description = "Verification and build tooling for USAAIO mock tests and teaching materials"
 requires-python = ">=3.12"
 dependencies = [
+    "ipykernel>=7.3.0",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.11.1",
+    "nbclient>=0.11.0",
     "nbformat",
+    "numpy>=2.5.1",
     "pyyaml",
 ]
 

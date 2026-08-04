@@ -8,7 +8,7 @@ The pre-PR quality gate for teaching content and mock tests
 | # | Reviewer | Dispatch | Model |
 |---|----------|----------|-------|
 | 1 | Claude self | inline | claude-opus (or session model) |
-| 2 | Codex | `codex:codex-rescue` subagent | Codex GPT-5.5 |
+| 2 | Codex | `codex:codex-rescue` subagent (request `--model gpt-5.6-terra`) | Codex GPT-5.6-terra |
 | 3 | Independent Opus | `Agent` general-purpose, `model: opus`, fresh context, read-only | claude-opus |
 | 4 | GLM | `opencode:opencode-review` subagent, read-only | opencode-go/glm-5.2 |
 

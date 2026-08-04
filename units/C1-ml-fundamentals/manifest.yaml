@@ -1,0 +1,38 @@
+unit: C1-ml-fundamentals
+concepts_taught: [supervised-vs-unsupervised, clustering-concept, train-test-split, overfitting,
+                  bias-variance-intuition, accuracy-precision-recall, f1-score, f1-macro,
+                  class-imbalance]
+concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, aggregation-axis,
+                random-seeding, matplotlib-basics]
+prereq_units: [F1-scientific-python]
+estimated_minutes:
+  lesson_sessions: [75, 85, 80]   # lessons/01..03; lesson.ipynb overview ~10 min extra
+  review: 30
+  practice: 420
+practice:
+  # --- Set A: fundamentals drills ---
+  - {id: C1-p01, type: mc-multipart, set: A, concepts: [supervised-vs-unsupervised, clustering-concept], difficulty: intro, path: practice/p01.ipynb, solution_path: practice/p01_solution.ipynb}
+  - {id: C1-p02, type: drill, set: A, concepts: [train-test-split], difficulty: intro, path: practice/p02.ipynb, solution_path: practice/p02_solution.ipynb}
+  - {id: C1-p03, type: drill, set: A, concepts: [overfitting, bias-variance-intuition], difficulty: core, path: practice/p03.ipynb, solution_path: practice/p03_solution.ipynb}
+  - {id: C1-p04, type: drill, set: A, concepts: [accuracy-precision-recall], difficulty: intro, path: practice/p04.ipynb, solution_path: practice/p04_solution.ipynb}
+  - {id: C1-p05, type: drill, set: A, concepts: [f1-score, class-imbalance], difficulty: core, path: practice/p05.ipynb, solution_path: practice/p05_solution.ipynb}
+  - {id: C1-p06, type: drill, set: A, concepts: [f1-macro], difficulty: intro, path: practice/p06.ipynb, solution_path: practice/p06_solution.ipynb}
+  - {id: C1-p15, type: mc, set: A, concepts: [supervised-vs-unsupervised], difficulty: intro, path: practice/p15.ipynb, solution_path: practice/p15_solution.ipynb}
+  # --- Set B: exam register ---
+  - {id: C1-p07, type: mc, set: B, concepts: [bias-variance-intuition, overfitting], difficulty: core, path: practice/p07.ipynb, solution_path: practice/p07_solution.ipynb}
+  - {id: C1-p09, type: mc-normal-form, set: B, concepts: [accuracy-precision-recall, f1-score], difficulty: intro, path: practice/p09.ipynb, solution_path: practice/p09_solution.ipynb}
+  - {id: C1-p10, type: constrained-coding, set: B, concepts: [accuracy-precision-recall, f1-score], difficulty: core, path: practice/p10.ipynb, solution_path: practice/p10_solution.ipynb}
+  - {id: C1-p11, type: constrained-coding, set: B, concepts: [f1-macro], difficulty: advanced, path: practice/p11.ipynb, solution_path: practice/p11_solution.ipynb}
+  - {id: C1-p12, type: proof, set: B, concepts: [class-imbalance, accuracy-precision-recall, f1-score], difficulty: advanced, path: practice/p12.ipynb, solution_path: practice/p12_solution.ipynb}
+  - {id: C1-p16, type: constrained-coding, set: B, concepts: [train-test-split], difficulty: core, path: practice/p16.ipynb, solution_path: practice/p16_solution.ipynb}
+  - {id: C1-p17, type: constrained-coding, set: B, concepts: [clustering-concept], difficulty: core, path: practice/p17.ipynb, solution_path: practice/p17_solution.ipynb}
+  - {id: C1-p18, type: constrained-coding, set: B, concepts: [class-imbalance, accuracy-precision-recall, f1-score], difficulty: core, path: practice/p18.ipynb, solution_path: practice/p18_solution.ipynb}
+  - {id: C1-p19, type: proof, set: B, concepts: [overfitting, bias-variance-intuition], difficulty: advanced, path: practice/p19.ipynb, solution_path: practice/p19_solution.ipynb}
+  - {id: C1-p23, type: constrained-coding, set: B, concepts: [overfitting], difficulty: intro, path: practice/p23.ipynb, solution_path: practice/p23_solution.ipynb}
+  # --- Set C: integration + challenge ---
+  - {id: C1-p08, type: scenario, set: C, concepts: [class-imbalance, accuracy-precision-recall], difficulty: core, path: practice/p08.ipynb, solution_path: practice/p08_solution.ipynb}
+  - {id: C1-p13, type: integrative, set: C, concepts: [f1-macro, accuracy-precision-recall, class-imbalance], difficulty: core, path: practice/p13.ipynb, solution_path: practice/p13_solution.ipynb}
+  - {id: C1-p14, type: challenge, set: C, concepts: [accuracy-precision-recall, f1-score, train-test-split], difficulty: advanced, path: practice/p14.ipynb, solution_path: practice/p14_solution.ipynb}
+  - {id: C1-p20, type: integrative, set: C, concepts: [train-test-split, overfitting, accuracy-precision-recall], difficulty: core, path: practice/p20.ipynb, solution_path: practice/p20_solution.ipynb}
+  - {id: C1-p21, type: scenario, set: C, concepts: [supervised-vs-unsupervised, clustering-concept], difficulty: core, path: practice/p21.ipynb, solution_path: practice/p21_solution.ipynb}
+  - {id: C1-p22, type: challenge, set: C, concepts: [clustering-concept], difficulty: advanced, path: practice/p22.ipynb, solution_path: practice/p22_solution.ipynb}

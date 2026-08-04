@@ -22,8 +22,19 @@ else
     echo "executing: $nb"
     uv run jupyter execute "$nb"
   done <<< "$notebooks"
+  # answer-check permanence: every solution notebook must end with assert cells
+  uv run python - <<'PYEOF'
+import json, glob, sys
+bad = [f for f in glob.glob('units/*/practice/*_solution.ipynb') + glob.glob('mocktests/*/solutions/*.ipynb')
+       if not any('assert' in ''.join(c['source'])
+                  for c in [x for x in json.load(open(f))['cells'] if x['cell_type'] == 'code'][-2:])]
+if bad:
+    print('FAIL: solutions missing final answer-check asserts:', *bad, sep='\n  ')
+    sys.exit(1)
+print(f"answer-check asserts present in all {len(glob.glob('units/*/practice/*_solution.ipynb'))} unit solutions")
+PYEOF
 fi
-echo "PENDING (plan 006): answer-key reproduction"
+echo "PENDING (plan 011): answer-key reproduction"
 
 step "4/6 manifest + content checks"
 for c in prereq-check coverage-check hygiene-check blueprint-check overlap-scan; do
@@ -32,7 +43,7 @@ for c in prereq-check coverage-check hygiene-check blueprint-check overlap-scan;
 done
 
 step "5/6 PDF build (quarto)"
-echo "SKIP (plan 006)"
+echo "SKIP (plan 011)"
 
 step "6/6 pre-merge-guard"
 bash scripts/pre-merge-guard.sh
