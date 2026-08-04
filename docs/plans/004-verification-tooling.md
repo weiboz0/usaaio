@@ -281,3 +281,39 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 5. `[FIXED]` NITs: overlap dfs/shingle precompute hoisted out of the per-problem loop
    (~17s → sub-second); duration_minutes-vs-blueprint check added;
    `adapted_requires_tag` read from provenance_rules. Suite: 56 tests green.
+
+### Final re-verdicts
+
+- **[opus]** Approved with suggestions (re-verified all fixes at 547e3e2; last nit —
+  bare KeyError without path — `[FIXED]` via `_problem_from` extraction with
+  path+index error context).
+- **[codex]** Approved with suggestions (verified all its fixed items by inspection;
+  noted it could not run the suite in its sandbox — covered by three local 56-pass runs
+  recorded here and by [opus]'s independent run).
+- **[glm]** Approved with suggestions (all items fixed above).
+
+**GATE RESULT: PASS — 4/4**; no open findings.
+
+## Post-execution report (2026-08-04)
+
+**Shipped:** `tools/model.py` (typed loaders: sentinel-fenced syllabus, blueprint,
+unit/mock manifests with strict status + path-context errors), five checks as pure
+functions (`prereq`, `coverage`, `hygiene` via nbformat, `blueprint`, `overlap` with
+hoisted TF-IDF/shingle precompute), `new-mocktest` deterministic scaffolder, CLI with
+0/1/3 exit scheme and no-traceback error reporting, ci-local integration (solutions-only
+execution glob, PENDING plan-006 line, rc-3-tolerant check loop). 56 tests; ruff clean;
+ci-local ALL GREEN with overlap-scan running against the real corpus.
+
+**Deviations from plan:** hand-rolled YAML fallback removed post-implementation
+(dead code); hygiene switched from json to nbformat per spec during review;
+atom share corrected to count-share; arc-cluster validation reads manifest rotation.
+All review-driven, recorded above with named regression tests.
+
+**Gate history:** plan gate round 1 = 2 REJECT + 1 APPROVE-WITH-NITS + self → round 2
+PASS 4/4. Code gate: [codex] blocker (part-less id miscount), [opus] blocker
+(atom points-vs-count share — would have rejected the real 2026 paper), [glm]
+corpus-signal/validation-escape concerns — all fixed with regression tests → PASS 4/4.
+
+**Follow-ups owed:** plan 006 owns answer-key reproduction (ci prints PENDING each run);
+the once-observed parametric test failure remains UNREPRODUCED (30+ clean runs across
+seeds and concurrency) — reopen only if seen again.
