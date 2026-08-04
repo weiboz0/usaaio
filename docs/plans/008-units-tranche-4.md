@@ -144,6 +144,43 @@ scope-note carve-out; plain-Python-first inheritance. Re-verdict requested.
    narration check); executed notebooks staged local-only in .gate8-executed/ for codex to
    audit narration-vs-output directly; re-verdict requested on that evidence.
 
+### Review 4 — [opus] Independent Opus (2026-08-04)
+
+- **Verdict**: Changes requested → all findings fixed at commit `3359f14`, re-verdict pending
+- Duties: 6 lessons + 2 reviews + 40 solutions executed clean; 40/40 blind-solve agreement
+  (incl. all four proofs); type mix, dual-tags, difficulty spread verified.
+1. `[FIXED]` [opus] Must Fix: C5 L03 Checkpoint 6.2 read N(0.5, 0.01)'s second argument as σ
+   (25.01) against the course's pinned N(μ, σ²) notation. → Answer corrected to
+   100(0.25+0.01) = 26 with the convention restated.
+2. `[FIXED]` [opus] Must Fix: C5 ban register omitted np.inner (+ np.linalg) — a regression
+   vs C2's established closer set. → Added to p05/p08/p10/p16 (+ p10's comment echo);
+   p06 additionally closes np.heaviside/np.clip. Verified answer-preserving: no affected
+   solution used any newly-banned function, so the re-solve rule is not triggered.
+3. `[FIXED]` [opus] Should Fix: C6 L03 Pitfall 3 header claimed transposition "passes every
+   count check" while its own demo prints 16 vs 15. → Header restated (weight-numel
+   identical; totals agree only on square layers; the demo's bias gap is the tell).
+4. `[FIXED]` [opus] Should Fix: C6 solutions p10/p15/p18 used non-pinned gate biases
+   (−2/−1/−4). → Repinned to −1.5/−0.5/−3.5 per the course's half-integer register (also
+   restoring agreement with the drafter outline's literals); outputs unchanged on 0/1 bits;
+   all three re-executed PASS.
+5. `[FIXED]` [opus] Should Fix: both p04 solutions had vacuous/wrong distractor rationales.
+   → Rewritten with each trap traced (C5: drop-b₂ 6, skip-activation 9, both-fire 15,
+   ReLU 17; C6: A=26 identified as the forget-the-biases count 50 = 2·25).
+6. `[FIXED]` [opus] Should Fix: p17 mandated untaught np.roll. → Statement now glosses
+   np.roll(verts, −1, axis=0) inline (one sentence).
+7. `[FIXED]` [opus] Should Fix: manifests omitted gaussian-distribution from concepts_used.
+   → Added to both (F5-taught; closure stays green). C5 practice minutes 470 → 500 per
+   reviewer's bottom-up estimate.
+8. `[FIXED]` [opus] N: "Section 6's inheritance rule" → "Session 1 §6". 9. `[FIXED]` [opus]
+   N: Sequential checkpoint answer now cites a skip connection, not the chain-expressible
+   p14. 10. `[FIXED]` [opus] N: L03 §5 prose uses zeros_dense(out, in) shapes.
+   11. `[FIXED]` [opus] N: p12(d) pins np.var ddof=0. 12. `[FIXED]` [opus] N: p13/p14
+   solutions now pin by-hand answers as literal asserts. 13. `[FIXED]` [opus] N: dead
+   NumPy seeding removed from C6 p10/p16/p18 solutions. 14. `[FIXED]` [opus] N: 20 C5
+   solutions nbformat-normalized (cell ids). 15. `[FIXED]` [opus] N: L01 §5 gap narration
+   now ≈3.6e-15 matching print. 16. `[FIXED]` [opus] N: C6 p18 statement pins hidden-row
+   order ("in the order listed").
+
 ### Review 3 — [glm] GLM 5.2 (2026-08-04)
 
 - **Verdict**: Approved with suggestions
