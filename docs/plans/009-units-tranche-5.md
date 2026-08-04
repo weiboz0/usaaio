@@ -262,3 +262,14 @@ property (no remote runner exists; the gate is ci-local.sh). Re-verdict requeste
   with shipped solutions. Verification phase: five checks PASS, torch-sweep of C8 CLEAN,
   gensim-vocabulary sweep CLEAN, 42/42 asserts, float32-register presence confirmed in all
   10 weights-loading C7 solutions.
+
+### Review 2 — [codex] GPT-5.6-terra (2026-08-05)
+
+- **Verdict**: Changes requested → fix applied, re-verdict pending
+- Blind-solve: 6/6 agree (C7 p04/p13/p14, C8 p04/p11/p12). All other gate checks reported
+  clean (manifests, torch-free C8, bans, float32 convention, construction-only, staged
+  narration audit).
+1. `[FIXED]` [codex] Must Fix: p13's solution still said the prompt omits the no-gap
+   assumption — stale after the reconciliation amendment put the standing assumption INTO
+   the statement. → Solution paragraph rewritten to invoke the statement's assumption
+   (commit 8ad9b27); re-executed PASS.
