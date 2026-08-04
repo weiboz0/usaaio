@@ -283,4 +283,13 @@ constraints:
 
 ## Content Review
 
-(Pre-PR gate findings land here.)
+### Review 1 — [claude-self] inline (2026-08-04)
+
+- **Verdict**: Approved with suggestions
+
+1. `[FIXED]` Consistency check (Task 4, all a–i assertions) caught `numpy` used as a
+   distribution bucket but absent from the syllabus cluster namespace — added with an
+   explanatory comment. Re-run: ALL CONSISTENCY CHECKS PASS (16 units, 100 concepts).
+2. Verified by hand: example manifest section_points sum to 300 within blueprint ranges;
+   time_budget sums to 180; the suggested topological order respects all 16 units'
+   prereq edges; ci-local ALL GREEN.
