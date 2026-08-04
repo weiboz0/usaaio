@@ -102,3 +102,13 @@ Solver (gpt-5.6-sol, blind) vs drafter outline: **18/18 agreement** — every MC
 (gradients, anchors, w_final ≈ (46.85, 4.51)), both proof anchors. One non-blocking
 ambiguity (p18 tied minima at (±3, 0)); solver's row-major argmin assumption matches the
 drafter's note. All 18 solutions execute exit 0. No statement amendments needed.
+
+### F5-probability (2026-08-04)
+Solver (gpt-5.6-sol, blind) vs drafter outline: **18/18 agreement** (letters B/B/C/E;
+all numerics incl. Var[T]=19/4→23, σ_s=1/√C anchor, portfolio 0.8/1.6, covariance
+pairing story). Three non-blocking ambiguities (inclusive bounds in p09; probability
+encoding in p13; shared-vs-separate draws in p17) — solver assumptions all valid;
+p09's inclusive-|z| reading yields 0.732 vs the drafter's rough ≈0.68 note (binomial
+discreteness, not a disagreement — the statement's compare-in-one-sentence task stands).
+Solver sandbox lacked kernel sockets; ALL 18 solutions re-executed LOCALLY exit 0.
+No statement amendments needed.
