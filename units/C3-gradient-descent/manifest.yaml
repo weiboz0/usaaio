@@ -1,0 +1,138 @@
+unit: C3-gradient-descent
+concepts_taught: [loss-surfaces, gradient-descent, learning-rate, stochastic-gd]
+concepts_used: [numpy-arrays, elementwise-ops, broadcasting, vectorization, aggregation-axis, random-seeding,
+  matplotlib-basics, partial-derivatives, gradient, sum-of-squares-gradients, linear-regression, mse-loss,
+  l2-regularization]
+prereq_units: [F4-multivar-calculus, C2-linear-models]
+estimated_minutes:
+  lesson: 170
+  lesson_sessions: [85, 85]
+  practice: 400
+  review: 40
+practice:
+- id: C3-p01
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [loss-surfaces]
+  path: practice/p01.ipynb
+  solution_path: practice/p01_solution.ipynb
+- id: C3-p02
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [gradient-descent]
+  path: practice/p02.ipynb
+  solution_path: practice/p02_solution.ipynb
+- id: C3-p03
+  set: B
+  type: mc
+  difficulty: core
+  concepts: [learning-rate]
+  path: practice/p03.ipynb
+  solution_path: practice/p03_solution.ipynb
+- id: C3-p04
+  set: B
+  type: mc-normal-form
+  difficulty: core
+  concepts: [gradient-descent, learning-rate]
+  path: practice/p04.ipynb
+  solution_path: practice/p04_solution.ipynb
+- id: C3-p05
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [gradient-descent]
+  path: practice/p05.ipynb
+  solution_path: practice/p05_solution.ipynb
+- id: C3-p06
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [loss-surfaces]
+  path: practice/p06.ipynb
+  solution_path: practice/p06_solution.ipynb
+- id: C3-p07
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [gradient-descent, learning-rate]
+  path: practice/p07.ipynb
+  solution_path: practice/p07_solution.ipynb
+- id: C3-p08
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [stochastic-gd]
+  path: practice/p08.ipynb
+  solution_path: practice/p08_solution.ipynb
+- id: C3-p09
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [gradient-descent]
+  path: practice/p09.ipynb
+  solution_path: practice/p09_solution.ipynb
+- id: C3-p10
+  set: B
+  type: constrained-coding
+  difficulty: advanced
+  concepts: [learning-rate]
+  path: practice/p10.ipynb
+  solution_path: practice/p10_solution.ipynb
+- id: C3-p11
+  set: B
+  type: proof
+  difficulty: advanced
+  concepts: [gradient-descent, learning-rate]
+  path: practice/p11.ipynb
+  solution_path: practice/p11_solution.ipynb
+- id: C3-p12
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [stochastic-gd]
+  path: practice/p12.ipynb
+  solution_path: practice/p12_solution.ipynb
+- id: C3-p13
+  set: C
+  type: integrative
+  difficulty: core
+  concepts: [gradient-descent, learning-rate, loss-surfaces]
+  path: practice/p13.ipynb
+  solution_path: practice/p13_solution.ipynb
+- id: C3-p14
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [stochastic-gd, gradient-descent, learning-rate]
+  path: practice/p14.ipynb
+  solution_path: practice/p14_solution.ipynb
+- id: C3-p15
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [learning-rate]
+  path: practice/p15.ipynb
+  solution_path: practice/p15_solution.ipynb
+- id: C3-p16
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [stochastic-gd]
+  path: practice/p16.ipynb
+  solution_path: practice/p16_solution.ipynb
+- id: C3-p17
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [gradient-descent, loss-surfaces]
+  path: practice/p17.ipynb
+  solution_path: practice/p17_solution.ipynb
+- id: C3-p18
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [learning-rate, stochastic-gd]
+  path: practice/p18.ipynb
+  solution_path: practice/p18_solution.ipynb

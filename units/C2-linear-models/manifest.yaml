@@ -1,0 +1,138 @@
+unit: C2-linear-models
+concepts_taught: [linear-regression, mse-loss, l1-regularization, l2-regularization, sparsity]
+concepts_used: [numpy-arrays, elementwise-ops, broadcasting, vectorization, aggregation-axis, random-seeding,
+  matplotlib-basics, vectors-and-norms, projection, residuals, matrices-as-linear-maps, matrix-multiplication,
+  partial-derivatives, gradient, sum-of-squares-gradients, train-test-split, overfitting]
+prereq_units: [F3-matrices, F4-multivar-calculus, C1-ml-fundamentals]
+estimated_minutes:
+  lesson: 170
+  lesson_sessions: [85, 85]
+  practice: 420
+  review: 40
+practice:
+- id: C2-p01
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [linear-regression]
+  path: practice/p01.ipynb
+  solution_path: practice/p01_solution.ipynb
+- id: C2-p02
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [mse-loss]
+  path: practice/p02.ipynb
+  solution_path: practice/p02_solution.ipynb
+- id: C2-p03
+  set: B
+  type: mc
+  difficulty: core
+  concepts: [l1-regularization, sparsity]
+  path: practice/p03.ipynb
+  solution_path: practice/p03_solution.ipynb
+- id: C2-p04
+  set: B
+  type: mc-normal-form
+  difficulty: core
+  concepts: [mse-loss, linear-regression]
+  path: practice/p04.ipynb
+  solution_path: practice/p04_solution.ipynb
+- id: C2-p05
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [linear-regression]
+  path: practice/p05.ipynb
+  solution_path: practice/p05_solution.ipynb
+- id: C2-p06
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [mse-loss]
+  path: practice/p06.ipynb
+  solution_path: practice/p06_solution.ipynb
+- id: C2-p07
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [l2-regularization]
+  path: practice/p07.ipynb
+  solution_path: practice/p07_solution.ipynb
+- id: C2-p08
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [l1-regularization]
+  path: practice/p08.ipynb
+  solution_path: practice/p08_solution.ipynb
+- id: C2-p09
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [linear-regression, mse-loss]
+  path: practice/p09.ipynb
+  solution_path: practice/p09_solution.ipynb
+- id: C2-p10
+  set: B
+  type: constrained-coding
+  difficulty: advanced
+  concepts: [sparsity, l1-regularization, l2-regularization]
+  path: practice/p10.ipynb
+  solution_path: practice/p10_solution.ipynb
+- id: C2-p11
+  set: B
+  type: proof
+  difficulty: advanced
+  concepts: [l1-regularization, sparsity]
+  path: practice/p11.ipynb
+  solution_path: practice/p11_solution.ipynb
+- id: C2-p12
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [l2-regularization]
+  path: practice/p12.ipynb
+  solution_path: practice/p12_solution.ipynb
+- id: C2-p13
+  set: C
+  type: integrative
+  difficulty: core
+  concepts: [linear-regression, mse-loss, l2-regularization]
+  path: practice/p13.ipynb
+  solution_path: practice/p13_solution.ipynb
+- id: C2-p14
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [l1-regularization, l2-regularization, sparsity, mse-loss]
+  path: practice/p14.ipynb
+  solution_path: practice/p14_solution.ipynb
+- id: C2-p15
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [sparsity, l1-regularization]
+  path: practice/p15.ipynb
+  solution_path: practice/p15_solution.ipynb
+- id: C2-p16
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [l2-regularization, mse-loss]
+  path: practice/p16.ipynb
+  solution_path: practice/p16_solution.ipynb
+- id: C2-p17
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [l1-regularization, l2-regularization, sparsity]
+  path: practice/p17.ipynb
+  solution_path: practice/p17_solution.ipynb
+- id: C2-p18
+  set: C
+  type: challenge
+  difficulty: core
+  concepts: [mse-loss, linear-regression]
+  path: practice/p18.ipynb
+  solution_path: practice/p18_solution.ipynb

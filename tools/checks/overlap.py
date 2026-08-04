@@ -8,6 +8,8 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+import nbformat
+
 from tools.model import Report, _parse_yaml, load_mock_manifests
 
 SHINGLE_SIZE = 8
@@ -23,6 +25,20 @@ def _words(text: str) -> list[str]:
 def _shingles(text: str) -> set[tuple[str, ...]]:
     words = _words(text)
     return {tuple(words[i : i + SHINGLE_SIZE]) for i in range(max(0, len(words) - SHINGLE_SIZE + 1))}
+
+
+def _without_boilerplate(text: str) -> str:
+    lines = []
+    for line in text.splitlines():
+        stripped = line.lstrip()
+        if (
+            stripped.startswith(("import ", "from "))
+            or "default_rng" in line
+            or "SEED =" in line
+        ):
+            continue
+        lines.append(line)
+    return "\n".join(lines)
 
 
 def _tf(text: str) -> Counter[str]:
@@ -73,16 +89,17 @@ def _collect_text_fields(node: Any) -> list[str]:
     return []
 
 
-def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None]:
+def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None, list[str]]:
     reference = root / "reference"
     # PDFs alone are a valid corpus (spec Task 5); index.yaml text fields are additive.
     if not reference.exists() or not (
         any(reference.glob("*/index.yaml")) or any(reference.glob("*/*.pdf"))
     ):
-        return [], REMEDY
+        return [], REMEDY, []
     if shutil.which("pdftotext") is None:
-        return [], f"pdftotext unavailable; {REMEDY}"
+        return [], f"pdftotext unavailable; {REMEDY}", []
     parts: list[tuple[str, str]] = []
+    failures: list[str] = []
     for ref_dir in sorted(reference.glob("*")):
         if not ref_dir.is_dir():
             continue
@@ -92,7 +109,7 @@ def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None]:
                 for offset, text in enumerate(_collect_text_fields(_parse_yaml(index.read_text()))):
                     parts.append((f"{index}#text-{offset}", text))
             except (OSError, ValueError) as exc:
-                return [], f"{index}: cannot read corpus index ({exc}); {REMEDY}"
+                return [], f"{index}: cannot read corpus index ({exc}); {REMEDY}", []
         for pdf in sorted(ref_dir.glob("*.pdf")):
             proc = subprocess.run(
                 ["pdftotext", str(pdf), "-"],
@@ -103,9 +120,15 @@ def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None]:
             )
             if proc.returncode == 0 and proc.stdout.strip():
                 parts.append((str(pdf), proc.stdout))
+            else:
+                # A silently-dropped corpus part would let copied content escape
+                # scanning; surface every extraction failure as a loud warning.
+                failures.append(
+                    f"corpus part NOT scanned (pdftotext failed, rc={proc.returncode}): {pdf}"
+                )
     if not parts:
-        return [], REMEDY
-    return parts, None
+        return [], REMEDY, failures
+    return parts, None, failures
 
 
 def _problem_text(root: Path, manifest_path: Path, problem) -> tuple[str, list[str]]:
@@ -122,9 +145,18 @@ def _problem_text(root: Path, manifest_path: Path, problem) -> tuple[str, list[s
     return "\n".join(texts), warnings
 
 
+def _notebook_text(path: Path) -> str:
+    notebook = nbformat.read(path, as_version=4)
+    return "\n".join(
+        str(cell.get("source", ""))
+        for cell in notebook.get("cells", [])
+        if cell.get("cell_type") in {"markdown", "code"}
+    )
+
+
 def check_overlap(root: str | Path) -> Report:
     root = Path(root)
-    corpus, skipped = _corpus(root)
+    corpus, skipped, corpus_failures = _corpus(root)
     if skipped:
         return Report(name="overlap-scan", ok=True, skipped=skipped)
     corpus_texts = [text for _, text in corpus]
@@ -134,11 +166,12 @@ def check_overlap(root: str | Path) -> Report:
     base_dfs = _corpus_dfs(corpus_texts)
     doc_count = len(corpus_texts) + 1
     errors: list[str] = []
-    warnings: list[str] = []
+    warnings: list[str] = list(corpus_failures)
     for manifest in load_mock_manifests(root):
         for problem in manifest.problems:
             text, text_warnings = _problem_text(root, manifest.path, problem)
             warnings.extend(text_warnings)
+            text = _without_boilerplate(text)
             problem_shingles = _shingles(text)
             for label, reference_text, reference_shingles in corpus_shingles:
                 overlap = len(problem_shingles & reference_shingles)
@@ -150,4 +183,12 @@ def check_overlap(root: str | Path) -> Report:
                     else:
                         errors.append(hit)
                     break
+    for path in sorted(root.glob("units/*/practice/*.ipynb")):
+        text = _without_boilerplate(_notebook_text(path))
+        notebook_shingles = _shingles(text)
+        for label, _, reference_shingles in corpus_shingles:
+            overlap = len(notebook_shingles & reference_shingles)
+            if overlap >= SHINGLE_THRESHOLD:
+                errors.append(f"{path} overlaps {label} (shingles={overlap})")
+                break
     return Report(name="overlap-scan", ok=not errors, errors=errors, warnings=warnings)

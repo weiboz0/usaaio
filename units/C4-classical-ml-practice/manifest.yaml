@@ -1,0 +1,152 @@
+unit: C4-classical-ml-practice
+concepts_taught: [knn, feature-scaling, pandas-basics, csv-data-loading, sklearn-pipelines, cross-validation]
+concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting, vectorization, aggregation-axis,
+  random-seeding, matplotlib-basics, vectors-and-norms, distance-metrics, variance, train-test-split,
+  overfitting, accuracy-precision-recall, f1-score, supervised-vs-unsupervised]
+prereq_units: [C1-ml-fundamentals, F1-scientific-python, F2-vectors, F5-probability]
+estimated_minutes:
+  lesson: 250
+  lesson_sessions: [80, 85, 85]
+  practice: 460
+  review: 45
+practice:
+- id: C4-p01
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [pandas-basics]
+  path: practice/p01.ipynb
+  solution_path: practice/p01_solution.ipynb
+- id: C4-p02
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [knn, feature-scaling]
+  path: practice/p02.ipynb
+  solution_path: practice/p02_solution.ipynb
+- id: C4-p03
+  set: B
+  type: mc
+  difficulty: core
+  concepts: [cross-validation]
+  path: practice/p03.ipynb
+  solution_path: practice/p03_solution.ipynb
+- id: C4-p04
+  set: B
+  type: mc-normal-form
+  difficulty: core
+  concepts: [knn]
+  path: practice/p04.ipynb
+  solution_path: practice/p04_solution.ipynb
+- id: C4-p05
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [pandas-basics, csv-data-loading]
+  path: practice/p05.ipynb
+  solution_path: practice/p05_solution.ipynb
+- id: C4-p06
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [csv-data-loading]
+  path: practice/p06.ipynb
+  solution_path: practice/p06_solution.ipynb
+- id: C4-p07
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [knn]
+  path: practice/p07.ipynb
+  solution_path: practice/p07_solution.ipynb
+- id: C4-p08
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [feature-scaling]
+  path: practice/p08.ipynb
+  solution_path: practice/p08_solution.ipynb
+- id: C4-p09
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [sklearn-pipelines]
+  path: practice/p09.ipynb
+  solution_path: practice/p09_solution.ipynb
+- id: C4-p10
+  set: B
+  type: constrained-coding
+  difficulty: advanced
+  concepts: [cross-validation]
+  path: practice/p10.ipynb
+  solution_path: practice/p10_solution.ipynb
+- id: C4-p11
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [knn, sklearn-pipelines]
+  path: practice/p11.ipynb
+  solution_path: practice/p11_solution.ipynb
+- id: C4-p12
+  set: B
+  type: proof
+  difficulty: advanced
+  concepts: [feature-scaling, knn]
+  path: practice/p12.ipynb
+  solution_path: practice/p12_solution.ipynb
+- id: C4-p13
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [cross-validation]
+  path: practice/p13.ipynb
+  solution_path: practice/p13_solution.ipynb
+- id: C4-p14
+  set: C
+  type: integrative
+  difficulty: core
+  concepts: [pandas-basics, csv-data-loading, knn, feature-scaling]
+  path: practice/p14.ipynb
+  solution_path: practice/p14_solution.ipynb
+- id: C4-p15
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [sklearn-pipelines, cross-validation, knn]
+  path: practice/p15.ipynb
+  solution_path: practice/p15_solution.ipynb
+- id: C4-p16
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [feature-scaling, knn]
+  path: practice/p16.ipynb
+  solution_path: practice/p16_solution.ipynb
+- id: C4-p17
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [cross-validation, sklearn-pipelines]
+  path: practice/p17.ipynb
+  solution_path: practice/p17_solution.ipynb
+- id: C4-p18
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [knn, feature-scaling]
+  path: practice/p18.ipynb
+  solution_path: practice/p18_solution.ipynb
+- id: C4-p19
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [cross-validation]
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb
+- id: C4-p20
+  set: A
+  type: drill
+  difficulty: intro
+  concepts: [pandas-basics, csv-data-loading]
+  path: practice/p20.ipynb
+  solution_path: practice/p20_solution.ipynb
