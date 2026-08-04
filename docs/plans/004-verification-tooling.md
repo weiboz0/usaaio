@@ -196,6 +196,15 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 9. `[NOTED]` Overlap thresholds accepted; Report logs the hitting metric.
 10. `[FIXED]` time_budget-sums-to-duration check added (cheap).
 
+### Round 2 re-verdicts
+
+- **[fable]** APPROVE WITH NITS → 3 nits fixed (solutions-only execution glob,
+  solution_path coverage, mixed draft/final exit semantics) → **APPROVE** (verified).
+- **[codex]** APPROVE.
+- **[glm]** APPROVE WITH NITS round 1; all nits fixed.
+
+**GATE RESULT: PASS — 4/4** ([claude-self], [fable], [codex], [glm]); no open blockers.
+
 ## Content Review
 
 (Code review findings land here.)
