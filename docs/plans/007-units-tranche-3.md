@@ -164,3 +164,22 @@ excellent (reviewer recomputed even unprinted assertions). Findings:
 6. `[WONTFIX]` C3 p14(c) cost constants not consumed from earlier parts — chaining
    genuine in 5/6 audited integratives; the constants are the problem's given
    parameters, not derived quantities.
+
+### Opus re-verdict: **Approved** (re-executed at 95b0a57; all numbers match; §4 complete;
+genuine inversion confirmed). **GATE RESULT: PASS — 4/4.**
+Gate blind-solve totals: 27/27; tranche total incl. solver reconciliation: 83/83.
+
+## Post-execution report (2026-08-04)
+
+**Shipped:** C4-classical-ml-practice (3 sessions, 20 problems, seeded CSV datasets),
+C2-linear-models (2 sessions, 18, fitting-fence compliant), C3-gradient-descent
+(2 sessions, 18, notation-pinned to C2) + the overlap-scan unit extension with per-file
+failure loudness. 56/56 solver reconciliation, zero re-solves (one identity
+clarification); deps sklearn+pandas.
+
+**Gate history:** plan gate PASS 4/4 (fable's fitting-fence/notation-pin/C10-descope
+round; codex's supplied-weights + loud-skip test round). Content gate PASS 4/4 —
+blockers: overlap silent corpus-part drops (fixed + regression test) and the THIRD
+printed-output defect (grid-boundary argmin artifact — fixed with closed form + the
+"argmin at a grid edge" lab habit); C2 §4 rigor completed; pitfall-1 re-engineered to a
+genuine inversion.
