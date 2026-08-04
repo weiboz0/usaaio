@@ -293,3 +293,30 @@ constraints:
 2. Verified by hand: example manifest section_points sum to 300 within blueprint ranges;
    time_budget sums to 180; the suggested topological order respects all 16 units'
    prereq edges; ci-local ALL GREEN.
+
+### Review 2 — [glm] GLM 5.2 (2026-08-04)
+
+- **Verdict**: Approved with suggestions
+1. `[FIXED]` C5 diverged from the approved roster (ReLU missing; would dodge Task 4(h)
+   silently) → `relu-activation` added to vocabulary + C5.
+2. `[NOTED]` tanh-derivative reachable from C5 via C3→C2→F4 (closure is transitive —
+   confirmed as the prereq-check semantics for plan 004).
+3. `[FIXED]` F6 double-length flag now machine-readable (`length: double`).
+4. `[FIXED]` Section-vs-global cluster semantics comment added to blueprint.
+5. `[NOTED]` Example difficulty_draw verified in-band.
+
+### Review 3 — [opus] Independent Opus, fresh context (2026-08-04)
+
+- **Verdict**: Changes requested → all fixed → **Approved** (re-verified at fd36e23)
+1. `[FIXED]` BLOCKER: C4 taught feature-scaling before variance existed → F5 added to
+   C4 prereqs; suggested order reordered (F5 before C4) with rationale.
+2. `[FIXED]` BLOCKER: blueprint 2026 section anchors summed to 285 → math-computation
+   anchor corrected to P2+P3+P4=45; reconstruction 50+45+90+65+50=300 spelled out.
+3. `[FIXED]` Vocabulary gaps → orthogonality-orthonormality (F2),
+   linear-independence-span (F3).
+4. `[FIXED]` C2 had no fitting method → narrative defines C2 practice (evaluate/
+   differentiate losses; fitting deferred to C3).
+5. `[FIXED]` Sentinel literal appeared twice → prose mention de-literalized.
+6. `[FIXED]` Nits: bias-variance forward-promise reworded; unsupported "~30 points"
+   dropped; covariance added to F5; python-inheritance added to C6.
+   Final vocabulary: 105 concepts (supersedes the "100" in Review 1's note).
