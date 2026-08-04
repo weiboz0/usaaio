@@ -52,8 +52,8 @@ test: r1-001
 blueprint_version: 1            # the version this test was generated against
 generated: 2026-08-15           # date
 generation_parameters:          # every choice made at instantiation, for repeatability
-  section_points: {concept-block: 50, math-computation: 30, integrative-arc: 90,
-                   engineering: 80, open-ended-notebook: 50}
+  section_points: {concept-block: 50, math-computation: 45, integrative-arc: 90,
+                   engineering: 65, open-ended-notebook: 50}   # = the default anchors
   arc_clusters: [nlp-embeddings, linear-algebra, numpy]
   problem_count: 9
   difficulty_draw: {intro: 0.23, core: 0.45, advanced: 0.32}
