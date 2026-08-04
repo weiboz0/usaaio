@@ -70,7 +70,10 @@ def _collect_text_fields(node: Any) -> list[str]:
 
 def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None]:
     reference = root / "reference"
-    if not reference.exists() or not any(reference.glob("*/index.yaml")):
+    # PDFs alone are a valid corpus (spec Task 5); index.yaml text fields are additive.
+    if not reference.exists() or not (
+        any(reference.glob("*/index.yaml")) or any(reference.glob("*/*.pdf"))
+    ):
         return [], REMEDY
     if shutil.which("pdftotext") is None:
         return [], f"pdftotext unavailable; {REMEDY}"

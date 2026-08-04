@@ -68,6 +68,12 @@ def _validate_manifest(
         errors.append(f"{manifest.path}: time_budget does not sum to duration_minutes")
 
     for problem in manifest.problems:
+        if problem.section not in section_ranges:
+            errors.append(f"{manifest.path}: {problem.id} unknown section {problem.section!r}")
+        if problem.difficulty not in blueprint.difficulty_mix:
+            errors.append(
+                f"{manifest.path}: {problem.id} unknown difficulty {problem.difficulty!r}"
+            )
         section_points[problem.section] += problem.points
         difficulty_points[problem.difficulty] += problem.points
         if problem.type == "programming":

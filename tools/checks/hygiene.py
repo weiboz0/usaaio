@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
+
+import nbformat
 
 from tools.model import Report
 
@@ -21,9 +22,9 @@ def check_hygiene(root: str | Path) -> Report:
     errors: list[str] = []
     for path in _student_notebooks(root):
         try:
-            notebook = json.loads(path.read_text())
-        except json.JSONDecodeError as exc:
-            errors.append(f"{path}: invalid notebook JSON: {exc.msg}")
+            notebook = nbformat.reads(path.read_text(), as_version=4)
+        except ValueError as exc:  # NotJSONError and validation errors subclass ValueError
+            errors.append(f"{path}: invalid notebook: {exc}")
             continue
         for index, cell in enumerate(notebook.get("cells", []), start=1):
             if cell.get("outputs") not in (None, []):
