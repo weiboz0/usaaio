@@ -446,7 +446,7 @@ git commit -m "docs: add content-review gate, generation-pipeline stub, decision
 **Interfaces:**
 - Produces: `tools.cli:main` console script `usaaio-tools` with subcommand framework;
   plan 004 adds real subcommands (`blueprint-check`, `overlap-scan`, `prereq-check`,
-  `coverage-check`, `new-mocktest`) into `SUBCOMMANDS`.
+  `coverage-check`, `hygiene-check`, `new-mocktest`) into `SUBCOMMANDS`.
   `tools.__version__` string.
 
 - [ ] **Step 1: Write `pyproject.toml`**
@@ -744,10 +744,10 @@ count as a pass:
 ```bash
 touch docs/plans/001-fake-collision.md
 out=$(bash scripts/pre-merge-guard.sh 2>&1 || true)
+rm docs/plans/001-fake-collision.md
 echo "$out" | grep -q 'duplicate docs/plans' \
   && echo "guard correctly detected the collision" \
-  || { echo "BUG: guard did not report the collision. Output was:"; echo "$out"; }
-rm docs/plans/001-fake-collision.md
+  || { echo "BUG: guard did not report the collision. Output was:"; echo "$out"; false; }
 ```
 
 Expected: "guard correctly detected the collision".
@@ -789,14 +789,19 @@ reference/*
 !reference/analysis.md
 ```
 
-Then verify all ignore rules actually hold:
+Then verify all ignore rules actually hold — one path at a time
+(`git check-ignore` with multiple paths exits 0 if ANY is ignored, so a joint call
+would pass with missing rules):
 
 ```bash
-git check-ignore .gh-token build/x reference/some-paper.pdf && echo "ignore rules OK"
-git check-ignore reference/.gitkeep && echo "BUG: .gitkeep must be committed" || true
+for p in .gh-token build/x reference/some-paper.pdf; do
+  git check-ignore -q "$p" || echo "BUG: $p is not ignored"
+done
+git check-ignore -q reference/.gitkeep && echo "BUG: .gitkeep must be committed" || true
+echo "ignore checks done"
 ```
 
-Expected: "ignore rules OK" and no BUG line.
+Expected: only "ignore checks done", no BUG lines.
 
 - [ ] **Step 2: Full verification**
 
@@ -929,6 +934,19 @@ and stated in `## Out of scope`.
 7. `[WONTFIX]` docs/README lifecycle line compresses the gate order. → Response: the
    line already names `ci-local.sh` at its verification position; CLAUDE.md is the
    authoritative ordering.
+
+### Round 2 — re-review of commit 49a22ba
+
+- **[fable] VERDICT: APPROVE WITH NITS.** Confirmed all seven round-1 findings genuinely
+  fixed. Remaining: multi-path `git check-ignore` passes if ANY path is ignored
+  (`[FIXED]` — per-path loop); Task 5 Interfaces list missing `hygiene-check`
+  (`[FIXED]`); negative-test failure branch exits 0 (`[FIXED]` — `false` appended).
+- **[codex] VERDICT: APPROVE WITH NITS.** Confirmed all three round-1 items fixed.
+  Same three nits as [fable], all `[FIXED]` as above.
+
+**GATE RESULT: PASS — 4/4 APPROVE WITH NITS**
+([claude-self], [codex], [fable], [glm]); no open blockers. Per CLAUDE-md-to-be and the
+adopted workflow, a passing gate authorizes implementation.
 
 ## Content Review
 
