@@ -11,7 +11,7 @@
 
 ## Deps (Task 0)
 
-`uv add torch --index https://download.pytorch.org/whl/cpu` (CPU wheel — no GPU assumptions; C6 teaches torch). If the index flag fails under uv, use the `tool.uv.sources`/`extra-index-url` route and record which. Verify `python -c "import torch"` and pin the version in the post-exec report.
+`uv add torch --index pytorch=https://download.pytorch.org/whl/cpu` — the NAMED-index form, which persists `[[tool.uv.index]]` + `[tool.uv.sources]` in pyproject so re-locks keep the CPU-only guarantee (URL-only --index resolves once but does not persist — gate finding). VERIFY pyproject gains both sections, `python -c "import torch"` works, and pin the version in the post-exec report.
 
 ## Units
 
@@ -25,7 +25,7 @@
 - 18–20 problems. Torch allowed (that's the point); autograd/training BANNED (inference-only, matching the exam's pattern and C5's scope; optimizer/backward vocabulary forbidden EXCEPT one scope-note sentence acknowledging torch can compute gradients for training (needed to teach requires_grad=False honestly) — carved out explicitly; note in Exam Connections that the real paper's torch problems are inference-only too, paraphrase).
 - Conventions: SEED for torch = `torch.manual_seed(20260804)` alongside the NumPy seed where both used.
 
-**C5/C6 shared module-spec pin (both drafter prompts verbatim, the 007-notation-pin lesson):** the hand-built layers are TWO NumPy helpers in C5 — `affine_layer(x, W, b)` (= x@W.T+b... written component-form per C5's register) and `step_activation(z)` (= (z >= 0) as floats) — mapped one-to-one to C6 modules `DenseLayer(nn.Module)` / `ThresholdGate(nn.Module)` (names deliberately DISTINCT from the paper's underscore identifiers — an underscore-only difference does not clear the fresh-names bar) with EXACT semantics: DenseLayer stores `weight` (out×in) and `bias` (out,), forward = `x @ weight.T + bias`; ThresholdGate forward = `(x >= 0).to(x.dtype)`; C6's lesson builds THESE from C5's NumPy versions by name. FRESH NAMES ship (the repo is public): use `DenseLayer`/`ThresholdGate` — never the paper's verbatim identifiers nor underscore-only variants; corpus check at reconciliation confirms.
+**C5/C6 shared module-spec pin (both drafter prompts verbatim, the 007-notation-pin lesson):** the hand-built layers are TWO NumPy helpers in C5 — `affine_layer(x, W, b)` (= x@W.T+b... written component-form per C5's register) and `step_activation(z)` (= (z >= 0) as floats) — mapped one-to-one to C6 modules `DenseLayer(nn.Module)` / `ThresholdGate(nn.Module)` (names deliberately DISTINCT from the paper's underscore identifiers — an underscore-only difference does not clear the fresh-names bar) with EXACT semantics: DenseLayer REGISTERS `weight` (out×in) and `bias` (out,) as `nn.Parameter` (constructed with `requires_grad=False` for the inference-only register — plain tensors would vanish from `parameters()`/`state_dict` and break the counting/inspection session; gate finding), forward = `x @ weight.T + bias`; ThresholdGate forward = `(x >= 0).to(x.dtype)`; C6's lesson builds THESE from C5's NumPy versions by name. FRESH NAMES ship (the repo is public): use `DenseLayer`/`ThresholdGate` — never the paper's verbatim identifiers nor underscore-only variants; corpus check at reconciliation confirms.
 
 **Orchestrator corpus duty (carried from F3/007 precedent):** at reconciliation, structurally compare — with explicit targets — C5-02's region-design problems, C6-02's custom-module problems, AND the C5-03→C6 variance-init chain against the local index's P7 arc (p07-1..4) and P8 sub-parts — generic-skill overlap fine; no isomorph-with-renamed-numbers. Verdict recorded in this plan.
 
@@ -63,6 +63,14 @@ Shared: A/B/C sets; v2 floors (≥4 MC w/ ≥1 numeric normal-form — parameter
 ### Review 2 — [glm] GLM 5.2 (2026-08-04): APPROVE WITH NITS → all fixed
 float64 default in C6 solution headers; dual-tag arithmetic flagged (21 instances vs
 18-20 → target 20, manifest flags); fresh-names rule explicit; "all solutions" phrasing.
+
+### Review 3½ — [codex] GPT-5.6-sol (2026-08-04): REJECT → fixed
+Blocker: torch dep needed the NAMED-index persistent form → Task 0 rewritten
+(`--index pytorch=URL`, verify both pyproject sections). Concern: module contract now
+requires nn.Parameter registration w/ requires_grad=False (plain tensors would break
+parameters()/state_dict). NITs: coverage/scope/floors verified clean by reviewer;
+its line refs raced the DenseLayer rename (contract fix applied to the renamed spec).
+Re-verdict requested.
 
 ### Review 3 — [fable] Independent Fable 5 (2026-08-04): REJECT → resolved
 Both blockers (corpus structural-comparison duty; C5/C6 module-spec pin) were already
