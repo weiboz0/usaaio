@@ -950,4 +950,14 @@ adopted workflow, a passing gate authorizes implementation.
 
 ## Content Review
 
-(Pre-PR gate findings land here.)
+### Review 1 — [claude-self] inline (2026-08-03)
+
+- **Verdict**: Approved with suggestions
+
+1. `[FIXED]` Deviation from plan: `tests/test_cli.py` adds `check=False` to
+   `subprocess.run` — required by ruff PLW1510, absent from the plan's embedded test code.
+   Behavior-identical (returncodes are inspected explicitly); recorded as a deviation.
+2. Verified: ci-local ALL GREEN on the scaffolded tree; negative guard test detects a
+   seeded plan-number collision by message; per-path `check-ignore` assertions clean;
+   `git ls-remote origin` OK; all doc cross-references (CLAUDE.md → workflow/gate/
+   decisions/design paths) resolve; no secrets or reference material staged.
