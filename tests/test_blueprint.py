@@ -274,3 +274,32 @@ def test_invalid_status_rejected(tmp_path):
     import pytest as _pytest
     with _pytest.raises(ValueError, match="status must be"):
         check_blueprint(tmp_path)
+
+
+def test_atom_share_is_count_share_not_points_share(tmp_path):
+    # The 2026 paper texture: 24/37 sub-parts are 5-pointers (count share 0.65) but only
+    # 120/300 points (points share 0.40). Must PASS — the metric is a count share.
+    rows = copy.deepcopy(valid_problems())
+    write_repo(tmp_path, rows)
+    errors = check_blueprint(tmp_path).errors
+    assert not any("atom share" in error for error in errors)
+
+
+def test_arc_clusters_validated_from_manifest_rotation(tmp_path):
+    # An arc problem allowed only by the manifest's ROTATED arc_clusters (not the
+    # blueprint's static list) must be accepted; without the declaration it must fail.
+    rows = copy.deepcopy(valid_problems())
+    arc_row = next(r for r in rows if r["section"] == "integrative-arc")
+    arc_row["concepts"] = ["nn-module"]
+    arc_row["cluster"] = "pytorch"
+    write_repo(tmp_path, rows)
+    manifest = tmp_path / "mocktests" / "r1-001" / "manifest.yaml"
+    text = manifest.read_text()
+    errors = check_blueprint(tmp_path).errors
+    assert any("cluster not allowed" in error for error in errors)  # static list rejects
+    manifest.write_text(text.replace(
+        "generation_parameters: {}",
+        "generation_parameters:\n  arc_clusters: [nlp-embeddings, linear-algebra, numpy, pytorch]",
+    ))
+    errors = check_blueprint(tmp_path).errors
+    assert not any("cluster not allowed" in error for error in errors)  # rotation accepts

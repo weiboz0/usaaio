@@ -66,6 +66,8 @@ def _validate_manifest(
         errors.append(f"{manifest.path}: total_points {manifest.total_points} != blueprint total")
     if sum(manifest.time_budget.values()) != manifest.duration_minutes:
         errors.append(f"{manifest.path}: time_budget does not sum to duration_minutes")
+    if manifest.duration_minutes and manifest.duration_minutes != blueprint.raw.get("duration_minutes"):
+        errors.append(f"{manifest.path}: duration_minutes differs from blueprint")
 
     for problem in manifest.problems:
         if problem.section not in section_ranges:
@@ -81,12 +83,15 @@ def _validate_manifest(
         if problem.provenance == "original":
             original_points += problem.points
         if problem.provenance == "adapted" and not problem.adapted_from:
-            errors.append(f"{manifest.path}: {problem.id} adapted missing adapted-from")
+            tag = blueprint.provenance_rules.get("adapted_requires_tag", "adapted-from")
+            errors.append(f"{manifest.path}: {problem.id} adapted missing {tag}")
         if not problem.spec:
             errors.append(f"{manifest.path}: {problem.id} missing spec")
         if problem.answer_key in (None, "", {}):
             errors.append(f"{manifest.path}: {problem.id} missing answer_key")
-        if problem.data and problem.data.get("generator_script") and not (
+        if problem.data and not isinstance(problem.data, dict):
+            errors.append(f"{manifest.path}: {problem.id} data must be a mapping")
+        elif problem.data and problem.data.get("generator_script") and not (
             manifest.path.parent / problem.data["generator_script"]
         ).exists():
             errors.append(f"{manifest.path}: {problem.id} missing generator_script")
@@ -104,7 +109,14 @@ def _validate_manifest(
             cluster_points[problem.cluster] += problem.points
             section = section_ranges.get(problem.section)
             if section:
-                allowed = {fold_cluster(blueprint, cluster) for cluster in section["draws_on_clusters"]}
+                source_clusters = section["draws_on_clusters"]
+                if problem.section == "integrative-arc":
+                    # the arc rotates per test; the manifest's generation_parameters
+                    # declare the rotated allowed set (falls back to the blueprint list)
+                    source_clusters = (manifest.generation_parameters or {}).get(
+                        "arc_clusters", source_clusters
+                    )
+                allowed = {fold_cluster(blueprint, cluster) for cluster in source_clusters}
                 if problem.cluster not in allowed:
                     errors.append(f"{manifest.path}: {problem.id} cluster not allowed in section")
 
@@ -127,8 +139,10 @@ def _validate_manifest(
     if not _in_range(len(top_level_problem_ids), blueprint.texture["problem_count"]):
         errors.append(f"{manifest.path}: problem_count out of range")
     if total:
-        five_point_share = sum(p.points for p in manifest.problems if p.points == 5) / total
-        if five_point_share < float(blueprint.texture["five_point_atom_share"]["min"]):
+        # COUNT share of sub-parts (analysis: "24 of 37 sub-parts are 5 pts" = 0.65),
+        # not a points share (which would be 120/300 = 0.40 and reject the real paper).
+        atom_count_share = sum(1 for p in manifest.problems if p.points == 5) / len(manifest.problems)
+        if atom_count_share < float(blueprint.texture["five_point_atom_share"]["min"]):
             errors.append(f"{manifest.path}: five-point atom share below minimum")
         programming_share = programming_points / total
         if not _in_range(programming_share, blueprint.texture["programming_points_share"]):

@@ -29,15 +29,20 @@ def _tf(text: str) -> Counter[str]:
     return Counter(_words(text))
 
 
-def _cosine(query: str, document: str, documents: list[str]) -> float:
+def _corpus_dfs(documents: list[str]) -> Counter[str]:
+    dfs: Counter[str] = Counter()
+    for doc in documents:
+        dfs.update(set(_words(doc)))
+    return dfs
+
+
+def _cosine(query: str, document: str, doc_count: int, base_dfs: Counter[str]) -> float:
     q_tf = _tf(query)
     d_tf = _tf(document)
     if not q_tf or not d_tf:
         return 0.0
-    doc_count = len(documents) + 1
-    dfs: Counter[str] = Counter()
-    for doc in [*documents, query]:
-        dfs.update(set(_words(doc)))
+    dfs = base_dfs.copy()
+    dfs.update(set(_words(query)))
     terms = set(q_tf) | set(d_tf)
     numerator = 0.0
     q_norm = 0.0
@@ -123,6 +128,11 @@ def check_overlap(root: str | Path) -> Report:
     if skipped:
         return Report(name="overlap-scan", ok=True, skipped=skipped)
     corpus_texts = [text for _, text in corpus]
+    # Hoisted per-corpus precomputation: shingles per reference doc + document frequencies
+    # (previously recomputed inside the per-problem loop — O(P x R x |corpus|)).
+    corpus_shingles = [(label, text, _shingles(text)) for label, text in corpus]
+    base_dfs = _corpus_dfs(corpus_texts)
+    doc_count = len(corpus_texts) + 1
     errors: list[str] = []
     warnings: list[str] = []
     for manifest in load_mock_manifests(root):
@@ -130,9 +140,9 @@ def check_overlap(root: str | Path) -> Report:
             text, text_warnings = _problem_text(root, manifest.path, problem)
             warnings.extend(text_warnings)
             problem_shingles = _shingles(text)
-            for label, reference_text in corpus:
-                overlap = len(problem_shingles & _shingles(reference_text))
-                cosine = _cosine(text, reference_text, corpus_texts)
+            for label, reference_text, reference_shingles in corpus_shingles:
+                overlap = len(problem_shingles & reference_shingles)
+                cosine = _cosine(text, reference_text, doc_count, base_dfs)
                 if overlap >= SHINGLE_THRESHOLD or cosine >= COSINE_THRESHOLD:
                     hit = f"{manifest.path}: {problem.id} overlaps {label} (shingles={overlap}, cosine={cosine:.2f})"
                     if problem.provenance == "adapted" and problem.adapted_from:

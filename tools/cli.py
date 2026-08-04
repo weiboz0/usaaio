@@ -69,7 +69,13 @@ def main(argv: list[str] | None = None) -> int:
 
     check = SUBCOMMANDS[args.command][1]
     assert check is not None
-    return print_report(check(args.root))
+    try:
+        return print_report(check(args.root))
+    except (ValueError, KeyError, OSError) as exc:
+        # Loader/config failures (bad sentinel, invalid status, malformed manifest,
+        # missing files) surface as check errors, not tracebacks; exit 1 still blocks.
+        print(f"ERROR {args.command}: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
