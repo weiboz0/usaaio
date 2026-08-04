@@ -104,6 +104,7 @@ concepts:
   - {id: activation-functions,      cluster: pytorch}
   - {id: threshold-activation,      cluster: pytorch}
   - {id: mlp-architecture,          cluster: pytorch}
+  - {id: relu-activation,           cluster: pytorch}
   - {id: decision-boundaries-geometric, cluster: pytorch}
   - {id: weight-init-variance,      cluster: probability-statistics}
   # --- C6 ---
@@ -174,7 +175,8 @@ units:
               gaussian-distribution, sampling-simulation]
   - id: F6-svd-spectral
     track: foundation
-    title: Eigenvalues, SVD, and Low-Rank Structure   # double-length unit
+    title: Eigenvalues, SVD, and Low-Rank Structure
+    length: double   # heaviest unit in the roster; lesson splits into two sittings
     prereqs: [F3-matrices]
     teaches: [eigenvalues-eigenvectors, spectral-decomposition, svd, singular-values,
               low-rank-approximation, frobenius-norm]
@@ -205,8 +207,8 @@ units:
     track: core
     title: Neural Networks from First Principles
     prereqs: [C3-gradient-descent, F5-probability]
-    teaches: [perceptron, activation-functions, threshold-activation, mlp-architecture,
-              decision-boundaries-geometric, weight-init-variance]
+    teaches: [perceptron, activation-functions, threshold-activation, relu-activation,
+              mlp-architecture, decision-boundaries-geometric, weight-init-variance]
   - id: C6-pytorch
     track: core
     title: PyTorch Engineering

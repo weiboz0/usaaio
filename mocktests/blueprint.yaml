@@ -15,7 +15,10 @@ texture:                               # invariants
                                        # answer-form tagging, not a printed figure
   problem_count: {min: 3, max: 10}     # free parameter (3 in 2025, 9 in 2026)
 
-sections:                              # required texture, order fixed
+sections:                              # required texture, order fixed.
+                                       # draws_on_clusters lists ALLOWED sources — a section
+                                       # mixes clusters freely; topic_distribution floors/
+                                       # ceilings are TEST-GLOBAL, never per-section.
   - id: concept-block
     points: {min: 40, max: 60}         # 2026: 50
     style: >
