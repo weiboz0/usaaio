@@ -21,7 +21,9 @@ baseline:   # Calc AB + basic Python allowlist — usable WITHOUT being taught
   python: [variables-and-types, lists-dicts-sets, control-flow, functions,
            classes-basics, file-io-basics]
 clusters: [python-scientific, linear-algebra, calculus-multivar, probability-statistics,
-           ml-concepts, pytorch, cnn-vision, nlp-embeddings, applied-ml, competition-craft]
+           ml-concepts, pytorch, cnn-vision, nlp-embeddings, applied-ml, competition-craft,
+           numpy]   # numpy is a distribution-level bucket: python-scientific concepts fold
+                    # into it for blueprint topic accounting (blueprint cluster_fold)
 concepts:
   # --- F1 ---
   - {id: numpy-arrays,              cluster: python-scientific}
