@@ -1,0 +1,105 @@
+# Round 1 mock-test blueprint. Every value cites reference/analysis.md (n=1 fully-indexed
+# 2026 paper + 2025 structural metadata); printed vs inferred marked honestly.
+# blueprint-check (plan 004) enforces texture/sections/topic_distribution/difficulty_mix.
+blueprint_version: 1
+derived_from: reference/analysis.md
+target: round-1
+duration_minutes: 180                  # external (official schedule), not printed in paper
+total_points: 300                      # printed
+
+texture:                               # invariants
+  subparts: {min: 33, max: 41}         # 2026: 37; 2025: >=39 VISIBLE (pagination may hide
+                                       # more — n=1 fully-counted sample; max provisional)
+  five_point_atom_share: {min: 0.55}   # 2026: 24/37 = 0.65
+  programming_points_share: {min: 0.45, max: 0.55}   # 2026: ~150/300 INFERRED from
+                                       # answer-form tagging, not a printed figure
+  problem_count: {min: 3, max: 10}     # free parameter (3 in 2025, 9 in 2026)
+
+sections:                              # required texture, order fixed.
+                                       # draws_on_clusters lists ALLOWED sources — a section
+                                       # mixes clusters freely; topic_distribution floors/
+                                       # ceilings are TEST-GLOBAL, never per-section.
+  - id: concept-block
+    points: {min: 40, max: 60}         # 2026: 50
+    style: >
+      Multiple choice, exactly five options A-E, 10-point atoms, opening position.
+    draws_on_clusters: [ml-concepts]
+  - id: math-computation
+    points: {min: 20, max: 45}         # 2026: P2+P3+P4 = 45 (the five section
+                                       # anchors 50+45+90+65+50 = 300 exactly)
+    style: >
+      Short scaffolded problems; numeric answers unique-decodable via normal forms
+      (gcd/sign constraints) as MC, or short-answer/proof with reasoning-required flags.
+    draws_on_clusters: [linear-algebra, calculus-multivar, probability-statistics]
+  - id: integrative-arc
+    points: {min: 80, max: 100}        # 2026: 90 (15 parts)
+    subparts: {min: 12, max: 16}
+    style: >
+      One narrative dataset/model journey mixing theory and code sub-parts;
+      later parts consume earlier results explicitly.
+    draws_on_clusters: [nlp-embeddings, linear-algebra, numpy]   # rotate per test
+  - id: engineering
+    points: {min: 50, max: 90}         # 2026: P6+P7+P8 = 65
+    style: >
+      2-3 problems; framework tasks with exact identifiers (snake_case functions,
+      My_CamelCase modules), shape contracts, banned-API lists with zero-point clauses.
+    draws_on_clusters: [pytorch, cnn-vision, numpy]
+  - id: open-ended-notebook
+    points: {min: 40, max: 60}         # 2026: 50 (16.7%)
+    style: >
+      Kaggle-style hidden-test task with a single allowed model family, run-clean
+      notebook requirement, prediction-function contract, and written summary cell.
+    draws_on_clusters: [applied-ml, competition-craft]
+
+topic_distribution:                    # POINTS per cluster {target, min, max}; targets sum
+                                       # to total_points exactly. Per-cluster tolerances
+                                       # (±20 for targets >=50, else ±10, floored at 0) so
+                                       # small clusters can't silently absorb a problem.
+  linear-algebra: {target: 60, min: 40, max: 80}
+  ml-concepts: {target: 50, min: 30, max: 70}
+  numpy: {target: 55, min: 35, max: 75}
+  pytorch: {target: 50, min: 30, max: 70}
+  applied-ml: {target: 50, min: 30, max: 70}
+  cnn-vision: {target: 10, min: 0, max: 20}
+  nlp-embeddings: {target: 15, min: 5, max: 25}
+  probability-statistics: {target: 5, min: 0, max: 15}
+  calculus-multivar: {target: 5, min: 0, max: 15}
+
+cluster_fold:                          # tag clusters that fold into the distribution above
+  python-scientific: numpy
+  competition-craft: applied-ml
+
+cluster_aliases:                       # analysis.md topic-table row -> canonical cluster id
+  "Linear algebra": linear-algebra
+  "ML concepts": ml-concepts
+  "NumPy implementation": numpy
+  "PyTorch engineering": pytorch
+  "Probability/statistics": probability-statistics
+  "Calculus": calculus-multivar        # bucket spans 1-D + multivariable calculus items
+  "CNN representations": cnn-vision
+  "NLP/embeddings context": nlp-embeddings
+  "Applied tabular ML": applied-ml
+
+difficulty_mix:                        # per-band FLOORS/CEILINGS on point share (bands need
+                                       # not partition; actual shares sum to 1 by
+                                       # construction; band min-sum 0.75 <= 1 <= max-sum 1.25)
+  intro: {min: 0.15, max: 0.30}        # baseline-reachable ~70/300 = 0.23 (analysis)
+  core: {min: 0.35, max: 0.55}
+  advanced: {min: 0.25, max: 0.40}
+
+style_rules:                           # fidelity contract (reviewer half of blueprint-check)
+  - five-option MC (A-E)
+  - numeric answers unique-decodable via normal forms (gcd/sign constraints)
+  - exact function/class identifiers; snake_case functions, My_CamelCase modules
+  - explicit per-part reasoning-required / coding-allowed flags
+  - banned-API lists with zero-point penalty clauses
+  - complete runnable starter code; public datasets via stable URLs
+  - later parts consume earlier parts' results within a problem
+
+provenance_rules:
+  original_share_min: 0.7              # design 000: mixed, original default
+  adapted_requires_tag: adapted-from
+
+constraints:
+  - every problem tags >=1 unit from syllabus.md; no concept outside the taught closure
+  - datasets generated by seeded scripts (manifest records generator_script + seed)
