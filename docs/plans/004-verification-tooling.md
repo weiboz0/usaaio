@@ -218,12 +218,25 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 2. `[FIXED]` Two test files read `mocktests/blueprint.yaml`/`syllabus.md` via CWD-relative
    paths — anchored to `ROOT` (the fragility class most likely to explain the one
    unreproduced failure below).
-3. `[OPEN]` Flake watch: `test_blueprint_flags_remaining_invariants_parametric
-   [problem count…]` failed exactly once in the first full-suite run and never again
-   (5+ clean re-runs, including 3 consecutive). No chdir/shared-fixture culprit found;
-   reviewers asked to hunt residual order dependence. Not merge-blocking unless a
-   reviewer finds the mechanism.
+3. `[FIXED]` Flake watch: `test_blueprint_flags_remaining_invariants_parametric
+   [problem count…]` failed exactly once, never reproduced. [codex]'s analysis attributes
+   it to the pre-fix CWD-relative fixture reads (stale path state), which the
+   ROOT-anchoring in Review 1 item 2 already eliminated; the data path itself is
+   deterministic. Closed on that mechanism.
 4. Verified: 7 per-task commits; 52 tests pass ×3; ruff clean; ci-local ALL GREEN with
    all five checks executing for real (overlap-scan PASS against the local corpus,
    prereq/coverage vacuous-pass, hygiene vacuous, blueprint vacuous, PENDING plan-006
    line present).
+
+### Review 2 — [codex] Codex GPT-5.5 (2026-08-04)
+
+- **Verdict**: Changes requested → all fixed, re-verdict requested
+
+1. `[FIXED]` BLOCKER: `problem_count` stripped the last hyphen segment, collapsing
+   part-less ids (`r1-001-p01` → `r1-001`) — a valid 3-problem manifest could miscount
+   as 1. → pNN-token regex derivation + `test_problem_count_handles_partless_ids`.
+2. `[FIXED]` `status` accepted arbitrary text as final (`drfat` passed) →
+   `_validated_status` raises on anything ≠ draft|final + `test_invalid_status_rejected`.
+3. `[FIXED]` Flake mechanism identified (pre-fix CWD-relative reads) — closed above.
+4. `[FIXED]` Dead `_split_top_level`/`_parse_scalar` remnants removed (+unused `ast`
+   import). Suite now 54 tests, green; ci-local ALL GREEN.
