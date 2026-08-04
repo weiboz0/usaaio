@@ -155,3 +155,22 @@ def test_overlap_loud_skip_preserved(tmp_path, monkeypatch, capsys):
     assert "bash scripts/fetch-reference.sh" in report.skipped
     assert print_report(report) == 3
     assert "SKIP overlap-scan" in capsys.readouterr().out
+
+
+def test_overlap_partial_pdftotext_failure_warns(tmp_path, monkeypatch):
+    # One good corpus part + one corrupt PDF: the corrupt part must surface as a
+    # warning, never be silently dropped (a copied source could escape scanning).
+    ref = tmp_path / "reference" / "r1-9999"
+    ref.mkdir(parents=True)
+    (ref / "index.yaml").write_text("sections:\n  - problems:\n      - text: |\n          alpha beta gamma delta epsilon zeta eta theta iota kappa\n")
+    (ref / "broken.pdf").write_bytes(b"%PDF-1.5 truncated garbage")
+    (tmp_path / "mocktests").mkdir()
+    (tmp_path / "units").mkdir()
+    import shutil as _sh
+
+    from tools.checks.overlap import check_overlap
+    if _sh.which("pdftotext") is None:
+        import pytest as _pytest
+        _pytest.skip("pdftotext unavailable")
+    report = check_overlap(tmp_path)
+    assert any("NOT scanned" in w and "broken.pdf" in w for w in report.warnings)

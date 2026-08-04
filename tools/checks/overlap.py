@@ -89,16 +89,17 @@ def _collect_text_fields(node: Any) -> list[str]:
     return []
 
 
-def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None]:
+def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None, list[str]]:
     reference = root / "reference"
     # PDFs alone are a valid corpus (spec Task 5); index.yaml text fields are additive.
     if not reference.exists() or not (
         any(reference.glob("*/index.yaml")) or any(reference.glob("*/*.pdf"))
     ):
-        return [], REMEDY
+        return [], REMEDY, []
     if shutil.which("pdftotext") is None:
-        return [], f"pdftotext unavailable; {REMEDY}"
+        return [], f"pdftotext unavailable; {REMEDY}", []
     parts: list[tuple[str, str]] = []
+    failures: list[str] = []
     for ref_dir in sorted(reference.glob("*")):
         if not ref_dir.is_dir():
             continue
@@ -108,7 +109,7 @@ def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None]:
                 for offset, text in enumerate(_collect_text_fields(_parse_yaml(index.read_text()))):
                     parts.append((f"{index}#text-{offset}", text))
             except (OSError, ValueError) as exc:
-                return [], f"{index}: cannot read corpus index ({exc}); {REMEDY}"
+                return [], f"{index}: cannot read corpus index ({exc}); {REMEDY}", []
         for pdf in sorted(ref_dir.glob("*.pdf")):
             proc = subprocess.run(
                 ["pdftotext", str(pdf), "-"],
@@ -119,9 +120,15 @@ def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None]:
             )
             if proc.returncode == 0 and proc.stdout.strip():
                 parts.append((str(pdf), proc.stdout))
+            else:
+                # A silently-dropped corpus part would let copied content escape
+                # scanning; surface every extraction failure as a loud warning.
+                failures.append(
+                    f"corpus part NOT scanned (pdftotext failed, rc={proc.returncode}): {pdf}"
+                )
     if not parts:
-        return [], REMEDY
-    return parts, None
+        return [], REMEDY, failures
+    return parts, None, failures
 
 
 def _problem_text(root: Path, manifest_path: Path, problem) -> tuple[str, list[str]]:
@@ -149,7 +156,7 @@ def _notebook_text(path: Path) -> str:
 
 def check_overlap(root: str | Path) -> Report:
     root = Path(root)
-    corpus, skipped = _corpus(root)
+    corpus, skipped, corpus_failures = _corpus(root)
     if skipped:
         return Report(name="overlap-scan", ok=True, skipped=skipped)
     corpus_texts = [text for _, text in corpus]
@@ -159,7 +166,7 @@ def check_overlap(root: str | Path) -> Report:
     base_dfs = _corpus_dfs(corpus_texts)
     doc_count = len(corpus_texts) + 1
     errors: list[str] = []
-    warnings: list[str] = []
+    warnings: list[str] = list(corpus_failures)
     for manifest in load_mock_manifests(root):
         for problem in manifest.problems:
             text, text_warnings = _problem_text(root, manifest.path, problem)
