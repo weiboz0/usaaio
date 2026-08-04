@@ -251,3 +251,26 @@ def test_blueprint_vacuous_without_mocktests(tmp_path):
     (tmp_path / "mocktests" / "blueprint.yaml").write_text((ROOT / "mocktests/blueprint.yaml").read_text())
     (tmp_path / "syllabus.md").write_text((ROOT / "syllabus.md").read_text())
     assert check_blueprint(tmp_path).ok
+
+
+def test_problem_count_handles_partless_ids(tmp_path):
+    rows = copy.deepcopy(valid_problems())
+    # rename every sub-part of the first three top-level problems to part-less/lettered forms
+    seen = 0
+    for row in rows:
+        if row["id"].endswith("-1") and seen < 1:
+            row["id"] = row["id"].rsplit("-", 1)[0]  # pNN part-less form
+            seen += 1
+    write_repo(tmp_path, rows)
+    errors = check_blueprint(tmp_path).errors
+    assert not any("problem_count" in error for error in errors)
+
+
+def test_invalid_status_rejected(tmp_path):
+    rows = copy.deepcopy(valid_problems())
+    write_repo(tmp_path, rows)
+    path = tmp_path / "mocktests" / "r1-001" / "manifest.yaml"
+    path.write_text(path.read_text().replace("status: final", "status: drfat"))
+    import pytest as _pytest
+    with _pytest.raises(ValueError, match="status must be"):
+        check_blueprint(tmp_path)

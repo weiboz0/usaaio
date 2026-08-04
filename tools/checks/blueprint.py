@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -111,7 +112,12 @@ def _validate_manifest(
 
     if not _in_range(len(manifest.problems), blueprint.texture["subparts"]):
         errors.append(f"{manifest.path}: subparts out of range")
-    top_level_problem_ids = {"-".join(problem.id.split("-")[:-1]) for problem in manifest.problems}
+    # Top-level problem = the pNN token in the id; handles pNN, pNN-M, and pNNa forms
+    # (naive last-segment stripping collapsed part-less ids like "r1-001-p01" to "r1-001").
+    top_level_problem_ids = set()
+    for problem in manifest.problems:
+        match = re.search(r"(?:^|-)(p\d+)", problem.id)
+        top_level_problem_ids.add(match.group(1) if match else problem.id)
     if not _in_range(len(top_level_problem_ids), blueprint.texture["problem_count"]):
         errors.append(f"{manifest.path}: problem_count out of range")
     if total:

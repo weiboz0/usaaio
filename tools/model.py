@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import ast
 import json
 import re
 from dataclasses import dataclass, field
@@ -98,6 +97,12 @@ class ManifestProblem:
     files: list[str]
 
 
+def _validated_status(value: object, path: Path) -> str:
+    if value not in ("draft", "final"):
+        raise ValueError(f"{path}: status must be 'draft' or 'final', got {value!r}")
+    return str(value)
+
+
 @dataclass
 class MockManifest:
     test: str
@@ -122,49 +127,6 @@ class Report:
 
 
 
-def _split_top_level(text: str) -> list[str]:
-    out: list[str] = []
-    start = 0
-    depth = 0
-    quote: str | None = None
-    for i, ch in enumerate(text):
-        if ch in {"'", '"'}:
-            quote = None if quote == ch else ch if quote is None else quote
-        elif quote is None:
-            if ch in "[{":
-                depth += 1
-            elif ch in "]}":
-                depth -= 1
-            elif ch == "," and depth == 0:
-                out.append(text[start:i].strip())
-                start = i + 1
-    tail = text[start:].strip()
-    if tail:
-        out.append(tail)
-    return out
-
-
-def _parse_scalar(text: str) -> Any:
-    text = text.strip()
-    if text == "":
-        return ""
-    if text in {"[]", "{}"}:
-        return [] if text == "[]" else {}
-    if text.startswith("[") and text.endswith("]"):
-        return [_parse_scalar(part) for part in _split_top_level(text[1:-1])]
-    if text.startswith("{") and text.endswith("}"):
-        result: dict[str, Any] = {}
-        for part in _split_top_level(text[1:-1]):
-            key, value = part.split(":", 1)
-            result[str(_parse_scalar(key))] = _parse_scalar(value)
-        return result
-    if (text.startswith('"') and text.endswith('"')) or (text.startswith("'") and text.endswith("'")):
-        return ast.literal_eval(text)
-    if re.fullmatch(r"-?\d+", text):
-        return int(text)
-    if re.fullmatch(r"-?\d+\.\d+", text):
-        return float(text)
-    return text
 
 
 def _parse_yaml(text: str) -> Any:
@@ -269,7 +231,7 @@ def load_mock_manifests(root: str | Path) -> list[MockManifest]:
                 test=raw["test"],
                 blueprint_version=int(raw.get("blueprint_version", 0)),
                 generated=str(raw["generated"]) if raw.get("generated") is not None else None,
-                status=raw.get("status", "final"),
+                status=_validated_status(raw.get("status", "final"), path),
                 generation_parameters=dict(raw.get("generation_parameters", {})),
                 duration_minutes=int(raw.get("duration_minutes", 0)),
                 total_points=int(raw.get("total_points", 0)),
