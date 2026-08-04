@@ -229,7 +229,13 @@ def _parse_yaml_subset(text: str) -> Any:
                     seq.append(value)
                 elif ":" in item and not item.startswith(("[", "{")):
                     key, value_text = item.split(":", 1)
-                    item_map: dict[str, Any] = {key: _parse_scalar(value_text.strip()) if value_text.strip() else {}}
+                    item_map: dict[str, Any] = {}
+                    if value_text.strip():
+                        item_map[key] = _parse_scalar(value_text.strip())
+                    elif pos + 1 >= len(stripped) or stripped[pos + 1][0] <= indent:
+                        item_map[key] = ""
+                    else:
+                        item_map[key] = {}
                     pos += 1
                     while pos < len(stripped) and stripped[pos][0] > indent:
                         child_indent, child = stripped[pos]
@@ -239,8 +245,11 @@ def _parse_yaml_subset(text: str) -> Any:
                         if ctext.strip():
                             item_map[ckey] = _parse_scalar(ctext.strip())
                             pos += 1
-                        else:
+                        elif pos + 1 < len(stripped) and stripped[pos + 1][0] > child_indent:
                             item_map[ckey], pos = parse_block(pos + 1, child_indent + 2)
+                        else:
+                            item_map[ckey] = ""
+                            pos += 1
                     seq.append(item_map)
                 else:
                     seq.append(_parse_scalar(item))
@@ -253,8 +262,11 @@ def _parse_yaml_subset(text: str) -> Any:
             if value_text.strip():
                 mapping[key] = _parse_scalar(value_text.strip())
                 pos += 1
-            else:
+            elif pos + 1 < len(stripped) and stripped[pos + 1][0] > indent:
                 mapping[key], pos = parse_block(pos + 1, indent + 2)
+            else:
+                mapping[key] = ""
+                pos += 1
         return mapping, pos
 
     if not stripped:
