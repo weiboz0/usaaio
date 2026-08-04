@@ -23,11 +23,19 @@ execute with cwd = the notebook's own directory, so a relative cache path would 
 into unit dirs and re-download per notebook): every loading notebook's header cell runs, BEFORE
 the torch/gensim import, exactly:**
 
+**The recipe is SPLIT BY LIBRARY (gate finding: a combined recipe would put the string
+TORCH_HOME into C8 notebooks and trip C8's own torch-free sweep). C7 loading notebooks run:**
+
 ```python
 import os, pathlib
 _root = next(p for p in [pathlib.Path.cwd(), *pathlib.Path.cwd().parents]
              if (p / "pyproject.toml").exists())
 os.environ["TORCH_HOME"] = str(_root / "reference" / "cache" / "torch")
+```
+
+**C8 loading notebooks run the same `_root` lines followed ONLY by:**
+
+```python
 os.environ["GENSIM_DATA_DIR"] = str(_root / "reference" / "cache" / "gensim")
 ``` First ci run downloads (~100MB resnet50 +
 ~130MB glove-wiki-gigaword-100); later runs are warm. **This warm-cache claim is a
@@ -190,6 +198,12 @@ staging pre-named for network-denied gate reviewers.
 Input-side float32 boundary-cast pin added (float64 default × float32 pretrained weights);
 empirical tolerance verification mandated; Task 6 assert scan now names the exception cells;
 Task 0 records the resolved torch↔torchvision pair + gensim ≥4.3.3.
+
+### Review 4b — [codex] GPT-5.6-sol re-verdict (2026-08-04): REJECT → fixed
+Caught a cross-constraint collision introduced by the fable-round recipe: the combined
+TORCH_HOME+GENSIM header would put torch strings into C8 notebooks, tripping C8's torch-free
+sweep. Recipe split by library (C7: TORCH_HOME only; C8: GENSIM_DATA_DIR only). Second
+re-verdict requested.
 
 ### Review 4 — [codex] GPT-5.6-sol (2026-08-04): REJECT → fixed
 MAJOR: Task 1 still said 7 dual-tags after the 22-problem amendment (racing commit) —
