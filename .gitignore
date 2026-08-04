@@ -12,3 +12,9 @@ build/
 
 # Secrets — never commit
 .gh-token
+
+# Public repo: raw past-test papers stay local-only (copyright).
+# Only reference/analysis.md and other original derived work are committed.
+reference/*
+!reference/.gitkeep
+!reference/analysis.md

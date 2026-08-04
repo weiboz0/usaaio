@@ -32,7 +32,9 @@ tailored for content development rather than software.
   *fidelity* (similar enough in structure, topic mix, difficulty, style) and
   *overlap* (no problem near-duplicates a specific past problem unless tagged `adapted-from`).
 - **Process:** full PowerMarket adoption, tailored (gates retargeted at content correctness).
-- **Git:** private GitHub repo; PR workflow via `gh`.
+- **Git:** public GitHub repo (github.com/weiboz0/usaaio); PR workflow via `gh`.
+  Because the repo is public, raw past-test papers and any student data are never committed —
+  only original material and our own derived analysis.
 
 ## 1. Repo structure
 
@@ -48,9 +50,12 @@ usaaio/
 │       └── manifest.yaml      # concepts-taught, concepts-used, prerequisite units,
 │                              # per-problem concept tags
 │                              # (drives the prereq-closure + practice-coverage checks, §3)
-├── reference/                 # corpus of real past USAAIO/IOAI tests (private use only)
-│   ├── r1-2025/ r1-2026/ …    # real test papers + per-problem structured index (index.yaml)
-│   └── analysis.md            # observed format, topic distribution, difficulty notes
+├── reference/                 # corpus of real past USAAIO/IOAI tests
+│   ├── r1-2025/ r1-2026/ …    # real test papers + per-problem index (index.yaml) —
+│   │                          # GITIGNORED: the repo is public; raw papers and verbatim
+│   │                          # problem text stay local-only (copyright)
+│   └── analysis.md            # committed: our own analysis — format, topic distribution,
+│                              # difficulty notes; no verbatim problem text
 ├── mocktests/                 # one dir per mock test
 │   ├── blueprint.yaml         # canonical R1 test blueprint derived from reference/ (versioned)
 │   └── r1-001/
@@ -167,7 +172,10 @@ so a future session can reproduce or extend the test without reverse-engineering
   Human/model: content-gate reviewers independently note any past problem a mock problem
   resembles, checked against the provenance tags.
 
-### Content-review gate (replaces the code-review gate, same 4-way roster)
+### Content-review gate (replaces the code-review gate, same 4-way roster shape)
+
+Following the PowerMarket convention, the two Claude slots run **Fable for plan review**
+and **Opus for the content-review gate** (Codex and GLM fill the other two slots in both).
 
 Reviewers receive the student-facing materials plus the answer key and must:
 
@@ -240,7 +248,8 @@ committing student data or personal information.
    including the foundation track and the Calc AB + Python baseline concept allowlist;
    derive `mocktests/blueprint.yaml`; write `docs/mocktest-generation.md`.
 4. **004** — verification tooling: `blueprint-check` + `overlap-scan` + `prereq-check`
-   + `coverage-check` + `new-mocktest` scaffolder.
+   + `coverage-check` + `hygiene-check` (student-notebook solution-leakage lint, §3.2)
+   + `new-mocktest` scaffolder.
 5. **005** — first teaching unit (foundation track first: lesson + practice).
 6. **006** — first full mock test `r1-001` through the full pipeline.
 
