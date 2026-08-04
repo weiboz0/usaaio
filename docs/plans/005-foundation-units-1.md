@@ -32,7 +32,7 @@ F1 (8 concepts): p01 [numpy-arrays, array-indexing-slicing]; p02 [elementwise-op
 F2 (8 concepts): p01 [vectors-and-norms]; p02 [distance-metrics, vectors-and-norms]; p03 [dot-product, cosine-similarity]; p04 [unit-vectors, orthogonality-orthonormality]; p05 [projection, residuals]; p06 [projection, cosine-similarity] (NumPy implementation, no-loops constraint); p07 [orthogonality-orthonormality, dot-product] (by-hand proof-style).
 - concepts_used: baseline + F1 teaches.
 
-C1 (9 concepts): p01 [supervised-vs-unsupervised, clustering-concept] (MC, five options A-E); p02 [train-test-split]; p03 [overfitting, bias-variance-intuition]; p04 [accuracy-precision-recall]; p05 [f1-score, class-imbalance]; p06 [f1-macro] (compute from a confusion table with NumPy); p07 [bias-variance-intuition, overfitting] (MC); p08 [class-imbalance, accuracy-precision-recall] (scenario analysis).
+C1 (9 concepts): p01 [supervised-vs-unsupervised, clustering-concept] (multi-part: p01a MC on task classification, p01b short-answer on what clustering finds without labels — both concepts substantively exercised, not token-mentioned); p02 [train-test-split]; p03 [overfitting, bias-variance-intuition]; p04 [accuracy-precision-recall]; p05 [f1-score, class-imbalance]; p06 [f1-macro] (compute from a confusion table with NumPy); p07 [bias-variance-intuition, overfitting] (MC); p08 [class-imbalance, accuracy-precision-recall] (scenario analysis).
 - concepts_used: baseline + F1 teaches (metrics computed with numpy arrays).
 
 **Steps:** write manifests → `uv run usaaio-tools prereq-check` must PASS (manifest==syllabus) → `coverage-check` must FAIL RED with missing-file errors (proves the check drives drafting) → commit ("feat: unit manifests for F1/F2/C1 (coverage RED)").
@@ -46,11 +46,20 @@ Practice per the Task-1 map: student notebook = statement + starter cells + `# Y
 
 ### Task 3: Draft F2 (dispatch subagent 2, parallel with Task 2)
 
-Lesson: vectors as data points (ties to F1 arrays); norms/distance (why √Σx²; triangle intuition); dot product (algebraic + geometric, cos link); cosine similarity; unit vectors + normalization; orthogonality/orthonormality; projection + residual (the picture, the formula, the NumPy one-liner). By-hand and NumPy work mixed; p07 is proof-style (reasoning-required register).
+Lesson: vectors as data points (ties to F1 arrays); norms/distance — Euclidean (why √Σx²; triangle intuition) AND Manhattan, so `distance-metrics` earns its plural; dot product (algebraic + geometric, cos link); cosine similarity; unit vectors + normalization; orthogonality/orthonormality; projection + residual (the picture, the formula, the NumPy one-liner). By-hand and NumPy work mixed; p07 is proof-style (reasoning-required register).
 
 ### Task 4: Draft C1 (dispatch subagent 3, parallel)
 
 Lesson: the learning-from-data framing; supervised vs unsupervised vs clustering; train/test discipline (why holding out data matters); overfitting (memorization-vs-simple-rule demo: a lookup-table classifier vs a single threshold on seeded 1-D data, train/test scores computed with plain numpy — deliberately NO curve-fitting API, keeping the closure free of regression concepts); bias-variance INTUITIVE treatment (explicit scope note); metrics — accuracy, precision, recall, F1, macro-F1 (confusion-matrix arithmetic, worked examples); class imbalance (why accuracy lies; the 99%-negative demo). MC practice items use exactly five options A-E; the student notebook records the choice as a variable (e.g. `answer_p01 = "?"`) with the correct letter appearing ONLY in the solution notebook (hygiene-safe capture).
+
+### Notebook conventions (paste VERBATIM into all three drafting prompts)
+
+- nbformat 4, kernelspec python3; first cell: `import numpy as np` (+`import matplotlib.pyplot as plt` where used); solutions set `SEED = 20260804` and `rng = np.random.default_rng(SEED)`.
+- Lesson section headers: `## N. Title`; each section ends with `### Checkpoint N` (1-3 quick exercises, answers inline-collapsed at lesson end, not in checkpoint cells).
+- Practice student notebooks: title cell `# <unit> — Practice pNN`, problem statement, starter cells with `# YOUR CODE HERE` (code) or `answer_pNN = "?"` (MC/short-answer); NO outputs, NO solution text.
+- Solution notebooks: same title + ` — Solution`, complete worked code + 2-4 sentence explanation per part; must run top-to-bottom clean.
+- Cross-unit references use syllabus concept ids/titles ("as covered in F1-scientific-python"), NEVER internal section numbers of concurrently-drafted lessons.
+- Prose must not use vocabulary surface forms outside the unit's closure (accessibility sweep enforces; per-unit allowlist documents deliberate exceptions).
 
 ---
 
@@ -63,7 +72,7 @@ Lesson: the learning-from-data framing; supervised vs unsupervised vs clustering
 3. `uv run usaaio-tools hygiene-check` → PASS (student notebooks clean).
 4. `uv run usaaio-tools blueprint-check` / `overlap-scan` → vacuous-pass / PASS (no mocktests yet; overlap runs on corpus).
 5. `bash scripts/ci-local.sh` → ALL GREEN, executing every `*_solution.ipynb` (21-24 notebooks) top-to-bottom (this plan adds `jupyter`+`nbclient` deps and un-defers ci-local step 3 reality).
-6. Accessibility sweep (scripted): every lesson's markdown scanned for vocabulary concept mentions outside baseline ∪ prereq-closure ∪ own-teaches → zero hits (tooling: throwaway scratchpad script; the formal check remains reviewer duty 8).
+6. Accessibility sweep (scripted): lessons scanned with an id→surface-form map (e.g. `dot-product` → "dot product") for mentions outside baseline ∪ prereq-closure ∪ own-teaches, with a documented per-unit allowlist for deliberate colloquial uses (C1 may say "variance"/"varies" in the bias-variance scope note — the allowlist entry cites the scope note). Zero UNALLOWED hits. Substrings of own concept ids (e.g. "variance" inside bias-variance-intuition's own section) are excluded by the map construction. The formal check remains reviewer duty 8.
 **Fixtures:** none beyond the real repo; the units ARE the fixtures for the tooling's first live run.
 
 ### Task 6: Ship
