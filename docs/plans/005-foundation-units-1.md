@@ -22,7 +22,11 @@
 
 ### Task 1: Manifests first (all three units)
 
+**Step 0 (deps):** `uv add jupyter nbclient ipykernel numpy matplotlib` (ipykernel registers the kernel `jupyter execute` needs); commit pyproject/uv.lock separately ("chore: notebook execution + content deps").
+
 **Files:** `units/F1-scientific-python/manifest.yaml`, `units/F2-vectors/manifest.yaml`, `units/C1-ml-fundamentals/manifest.yaml`
+
+Practice ids are unit-prefixed per the plan-004 schema example (`F1-p01`, `F2-p03`, `C1-p08`); file paths stay `practice/pNN.ipynb`. `prereq_units`: F1 `[]`, F2 `[F1-scientific-python]`, C1 `[F1-scientific-python]` (== syllabus).
 
 Practice maps (id → concepts, the load-bearing coverage decisions):
 
@@ -91,7 +95,7 @@ satisfied in unit-appropriate form or explicitly deferred — never silently dro
 
 ### Task 6: Ship
 
-Content gate (4-way; duties: solve practice blind, verify solutions, accessibility as Calc AB reader, coverage quality — not token mentions). Post-exec report; TODO update **including the roadmap renumbering** (mock test moves to plan 011; tranches 006=F4+F3+F5, 007=C4+C2+C3, 008=C5+C6, 009=C7+C8, 010=F6+C9+C10); final ci-local; push; PR; guard; squash-merge.
+Content gate (4-way; duties: solve practice blind, verify solutions, accessibility as Calc AB reader, coverage quality — not token mentions). Post-exec report; TODO update **including the roadmap renumbering** (mock test moves to plan 011; tranches 006=F4+F3+F5, 007=C4+C2+C3, 008=C5+C6, 009=C7+C8, 010=F6+C9+C10). The renumbering step MUST also: (a) update `scripts/ci-local.sh`'s `PENDING (plan 006)` and `SKIP (plan 006)` strings to `plan 011` so answer-key reproduction and PDF-build ownership stay attached to the mock-test plan; (b) record the ownership reassignment in this plan's post-exec report (plan 004's doc stays as history). *Why this is not a judgment fork:* units-before-mock-test is entailed, not chosen — prereq-check requires every unit a mock problem cites to have a shipped manifest, and the blueprint's topic distribution spans clusters taught across all 16 units, so r1-001 cannot pass CI until the full roster ships. Final ci-local; push; PR; guard; squash-merge.
 
 ---
 

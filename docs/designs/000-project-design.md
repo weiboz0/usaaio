@@ -101,7 +101,12 @@ independent fresh-context Fable via `Agent` (read-only),
 GLM via `opencode:opencode-review` (read-only).
 The PowerMarket "integration-tests phase" rule becomes a **verification phase** rule:
 every plan that ships problems or lessons MUST include a named verification phase specifying
-that solutions execute and reproduce the answer key, PDFs build, manifests validate,
+that solutions execute and reproduce the answer key
+(assert-based self-checks for unit practice; manifest `answer_key` comparison for mock tests),
+manifests validate,
+PDFs build for any mock-test papers shipped
+(PDF rendering targets printable test papers per §1 and §3.4 —
+unit lessons are notebook-native and carry no PDF obligation),
 and the difficulty/timing budget is stated.
 Exempt categories (docs-only, tooling-only refactors, plan-design plans) must say so in "Out of scope".
 
