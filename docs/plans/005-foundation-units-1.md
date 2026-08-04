@@ -95,7 +95,7 @@ satisfied in unit-appropriate form or explicitly deferred — never silently dro
 
 ### Task 6: Ship
 
-Content gate (4-way; duties: solve practice blind, verify solutions, accessibility as Calc AB reader, coverage quality — not token mentions). Post-exec report; TODO update **including the roadmap renumbering** (mock test moves to plan 011; tranches 006=F4+F3+F5, 007=C4+C2+C3, 008=C5+C6, 009=C7+C8, 010=F6+C9+C10). The renumbering step MUST also: (a) update `scripts/ci-local.sh`'s `PENDING (plan 006)` and `SKIP (plan 006)` strings to `plan 011` so answer-key reproduction and PDF-build ownership stay attached to the mock-test plan; (b) record the ownership reassignment in this plan's post-exec report (plan 004's doc stays as history). *Why this is not a judgment fork:* units-before-mock-test is entailed, not chosen — prereq-check requires every unit a mock problem cites to have a shipped manifest, and the blueprint's topic distribution spans clusters taught across all 16 units, so r1-001 cannot pass CI until the full roster ships. Final ci-local; push; PR; guard; squash-merge.
+Content gate (4-way; duties: solve practice blind, verify solutions, accessibility as Calc AB reader, coverage quality — not token mentions). Post-exec report; TODO update **including the roadmap renumbering** (mock test moves to plan 011; tranches 006=F4+F3+F5, 007=C4+C2+C3, 008=C5+C6, 009=C7+C8, 010=F6+C9+C10). The renumbering step MUST also: (a) update `scripts/ci-local.sh`'s `PENDING (plan 006)` and `SKIP (plan 006)` strings to `plan 011`, and add a permanent step-3 line scanning every `*_solution.ipynb` final cell for `assert` (the 5b criterion becomes CI, so future edits can't silently drop answer checks) so answer-key reproduction and PDF-build ownership stay attached to the mock-test plan; (b) record the ownership reassignment in this plan's post-exec report (plan 004's doc stays as history). *Why this is not a judgment fork:* units-before-mock-test is entailed, not chosen — prereq-check requires every unit a mock problem cites to have a shipped manifest, and the blueprint's topic distribution spans clusters taught across all 16 units, so r1-001 cannot pass CI until the full roster ships. Final ci-local; push; PR; guard; squash-merge.
 
 ---
 
@@ -160,6 +160,13 @@ Content gate (4-way; duties: solve practice blind, verify solutions, accessibili
 7. `[FIXED]` Practice ids unit-prefixed per schema example.
 8. `[FIXED]` prereq_units enumerated.
 9. `[FIXED]` Notebook count fixed at 22.
+
+### Review 4 round 2 — [glm]
+
+- **Verdict**: APPROVE WITH NITS — all 9 fixes verified in-file; design edit judged sound.
+- `[FIXED]` Assert-scan permanence → Task 6 wires it into ci-local step 3.
+
+**GATE RESULT: PASS — 4/4** ([claude-self], [fable], [codex], [glm]); no open blockers.
 
 ## Content Review
 
