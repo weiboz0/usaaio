@@ -1,12 +1,115 @@
 # Mock-Test Generation Pipeline
 
-STUB — this document is completed by plan 003 (syllabus + blueprint).
-Until then, the authoritative outline is design 000 §2b:
+The repeatable procedure for producing every `mocktests/r1-NNN/`.
+Authoritative inputs: `mocktests/blueprint.yaml` (test spec) and `syllabus.md`
+(concept vocabulary + unit DAG).
+Design rationale: `docs/designs/000-project-design.md §2b`.
 
-1. **Blueprint** — `mocktests/blueprint.yaml`, derived from `reference/analysis.md`; versioned.
-2. **Instantiate** — `tools new-mocktest r1-NNN` scaffolds the directory + per-slot problem specs.
-3. **Draft** — problems/solutions per spec (subagent-dispatched); datasets from seeded scripts.
-4. **Verify** — `scripts/ci-local.sh` (design §3 checks).
-5. **Gate** — the 4-way content-review gate, including the fidelity review.
+## Pipeline
 
-Every manifest records blueprint version + generation parameters, so generation is repeatable.
+1. **Blueprint** — read `mocktests/blueprint.yaml` at its current `blueprint_version`.
+   Changing the blueprint is a reviewed change like any other (plan + gates).
+2. **Instantiate** — create the test skeleton and problem-spec sheet.
+   Once plan 004 ships: `uv run usaaio-tools new-mocktest r1-NNN`.
+   Until then, manually create:
+
+   ```
+   mocktests/r1-NNN/
+   ├── test.md          # front matter: instructions, duration, points table
+   ├── theory/          # theory question sources (Markdown + math)
+   ├── problems/        # student-facing programming notebooks (no solutions/outputs)
+   ├── solutions/       # solution notebooks + theory answer key (answers.md)
+   ├── rubric.md        # per-problem scoring rubric incl. partial credit
+   ├── data/            # generator scripts + small generated artifacts
+   └── manifest.yaml    # see schema below
+   ```
+
+   The instantiation step chooses, within blueprint ranges, and records in the manifest:
+   section point allocations, the arc's rotated clusters, problem count, and the
+   difficulty draw.
+3. **Draft** — write problems + solutions per spec (drafting rules below).
+   Dispatch per `CLAUDE.md ## Agent dispatch`; parallel per-problem subagents are the norm.
+4. **Verify** — `bash scripts/ci-local.sh` (verification map below).
+5. **Gate** — the 4-way content-review gate (`docs/content-review-gate.md`), including the
+   blind-solve and fidelity duties; fidelity compares against
+   `reference/analysis.md ## Style notes`.
+
+## Manifest schema (`mocktests/r1-NNN/manifest.yaml`)
+
+```yaml
+test: r1-001
+blueprint_version: 1            # the version this test was generated against
+generated: 2026-08-15           # date
+generation_parameters:          # every choice made at instantiation, for repeatability
+  section_points: {concept-block: 50, math-computation: 30, integrative-arc: 90,
+                   engineering: 80, open-ended-notebook: 50}
+  arc_clusters: [nlp-embeddings, linear-algebra, numpy]
+  problem_count: 9
+  difficulty_draw: {intro: 0.23, core: 0.45, advanced: 0.32}
+duration_minutes: 180
+total_points: 300
+time_budget:                    # advisory minutes per section (sums to duration)
+  concept-block: 20
+  math-computation: 25
+  integrative-arc: 55
+  engineering: 45
+  open-ended-notebook: 35
+problems:
+  - id: r1-001-p01-1            # one entry per gradable sub-part (pNN or pNN-M / pNN-Ma)
+    section: concept-block
+    units: [C1-ml-fundamentals] # syllabus units this sub-part draws on
+    concepts: [supervised-vs-unsupervised]   # vocabulary ids only
+    points: 10
+    difficulty: intro           # intro | core | advanced
+    type: theory                # theory | programming
+    answer_form: multiple-choice
+    provenance: original        # original | adapted
+    # adapted-from: r1-2026-p01-1   # required when provenance: adapted
+    answer_key: "C"             # value the solution notebook / answers.md must reproduce
+    # For data-backed problems:
+    # data:
+    #   generator_script: data/gen_p05.py
+    #   seed: 20260815
+```
+
+Field rules:
+
+- `concepts` come from the syllabus vocabulary only; `prereq-check` verifies the student
+  is never tested on an untaught concept (tested-only-if-taught).
+- `answer_key` holds the canonical answer (choice letter, numeric value, or a pointer
+  `solutions/<file>#<cell-tag>` for open-ended checks); solution execution must reproduce it.
+- `data.generator_script` + `data.seed` make datasets reproducible without reading
+  solution cells.
+
+## Drafting rules
+
+- **Problem specs first.** Each slot from instantiation gets a one-paragraph spec
+  (section, units, concepts, points, difficulty, answer form, provenance mode) before any
+  prose is written; specs live in the plan file of the test's plan.
+- **Student/solution separation.** Student-facing notebooks contain no solutions and no
+  executed outputs (hygiene-check). Solutions are separate notebooks that run
+  top-to-bottom clean with `random-seeding` fixed.
+- **Style compliance** per `blueprint.yaml style_rules` — five-option MC, normal-form
+  numeric answers, exact identifiers, reasoning-required flags, banned-API zero-point
+  clauses, complete runnable starter code.
+- **Datasets** come from seeded generator scripts in `data/`; large artifacts are
+  regenerated, not committed (only the script + small outputs are committed).
+- **Provenance:** original by default; an adapted problem carries `provenance: adapted` +
+  `adapted-from: <reference id>` (overlap-scan enforces; untagged similarity blocks merge).
+- **Public repo:** never copy verbatim text from reference papers into any committed file.
+
+## Verification map (ci-local step 4 ↔ blueprint)
+
+| Check (plan 004) | Verifies |
+|------------------|----------|
+| manifest validation | schema above; points sum to `total_points`; concepts in vocabulary |
+| blueprint-check | `texture`, `sections` ranges, `topic_distribution` (after `cluster_fold`), `difficulty_mix` bands |
+| overlap-scan | provenance rules vs the local reference corpus (SKIPS LOUDLY without corpus — run `bash scripts/fetch-reference.sh`) |
+| prereq-check | tested-only-if-taught closure over `units`/`concepts` |
+| coverage-check | (units, not mock tests) every taught concept practiced |
+| hygiene-check | student notebooks free of solutions/outputs |
+| solution execution | every solutions/ notebook runs clean and reproduces `answer_key` |
+| PDF build | Quarto renders test.md + problems to `build/` |
+
+Until plan 004 ships, these print `SKIP (plan 004)` in ci-local and the content-review
+gate carries the load manually.
