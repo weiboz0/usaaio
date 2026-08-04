@@ -51,6 +51,10 @@ Beyond the motivation → definition → worked example → checkpoint cycle:
   blueprint's register (identifiers, constraints, reasoning-required flags).
 - **Common pitfalls** section — the errors a newcomer actually makes (shape bugs,
   off-by-one axes, metric confusions…), each with a broken example and the fix.
+  *(Distribution rule, decided at plan-005 gate: Pitfalls / Exam Connections / Going
+  Deeper may be distributed across a unit's session notebooks wherever they fit best —
+  the requirement is satisfied UNIT-WIDE, each section appearing at least once per
+  unit; sessions need not each carry all three.)*
 - **Exam connections** section — how this unit's concepts appear in the real Round 1
   (paraphrase level, no verbatim past-test text; cite reference/analysis.md cluster).
 - **Going deeper** section — optional enrichment pointing FORWARD along the syllabus DAG
