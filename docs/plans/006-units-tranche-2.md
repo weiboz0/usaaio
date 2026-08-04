@@ -23,7 +23,7 @@
 
 **F5-probability** (prereqs [F1-scientific-python]; teaches: random-variables, expectation, variance, independence, variance-of-sums, gaussian-distribution, sampling-simulation, covariance)
 - **Continuous-case fence:** all proofs discrete; continuous results (Gaussian facts, independence of functions of independent RVs) enter as STATED FACTS verified by seeded simulation; no Gaussian integral evaluation anywhere (not AB-evaluable). Avoid "dot product" vocabulary (F2 not a prereq) — use indexed sums.
-- Sessions: `01-random-variables-and-expectation` (RVs as seeded simulations first, then formal E[X] in the discrete register; linearity), `02-variance-and-independence` (variance definition + shortcut; independence; variance-of-sums INCLUDING the weighted-sum identity Var[Σwᵢxᵢ] for independent zero-mean factors via the stated product-expectation fact E[XY]=E[X]E[Y] — the exam's weight-init derivation pattern, taught generically; scalar scaling Var[wX]=w²Var[X] included. No new concept id: all within variance-of-sums + independence), `03-gaussian-simulation-covariance` (the Gaussian as the bell curve of sums; seeded simulation verifying every algebra claim; covariance defined + computed, pointing forward to C9 by id only).
+- Sessions: `01-random-variables-and-expectation` (RVs as seeded simulations first, then formal E[X] in the discrete register; linearity), `02-variance-and-independence` (variance definition + shortcut; independence; variance-of-sums INCLUDING the weighted-sum identity Var[Σwᵢxᵢ] for independent zero-mean factors via the stated product-expectation fact E[XY]=E[X]E[Y] — the exam's initialization-derivation pattern, taught generically — F5 drafter prompt BANS the surface forms "weight"/"init"/"neural" (C5 vocabulary; describe as 'scaled sums of independent factors'); scalar scaling Var[wX]=w²Var[X] included. No new concept id: all within variance-of-sums + independence), `03-gaussian-simulation-covariance` (the Gaussian as the bell curve of sums; seeded simulation verifying every algebra claim; covariance defined + computed, pointing forward to C9 by id only).
 - 18–20 problems (same floor arithmetic note as F4).
 
 Accessibility allowlists: F3 owns "matrix"; F4 may use F2 vector vocabulary; F5 owns "variance/expectation" etc. No SVD/eigen (F6), no ML terms, no regression/gradient-descent (C-track) anywhere.
@@ -32,7 +32,7 @@ Accessibility allowlists: F3 owns "matrix"; F4 may use F2 vector vocabulary; F5 
 
 1. **Manifests first** (orchestrator): three manifests with practice maps (concepts, set A/B/C, difficulty, type per entry — v2 floors: ≥4 MC w/ ≥1 numeric normal-form, ≥6 constrained coding, ≥2 proof, ≥2 integrative multi-part, ≥2 scenario, ≥2 challenge; every concept ≥3 problems; spreads ≈30/45/25). prereq-check PASS + coverage-check RED, commit.
 2-4. **Draft F4 / F3 / F5** (3 parallel Fable agents): lessons + student notebooks + review per v2 — **conventions block amended for v2: ≥2 checkpoint exercises per section** (005's "1-3" wording is superseded); F5's drafter prompt carries the Continuous-case fence verbatim; answers-outline to `reference/outlines-006/<unit>.md` (gitignored, durable).
-5. **Solve** (3 sequential-or-parallel 5.6-sol agents, one per unit): write all `*_solution.ipynb` blind from student notebooks; execute clean; report ambiguity findings.
+5. **Solve** (3 sequential-or-parallel 5.6-sol agents, one per unit): write all `*_solution.ipynb` blind from student notebooks (PARALLEL — no cross-unit state); execute clean; return ambiguity findings as a uniform list: {problem id, ambiguity description, blocking: yes/no, assumption taken}.
 6. **Reconcile** (orchestrator): solver vs outline; fix disagreements (statement bugs → Fable agent fixes; solution bugs → sol agent fixes); record all in this plan.
 7. **Verification phase (NAMED)** — identical criteria to plan 005 Task 5 (all five checks PASS, ci-local ALL GREEN executing every solution + the permanent assert scan, accessibility sweep with the unit allowlists, estimated_minutes present). Design-§2 clause mapping as recorded in plan 005 (assert-based answer checks; PDFs are mock-test-only; timing budgets in manifests).
 8. **Ship** — content gate (4-way: self, codex 5.6-terra, independent Opus, GLM; blind-solve sampling ≥3/unit), post-exec report, TODO tick, ci-local, PR, guard, squash-merge.
@@ -73,6 +73,16 @@ Accessibility allowlists: F3 owns "matrix"; F4 may use F2 vector vocabulary; F5 
    no Gaussian integrals; no dot-product vocabulary).
 5. `[FIXED]` F4 drafting bans ("matrix", `@`, "Jacobian") explicit.
 6. `[FIXED]` Amended statements get blind re-solve.
+
+### Review 3 — [glm] GLM 5.2 (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS (verified all 21 teaches ids mapped to sessions; closure
+  clean; split-author mechanics sound; verification phase complete vs 005 precedent)
+1. `[FIXED]` F5 "weight-init" vocabulary leak risk → drafter-prompt ban on
+   weight/init/neural surface forms; pattern renamed in-plan.
+2. `[FIXED]` Sol-agent ambiguity findings → uniform format specified.
+3. `[FIXED]` (raced) floors already at 18 minimum; outlines already durable.
+4. `[FIXED]` Task 5 pinned to parallel.
 
 ## Content Review
 
