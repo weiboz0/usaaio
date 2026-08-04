@@ -9,3 +9,6 @@ build/
 
 # OS / editor
 .DS_Store
+
+# Secrets — never commit
+.gh-token
