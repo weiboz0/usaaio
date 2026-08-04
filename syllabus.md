@@ -5,7 +5,7 @@ Everything beyond that baseline is taught by a unit below;
 nothing may be used before it is taught (enforced by `prereq-check`, plan 004).
 
 **Machine-readable contract:** the YAML block immediately after the
-`<!-- syllabus-canonical -->` sentinel below is the canonical syllabus.
+syllabus-canonical sentinel comment below is the canonical syllabus.
 Tooling parses exactly that fence; any other YAML fence in this repo is illustrative.
 Narrative text refers to concepts by their vocabulary `id` so prose and YAML cannot drift.
 
@@ -42,6 +42,7 @@ concepts:
   - {id: projection,                cluster: linear-algebra}
   - {id: residuals,                 cluster: linear-algebra}
   - {id: unit-vectors,              cluster: linear-algebra}
+  - {id: orthogonality-orthonormality, cluster: linear-algebra}
   # --- F3 ---
   - {id: matrices-as-linear-maps,   cluster: linear-algebra}
   - {id: matrix-multiplication,     cluster: linear-algebra}
@@ -50,6 +51,7 @@ concepts:
   - {id: outer-products,            cluster: linear-algebra}
   - {id: matrix-from-action,       cluster: linear-algebra}
   - {id: gram-matrices,             cluster: linear-algebra}
+  - {id: linear-independence-span,  cluster: linear-algebra}
   # --- F4 ---
   - {id: partial-derivatives,       cluster: calculus-multivar}
   - {id: gradient,                  cluster: calculus-multivar}
@@ -64,6 +66,7 @@ concepts:
   - {id: variance-of-sums,          cluster: probability-statistics}
   - {id: gaussian-distribution,     cluster: probability-statistics}
   - {id: sampling-simulation,       cluster: probability-statistics}
+  - {id: covariance,                cluster: probability-statistics}
   # --- F6 ---
   - {id: eigenvalues-eigenvectors,  cluster: linear-algebra}
   - {id: spectral-decomposition,    cluster: linear-algebra}
@@ -108,6 +111,7 @@ concepts:
   - {id: decision-boundaries-geometric, cluster: pytorch}
   - {id: weight-init-variance,      cluster: probability-statistics}
   # --- C6 ---
+  - {id: python-inheritance,        cluster: python-scientific}
   - {id: torch-tensors,             cluster: pytorch}
   - {id: nn-module,                 cluster: pytorch}
   - {id: custom-layers,             cluster: pytorch}
@@ -154,13 +158,13 @@ units:
     title: Vectors, Norms, and Projections
     prereqs: [F1-scientific-python]
     teaches: [vectors-and-norms, distance-metrics, dot-product, cosine-similarity,
-              projection, residuals, unit-vectors]
+              projection, residuals, unit-vectors, orthogonality-orthonormality]
   - id: F3-matrices
     track: foundation
     title: Matrices as Linear Maps
     prereqs: [F2-vectors]
     teaches: [matrices-as-linear-maps, matrix-multiplication, rank, invertibility-via-rank,
-              outer-products, matrix-from-action, gram-matrices]
+              outer-products, matrix-from-action, gram-matrices, linear-independence-span]
   - id: F4-multivar-calculus
     track: foundation
     title: Gradients from Calculus AB
@@ -172,7 +176,7 @@ units:
     title: Probability and Statistics Essentials
     prereqs: [F1-scientific-python]
     teaches: [random-variables, expectation, variance, independence, variance-of-sums,
-              gaussian-distribution, sampling-simulation]
+              gaussian-distribution, sampling-simulation, covariance]
   - id: F6-svd-spectral
     track: foundation
     title: Eigenvalues, SVD, and Low-Rank Structure
@@ -200,7 +204,7 @@ units:
   - id: C4-classical-ml-practice
     track: core
     title: Classical ML Practice with sklearn and pandas
-    prereqs: [C1-ml-fundamentals, F1-scientific-python, F2-vectors]
+    prereqs: [C1-ml-fundamentals, F1-scientific-python, F2-vectors, F5-probability]
     teaches: [knn, feature-scaling, pandas-basics, csv-data-loading, sklearn-pipelines,
               cross-validation]
   - id: C5-neural-networks
@@ -213,8 +217,8 @@ units:
     track: core
     title: PyTorch Engineering
     prereqs: [C5-neural-networks]
-    teaches: [torch-tensors, nn-module, custom-layers, manual-weights, requires-grad,
-              parameter-counting]
+    teaches: [python-inheritance, torch-tensors, nn-module, custom-layers, manual-weights,
+              requires-grad, parameter-counting]
   - id: C7-cnn-transfer
     track: core
     title: CNNs, ResNet, and Transfer Learning
@@ -255,17 +259,22 @@ stated component-wise (`sum-of-squares-gradients`) so no matrix calculus is need
 `F5-probability` exists chiefly for `variance-of-sums` — the exam's
 weight-initialization derivation — and `sampling-simulation` for dataset generation.
 `F6-svd-spectral` is the flagged double-length capstone:
-`svd`, `spectral-decomposition`, and `low-rank-approximation` carried ~30 exam points.
+`svd`, `spectral-decomposition`, and `low-rank-approximation` anchored the heaviest
+sub-parts of the 2026 integrative arc.
 
 ## Core track — rationale
 
 `C1-ml-fundamentals` covers the opening concept block
 (`supervised-vs-unsupervised` through `class-imbalance`);
-`bias-variance-intuition` is deliberately intuitive — the rigorous treatment waits for
-F5-dependent units.
+`bias-variance-intuition` is deliberately intuitive; its statistical vocabulary
+(`variance`, `expectation`) firms up in F5 and is exercised in C5's
+`weight-init-variance` derivation.
 `C2-linear-models` is gradient-view only: normal equations require matrix inversion,
 which the vocabulary deliberately omits (`invertibility-via-rank` covers the exam's
 reasoning needs).
+Fitting itself is deferred to `C3-gradient-descent`; C2 practice evaluates and
+differentiates `mse-loss` for given parameters and reasons about `sparsity` —
+so every C2 concept has practice without a training loop.
 `C4-classical-ml-practice` teaches the `knn` + `pandas-basics` + `sklearn-pipelines`
 craft that the 50-point applied problem demands;
 `C10-competition-craft` turns that into exam technique
@@ -277,7 +286,8 @@ craft that the 50-point applied problem demands;
 
 ## Suggested order (one feasible topological sort)
 
-F1 → F2 → C1 → F4 → F3 → C4 → F5 → C2 → C3 → C5 → C6 → C7 → C8 → F6 → C9 → C10
+F1 → F2 → C1 → F4 → F3 → F5 → C4 → C2 → C3 → C5 → C6 → C7 → C8 → F6 → C9 → C10
 
 Foundation units interleave with core units so the student reaches applied work
-(C4) early; F6 is deferred until C8 motivates it (the similarity matrix begs for SVD).
+(C4) early — F5 precedes C4 because `feature-scaling` standardization needs `variance`;
+F6 is deferred until C8 motivates it (the similarity matrix begs for SVD).

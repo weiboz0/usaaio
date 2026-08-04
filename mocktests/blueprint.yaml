@@ -25,7 +25,8 @@ sections:                              # required texture, order fixed.
       Multiple choice, exactly five options A-E, 10-point atoms, opening position.
     draws_on_clusters: [ml-concepts]
   - id: math-computation
-    points: {min: 20, max: 45}         # 2026: P2+P3+P4.1 = 30
+    points: {min: 20, max: 45}         # 2026: P2+P3+P4 = 45 (the five section
+                                       # anchors 50+45+90+65+50 = 300 exactly)
     style: >
       Short scaffolded problems; numeric answers unique-decodable via normal forms
       (gcd/sign constraints) as MC, or short-answer/proof with reasoning-required flags.
