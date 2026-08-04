@@ -81,7 +81,7 @@ while the named plan is unshipped.
 | # | Reviewer | Dispatch | Model |
 |---|----------|----------|-------|
 | 1 | Claude self-review | inline; record in `## Plan Review` | claude-fable-5 (fallback opus) |
-| 2 | Codex | `codex:codex-rescue` subagent | Codex GPT-5.5 |
+| 2 | Codex | `codex:codex-rescue` subagent (request `--model gpt-5.6-sol`) | Codex GPT-5.6-sol |
 | 3 | Independent Fable | `Agent` general-purpose, `model: fable`, fresh context, read-only | claude-fable-5 (fallback opus) |
 | 4 | GLM | `opencode:opencode-review` subagent, read-only | opencode-go/glm-5.2 |
 
@@ -94,7 +94,7 @@ in `## Out of scope`).
 
 ## Content-review gate (mandatory — 4-way, pre-PR)
 
-Same roster shape (Claude self on Opus, Codex, independent Opus `Agent`, GLM).
+Same roster shape (Claude self on Opus, Codex on GPT-5.6-terra, independent Opus `Agent`, GLM).
 Duties and format: `docs/content-review-gate.md`.
 Findings tagged `[claude-self]` / `[codex]` / `[opus]` / `[glm]` with
 `[OPEN]` / `[FIXED]` / `[WONTFIX]` in the plan file's `## Content Review`;
@@ -107,13 +107,13 @@ all `[OPEN]` resolve before merge.
 | Planning, review orchestration, test assembly | Orchestrator Claude inline |
 | Problem / lesson drafting | `general-purpose` subagents (parallel per unit/problem) |
 | Blind independent solving (content gate) | Gate roster (all four reviewers solve blind) |
-| Tooling code (`tools/`, `scripts/`) | `codex:codex-rescue` |
+| Tooling code (`tools/`, `scripts/`) | `codex:codex-rescue` (GPT-5.6-terra) |
 | Trivially-scoped edits | Inline |
 
 ## Errata
 
 Post-merge content bugs (wrong answer key, broken problem): 2-way diagnosis
-(Claude inline + Codex, read-only) → fix plan → gates → merge, plus an `ERRATA.md`
+(Claude inline + Codex on GPT-5.6-sol — audits use sol, read-only) → fix plan → gates → merge, plus an `ERRATA.md`
 entry in the affected mock test's directory. Typos skip diagnosis.
 
 ## Session Handoff
