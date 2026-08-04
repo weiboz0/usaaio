@@ -16,18 +16,18 @@
 ## Units
 
 **C5-neural-networks** (prereqs [C3-gradient-descent, F5-probability]; teaches: perceptron, activation-functions, threshold-activation, relu-activation, mlp-architecture, decision-boundaries-geometric, weight-init-variance)
-- Sessions: `01-perceptrons-and-activations` (the perceptron as weighted-sum-then-threshold; threshold/step, tanh recap by reference to F4, ReLU; why nonlinearity matters — a stack of linear maps is linear, worked), `02-mlps-and-geometry` (MLP as function composition; hidden units as half-plane detectors; hand-built decision regions from intersections — the exam's triangle-membership pattern taught GENERICALLY with fresh regions (polygon-membership by half-plane AND-ing); forward pass by hand + NumPy), `03-initialization-and-variance` (the F5 weighted-sum variance identity applied to layer pre-activations; the 1/√C scaling derivation — the exam's init pattern, taught from the F5 stated-fact route; seeded simulation verification).
-- 18–20 problems, NumPy-only (torch is C6's): forward passes, region design, variance derivations + simulations. NO torch, NO training of MLPs (descent on MLPs is beyond scope — C3 trained linear models only; C5 practice designs weights BY HAND per the exam's inference-only pattern).
+- Sessions: `01-perceptrons-and-activations` (the perceptron as weighted-sum-then-threshold; threshold/step, tanh recap by reference to F4, ReLU; why nonlinearity matters — a stack of linear maps is linear, worked), `02-mlps-and-geometry` (MLP as function composition; hidden units as half-plane detectors; hand-built decision regions from intersections — the exam's triangle-membership pattern taught GENERICALLY with fresh regions (polygon-membership by half-plane AND-ing); forward pass by hand + NumPy), `03-initialization-and-variance` (the F5 weighted-sum variance identity applied to layer pre-activations; the 1/√C scaling derivation — the exam's init pattern, taught from the F5 stated-fact route **extended with the GROUP-FORM independence fact stated explicitly** (functions of disjoint variable-pairs are independent — one line, same stated-fact register; F5 states only the pairwise g(X)⊥h(Y) form, and random-weight product variance is new here); motivated FORWARD-PASS-ONLY: keeping activation scales stable across layers, exactly the exam's framing; seeded simulation verification).
+- 18–20 problems, NumPy-only (torch is C6's): forward passes, region design, variance derivations + simulations. NO torch, NO training of MLPs. **Student-facing scope-note device (mandatory in the C5 lesson):** "training MLPs needs backpropagation, beyond this course's scope; the exam tests inference engineering — you will design weights by hand," placed where a student would first ask; init variance motivated without any training reference.
 - Accessibility: owns perceptron/activation/MLP vocabulary; may use C3's descent + F5's variance freely.
 
 **C6-pytorch** (prereqs [C5-neural-networks]; teaches: python-inheritance, torch-tensors, nn-module, custom-layers, manual-weights, requires-grad, parameter-counting)
-- Sessions: `01-tensors-and-inheritance` (torch tensors mirroring F1 NumPy — bridge table; python-inheritance + super() taught explicitly (the syllabus id lives HERE); shapes/dtypes/devices-lite (CPU only)), `02-nn-module-and-custom-layers` (nn.Module subclassing; forward(); building the C5 threshold + linear layers as custom modules — the exam's My_Threshold/My_Linear pattern taught generically with fresh module specs; composing an inference-only MLP with MANUAL weights; requires_grad=False discipline), `03-parameter-counting-and-inspection` (parameters(); counting by hand vs numel; the exam's count-without-numel reasoning register; state_dict inspection; worked normal-form MC on parameter counts).
-- 18–20 problems. Torch allowed (that's the point); autograd/training BANNED (inference-only, matching the exam's pattern and C5's scope; optimizer/backward vocabulary forbidden — C-track ends at inference engineering; note in Exam Connections that the real paper's torch problems are inference-only too, paraphrase).
+- Sessions: `01-tensors-and-inheritance` (torch tensors mirroring F1 NumPy — bridge table; python-inheritance + super() taught explicitly with PLAIN-PYTHON examples first, then nn.Module as the payoff (the syllabus id lives HERE); shapes/dtypes/devices-lite (CPU only)), `02-nn-module-and-custom-layers` (nn.Module subclassing; forward(); building the C5 threshold + linear layers as custom modules — the exam's My_Threshold/My_Linear pattern taught generically with fresh module specs; composing an inference-only MLP with MANUAL weights; requires_grad=False discipline), `03-parameter-counting-and-inspection` (parameters(); counting by hand vs numel; the exam's count-without-numel reasoning register; state_dict inspection; worked normal-form MC on parameter counts).
+- 18–20 problems. Torch allowed (that's the point); autograd/training BANNED (inference-only, matching the exam's pattern and C5's scope; optimizer/backward vocabulary forbidden EXCEPT one scope-note sentence acknowledging torch can compute gradients for training (needed to teach requires_grad=False honestly) — carved out explicitly; note in Exam Connections that the real paper's torch problems are inference-only too, paraphrase).
 - Conventions: SEED for torch = `torch.manual_seed(20260804)` alongside the NumPy seed where both used.
 
 **C5/C6 shared module-spec pin (both drafter prompts verbatim, the 007-notation-pin lesson):** the hand-built layers are `step_layer(x, W, b)` (NumPy, C5) ↦ `MyThreshold(nn.Module)` / `MyLinear(nn.Module)` (C6) with EXACT semantics: MyLinear stores `weight` (out×in) and `bias` (out,), forward = `x @ weight.T + bias`; MyThreshold forward = `(x >= 0).to(x.dtype)`; C6's lesson builds THESE from C5's NumPy versions by name. FRESH NAMES ship (the repo is public): use `MyThreshold`/`MyLinear` (no underscore) or similar — never the paper's verbatim identifiers; corpus check at reconciliation confirms.
 
-**Orchestrator corpus duty (carried from F3/007 precedent):** at reconciliation, structurally compare C5's region-design problems and C6's custom-module/count problems against the local index's P7/P8 sub-parts — generic-skill overlap fine; no isomorph-with-renamed-numbers. Verdict recorded in this plan.
+**Orchestrator corpus duty (carried from F3/007 precedent):** at reconciliation, structurally compare — with explicit targets — C5-02's region-design problems, C6-02's custom-module problems, AND the C5-03→C6 variance-init chain against the local index's P7 arc (p07-1..4) and P8 sub-parts — generic-skill overlap fine; no isomorph-with-renamed-numbers. Verdict recorded in this plan.
 
 **Float32 note (both prompts, gate-refined):** C6 solution headers set `torch.set_default_dtype(torch.float64)` (matching the repo's NumPy-float64 assert style); any deliberately-float32 demo states `atol=1e-6`/`rtol=1e-5` explicitly; cross NumPy/torch comparisons cast explicitly.
 
@@ -59,6 +59,18 @@ Shared: A/B/C sets; v2 floors (≥4 MC w/ ≥1 numeric normal-form — parameter
    problems are inference-only — C5 needs an explicit scope-note device in its lesson
    ("why we design weights by hand here"), flagged for the drafter prompt.
 3. `[NOTED]` torch CPU via uv index — fallback route named in Task 0.
+
+### Review 2 — [glm] GLM 5.2 (2026-08-04): APPROVE WITH NITS → all fixed
+float64 default in C6 solution headers; dual-tag arithmetic flagged (21 instances vs
+18-20 → target 20, manifest flags); fresh-names rule explicit; "all solutions" phrasing.
+
+### Review 3 — [fable] Independent Fable 5 (2026-08-04): REJECT → resolved
+Both blockers (corpus structural-comparison duty; C5/C6 module-spec pin) were already
+present in the racing self-review commit — with the corpus duty now EXTENDED to fable's
+named targets (C5-02 regions, C6-02 modules, the C5-03/C6 variance-init chain vs the
+exam's P7 arc). New fixes from its round: group-form independence fact directed into
+C5-03 (real F5 closure gap); student-facing scope-note device mandated; requires_grad
+scope-note carve-out; plain-Python-first inheritance. Re-verdict requested.
 
 ## Content Review
 
