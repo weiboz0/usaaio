@@ -250,4 +250,15 @@ property (no remote runner exists; the gate is ci-local.sh). Re-verdict requeste
 
 ## Content Review
 
-(Pre-PR gate findings land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-05)
+
+- **Verdict**: Approved
+- Duties: all 6 lessons + 2 reviews executed clean (8/8, staged to .gate9-executed/);
+  narration-vs-output verified — every narrated count in the flagged lessons appears in
+  printed output (L03's 23,534,669 / 25,331,688 / 8,543,296 chain checked verbatim; two
+  initially-missing anchors were practice values, not lesson claims). Independent recomputes:
+  C7 p14 (17m² + 12m; m=512 → 4,462,592), p13 (stem chain 7 → 11), p04 (9/17 → 26);
+  C8 p11 (Gram entrywise), p12 (Cauchy–Schwarz both bounds), p04 (24/25 → 49) — all agree
+  with shipped solutions. Verification phase: five checks PASS, torch-sweep of C8 CLEAN,
+  gensim-vocabulary sweep CLEAN, 42/42 asserts, float32-register presence confirmed in all
+  10 weights-loading C7 solutions.
