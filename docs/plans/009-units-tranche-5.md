@@ -30,7 +30,10 @@ _root = next(p for p in [pathlib.Path.cwd(), *pathlib.Path.cwd().parents]
 os.environ["TORCH_HOME"] = str(_root / "reference" / "cache" / "torch")
 os.environ["GENSIM_DATA_DIR"] = str(_root / "reference" / "cache" / "gensim")
 ``` First ci run downloads (~100MB resnet50 +
-~130MB glove-wiki-gigaword-100); later runs are warm. Determinism pin: resnet50 loads
+~130MB glove-wiki-gigaword-100); later runs are warm. **This warm-cache claim is a
+LOCAL-ci property — this repo's gate is scripts/ci-local.sh on the developer machine and no
+remote runner exists; if remote CI is ever added, it must define its own cache persistence
+(gate finding).** Determinism pin: resnet50 loads
 `weights=ResNet50_Weights.IMAGENET1K_V1` EXPLICITLY (never `pretrained=True` — deprecated and
 ambiguous) **and is put in `model.eval()` immediately after loading, in every notebook that
 runs a forward pass** (self-review amendment: train-mode BatchNorm uses batch statistics —
@@ -137,7 +140,8 @@ if a specific anchor needs it.**
 
 0. Deps (torchvision via pinned index + gensim; cache-dir pattern verified; resnet50 +
    GloVe downloaded once locally to warm the cache), commit.
-1. Manifests ×2 (prereq PASS + coverage RED; C7's 7 dual-tags flagged), commit.
+1. Manifests ×2 (prereq PASS + coverage RED; C7's **5** dual-tags flagged — matching the
+   22-problem arithmetic above), commit.
 2-3. Fable drafters ×2 (parallel): lessons + statements + review + outlines.
 4. sol blind solvers ×2 (parallel, per-unit scope; warm caches locally — solvers may hit
    sandbox network denial: fall back to writing solutions against the pinned artifact
@@ -186,6 +190,11 @@ staging pre-named for network-denied gate reviewers.
 Input-side float32 boundary-cast pin added (float64 default × float32 pretrained weights);
 empirical tolerance verification mandated; Task 6 assert scan now names the exception cells;
 Task 0 records the resolved torch↔torchvision pair + gensim ≥4.3.3.
+
+### Review 4 — [codex] GPT-5.6-sol (2026-08-04): REJECT → fixed
+MAJOR: Task 1 still said 7 dual-tags after the 22-problem amendment (racing commit) —
+corrected to 5, matching the arithmetic. MINOR: warm-cache claim qualified as a local-ci
+property (no remote runner exists; the gate is ci-local.sh). Re-verdict requested.
 
 ## Content Review
 
