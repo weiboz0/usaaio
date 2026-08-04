@@ -240,3 +240,21 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 3. `[FIXED]` Flake mechanism identified (pre-fix CWD-relative reads) — closed above.
 4. `[FIXED]` Dead `_split_top_level`/`_parse_scalar` remnants removed (+unused `ast`
    import). Suite now 54 tests, green; ci-local ALL GREEN.
+
+### Review 3 — [glm] GLM 5.2 (2026-08-04)
+
+- **Verdict**: Approved with suggestions (reviewed pre-codex-fix HEAD; overlapping items
+  already fixed there: status strictness, dead helpers, p01-token counting)
+
+1. `[FIXED]` `_corpus` demanded index.yaml; PDFs alone are a valid corpus per spec →
+   signal now index.yaml OR PDFs.
+2. `[FIXED]` Unknown `section`/`difficulty` escaped validation silently → explicit
+   unknown-section/unknown-difficulty errors before accumulation.
+3. `[FIXED]` (already) status strictness via `_validated_status`.
+4. `[FIXED]` hygiene used `json.loads` with nbformat unused → `nbformat.reads`
+   (+`ValueError` catch covering `NotJSONError`).
+5. `[FIXED]` (already) dead helpers removed.
+6. `[FIXED]` (already) dash-less id counting via pNN-token regex.
+7. `[FIXED]` Stray dead blueprint load in `write_repo` removed.
+8. `[NOTED]` O(n²) TF-IDF acceptable at corpus scale; `adapted-from`/`adapted_from`
+   loader leniency kept as a deliberate schema bridge.
