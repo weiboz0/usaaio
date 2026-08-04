@@ -12,7 +12,8 @@
 
 - **PUBLIC REPO:** under `reference/`, git may track ONLY `.gitkeep` and `analysis.md` (gitignore already enforces this). `analysis.md` must contain NO verbatim problem text — paraphrase everything; short technical terms (topic names, section titles) are fine.
 - Corpus sources (from https://www.usaaio.org/past-problems, fetched 2026-08-03):
-  - 2026 R1: Google Drive id `11z6HzS92y5f6OdeBf7GUtb7PBgF7_RlC` (verified: 6-page PDF)
+  - 2026 R1: Google Drive id `11z6HzS92y5f6OdeBf7GUtb7PBgF7_RlC`
+    (live-verified during planning; `file`'s "6 pages" heuristic was wrong — pdfinfo: 24 pages)
   - 2026 R2 Day 1: id `1YXa62A14vF69ccAQjdWITwTCaCOoyscN`
   - 2026 R2 Day 2: id `1pp3PYo8f-M9HIvEs9VVKwCJAzIL-nmg4`
   - 2026 R2 Problems Design & Rationale: id `1C-2ewSPxNUX6dLL-oxE4FzhJBtjoOIo7`
