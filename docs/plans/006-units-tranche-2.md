@@ -31,7 +31,7 @@ Accessibility allowlists: F3 owns "matrix"; F4 may use F2 vector vocabulary; F5 
 ## Tasks
 
 1. **Manifests first** (orchestrator): three manifests with practice maps (concepts, set A/B/C, difficulty, type per entry — v2 floors: ≥4 MC w/ ≥1 numeric normal-form, ≥6 constrained coding, ≥2 proof, ≥2 integrative multi-part, ≥2 scenario, ≥2 challenge; every concept ≥3 problems; spreads ≈30/45/25). prereq-check PASS + coverage-check RED, commit.
-2-4. **Draft F4 / F3 / F5** (3 parallel Fable agents): lessons + student notebooks + review per v2; answers-outline to scratchpad.
+2-4. **Draft F4 / F3 / F5** (3 parallel Fable agents): lessons + student notebooks + review per v2; answers-outline to `reference/outlines-006/<unit>.md` (gitignored, durable).
 5. **Solve** (3 sequential-or-parallel 5.6-sol agents, one per unit): write all `*_solution.ipynb` blind from student notebooks; execute clean; report ambiguity findings.
 6. **Reconcile** (orchestrator): solver vs outline; fix disagreements (statement bugs → Fable agent fixes; solution bugs → sol agent fixes); record all in this plan.
 7. **Verification phase (NAMED)** — identical criteria to plan 005 Task 5 (all five checks PASS, ci-local ALL GREEN executing every solution + the permanent assert scan, accessibility sweep with the unit allowlists, estimated_minutes present). Design-§2 clause mapping as recorded in plan 005 (assert-based answer checks; PDFs are mock-test-only; timing budgets in manifests).
@@ -57,6 +57,22 @@ Accessibility allowlists: F3 owns "matrix"; F4 may use F2 vector vocabulary; F5 
 3. `[NOTED]` F3 matrix-from-action originality line: teach the generic skill; the
    overlap-scan + fidelity duty police specific-problem resemblance, same as all
    exam-register training content.
+
+### Review 2 — [fable] Independent Fable 5, fresh context (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS → all findings fixed
+1. `[FIXED]` Outline durability + MC assert semantics → outlines to gitignored
+   `reference/outlines-006/` (leak-guard-protected, session-durable); numeric
+   normal-form MCs must assert recomputed value + decode; concept-MC letter-assert
+   tautology stated openly with reconciliation carrying correctness.
+2. `[FIXED]` F3 structural-overlap enforcement → explicit orchestrator corpus-holder
+   duty at reconciliation, verdict recorded in-plan.
+3. `[FIXED]` Floors arithmetic → F4/F5 raised to 18-problem minimum; dual-tagging
+   policy stated up front.
+4. `[FIXED]` F5 continuous fence added (discrete proofs; stated-facts + simulation;
+   no Gaussian integrals; no dot-product vocabulary).
+5. `[FIXED]` F4 drafting bans ("matrix", `@`, "Jacobian") explicit.
+6. `[FIXED]` Amended statements get blind re-solve.
 
 ## Content Review
 
