@@ -272,6 +272,15 @@ constraints:
 6. `[FIXED]` Manifest schema gains per-problem dataset `generator_script` + `seed`.
 7. `[FIXED]` Exact-300 feasibility assertion added to Task 4(f).
 
+### Round 2 re-verdicts (commit 1beb378 + nit fixes)
+
+- **[fable] APPROVE WITH NITS** — verified arithmetic + full DAG re-walk clean; two
+  wording nits (`[FIXED]`: cluster_aliases calculus comment; "declare or reach F1").
+- **[glm] APPROVE** — all 7 fixes verified with line references.
+- **[codex] APPROVE** — all 6 fixes verified with line references.
+
+**GATE RESULT: PASS — 4/4** ([claude-self], [fable], [glm], [codex]); no open blockers.
+
 ## Content Review
 
 (Pre-PR gate findings land here.)
