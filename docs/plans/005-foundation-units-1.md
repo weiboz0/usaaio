@@ -120,6 +120,38 @@ Content gate (4-way; duties: solve practice blind, verify solutions, accessibili
 4. `[NOTED]` Verified all three practice maps cover their full syllabus teaches lists
    (8+8+9 concepts) with exact vocabulary ids.
 
+### Review 2 — [fable] Independent Fable 5, fresh context (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS (raced self-review commit; its #1/#2 = self items 1/2,
+  already fixed — the polyfit demo was replaced entirely, superseding the black-box option)
+3. `[FIXED]` Zero-hits sweep unsatisfiable → id→surface-form map + documented per-unit
+   allowlist; zero UNALLOWED hits.
+4. `[FIXED]` Drafter coordination underspecified → verbatim notebook-conventions block
+   added (kernel, SEED, headers, checkpoints, MC capture, no cross-lesson internals).
+5. `[FIXED]` Manhattan added under distance-metrics.
+6. `[FIXED]` C1 p01 multi-part (p01a MC + p01b short-answer).
+
+### Review 3 — [codex] Codex GPT-5.5 (2026-08-04)
+
+- **Verdict**: REJECT ×2 → design clarified, re-verdict requested
+1. `[FIXED]` Verification phase vs design-§2 literal clauses → unit-form mapping added
+   (assert-cell answer checks + criterion 5b; manifests via checks; estimated_minutes
+   timing budget), and the design's PDF clause — whose §1/§3.4 scope is printable TEST
+   papers — clarified in designs/000 (not a governance file) to say so explicitly.
+   Units are notebook-native; mock-test plans carry the PDF obligation.
+
+### Review 4 — [glm] GLM 5.2 (2026-08-04)
+
+- **Verdict**: REJECT (raced fixes; its #1/#3 already fixed) → re-verdict requested
+2. `[FIXED]` BLOCKER: renumbering orphaned plan-004's "plan 006" ownership strings →
+   Task 6 now updates ci-local's PENDING/SKIP strings to plan 011 and records the
+   reassignment; rationale added for why the ordering is entailed, not a judgment fork.
+4. `[FIXED]` ipykernel added to the dep list.
+6. `[FIXED]` Dep-add got an explicit Task 1 Step 0.
+7. `[FIXED]` Practice ids unit-prefixed per schema example.
+8. `[FIXED]` prereq_units enumerated.
+9. `[FIXED]` Notebook count fixed at 22.
+
 ## Content Review
 
 (Pre-PR gate findings land here.)
