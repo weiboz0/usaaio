@@ -76,7 +76,9 @@ via C1 vocabulary); C2/C3 shared-notation pin; unit-overlap channel spec
 ### Review 3 — [codex] GPT-5.6-sol (2026-08-04): REJECT (raced the fable-fix commit)
 Blocker (C4/C10 encroachment) already fixed by the fable round. Its two live items
 fixed: supplied-weights wording made explicit; `test_overlap_loud_skip_preserved`
-regression test + filter-before-both-channels wording added. Re-verdict requested.
+regression test + filter-before-both-channels wording added. Re-verdict: **APPROVE**, none remaining.
+
+**GATE RESULT: PASS — 4/4** ([claude-self], [fable], [glm], [codex]); no open blockers.
 
 ### Review 4 — [glm] GLM 5.2 (2026-08-04): APPROVE WITH NITS
 Fixed: F2-transitive reliance stated for C2 S01; C4 target 20 (coverage slack);
