@@ -25,6 +25,12 @@
 - 18–20 problems. Torch allowed (that's the point); autograd/training BANNED (inference-only, matching the exam's pattern and C5's scope; optimizer/backward vocabulary forbidden — C-track ends at inference engineering; note in Exam Connections that the real paper's torch problems are inference-only too, paraphrase).
 - Conventions: SEED for torch = `torch.manual_seed(20260804)` alongside the NumPy seed where both used.
 
+**C5/C6 shared module-spec pin (both drafter prompts verbatim, the 007-notation-pin lesson):** the hand-built layers are `step_layer(x, W, b)` (NumPy, C5) ↦ `MyThreshold(nn.Module)` / `MyLinear(nn.Module)` (C6) with EXACT semantics: MyLinear stores `weight` (out×in) and `bias` (out,), forward = `x @ weight.T + bias`; MyThreshold forward = `(x >= 0).to(x.dtype)`; C6's lesson builds THESE from C5's NumPy versions by name. Fresh module names (My-prefix but NOT the real paper's exact identifiers where they differ — check the corpus at reconciliation).
+
+**Orchestrator corpus duty (carried from F3/007 precedent):** at reconciliation, structurally compare C5's region-design problems and C6's custom-module/count problems against the local index's P7/P8 sub-parts — generic-skill overlap fine; no isomorph-with-renamed-numbers. Verdict recorded in this plan.
+
+**Float32 note (both prompts):** torch defaults to float32 — assert tolerances in C6 solutions use 1e-5-scale (not 1e-9); cross NumPy/torch comparisons cast explicitly.
+
 Shared: A/B/C sets; v2 floors (≥4 MC w/ ≥1 numeric normal-form — parameter-count normal-forms fit naturally; ≥6 constrained coding with exact contracts + ban clauses (e.g. "no numel" mirrors the exam); ≥2 proof (C5: linear-stack-is-linear; variance derivation; C6: parameter-count formula derivations); ≥2 integrative; ≥2 scenario; ≥2 challenge); every concept ≥3; ≈30/45/25; ≥2 checkpoints/section; pitfalls/exam-connections/going-deeper unit-wide (C5 → C6/C7 by id; C6 → C7-cnn-transfer by id).
 
 ## Tasks
@@ -42,7 +48,17 @@ Shared: A/B/C sets; v2 floors (≥4 MC w/ ≥1 numeric normal-form — parameter
 
 ## Plan Review
 
-(4-way gate verdicts land here; Codex slot on gpt-5.6-sol.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS
+1. `[FIXED-pre-gate]` Added the C5/C6 module-spec pin (the 007 notation-pin lesson
+   applied to concurrent drafting), the orchestrator corpus structural-comparison duty
+   (F3 precedent), and the float32 tolerance note.
+2. `[NOTED]` Inference-only scope is the deliberate design: the syllabus never teaches
+   MLP training, C3's descent covers linear models only, and the real exam's torch
+   problems are inference-only — C5 needs an explicit scope-note device in its lesson
+   ("why we design weights by hand here"), flagged for the drafter prompt.
+3. `[NOTED]` torch CPU via uv index — fallback route named in Task 0.
 
 ## Content Review
 
