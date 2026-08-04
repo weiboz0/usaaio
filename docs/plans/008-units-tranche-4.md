@@ -143,3 +143,20 @@ scope-note carve-out; plain-Python-first inheritance. Re-verdict requested.
    tempdir). → Response: orchestrator's own execution stands (8/8 PASS, 17-anchor
    narration check); executed notebooks staged local-only in .gate8-executed/ for codex to
    audit narration-vs-output directly; re-verdict requested on that evidence.
+
+### Review 3 — [glm] GLM 5.2 (2026-08-04)
+
+- **Verdict**: Approved with suggestions
+- Duties: 6/6 lessons executed clean, no narration contradictions; 16/16 blind-solves agree
+  (incl. all four proofs).
+1. `[FIXED]` [glm] Should Fix: C5 lesson 03 §2 cited "C4's scaling discipline" — C4 is not in
+   C5's prereq chain. → Response: attribution dropped; the sentence already defines
+   standardization inline ("each with mean 0 and variance 1"), now fully self-contained.
+   Lesson re-executed PASS.
+2. `[FIXED]` [glm] Nice to Have: C6 p13 solution asserted exact 0.0 cross-library gap
+   (BLAS-sensitive). → Response: softened to `gap < 1e-12` with rationale comment; solution
+   re-executed PASS. Answer unchanged — no re-solve triggered (statement untouched).
+3. `[WONTFIX]` [glm] Nice to Have: A/B/C split 30/40/30 vs plan's ≈30/45/25. → Response: the
+   plan's target is explicitly approximate; v2 floors are all met and set membership was
+   fixed at reconciliation — re-shuffling sets post-verification risks churn for no
+   student-visible gain.
