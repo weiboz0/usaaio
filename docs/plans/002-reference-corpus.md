@@ -362,3 +362,33 @@ Round 1:
    `analysis.md` only; 2025 forum structure captured without content scraping;
    R2 index (26 sub-parts, verified point sums 90/70/50/40/50) written by subagent that
    independently caught the initial wrong page counts.
+
+### Review 2 — [codex] Codex GPT-5.5 (2026-08-03/04)
+
+- **Verdict**: Changes requested (rounds 1–2) → all findings fixed, re-verdict requested
+
+1. `[FIXED]` Sub-part arithmetic inconsistency (round 1 read straddled the fix commit;
+   round 2 confirmed lines 33/43/118 correct). Last remaining spot — Sources table row
+   still "24 sub-parts" — corrected to 37.
+2. `[FIXED]` Stale "verified: 6-page PDF" provenance note in the plan → now explains the
+   `file` heuristic error (pdfinfo: 24 pages).
+3. `[NOTED]` Fetch script, leak guard, git hygiene, and no-verbatim scan all verified clean
+   by reviewer (own 0-hit shingle scan).
+
+### Review 3 — [opus] Independent Opus, fresh context (2026-08-04)
+
+- **Verdict**: Changes requested → all findings fixed, re-verdict requested
+  (Blockers 1–2 and concern 3 target the pre-fix commit — the same arithmetic errors
+  self-caught in Review 1, already fixed: 37 sub-parts, 24-of-37 atoms, MC ×8,
+  table sums 37/300.)
+
+4. `[FIXED]` Difficulty band understated baseline-reachable points (~45–55 → ~70 with
+   itemized breakdown).
+5. `[FIXED]` One 6-gram verbatim run: the paraphrase of the R2 day-1 open-ended title kept
+   a six-word span (hyphenated tokens hid it from the first shingle scan). Reworded;
+   re-scan with hyphen-splitting tokenization at 6/7/8-grams: 0 hits.
+6. `[FIXED]` "recurring" distractor overstated (occurs once) → reworded.
+7. `[FIXED]` index.yaml header comment softened: text fields verbatim for statements,
+   compressed for starter-code-heavy entries; overlap-scan routes through pdftotext.
+- `[NOTED]` Reviewer verified: all problem/point structure, style notes, R2 figures,
+  10 index spot-checks, git hygiene, and blueprint implications 2–4.

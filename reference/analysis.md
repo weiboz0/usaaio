@@ -10,7 +10,7 @@ Raw papers and the per-problem `index.yaml` files live only on machines that ran
 
 | Test | Source | Fetched | Local path | Indexed |
 |------|--------|---------|-----------|---------|
-| r1-2026 | usaaio.org/past-problems → Google Drive | 2026-08-03 | `reference/r1-2026/paper.pdf` (24 pp) | yes (24 sub-parts) |
+| r1-2026 | usaaio.org/past-problems → Google Drive | 2026-08-03 | `reference/r1-2026/paper.pdf` (24 pp) | yes (37 sub-parts) |
 | r2-2026 day 1 | same | 2026-08-03 | `reference/r2-2026/day1.pdf` (15 pp) | yes (light) |
 | r2-2026 day 2 | same | 2026-08-03 | `reference/r2-2026/day2.pdf` (14 pp) | yes (light) |
 | r2-2026 rationale | same | 2026-08-03 | `reference/r2-2026/rationale.pdf` (6 pp) | mined for design intent |
@@ -76,9 +76,9 @@ R2 topics are tabulated separately below.)
 
 ## Difficulty profile (against the Calc AB + basic Python baseline)
 
-- **Directly reachable from the baseline + early foundation units:** the five concept MCQs,
-  tanh derivative (single-variable calculus), Python set/list semantics, basic NumPy array
-  conversion. Roughly 45–55 of 300 points.
+- **Directly reachable from the baseline + early foundation units:** the five concept MCQs
+  (50), tanh derivative (5), Python set/list semantics (10), basic NumPy array conversion
+  (5) — roughly 70 of 300 points.
 - **Reachable after a linear-algebra foundation unit** (dot products, norms, projection,
   matrix action, rank): Problems 2, 3, and the first half of Problem 5 — about 60 more points.
 - **Requires dedicated curriculum beyond current foundation scope:** SVD/spectral
@@ -98,7 +98,7 @@ R2 topics are tabulated separately below.)
 - Formal-but-plain register; imperative task statements ("Compute", "Build", "Write code
   to"); explicit meta-instructions per part on whether reasoning is required and whether
   coding is allowed/needed.
-- Multiple-choice items use exactly five options A–E, including a recurring
+- Multiple-choice items use exactly five options A–E; one item includes a
   cannot-be-determined style of distractor.
 - Numeric MC answers are made unique-decodable via normal-form constraints
   (gcd conditions, sign conventions) — a distinctive USAAIO pattern.
@@ -142,7 +142,7 @@ R2 topics are tabulated separately below.)
 no duration printed in either paper.
 Structure: each day pairs one long scaffolded "non-open-ended" arc with open-ended
 model-building tasks — day 1: a 90-pt 14-part linear-attention arc + a 70-pt open-ended
-inverse-problem (recovering a central field from vector-field observations);
+inverse-problem (reconstructing a single-source force field given measured field vectors);
 day 2: a 50-pt 9-part diffusion-models arc + two open-ended tasks
 (40-pt image-shape classification, 50-pt mixture-function parameter regression).
 Open-ended work carries 160/300 points — a much higher open-ended share than Round 1.
