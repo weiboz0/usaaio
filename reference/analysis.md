@@ -30,7 +30,7 @@ Fields marked (printed) appear in the paper; (external) come from the official s
 (inferred) are judgment.
 
 - **Duration:** 180 minutes (external — official schedule 12–3pm ET; not printed in paper).
-- **Total:** 300 points (printed, summed) across **9 problems / 24 gradable sub-parts** (2026).
+- **Total:** 300 points (printed, summed) across **9 problems / 37 gradable sub-parts** (2026).
 - **2025 structural contrast:** only 3 problems, but each with many parts
   (≥8, ≥13, 18 visible) — the format varies year to year in problem-count shape while
   keeping the "few long multi-part arcs plus standalone items" texture.
@@ -38,9 +38,9 @@ Fields marked (printed) appear in the paper; (external) come from the official s
   One dominant multi-part arc (90 pts, 15 parts) builds a single narrative
   (embeddings → similarity → SVD → low-rank approximation);
   one open-ended applied task (50 pts) is a Kaggle-style notebook submission.
-- **Answer forms (2026, by sub-part):** multiple-choice ×9 (all in the first two problems),
-  code ×15-ish, short-answer/proof for the rest; roughly half the points are programming.
-- **Sub-part granularity:** 5-point atoms dominate (17 of 24 sub-parts are 5 pts);
+- **Answer forms (2026, by sub-part):** multiple-choice ×8 (all in the first two problems),
+  code ×15, short-answer/proof for the rest; roughly half the points are programming.
+- **Sub-part granularity:** 5-point atoms dominate (24 of 37 sub-parts are 5 pts);
   larger sub-parts (10–15 pts) mark reasoning-heavy or integrative steps; the notebook task
   is a single 50-pt unit.
 - **Scaffolding style:** later parts consume earlier parts' results explicitly
@@ -60,18 +60,19 @@ Fields marked (printed) appear in the paper; (external) come from the official s
 
 | Topic cluster | Sub-parts | Points |
 |---------------|-----------|--------|
-| Linear algebra (vectors, projection, rank, outer products, Gram/SVD/spectral, low-rank) | 10 | 70 |
+| Linear algebra (vectors, projection, rank, outer products, Gram matrix, SVD/spectral, low-rank) | 10 | 60 |
 | ML concepts (supervised vs unsupervised, regularization/sparsity, bias-variance, metrics, UMAP) | 5 | 50 |
-| NumPy implementation (broadcasting-only gradients, normalization, similarity, argsort, plotting) | 6 | 45 |
-| PyTorch engineering (custom modules, manual-weight MLP geometry, ResNet surgery, transfer learning) | 6 | 55 |
+| NumPy implementation (broadcasting-only gradients, normalization, similarity, argsort, SVD calls, plotting) | 8 | 55 |
+| PyTorch engineering (custom modules, manual-weight MLP geometry, ResNet surgery, transfer learning) | 7 | 50 |
 | Probability/statistics (variance-preserving init) | 1 | 5 |
 | Calculus (tanh derivative) | 1 | 5 |
 | CNN representations (feature-map depth ordering) | 1 | 10 |
-| NLP/embeddings context (tokenization, cosine similarity semantics) | ~4 | 20 |
+| NLP/embeddings context (tokenization, dedup semantics, cosine-similarity meaning) | 3 | 15 |
 | Applied tabular ML (kNN pipeline, f1-macro, notebook craft) | 1 | 50 |
+| **Total** | **37** | **300** |
 
-(Sub-parts overlap clusters; counts assign each to its dominant cluster. R2 topics are
-tabulated separately below.)
+(Each sub-part is assigned to its dominant cluster; totals verified against the index.
+R2 topics are tabulated separately below.)
 
 ## Difficulty profile (against the Calc AB + basic Python baseline)
 
@@ -112,9 +113,11 @@ tabulated separately below.)
 ## Implications
 
 **For plan 003 (syllabus + blueprint):**
-1. Blueprint should parameterize: total points 300, 3h, 8–10 problems, 20–26 gradable
-   sub-parts, one long integrative arc (~30% of points), one open-ended notebook task
-   (~15–17%), MC concentrated in an opening concept block, ~50% of points on programming.
+1. Blueprint should parameterize: total points 300, 3h, one long integrative arc
+   (~30% of points), one open-ended notebook task (~15–17%), MC concentrated in an opening
+   concept block, ~50% of points on programming, roughly 35–40 gradable sub-parts
+   (2026: 37; 2025's three problems show ≥39 visible parts) dominated by 5-point atoms —
+   while leaving top-level problem count a free parameter (3 in 2025 vs 9 in 2026).
 2. Syllabus foundation track must cover: vectors/norms/projection → matrices/rank/outer
    products → Gram matrices → SVD → low-rank approximation; probability to variance of
    sums; single-variable calculus is assumed but chain-rule fluency must be exercised.
