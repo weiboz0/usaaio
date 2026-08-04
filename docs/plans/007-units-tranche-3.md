@@ -52,7 +52,18 @@ Units 008-010 (C5+C6 w/ torch, C7+C8, F6+C9+C10), mock test 011, course structur
 
 ## Plan Review
 
-(4-way gate verdicts land here; Codex slot on gpt-5.6-sol.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS
+1. `[NOTED]` C2-without-fitting is the tranche's pedagogical tightrope — the plan's
+   devices (evaluate/differentiate at given weights, penalty geometry, given-sequence
+   regularization paths) mirror what the shipped C2 syllabus narrative promised;
+   reviewers asked to probe for thinness.
+2. `[NOTED]` C4's prereqs in-plan ([C1, F1, F2, F5]) verified == syllabus (F5 was added
+   at the plan-003 gate for scaling variance).
+3. `[NOTED]` C4's committed-small-CSV device is new (prior units generated data inline);
+   flagged for reviewer judgment vs the datasets-from-scripts rule — the generator
+   scripts ARE committed and the CSVs are small and regenerable.
 
 ## Content Review
 
