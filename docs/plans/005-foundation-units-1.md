@@ -79,7 +79,19 @@ Content gate (4-way; duties: solve practice blind, verify solutions, accessibili
 
 ## Plan Review
 
-(4-way gate verdicts land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS
+
+1. `[FIXED]` F1 p05 listed "sampling-free intro" — not a vocabulary id; manifest
+   validation would fail. Trimmed to `[random-seeding]`.
+2. `[FIXED]` C1's overfitting demo used numpy polyfit — a closure leak toward
+   linear-regression (taught in C2, not an ancestor). Replaced with a
+   memorization-vs-threshold demo in plain numpy.
+3. `[FIXED]` MC answer capture in notebooks was unspecified vs hygiene rules →
+   answer-variable convention with the letter only in the solution notebook.
+4. `[NOTED]` Verified all three practice maps cover their full syllabus teaches lists
+   (8+8+9 concepts) with exact vocabulary ids.
 
 ## Content Review
 
