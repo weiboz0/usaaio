@@ -6,11 +6,13 @@ from tools.checks.blueprint import check_blueprint
 from tools.checks.new_mocktest import scaffold_mocktest
 from tools.model import load_mock_manifests
 
+ROOT = Path(__file__).resolve().parents[1]
+
 
 def seed_repo(root: Path) -> None:
     (root / "mocktests").mkdir()
-    (root / "mocktests" / "blueprint.yaml").write_text(Path("mocktests/blueprint.yaml").read_text())
-    (root / "syllabus.md").write_text(Path("syllabus.md").read_text())
+    (root / "mocktests" / "blueprint.yaml").write_text((ROOT / "mocktests/blueprint.yaml").read_text())
+    (root / "syllabus.md").write_text((ROOT / "syllabus.md").read_text())
 
 
 def test_new_mocktest_scaffolds_defaults(tmp_path):

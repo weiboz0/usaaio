@@ -7,12 +7,14 @@ import pytest
 
 from tools.checks.blueprint import check_blueprint
 
+ROOT = Path(__file__).resolve().parents[1]
+
 
 def write_repo(root: Path, problems: list[dict], status: str | None = "final") -> None:
     root.joinpath("mocktests").mkdir()
-    Path("mocktests/blueprint.yaml").resolve().read_text()
-    root.joinpath("mocktests/blueprint.yaml").write_text(Path("mocktests/blueprint.yaml").read_text())
-    root.joinpath("syllabus.md").write_text(Path("syllabus.md").read_text())
+    (ROOT / "mocktests/blueprint.yaml").resolve().read_text()
+    root.joinpath("mocktests/blueprint.yaml").write_text((ROOT / "mocktests/blueprint.yaml").read_text())
+    root.joinpath("syllabus.md").write_text((ROOT / "syllabus.md").read_text())
     test_dir = root / "mocktests" / "r1-001"
     (test_dir / "data").mkdir(parents=True)
     (test_dir / "data" / "gen.py").write_text("print('ok')\n")
@@ -246,6 +248,6 @@ def test_blueprint_flags_remaining_invariants_parametric(tmp_path, name, mutator
 
 def test_blueprint_vacuous_without_mocktests(tmp_path):
     (tmp_path / "mocktests").mkdir()
-    (tmp_path / "mocktests" / "blueprint.yaml").write_text(Path("mocktests/blueprint.yaml").read_text())
-    (tmp_path / "syllabus.md").write_text(Path("syllabus.md").read_text())
+    (tmp_path / "mocktests" / "blueprint.yaml").write_text((ROOT / "mocktests/blueprint.yaml").read_text())
+    (tmp_path / "syllabus.md").write_text((ROOT / "syllabus.md").read_text())
     assert check_blueprint(tmp_path).ok

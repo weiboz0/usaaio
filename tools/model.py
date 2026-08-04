@@ -7,6 +7,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 
 @dataclass(frozen=True)
 class Unit:
@@ -119,15 +121,6 @@ class Report:
     skipped: str | None = None
 
 
-def _strip_comment(line: str) -> str:
-    quote: str | None = None
-    for i, ch in enumerate(line):
-        if ch in {"'", '"'} and (i == 0 or line[i - 1] != "\\"):
-            quote = None if quote == ch else ch if quote is None else quote
-        if ch == "#" and quote is None:
-            return line[:i]
-    return line
-
 
 def _split_top_level(text: str) -> list[str]:
     out: list[str] = []
@@ -175,104 +168,8 @@ def _parse_scalar(text: str) -> Any:
 
 
 def _parse_yaml(text: str) -> Any:
-    try:
-        import yaml  # type: ignore[import-not-found]
+    return yaml.safe_load(text)
 
-        return yaml.safe_load(text)
-    except ModuleNotFoundError:
-        return _parse_yaml_subset(text)
-
-
-def _parse_yaml_subset(text: str) -> Any:
-    raw_lines = text.splitlines()
-    stripped: list[tuple[int, str]] = []
-    i = 0
-    while i < len(raw_lines):
-        line = raw_lines[i]
-        cleaned = _strip_comment(line).rstrip()
-        if cleaned.strip():
-            indent = len(cleaned) - len(cleaned.lstrip(" "))
-            body = cleaned.strip()
-            if body.endswith((": >", ": |")):
-                key = body[:-3].strip()
-                i += 1
-                parts: list[str] = []
-                while i < len(raw_lines):
-                    nxt = raw_lines[i]
-                    nclean = _strip_comment(nxt).rstrip()
-                    nindent = len(nclean) - len(nclean.lstrip(" ")) if nclean.strip() else indent + 2
-                    if nclean.strip() and nindent <= indent:
-                        i -= 1
-                        break
-                    if nclean.strip():
-                        parts.append(nclean.strip())
-                    i += 1
-                stripped.append((indent, f"{key}: {' '.join(parts)}"))
-            else:
-                depth = body.count("[") + body.count("{") - body.count("]") - body.count("}")
-                while depth > 0 and i + 1 < len(raw_lines):
-                    i += 1
-                    continuation = _strip_comment(raw_lines[i]).strip()
-                    if continuation:
-                        body = f"{body} {continuation}"
-                        depth = body.count("[") + body.count("{") - body.count("]") - body.count("}")
-                stripped.append((indent, body))
-        i += 1
-
-    def parse_block(pos: int, indent: int) -> tuple[Any, int]:
-        if stripped[pos][1].startswith("- "):
-            seq: list[Any] = []
-            while pos < len(stripped) and stripped[pos][0] == indent and stripped[pos][1].startswith("- "):
-                item = stripped[pos][1][2:].strip()
-                if item == "":
-                    value, pos = parse_block(pos + 1, indent + 2)
-                    seq.append(value)
-                elif ":" in item and not item.startswith(("[", "{")):
-                    key, value_text = item.split(":", 1)
-                    item_map: dict[str, Any] = {}
-                    if value_text.strip():
-                        item_map[key] = _parse_scalar(value_text.strip())
-                    elif pos + 1 >= len(stripped) or stripped[pos + 1][0] <= indent:
-                        item_map[key] = ""
-                    else:
-                        item_map[key] = {}
-                    pos += 1
-                    while pos < len(stripped) and stripped[pos][0] > indent:
-                        child_indent, child = stripped[pos]
-                        if child_indent != indent + 2:
-                            break
-                        ckey, ctext = child.split(":", 1)
-                        if ctext.strip():
-                            item_map[ckey] = _parse_scalar(ctext.strip())
-                            pos += 1
-                        elif pos + 1 < len(stripped) and stripped[pos + 1][0] > child_indent:
-                            item_map[ckey], pos = parse_block(pos + 1, child_indent + 2)
-                        else:
-                            item_map[ckey] = ""
-                            pos += 1
-                    seq.append(item_map)
-                else:
-                    seq.append(_parse_scalar(item))
-                    pos += 1
-            return seq, pos
-        mapping: dict[str, Any] = {}
-        while pos < len(stripped) and stripped[pos][0] == indent:
-            _, body = stripped[pos]
-            key, value_text = body.split(":", 1)
-            if value_text.strip():
-                mapping[key] = _parse_scalar(value_text.strip())
-                pos += 1
-            elif pos + 1 < len(stripped) and stripped[pos + 1][0] > indent:
-                mapping[key], pos = parse_block(pos + 1, indent + 2)
-            else:
-                mapping[key] = ""
-                pos += 1
-        return mapping, pos
-
-    if not stripped:
-        return None
-    data, _ = parse_block(0, stripped[0][0])
-    return data
 
 
 def _canonical_yaml(markdown: str) -> str:
