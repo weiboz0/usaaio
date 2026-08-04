@@ -46,8 +46,13 @@ prereq-units: [..]                        # must equal syllabus prereqs for this
 practice:
   - id: F1-p01
     concepts: [broadcasting, vectorization]   # exercised concepts
-    path: practice/p01.ipynb
+    path: practice/p01.ipynb                  # student-facing (hygiene-checked)
+    solution_path: practice/p01_solution.ipynb  # runs clean top-to-bottom; NOT hygiene-checked
 ```
+
+Naming convention (hygiene relies on it): any notebook whose filename contains
+`solution` is a solutions notebook; every other notebook under `practice/` or
+`problems/` is student-facing.
 
 **Tests (exact names):** `test_load_syllabus_real_repo` (16 units, 105 concepts), `test_sentinel_must_be_unique`, `test_load_blueprint_real_repo` (targets sum 300), `test_missing_dirs_yield_empty_lists`, `test_unit_manifest_roundtrip` (tmp fixture).
 
@@ -68,7 +73,7 @@ practice:
 
 ### Task 3: hygiene-check (`tools/checks/hygiene.py`)
 
-Rules (student-facing notebooks: `mocktests/*/problems/*.ipynb` and any `units/*/practice/*student*.ipynb`):
+Rules (student-facing notebooks: `mocktests/*/problems/*.ipynb` and `units/*/practice/*.ipynb`, in both cases EXCLUDING filenames containing `solution` — the Task 1 naming convention):
 1. No executed outputs (`cell.outputs == []`, `execution_count is None`).
 2. No solution leakage markers: cells containing `# SOLUTION`, `answer_key`, or tag `solution` are forbidden in student notebooks.
 3. Solutions notebooks (`solutions/*.ipynb`) are NOT checked here (they may contain outputs).
@@ -79,7 +84,7 @@ Rules (student-facing notebooks: `mocktests/*/problems/*.ipynb` and any `units/*
 
 ### Task 4: blueprint-check (`tools/checks/blueprint.py`)
 
-Per mock manifest, against the blueprint: points sum == total_points; per-section sums within `sections[].points` ranges (+ arc subparts range); subpart count within texture range; five-point-atom share ≥ min; programming share (points of `type: programming`) within range; problem_count within range; topic accounting — map each problem's concepts→clusters via syllabus, fold via `cluster_fold`, points per cluster within `{min,max}` (a problem's points split equally across its concepts' distinct folded clusters); difficulty bands (share of points per difficulty within band bounds); provenance — original share ≥ min, `adapted` requires `adapted-from`; every problem carries non-empty `spec` + `answer_key`; `data` entries name existing `generator_script` files.
+Per mock manifest, against the blueprint: points sum == total_points; per-section sums within `sections[].points` ranges (+ arc subparts range); subpart count within texture range; five-point-atom share ≥ min; programming share (points of `type: programming`) within range; problem_count within range; topic accounting — **dominant-concept attribution**: each problem's points go entirely to the folded cluster of its FIRST-listed concept (`concepts[0]` is the declared dominant concept — matching how `reference/analysis.md` assigned each sub-part to one dominant cluster, which is where the targets came from; split-attribution would drift from the targets' derivation); per-cluster point totals within `{min,max}`; difficulty bands (share of points per difficulty within band bounds); provenance — original share ≥ min, `adapted` requires `adapted-from`; every problem carries non-empty `spec` + `answer_key`; `data` entries name existing `generator_script` files.
 
 **Tests:** `test_blueprint_pass_on_fixture_test`, `test_blueprint_flags_section_out_of_range`, `test_blueprint_flags_topic_distribution_breach`, `test_blueprint_flags_missing_adapted_tag`, `test_blueprint_vacuous_without_mocktests`.
 
@@ -129,7 +134,19 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 
 ## Plan Review
 
-(4-way gate verdicts land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
+
+- **Verdict**: APPROVE WITH NITS
+
+1. `[FIXED]` Topic accounting originally split points equally across concept clusters,
+   which would drift from the blueprint targets' own derivation (analysis assigned each
+   sub-part ONE dominant cluster) → dominant-concept attribution: `concepts[0]` is the
+   declared dominant concept and takes all the problem's points.
+2. `[FIXED]` Unit-practice hygiene conventions were fuzzy → explicit naming rule
+   (filename containing `solution` = solutions notebook), `solution_path` added to the
+   unit-manifest practice schema, hygiene globs updated to match.
+3. `[NOTED]` ci-local rc-capture snippet verified correct under `set -euo pipefail`
+   (the `||` compound guards the non-zero exit; only rc==3 is tolerated).
 
 ## Content Review
 
