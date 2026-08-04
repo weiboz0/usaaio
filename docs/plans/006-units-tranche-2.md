@@ -169,3 +169,47 @@ material) — zero content overlap. VERDICT: PASS.
 **Filed follow-up (concrete, not deferred):** plan 007's tooling touch extends
 `check_overlap` to scan `units/*/practice/*.ipynb` sources with a starter-boilerplate
 exemption list, making this scan permanent CI.
+
+### Content-gate rounds summary (full findings in the review transcripts)
+
+- **[codex] terra:** Changes requested → Approved. 9/9 blind solves + 3/3 normal-form
+  recomputes matched. Blocker: ban-register contract vs per-problem additions → contract
+  amended (core set = minimum). Concern: units not corpus-scanned → manual 8-shingle scan
+  run (only import boilerplate hits; PASS) + concrete follow-up filed (007 extends
+  check_overlap to units).
+- **[glm]:** Changes requested → Approved. 6/6 blind solves matched. Blocker: F5
+  checkpoint-answer sections (stale-format artifact of the interrupted drafter) → all 25
+  blocks normalized to the collapsed-details precedent with every value recomputed
+  (+ a real float-equality bug fixed in S01 C3's answer). Nits: F3 answer-check headers
+  normalized (20), F5 overview per-problem map, capitalization.
+- **[opus]:** Changes requested → Approved (twice re-verified; caught 4 of the
+  orchestrator's nit-fixes silently no-op'ing — all then properly applied and
+  grep-verified). 12/12 blind solves matched. Blockers: F4 L01 answer key contradicted
+  its own printed sweep (ranking corrected to match output); F5 review leaked quiz
+  answers pre-quiz (cell relocated). Concerns: p14 citation, F3-p14d unsupported rank
+  claim, F5 mutual-independence definition + vacuous demo (both fixed substantively),
+  AM-GM outside AB (clean rewrite).
+- **[claude-self]:** Approved with suggestions (verification record + reconciliation).
+
+**GATE RESULT: PASS — 4/4.** Blind-solve totals for the tranche: 56/56 (solver
+reconciliation) + 27/27 (gate reviewers) = 83/83 independent agreement.
+
+## Post-execution report (2026-08-04)
+
+**Shipped:** F4-multivar-calculus (2 sessions, 18 problems), F3-matrices (3 sessions,
+20 problems), F5-probability (3 sessions, 18 problems) — each with overview, review,
+A/B/C manifests; 56 practice pairs blind-solved by gpt-5.6-sol with 56/56 reconciliation
+agreement and zero statement amendments.
+
+**Process notes:** the tranche survived a mid-build account session limit — drafter
+agents died; the orchestrator drafted all 56 statements inline, solvers ran on the
+independent Codex quota, and lesson drafting resumed after reset. The F5 lesson layer's
+interrupted-draft artifacts (checkpoint-answer format) were the gate's biggest real
+catch, alongside an answer key contradicted by its own printed output (the second
+occurrence of this defect class — both caught by reviewers executing lessons).
+
+**Deviations:** ban-register contract amended (core set = minimum + workaround-closers);
+unit-overlap manual scan (PASS) with tooling follow-up filed for 007; F3 answer-check
+header normalization; commit 4f9cc81 message artifact (cosmetic, squashed away).
+
+**Follow-ups filed:** 007 extends check_overlap to units/ with boilerplate exemption.
