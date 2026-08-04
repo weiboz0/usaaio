@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Verification and build tooling for USAAIO mock tests and teaching materials"
 requires-python = ">=3.12"
 dependencies = [
+    "gensim>=4.4.0",
     "ipykernel>=7.3.0",
     "jupyter>=1.1.1",
     "matplotlib>=3.11.1",
@@ -14,6 +15,7 @@ dependencies = [
     "pyyaml",
     "scikit-learn>=1.9.0",
     "torch>=2.13.0",
+    "torchvision>=0.28.0",
 ]
 
 [project.scripts]
@@ -34,6 +36,7 @@ explicit = true
 
 [tool.uv.sources]
 torch = { index = "pytorch" }
+torchvision = { index = "pytorch" }
 
 [build-system]
 requires = ["hatchling"]
