@@ -4,8 +4,14 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from tools.model import Blueprint, MockManifest, Report, load_blueprint, load_mock_manifests, load_syllabus
-
+from tools.model import (
+    Blueprint,
+    MockManifest,
+    Report,
+    load_blueprint,
+    load_mock_manifests,
+    load_syllabus,
+)
 
 DEFAULT_ANCHORS = {
     "concept-block": 50,
@@ -73,9 +79,10 @@ def _validate_manifest(
             errors.append(f"{manifest.path}: {problem.id} missing spec")
         if problem.answer_key in (None, "", {}):
             errors.append(f"{manifest.path}: {problem.id} missing answer_key")
-        if problem.data and problem.data.get("generator_script"):
-            if not (manifest.path.parent / problem.data["generator_script"]).exists():
-                errors.append(f"{manifest.path}: {problem.id} missing generator_script")
+        if problem.data and problem.data.get("generator_script") and not (
+            manifest.path.parent / problem.data["generator_script"]
+        ).exists():
+            errors.append(f"{manifest.path}: {problem.id} missing generator_script")
 
         folded_concept_clusters = {
             fold_cluster(blueprint, concepts[concept])

@@ -193,7 +193,7 @@ def _parse_yaml_subset(text: str) -> Any:
         if cleaned.strip():
             indent = len(cleaned) - len(cleaned.lstrip(" "))
             body = cleaned.strip()
-            if body.endswith(": >") or body.endswith(": |"):
+            if body.endswith((": >", ": |")):
                 key = body[:-3].strip()
                 i += 1
                 parts: list[str] = []
@@ -280,7 +280,7 @@ def _canonical_yaml(markdown: str) -> str:
     if markdown.count(sentinel) != 1:
         raise ValueError("syllabus canonical sentinel must appear exactly once")
     after = markdown.split(sentinel, 1)[1]
-    match = re.search(r"```yaml\n(.*?)\n```", after, re.S)
+    match = re.search(r"```yaml\n(.*?)\n```", after, re.DOTALL)
     if match is None:
         raise ValueError("missing syllabus canonical yaml fence")
     return match.group(1)
@@ -334,7 +334,7 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
                         path=item["path"],
                         solution_path=item["solution_path"],
                     )
-                    for item in raw.get("practice", [])
+                    for item in raw.get("practice") or []
                 ],
                 path=path,
             )
@@ -347,7 +347,7 @@ def load_mock_manifests(root: str | Path) -> list[MockManifest]:
     for path in sorted(Path(root).glob("mocktests/r1-*/manifest.yaml")):
         raw = _read_manifest(path)
         problems = []
-        for item in raw.get("problems", []):
+        for item in raw.get("problems") or []:
             problems.append(
                 ManifestProblem(
                     id=item["id"],

@@ -27,10 +27,10 @@ def test_help_lists_planned_subcommands():
         assert name in proc.stdout
 
 
-def test_unimplemented_subcommand_exits_2():
-    proc = run_cli("blueprint-check")
-    assert proc.returncode == 2
-    assert "plan 004" in proc.stderr
+def test_check_subcommand_runs():
+    proc = run_cli("prereq-check")
+    assert proc.returncode == 0
+    assert "PASS prereq-check" in proc.stdout
 
 
 def test_main_no_subcommand_prints_help(capsys):
@@ -38,6 +38,6 @@ def test_main_no_subcommand_prints_help(capsys):
     assert "usage: usaaio-tools" in capsys.readouterr().out
 
 
-def test_main_unimplemented_subcommand_in_process(capsys):
-    assert main(["blueprint-check"]) == 2
-    assert "plan 004" in capsys.readouterr().err
+def test_main_check_subcommand_in_process(capsys):
+    assert main(["prereq-check"]) == 0
+    assert "PASS prereq-check" in capsys.readouterr().out

@@ -10,8 +10,7 @@ Design rationale: `docs/designs/000-project-design.md §2b`.
 1. **Blueprint** — read `mocktests/blueprint.yaml` at its current `blueprint_version`.
    Changing the blueprint is a reviewed change like any other (plan + gates).
 2. **Instantiate** — create the test skeleton and problem-spec sheet.
-   Once plan 004 ships: `uv run usaaio-tools new-mocktest r1-NNN`.
-   Until then, manually create:
+   Run `uv run usaaio-tools new-mocktest r1-NNN --date YYYY-MM-DD`.
 
    ```
    mocktests/r1-NNN/
@@ -29,9 +28,9 @@ Design rationale: `docs/designs/000-project-design.md §2b`.
    - section points = the blueprint's 2026 anchors:
      concept-block 50, math-computation 45, integrative-arc 90, engineering 65,
      open-ended-notebook 50 (sums to 300);
-   - arc clusters = position `NNN mod 3` in the rotation list
+   - arc clusters = position `(NNN - 1) mod 3` in the rotation list
      `[[nlp-embeddings, linear-algebra, numpy], [cnn-vision, pytorch, numpy],
-     [applied-ml, probability-statistics, numpy]]` (r1-001 → index 1 ⇒ the first entry);
+     [applied-ml, probability-statistics, numpy]]` (r1-001 → index 0 ⇒ the first entry);
    - difficulty draw = the analysis-observed `{intro: 0.23, core: 0.45, advanced: 0.32}`;
    - problem count = 9.
 
@@ -51,6 +50,7 @@ Design rationale: `docs/designs/000-project-design.md §2b`.
 test: r1-001
 blueprint_version: 1            # the version this test was generated against
 generated: 2026-08-15           # date
+status: final                   # final by default if absent; draft is loud in CI
 generation_parameters:          # every choice made at instantiation, for repeatability
   section_points: {concept-block: 50, math-computation: 45, integrative-arc: 90,
                    engineering: 65, open-ended-notebook: 50}   # = the default anchors
@@ -70,6 +70,7 @@ problems:
     section: concept-block
     units: [C1-ml-fundamentals] # syllabus units this sub-part draws on
     concepts: [supervised-vs-unsupervised]   # vocabulary ids only
+    cluster: ml-concepts        # dominant cluster after cluster_fold; baseline-only may choose any distribution cluster
     points: 10
     difficulty: intro           # intro | core | advanced
     type: theory                # theory | programming
@@ -80,6 +81,7 @@ problems:
       10-pt intro MC testing supervised-vs-unsupervised via task-identification
       distractors; five options; no code.
     answer_key: "C"             # value the solution notebook / answers.md must reproduce
+    files: [theory/p01.md]      # optional extra text scanned by overlap-scan; spec-only if absent
     # For data-backed problems:
     # data:
     #   generator_script: data/gen_p05.py
@@ -90,6 +92,10 @@ Field rules:
 
 - `concepts` come from the syllabus vocabulary only; `prereq-check` verifies the student
   is never tested on an untaught concept (tested-only-if-taught).
+- `status` is `final` when absent. `status: draft` makes `blueprint-check` print a loud
+  draft warning; final manifests determine the exit code, and drafts-only exits 3.
+- `cluster` is required per problem for final manifests. It is the dominant
+  topic-distribution cluster after applying `cluster_fold`.
 - `answer_key` holds the canonical answer (choice letter, numeric value, or a pointer
   `solutions/<file>#<cell-tag>` for open-ended checks); solution execution must reproduce it.
 - `data.generator_script` + `data.seed` make datasets reproducible without reading
@@ -117,16 +123,13 @@ Field rules:
 
 ## Verification map (ci-local step 4 ↔ blueprint)
 
-| Check (plan 004) | Verifies |
-|------------------|----------|
-| manifest validation | schema above; points sum to `total_points`; concepts in vocabulary |
+| Check | Verifies |
+|-------|----------|
+| prereq-check | manifest schema shape; tested-only-if-taught closure over `units`/`concepts` |
 | blueprint-check | `texture`, `sections` ranges, `topic_distribution` (after `cluster_fold`), `difficulty_mix` bands |
-| overlap-scan | provenance rules vs the local reference corpus (SKIPS LOUDLY without corpus — run `bash scripts/fetch-reference.sh`) |
-| prereq-check | tested-only-if-taught closure over `units`/`concepts` |
+| overlap-scan | provenance rules vs the local reference corpus; loud skip without corpus names `bash scripts/fetch-reference.sh` |
 | coverage-check | (units, not mock tests) every taught concept practiced |
 | hygiene-check | student notebooks free of solutions/outputs |
-| solution execution | every solutions/ notebook runs clean and reproduces `answer_key` |
+| solution execution | every solutions/ notebook runs clean |
+| answer-key reproduction | PENDING (plan 006) |
 | PDF build | Quarto renders test.md + problems to `build/` |
-
-Until plan 004 ships, these print `SKIP (plan 004)` in ci-local and the content-review
-gate carries the load manually.

@@ -3,7 +3,6 @@ from pathlib import Path
 from tools.checks.coverage import check_coverage
 from tools.checks.prereq import check_prereq
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 

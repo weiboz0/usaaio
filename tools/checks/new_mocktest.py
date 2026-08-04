@@ -6,7 +6,6 @@ from pathlib import Path
 from tools.checks.blueprint import ARC_ROTATION, DEFAULT_ANCHORS, DEFAULT_TIME_BUDGET
 from tools.model import load_blueprint
 
-
 DIFFICULTY_DRAW = {"intro": 0.23, "core": 0.45, "advanced": 0.32}
 
 

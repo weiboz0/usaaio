@@ -14,7 +14,7 @@ step "2/6 unit tests (pytest)"
 uv run pytest -q
 
 step "3/6 solution-notebook execution"
-notebooks=$(find units mocktests -path '*/solutions/*.ipynb' -o -path '*/practice/*.ipynb' 2>/dev/null || true)
+notebooks=$(find units mocktests -path '*/solutions/*.ipynb' -o -path '*/practice/*solution*.ipynb' 2>/dev/null || true)
 if [[ -z "$notebooks" ]]; then
   echo "no notebooks yet — nothing to execute"
 else
@@ -23,14 +23,13 @@ else
     uv run jupyter execute "$nb"
   done <<< "$notebooks"
 fi
+echo "PENDING (plan 006): answer-key reproduction"
 
 step "4/6 manifest + content checks"
-echo "SKIP manifest validation      (plan 004)"
-echo "SKIP blueprint-check          (plan 004)"
-echo "SKIP overlap-scan             (plan 004)"
-echo "SKIP prereq-check             (plan 004)"
-echo "SKIP coverage-check           (plan 004)"
-echo "SKIP hygiene-check            (plan 004)"
+for c in prereq-check coverage-check hygiene-check blueprint-check overlap-scan; do
+  echo "running: $c"
+  uv run usaaio-tools "$c" || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
+done
 
 step "5/6 PDF build (quarto)"
 echo "SKIP (plan 006)"

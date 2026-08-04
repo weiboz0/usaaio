@@ -10,7 +10,6 @@ from typing import Any
 
 from tools.model import Report, _parse_yaml, load_mock_manifests
 
-
 SHINGLE_SIZE = 8
 SHINGLE_THRESHOLD = 2
 COSINE_THRESHOLD = 0.35
@@ -57,7 +56,7 @@ def _cosine(query: str, document: str, documents: list[str]) -> float:
 
 def _collect_text_fields(node: Any) -> list[str]:
     if isinstance(node, dict):
-        texts = [str(node["text"])] if "text" in node and node["text"] else []
+        texts = [str(node["text"])] if node.get("text") else []
         for value in node.values():
             texts.extend(_collect_text_fields(value))
         return texts

@@ -5,7 +5,6 @@ from pathlib import Path
 
 from tools.model import Report
 
-
 LEAK_MARKERS = ("# SOLUTION", "answer_key")
 
 

@@ -9,7 +9,6 @@ from tools.model import (
     load_unit_manifests,
 )
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
