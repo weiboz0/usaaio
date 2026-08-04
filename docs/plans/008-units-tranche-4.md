@@ -131,7 +131,7 @@ scope-note carve-out; plain-Python-first inheritance. Re-verdict requested.
 
 ### Review 2 — [codex] GPT-5.6-terra (2026-08-04)
 
-- **Verdict**: Changes requested → fixes applied, re-verdict pending
+- **Verdict**: Changes requested → **Approved** (re-verdict: unit-id pointers accepted as plan-mandated; staged executed lessons show no error outputs and narration matches recorded output)
 - Blind-solve: 6/6 agree (C5 p01/p11/p13, C6 p01/p11/p13 — MC keys, W_eff/b_eff, count 59,
   module outputs all match).
 1. `[FIXED]` [codex] Must Fix: prose "PyTorch engineering cluster" survived the C5 scrub in
