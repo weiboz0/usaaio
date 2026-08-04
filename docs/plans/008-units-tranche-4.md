@@ -64,13 +64,15 @@ Shared: A/B/C sets; v2 floors (≥4 MC w/ ≥1 numeric normal-form — parameter
 float64 default in C6 solution headers; dual-tag arithmetic flagged (21 instances vs
 18-20 → target 20, manifest flags); fresh-names rule explicit; "all solutions" phrasing.
 
+**GATE RESULT: PASS — 4/4** (claude-self AWN, glm AWN→fixed, codex REJECT→fixed→APPROVE clean, fable REJECT→AWN→nits fixed). Implementation may begin.
+
 ### Review 3½ — [codex] GPT-5.6-sol (2026-08-04): REJECT → fixed
 Blocker: torch dep needed the NAMED-index persistent form → Task 0 rewritten
 (`--index pytorch=URL`, verify both pyproject sections). Concern: module contract now
 requires nn.Parameter registration w/ requires_grad=False (plain tensors would break
 parameters()/state_dict). NITs: coverage/scope/floors verified clean by reviewer;
 its line refs raced the DenseLayer rename (contract fix applied to the renamed spec).
-Re-verdict requested.
+Re-verdict returned: **APPROVE — both fixes present at HEAD, no remaining nits.**
 
 ### Review 3 — [fable] Independent Fable 5 (2026-08-04): REJECT → resolved
 Both blockers (corpus structural-comparison duty; C5/C6 module-spec pin) were already
