@@ -207,4 +207,23 @@ Per mock manifest, against the blueprint: points sum == total_points; per-sectio
 
 ## Content Review
 
-(Code review findings land here.)
+### Review 1 — [claude-self] inline (2026-08-04)
+
+- **Verdict**: Approved with suggestions
+
+1. `[FIXED]` Implementation included a ~100-line hand-rolled YAML-subset fallback parser
+   in `tools/model.py` for the pyyaml-missing case — dead code (pyyaml is an unconditional
+   dependency) with silent-divergence risk. Removed along with its `_strip_comment`
+   helper; `_parse_yaml` now calls `yaml.safe_load` directly.
+2. `[FIXED]` Two test files read `mocktests/blueprint.yaml`/`syllabus.md` via CWD-relative
+   paths — anchored to `ROOT` (the fragility class most likely to explain the one
+   unreproduced failure below).
+3. `[OPEN]` Flake watch: `test_blueprint_flags_remaining_invariants_parametric
+   [problem count…]` failed exactly once in the first full-suite run and never again
+   (5+ clean re-runs, including 3 consecutive). No chdir/shared-fixture culprit found;
+   reviewers asked to hunt residual order dependence. Not merge-blocking unless a
+   reviewer finds the mechanism.
+4. Verified: 7 per-task commits; 52 tests pass ×3; ruff clean; ci-local ALL GREEN with
+   all five checks executing for real (overlap-scan PASS against the local corpus,
+   prereq/coverage vacuous-pass, hygiene vacuous, blueprint vacuous, PENDING plan-006
+   line present).
