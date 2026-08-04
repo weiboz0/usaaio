@@ -56,6 +56,16 @@ p17 frac 0.372); boundary convention step(0)=1 agreed everywhere incl. p15's ref
 and p20's exact-zero corner. Zero statement ambiguities flagged. All 20 solutions re-executed
 locally via jupyter execute: 20/20 PASS. No amendments needed — re-solve rule not triggered.
 
+**RECONCILIATION — C6 (2026-08-04): 20/20 AGREE.** Blind solver matches the outline on every
+problem: MC keys p01 D / p02 B / p03 C / p04 C; anchors exact (p11 count 59, p12 h=9 → 226,
+p13 outputs (0.75, 2.75, 2.75, 2.75, 1.25), p18 n_scalars 17 + b1_rect (2,0,1,1), p16 all-True
+freeze audit). Solver's two LOUD flags resolved as non-defects: (1) p05/p07 seed torch only —
+matches the outline's convention (NumPy seeded only where NumPy imports are permitted);
+(2) "keep this assert" starter cells were a C5-only device mistakenly echoed in the solver
+prompt — C6 statements never had them; solutions close with their own Answer-check asserts.
+All 20 solutions re-executed locally via jupyter execute: 20/20 PASS. No amendments — re-solve
+rule not triggered. Cumulative tranche-4 record: 40/40.
+
 ## Out of scope
 
 009 (C7+C8, torchvision/gensim), 010 (F6+C9+C10), 011 mock test, 012 course map. Training/autograd (never taught in this curriculum — the exam is inference-only for torch).
