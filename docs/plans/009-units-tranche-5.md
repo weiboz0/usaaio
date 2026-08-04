@@ -14,7 +14,9 @@
 `torchvision` from the SAME explicit pytorch CPU index (add `torchvision = { index = "pytorch" }`
 to `[tool.uv.sources]`, then `uv add torchvision` — the 008 pattern; NEVER a bare index add,
 the pytorch index shadows PyPI numpy). `gensim` from PyPI (`uv add gensim`).
-Verify both import; pin versions in the post-exec report.
+Verify both import; pin versions in the post-exec report **including the resolved
+torch↔torchvision pair (uv add must not bump torch; gensim needs ≥4.3.3 for numpy 2.x —
+record both).**
 **Download/cache pin:** pretrained weights and corpora are fetched at first execution and
 cached under `reference/cache/` (gitignored). **Path resolution pin (gate finding — notebooks
 execute with cwd = the notebook's own directory, so a relative cache path would scatter caches
@@ -123,7 +125,13 @@ pitfalls/exam-connections/going-deeper unit-wide (C7 → C10 by id; C8 → C9-di
 by id). SEED = 20260804 (+ torch.manual_seed in C7). C7 solution headers
 torch.set_default_dtype(torch.float64) EXCEPT cells touching pretrained resnet50 (float32
 weights are the artifact — compare with explicit atol=1e-6/rtol=1e-5, cast explicitly;
-state this exception in the C7 drafter prompt verbatim).
+state this exception in the C7 drafter prompt verbatim). **Input-side pin (gate finding):
+tensors fed to resnet50 are cast `.to(torch.float32)` AT THE MODEL BOUNDARY — under the
+course's float64 default a float64 input to float32 weights errors or promotes; every
+resnet-derived anchor is recorded from that exact float32 pipeline (never a promoted one),
+and the atol=1e-6/rtol=1e-5 pair is verified EMPIRICALLY on first execution (float32 carries
+~7 significant digits and resnet activations are O(10)) — widen per-problem with a comment
+if a specific anchor needs it.**
 
 ## Tasks
 
@@ -136,7 +144,9 @@ state this exception in the C7 drafter prompt verbatim).
    literals and the orchestrator re-executes locally with warm cache).
 5. Reconciliation (+ re-solve rule) + corpus duty.
 6. Verification phase (NAMED): five checks PASS, ci-local ALL GREEN (background; NOTE:
-   first-run downloads make this longer), assert scan, accessibility sweep (C7 torch-legal,
+   first-run downloads make this longer), assert scan **(explicitly verifying every
+   resnet-touching cell carries the float32 boundary cast + stated atol/rtol — the
+   exception must live in cells, not prose; gate finding)**, accessibility sweep (C7 torch-legal,
    C8 torch-free; gensim vocabulary C8-only), estimated_minutes.
 7. Ship: content gate (self + codex 5.6-terra + opus + glm; blind-solve ≥3/unit incl ≥1 proof;
    execute-lessons duty; **network-denied reviewer sandboxes get the 008 device pre-named:
@@ -171,6 +181,11 @@ in. New fixes from its round: torch.inference_mode() around all forwards (silent
 absolute repo-root cache-path recipe (relative TORCH_HOME would scatter caches per-notebook —
 real bug); np.argsort taught inline in C8-03 + keepdims gloss in C8-02; .gate9-executed/
 staging pre-named for network-denied gate reviewers.
+
+### Review 3 — [glm] GLM 5.2 (2026-08-04): APPROVE WITH NITS → all resolved
+Input-side float32 boundary-cast pin added (float64 default × float32 pretrained weights);
+empirical tolerance verification mandated; Task 6 assert scan now names the exception cells;
+Task 0 records the resolved torch↔torchvision pair + gensim ≥4.3.3.
 
 ## Content Review
 
