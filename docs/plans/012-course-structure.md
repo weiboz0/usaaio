@@ -12,27 +12,30 @@ Manifests' `estimated_minutes` (totals: lessons 3,900 + practice 7,160 + reviews
 
 `docs/course-structure.md`, semantic line breaks, containing:
 
-1. **Course model:** weekly budget 7.5 h — DERIVED split 2.5 h in-class + 5 h independent
-   (lesson total 65 h and practice+review total 130 h over 26 weeks divide exactly; gate
-   fix — the split is computed, not assumed) → 195 h = 26 teaching weeks = two 13-week
-   semesters.
+1. **Course model:** two 13-week semesters with PER-SEMESTER weekly loads (gate fix —
+   a flat 7.5 h/wk leaves S1 overflowing): S1 = 101.1 h → 7.8 h/wk; S2 = 93.9 h content +
+   3-h mock + 1-h debrief = 97.9 h → 7.5 h/wk. Course-wide derived split ≈2.5 h in-class +
+   ≈5 h independent (lesson 65 h / practice+review 130 h). All figures computed from
+   manifests, none assumed.
 2. **Semester split (DAG-respecting, hour-balanced):**
    - Semester 1 (≈101 h): F1 → F2 → {F4, F3} → F5 → C1 → C2 → C3 → C4. Foundations plus
      the classical-ML core; ends with C4's sklearn practice as the semester capstone.
    - Semester 2 (≈94 h): C5 → C6 → C7 ∥ C8 → F6 → C9 → C10 → r1-001 as the final-week
      mock exam (3 h) + debrief. F6 placed mid-semester-2 directly before C9 (its consumer),
-     its five sessions split across two teaching weeks (3 + 2 — the double-unit weight).
+     its five 85-min sessions spread across two-and-a-half teaching weeks (2+2+1 — the
+     double-unit weight; each sitting stays inside the 60-90-min session rule).
 3. **Week-by-week table:** one row per week — units/sessions covered, in-class vs
    independent minutes (from lesson_sessions / practice / review), the unit-review
-   checkpoints as week-end gates, and the mock-exam week. Pacing reconciliation (gate fix): semester loads are
-   7.8 h/wk (S1) vs 7.2 h/wk (S2); S2's ≈4 h cumulative slack absorbs the 3-h mock + 1-h
-   debrief exactly, keeping everything inside the 26 weeks — the table shows this
-   explicitly in the final week's row.
+   checkpoints as week-end gates (F1 has no review artifact — its gate is the F2-opening
+   recap, noted in the table), and the mock-exam week. Pacing: the per-semester loads above already
+   include the mock + debrief in S2's final week — the table's rows sum exactly to
+   101.1 h and 97.9 h.
 4. **Milestones & assessment:** unit reviews as formative checks; r1-001 as the summative
    mock (blueprint-scored, 300 pts); a slot marked for r1-002 as an optional
    semester-1-end or pre-exam second mock (generated on demand via the pipeline).
 5. **Provenance note:** all numbers derive from unit manifests; the regeneration one-liner
-   (the yaml-summing snippet) included in a comment for maintainers.
+   included in a comment for maintainers — it MUST sum `lesson_sessions` (C1's manifest
+   has no `lesson:` scalar; summing `lesson:` undercounts by 240 — gate catch).
 6. **Prereq-integrity statement:** the week order is a topological order of the syllabus
    DAG (each unit scheduled after all its prereqs; verified in-document by listing each
    unit's prereqs beside its week).
@@ -68,6 +71,13 @@ All arithmetic and topology verified exact. Nits fixed in the plan: the weekly s
 the DERIVED 2.5/5 (not the assumed 3/4.5 — lesson 65 h and practice+review 130 h divide 26
 exactly); the mock+debrief absorption into S2's 4-h slack pinned for the week table; F6's
 "two sittings" made concrete (sessions 3+2 across two weeks).
+
+### Review 3 — [fable] Independent Fable 5 (2026-08-07): APPROVE WITH NITS → all resolved
+Arithmetic + DAG independently verified. Major 4 (F6 sittings) raced the glm fix and is now
+further tightened (2+2+1 sessions, 60-90-min rule respected). Major 5 (zero slack — S1
+overflows a flat 7.5): fixed with honest PER-SEMESTER loads (7.8/7.5 incl. mock+debrief).
+Minors: regeneration snippet pinned to lesson_sessions (C1 trap); F1's missing review gate
+handled in the table spec.
 
 ## Content Review
 
