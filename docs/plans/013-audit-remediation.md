@@ -129,14 +129,16 @@ none. Watch-list topics.
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
 
 - **Verdict**: APPROVE WITH NITS (pre-emption applied)
-1. `[FIXED-pre-gate]` Guard scope pinned: tolerance-check scans SOLUTION notebooks only
+1. `[FIXED-pre-gate, SUPERSEDED by the fable round — statements' code cells now in scope]`
+   Guard scope originally pinned: tolerance-check scans SOLUTION notebooks only
    (statements legitimately describe tolerances in prose) and only np.isclose/np.allclose
    CALLS (exact comparisons via == are out of scope by construction).
 2. `[VERIFIED]` New-id arithmetic: tensor-shape-tracing 3+1(dual)=4, the other three ids
    3 each; closures derive in-chain for C7/C4/C10; convolution keeps its count through
    the dual-tag while gaining its advanced ceiling.
 
-### Review 3 — [fable] Independent Fable 5 (2026-08-07): REJECT → all resolved
+### Review 3 — [fable] Independent Fable 5 (2026-08-07): REJECT → **APPROVE WITH NITS**
+(re-verdict: all six resolved; stale self-review note annotated superseded)
 Majors: coverage-check ≥1-not-≥3 claim falsified → Task 0 now EXTENDS coverage.py to ≥3
 (repo-wide immediate run, failures errata-adjudicated); guard family completed (torch.isclose,
 rtol-only class); inventory authority moved to the guard itself (~470 est. vs my stale 382).
