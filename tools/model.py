@@ -92,6 +92,7 @@ class ManifestProblem:
     adapted_from: str | None
     spec: str
     answer_key: Any
+    answer_tolerance: float | None
     data: dict[str, Any] | None
     cluster: str | None
     files: list[str]
@@ -202,6 +203,10 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
 
 
 def _problem_from(item: dict[str, Any]) -> ManifestProblem:
+    raw_tolerance = item.get("answer_tolerance")
+    answer_tolerance = None if raw_tolerance is None else float(raw_tolerance)
+    if answer_tolerance is not None and answer_tolerance < 0:
+        raise ValueError("answer_tolerance must be non-negative")
     return ManifestProblem(
         id=item["id"],
         section=item["section"],
@@ -215,6 +220,7 @@ def _problem_from(item: dict[str, Any]) -> ManifestProblem:
         adapted_from=item.get("adapted-from") or item.get("adapted_from"),
         spec=item.get("spec", ""),
         answer_key=item.get("answer_key"),
+        answer_tolerance=answer_tolerance,
         data=item.get("data"),
         cluster=item.get("cluster"),
         files=list(item.get("files", [])),

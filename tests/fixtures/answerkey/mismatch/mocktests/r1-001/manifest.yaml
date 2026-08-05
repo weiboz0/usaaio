@@ -1,0 +1,7 @@
+test: r1-001
+blueprint_version: 1
+status: final
+problems:
+  - id: r1-001-p01
+    section: concept-block
+    answer_key: C
