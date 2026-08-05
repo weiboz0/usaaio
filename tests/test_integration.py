@@ -93,8 +93,11 @@ def test_full_pipeline_on_synthetic_test(tmp_path):
     seed_repo(tmp_path)
     unit_dir = tmp_path / "units" / "F1-scientific-python"
     (unit_dir / "practice").mkdir(parents=True)
-    (unit_dir / "practice" / "p01.ipynb").write_text('{"cells":[],"metadata":{},"nbformat":4,"nbformat_minor":5}')
-    (unit_dir / "practice" / "p01_solution.ipynb").write_text("{}")
+    for number in range(1, 4):
+        (unit_dir / "practice" / f"p{number:02}.ipynb").write_text(
+            '{"cells":[],"metadata":{},"nbformat":4,"nbformat_minor":5}'
+        )
+        (unit_dir / "practice" / f"p{number:02}_solution.ipynb").write_text("{}")
     (unit_dir / "manifest.yaml").write_text(
         """
 unit: F1-scientific-python
@@ -106,6 +109,14 @@ practice:
     concepts: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics]
     path: practice/p01.ipynb
     solution_path: practice/p01_solution.ipynb
+  - id: p02
+    concepts: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics]
+    path: practice/p02.ipynb
+    solution_path: practice/p02_solution.ipynb
+  - id: p03
+    concepts: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics]
+    path: practice/p03.ipynb
+    solution_path: practice/p03_solution.ipynb
 """
     )
     scaffold_mocktest(tmp_path, "r1-001", "2026-08-15")

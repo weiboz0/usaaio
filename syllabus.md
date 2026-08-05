@@ -102,6 +102,7 @@ concepts:
   - {id: csv-data-loading,          cluster: applied-ml}
   - {id: sklearn-pipelines,         cluster: applied-ml}
   - {id: cross-validation,          cluster: applied-ml}
+  - {id: tabular-feature-engineering, cluster: applied-ml}
   # --- C5 ---
   - {id: perceptron,                cluster: pytorch}
   - {id: activation-functions,      cluster: pytorch}
@@ -128,6 +129,7 @@ concepts:
   - {id: model-truncation,          cluster: cnn-vision}
   - {id: layer-freezing,            cluster: cnn-vision}
   - {id: transfer-learning,         cluster: cnn-vision}
+  - {id: tensor-shape-tracing,      cluster: cnn-vision}
   # --- C8 ---
   - {id: tokenization,              cluster: nlp-embeddings}
   - {id: word-embeddings,           cluster: nlp-embeddings}
@@ -141,6 +143,8 @@ concepts:
   - {id: umap-concept,              cluster: ml-concepts}
   - {id: local-vs-global-structure, cluster: ml-concepts}
   # --- C10 ---
+  - {id: normal-form-answers,       cluster: competition-craft}
+  - {id: api-constraint-compliance, cluster: competition-craft}
   - {id: notebook-discipline,       cluster: competition-craft}
   - {id: hidden-test-protocol,      cluster: competition-craft}
   - {id: prediction-function-contract, cluster: competition-craft}
@@ -206,7 +210,7 @@ units:
     title: Classical ML Practice with sklearn and pandas
     prereqs: [C1-ml-fundamentals, F1-scientific-python, F2-vectors, F5-probability]
     teaches: [knn, feature-scaling, pandas-basics, csv-data-loading, sklearn-pipelines,
-              cross-validation]
+              cross-validation, tabular-feature-engineering]
   - id: C5-neural-networks
     track: core
     title: Neural Networks from First Principles
@@ -225,7 +229,7 @@ units:
     prereqs: [C6-pytorch]
     teaches: [convolution, feature-maps, receptive-field, feature-hierarchy,
               resnet-architecture, bottleneck-blocks, model-truncation, layer-freezing,
-              transfer-learning]
+              transfer-learning, tensor-shape-tracing]
   - id: C8-embeddings
     track: core
     title: Word Embeddings and Similarity
@@ -242,7 +246,8 @@ units:
     title: Competition and Notebook Craft
     prereqs: [C4-classical-ml-practice]
     teaches: [notebook-discipline, hidden-test-protocol, prediction-function-contract,
-              metric-driven-iteration, writeup-quality]
+              metric-driven-iteration, writeup-quality, normal-form-answers,
+              api-constraint-compliance]
 ```
 
 ## Foundation track — rationale
