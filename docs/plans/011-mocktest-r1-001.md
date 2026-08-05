@@ -13,7 +13,8 @@ two tools that turn ci's last stub lines green (answer-key reproduction; Quarto 
 
 0a. **Quarto**: user-space install (official tarball → `~/.local/quarto`, symlink on PATH via
     `~/.local/bin`); PDF via the BUNDLED typst engine (`format: typst` — no TeX install).
-    Pin the version (1.6.x line) + verify the tarball's published sha256; record both. If the download is blocked, record and fall back to
+    Pin **quarto 1.6.42 exactly** + verify the tarball against its published sha256 checksum
+    file; record both. If the download is blocked, record and fall back to
     `nbconvert --to html` as a TEMPORARY build (HTML, NOT a PDF — recorded honestly; the
     TEMPORARY build does NOT satisfy Task 5's PDF gate — merge blocks until quarto lands) (decision recorded here:
     quarto+typst is the design-pinned route).
@@ -120,16 +121,58 @@ arc sub-parts 14 ∈ [12, 16] ✓; section sums 50/45/90/65/50 = 300 = the ancho
 **Cluster ledger (test-global, all within min/max; every problem's clusters drawn from its
 SECTION's allowed list — gate blocker fixed):** ml-concepts 50 (P1) · calculus-multivar 5 (P2a) ·
 probability-statistics 10 (P2b-c) · linear-algebra 75 (P3 15 + P4 15 + P5 45; ≤ 80) ·
-nlp-embeddings 15 (P5 first three) · numpy 50 (P5 30 + P6 20) · pytorch 35 (P7 15 + P8 20;
-≥ 30) · cnn-vision 10 (P7; ≤ 20, = target) · applied-ml 50 (P9). Sum 300 ✓.
+nlp-embeddings 15 (p05-1..3) · numpy 50 (P5 beats 4/5/8/12/13/14 = 30, + P6 20) · pytorch
+35 (P7 beats 1/2/5 = 15 + P8 20; ≥ 30) · cnn-vision 10 (P7 beats 3/4; ≤ 20, = target) ·
+applied-ml 50 (P9). Sum 300 ✓ — every row of the spec table sums to exactly this ledger.
 
-**Per-sub-part completion rule:** these specs pin section/points/type/cluster per sub-part;
-Task 1 completes each manifest entry's {difficulty, answer_form, concepts (canonical ids),
-provenance} under the aggregate ledgers below — recorded as spec: fields so the manifest
-alone is authoritative (zero free choices REMAINING after Task 1's commit).
+**COMPLETE per-sub-part spec table (gate blocker: mocktest-generation.md requires full
+specs in the plan BEFORE prose — Task 1 transcribes, zero free choices):**
 
-**Difficulty ledger (point shares):** intro 70 (0.233 ∈ [.15,.30]) · core 135 (0.45 ∈
-[.35,.55]) · advanced 95 (0.317 ∈ [.25,.40]) — per-sub-part bands assigned in the manifest.
+| id | pts | diff | type / answer_form | cluster | concepts | prov |
+|----|-----|------|--------------------|---------|----------|------|
+| p01-1 | 10 | intro | theory / MC | ml-concepts | supervised-vs-unsupervised | orig |
+| p01-2 | 10 | core | theory / MC | ml-concepts | overfitting | orig |
+| p01-3 | 10 | core | theory / MC | ml-concepts | train-test-split | orig |
+| p01-4 | 10 | core | theory / MC | ml-concepts | f1-macro, accuracy-precision-recall | orig |
+| p01-5 | 10 | intro | theory / MC | ml-concepts | clustering-concept | orig |
+| p02-1 | 5 | intro | theory / MC-normal-form | calculus-multivar | tanh-derivative, multivar-chain-rule | orig |
+| p02-2 | 5 | core | theory / short-answer | probability-statistics | variance-of-sums, independence | orig |
+| p02-3 | 5 | core | theory / proof (reasoning req.) | probability-statistics | weight-init-variance, variance | orig |
+| p03-1 | 5 | intro | theory / MC-normal-form | linear-algebra | eigenvalues-eigenvectors | orig |
+| p03-2 | 10 | core | theory / proof (reasoning req.) | linear-algebra | eigenvalues-eigenvectors, linear-independence-span | orig |
+| p04-1 | 5 | intro | theory / MC-normal-form | linear-algebra | frobenius-norm | orig |
+| p04-2 | 10 | core | theory / proof (reasoning req.) | linear-algebra | spectral-decomposition, outer-products, orthogonality-orthonormality | orig |
+| p05-1 | 5 | intro | programming / code | nlp-embeddings | tokenization | orig |
+| p05-2 | 5 | intro | theory / short-answer | nlp-embeddings | tokenization | orig |
+| p05-3 | 5 | core | programming / code | nlp-embeddings | gensim-usage, word-embeddings | orig |
+| p05-4 | 5 | intro | programming / code | numpy | embedding-matrices, numpy-arrays | orig |
+| p05-5 | 5 | core | programming / code | numpy | broadcasting, vectorization | orig |
+| p05-6 | 5 | core | theory / short-answer | linear-algebra | cosine-similarity, unit-vectors | orig |
+| p05-7 | 15 | advanced | theory / proof (reasoning req.) | linear-algebra | similarity-matrices, matrix-multiplication | **adapted ← r1-2026-p05-6** |
+| p05-8 | 5 | core | programming / code | numpy | svd (API call — exam's own p05-11 tagging precedent) | orig |
+| p05-9 | 5 | core | theory / short-answer | linear-algebra | svd, singular-values | orig |
+| p05-10 | 5 | advanced | programming / code | linear-algebra | spectral-decomposition, svd | orig |
+| p05-11 | 15 | advanced | theory / proof (reasoning req.) | linear-algebra | low-rank-approximation, frobenius-norm | **adapted ← r1-2026-p05-14** |
+| p05-12 | 5 | core | programming / code | numpy | low-rank-approximation, vectorization | orig |
+| p05-13 | 5 | core | programming / code | numpy | low-rank-approximation, aggregation-axis | orig |
+| p05-14 | 5 | core | theory / short-answer | numpy | low-rank-approximation (float-count register) | orig |
+| p06-1 | 5 | intro | programming / code | numpy | broadcasting | orig |
+| p06-2 | 5 | core | programming / code | numpy | nearest-neighbor-search, array-indexing-slicing | orig |
+| p06-3 | 5 | core | programming / code | numpy | relu-activation, elementwise-ops | orig |
+| p06-4 | 5 | intro | programming / code | numpy | random-seeding, aggregation-axis | orig |
+| p07-1 | 5 | core | programming / code | pytorch | nn-module, custom-layers | orig |
+| p07-2 | 5 | core | programming / code | pytorch | torch-tensors, manual-weights | orig |
+| p07-3 | 5 | advanced | theory / numeric (no numel, reasoning req.) | cnn-vision | bottleneck-blocks, parameter-counting | orig |
+| p07-4 | 5 | advanced | programming / code | cnn-vision | model-truncation, resnet-architecture | orig |
+| p07-5 | 5 | core | programming / code | pytorch | layer-freezing, requires-grad | orig |
+| p08-1 | 5 | intro | programming / code | pytorch | threshold-activation, nn-module | orig |
+| p08-2 | 5 | core | programming / code | pytorch | decision-boundaries-geometric, manual-weights | orig |
+| p08-3 | 5 | advanced | programming / code | pytorch | mlp-architecture, custom-layers | orig |
+| p08-4 | 5 | core | programming / code | pytorch | parameter-counting | orig |
+| p09 | 50 | advanced | programming / notebook | applied-ml | prediction-function-contract, hidden-test-protocol, metric-driven-iteration, knn, writeup-quality | orig |
+
+**Difficulty ledger (from the table):** intro 65 (0.217 ∈ [.15,.30]) · core 135 (0.45 ∈
+[.35,.55]) · advanced 100 (0.333 ∈ [.25,.40]).
 
 - **P1** (concept-block, 50 = 5 MC × 10, the pinned 10-point-atom style, opening position):
   supervised-vs-unsupervised task identification; overfitting from a learning-curve
@@ -210,6 +253,16 @@ explicit sampling rule.
 3. `[VERIFIED]` Section sums 50/45/90/65/50 = 300 against the anchors; 8 total MC sub-parts
    matches the 2026 anchor; all named concepts spot-checked taught (dependent-rows eigen F6,
    bottleneck C7, GloVe C8, contract register C10).
+
+### Review 7 — [codex] re-verdict 2 (2026-08-06): REJECT → fixed
+Live blocker: the Task-1 deferral contradicted mocktest-generation.md's specs-before-prose
+rule → the COMPLETE 40-row per-sub-part spec table now lives in the plan (points/difficulty/
+type/answer-form/cluster/canonical-concepts/provenance per row; Task 1 transcribes with
+zero free choices). Cluster honesty: 5.6 retagged linear-algebra (cosine is F2/LA family),
+5.8 tagged numpy on the exam's own p05-11 precedent — per-beat sums now equal the ledger
+exactly (LA 75, numpy 50, margins restored). Difficulty ledger recomputed from the table
+(65/135/100). Quarto pinned 1.6.42 exactly + published sha256. Its other specifics raced
+prior fixes. Third re-verdict requested.
 
 ### Review 6 — [fable] re-verdict (2026-08-06): APPROVE WITH NITS → resolved
 Independent re-derivation of all ledgers confirms; WONTFIX on the arc texture ACCEPTED
