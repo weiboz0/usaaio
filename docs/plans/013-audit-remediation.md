@@ -181,6 +181,14 @@ Values genuine; contract corrected to atol=1e-6, rtol=0 with an in-cell rational
 still ~6000× tighter than the pre-retrofit default-rtol slack. 2-way: sol flagged + stopped
 per protocol; orchestrator measured and disposed. No statement change → no re-solve.
 
+**RECONCILIATION (2026-08-08): 18/18 AGREE** (blind sol session vs the drafter outline —
+every anchor exact incl. C5-p21's (7,−11)/9 geometry, C7's shape chains, C10's decode
+values; zero ambiguities flagged). All 18 re-executed locally 18/18. Corpus note: the
+tensor-shape problems use fresh dimensions (74/113/187-decode etc. — grep-verified absent
+from the exam's 224-chain), the feature-engineering items live on fresh seeded data, and
+the decode drills use fresh fractions; register-instantiation only. Verification: prereq,
+coverage (≥3 machine-enforced, incl. the 4 new ids), hygiene, tolerance — ALL PASS.
+
 ## Content Review
 
 (Pre-PR gate findings land here.)
