@@ -97,4 +97,13 @@ handled in the table spec.
 
 ## Content Review
 
-(Pre-PR gate findings land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
+
+- **Verdict**: Approved
+- Table column sums verified programmatically (26 rows: S1 1,970+4,095 = 6,065; S2
+  2,170+3,705 = 5,875 — both exact). Per-unit practice allocations hand-verified for all
+  16 units against manifests (two initial flags were my parser's regex artifacts — C4's
+  "capstone-practice" phrasing and prereq-list mis-attribution — both totals correct:
+  460 and 420). All pinned devices present (per-semester loads, F6 2+2+1, F1 recap gate,
+  r1-002 displacement, C-set-first buffer, prereqs beside weeks, lesson_sessions
+  regeneration one-liner printing 3900/7160/640).
