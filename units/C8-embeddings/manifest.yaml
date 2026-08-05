@@ -3,7 +3,7 @@ concepts_taught: [tokenization, word-embeddings, embedding-matrices, similarity-
   nearest-neighbor-search, gensim-usage]
 concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting, vectorization,
   aggregation-axis, random-seeding, matplotlib-basics, vectors-and-norms, dot-product,
-  cosine-similarity, unit-vectors, distance-metrics, matrices-as-linear-maps, matrix-multiplication]
+  cosine-similarity, unit-vectors, distance-metrics, matrix-multiplication]
 prereq_units: [F2-vectors, F3-matrices, F1-scientific-python]
 estimated_minutes:
   lesson: 250
