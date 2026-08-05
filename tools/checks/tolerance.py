@@ -28,14 +28,17 @@ MODULE_NAMES = {
 
 
 def _notebooks(root: Path) -> list[Path]:
+    # Scan EVERY notebook under the content trees — no filename allowlist.
+    # An allowlist silently exempts any future path (the gate caught this class when a
+    # reviewer asked about a hypothetical units/*/overview.ipynb); globbing the trees means
+    # a new notebook is guarded the moment it lands. Build artifacts and checkpoints are the
+    # only exclusions.
+    excluded = {".ipynb_checkpoints", "build"}
     candidates = {
-        *root.glob("units/*/practice/*.ipynb"),
-        *root.glob("units/*/practice/*_solution.ipynb"),
-        *root.glob("units/*/lessons/*.ipynb"),
-        *root.glob("units/*/review.ipynb"),
-        *root.glob("units/*/lesson.ipynb"),
-        *root.glob("mocktests/*/solutions/*.ipynb"),
-        *root.glob("mocktests/*/problems/*.ipynb"),
+        path
+        for tree in ("units", "mocktests")
+        for path in root.glob(f"{tree}/**/*.ipynb")
+        if not (excluded & set(path.parts))
     }
     return sorted(candidates)
 

@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import nbformat
@@ -210,3 +211,55 @@ def test_tolerance_schema_validation_failure_maps_to_exit_1(tmp_path, capsys):
 def test_tolerance_zero_notebooks_maps_to_exit_3(tmp_path, capsys):
     assert main(["--root", str(tmp_path), "tolerance-check"]) == 3
     assert "SKIP tolerance-check" in capsys.readouterr().out
+
+
+def test_scans_any_notebook_path_under_content_trees(tmp_path):
+    """A notebook at a path no allowlist anticipated must still be guarded."""
+    from tools.checks.tolerance import check_tolerance
+
+    novel = tmp_path / "units" / "X1-unit" / "extras" / "supplement.ipynb"
+    novel.parent.mkdir(parents=True)
+    novel.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "code",
+                        "metadata": {},
+                        "source": ["import numpy as np\n", "np.isclose(1.0, 1.0)\n"],
+                    }
+                ],
+                "metadata": {},
+                "nbformat": 4,
+                "nbformat_minor": 5,
+            }
+        )
+    )
+    report = check_tolerance(tmp_path)
+    assert not report.ok
+    assert any("supplement.ipynb" in e for e in report.errors)
+
+
+def test_build_artifacts_are_not_scanned(tmp_path):
+    from tools.checks.tolerance import check_tolerance
+
+    art = tmp_path / "mocktests" / "r1-001" / "build" / "rendered.ipynb"
+    art.parent.mkdir(parents=True)
+    art.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "code",
+                        "metadata": {},
+                        "source": ["import numpy as np\n", "np.isclose(1.0, 1.0)\n"],
+                    }
+                ],
+                "metadata": {},
+                "nbformat": 4,
+                "nbformat_minor": 5,
+            }
+        )
+    )
+    report = check_tolerance(tmp_path)
+    assert report.skipped is not None or report.ok
