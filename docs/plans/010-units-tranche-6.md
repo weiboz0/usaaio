@@ -30,9 +30,16 @@ C9 consumes C8's convention by name: embedding stack `W` (N, 100), rows = tokens
 unit-normalized, `S = W @ W.T`. NOTE: np.linalg is LEGAL from F6 onward for eigen/SVD calls
 (`np.linalg.svd`, `np.linalg.eig`, `np.linalg.eigh`, `np.linalg.norm` where stated; NOTE
 `eigh` returns eigenvalues ASCENDING — the pinned idiom is `vals[::-1]`/`vecs[:, ::-1]`
-reorder to the descending convention, taught once in F6-02; gate finding) — the
-C2/C5/C8 np.linalg bans were per-problem skill-forcing devices, not a curriculum ban; F6
-statements say explicitly which calls are allowed per problem.
+reorder to the descending convention, taught once in F6-02; gate finding). **Eigenvector/
+singular-vector SIGN pin (gate finding): u and −u are both valid — every cross-route
+comparison (F6-05's spectral-from-SVD vs eigh, C9's loadings) either compares absolute
+values or sign-fixes first (largest-|entry| component made positive), pinned once in F6-02
+and reused verbatim** — the
+C2/C5/C8 np.linalg bans were per-problem skill-forcing devices, not a curriculum ban — the
+EXAM ITSELF scopes this per-problem (P5-4 bans np.linalg for hand-normalization while
+P5-11 hints np.linalg.svd), so the flip mirrors the exam's own register; F6 statements say
+explicitly which calls are allowed per problem, and F6's lesson 03 states the scoping
+sentence once for students.
 
 ## Units
 
@@ -87,7 +94,10 @@ local-vs-global-structure)
   rows S vs S_r),
   `03-maps-and-structure` (umap-concept AS CONCEPT: neighbor-graph intuition, "local
   neighborhoods preserved, global distances distorted" — stated-fact register with a
-  PCA-vs-concept contrast on a seeded two-cluster dataset; local-vs-global-structure:
+  PCA-vs-concept contrast on a seeded CURVED-MANIFOLD dataset (an S-curve-style parametric
+  arc built in NumPy — a shape where local neighborhoods genuinely survive projection while
+  global distances distort; a plain two-cluster blob would NOT demonstrate the taught
+  concept — gate finding); local-vs-global-structure:
   which questions each view answers; reading 2-D maps critically — axes of a nonlinear map
   carry no units; NO umap library anywhere).
 - 18 problems: floors = 18 exactly. 4 concepts × 3 = 12 ≤ 18: no dual-tags required.
@@ -141,11 +151,16 @@ Proof anchors asserted in code. isclose contract: stated atol + rtol=0.
 2-4. Fable drafters ×3 (parallel — the shared notation pin makes F6/C9 concurrent-safe;
    C10 independent): lessons + statements + review + outlines (+ C10's data/make_dataset.py).
 5-7. sol blind solvers ×3 (parallel, per-unit scope).
-8. Reconciliation (+ re-solve rule) + corpus duty.
+8. Reconciliation (+ re-solve rule) + corpus duty. **F6→C9 dependency check: if
+   reconciliation amends F6's bridge/notation content, C9's statements are re-checked
+   against the shared pin before the gate (gate finding).**
 9. Verification phase (NAMED): five checks PASS, ci-local ALL GREEN (background), assert scan
    (atol+rtol=0 contract), accessibility sweep (F6: foundation-track — no ML/probability
    vocabulary; C9: torch-free strings; C10: sklearn-legal), estimated_minutes, C10 harness
-   determinism check (two fresh runs of make_dataset.py byte-identical).
+   determinism check (two fresh runs of make_dataset.py byte-identical), **C10 leakage sweep:
+   student-register notebooks never read/print the held-back split (the generator is
+   student-visible; the protocol lives in the register — grep student notebooks for the
+   test-split artifacts; gate finding).**
 10. Ship: content gate (self + codex 5.6-terra + opus + glm PER-UNIT ×3; blind-solve ≥3/unit
    incl ≥1 proof; narration duty on staged .gate10-executed/), post-exec report, TODO tick,
    PR, guard, squash-merge.
@@ -180,6 +195,13 @@ self-checks replace the cross-check cell). MINOR 3 raced the self-review trace f
 component-routed). MINOR 4: eigh-ascending → pinned [::-1] reorder idiom. NIT 5: 24-problem
 wording corrected (bottom of the 24-30 double band, deliberate). NIT 6: claim-by-claim rubric
 restored to the header contract.
+
+### Review 3 — [glm] GLM 5.2 (2026-08-05): APPROVE WITH NITS → all resolved
+S-curve vehicle pinned for umap-concept (two-cluster wouldn't demonstrate local-vs-global);
+sign-fixing pin added for all cross-route eigenvector comparisons; np.linalg-flip phrasing
+reconciled with C8's exam-register framing (the exam itself scopes per-problem: P5-4 vs
+P5-11); F6→C9 reconciliation dependency check added to Task 8; C10 leakage sweep added to
+Task 9. Trace nit raced the self-review fix (already component-routed).
 
 ## Content Review
 
