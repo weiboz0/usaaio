@@ -73,6 +73,22 @@ executed; synthesis manifest validates.
 4-way content gate (self + codex terra + opus + glm ×2 by scope: synthesis / rest);
 blind-solve ≥3 synthesis arcs per reviewer; post-exec report, TODO, PR, guard, squash-merge.
 
+## Plan Review
+
+### Review 1 — [claude-self] inline (2026-08-05, Opus session model)
+
+- **Verdict**: APPROVE WITH NITS (pre-emptions applied below)
+1. `[FIXED-pre-gate]` Synthesis-set counting rule made explicit in Task 1: synthesis problems
+   satisfy prereq closure against the full taught set but are EXCLUDED from every unit's ≥3
+   coverage tally — otherwise they could silently substitute for unit practice, which the
+   013 rule exists to prevent.
+2. `[FIXED-pre-gate]` Task 3 scope guard stated: teaching cross-entropy does NOT introduce
+   training; problems stay in the inference/analysis register (evaluate a loss, prove
+   shift-invariance) with no optimizer or backward call.
+3. `[NOTED]` Model-delegation context: all Fable slots run as gpt-5.6-sol until
+   2026-08-09 16:00; gate slot 3 is a second, independent sol session prompted not to
+   assume slot 2's findings.
+
 ## Inherited item (from 013's gate, recorded)
 
 **ci lesson-execution scope.** ci step 3 executes only `*_solution`/`solutions/*`, so lesson
