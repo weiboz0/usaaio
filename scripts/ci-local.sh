@@ -7,13 +7,13 @@ cd "$(dirname "$0")/.."
 
 step() { echo; echo "=== $1 ==="; }
 
-step "1/6 lint (ruff)"
+step "1/7 lint (ruff)"
 uv run ruff check tools/ tests/
 
-step "2/6 unit tests (pytest)"
+step "2/7 unit tests (pytest)"
 uv run pytest -q
 
-step "3/6 solution-notebook execution"
+step "3/7 solution-notebook execution"
 notebooks=$(find units mocktests -path '*/solutions/*.ipynb' -o -path '*/practice/*solution*.ipynb' 2>/dev/null || true)
 if [[ -z "$notebooks" ]]; then
   echo "no notebooks yet — nothing to execute"
@@ -36,16 +36,19 @@ PYEOF
 fi
 uv run usaaio-tools answerkey-check || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 
-step "4/6 manifest + content checks"
+step "4/7 register verification"
+python3 scripts/verify-register.py || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
+
+step "5/7 manifest + content checks"
 for c in prereq-check coverage-check tolerance-check hygiene-check blueprint-check overlap-scan; do
   echo "running: $c"
   uv run usaaio-tools "$c" || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 done
 
-step "5/6 PDF build (quarto)"
+step "6/7 PDF build (quarto)"
 bash scripts/build-pdf.sh || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 
-step "6/6 pre-merge-guard"
+step "7/7 pre-merge-guard"
 bash scripts/pre-merge-guard.sh
 
 echo
