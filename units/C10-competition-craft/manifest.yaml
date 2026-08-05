@@ -5,7 +5,7 @@ concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcast
   aggregation-axis, random-seeding, matplotlib-basics, pandas-basics, csv-data-loading, knn,
   feature-scaling, sklearn-pipelines, cross-validation, train-test-split, overfitting,
   accuracy-precision-recall, f1-score, f1-macro, supervised-vs-unsupervised, distance-metrics,
-  vectors-and-norms]
+  vectors-and-norms, random-variables, expectation, sampling-simulation]
 prereq_units: [C4-classical-ml-practice]
 estimated_minutes:
   lesson: 250
