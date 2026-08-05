@@ -73,6 +73,18 @@ arithmetic-verification duty (design §2 exemption stated).
   foundation-only prereqs make the C7 ∥ C8 parallelism legal; C9's four prereqs all
   precede it; C4's all in semester 1).
 
+### Review 3 — [codex] GPT-5.6-terra (2026-08-07)
+
+- **Verdict**: Changes requested → response below, re-verdict pending
+1. `[WONTFIX-with-reasoning + FIXED-clarification]` [codex] Strict week-granular prereq
+   ordering FAIL on the five shared weeks: the plan pinned SESSION-granular topological
+   integrity, and every shared week's "then" notation is strict in-week sequence (a unit's
+   first session always follows its prerequisites' final sessions). Week-granular
+   strictness would force five half-empty transition weeks for no pedagogical gain.
+   FIXED-clarification: §7 now states the granularity rule explicitly so the reading
+   cannot recur. All its other duties PASS (arithmetic exact, one-liner reproduced,
+   sections complete, style clean).
+
 ### Review 2 — [glm] GLM 5.2 (2026-08-07): APPROVE WITH NITS → all resolved
 All arithmetic and topology verified exact. Nits fixed in the plan: the weekly split is now
 the DERIVED 2.5/5 (not the assumed 3/4.5 — lesson 65 h and practice+review 130 h divide 26
@@ -96,6 +108,18 @@ Minors: regeneration snippet pinned to lesson_sessions (C1 trap); F1's missing r
 handled in the table spec.
 
 ## Content Review
+
+### Review 3 — [codex] GPT-5.6-terra (2026-08-07)
+
+- **Verdict**: Changes requested → response below, re-verdict pending
+1. `[WONTFIX-with-reasoning + FIXED-clarification]` [codex] Strict week-granular prereq
+   ordering FAIL on the five shared weeks: the plan pinned SESSION-granular topological
+   integrity, and every shared week's "then" notation is strict in-week sequence (a unit's
+   first session always follows its prerequisites' final sessions). Week-granular
+   strictness would force five half-empty transition weeks for no pedagogical gain.
+   FIXED-clarification: §7 now states the granularity rule explicitly so the reading
+   cannot recur. All its other duties PASS (arithmetic exact, one-liner reproduced,
+   sections complete, style clean).
 
 ### Review 2 — [glm] GLM 5.2 (2026-08-07)
 

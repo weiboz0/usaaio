@@ -92,6 +92,11 @@ The optional r1-002 follows the same buffer policy by displacing Week 13 challen
 
 ## 7. Prerequisite integrity
 
+Prerequisite integrity holds at SESSION granularity.
+Within a shared week, "then" denotes strict in-week sequence: a unit's first session always begins after its prerequisites' final sessions (and their practice) in that week's row.
+Consequently the week-level order below lists first-instruction weeks; shared weeks (2, 9, 10, 15, 17) are sequenced internally by the table's "then" notation.
+
+
 The first-instruction order is F1 (Week 1) → F2 (Week 2) → {F4, F3} (Week 4) → F5 (Week 6) → C1 (Week 8) → C2 (Week 9) → C3 (Week 10) → C4 (Week 11) → C5 (Week 14) → C6 (Week 15) → {C7, C8} (Week 17) → F6 (Week 20) → C9 (Week 23) → C10 (Week 24).
 This is a topological order of the syllabus DAG because every unit's listed prerequisites appear earlier in that sequence.
 The table makes the check local by repeating every unit's complete prerequisite list beside every week in which that unit appears.
