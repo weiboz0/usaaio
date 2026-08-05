@@ -13,9 +13,14 @@ and six ceiling-raising items. (Enrichment tranche = plan 014, separate.)
 
 `tools/checks/tolerance.py` + CLI `tolerance-check` (wired into ci step 4): scan all
 `units/*/practice/*_solution.ipynb` and `mocktests/*/solutions/*.ipynb` code cells; every
-`np.isclose`/`np.allclose` call must state BOTH `atol` and `rtol` explicitly. Escape hatch:
-a `# tol-exempt: <reason>` comment on the call line (the recorded C7-p18 WONTFIX gets one).
-Exit 0/1/3 contract; pytest coverage incl. the escape.
+tolerance-family call — `np.isclose`, `np.allclose`, `torch.allclose`,
+`np.testing.assert_allclose`, `math.isclose` (gate finding: the corpus uses torch.allclose
+too) — must state BOTH atol and rtol explicitly. Escape hatch: `# tol-exempt: <non-empty
+reason>` on the call line (empty reason = violation; the recorded C7-p18 WONTFIX is the
+one planned use). Exit semantics: 0 = all calls compliant; 1 = any violation; 3 = loud
+skip if zero scanned notebooks exist. Guard runs REPO-WIDE (F5 uses none; C5/C9/C10/F6
+already compliant per the audit — Task 1's 12-unit list is the offender inventory, not a
+scan exclusion).
 
 ## Task 1 — A1: the retrofit itself (sol, batched per unit; then orchestrator re-executes)
 
@@ -66,15 +71,19 @@ C6/C7/mocktest manifests + blueprint cluster mapping outweighs tooling visibilit
 skills demonstrably exercised (C6-p04/p11/p12 hand-arithmetic; C7 audits).
 Blueprint impact check: new ids need `clusters:` entries (competition-craft ×2 folds to
 applied-ml; tensor-shape-tracing → cnn-vision; tabular-feature-engineering → applied-ml);
-mocktest r1-001 manifest untouched (no retro-tagging).
+mocktest r1-001 manifest untouched (no retro-tagging). **Craft ids are never the DOMINANT
+cluster on future mock problems (a normal-form MC's dominant cluster stays its subject id) —
+so no math-computation section-list conflict can arise (gate finding).**
 
 ## Task 4 — C: ceilings (6 new problems)
 
 C5/perceptron: +1 core (realize a given half-plane from geometry) +1 advanced
-(XOR-unrealizability argument — in-closure via decision-boundaries-geometric). C6/torch-
-tensors: +1 core (dtype-promotion audit under contract) +1 advanced (from_numpy aliasing
-bug hunt). C8/nearest-neighbor-search: +1 advanced (ties + self-exclusion adversarial
-contract). C7/convolution: +1 advanced (multi-layer shape trace, nn.functional banned) —
+(XOR-unrealizability argument — in-closure via decision-boundaries-geometric). C6/torch-tensors: +1 core (dtype-promotion audit under contract — anchored to C6-L01's
+bridge-table + pitfall teaching) +1 advanced (from_numpy aliasing bug hunt — same anchor;
+the aliasing fact gets a one-line lesson addition if L01 lacks it, checked at drafting).
+C8/nearest-neighbor-search: +1 advanced (ties + self-exclusion adversarial contract —
+self-exclusion is taught in C8-03; the tie-handling convention is glossed in the
+statement, argsort-stability register). C7/convolution: +1 advanced (multi-layer shape trace, nn.functional banned) —
 NOTE: doubles as tensor-shape-tracing practice; dual-tag flagged.
 
 ## Task 5 — Statements/solutions cycle for Tasks 3-4 content
@@ -114,6 +123,11 @@ none. Watch-list topics.
 2. `[VERIFIED]` New-id arithmetic: tensor-shape-tracing 3+1(dual)=4, the other three ids
    3 each; closures derive in-chain for C7/C4/C10; convolution keeps its count through
    the dual-tag while gaining its advanced ceiling.
+
+### Review 2 — [glm] GLM 5.2 (2026-08-07): APPROVE WITH NITS → all resolved
+Guard family widened (torch.allclose/assert_allclose/math.isclose), exit semantics pinned,
+non-empty exempt reason enforced, repo-wide-scan-vs-offender-list clarified, teaching
+anchors cited for the C6/C8 ceiling items, craft-cluster dominance rule pinned.
 
 ## Content Review
 
