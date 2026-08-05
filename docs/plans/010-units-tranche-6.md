@@ -212,6 +212,14 @@ overfitting-to-validation finding (val-selected SIGNAL recipe 0.8199 val vs weak
 reproduced independently — treated as the designed feature. All 18 solutions re-executed
 locally: 18/18 PASS. No amendments; re-solve rule not triggered.
 
+**RECONCILIATION — F6 (2026-08-06): 24/24 AGREE.** MC keys D/C/D/C/B/B; every anchor matches
+(p08 6.249336, p12 err_r2 3.438730, p13 padded spectrum = σ² exactly, p14 sign-fix
+cross-route 8.7e-16, p15 19.399856 with the component route and no trace, p16 23.707935,
+p17 top-frac 0.66068/k90=2, p18 r*=5 per the deliberately-near-threshold design, p20
+460-floor → r=4/slack 8, p22 12.568605). All four solver-flagged ambiguities resolved to the
+outline's own intended readings — no amendments, no re-solve. All 24 re-executed locally:
+24/24 PASS.
+
 ## Out of scope
 
 011 mock test r1-001 (owns answer-key comparator + Quarto PDF build), 012 course map.
