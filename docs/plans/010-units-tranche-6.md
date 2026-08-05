@@ -1,0 +1,154 @@
+# Plan 010 — Teaching Units Tranche 6: F6 + C9 + C10 (curriculum completion)
+
+> **For agentic workers:** the proven 006-009 cycle verbatim (per-task commits; Fable drafts
+> lessons + statements, outlines to `reference/outlines-010/<unit>.md` (gitignored); gpt-5.6-sol
+> blind-solves per unit; reconciliation before the gate; amended statements → blind re-solve;
+> proofs carry numeric anchors; ban-register = core set + closers; narration MUST match printed
+> output; regex prose edits forbidden — read every sentence after mechanical changes; numpy
+> isclose contract = stated atol + rtol=0 for fixed anchors; opencode gate reviews dispatch
+> PER-UNIT against staged `.gate10-executed/` copies).
+
+**Goal:** Ship `F6-svd-spectral` (double-length), `C9-dimensionality-reduction`, and
+`C10-competition-craft` — **completing all 16 syllabus units.**
+
+## Deps (Task 0)
+
+NONE new. sklearn/pandas/matplotlib already installed (C4); F6/C9 are NumPy-register;
+umap is CONCEPT-ONLY (no install — the syllabus id is `umap-concept`). Task 0 collapses into
+Task 1.
+
+## Shared notation pin (all three drafter prompts verbatim — the cross-unit-pin lesson)
+
+Eigenpairs written (λ, q) with `S q = λ q`; symmetric spectral form `S = Q Λ Qᵀ`, eigenvalues
+sorted DESCENDING. SVD written `W = U Σ Vᵀ` with singular values σ descending (matching
+`np.linalg.svd` output order); `np.linalg.svd(W, full_matrices=False)` is the taught call.
+The bridge fact (taught in F6-03, consumed by C9): for `S = W Wᵀ`, the eigenvalues are
+λᵢ = σᵢ² with eigenvectors the columns of U. Frobenius norm `‖A‖_F = sqrt((A*A).sum())`;
+`‖W‖_F² = Σσᵢ²` (derived); rank-r truncation error identity `‖W − W_r‖_F² = Σ_{i>r} σᵢ²`
+(Eckart–Young optimality STATED as fact, error identity DERIVED for the truncation itself).
+C9 consumes C8's convention by name: embedding stack `W` (N, 100), rows = tokens,
+unit-normalized, `S = W @ W.T`. NOTE: np.linalg is LEGAL from F6 onward for eigen/SVD calls
+(`np.linalg.svd`, `np.linalg.eig`, `np.linalg.eigh`, `np.linalg.norm` where stated) — the
+C2/C5/C8 np.linalg bans were per-problem skill-forcing devices, not a curriculum ban; F6
+statements say explicitly which calls are allowed per problem.
+
+## Units
+
+**F6-svd-spectral** (foundation, **double length**; prereqs [F3-matrices]; teaches:
+eigenvalues-eigenvectors, spectral-decomposition, svd, singular-values, low-rank-approximation,
+frobenius-norm)
+- FIVE sessions (double-unit structure, two sittings: 01-03 / 04-05):
+  `01-eigenvalues-and-eigenvectors` (direction preserved by a map — matrix-from-action recap;
+  2×2 characteristic polynomial BY HAND (quadratics — Calc AB algebra); `np.linalg.eig`;
+  eigenvalue signs/magnitudes as stretch factors; symmetric matrices get real eigenvalues +
+  orthogonal eigenvectors — STATED fact, numerically verified),
+  `02-spectral-decomposition` (S = Q Λ Qᵀ for symmetric S; reconstruction as Σ λᵢ qᵢqᵢᵀ
+  (F3 outer-products); `np.linalg.eigh` for the symmetric case; energy interpretation),
+  `03-svd` (any W = U Σ Vᵀ; singular values; the S = WWᵀ bridge (λ = σ², Q = U) DERIVED in
+  component form; `np.linalg.svd`; shapes for tall/wide matrices; full_matrices=False),
+  `04-frobenius-and-low-rank` (‖·‖_F from entries; ‖W‖_F² = Σσᵢ² derived via ‖W‖_F² =
+  trace(WᵀW) route written component-wise; truncated W_r = U[:, :r] Σ_r V[:, :r]ᵀ; the
+  error identity; storage arithmetic rN vs N²; Eckart–Young stated),
+  `05-synthesis-capstone` (the full chain on a seeded (200, 40) matrix: W → S → SVD →
+  spectral-from-SVD → rank-r sweep → error-vs-r curve; worked ‖S‖_F-in-terms-of-σ derivation
+  (= sqrt(Σσᵢ⁴), the exam's P5-13 register taught GENERICALLY with the derivation route);
+  worked normal-form MC).
+- **24 problems** (top of band — double unit): floors ≥4 MC (≥1 normal-form), ≥6 constrained,
+  ≥2 proof (‖W‖_F² = Σσᵢ² via trace route; the rank-r error identity), ≥2 integrative,
+  ≥2 scenario, ≥2 challenge (= 18) + 2 drills + 2 constrained + 2 MC. 6 concepts × 3 = 18 ≤ 24:
+  NO dual-tags required (flag any used).
+- estimated_minutes: lesson ~425 (5 × 85), practice ~560, review 45.
+- Accessibility: F3 chain only. NO probability, NO ML vocabulary (foundation track).
+  2×2 hand-eigen work stays at quadratic-formula level.
+
+**C9-dimensionality-reduction** (prereqs [F6-svd-spectral, C8-embeddings, F5-probability,
+C1-ml-fundamentals]; teaches: pca, truncated-svd-practice, umap-concept,
+local-vs-global-structure)
+- Sessions: `01-pca` (center the data — mean vector; direction of maximal variance; PCA via
+  SVD of the CENTERED data matrix (route pinned: no covariance-eigendecomposition detour —
+  σᵢ²/(n−1) ARE the component variances, stated + verified); variance-explained ratios;
+  2-D projections plotted; sklearn PCA as a cross-check ONLY (one cell, verifying loadings
+  match up to sign — sign-flip ambiguity TAUGHT)),
+  `02-truncated-svd-practice` (C8's W consumed by name: compress the embedding stack;
+  rank-r error curves on real GloVe rows (cache header, C8 form — GENSIM_DATA_DIR only, unit
+  stays torch-free); choosing r from an error budget; reconstruction quality on similarity
+  rows S vs S_r),
+  `03-maps-and-structure` (umap-concept AS CONCEPT: neighbor-graph intuition, "local
+  neighborhoods preserved, global distances distorted" — stated-fact register with a
+  PCA-vs-concept contrast on a seeded two-cluster dataset; local-vs-global-structure:
+  which questions each view answers; reading 2-D maps critically — axes of a nonlinear map
+  carry no units; NO umap library anywhere).
+- 18 problems: floors = 18 exactly. 4 concepts × 3 = 12 ≤ 18: no dual-tags required.
+- Ban registers: PCA-by-hand problems ban sklearn (+closers); sklearn-verification problems
+  require it; gensim problems use the C8 cache header (torch-free strings).
+- estimated_minutes: lesson 250, practice 430, review 45.
+
+**C10-competition-craft** (prereqs [C4-classical-ml-practice]; teaches: notebook-discipline,
+hidden-test-protocol, prediction-function-contract, metric-driven-iteration, writeup-quality)
+- Sessions: `01-the-contract` (the graded-notebook model: runs top-to-bottom, defines ONE
+  prediction function to a stated signature; the hidden-test protocol — you never see X_test;
+  contract violations = zero (wrong return type/index/length); leakage traps (fitting scalers
+  on all data, peeking at validation); the course's pinned contract device:
+  `predict_labels(X_test) -> pd.Series` — FRESH name, never the exam's identifier),
+  `02-metric-driven-iteration` (f1-macro from its confusion-matrix pieces (C4's
+  accuracy-precision-recall extended to macro averaging — derived + computed); validation
+  splits as the only honest signal; iterate: baseline → error analysis → feature change →
+  re-validate; overfitting-to-validation warned as stated fact),
+  `03-notebook-and-writeup` (notebook-discipline: seed pinning, cell order = execution order,
+  no dead cells, deterministic re-run; writeup-quality: the approach/intuition/alternatives
+  summary cell — a graded RUBRIC given and practiced; a full worked mini-competition:
+  seeded synthetic tabular task end-to-end under the C10 harness).
+- **The C10 harness (built by the drafter as unit infrastructure, seeded):** a generation
+  script `units/C10-competition-craft/data/make_dataset.py` (SEED = 20260804) producing
+  train.csv + a HELD-BACK test split regenerated at grading time by the solution notebooks
+  (deterministic — the "hidden" test is hidden from the STUDENT register, not from ci);
+  a grader cell pattern computing f1-macro of `predict_labels(X_test)`. kNN-only supervised
+  model mirrors the exam's constraint GENERICALLY (any preprocessing allowed; sklearn/numpy/
+  pandas/matplotlib imports only).
+- 18 problems: floors = 18. 5 concepts × 3 = 15 ≤ 18: no dual-tags required. Scenario/challenge
+  problems include contract-violation postmortems (why did this notebook score zero?) and a
+  capped mini-iteration log exercise.
+- estimated_minutes: lesson 250, practice 440, review 45.
+
+**Orchestrator corpus duty:** at reconciliation, compare — explicit targets — F6-03/04/05 +
+C9-02 vs the exam's p05-11..15 SVD arc (the σ⁴ Frobenius derivation and error-curve plot are
+the taught patterns — fresh matrices (seeded synthetic (200, 40) in F6; GloVe rows in C9),
+fresh deliverable structure, no isomorph of the exact 5-part chain in any single problem);
+C10's harness + problems vs p09 (fresh SYNTHETIC dataset — never breast-cancer/medical-themed;
+fresh function name predict_labels; same-register constraints are the teachable). Verdict
+recorded in this plan.
+
+Shared: A/B/C sets; ≈30/45/25; ≥2 checkpoints/section; pitfalls/exam-connections/going-deeper
+unit-wide (F6 → C9 by id; C9 → C10 by id; C10 → mocktests). SEED = 20260804. All-NumPy float64
+register (no torch anywhere in this tranche; C9-02's gensim cells use the C8 cache header).
+Proof anchors asserted in code. isclose contract: stated atol + rtol=0.
+
+## Tasks
+
+1. Manifests ×3 (prereq PASS + coverage RED), commit. (No Task 0 — no new deps.)
+2-4. Fable drafters ×3 (parallel — the shared notation pin makes F6/C9 concurrent-safe;
+   C10 independent): lessons + statements + review + outlines (+ C10's data/make_dataset.py).
+5-7. sol blind solvers ×3 (parallel, per-unit scope).
+8. Reconciliation (+ re-solve rule) + corpus duty.
+9. Verification phase (NAMED): five checks PASS, ci-local ALL GREEN (background), assert scan
+   (atol+rtol=0 contract), accessibility sweep (F6: foundation-track — no ML/probability
+   vocabulary; C9: torch-free strings; C10: sklearn-legal), estimated_minutes, C10 harness
+   determinism check (two fresh runs of make_dataset.py byte-identical).
+10. Ship: content gate (self + codex 5.6-terra + opus + glm PER-UNIT ×3; blind-solve ≥3/unit
+   incl ≥1 proof; narration duty on staged .gate10-executed/), post-exec report, TODO tick,
+   PR, guard, squash-merge.
+
+## Out of scope
+
+011 mock test r1-001 (owns answer-key comparator + Quarto PDF build), 012 course map.
+umap/plotly/any new dependency. Training neural nets (C10 is kNN-register per the exam).
+F6 formal proofs of the spectral theorem / Eckart–Young optimality (stated facts; the
+DERIVED pieces are the norm identities and the λ = σ² bridge).
+
+## Plan Review
+
+(4-way gate verdicts land here.)
+
+## Content Review
+
+(Pre-PR gate findings land here.)
