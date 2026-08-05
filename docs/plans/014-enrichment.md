@@ -115,9 +115,12 @@ AFTER `mlp-architecture` within C5's lesson order (it is taught inside C5, not a
 and unit-level tooling cannot catch intra-unit ordering); and the scope claim must be stated
 accurately (gate finding — my first correction was still wrong): C3 DOES implement and run
 training loops — hand-written gradient-descent updates for LINEAR models, named as such in
-lesson 02. The real boundary is narrower and framework-shaped: **no unit trains a NEURAL
-NETWORK — there is no `.backward()`, no `torch.optim`, no autograd anywhere in `units/`
-(grep-verified at gate time). C5-C7 are construction/inference-only.** Cross-entropy may
+lesson 02. The real boundary is narrower and framework-shaped: **no unit performs AUTOGRAD-BASED
+TRAINING — there is no `.backward()` and no `torch.optim` anywhere in `units/` (grep-verified
+at gate time). C5-C7 are construction/inference-only. Note the precise line (gate finding,
+third correction of this sentence): C6/C7 DO teach autograd *machinery* — `requires_grad`
+flags and `torch.inference_mode()` — as inference discipline; what no unit does is call
+backward or drive an optimizer.** Cross-entropy may
 therefore be taught, evaluated, and differentiated ON PAPER, and may even be minimised by a
 hand-written descent loop in C3's register if plan 015 wants it — but it must not introduce
 autograd or an optimizer object. The optional CE-gradient proof
@@ -219,6 +222,11 @@ cross-unit-tag VALIDATION, full-taught-set closure); the overlap duty made enfor
 than aspirational, incl. a per-arc recorded verdict against r1-001's P5; Task 0's acceptance
 criteria beyond runtime; **the C5 capacity overflow (22 + 6 = 28 > band 24), which drove the
 Task 3 deferral**; the CE-gradient proof's F4 dependency.
+
+**GATE RESULT: PASS — 4/4** (claude-self AWN pre-empted; glm REJECT→APPROVE; both codex
+slots REJECT→resolved, consolidated re-verdict APPROVE WITH NITS — its final nit, that
+"no autograd anywhere" was overbroad given C6/C7 teach `requires_grad`/`inference_mode`,
+is fixed above). Implementation may begin.
 
 ## Inherited item (from 013's gate, recorded)
 
