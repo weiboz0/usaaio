@@ -31,7 +31,14 @@ eigenvectors are NOT in thin U. (ii) FULL form (`full_matrices=True`, U (n, n)):
 λ = σ² zero-padded to length n gives the complete spectral decomposition S = Q Λ Qᵀ.
 F6-03 teaches the thin/full distinction explicitly (shape table both ways); the F6-05
 capstone's spectral-from-SVD uses the FULL form with zero-padding, verified against eigh
-(sign-fixed comparison per the pin below). Frobenius norm `‖A‖_F = sqrt((A*A).sum())`;
+via INVARIANTS, never column-by-column (gate blocker — the zero eigenvalue has multiplicity
+n − d = 160, and degenerate eigenspaces differ by arbitrary orthogonal rotations that
+sign-fixing cannot reconcile): the pinned comparisons are (i) reconstruction
+`‖QΛQᵀ − S‖_F < tol`, (ii) eigen-equation residuals `‖S qᵢ − λᵢ qᵢ‖ < tol` for the top
+nonzero pairs, and (iii) the top-k subspace projector `‖Q_k Q_kᵀ − Û_k Û_kᵀ‖_F < tol`.
+Sign-fixing (per the pin below) is reserved for comparing INDIVIDUAL eigenvectors with
+distinct, well-separated eigenvalues (the seeded matrices are constructed to keep the top
+spectrum separated). Frobenius norm `‖A‖_F = sqrt((A*A).sum())`;
 `‖W‖_F² = Σσᵢ²` (derived); rank-r truncation error identity `‖W − W_r‖_F² = Σ_{i>r} σᵢ²`
 (Eckart–Young optimality STATED as fact, error identity DERIVED for the truncation itself).
 C9 consumes C8's convention by name: embedding stack `W` (N, 100), rows = tokens,
@@ -39,10 +46,10 @@ unit-normalized, `S = W @ W.T`. NOTE: np.linalg is LEGAL from F6 onward for eige
 (`np.linalg.svd`, `np.linalg.eig`, `np.linalg.eigh`, `np.linalg.norm` where stated; NOTE
 `eigh` returns eigenvalues ASCENDING — the pinned idiom is `vals[::-1]`/`vecs[:, ::-1]`
 reorder to the descending convention, taught once in F6-02; gate finding). **Eigenvector/
-singular-vector SIGN pin (gate finding): u and −u are both valid — every cross-route
-comparison (F6-05's spectral-from-SVD vs eigh, C9's loadings) either compares absolute
-values or sign-fixes first (largest-|entry| component made positive), pinned once in F6-02
-and reused verbatim** — the
+singular-vector SIGN pin (gate finding): u and −u are both valid — individual-vector cross-route
+comparisons (distinct, separated eigenvalues only — degenerate blocks use the invariant
+comparisons pinned above) either compare absolute values or sign-fix first (largest-|entry|
+component made positive), pinned once in F6-02 and reused verbatim** — the
 C2/C5/C8 np.linalg bans were per-problem skill-forcing devices, not a curriculum ban — the
 EXAM ITSELF scopes this per-problem (P5-4 bans np.linalg for hand-normalization while
 P5-11 hints np.linalg.svd), so the flip mirrors the exam's own register; F6 statements say
@@ -209,6 +216,13 @@ self-checks replace the cross-check cell). MINOR 3 raced the self-review trace f
 component-routed). MINOR 4: eigh-ascending → pinned [::-1] reorder idiom. NIT 5: 24-problem
 wording corrected (bottom of the 24-30 double band, deliberate). NIT 6: claim-by-claim rubric
 restored to the header contract.
+
+### Review 4c — [codex] re-verdict 2 (2026-08-05): REJECT → fixed
+Remaining blocker: sign-fixing cannot reconcile the 160-fold-degenerate null-space bases
+(arbitrary orthogonal rotations). → Capstone verification re-pinned to INVARIANTS
+(reconstruction, eigen-equation residuals, top-k subspace projectors); sign-fixing scoped
+to distinct-separated-eigenvalue vectors only; seeded matrices constructed with separated
+top spectra. Third re-verdict requested.
 
 ### Review 4 — [codex] GPT-5.6-sol (2026-08-05): REJECT → fixed
 BLOCKER: thin-SVD U (n, d) cannot supply the Gram matrix's full eigenbasis — bridge rewritten
