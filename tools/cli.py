@@ -6,6 +6,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 import tools
+from tools.checks.answerkey import check_answerkey
 from tools.checks.blueprint import check_blueprint
 from tools.checks.coverage import check_coverage
 from tools.checks.hygiene import check_hygiene
@@ -17,6 +18,7 @@ from tools.model import Report
 CheckFn = Callable[[str | Path], Report]
 
 SUBCOMMANDS: dict[str, tuple[str, CheckFn | None]] = {
+    "answerkey-check": ("cross-check mock-test answer keys against solutions", check_answerkey),
     "blueprint-check": ("verify a mock test against mocktests/blueprint.yaml", check_blueprint),
     "overlap-scan": ("flag problems too similar to the reference corpus", check_overlap),
     "prereq-check": ("verify the unit DAG and concept closure", check_prereq),

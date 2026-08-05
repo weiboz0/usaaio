@@ -1,0 +1,111 @@
+from pathlib import Path
+
+from tools.checks.answerkey import check_answerkey
+from tools.cli import main
+from tools.model import load_mock_manifests
+
+FIXTURES = Path(__file__).parent / "fixtures" / "answerkey"
+
+
+def write_direct_key_fixture(
+    root: Path,
+    *,
+    answer_key: str | int,
+    marker: str,
+    files: list[str] | None = None,
+) -> None:
+    test_dir = root / "mocktests" / "r1-001"
+    solutions = test_dir / "solutions"
+    solutions.mkdir(parents=True)
+    files_block = ""
+    if files:
+        files_block = "    files:\n" + "".join(f"      - {path}\n" for path in files)
+        for rel in files:
+            path = test_dir / rel
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("theory statement")
+    test_dir.joinpath("manifest.yaml").write_text(
+        f"""
+test: r1-001
+blueprint_version: 1
+status: final
+problems:
+  - id: r1-001-p01
+    section: math-computation
+    answer_key: {answer_key!r}
+{files_block}
+"""
+    )
+    solutions.joinpath("answers.md").write_text(
+        f"- r1-001-p01: answer: {marker}\n"
+    )
+
+
+def test_answerkey_fixture_passes_with_numeric_tolerance(capsys):
+    root = FIXTURES / "pass"
+    report = check_answerkey(root)
+
+    assert report.ok
+    assert report.errors == []
+    assert report.skipped is None
+    assert main(["--root", str(root), "answerkey-check"]) == 0
+    assert "PASS answerkey-check" in capsys.readouterr().out
+
+
+def test_answerkey_fixture_reports_mismatch(capsys):
+    root = FIXTURES / "mismatch"
+    report = check_answerkey(root)
+
+    assert not report.ok
+    assert any("r1-001-p01" in error and "answers.md" in error for error in report.errors)
+    assert main(["--root", str(root), "answerkey-check"]) == 1
+    assert "FAIL answerkey-check" in capsys.readouterr().err
+
+
+def test_answerkey_fraction_key_matches_marker_as_text(tmp_path):
+    write_direct_key_fixture(tmp_path, answer_key="775/24", marker="775/24")
+
+    report = check_answerkey(tmp_path)
+
+    assert report.ok
+    assert report.errors == []
+
+
+def test_answerkey_theory_only_problem_passes_without_tagged_cell(tmp_path):
+    write_direct_key_fixture(
+        tmp_path,
+        answer_key=42,
+        marker="42",
+        files=["theory/p01.md"],
+    )
+
+    report = check_answerkey(tmp_path)
+
+    assert report.ok
+    assert report.errors == []
+
+
+def test_answerkey_marker_comparison_normalizes_whitespace(tmp_path):
+    write_direct_key_fixture(
+        tmp_path,
+        answer_key="hash-dependent  set order",
+        marker="hash-dependent set order",
+    )
+
+    assert check_answerkey(tmp_path).ok
+
+
+def test_answerkey_draft_only_fixture_is_loud_skip(capsys):
+    root = FIXTURES / "draft-only"
+
+    report = check_answerkey(root)
+    assert report.ok
+    assert report.skipped is not None
+    assert main(["--root", str(root), "answerkey-check"]) == 3
+    assert "SKIP answerkey-check" in capsys.readouterr().out
+
+
+def test_answer_tolerance_loads_from_manifest():
+    manifest = load_mock_manifests(FIXTURES / "pass")[0]
+
+    assert manifest.problems[2].answer_tolerance == 0.01

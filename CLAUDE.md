@@ -105,8 +105,8 @@ all `[OPEN]` resolve before merge.
 | Work | Dispatch |
 |------|----------|
 | Planning, review orchestration, test assembly | Orchestrator Claude inline |
-| Lesson content + problem/mock-question STATEMENTS | `general-purpose` subagents on Fable 5 |
-| SOLUTIONS to practice + mock questions | `codex:codex-rescue` (GPT-5.6-sol) — independent author = built-in blind solve |
+| Lesson content + problem/mock-question STATEMENTS | `codex:codex-rescue` (GPT-5.6-sol) — user directive 2026-08-06 |
+| SOLUTIONS to practice + mock questions | `codex:codex-rescue` (GPT-5.6-sol) — SEPARATE fresh session, never reads statements' outlines; blind-solve independence is now session-level (same model family), cross-model verification lives in the gates |
 | Blind independent solving (content gate) | Gate roster (all four reviewers solve blind) |
 | Tooling code (`tools/`, `scripts/`) | `codex:codex-rescue` (GPT-5.6-sol) |
 | Trivially-scoped edits | Inline |

@@ -1,0 +1,20 @@
+test: r1-001
+blueprint_version: 1
+problems:
+  - id: r1-001-p01
+    section: concept-block
+    answer_key: C
+  - id: r1-001-p02
+    section: math-computation
+    answer_key: 42
+    files:
+      - problems/numeric.ipynb
+  - id: r1-001-p03
+    section: math-computation
+    answer_key: 3.14
+    answer_tolerance: 0.01
+    files:
+      - problems/numeric.ipynb
+  - id: r1-001-p04
+    section: open-ended-notebook
+    answer_key: solutions/p04.ipynb#answer:r1-001-p04

@@ -1,3 +1,12 @@
+"""Detect reference overlap at the granularity appropriate to each artifact.
+
+Following the plan-004 unit-path precedent, short structured mock manifest specs
+provide the failing TF-IDF cosine signal against both reference text and a distinct
+reference-summary stream. Full mock statement files retain their verbatim-copy
+shingle check and also receive a higher-threshold, warning-only cosine drift signal
+reported once per statement-file/corpus-part pair.
+"""
+
 from __future__ import annotations
 
 import math
@@ -15,7 +24,20 @@ from tools.model import Report, _parse_yaml, load_mock_manifests
 SHINGLE_SIZE = 8
 SHINGLE_THRESHOLD = 2
 COSINE_THRESHOLD = 0.35
+FILE_COSINE_WARNING_THRESHOLD = 0.5
 REMEDY = "reference corpus absent; run bash scripts/fetch-reference.sh"
+
+# Register mandated by mocktests/blueprint.yaml style_rules must not dominate
+# mock-test cosine similarity. These patterns intentionally cover only that register.
+MOCK_REGISTER_BOILERPLATE_PATTERNS = (
+    r"(?im)^\s*(?:\*\*)?Total:\s*\d+\s+points?\.?(?:\*\*)?\s*$",
+    r"(?i)(?:#+\s*)?Part\s+\d+\.\d+\s*\(\s*\d+\s+points?\s*\)",
+    r"(?i)\bReasoning\s+(?:is\s+)?(?:not\s+)?required\b[.;]?",
+    r"(?i)\bCoding\s+(?:is\s+)?(?:not\s+)?(?:allowed|required|needed)\b[.;]?",
+    r"(?im)^\s*[-*]?\s*(?:\*\*)?[A-E][.)](?:\*\*)?\s*",
+    r"(?im)\bWrite\s+[^\n]*?\s+in\s+the\s+unique\s+form\b[^\n]*",
+    r"(?i)\bWhat\s+is\s+\$?p\s*\+\s*q\$?\s*\?",
+)
 
 
 def _words(text: str) -> list[str]:
@@ -39,6 +61,12 @@ def _without_boilerplate(text: str) -> str:
             continue
         lines.append(line)
     return "\n".join(lines)
+
+
+def _without_mock_register_boilerplate(text: str) -> str:
+    for pattern in MOCK_REGISTER_BOILERPLATE_PATTERNS:
+        text = re.sub(pattern, " ", text)
+    return text
 
 
 def _tf(text: str) -> Counter[str]:
@@ -89,16 +117,33 @@ def _collect_text_fields(node: Any) -> list[str]:
     return []
 
 
-def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None, list[str]]:
+def _collect_summary_fields(node: Any) -> list[str]:
+    if isinstance(node, dict):
+        summaries = [str(node["summary"])] if node.get("summary") else []
+        for value in node.values():
+            summaries.extend(_collect_summary_fields(value))
+        return summaries
+    if isinstance(node, list):
+        summaries: list[str] = []
+        for value in node:
+            summaries.extend(_collect_summary_fields(value))
+        return summaries
+    return []
+
+
+def _corpus(
+    root: Path,
+) -> tuple[list[tuple[str, str]], list[tuple[str, str]], str | None, list[str]]:
     reference = root / "reference"
     # PDFs alone are a valid corpus (spec Task 5); index.yaml text fields are additive.
     if not reference.exists() or not (
         any(reference.glob("*/index.yaml")) or any(reference.glob("*/*.pdf"))
     ):
-        return [], REMEDY, []
+        return [], [], REMEDY, []
     if shutil.which("pdftotext") is None:
-        return [], f"pdftotext unavailable; {REMEDY}", []
+        return [], [], f"pdftotext unavailable; {REMEDY}", []
     parts: list[tuple[str, str]] = []
+    summaries: list[tuple[str, str]] = []
     failures: list[str] = []
     for ref_dir in sorted(reference.glob("*")):
         if not ref_dir.is_dir():
@@ -106,10 +151,13 @@ def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None, list[str]]:
         index = ref_dir / "index.yaml"
         if index.exists():
             try:
-                for offset, text in enumerate(_collect_text_fields(_parse_yaml(index.read_text()))):
+                parsed_index = _parse_yaml(index.read_text())
+                for offset, text in enumerate(_collect_text_fields(parsed_index)):
                     parts.append((f"{index}#text-{offset}", text))
+                for offset, summary in enumerate(_collect_summary_fields(parsed_index)):
+                    summaries.append((f"{index}#summary-{offset}", summary))
             except (OSError, ValueError) as exc:
-                return [], f"{index}: cannot read corpus index ({exc}); {REMEDY}", []
+                return [], [], f"{index}: cannot read corpus index ({exc}); {REMEDY}", []
         for pdf in sorted(ref_dir.glob("*.pdf")):
             proc = subprocess.run(
                 ["pdftotext", str(pdf), "-"],
@@ -127,22 +175,22 @@ def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None, list[str]]:
                     f"corpus part NOT scanned (pdftotext failed, rc={proc.returncode}): {pdf}"
                 )
     if not parts:
-        return [], REMEDY, failures
-    return parts, None, failures
+        return [], [], REMEDY, failures
+    return parts, summaries, None, failures
 
 
-def _problem_text(root: Path, manifest_path: Path, problem) -> tuple[str, list[str]]:
+def _problem_texts(root: Path, manifest_path: Path, problem) -> tuple[str, str, list[str]]:
     warnings: list[str] = []
-    texts = [problem.spec]
+    statement_texts: list[str] = []
     if not problem.files:
         warnings.append(f"{manifest_path}: {problem.id} has no files; scanning spec only")
     for rel in problem.files:
         path = manifest_path.parent / rel
         if path.exists():
-            texts.append(path.read_text(errors="ignore"))
+            statement_texts.append(path.read_text(errors="ignore"))
         else:
             warnings.append(f"{manifest_path}: {problem.id} listed missing file {rel}")
-    return "\n".join(texts), warnings
+    return problem.spec, "\n".join(statement_texts), warnings
 
 
 def _notebook_text(path: Path) -> str:
@@ -154,39 +202,91 @@ def _notebook_text(path: Path) -> str:
     )
 
 
+def _statement_file_text(path: Path) -> str:
+    if path.suffix == ".ipynb":
+        return _notebook_text(path)
+    return path.read_text(errors="ignore")
+
+
 def check_overlap(root: str | Path) -> Report:
     root = Path(root)
-    corpus, skipped, corpus_failures = _corpus(root)
+    corpus, summary_corpus, skipped, corpus_failures = _corpus(root)
     if skipped:
         return Report(name="overlap-scan", ok=True, skipped=skipped)
     corpus_texts = [text for _, text in corpus]
+    corpus_cosine_texts = [_without_mock_register_boilerplate(text) for text in corpus_texts]
     # Hoisted per-corpus precomputation: shingles per reference doc + document frequencies
     # (previously recomputed inside the per-problem loop — O(P x R x |corpus|)).
-    corpus_shingles = [(label, text, _shingles(text)) for label, text in corpus]
-    base_dfs = _corpus_dfs(corpus_texts)
+    corpus_shingles = [
+        (label, text, _shingles(text), _without_mock_register_boilerplate(text))
+        for label, text in corpus
+    ]
+    base_dfs = _corpus_dfs(corpus_cosine_texts)
     doc_count = len(corpus_texts) + 1
+    summary_cosine_texts = [
+        (label, _without_mock_register_boilerplate(text))
+        for label, text in summary_corpus
+    ]
+    summary_base_dfs = _corpus_dfs([text for _, text in summary_cosine_texts])
+    summary_doc_count = len(summary_cosine_texts) + 1
     errors: list[str] = []
     warnings: list[str] = list(corpus_failures)
+    statement_paths: set[Path] = set()
     for manifest in load_mock_manifests(root):
         for problem in manifest.problems:
-            text, text_warnings = _problem_text(root, manifest.path, problem)
+            spec_text, statement_text, text_warnings = _problem_texts(
+                root, manifest.path, problem
+            )
             warnings.extend(text_warnings)
-            text = _without_boilerplate(text)
-            problem_shingles = _shingles(text)
-            for label, reference_text, reference_shingles in corpus_shingles:
+            statement_paths.update(
+                manifest.path.parent / rel
+                for rel in problem.files
+                if (manifest.path.parent / rel).exists()
+            )
+            problem_shingles = _shingles(_without_boilerplate(statement_text))
+            cosine_text = _without_mock_register_boilerplate(
+                _without_boilerplate(spec_text)
+            )
+            for label, _, reference_shingles, reference_cosine_text in corpus_shingles:
                 overlap = len(problem_shingles & reference_shingles)
-                cosine = _cosine(text, reference_text, doc_count, base_dfs)
+                cosine = _cosine(cosine_text, reference_cosine_text, doc_count, base_dfs)
                 if overlap >= SHINGLE_THRESHOLD or cosine >= COSINE_THRESHOLD:
                     hit = f"{manifest.path}: {problem.id} overlaps {label} (shingles={overlap}, cosine={cosine:.2f})"
                     if problem.provenance == "adapted" and problem.adapted_from:
                         warnings.append(hit)
                     else:
                         errors.append(hit)
-                    break
+            for label, reference_cosine_text in summary_cosine_texts:
+                cosine = _cosine(
+                    cosine_text,
+                    reference_cosine_text,
+                    summary_doc_count,
+                    summary_base_dfs,
+                )
+                if cosine >= COSINE_THRESHOLD:
+                    hit = (
+                        f"{manifest.path}: {problem.id} overlaps {label} "
+                        f"(summary-cosine={cosine:.2f})"
+                    )
+                    if problem.provenance == "adapted" and problem.adapted_from:
+                        warnings.append(hit)
+                    else:
+                        errors.append(hit)
+    for path in sorted(statement_paths):
+        cosine_text = _without_mock_register_boilerplate(
+            _without_boilerplate(_statement_file_text(path))
+        )
+        for label, _, _, reference_cosine_text in corpus_shingles:
+            cosine = _cosine(cosine_text, reference_cosine_text, doc_count, base_dfs)
+            if cosine >= FILE_COSINE_WARNING_THRESHOLD:
+                warnings.append(
+                    f"{path} has file-level cosine drift with {label} "
+                    f"(cosine={cosine:.2f})"
+                )
     for path in sorted(root.glob("units/*/practice/*.ipynb")):
         text = _without_boilerplate(_notebook_text(path))
         notebook_shingles = _shingles(text)
-        for label, _, reference_shingles in corpus_shingles:
+        for label, _, reference_shingles, _ in corpus_shingles:
             overlap = len(notebook_shingles & reference_shingles)
             if overlap >= SHINGLE_THRESHOLD:
                 errors.append(f"{path} overlaps {label} (shingles={overlap})")

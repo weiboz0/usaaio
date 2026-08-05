@@ -34,7 +34,7 @@ if bad:
 print(f"answer-check asserts present in all {len(glob.glob('units/*/practice/*_solution.ipynb'))} unit solutions")
 PYEOF
 fi
-echo "PENDING (plan 011): answer-key reproduction"
+uv run usaaio-tools answerkey-check || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 
 step "4/6 manifest + content checks"
 for c in prereq-check coverage-check hygiene-check blueprint-check overlap-scan; do
@@ -43,7 +43,7 @@ for c in prereq-check coverage-check hygiene-check blueprint-check overlap-scan;
 done
 
 step "5/6 PDF build (quarto)"
-echo "SKIP (plan 011)"
+bash scripts/build-pdf.sh || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 
 step "6/6 pre-merge-guard"
 bash scripts/pre-merge-guard.sh

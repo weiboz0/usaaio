@@ -81,6 +81,7 @@ problems:
       10-pt intro MC testing supervised-vs-unsupervised via task-identification
       distractors; five options; no code.
     answer_key: "C"             # value the solution notebook / answers.md must reproduce
+    # answer_tolerance: 1e-6     # optional numeric absolute tolerance (rtol is always 0)
     files: [theory/p01.md]      # optional extra text scanned by overlap-scan; spec-only if absent
     # For data-backed problems:
     # data:
@@ -131,5 +132,5 @@ Field rules:
 | coverage-check | (units, not mock tests) every taught concept practiced |
 | hygiene-check | student notebooks free of solutions/outputs |
 | solution execution | every solutions/ notebook runs clean |
-| answer-key reproduction | PENDING (plan 006) |
+| answer-key reproduction | answerkey-check (plan 011) |
 | PDF build | Quarto renders test.md + problems to `build/` |
