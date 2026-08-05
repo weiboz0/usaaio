@@ -370,6 +370,11 @@ final ci at final status).
 
 ## Content Review
 
+**GATE RESULT: PASS — 4/4** (claude-self Approved; codex CR→Approved incl. the provenance
+precedent ruling; glm ×2 both AWS-resolved; opus CR→CR→Approved-with-suggestions across
+three rounds — 40/40 roster-wide blind-solve agreement, ~30 findings resolved, two live
+comparator legs proven by corruption test). All [OPEN] items resolved.
+
 ### Review 2 — [codex] GPT-5.6-terra (2026-08-07)
 
 - **Verdict**: Changes requested → **Approved** (re-verdict: precedent rationale accepted,
@@ -422,8 +427,10 @@ final ci at final status).
 
 ### Review 5 — [opus] Independent Opus (2026-08-07)
 
-- **Verdict**: Changes requested → all 16 findings fixed → re-verdict verified all 16 and
-  caught 2 fix-round defects + 2 minors (fixed below) → final confirmation pending
+- **Verdict**: Changes requested → **Approved with suggestions** (final confirmation at
+  79055e6: all 14 p05 prompt bodies byte-identical to the student copy, rubric arithmetic
+  verified, plan record complete; 2 cosmetic nits — trailing newline + instructor metadata
+  on the 3 mirrored grader cells — fixed post-verdict)
 - Blind-solve: 40/40 agree (the complete P5 arc + every section + all five proofs + an
   independent P9 campaign); executed the full battery itself incl. a corruption test of the
   comparator (now fails on both legs).
