@@ -62,6 +62,17 @@ Generating r1-002/r1-003 (on-demand later). Any tooling. Any unit/manifest edits
 runs unchanged as the merge gate; correctness is enforced by the gate's
 arithmetic-verification duty (design §2 exemption stated).
 
+## Post-Execution Report (2026-08-07)
+
+**Shipped:** docs/course-structure.md — the two-semester pacing map, closing the roadmap.
+- 26-week table (16 units + mock), every figure manifest-derived and gate-recomputed by
+  four reviewers independently (all 16 practice distributions exact; both schema traps
+  handled; session-granular DAG integrity stated and verified).
+- Course model: S1 101.1 h @ 7.8 h/wk; S2 97.9 h @ 7.5 h/wk incl. the summative r1-001;
+  derived 2.5/5 in-class/independent split; grading + buffer guidance included.
+- **THE STANDING GOAL IS COMPLETE**: 16/16 units, mock test r1-001, fully-real ci, and the
+  course map — plans 001-012 all merged through the full dev process with auto-merge.
+
 ## Plan Review
 
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
