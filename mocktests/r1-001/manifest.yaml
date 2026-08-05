@@ -27,10 +27,10 @@ generation_parameters:
 duration_minutes: 180
 total_points: 300
 time_budget:
-  concept-block: 20
+  concept-block: 15
   math-computation: 25
-  integrative-arc: 55
-  engineering: 45
+  integrative-arc: 65
+  engineering: 40
   open-ended-notebook: 35
 problems:
 - id: r1-001-p01-1
@@ -44,11 +44,12 @@ problems:
   difficulty: intro
   type: theory
   answer_form: multiple-choice
-  provenance: original
+  provenance: adapted
   spec: '10-pt intro MC: identify which of five described tasks is unsupervised; five options; no code.'
   answer_key: C
   files:
   - theory/p01.md
+  adapted-from: r1-2026-p01-1
 - id: r1-001-p01-2
   section: concept-block
   units:
@@ -244,7 +245,7 @@ problems:
   provenance: original
   spec: '10-pt core reasoning-required: derive and evaluate d/dw_j of a 3-term squared-residual sum at
     a given point.'
-  answer_key: '-164'
+  answer_key: -164
   files:
   - theory/p04.md
 - id: r1-001-p05-1
@@ -260,8 +261,8 @@ problems:
   answer_form: code
   provenance: original
   spec: '5-pt intro code: tokenize the supplied fresh corpus with simple_preprocess; report token and
-    type counts.'
-  answer_key: 311 (token-count invariant)
+    type counts. [Key context: token-count invariant]'
+  answer_key: 311
   files:
   - problems/p05.ipynb
 - id: r1-001-p05-2
@@ -293,8 +294,9 @@ problems:
   type: programming
   answer_form: code
   provenance: original
-  spec: '5-pt core code: filter tokens to the GloVe vocabulary (cached model) and look up vectors.'
-  answer_key: 220 (embedded-token-count invariant; OOV count is 0)
+  spec: '5-pt core code: filter tokens to the GloVe vocabulary (cached model) and look up vectors. [Key
+    context: embedded-token-count invariant; OOV count is 0]'
+  answer_key: 220
   files:
   - problems/p05.ipynb
 - id: r1-001-p05-4
@@ -311,8 +313,9 @@ problems:
   type: programming
   answer_form: code
   provenance: original
-  spec: '5-pt intro code: stack vectors into the (N,100) rows-are-tokens float64 matrix named W_raw.'
-  answer_key: 220 (row-count invariant for `W_raw.shape == (220, 100)`)
+  spec: '5-pt intro code: stack vectors into the (N,100) rows-are-tokens float64 matrix named W_raw. [Key
+    context: row-count invariant for `W_raw.shape == (220, 100)`]'
+  answer_key: 220
   files:
   - problems/p05.ipynb
 - id: r1-001-p05-5
@@ -330,8 +333,8 @@ problems:
   answer_form: code
   provenance: original
   spec: '5-pt core code: unit-normalize rows by broadcasting; np.linalg and loops banned (zero points)
-    in this part.'
-  answer_key: 220 (unit-row-count invariant)
+    in this part. [Key context: unit-row-count invariant]'
+  answer_key: 220
   files:
   - problems/p05.ipynb
 - id: r1-001-p05-6
@@ -385,9 +388,9 @@ problems:
   answer_form: code
   provenance: adapted
   spec: '5-pt core code: thin SVD of W via np.linalg.svd (allowed here); report the descending singular
-    values.'
+    values. [Key context: singular-value-count invariant]'
   adapted-from: r1-2026-p05-11
-  answer_key: 100 (singular-value-count invariant)
+  answer_key: 100
   files:
   - problems/p05.ipynb
 - id: r1-001-p05-9
@@ -421,8 +424,8 @@ problems:
   answer_form: code
   provenance: original
   spec: '5-pt advanced code: build the complete spectral decomposition of S from the FULL SVD with zero-padded
-    lambda.'
-  answer_key: 220.0 (sum-of-full-eigenvalues invariant)
+    lambda. [Key context: sum-of-full-eigenvalues invariant]'
+  answer_key: 220.0
   files:
   - problems/p05.ipynb
 - id: r1-001-p05-11
@@ -459,8 +462,9 @@ problems:
   type: programming
   answer_form: code
   provenance: original
-  spec: '5-pt core code: the error-vs-r values from the tail identity via one cumsum; no truncations built.'
-  answer_key: 100 (relative-error-vector-length invariant)
+  spec: '5-pt core code: the error-vs-r values from the tail identity via one cumsum; no truncations built.
+    [Key context: relative-error-vector-length invariant]'
+  answer_key: 100
   files:
   - problems/p05.ipynb
 - id: r1-001-p05-13
@@ -477,7 +481,7 @@ problems:
   answer_form: code
   provenance: original
   spec: '5-pt core code: budget-to-r-star with the two-sided certificate asserts.'
-  answer_key: '3'
+  answer_key: 3
   files:
   - problems/p05.ipynb
 - id: r1-001-p05-14
@@ -493,8 +497,9 @@ problems:
   type: theory
   answer_form: short-answer
   provenance: original
-  spec: '5-pt core short-answer: floats stored by the rank-r factorization vs N^2; the crossover argument.'
-  answer_key: 663 (stored-scalar-count invariant; dense S stores 48400)
+  spec: '5-pt core short-answer: floats stored by the rank-r factorization vs N^2; the crossover argument.
+    [Key context: stored-scalar-count invariant; dense S stores 48400]'
+  answer_key: 663
   files:
   - problems/p05.ipynb
 - id: r1-001-p06-1
@@ -510,8 +515,8 @@ problems:
   answer_form: code
   provenance: original
   spec: '5-pt intro code: column-standardize a fresh array by broadcasting; loops and np.linalg banned
-    (zero points).'
-  answer_key: 20.0 (standardized-array squared-energy invariant)
+    (zero points). [Key context: standardized-array squared-energy invariant]'
+  answer_key: 20.0
   files:
   - problems/p06.ipynb
 - id: r1-001-p06-2
@@ -530,7 +535,7 @@ problems:
   provenance: original
   spec: '5-pt core code: masked argmax retrieval with self-exclusion; exact snake_case identifiers; bans
     listed.'
-  answer_key: '0'
+  answer_key: 0
   files:
   - problems/p06.ipynb
 - id: r1-001-p06-3
@@ -548,8 +553,8 @@ problems:
   answer_form: code
   provenance: original
   spec: '5-pt core code: piecewise function as a ReLU combination; np.where/np.select/np.piecewise banned
-    (zero points).'
-  answer_key: 24.0 (sum of supplied-probe outputs invariant)
+    (zero points). [Key context: sum of supplied-probe outputs invariant]'
+  answer_key: 24.0
   files:
   - problems/p06.ipynb
 - id: r1-001-p06-4
@@ -565,8 +570,9 @@ problems:
   type: programming
   answer_form: code
   provenance: original
-  spec: '5-pt intro code: seeded census of a generated array (row/column aggregates); seed pinned.'
-  answer_key: 86 (sum of seeded census array invariant)
+  spec: '5-pt intro code: seeded census of a generated array (row/column aggregates); seed pinned. [Key
+    context: sum of seeded census array invariant]'
+  answer_key: 86
   files:
   - problems/p06.ipynb
 - id: r1-001-p07-1
@@ -582,8 +588,9 @@ problems:
   type: programming
   answer_form: code
   provenance: original
-  spec: '5-pt core code: build the specified My_CamelCase module registering weight+bias as frozen nn.Parameters.'
-  answer_key: 16 (registered-scalar-count invariant for supplied shape probe)
+  spec: '5-pt core code: build the specified My_CamelCase module registering weight+bias as frozen nn.Parameters.
+    [Key context: registered-scalar-count invariant for supplied shape probe]'
+  answer_key: 16
   files:
   - problems/p07.ipynb
 - id: r1-001-p07-2
@@ -599,8 +606,9 @@ problems:
   type: programming
   answer_form: code
   provenance: original
-  spec: '5-pt core code: hand-set weights to realize a stated map; forward-pass shape contract asserted.'
-  answer_key: -3.5 (sum of `manual_output` invariant)
+  spec: '5-pt core code: hand-set weights to realize a stated map; forward-pass shape contract asserted.
+    [Key context: sum of `manual_output` invariant]'
+  answer_key: -3.5
   files:
   - problems/p07.ipynb
 - id: r1-001-p07-3
@@ -618,7 +626,7 @@ problems:
   provenance: original
   spec: '5-pt advanced numeric reasoning-required: conv parameter count of a fresh-width bottleneck; numel
     banned (zero points).'
-  answer_key: '131648'
+  answer_key: 131648
   files:
   - problems/p07.ipynb
 - id: r1-001-p07-4
@@ -635,8 +643,8 @@ problems:
   answer_form: code
   provenance: original
   spec: '5-pt advanced code: truncate cached resnet50 at a fresh cut; output shape asserted; weights cached
-    locally.'
-  answer_key: 1024 (output-channel-count invariant; shape is (1,1024,10,10))
+    locally. [Key context: output-channel-count invariant; shape is (1,1024,10,10]'
+  answer_key: 1024
   files:
   - problems/p07.ipynb
 - id: r1-001-p07-5
@@ -653,8 +661,9 @@ problems:
   type: programming
   answer_form: code
   provenance: original
-  spec: '5-pt core code: freeze the backbone, report frozen vs trainable scalar counts.'
-  answer_key: 4074560 (frozen-scalar-count invariant; trainable count is 11275)
+  spec: '5-pt core code: freeze the backbone, report frozen vs trainable scalar counts. [Key context:
+    frozen-scalar-count invariant; trainable count is 11275]'
+  answer_key: 4074560
   files:
   - problems/p07.ipynb
 - id: r1-001-p08-1
@@ -671,8 +680,9 @@ problems:
   type: programming
   answer_form: code
   provenance: original
-  spec: '5-pt intro code: step-activation module firing at exactly zero; dtype-preserving contract.'
-  answer_key: 2.0 (sum of inclusive-step probe outputs invariant)
+  spec: '5-pt intro code: step-activation module firing at exactly zero; dtype-preserving contract. [Key
+    context: sum of inclusive-step probe outputs invariant]'
+  answer_key: 2.0
   files:
   - problems/p08.ipynb
 - id: r1-001-p08-2
@@ -689,8 +699,9 @@ problems:
   type: programming
   answer_form: code
   provenance: original
-  spec: '5-pt core code: two-half-plane region detector with hand-set weights on FRESH geometry.'
-  answer_key: -5.0 (sum of all plane weights and biases invariant)
+  spec: '5-pt core code: two-half-plane region detector with hand-set weights on FRESH geometry. [Key
+    context: sum of all plane weights and biases invariant]'
+  answer_key: -5.0
   files:
   - problems/p08.ipynb
 - id: r1-001-p08-3
@@ -708,8 +719,8 @@ problems:
   answer_form: code
   provenance: original
   spec: '5-pt advanced code: compose the inference MLP from the two prior modules; region membership asserted
-    on probes.'
-  answer_key: 2.0 (sum of region-membership probe outputs invariant)
+    on probes. [Key context: sum of region-membership probe outputs invariant]'
+  answer_key: 2.0
   files:
   - problems/p08.ipynb
 - id: r1-001-p08-4
@@ -726,7 +737,7 @@ problems:
   provenance: original
   spec: '5-pt core code: literal-arithmetic parameter audit of the composed model; numel and disguised
     helpers banned.'
-  answer_key: '9'
+  answer_key: 9
   files:
   - problems/p08.ipynb
 - id: r1-001-p09

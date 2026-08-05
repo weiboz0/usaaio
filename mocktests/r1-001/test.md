@@ -25,6 +25,9 @@ points_by_section:
    requirements exactly. Banned-API violations score zero for that part.
 3. Unless a part states otherwise, give exact values rather than decimal
    approximations.
+4. Programming problems load pretrained assets (GloVe embeddings, ResNet-50
+   weights) from the local cache; these are pre-downloaded before the exam
+   clock starts.
 
 ## Points by section
 

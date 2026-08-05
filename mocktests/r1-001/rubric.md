@@ -88,11 +88,11 @@ Any one of these failures makes the score **0/50** before point scoring:
 
 ### Model and validation quality — 44 points
 
-- **Validation methodology and reproducibility — 8 points.** Frozen seeded carve (2), stratification and macro-F1 (2), feature/model decisions use labeled fitting data without heldout leakage (2), deterministic replay plus honest limitation (2).
+- **Validation methodology and reproducibility — 8 points.** Honest validation protocol — a frozen seeded carve OR repeated/cross-validated splits, on equal terms (2), stratification and macro-F1 (2), feature/model decisions use labeled fitting data without heldout leakage (2), deterministic replay plus honest limitation (2).
 - **kNN investigation and final recipe — 8 points.** Meaningful scaled baseline (2), bounded comparison of kNN preprocessing/features/distances/hyperparameters (2), results are recorded and the accepted choice follows them (2), accepted model is refit on all labeled rows and prediction does not refit (2).
 - **Heldout predictive performance — 28 points.** Apply the course/mock-test's official f1-macro-to-points mapping to the grader-only heldout predictions.
 
-**REGISTER AMBIGUITY:** neither `p09.ipynb` nor the `r1-001-p09` manifest entry supplies performance bands or a formula for the 28-point heldout component. This fragment therefore preserves the 28-point allocation but does not fabricate cutoffs. A coordinator must bind an official mapping before summative grading; until then, report raw heldout f1-macro alongside the 16 auditable methodology/model points.
+The performance mapping is DEFINED below (see 'Performance-points mapping') — apply it directly.
 
 ### Required summary cell — 6 points
 
@@ -112,10 +112,12 @@ The exemplar summary earns **6/6**: every item above is a checkable sentence tie
 
 Held-back f1-macro (computed by the grading register) maps to the 28 performance points as:
 
-- f1 < 0.55 → 0 points (a contract-passing majority-class baseline sits near here)
-- 0.55 ≤ f1 < 0.75 → linear: points = round(28 · (f1 − 0.55) / 0.20)
-- f1 ≥ 0.75 → 28 points
+- f1 < 0.67 → 0 points (the UNMODIFIED supplied starter scores ≈0.674 — performance
+  points reward work beyond it; the majority-class baseline sits far below)
+- 0.67 ≤ f1 < 0.78 → linear: points = round(28 · (f1 − 0.67) / 0.11)
+- f1 ≥ 0.78 → 28 points
 
-Anchors: the exemplar solution (honest validation methodology) scores 0.686 → 19 points;
-a strong-but-realistic 0.75+ earns full marks; the hard gates (contract, kNN-only, imports,
+Anchors: the exemplar's single-carve campaign (0.686) → 4 points; a cross-validated recipe
+measured at 0.7116 → 11 points; strong work at 0.78+ earns full marks;
+ the hard gates (contract, kNN-only, imports,
 run-clean) remain pass/fail on top and zero the whole problem when violated.
