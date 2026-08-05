@@ -316,6 +316,38 @@ Task 9. Trace nit raced the self-review fix (already component-routed).
    caught it. → Key corrected to W-A2 = 1 / total 3 in definition + assert + prose cells
    (commit a0e8f49); re-executed PASS; outline annotated.
 
+### Review 6 — [opus] Independent Opus (2026-08-06)
+
+- **Verdict**: Changes requested → all findings fixed at commit `d82e3dd`, re-verdict pending
+- Duties: 17/17 lessons/reviews/overviews + 60/60 solutions executed in its own runs;
+  9/9 blind-solves agree (5 proofs); 85/85 isclose calls verified atol+rtol=0; exhaustive
+  clean-sweep list recorded in its report.
+1. `[FIXED]` [opus] Must Fix: F6 capstone Checkpoint 3.3 answer opened "Yes, it would still
+   pass" — MEASURED false (proj_gap ≈ 0.6 at k=100 on the unit's own matrix). → "No — it
+   would not reliably pass (measured …)" with the existing reasoning kept.
+2. `[FIXED]` [opus] Must Fix: the p18 W-A2 ruling REVERSED on stronger evidence — the
+   published rubric (lesson 03 §3) and p15's key for the IDENTICAL situation require the
+   validation protocol, which the transcript lacks; the statement's "a value is present"
+   hedge only addressed the mislabel. → Key restored to W-A2=0/total 2 (matching rubric,
+   p15, outline, and original solver) and the STATEMENT's hedge rewritten to say exactly
+   what "own terms" means (no double-penalizing; the protocol clause is what fails).
+   Cross-reviewer conflict with codex's earlier ruling resolved on cross-artifact
+   consistency; codex asked to confirm.
+3. `[FIXED-prior]` [opus] Must Fix: C9 p12 trace route — already fixed in the glm-C9 round
+   (raced; verified trace-free at HEAD).
+4. `[FIXED]` [opus] Should Fix: C10 L03's "expect a little below 0.82" replaced with the
+   honest possibly-well-below framing citing the three-selections + 0.0567-spread facts —
+   the designed overfitting finding now lands.
+5. `[FIXED]` [opus] Should Fix: p12's fabricated "F5's monotonicity-of-averages" attribution
+   dropped (fact stated inline). 6. `[FIXED]` r*=1 guards added to C9 review idiom sheet +
+   p13(b). 7. `[FIXED]` C10 manifest adds random-variables/expectation/sampling-simulation.
+   8. `[FIXED]` F6 p20 statement gains the flooring convention (see below).
+9-12. `[FIXED]` [opus] Nits: p13 names the outcome column; p17 label follows the computed
+   flag; p16 states each view is used once. 13. `[NOTED]` the markdown-only grader register
+   is a deliberate deviation → recorded in the post-exec report. 14. `[WONTFIX]` overview
+   minutes unbudgeted — consistent with units C2-C9. 10. `[NOTED]` difficulty spread within
+   tolerance.
+
 ### Review 3 — [glm] GLM 5.2, per-unit F6 (2026-08-06)
 
 - **Verdict**: Approved (3/3 blind-solves incl. the rank-r proof anchor to 1.8e-14; narration
