@@ -203,6 +203,15 @@ Proof anchors asserted in code. isclose contract: stated atol + rtol=0.
    incl ≥1 proof; narration duty on staged .gate10-executed/), post-exec report, TODO tick,
    PR, guard, squash-merge.
 
+**RECONCILIATION — C10 (2026-08-06): 18/18 AGREE.** MC keys B/C/C/D; every anchor matches the
+outline exactly (p04 macro 11/15 → 26; p08 best_k=11 @ 0.810348; p11 161/261 < 81/100;
+p12 0.60905/0.49739; p13 baseline 0.766582; p14 dead cells [3,6,8]; p15 3/6; p18 vocab + 2/6).
+The solver's single flagged ambiguity (p17 iter-3 accepted flag) resolved to the outline's own
+intended reading (False — re-sweep selected the incumbent, no state change). The organic
+overfitting-to-validation finding (val-selected SIGNAL recipe 0.8199 val vs weaker heldout)
+reproduced independently — treated as the designed feature. All 18 solutions re-executed
+locally: 18/18 PASS. No amendments; re-solve rule not triggered.
+
 ## Out of scope
 
 011 mock test r1-001 (owns answer-key comparator + Quarto PDF build), 012 course map.
