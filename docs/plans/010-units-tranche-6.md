@@ -21,9 +21,17 @@ Task 1.
 
 Eigenpairs written (λ, q) with `S q = λ q`; symmetric spectral form `S = Q Λ Qᵀ`, eigenvalues
 sorted DESCENDING. SVD written `W = U Σ Vᵀ` with singular values σ descending (matching
-`np.linalg.svd` output order); `np.linalg.svd(W, full_matrices=False)` is the taught call.
-The bridge fact (taught in F6-03, consumed by C9): for `S = W Wᵀ`, the eigenvalues are
-λᵢ = σᵢ² with eigenvectors the columns of U. Frobenius norm `‖A‖_F = sqrt((A*A).sum())`;
+`np.linalg.svd` output order); `np.linalg.svd(W, full_matrices=False)` is the DEFAULT taught call, with
+`full_matrices=True` taught alongside it for whole-space spectral work (see bridge below).
+The bridge fact (taught in F6-03, consumed by C9), stated in BOTH forms (gate blocker —
+thin U cannot span the Gram matrix's null space): for `S = W Wᵀ` with W (n, d), n > d:
+(i) THIN form (`full_matrices=False`, U (n, d)): U's columns are the eigenvectors of the d
+(at most) NONZERO eigenvalues λᵢ = σᵢ²; the remaining n − d eigenvalues of S are 0 and their
+eigenvectors are NOT in thin U. (ii) FULL form (`full_matrices=True`, U (n, n)): Q = U with
+λ = σ² zero-padded to length n gives the complete spectral decomposition S = Q Λ Qᵀ.
+F6-03 teaches the thin/full distinction explicitly (shape table both ways); the F6-05
+capstone's spectral-from-SVD uses the FULL form with zero-padding, verified against eigh
+(sign-fixed comparison per the pin below). Frobenius norm `‖A‖_F = sqrt((A*A).sum())`;
 `‖W‖_F² = Σσᵢ²` (derived); rank-r truncation error identity `‖W − W_r‖_F² = Σ_{i>r} σᵢ²`
 (Eckart–Young optimality STATED as fact, error identity DERIVED for the truncation itself).
 C9 consumes C8's convention by name: embedding stack `W` (N, 100), rows = tokens,
@@ -58,8 +66,10 @@ frobenius-norm)
   orthogonal eigenvectors — STATED fact, numerically verified),
   `02-spectral-decomposition` (S = Q Λ Qᵀ for symmetric S; reconstruction as Σ λᵢ qᵢqᵢᵀ
   (F3 outer-products); `np.linalg.eigh` for the symmetric case; energy interpretation),
-  `03-svd` (any W = U Σ Vᵀ; singular values; the S = WWᵀ bridge (λ = σ², Q = U) DERIVED in
-  component form; `np.linalg.svd`; shapes for tall/wide matrices; full_matrices=False),
+  `03-svd` (any W = U Σ Vᵀ; singular values; the S = WWᵀ bridge DERIVED in component form —
+  thin form for the nonzero spectrum, full form (zero-padded λ) for the complete spectral
+  decomposition, per the pinned two-form bridge; `np.linalg.svd`; shapes for tall/wide
+  matrices; thin-vs-full shape table),
   `04-frobenius-and-low-rank` (‖·‖_F from entries; ‖W‖_F² = Σσᵢ² derived COMPONENT-WISE from
   the SVD expansion W = Σₖ σₖ uₖvₖᵀ — squared entries summed, cross terms killed by the
   orthonormality of the uₖ/vₖ (dot products of unit vectors, F2's register; NO trace — trace
@@ -125,8 +135,10 @@ hidden-test-protocol, prediction-function-contract, metric-driven-iteration, wri
   train.csv + a HELD-BACK test split regenerated at grading time by the solution notebooks
   (deterministic — the "hidden" test is hidden from the STUDENT register, not from ci);
   a grader cell pattern computing f1-macro of `predict_labels(X_test)`. kNN-only supervised
-  model mirrors the exam's constraint GENERICALLY (any preprocessing allowed; sklearn/numpy/
-  pandas/matplotlib imports only).
+  model mirrors the exam's constraint GENERICALLY, enforced per-problem with the ban-register
+  contract (gate finding): "any non-kNN supervised estimator scores zero" + named closers
+  (LogisticRegression/RandomForest/GradientBoosting/SVC/MLP families, and re-implementing
+  them by hand); any preprocessing allowed; sklearn/numpy/pandas/matplotlib imports only.
 - 18 problems: floors = 18. 5 concepts × 3 = 15 ≤ 18: no dual-tags required. Scenario/challenge
   problems include contract-violation postmortems (why did this notebook score zero?) and a
   capped mini-iteration log exercise.
@@ -160,7 +172,9 @@ Proof anchors asserted in code. isclose contract: stated atol + rtol=0.
    determinism check (two fresh runs of make_dataset.py byte-identical), **C10 leakage sweep:
    student-register notebooks never read/print the held-back split (the generator is
    student-visible; the protocol lives in the register — grep student notebooks for the
-   test-split artifacts; gate finding).**
+   test-split artifacts; gate finding). Harness determinism check ENUMERATES its compared
+   outputs: train.csv bytes AND the regenerated held-back split bytes, both runs (gate
+   finding).**
 10. Ship: content gate (self + codex 5.6-terra + opus + glm PER-UNIT ×3; blind-solve ≥3/unit
    incl ≥1 proof; narration duty on staged .gate10-executed/), post-exec report, TODO tick,
    PR, guard, squash-merge.
@@ -195,6 +209,15 @@ self-checks replace the cross-check cell). MINOR 3 raced the self-review trace f
 component-routed). MINOR 4: eigh-ascending → pinned [::-1] reorder idiom. NIT 5: 24-problem
 wording corrected (bottom of the 24-30 double band, deliberate). NIT 6: claim-by-claim rubric
 restored to the header contract.
+
+### Review 4 — [codex] GPT-5.6-sol (2026-08-05): REJECT → fixed
+BLOCKER: thin-SVD U (n, d) cannot supply the Gram matrix's full eigenbasis — bridge rewritten
+in two pinned forms (thin = nonzero spectrum only; full_matrices=True + zero-padded λ = the
+complete spectral decomposition); F6-03 teaches the distinction, the capstone uses the full
+form. MAJORs on det-route and sklearn-gradeability raced the fable round (det-free derivation
+already pinned; sklearn already REMOVED from C9 — moot). Task 9 strengthened per its (d/f):
+kNN-only ban clause with named closers incl. hand-reimplementation; determinism check
+enumerates both compared artifacts. Wording nit raced. Re-verdict requested.
 
 ### Review 3 — [glm] GLM 5.2 (2026-08-05): APPROVE WITH NITS → all resolved
 S-curve vehicle pinned for umap-concept (two-cluster wouldn't demonstrate local-vs-global);
