@@ -129,6 +129,7 @@ concepts:
   - {id: model-truncation,          cluster: cnn-vision}
   - {id: layer-freezing,            cluster: cnn-vision}
   - {id: transfer-learning,         cluster: cnn-vision}
+  - {id: tensor-shape-tracing,      cluster: cnn-vision}
   # --- C8 ---
   - {id: tokenization,              cluster: nlp-embeddings}
   - {id: word-embeddings,           cluster: nlp-embeddings}
