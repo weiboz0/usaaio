@@ -12,17 +12,22 @@ Manifests' `estimated_minutes` (totals: lessons 3,900 + practice 7,160 + reviews
 
 `docs/course-structure.md`, semantic line breaks, containing:
 
-1. **Course model:** weekly budget 7.5 h (3 in-class + ~4.5 independent practice) →
-   195 h ≈ 26 teaching weeks ≈ two 13-week semesters. Assumption stated, tunable.
+1. **Course model:** weekly budget 7.5 h — DERIVED split 2.5 h in-class + 5 h independent
+   (lesson total 65 h and practice+review total 130 h over 26 weeks divide exactly; gate
+   fix — the split is computed, not assumed) → 195 h = 26 teaching weeks = two 13-week
+   semesters.
 2. **Semester split (DAG-respecting, hour-balanced):**
    - Semester 1 (≈101 h): F1 → F2 → {F4, F3} → F5 → C1 → C2 → C3 → C4. Foundations plus
      the classical-ML core; ends with C4's sklearn practice as the semester capstone.
    - Semester 2 (≈94 h): C5 → C6 → C7 ∥ C8 → F6 → C9 → C10 → r1-001 as the final-week
      mock exam (3 h) + debrief. F6 placed mid-semester-2 directly before C9 (its consumer),
-     honoring the double-unit weight with two sittings.
+     its five sessions split across two teaching weeks (3 + 2 — the double-unit weight).
 3. **Week-by-week table:** one row per week — units/sessions covered, in-class vs
    independent minutes (from lesson_sessions / practice / review), the unit-review
-   checkpoints as week-end gates, and the mock-exam week.
+   checkpoints as week-end gates, and the mock-exam week. Pacing reconciliation (gate fix): semester loads are
+   7.8 h/wk (S1) vs 7.2 h/wk (S2); S2's ≈4 h cumulative slack absorbs the 3-h mock + 1-h
+   debrief exactly, keeping everything inside the 26 weeks — the table shows this
+   explicitly in the final week's row.
 4. **Milestones & assessment:** unit reviews as formative checks; r1-001 as the summative
    mock (blueprint-scored, 300 pts); a slot marked for r1-002 as an optional
    semester-1-end or pre-exam second mock (generated on demand via the pipeline).
@@ -57,6 +62,12 @@ arithmetic-verification duty (design §2 exemption stated).
   93.9 h + the 3-h mock; 26 × 7.5 = 195. DAG: the stated order verified topological (C8's
   foundation-only prereqs make the C7 ∥ C8 parallelism legal; C9's four prereqs all
   precede it; C4's all in semester 1).
+
+### Review 2 — [glm] GLM 5.2 (2026-08-07): APPROVE WITH NITS → all resolved
+All arithmetic and topology verified exact. Nits fixed in the plan: the weekly split is now
+the DERIVED 2.5/5 (not the assumed 3/4.5 — lesson 65 h and practice+review 130 h divide 26
+exactly); the mock+debrief absorption into S2's 4-h slack pinned for the week table; F6's
+"two sittings" made concrete (sessions 3+2 across two weeks).
 
 ## Content Review
 
