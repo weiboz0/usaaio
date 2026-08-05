@@ -101,8 +101,14 @@ placement explicitly (which unit gains capacity, or whether the band flexes with
 unit-standards amendment). Two corrections carried forward for that plan: the section must sit
 AFTER `mlp-architecture` within C5's lesson order (it is taught inside C5, not a unit prereq,
 and unit-level tooling cannot catch intra-unit ordering); and the scope claim must be stated
-accurately — the curriculum is not "inference-only" wholesale (C3 teaches fitting) but no unit
-RUNS a training loop, which is the boundary CE must respect. The optional CE-gradient proof
+accurately (gate finding — my first correction was still wrong): C3 DOES implement and run
+training loops — hand-written gradient-descent updates for LINEAR models, named as such in
+lesson 02. The real boundary is narrower and framework-shaped: **no unit trains a NEURAL
+NETWORK — there is no `.backward()`, no `torch.optim`, no autograd anywhere in `units/`
+(grep-verified at gate time). C5-C7 are construction/inference-only.** Cross-entropy may
+therefore be taught, evaluated, and differentiated ON PAPER, and may even be minimised by a
+hand-written descent loop in C3's register if plan 015 wants it — but it must not introduce
+autograd or an optimizer object. The optional CE-gradient proof
 additionally depends on F4's partial-derivatives/multivariable-chain-rule (in C5's transitive
 chain — state it).
 
@@ -188,6 +194,11 @@ four REQUIRED properties spelled out rather than cited; softmax placement/scope 
 mathematical error in this plan** — "X symmetric ⇒ X, X² dependent" is false for Rademacher X
 (X² constant ⇒ independent), verified numerically at gate time; the spec now pins a
 nondegenerate symmetric distribution and makes the degenerate case the instructive near-miss.
+
+**Slot-2 re-verdict round 2:** its remaining finding was that my own scope correction was
+STILL factually wrong — C3 implements and runs a training loop (verified: lesson 02's
+hand-written descent updates). Re-corrected to the accurate, narrower boundary: no unit
+trains a NEURAL NETWORK; `grep` confirms zero `.backward()` / `torch.optim` in `units/`.
 
 ### Review 4 — [codex] GPT-5.6-sol, slot 3 — independent session (2026-08-05): REJECT → all resolved
 Its blocker raced the same fix but added the negative test (synthesis must never rescue a
