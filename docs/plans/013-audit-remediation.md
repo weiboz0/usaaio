@@ -105,7 +105,15 @@ none. Watch-list topics.
 
 ## Plan Review
 
-(4-way gate verdicts land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
+
+- **Verdict**: APPROVE WITH NITS (pre-emption applied)
+1. `[FIXED-pre-gate]` Guard scope pinned: tolerance-check scans SOLUTION notebooks only
+   (statements legitimately describe tolerances in prose) and only np.isclose/np.allclose
+   CALLS (exact comparisons via == are out of scope by construction).
+2. `[VERIFIED]` New-id arithmetic: tensor-shape-tracing 3+1(dual)=4, the other three ids
+   3 each; closures derive in-chain for C7/C4/C10; convolution keeps its count through
+   the dual-tag while gaining its advanced ceiling.
 
 ## Content Review
 
