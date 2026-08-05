@@ -39,7 +39,7 @@ clusters [nlp-embeddings, linear-algebra, numpy]; difficulty draw {intro .23, co
 advanced .32}; 9 problems; 180 min. Slot specs (one paragraph per gradable sub-part) drafted
 in this plan → recorded as `spec:` fields in the manifest. Section shape mirrors the 2026
 texture: P1-P2 concept-block MC (8 MC sub-parts), P3-P4 math-computation, P5 the integrative
-arc (embeddings → similarity → SVD → low-rank, ~7 sub-parts — OUR OWN arc on fresh data,
+arc (embeddings → similarity → SVD → low-rank, 12 sub-parts per the slot spec — OUR OWN arc on fresh data,
 never the exam's), P6-P8 engineering (numpy/torch-free-mix per clusters), P9 the 50-pt
 open-ended notebook task (C10's register: hidden-test protocol, kNN-only, f1-macro,
 predict-function contract — FRESH dataset theme, not apiary, not medical).
