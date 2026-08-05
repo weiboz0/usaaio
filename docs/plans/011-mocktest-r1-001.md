@@ -286,6 +286,36 @@ blind solving is disproportionate; each reviewer blind-solves ≥8 sub-parts spa
 sections AND either the complete P5 chain or the complete P9 task. Recorded here as the
 explicit sampling rule.
 
+## Post-Execution Report (2026-08-07)
+
+**Shipped:** mocktests/r1-001 — the project's first full mock test — plus the two ci
+capstones. **Every ci check is now real; zero stubs remain.**
+- The test: 9 problems, 40 gradable sub-parts, 300 points, 180 minutes, built by the
+  deterministic blueprint pipeline (rotation index 0). All texture/cluster/difficulty
+  ledgers verified by blueprint-check on the final manifest. 6 adapted-tagged sub-parts
+  (original share 0.817); arc/register structural lineage acknowledged in
+  generation_parameters.
+- Tooling: quarto 1.6.42 (sha256-verified user-space install); answerkey-check with THREE
+  live legs (manifest ↔ answers.md markers ↔ tagged notebook literals — corruption-tested
+  by a reviewer); build-pdf.sh rendering the full student package to typst PDFs
+  (execute:false, solutions never rendered, math verified via pdftotext); overlap-scan
+  matured across four commits (mock boilerplate filter, spec/file granularity split,
+  summary-stream cosine, all-hits reporting) — every tagged adaptation now surfaces and
+  nothing untagged does.
+- Split-author under the NEW dispatch (sol drafts + separate sol sessions solve blind):
+  reconciliation 40/40; the roster's four-way gate then added ~30 findings across five
+  reviewer rounds — the deepest gate of the project — including four demonstrated
+  Must-Fixes (tautological asserts, disabled comparator leg, a crash bug, a
+  self-contradicting rubric). Session-level blind independence + cross-model gates held.
+- P9's exemplar reproduced the overfitting-to-validation phenomenon (0.790 val → 0.686
+  heldout); the performance band now floors above the unmodified starter.
+- Fidelity: per-section PASS ×5 from three independent reviewers. Hidden-test honesty
+  convention documented (protocol-hidden, not secrecy-hidden; a real administration
+  distributes only the rendered package).
+
+**Remaining for the standing goal:** plan 012 (course-structure doc). r1-002/r1-003
+(rotation indices 1-2) available cheaply on demand — user informed.
+
 ## Plan Review
 
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-06)
