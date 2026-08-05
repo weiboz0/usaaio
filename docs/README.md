@@ -2,6 +2,8 @@
 
 Project documentation and the plan-driven execution lifecycle.
 
+- [Course structure](course-structure.md) — the two-semester pacing map (plan 012).
+
 ## Plan-driven execution docs
 
 Four numbered folders, all 3-digit prefix, monotonically increasing per folder:

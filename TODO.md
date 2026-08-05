@@ -12,4 +12,4 @@
 - [x] 009 — units tranche 5: C7+C8 (merged)
 - [x] 010 — units tranche 6: F6+C9+C10 (merged — curriculum complete)
 - [ ] 011 — first full mock test r1-001 through the pipeline (owns answer-key reproduction + PDF build)
-- [ ] 012 — course-structure doc (units -> semesters/weeks pacing)
+- [x] 012 — course-structure doc (merged — roadmap complete) (units -> semesters/weeks pacing)
