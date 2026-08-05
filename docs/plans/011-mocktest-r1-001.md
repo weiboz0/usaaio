@@ -120,6 +120,17 @@ build green — test.md had no body (rendered empty), theory/*.md weren't render
 (build-pdf extended), and quarto's typst path drops LaTeX \[ \]/\( \) delimiters
 (statements converted to $-form; math verified present in every rendered PDF via pdftotext).
 
+**VERIFICATION FINDING (recorded in-scope tooling fix):** with `files:` fields populated,
+overlap-scan's mock path TF-IDF'd raw statement texts and fired ~10 false-positive ERRORs —
+every one at shingles=0 (zero verbatim overlap) — because the blueprint's style_rules
+MANDATE the exam's register boilerplate in every statement, and boilerplate dominates
+cosine on short texts. The unit path already carries a boilerplate filter for the same
+class (plan-004 design); the mock path lacked one. Fix dispatched (sol): mirror the unit
+filter with a register-phrase constant citing style_rules; shingle scan stays raw
+(verbatim protection unchanged); thresholds unchanged; regression tests. Justification:
+this makes a NAMED phase's check meaningful for the register the blueprint itself mandates
+— not new scope; the gate's tooling review covers it.
+
 ## Task 5 — Verification (NAMED)
 
 ci-local ALL GREEN with the two NEW checks live (answerkey-check real; PDF build real,
