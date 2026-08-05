@@ -26,10 +26,13 @@ two tools that turn ci's last stub lines green (answer-key reproduction; Quarto 
     order-independent). Exit contract: 0 pass / 1 fail / 3 loud-skip when no final mocktest
     manifests exist. Tests in tests/ (pytest), including a fixture mocktest.
 0c. **PDF build wiring** (`scripts/build-pdf.sh` + ci step 5): quarto-render test.md +
-    problems/*.ipynb (student register ONLY — solutions never rendered) to
+    problems/*.ipynb (student register ONLY — solutions never rendered; **`execute: false`
+    pinned in the render config — quarto executes notebooks by default, which would both
+    slow ci and risk leaking outputs into the student PDF; gate finding**) to
     `mocktests/r1-NNN/build/` (gitignored); ci runs it for every mocktest dir and fails on
     render errors. ci-local.sh lines "PENDING (plan 011)" and "SKIP (plan 011)" replaced by
-    real invocations.
+    real invocations. **Also update docs/mocktest-generation.md's verification map (its
+answer-key row still says "PENDING (plan 006)" — stale plan number; gate finding).**
 
 ## Task 1 — Instantiate (orchestrator inline)
 
@@ -72,7 +75,9 @@ C8/C9/F6 problems, P9 vs C10's harness problems).
 ## Task 5 — Verification (NAMED)
 
 ci-local ALL GREEN with the two NEW checks live (answerkey-check real; PDF build real,
-rendered artifacts spot-opened); status flipped draft→final at the end of the gate;
+rendered artifacts spot-opened); **the draft→final manifest flip happens in Task 6 AFTER
+the content gate passes (wording clarified — gate finding), with one final ci run at
+final status before the PR**;
 tooling pytest suite green; comparator loud-skip path exercised in tests.
 
 ## Task 6 — Ship
@@ -179,6 +184,23 @@ explicit sampling rule.
 3. `[VERIFIED]` Section sums 50/45/90/65/50 = 300 against the anchors; 8 total MC sub-parts
    matches the 2026 anchor; all named concepts spot-checked taught (dependent-rows eigen F6,
    bottleneck C7, GloVe C8, contract register C10).
+
+### Review 2 — [fable] Independent Fable 5 (2026-08-06): REJECT → resolved
+BLOCKER (sub-part texture 27 vs min 33; arc 7 vs min 12; atom share unreachable) → slot
+specs REBUILT with full ledgers: 40 sub-parts, arc 14, atom share 0.75, concept-block
+5×10-pt atoms. MAJORs: cluster ledger added (all floors/ceilings met — pytorch rebalanced
+via P8-as-torch; cnn-vision 15 ≤ 20); deliverable ownership assigned (test.md/time_budget →
+Task 1; rubric.md/answers.md → Task 3); comparator binding rule added (in-notebook assert
+binds literal↔computation; tag + marker conventions pinned). MINORs: blind-solve sampling
+recorded as an explicit deviation; provenance pre-commitment for 5.7/5.11 (adapted tags,
+original share 0.95); nbconvert-fallback honesty note (HTML, not PDF).
+
+### Review 3 — [glm] GLM 5.2 (2026-08-06): REJECT → resolved
+Its texture/atomization/arithmetic majors raced the fable-round rebuild (verified addressed
+by the ledgers — programming share 155 ≤ 165 with P5 code capped at 8×5). New fixes:
+quarto `execute: false` pin (output-leak + ci-speed); docs/mocktest-generation.md stale
+"plan 006" row updated in Task 0c; draft→final flip timing clarified (Task 6, post-gate,
+final ci at final status).
 
 ## Content Review
 
