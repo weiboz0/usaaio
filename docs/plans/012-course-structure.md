@@ -23,7 +23,7 @@ Manifests' `estimated_minutes` (totals: lessons 3,900 + practice 7,160 + reviews
    - Semester 2 (93.9 h content, 97.9 h total with the mock + debrief): C5 → C6 → C7 ∥ C8 →
      F6 → C9 → C10 → r1-001 as the final-week
      mock exam (3 h) + debrief. F6 placed mid-semester-2 directly before C9 (its consumer),
-     its five 85-min sessions spread across two-and-a-half teaching weeks (2+2+1 — the
+     its five 85-min sessions spread across three teaching weeks (2+2+1, sharing the first — the
      double-unit weight; each sitting stays inside the 60-90-min session rule).
 3. **Week-by-week table:** one row per week — units/sessions covered, in-class vs
    independent minutes (from lesson_sessions / practice / review), the unit-review
@@ -96,6 +96,13 @@ Minors: regeneration snippet pinned to lesson_sessions (C1 trap); F1's missing r
 handled in the table spec.
 
 ## Content Review
+
+### Review 2 — [glm] GLM 5.2 (2026-08-07)
+
+- **Verdict**: Approved (full arithmetic re-derivation exact; spot units exact; topology
+  sound; all devices present).
+1. `[FIXED]` [glm] N: the PLAN's "two-and-a-half teaching weeks" phrasing (the doc already
+  said three) → aligned to "three teaching weeks (2+2+1, sharing the first)".
 
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
 
