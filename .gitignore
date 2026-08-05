@@ -18,3 +18,8 @@ build/
 reference/*
 !reference/.gitkeep
 !reference/analysis.md
+
+# C10 grading register: the held-back split is regenerated at grading time
+# by `make_dataset.py --with-test` and must never be committed (public repo;
+# committing it would break the hidden-test teaching device).
+units/C10-competition-craft/data/heldout.csv
