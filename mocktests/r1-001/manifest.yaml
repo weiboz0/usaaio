@@ -108,9 +108,10 @@ problems:
   difficulty: intro
   type: theory
   answer_form: multiple-choice
-  provenance: original
+  provenance: adapted
   spec: '5-pt intro numeric normal-form MC: evaluate d/dx tanh(ax+b) at a point; gcd normal form p/q,
     answer p+q.'
+  adapted-from: r1-2026-p04-1
 - id: r1-001-p02-2
   section: math-computation
   units:
@@ -140,9 +141,10 @@ problems:
   difficulty: core
   type: theory
   answer_form: proof
-  provenance: original
+  provenance: adapted
   spec: '5-pt core reasoning-required: solve the sigma that preserves variance for fresh C; the 1/sqrt(C)
     route.'
+  adapted-from: r1-2026-p07-2
 - id: r1-001-p03-1
   section: math-computation
   units:
@@ -316,9 +318,10 @@ problems:
   difficulty: core
   type: programming
   answer_form: code
-  provenance: original
+  provenance: adapted
   spec: '5-pt core code: thin SVD of W via np.linalg.svd (allowed here); report the descending singular
     values.'
+  adapted-from: r1-2026-p05-11
 - id: r1-001-p05-9
   section: integrative-arc
   units:

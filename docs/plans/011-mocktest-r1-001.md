@@ -137,9 +137,9 @@ specs in the plan BEFORE prose — Task 1 transcribes, zero free choices):**
 | p01-3 | 10 | core | theory / MC | ml-concepts | train-test-split | orig |
 | p01-4 | 10 | core | theory / MC | ml-concepts | f1-macro, accuracy-precision-recall | orig |
 | p01-5 | 10 | intro | theory / MC | ml-concepts | clustering-concept | orig |
-| p02-1 | 5 | intro | theory / MC-normal-form | calculus-multivar | tanh-derivative, multivar-chain-rule | orig |
+| p02-1 | 5 | intro | theory / MC-normal-form | calculus-multivar | tanh-derivative, multivar-chain-rule | **adapted ← r1-2026-p04-1** |
 | p02-2 | 5 | core | theory / short-answer | probability-statistics | variance-of-sums, independence | orig |
-| p02-3 | 5 | core | theory / proof (reasoning req.) | probability-statistics | weight-init-variance, variance | orig |
+| p02-3 | 5 | core | theory / proof (reasoning req.) | probability-statistics | weight-init-variance, variance | **adapted ← r1-2026-p07-2** |
 | p03-1 | 5 | intro | theory / MC-normal-form | linear-algebra | eigenvalues-eigenvectors | orig |
 | p03-2 | 10 | core | theory / proof (reasoning req.) | linear-algebra | eigenvalues-eigenvectors, linear-independence-span | orig |
 | p04-1 | 5 | intro | theory / MC-normal-form | linear-algebra | frobenius-norm | orig |
@@ -151,7 +151,7 @@ specs in the plan BEFORE prose — Task 1 transcribes, zero free choices):**
 | p05-5 | 5 | core | programming / code | numpy | broadcasting, vectorization | orig |
 | p05-6 | 5 | core | theory / short-answer | linear-algebra | cosine-similarity, unit-vectors | orig |
 | p05-7 | 15 | advanced | theory / proof (reasoning req.) | linear-algebra | similarity-matrices, matrix-multiplication | **adapted ← r1-2026-p05-6** |
-| p05-8 | 5 | core | programming / code | linear-algebra | svd | orig |
+| p05-8 | 5 | core | programming / code | linear-algebra | svd | **adapted ← r1-2026-p05-11** |
 | p05-9 | 5 | core | theory / short-answer | linear-algebra | svd, singular-values | orig |
 | p05-10 | 5 | advanced | programming / code | linear-algebra | spectral-decomposition, svd | orig |
 | p05-11 | 15 | advanced | theory / proof (reasoning req.) | linear-algebra | low-rank-approximation, frobenius-norm | **adapted ← r1-2026-p05-14** |
@@ -218,7 +218,10 @@ specs in the plan BEFORE prose — Task 1 transcribes, zero free choices):**
 **Provenance pre-commitment (gate finding):** the arc STRUCTURE is the blueprint's required
 rotation texture, not a provenance event; sub-parts are original EXCEPT 5.7 and 5.11, which
 mirror specific exam sub-part registers closely enough to carry `provenance: adapted` +
-`adapted-from` tags up front. Original share 38/40 = 0.95 ≥ 0.7 ✓. Any reviewer may
+`adapted-from` tags up front. Original share 35/40 = 0.875 ≥ 0.7 ✓ (three more sub-parts escalated to adapted at
+implementation when overlap-scan flagged their register mirrors — p02-1 ← p04-1 tanh,
+p02-3 ← p07-2 variance, p05-8 ← p05-11 SVD call; exactly the escalation valve the
+pre-commitment reserved). Any reviewer may
 escalate additional sub-parts to adapted at the gate.
 
 **Deliverable ownership (gate finding):** `test.md` front matter + manifest `time_budget`
