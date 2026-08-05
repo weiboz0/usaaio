@@ -115,15 +115,17 @@ Round 2 anything. Changing blueprint.yaml (any texture change is its own plan).
 **Texture ledger (verified against blueprint invariants):** sub-parts
 5+3+2+2+14+4+5+4+1 = **40** ∈ [33, 41] ✓; five-point atoms 30/40 = **0.75** ≥ 0.55 ✓
 (P2's 3 + P3's 1 + P4's 1 + P5's 12 + P6-P8's 13); programming points
-40(P5 code) + 20 + 25 + 20 + 50 = **155**/300 = 0.517 ∈ [0.45, 0.55] ✓; problem count 9 ✓;
+40 (P5 code) + 20 (P6) + 20 (P7 code beats — p07-3 is theory) + 20 (P8) + 50 (P9) =
+**150**/300 = 0.50 ∈ [0.45, 0.55] ✓; problem count 9 ✓;
 arc sub-parts 14 ∈ [12, 16] ✓; section sums 50/45/90/65/50 = 300 = the anchors ✓.
 
 **Cluster ledger (test-global, all within min/max; every problem's clusters drawn from its
-SECTION's allowed list — gate blocker fixed):** ml-concepts 50 (P1) · calculus-multivar 5 (P2a) ·
-probability-statistics 10 (P2b-c) · linear-algebra 75 (P3 15 + P4 15 + P5 45; ≤ 80) ·
-nlp-embeddings 15 (p05-1..3) · numpy 50 (P5 beats 4/5/8/12/13/14 = 30, + P6 20) · pytorch
-35 (P7 beats 1/2/5 = 15 + P8 20; ≥ 30) · cnn-vision 10 (P7 beats 3/4; ≤ 20, = target) ·
-applied-ml 50 (P9). Sum 300 ✓ — every row of the spec table sums to exactly this ledger.
+SECTION's allowed list; cluster follows the row's CONCEPTS — gate rule):** ml-concepts 50
+(P1) · calculus-multivar 15 (p02-1 + p04-2 — AT the 15 ceiling, noted) ·
+probability-statistics 10 (p02-2/3) · linear-algebra 75 (P3 15 + p04-1 5 + P5 beats
+6/7/8/9/10/11/14 = 55; ≤ 80) · nlp-embeddings 15 (p05-1..3) · numpy 40 (P5 beats
+4/5/12/13 = 20 + P6 20; ≥ 35) · pytorch 35 (P7 beats 1/2/5 + P8 20; ≥ 30) · cnn-vision 10
+(P7 beats 3/4) · applied-ml 50 (P9). Sum 300 ✓ — equals the spec table row-by-row.
 
 **COMPLETE per-sub-part spec table (gate blocker: mocktest-generation.md requires full
 specs in the plan BEFORE prose — Task 1 transcribes, zero free choices):**
@@ -141,7 +143,7 @@ specs in the plan BEFORE prose — Task 1 transcribes, zero free choices):**
 | p03-1 | 5 | intro | theory / MC-normal-form | linear-algebra | eigenvalues-eigenvectors | orig |
 | p03-2 | 10 | core | theory / proof (reasoning req.) | linear-algebra | eigenvalues-eigenvectors, linear-independence-span | orig |
 | p04-1 | 5 | intro | theory / MC-normal-form | linear-algebra | frobenius-norm | orig |
-| p04-2 | 10 | core | theory / proof (reasoning req.) | linear-algebra | spectral-decomposition, outer-products, orthogonality-orthonormality | orig |
+| p04-2 | 10 | core | theory / proof (reasoning req.) | calculus-multivar | sum-of-squares-gradients, partial-derivatives | orig |
 | p05-1 | 5 | intro | programming / code | nlp-embeddings | tokenization | orig |
 | p05-2 | 5 | intro | theory / short-answer | nlp-embeddings | tokenization | orig |
 | p05-3 | 5 | core | programming / code | nlp-embeddings | gensim-usage, word-embeddings | orig |
@@ -149,13 +151,13 @@ specs in the plan BEFORE prose — Task 1 transcribes, zero free choices):**
 | p05-5 | 5 | core | programming / code | numpy | broadcasting, vectorization | orig |
 | p05-6 | 5 | core | theory / short-answer | linear-algebra | cosine-similarity, unit-vectors | orig |
 | p05-7 | 15 | advanced | theory / proof (reasoning req.) | linear-algebra | similarity-matrices, matrix-multiplication | **adapted ← r1-2026-p05-6** |
-| p05-8 | 5 | core | programming / code | numpy | svd (API call — exam's own p05-11 tagging precedent) | orig |
+| p05-8 | 5 | core | programming / code | linear-algebra | svd | orig |
 | p05-9 | 5 | core | theory / short-answer | linear-algebra | svd, singular-values | orig |
 | p05-10 | 5 | advanced | programming / code | linear-algebra | spectral-decomposition, svd | orig |
 | p05-11 | 15 | advanced | theory / proof (reasoning req.) | linear-algebra | low-rank-approximation, frobenius-norm | **adapted ← r1-2026-p05-14** |
 | p05-12 | 5 | core | programming / code | numpy | low-rank-approximation, vectorization | orig |
 | p05-13 | 5 | core | programming / code | numpy | low-rank-approximation, aggregation-axis | orig |
-| p05-14 | 5 | core | theory / short-answer | numpy | low-rank-approximation (float-count register) | orig |
+| p05-14 | 5 | core | theory / short-answer | linear-algebra | low-rank-approximation | orig |
 | p06-1 | 5 | intro | programming / code | numpy | broadcasting | orig |
 | p06-2 | 5 | core | programming / code | numpy | nearest-neighbor-search, array-indexing-slicing | orig |
 | p06-3 | 5 | core | programming / code | numpy | relu-activation, elementwise-ops | orig |
@@ -184,11 +186,9 @@ specs in the plan BEFORE prose — Task 1 transcribes, zero free choices):**
 - **P3** (math-computation, 15 = 5+10): eigenvalue check of a given pair (5, normal form);
   2×2 eigen by hand via the dependent-rows route (10, reasoning required). F6,
   linear-algebra.
-- **P4** (math-computation, 15 = 5+10; cluster linear-algebra — math-computation's
-  allowed-cluster list is [linear-algebra, calculus-multivar, probability-statistics];
-  cnn-vision content MOVED to P7 where the section allows it — gate blocker): Frobenius
-  norm of a small matrix (5, normal form); outer-product reconstruction Σλqqᵀ with an
-  orthonormality justification step (10, reasoning required). F6/F3.
+- **P4** (math-computation, 15 = 5+10; clusters LA 5 + calculus-multivar 10 per the table):
+  Frobenius norm of a small matrix (5, normal form, F6); sum-of-squares gradient derivation
+  at a point — ∂/∂wⱼ of a squared-residual sum, evaluated (10, reasoning required, F4).
 - **P5** (integrative-arc, 90 = 12×5 + 2×15, 14 sub-parts, later parts consume earlier):
   OUR arc on a fresh committed text corpus (seeded generator). Beats (5 pts each unless
   noted): 5.1 tokenize + census (code, nlp) · 5.2 dedup semantics (theory, nlp) · 5.3
@@ -253,6 +253,13 @@ explicit sampling rule.
 3. `[VERIFIED]` Section sums 50/45/90/65/50 = 300 against the anchors; 8 total MC sub-parts
    matches the 2026 anchor; all named concepts spot-checked taught (dependent-rows eigen F6,
    bottleneck C7, GloVe C8, contract register C10).
+
+### Review 8 — [codex] re-verdict 3 (2026-08-06): REJECT → fixed
+Cluster-follows-concepts enforced: p05-8/p05-14 → linear-algebra; the LA overflow this
+caused (85 > 80) rebalanced by making p04-2 a calculus-multivar beat (sum-of-squares
+gradient derivation, F4) — final ledger LA 75, numpy 40, calc 15 (at ceiling, noted).
+Programming share corrected to 150 (p07-3 is theory). P5 prose bullets stripped of inline
+cluster tags — the spec table is authoritative. Fourth re-verdict requested.
 
 ### Review 7 — [codex] re-verdict 2 (2026-08-06): REJECT → fixed
 Live blocker: the Task-1 deferral contradicted mocktest-generation.md's specs-before-prose
