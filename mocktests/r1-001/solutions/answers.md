@@ -325,8 +325,7 @@
 - r1-001-p05-9: answer: thin: (220,100),(100,),(100,100); full: (220,220),(100,),(100,100); S adds 120 zeros
 - r1-001-p05-10: answer: 220.0
   (Invariant: sum-of-full-eigenvalues invariant)
-- r1-001-p05-11: answer: sum
-  (Invariant: sigma[r:]**4) / sum(sigma**4)
+- r1-001-p05-11: answer: sum(sigma[r:]**4) / sum(sigma**4)
 - r1-001-p05-12: answer: 100
   (Invariant: relative-error-vector-length invariant)
 - r1-001-p05-13: answer: 3
