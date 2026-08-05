@@ -13,10 +13,27 @@ bias–variance callback the syllabus promised, and two targeted items.
 > until 2026-08-09 16:00 (user directive) — the plan-gate independent slot runs as a second,
 > independent sol session.**
 
-## Task 1 — The synthesis set (the largest item; both auditors' #1)
+## Task 0b — Retagging audit FIRST (gate finding: the cheap option is unverified)
 
-New top-level `synthesis/` unit-like directory (NOT a syllabus unit — no new concepts):
+Before any synthesis file is written, audit whether existing practice problems can be
+HONESTLY retagged cross-unit: for each of the 337 problems, does it substantively exercise a
+concept owned by another unit (not merely use it as scaffolding)? Record the count and the
+qualifying list. **Decision rule:** every arc the retagging audit can cover honestly is
+covered that way (cheaper, no new tree); the synthesis set is built ONLY for arcs retagging
+cannot express — a graded problem whose parts consume results across units in one narrative.
+If the audit finds ≥4 arcs coverable by retagging, this plan drops to a retagging pass plus
+the residual arcs, and Task 1's tooling shrinks accordingly. Record the verdict here.
+
+## Task 1 — The synthesis set (only for what Task 0b leaves uncovered)
+
+New top-level `synthesis/` directory (NOT a syllabus unit — no new concepts):
 `synthesis/manifest.yaml` + `synthesis/problems/sNN.ipynb` + `sNN_solution.ipynb`.
+**Manifest contract (gate finding — previously undefined):** the file declares
+`set: synthesis`, and each entry carries `id` (sNN), `concepts` (≥2 concepts whose OWNING
+UNITS differ — validated, not merely documented), `units` (the owning units, ≥2), `type`,
+`difficulty`, `path`, `solution_path`. `tools/model.py` gains a `load_synthesis()` returning
+the same problem shape as units; `prereq-check` validates closure against the FULL taught set
+(not a single unit's chain) and REJECTS an entry whose concepts all share one owning unit.
 **Six graded multi-unit arcs**, each tagging concepts from ≥2 units (no UNIT PRACTICE problem is cross-unit tagged — 0 of
 337; note mock test r1-001 does carry 19 multi-unit problems, so the gap is specifically in
 the practice corpus, not the assessment corpus):
@@ -44,16 +61,27 @@ the whole set (gate MAJOR; the 013 anti-vacuity lesson):**
    it does NOT, so its tree list gains `synthesis/**` (the 013 full-tree scan is per-tree).
 **Acceptance:** each of the 8 is demonstrated by a deliberately-broken fixture (a synthesis
 notebook that violates the check) proving the check FAILS — no consumer is accepted on the
-strength of a green run alone.
+strength of a green run alone. **Plus one NEGATIVE test (gate finding): a unit concept with
+only 2 unit-practice problems plus 1 synthesis problem must still FAIL coverage-check —
+synthesis can never rescue a unit's ≥3.**
 `docs/unit-standards.md` gains a short "Synthesis set" section defining the contract, AND its
 stale "coverage-check enforces ≥1" line is corrected to ≥3 (plan 013 made it machine-enforced).
 
-## Task 2 — Error clinics (2 problems + 1 section)
+## Task 2 — Error clinics (2 problems + 1 section) — PLACEMENTS PINNED (gate finding:
+"C3 (or C5)" / "C9 or C5" left curriculum placement to drafters)
 
-- C3 (or C5) "broken descent" clinic: 5 short transcripts, one planted bug each (η too large;
+- **C3** "broken descent" clinic (C3 owns descent; 1 problem, type `scenario`, difficulty
+  `advanced`): 5 short transcripts, one planted bug each (η too large;
   sum-vs-mean loss mismatch; gradient sign flip; un-zeroed accumulator; wrong-axis broadcast).
-  Student diagnoses from the loss trace BEFORE touching code — precommit-gated verification
-  cell per 013's C7-p24 precedent.
+  Student diagnoses from the loss trace BEFORE touching code.
+  **Verifier contract — all FOUR properties of the C7-p24 precedent are REQUIRED (gate
+  finding: citing the precedent is not pinning it): (1) committed-answer schema — the
+  student's diagnosis variables are named and typed in the statement; (2) completeness check
+  — the verifier raises if any answer is uncommitted AND if the committed collection's length
+  differs from the expected count (013's `zip()` truncation hole); (3) artifact-derived
+  grading — the verdict is computed from the actual transcripts/run, never from a
+  student-assigned value (013's C4-p22 vacuity lesson); (4) non-disclosure — the verifier
+  reports agreement only, never the expected values.**
 - C7 BN/eval/requires_grad three-way clinic: toggle each independently on a small
   BatchNorm trunk; which changes gradients, outputs, running buffers?
   **This clinic owns the plan's "1 section" (gate finding): BatchNorm train/eval semantics
@@ -62,7 +90,23 @@ stale "coverage-check enforces ≥1" line is corrected to ≥3 (plan 013 made it
   ids (`layer-freezing`, `requires-grad`, `resnet-architecture`), with the BN behaviour
   taught-and-assessed as part of that register rather than as a new concept id.**
 
-## Task 3 — softmax + cross-entropy (the top future-proofing gap)
+## Task 3 — softmax + cross-entropy: DEFERRED to plan 015 (gate finding)
+
+**Recorded decision.** C5 currently holds 22 problems; unit-standards' band is 16-24, so the
+6 planned problems (3 per new id) would put C5 at 28 — and both codex reviewers independently
+flagged the sizing. Softmax/cross-entropy is a FUTURE-RISK item (no current exam sub-part
+tests it), not a coverage gap, so it does not justify either breaking the band or a rushed
+unit-capacity decision inside an already-large plan. **Plan 015 owns it** and must resolve
+placement explicitly (which unit gains capacity, or whether the band flexes with a recorded
+unit-standards amendment). Two corrections carried forward for that plan: the section must sit
+AFTER `mlp-architecture` within C5's lesson order (it is taught inside C5, not a unit prereq,
+and unit-level tooling cannot catch intra-unit ordering); and the scope claim must be stated
+accurately — the curriculum is not "inference-only" wholesale (C3 teaches fitting) but no unit
+RUNS a training loop, which is the boundary CE must respect. The optional CE-gradient proof
+additionally depends on F4's partial-derivatives/multivariable-chain-rule (in C5's transitive
+chain — state it).
+
+<!-- superseded spec retained for plan 015's drafter -->
 
 New syllabus ids `softmax` + `cross-entropy-loss` → C5 (prereqs in-chain:
 exponentials-and-logs baseline, mlp-architecture, expectation). **Clusters (gate finding):
@@ -75,17 +119,28 @@ training — it stays inference/analysis register per the curriculum's standing 
 
 ## Task 4 — Promised callbacks + targeted items
 
-- Bias–variance callback (C9 or C5 section): revisit C1's rigid/flexible spectrum with the
-  now-precise variance vocabulary + 1 problem tying evr/capacity to the train–test gap.
-- F5: covariance-converse trap problem (X symmetric, Y = X²: zero covariance, dependent).
-- C1: underfitting-side scenario (both scores poor and close → recommend more flexibility).
+- **C9** bias–variance callback (C9 owns evr/capacity; 1 lesson subsection + 1 problem, type
+  `scenario`, difficulty `core`) revisiting C1's rigid/flexible spectrum with the now-precise
+  variance vocabulary and tying evr/capacity to the train–test gap.
+- F5: covariance-converse trap problem. **CORRECTED SPEC (gate BLOCKER — the original
+  "X symmetric, Y = X²" is FALSE in general: for Rademacher X = ±1, X² ≡ 1 is constant and
+  therefore INDEPENDENT of X, verified numerically at gate time). Pin a NONDEGENERATE
+  symmetric distribution whose |X| varies — e.g. X uniform on {−2, −1, 1, 2} — so that
+  Cov(X, X²) = E[X³] = 0 by symmetry while X² is a non-constant function of X, hence
+  dependent. The statement must make the varying-magnitude requirement explicit, and the
+  solution must show the degenerate case as the instructive near-miss.**
+- **C1**: underfitting-side scenario (1 problem, type `scenario`, difficulty `core`): both
+  scores poor and close → recommend more flexibility, distinguished from overfitting.
 
 ## Task 5 — Statements/solutions cycle
 
 sol drafters (sections + statements + outlines to gitignored reference/outlines-014/);
 SEPARATE sol sessions blind-solve; reconciliation; amended-statement → re-solve;
-corpus duty: synthesis arcs vs the exam's integrative arc AND vs r1-001's P5 (our own mock)
-— the synthesis set must not duplicate either.
+corpus duty (gate finding — make it enforced, not aspirational): overlap-scan covers
+synthesis statements per Task 1's consumer #6, AND the orchestrator records an explicit
+structural comparison of every arc against (i) the exam's integrative arc and (ii) r1-001's
+P5 chain — our own mock — with a per-arc recorded verdict in this plan. An arc that would
+duplicate either is redesigned before drafting, not after.
 
 ## Task 6 — Verification (NAMED)
 
@@ -125,6 +180,23 @@ requirement. NITs: unit-standards' stale ≥1 line corrected alongside; the cros
 scoped to practice problems (r1-001 has 19 multi-unit items); softmax/CE clustered
 `ml-concepts`.
 
+### Review 3 — [codex] GPT-5.6-sol, slot 2 (2026-08-05): REJECT → all resolved
+Its BLOCKER-1 (synthesis invisibility) raced the glm round's 8-consumer fix. NEW and applied:
+the retagging-first audit (Task 0b — the cheaper option was untested); the clinic verifier's
+four REQUIRED properties spelled out rather than cited; softmax placement/scope corrections
+(carried into the deferral); every "A or B" placement pinned. **BLOCKER-6 was a real
+mathematical error in this plan** — "X symmetric ⇒ X, X² dependent" is false for Rademacher X
+(X² constant ⇒ independent), verified numerically at gate time; the spec now pins a
+nondegenerate symmetric distribution and makes the degenerate case the instructive near-miss.
+
+### Review 4 — [codex] GPT-5.6-sol, slot 3 — independent session (2026-08-05): REJECT → all resolved
+Its blocker raced the same fix but added the negative test (synthesis must never rescue a
+unit's ≥3) — applied. NEW and applied: the synthesis manifest contract (schema, loader,
+cross-unit-tag VALIDATION, full-taught-set closure); the overlap duty made enforced rather
+than aspirational, incl. a per-arc recorded verdict against r1-001's P5; Task 0's acceptance
+criteria beyond runtime; **the C5 capacity overflow (22 + 6 = 28 > band 24), which drove the
+Task 3 deferral**; the CE-gradient proof's F4 dependency.
+
 ## Inherited item (from 013's gate, recorded)
 
 **ci lesson-execution scope.** ci step 3 executes only `*_solution`/`solutions/*`, so lesson
@@ -136,7 +208,12 @@ narrower `lesson-execution` step behind a documented rationale. Whichever is cho
 recorded here with its measured runtime delta, **measured as: three consecutive
 `scripts/ci-local.sh` runs on warm caches before and after, reporting the median wall-clock
 delta; and the chosen step must be WIRED INTO ci-local.sh (not merely recorded), with the
-exit-3-tolerant pattern (gate finding).**
+exit-3-tolerant pattern. **ACCEPTANCE beyond runtime (gate finding — measurement is not a
+criterion): the chosen step MUST execute every lesson and review notebook that carries an
+enforced tolerance contract or executable narration (scope stated explicitly, not sampled);
+warm caches are assumed and stated; the step FAILS ci on any execution error; and if the
+median delta exceeds +12 minutes the narrower option is taken WITH the same coverage
+guarantee (parallelism or reuse), never by dropping notebooks from scope.**
 
 ## Out of scope
 
