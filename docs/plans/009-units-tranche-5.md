@@ -250,6 +250,11 @@ property (no remote runner exists; the gate is ci-local.sh). Re-verdict requeste
 
 ## Content Review
 
+**GATE RESULT: PASS — 4/4** (claude-self Approved; codex CR→Approved; opus CR→CR→Approved
+across three rounds; glm split-review C7 Approved + C8 AWS with all items resolved —
+3 FIXED, 1 WONTFIX-with-reason). All [OPEN] items resolved. 24 blind-solves across the
+roster, 24/24 agreement.
+
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-05)
 
 - **Verdict**: Approved
