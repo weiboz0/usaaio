@@ -20,7 +20,8 @@ Manifests' `estimated_minutes` (totals: lessons 3,900 + practice 7,160 + reviews
 2. **Semester split (DAG-respecting, hour-balanced):**
    - Semester 1 (≈101 h): F1 → F2 → {F4, F3} → F5 → C1 → C2 → C3 → C4. Foundations plus
      the classical-ML core; ends with C4's sklearn practice as the semester capstone.
-   - Semester 2 (≈94 h): C5 → C6 → C7 ∥ C8 → F6 → C9 → C10 → r1-001 as the final-week
+   - Semester 2 (93.9 h content, 97.9 h total with the mock + debrief): C5 → C6 → C7 ∥ C8 →
+     F6 → C9 → C10 → r1-001 as the final-week
      mock exam (3 h) + debrief. F6 placed mid-semester-2 directly before C9 (its consumer),
      its five 85-min sessions spread across two-and-a-half teaching weeks (2+2+1 — the
      double-unit weight; each sitting stays inside the 60-90-min session rule).
@@ -36,7 +37,13 @@ Manifests' `estimated_minutes` (totals: lessons 3,900 + practice 7,160 + reviews
 5. **Provenance note:** all numbers derive from unit manifests; the regeneration one-liner
    included in a comment for maintainers — it MUST sum `lesson_sessions` (C1's manifest
    has no `lesson:` scalar; summing `lesson:` undercounts by 240 — gate catch).
-6. **Prereq-integrity statement:** the week order is a topological order of the syllabus
+6. **Assessment & grading guidance (gate addition):** suggested weights (unit-review
+   checkpoints formative/ungraded; the mock summative at blueprint scoring, 300 pts; a
+   pass bar suggestion referencing the difficulty bands) and calendar-buffer guidance
+   (S1 runs at 7.8 h/wk with no slack — the stated recovery mechanism is trimming
+   C-set/challenge practice problems first, never lessons or reviews; optional r1-002
+   DISPLACES a review week rather than adding hours).
+7. **Prereq-integrity statement:** the week order is a topological order of the syllabus
    DAG (each unit scheduled after all its prereqs; verified in-document by listing each
    unit's prereqs beside its week).
 
@@ -71,6 +78,15 @@ All arithmetic and topology verified exact. Nits fixed in the plan: the weekly s
 the DERIVED 2.5/5 (not the assumed 3/4.5 — lesson 65 h and practice+review 130 h divide 26
 exactly); the mock+debrief absorption into S2's 4-h slack pinned for the week table; F6's
 "two sittings" made concrete (sessions 3+2 across two weeks).
+
+### Review 4 — [codex] GPT-5.6-sol (2026-08-07): APPROVE WITH NITS → resolved
+Full arithmetic/topology/model verification concurs (199/26 = 7.65 overall; 7.78/7.53
+per-semester correctly rounded). Nits: residual "≈94 h" phrasing fixed to the content/total
+form; grading-weights + calendar-buffer guidance added as document section 6 (trim C-set
+practice first; r1-002 displaces, never adds).
+
+**GATE RESULT: PASS — 4/4** (self APPROVE; glm/fable/codex all APPROVE WITH NITS, all
+resolved). Drafting may begin.
 
 ### Review 3 — [fable] Independent Fable 5 (2026-08-07): APPROVE WITH NITS → all resolved
 Arithmetic + DAG independently verified. Major 4 (F6 sittings) raced the glm fix and is now
