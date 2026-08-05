@@ -220,6 +220,16 @@ p17 top-frac 0.66068/k90=2, p18 r*=5 per the deliberately-near-threshold design,
 outline's own intended readings — no amendments, no re-solve. All 24 re-executed locally:
 24/24 PASS.
 
+**RECONCILIATION — C9 (2026-08-06): 18/18 AGREE. TRANCHE TOTAL 60/60 (project cumulative
+281/281, still zero re-solves).** MC keys B/B/A/A; anchors exact (p11 17.7996567/0.50091797,
+p12 2.07576657/28.63583422, p09 budget dict {0.20:11, 0.10:15, 0.02:21}, p13 r90=3, p14
+spider single-word change @ 0.1100, p17 graph stats 1468/0/2). Both solver ambiguities
+resolved to the outline's keyed readings (p16(i) neighbor-map with the original-space-confirm
+caveat — the outline's intended best answer; p18's p2-with-caveat). All 18 re-executed
+locally: 18/18 PASS. **F6→C9 dependency check (Task 8): PASS trivially — F6's reconciliation
+produced zero amendments, so the shared bridge/notation pin is exactly what C9 drafted
+against.** No amendments anywhere in the tranche; re-solve rule never triggered.
+
 ## Out of scope
 
 011 mock test r1-001 (owns answer-key comparator + Quarto PDF build), 012 course map.
