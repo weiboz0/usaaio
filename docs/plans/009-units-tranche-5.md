@@ -265,7 +265,9 @@ property (no remote runner exists; the gate is ci-local.sh). Re-verdict requeste
 
 ### Review 3 — [opus] Independent Opus (2026-08-05)
 
-- **Verdict**: Changes requested → all findings fixed at commit `0cbfe87`, re-verdict pending
+- **Verdict**: Changes requested → **Approved** (re-verdict 1 verified all 13 fixes but caught
+  the closer-insertion corrupting p15/p16/p19 ban sentences + 2 residual rtol nits — fixed at
+  `36a9b78`; final re-verdict: Approved, diff exactly the 5 intended files)
 - Duties: 10/10 notebooks + 42/42 solutions executed in its own runs; ~30 narration claims
   verified; 12/12 blind-solves agree (4 proofs); p13 amendment judged SOUND (J≤r verified
   against the actual resnet chain).
