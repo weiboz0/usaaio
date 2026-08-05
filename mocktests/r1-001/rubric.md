@@ -112,12 +112,12 @@ The exemplar summary earns **6/6**: every item above is a checkable sentence tie
 
 Held-back f1-macro (computed by the grading register) maps to the 28 performance points as:
 
-- f1 < 0.67 → 0 points (the UNMODIFIED supplied starter scores ≈0.674 — performance
-  points reward work beyond it; the majority-class baseline sits far below)
-- 0.67 ≤ f1 < 0.78 → linear: points = round(28 · (f1 − 0.67) / 0.11)
+- f1 < 0.68 → 0 points (the UNMODIFIED supplied starter scores ≈0.674, below this
+  floor — performance points reward work beyond it)
+- 0.68 ≤ f1 < 0.78 → linear: points = round(28 · (f1 − 0.68) / 0.10)
 - f1 ≥ 0.78 → 28 points
 
-Anchors: the exemplar's single-carve campaign (0.686) → 4 points; a cross-validated recipe
-measured at 0.7116 → 11 points; strong work at 0.78+ earns full marks;
+Anchors: the exemplar's single-carve campaign (0.686) → 2 points; a cross-validated recipe
+measured at 0.7116 → 9 points; strong work at 0.78+ earns full marks;
  the hard gates (contract, kNN-only, imports,
 run-clean) remain pass/fail on top and zero the whole problem when violated.

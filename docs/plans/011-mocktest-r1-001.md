@@ -420,6 +420,32 @@ final ci at final status).
    rendered problem package (build/ PDFs + problems/), which contains no generator flag
    documentation. 4. `[FIXED]` [glm] all 10 r1-001 notebooks nbformat-normalized.
 
+### Review 5 — [opus] Independent Opus (2026-08-07)
+
+- **Verdict**: Changes requested → all 16 findings fixed → re-verdict verified all 16 and
+  caught 2 fix-round defects + 2 minors (fixed below) → final confirmation pending
+- Blind-solve: 40/40 agree (the complete P5 arc + every section + all five proofs + an
+  independent P9 campaign); executed the full battery itself incl. a corruption test of the
+  comparator (now fails on both legs).
+1. `[FIXED]` [opus] MF: four tautological answer cells in p05_solution → real computational
+   binds (shape asserts; σ⁴-tail vs direct Frobenius to 1e-12 for r=1..4; empirical range;
+   census facts). 2. `[FIXED]` MF: 23 quoted YAML numerics silently disabled the comparator's
+   cell leg (demonstrated by corruption) → bare numerics, prose to spec/invariant lines.
+3. `[FIXED]` MF: build-pdf unbound-variable crash on theory-less dirs → array-length guard.
+4. `[FIXED]` MF: rubric/answers self-contradiction on the P9 mapping → stale text replaced.
+5. `[FIXED]` SF: P9 band re-anchored (floor 0.68 > starter 0.674 → starter 0; exemplar 2;
+   CV-recipe 9; 0.78+ full — second-round refinement after the 0.67 floor left the starter
+   1 point). 6. `[FIXED]` SF: p01-1 tagged adapted ← r1-2026-p01-1 (share 0.817).
+7. `[FIXED]` SF: overlap summary-stream (matching granularity — every tagged adaptation now
+   surfaces) + all-hits reporting. 8/12. `[FIXED]` SF: student notebooks stripped of
+   difficulty/concepts metadata; headers + totals normalized. 9. `[FIXED]` SF: p05-3
+   filter made required-and-inspectable (mirrored into the solution copy after the
+   re-verdict caught the one-sided edit). 10. `[FIXED]` SF: time_budget 15/25/65/40/35 +
+   warm-cache instruction. 11. `[FIXED]` SF: protocol-equal methodology rubric.
+13-16. `[FIXED]` NtH: p08-3 giveaway removed; fragments deleted; p05-7/11 prompts in
+   $-math (mirrored both copies); p09 hermetic subprocess grading (tree clean after
+   execution). Re-verdict's minors: floor arithmetic + stale --with-test citation `[FIXED]`.
+
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
 
 - **Verdict**: Approved

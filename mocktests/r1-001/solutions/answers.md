@@ -427,4 +427,4 @@ Methodology: one frozen, stratified 150-row validation carve (`random_state=2026
 
 The conversion is defined in rubric.md's Performance-points mapping.
 
-Heldout audit: the deterministic 200-row split was regenerated with `python mocktests/r1-001/data/gen_p09.py --with-test`, then the locked `predict_labels` was scored once. Heldout f1-macro is `0.6860096566841435`, which is `0.1036116616889281` below validation. This expected but material underperformance is consistent with selection optimism from choosing a feature subset and hyperparameters on one carve.
+The grading register regenerates the held-back split hermetically in a temporary directory (see p09_solution.ipynb).
