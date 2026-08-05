@@ -73,6 +73,20 @@ arithmetic-verification duty (design §2 exemption stated).
   foundation-only prereqs make the C7 ∥ C8 parallelism legal; C9's four prereqs all
   precede it; C4's all in semester 1).
 
+### Review 4 — [opus] Independent Opus (2026-08-07)
+
+- **Verdict**: Approved with suggestions (the fullest recomputation of the gate: all
+  totals, all 26 row sums against the ±10% bands, ALL 16 per-unit practice distributions,
+  all 15 review placements, both schema traps, DAG at session granularity, the one-liner —
+  every figure exact).
+1-6. `[FIXED]` [opus] W26 "then" sequencing (mock follows the C10 gate); r1-002's 180/240
+  in-class flip stated; docs/README indexes the artifact; the ±10% band labeled an
+  authoring convention; six long lines broken at clauses; §6 retitled "Grading and
+  calendar buffer".
+
+**GATE RESULT: PASS — 4/4** (self Approved; glm Approved; codex CR→Approved on the
+granularity ruling; opus Approved-with-suggestions, all resolved).
+
 ### Review 3 — [codex] GPT-5.6-terra (2026-08-07)
 
 - **Verdict**: Changes requested → **Approved** (re-verdict: §7's session-granularity rule
@@ -109,6 +123,20 @@ Minors: regeneration snippet pinned to lesson_sessions (C1 trap); F1's missing r
 handled in the table spec.
 
 ## Content Review
+
+### Review 4 — [opus] Independent Opus (2026-08-07)
+
+- **Verdict**: Approved with suggestions (the fullest recomputation of the gate: all
+  totals, all 26 row sums against the ±10% bands, ALL 16 per-unit practice distributions,
+  all 15 review placements, both schema traps, DAG at session granularity, the one-liner —
+  every figure exact).
+1-6. `[FIXED]` [opus] W26 "then" sequencing (mock follows the C10 gate); r1-002's 180/240
+  in-class flip stated; docs/README indexes the artifact; the ±10% band labeled an
+  authoring convention; six long lines broken at clauses; §6 retitled "Grading and
+  calendar buffer".
+
+**GATE RESULT: PASS — 4/4** (self Approved; glm Approved; codex CR→Approved on the
+granularity ruling; opus Approved-with-suggestions, all resolved).
 
 ### Review 3 — [codex] GPT-5.6-terra (2026-08-07)
 
