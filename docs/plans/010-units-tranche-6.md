@@ -237,6 +237,28 @@ umap/plotly/any new dependency. Training neural nets (C10 is kNN-register per th
 F6 formal proofs of the spectral theorem / Eckart–Young optimality (stated facts; the
 DERIVED pieces are the norm identities and the λ = σ² bridge).
 
+## Post-Execution Report (2026-08-06)
+
+**Shipped:** F6-svd-spectral (double unit), C9-dimensionality-reduction, C10-competition-craft —
+**ALL 16 SYLLABUS UNITS NOW LIVE.** 60 new gate-verified problems (319 repo-wide).
+- Split-author: 60/60 reconciliation, zero re-solves (project cumulative 281/281). One
+  agreed-upon misread (p18 W-A2) survived reconciliation BY agreement and was caught only at
+  the gate — the definitive argument for independent review on top of blind solving.
+- Corpus duty: PASS (p05 SVD arc / p09 — lessons teach the patterns, problems deliver
+  different artifact shapes on fresh data).
+- Content gate: 4/4 (self; codex ×2 rounds + cross-check; opus ×2 rounds — incl. a MEASURED
+  false checkpoint answer and the p18 reversal; glm per-unit ×3). ~25 findings resolved.
+  Two cross-reviewer conflicts resolved on cross-artifact evidence with reconfirmation.
+- Deliberate deviations recorded: C10's grader register ships as an inert markdown block in
+  lesson 01 §4 (keeps the leakage sweep absolutely clean) rather than executable solution
+  cells; heldout.csv additionally gitignored as a public-repo safeguard; C5 class balance
+  1.71:1 vs the planned ~2:1 (seeded draw, prose says "roughly").
+- Verification: five checks PASS ×2; 85/85 isclose calls at atol+rtol=0; harness
+  byte-identical; leakage sweep zero hits; ci-local ALL GREEN (fresh run at merge HEAD).
+
+**Next:** plan 011 — mock test r1-001 (blueprint pipeline; owns the answer-key reproduction
+comparator + Quarto PDF build that turn ci's PENDING/SKIP lines green), then 012 course map.
+
 ## Plan Review
 
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-05)
