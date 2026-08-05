@@ -3,7 +3,7 @@
 > **For agentic workers:** the proven 006-009 cycle verbatim (per-task commits; Fable drafts
 > lessons + statements, outlines to `reference/outlines-010/<unit>.md` (gitignored); gpt-5.6-sol
 > blind-solves per unit; reconciliation before the gate; amended statements → blind re-solve;
-> proofs carry numeric anchors; ban-register = core set + closers; narration MUST match printed
+> proofs carry numeric anchors + claim-by-claim rubric; ban-register = core set + closers; narration MUST match printed
 > output; regex prose edits forbidden — read every sentence after mechanical changes; numpy
 > isclose contract = stated atol + rtol=0 for fixed anchors; opencode gate reviews dispatch
 > PER-UNIT against staged `.gate10-executed/` copies).
@@ -28,7 +28,9 @@ The bridge fact (taught in F6-03, consumed by C9): for `S = W Wᵀ`, the eigenva
 (Eckart–Young optimality STATED as fact, error identity DERIVED for the truncation itself).
 C9 consumes C8's convention by name: embedding stack `W` (N, 100), rows = tokens,
 unit-normalized, `S = W @ W.T`. NOTE: np.linalg is LEGAL from F6 onward for eigen/SVD calls
-(`np.linalg.svd`, `np.linalg.eig`, `np.linalg.eigh`, `np.linalg.norm` where stated) — the
+(`np.linalg.svd`, `np.linalg.eig`, `np.linalg.eigh`, `np.linalg.norm` where stated; NOTE
+`eigh` returns eigenvalues ASCENDING — the pinned idiom is `vals[::-1]`/`vecs[:, ::-1]`
+reorder to the descending convention, taught once in F6-02; gate finding) — the
 C2/C5/C8 np.linalg bans were per-problem skill-forcing devices, not a curriculum ban; F6
 statements say explicitly which calls are allowed per problem.
 
@@ -39,7 +41,12 @@ eigenvalues-eigenvectors, spectral-decomposition, svd, singular-values, low-rank
 frobenius-norm)
 - FIVE sessions (double-unit structure, two sittings: 01-03 / 04-05):
   `01-eigenvalues-and-eigenvectors` (direction preserved by a map — matrix-from-action recap;
-  2×2 characteristic polynomial BY HAND (quadratics — Calc AB algebra); `np.linalg.eig`;
+  the 2×2 eigen condition DERIVED FROM F3's OWN VOCABULARY (gate finding — determinants are
+  untaught): S q = λ q has a nonzero solution ⟺ (S − λI) is singular ⟺ its rows are linearly
+  dependent (F3 linear-independence-span) ⟺ (a−λ)(d−λ) − bc = 0 via the proportionality
+  cross-product; the resulting quadratic solved by Calc AB algebra; the expression ad−bc is
+  then NAMED "the determinant" in a one-line vocabulary aside (taught-inline device, the
+  argsort precedent); `np.linalg.eig`;
   eigenvalue signs/magnitudes as stretch factors; symmetric matrices get real eigenvalues +
   orthogonal eigenvectors — STATED fact, numerically verified),
   `02-spectral-decomposition` (S = Q Λ Qᵀ for symmetric S; reconstruction as Σ λᵢ qᵢqᵢᵀ
@@ -55,7 +62,8 @@ frobenius-norm)
   spectral-from-SVD → rank-r sweep → error-vs-r curve; worked ‖S‖_F-in-terms-of-σ derivation
   (= sqrt(Σσᵢ⁴), the exam's P5-13 register taught GENERICALLY with the derivation route);
   worked normal-form MC).
-- **24 problems** (top of band — double unit): floors ≥4 MC (≥1 normal-form), ≥6 constrained,
+- **24 problems** (the double-unit band is 24-30; 24 chosen deliberately to bound this
+  three-unit tranche's reconciliation load — gate-reviewed): floors ≥4 MC (≥1 normal-form), ≥6 constrained,
   ≥2 proof (‖W‖_F² = Σσᵢ² via the component/orthonormality route; the rank-r error identity), ≥2 integrative,
   ≥2 scenario, ≥2 challenge (= 18) + 2 drills + 2 constrained + 2 MC. 6 concepts × 3 = 18 ≤ 24:
   NO dual-tags required (flag any used).
@@ -69,8 +77,10 @@ local-vs-global-structure)
 - Sessions: `01-pca` (center the data — mean vector; direction of maximal variance; PCA via
   SVD of the CENTERED data matrix (route pinned: no covariance-eigendecomposition detour —
   σᵢ²/(n−1) ARE the component variances, stated + verified); variance-explained ratios;
-  2-D projections plotted; sklearn PCA as a cross-check ONLY (one cell, verifying loadings
-  match up to sign — sign-flip ambiguity TAUGHT)),
+  2-D projections plotted; sign-flip ambiguity TAUGHT (u and −u are the same axis — checks
+  compare |loadings| or fix signs by convention); NO SKLEARN anywhere in C9 (gate finding:
+  C4 is not in C9's prereq chain, so sklearn is outside the closure — verification is by
+  numerical self-checks against the SVD route instead)),
   `02-truncated-svd-practice` (C8's W consumed by name: compress the embedding stack;
   rank-r error curves on real GloVe rows (cache header, C8 form — GENSIM_DATA_DIR only, unit
   stays torch-free); choosing r from an error budget; reconstruction quality on similarity
@@ -81,8 +91,8 @@ local-vs-global-structure)
   which questions each view answers; reading 2-D maps critically — axes of a nonlinear map
   carry no units; NO umap library anywhere).
 - 18 problems: floors = 18 exactly. 4 concepts × 3 = 12 ≤ 18: no dual-tags required.
-- Ban registers: PCA-by-hand problems ban sklearn (+closers); sklearn-verification problems
-  require it; gensim problems use the C8 cache header (torch-free strings).
+- Ban registers: PCA problems ban sklearn OUTRIGHT (outside C9's prereq closure — gate
+  finding) plus closers; gensim problems use the C8 cache header (torch-free strings).
 - estimated_minutes: lesson 250, practice 430, review 45.
 
 **C10-competition-craft** (prereqs [C4-classical-ml-practice]; teaches: notebook-discipline,
@@ -161,6 +171,15 @@ DERIVED pieces are the norm identities and the λ = σ² bridge).
    18≤24, 12≤18, 15≤18).
 3. `[NOTED]` C10's "hidden" test is deterministic-regeneration — hidden from the student
    REGISTER, executable by ci; the honesty framing lives in the statement device.
+
+### Review 2 — [fable] Independent Fable 5 (2026-08-05): APPROVE WITH NITS → all resolved
+MAJOR 1: determinant untaught — 2×2 eigen route now derived from F3 linear-dependence
+(singular ⟺ rows dependent ⟺ cross-product condition), det named in a one-line aside.
+MAJOR 2: sklearn outside C9's prereq closure — sklearn REMOVED from C9 entirely (numerical
+self-checks replace the cross-check cell). MINOR 3 raced the self-review trace fix (already
+component-routed). MINOR 4: eigh-ascending → pinned [::-1] reorder idiom. NIT 5: 24-problem
+wording corrected (bottom of the 24-30 double band, deliberate). NIT 6: claim-by-claim rubric
+restored to the header contract.
 
 ## Content Review
 
