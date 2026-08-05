@@ -330,6 +330,17 @@ Task 9. Trace nit raced the self-review fix (already component-routed).
 2. `[FIXED]` [glm] N: C1-vs-C4 phrasing drift — preamble now says "taught in C1 and
    practiced in C4". Lesson re-executed PASS, staged copy refreshed.
 
+### Review 5 — [glm] GLM 5.2, per-unit C9 (2026-08-06)
+
+- **Verdict**: Approved with suggestions (3/3 blind-solves byte-identical incl. the p12
+  anchors; full narration audit clean; all pinned-route/ban sweeps pass).
+1. `[FIXED]` [glm] Should Fix: p12's solution derived (c) via the trace inner product —
+   trace is untaught curriculum-wide and the statement pins the component route. → (c)
+   rewritten as the F6-04-style entry-expansion + finite-sum swap + orthonormality kill;
+   zero trace notation remains; re-executed PASS.
+2. `[FIXED]` [glm] N: np.maximum used by p08/p18 solutions but absent from their Allowed
+   lists → added (with the clamping rationale), matching p10's precedent.
+
 ### (glm F6 finding, continued)
 1. `[WONTFIX]` [glm] N: generic "dataset" wording in L04/L05 — ordinary English for a table
    of measurements; no ML register invoked, no prereq-closure issue (reviewer marked it
