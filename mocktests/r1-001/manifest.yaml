@@ -1,0 +1,621 @@
+test: r1-001
+blueprint_version: 1
+generated: 2026-08-06
+status: draft
+generation_parameters:
+  section_points:
+    concept-block: 50
+    math-computation: 45
+    integrative-arc: 90
+    engineering: 65
+    open-ended-notebook: 50
+  arc_clusters:
+  - nlp-embeddings
+  - linear-algebra
+  - numpy
+  problem_count: 9
+  difficulty_draw:
+    intro: 0.23
+    core: 0.45
+    advanced: 0.32
+duration_minutes: 180
+total_points: 300
+time_budget:
+  concept-block: 20
+  math-computation: 25
+  integrative-arc: 55
+  engineering: 45
+  open-ended-notebook: 35
+problems:
+- id: r1-001-p01-1
+  section: concept-block
+  units:
+  - C1-ml-fundamentals
+  concepts:
+  - supervised-vs-unsupervised
+  cluster: ml-concepts
+  points: 10
+  difficulty: intro
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '10-pt intro MC: identify which of five described tasks is unsupervised; five options; no code.'
+- id: r1-001-p01-2
+  section: concept-block
+  units:
+  - C1-ml-fundamentals
+  concepts:
+  - overfitting
+  cluster: ml-concepts
+  points: 10
+  difficulty: core
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '10-pt core MC: diagnose overfitting from a described train/validation learning-curve divergence;
+    five options.'
+- id: r1-001-p01-3
+  section: concept-block
+  units:
+  - C1-ml-fundamentals
+  - C4-classical-ml-practice
+  concepts:
+  - train-test-split
+  cluster: ml-concepts
+  points: 10
+  difficulty: core
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '10-pt core MC: spot the leakage in a described preprocessing-before-split pipeline; five options.'
+- id: r1-001-p01-4
+  section: concept-block
+  units:
+  - C1-ml-fundamentals
+  - C10-competition-craft
+  concepts:
+  - f1-macro
+  - accuracy-precision-recall
+  cluster: ml-concepts
+  points: 10
+  difficulty: core
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '10-pt core MC: pick why f1-macro diverges from accuracy on a described 4:1 imbalance; five options.'
+- id: r1-001-p01-5
+  section: concept-block
+  units:
+  - C1-ml-fundamentals
+  concepts:
+  - clustering-concept
+  cluster: ml-concepts
+  points: 10
+  difficulty: intro
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '10-pt intro MC: classification vs clustering framing of a described problem; five options.'
+- id: r1-001-p02-1
+  section: math-computation
+  units:
+  - F4-multivar-calculus
+  concepts:
+  - tanh-derivative
+  - multivar-chain-rule
+  cluster: calculus-multivar
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '5-pt intro numeric normal-form MC: evaluate d/dx tanh(ax+b) at a point; gcd normal form p/q,
+    answer p+q.'
+- id: r1-001-p02-2
+  section: math-computation
+  units:
+  - F5-probability
+  - C5-neural-networks
+  concepts:
+  - variance-of-sums
+  - independence
+  cluster: probability-statistics
+  points: 5
+  difficulty: core
+  type: theory
+  answer_form: short-answer
+  provenance: original
+  spec: '5-pt core short-answer: variance of a weighted sum of fresh independent zero-mean variables;
+    state Var[z].'
+- id: r1-001-p02-3
+  section: math-computation
+  units:
+  - C5-neural-networks
+  - F5-probability
+  concepts:
+  - weight-init-variance
+  - variance
+  cluster: probability-statistics
+  points: 5
+  difficulty: core
+  type: theory
+  answer_form: proof
+  provenance: original
+  spec: '5-pt core reasoning-required: solve the sigma that preserves variance for fresh C; the 1/sqrt(C)
+    route.'
+- id: r1-001-p03-1
+  section: math-computation
+  units:
+  - F6-svd-spectral
+  concepts:
+  - eigenvalues-eigenvectors
+  cluster: linear-algebra
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '5-pt intro normal-form MC: verify which given pair is an eigenpair of a fresh 2x2; answer encodes
+    lambda.'
+- id: r1-001-p03-2
+  section: math-computation
+  units:
+  - F6-svd-spectral
+  - F3-matrices
+  concepts:
+  - eigenvalues-eigenvectors
+  - linear-independence-span
+  cluster: linear-algebra
+  points: 10
+  difficulty: core
+  type: theory
+  answer_form: proof
+  provenance: original
+  spec: '10-pt core reasoning-required: both eigenvalues of a fresh 2x2 via the dependent-rows singularity
+    route (no determinant vocabulary presumed).'
+- id: r1-001-p04-1
+  section: math-computation
+  units:
+  - F6-svd-spectral
+  concepts:
+  - frobenius-norm
+  cluster: linear-algebra
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '5-pt intro normal-form MC: Frobenius norm of a fresh 3x2 integer matrix; sqrt normal form.'
+- id: r1-001-p04-2
+  section: math-computation
+  units:
+  - F4-multivar-calculus
+  - C2-linear-models
+  concepts:
+  - sum-of-squares-gradients
+  - partial-derivatives
+  cluster: calculus-multivar
+  points: 10
+  difficulty: core
+  type: theory
+  answer_form: proof
+  provenance: original
+  spec: '10-pt core reasoning-required: derive and evaluate d/dw_j of a 3-term squared-residual sum at
+    a given point.'
+- id: r1-001-p05-1
+  section: integrative-arc
+  units:
+  - C8-embeddings
+  concepts:
+  - tokenization
+  cluster: nlp-embeddings
+  points: 5
+  difficulty: intro
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt intro code: tokenize the supplied fresh corpus with simple_preprocess; report token and
+    type counts.'
+- id: r1-001-p05-2
+  section: integrative-arc
+  units:
+  - C8-embeddings
+  concepts:
+  - tokenization
+  cluster: nlp-embeddings
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: short-answer
+  provenance: original
+  spec: '5-pt intro short-answer: why two census prints differ after list(set(tokens)); what else is lost.'
+- id: r1-001-p05-3
+  section: integrative-arc
+  units:
+  - C8-embeddings
+  concepts:
+  - gensim-usage
+  - word-embeddings
+  cluster: nlp-embeddings
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: filter tokens to the GloVe vocabulary (cached model) and look up vectors.'
+- id: r1-001-p05-4
+  section: integrative-arc
+  units:
+  - C8-embeddings
+  - F1-scientific-python
+  concepts:
+  - embedding-matrices
+  - numpy-arrays
+  cluster: numpy
+  points: 5
+  difficulty: intro
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt intro code: stack vectors into the (N,100) rows-are-tokens float64 matrix named W_raw.'
+- id: r1-001-p05-5
+  section: integrative-arc
+  units:
+  - C8-embeddings
+  - F1-scientific-python
+  concepts:
+  - broadcasting
+  - vectorization
+  cluster: numpy
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: unit-normalize rows by broadcasting; np.linalg and loops banned (zero points)
+    in this part.'
+- id: r1-001-p05-6
+  section: integrative-arc
+  units:
+  - F2-vectors
+  - C8-embeddings
+  concepts:
+  - cosine-similarity
+  - unit-vectors
+  cluster: linear-algebra
+  points: 5
+  difficulty: core
+  type: theory
+  answer_form: short-answer
+  provenance: original
+  spec: '5-pt core short-answer: the exact range of unit-row dot products and when the extremes occur.'
+- id: r1-001-p05-7
+  section: integrative-arc
+  units:
+  - C8-embeddings
+  - F3-matrices
+  concepts:
+  - similarity-matrices
+  - matrix-multiplication
+  cluster: linear-algebra
+  points: 15
+  difficulty: advanced
+  type: theory
+  answer_form: proof
+  provenance: adapted
+  spec: '15-pt advanced reasoning-required: express S entrywise from W, prove symmetry and the unit diagonal.'
+  adapted-from: r1-2026-p05-6
+- id: r1-001-p05-8
+  section: integrative-arc
+  units:
+  - F6-svd-spectral
+  concepts:
+  - svd
+  cluster: linear-algebra
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: thin SVD of W via np.linalg.svd (allowed here); report the descending singular
+    values.'
+- id: r1-001-p05-9
+  section: integrative-arc
+  units:
+  - F6-svd-spectral
+  concepts:
+  - svd
+  - singular-values
+  cluster: linear-algebra
+  points: 5
+  difficulty: core
+  type: theory
+  answer_form: short-answer
+  provenance: original
+  spec: '5-pt core short-answer: thin vs full output shapes for this W and which spectrum each carries.'
+- id: r1-001-p05-10
+  section: integrative-arc
+  units:
+  - F6-svd-spectral
+  concepts:
+  - spectral-decomposition
+  - svd
+  cluster: linear-algebra
+  points: 5
+  difficulty: advanced
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt advanced code: build the complete spectral decomposition of S from the FULL SVD with zero-padded
+    lambda.'
+- id: r1-001-p05-11
+  section: integrative-arc
+  units:
+  - F6-svd-spectral
+  - C9-dimensionality-reduction
+  concepts:
+  - low-rank-approximation
+  - frobenius-norm
+  cluster: linear-algebra
+  points: 15
+  difficulty: advanced
+  type: theory
+  answer_form: proof
+  provenance: adapted
+  spec: '15-pt advanced reasoning-required: derive the rank-r relative squared Frobenius error of S_r
+    in terms of the sigma.'
+  adapted-from: r1-2026-p05-14
+- id: r1-001-p05-12
+  section: integrative-arc
+  units:
+  - C9-dimensionality-reduction
+  concepts:
+  - low-rank-approximation
+  - vectorization
+  cluster: numpy
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: the error-vs-r values from the tail identity via one cumsum; no truncations built.'
+- id: r1-001-p05-13
+  section: integrative-arc
+  units:
+  - C9-dimensionality-reduction
+  concepts:
+  - low-rank-approximation
+  - aggregation-axis
+  cluster: numpy
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: budget-to-r-star with the two-sided certificate asserts.'
+- id: r1-001-p05-14
+  section: integrative-arc
+  units:
+  - F6-svd-spectral
+  - C9-dimensionality-reduction
+  concepts:
+  - low-rank-approximation
+  cluster: linear-algebra
+  points: 5
+  difficulty: core
+  type: theory
+  answer_form: short-answer
+  provenance: original
+  spec: '5-pt core short-answer: floats stored by the rank-r factorization vs N^2; the crossover argument.'
+- id: r1-001-p06-1
+  section: engineering
+  units:
+  - F1-scientific-python
+  concepts:
+  - broadcasting
+  cluster: numpy
+  points: 5
+  difficulty: intro
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt intro code: column-standardize a fresh array by broadcasting; loops and np.linalg banned
+    (zero points).'
+- id: r1-001-p06-2
+  section: engineering
+  units:
+  - C8-embeddings
+  - F1-scientific-python
+  concepts:
+  - nearest-neighbor-search
+  - array-indexing-slicing
+  cluster: numpy
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: masked argmax retrieval with self-exclusion; exact snake_case identifiers; bans
+    listed.'
+- id: r1-001-p06-3
+  section: engineering
+  units:
+  - C5-neural-networks
+  - F1-scientific-python
+  concepts:
+  - relu-activation
+  - elementwise-ops
+  cluster: numpy
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: piecewise function as a ReLU combination; np.where/np.select/np.piecewise banned
+    (zero points).'
+- id: r1-001-p06-4
+  section: engineering
+  units:
+  - F1-scientific-python
+  concepts:
+  - random-seeding
+  - aggregation-axis
+  cluster: numpy
+  points: 5
+  difficulty: intro
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt intro code: seeded census of a generated array (row/column aggregates); seed pinned.'
+- id: r1-001-p07-1
+  section: engineering
+  units:
+  - C6-pytorch
+  concepts:
+  - nn-module
+  - custom-layers
+  cluster: pytorch
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: build the specified My_CamelCase module registering weight+bias as frozen nn.Parameters.'
+- id: r1-001-p07-2
+  section: engineering
+  units:
+  - C6-pytorch
+  concepts:
+  - torch-tensors
+  - manual-weights
+  cluster: pytorch
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: hand-set weights to realize a stated map; forward-pass shape contract asserted.'
+- id: r1-001-p07-3
+  section: engineering
+  units:
+  - C7-cnn-transfer
+  concepts:
+  - bottleneck-blocks
+  - parameter-counting
+  cluster: cnn-vision
+  points: 5
+  difficulty: advanced
+  type: theory
+  answer_form: numeric
+  provenance: original
+  spec: '5-pt advanced numeric reasoning-required: conv parameter count of a fresh-width bottleneck; numel
+    banned (zero points).'
+- id: r1-001-p07-4
+  section: engineering
+  units:
+  - C7-cnn-transfer
+  concepts:
+  - model-truncation
+  - resnet-architecture
+  cluster: cnn-vision
+  points: 5
+  difficulty: advanced
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt advanced code: truncate cached resnet50 at a fresh cut; output shape asserted; weights cached
+    locally.'
+- id: r1-001-p07-5
+  section: engineering
+  units:
+  - C7-cnn-transfer
+  - C6-pytorch
+  concepts:
+  - layer-freezing
+  - requires-grad
+  cluster: pytorch
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: freeze the backbone, report frozen vs trainable scalar counts.'
+- id: r1-001-p08-1
+  section: engineering
+  units:
+  - C6-pytorch
+  - C5-neural-networks
+  concepts:
+  - threshold-activation
+  - nn-module
+  cluster: pytorch
+  points: 5
+  difficulty: intro
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt intro code: step-activation module firing at exactly zero; dtype-preserving contract.'
+- id: r1-001-p08-2
+  section: engineering
+  units:
+  - C5-neural-networks
+  - C6-pytorch
+  concepts:
+  - decision-boundaries-geometric
+  - manual-weights
+  cluster: pytorch
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: two-half-plane region detector with hand-set weights on FRESH geometry.'
+- id: r1-001-p08-3
+  section: engineering
+  units:
+  - C5-neural-networks
+  - C6-pytorch
+  concepts:
+  - mlp-architecture
+  - custom-layers
+  cluster: pytorch
+  points: 5
+  difficulty: advanced
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt advanced code: compose the inference MLP from the two prior modules; region membership asserted
+    on probes.'
+- id: r1-001-p08-4
+  section: engineering
+  units:
+  - C6-pytorch
+  concepts:
+  - parameter-counting
+  cluster: pytorch
+  points: 5
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt core code: literal-arithmetic parameter audit of the composed model; numel and disguised
+    helpers banned.'
+- id: r1-001-p09
+  section: open-ended-notebook
+  units:
+  - C10-competition-craft
+  - C4-classical-ml-practice
+  concepts:
+  - prediction-function-contract
+  - hidden-test-protocol
+  - metric-driven-iteration
+  - knn
+  - writeup-quality
+  cluster: applied-ml
+  points: 50
+  difficulty: advanced
+  type: programming
+  answer_form: notebook
+  provenance: original
+  spec: '50-pt advanced open notebook: fresh seeded urban-tree-health tabular task; kNN-only with named
+    closers; f1-macro; predict_labels contract; run-clean + summary-cell rubric.'
