@@ -93,16 +93,19 @@ Round 2 anything. Changing blueprint.yaml (any texture change is its own plan).
 - P1 (concept-block, 25 pts, 5 MC × 5): supervised-vs-unsupervised task identification;
   overfitting from a learning-curve description; train-test-split leakage scenario;
   f1-macro vs accuracy on imbalance; clustering-concept vs classification. Units C1/C4.
-- P2 (concept-block, 25 pts, 3 MC): feature-hierarchy depth ordering from described
-  activation statistics (C7 register, NO image); requires-grad audit reading (C6);
-  cosine-similarity range/meaning (C8/F2). All five-option.
+- P2 (concept-block, 25 pts, 3 MC **split 10/10/5** — self-review: 25 is not divisible by 3,
+  the split must be stated): feature-hierarchy depth ordering from described activation
+  statistics (C7 register, NO image, 10); requires-grad audit reading (C6, 10);
+  cosine-similarity range/meaning (C8/F2, 5). All five-option.
 - P3 (math-computation, 20 pts, 2 sub-parts): tanh-derivative chain evaluation at a point
   (F4, normal form); weighted-sum variance with the 1/√C conclusion on FRESH numbers
   (C5/F5 register, reasoning required).
 - P4 (math-computation, 25 pts, 2 sub-parts): 2×2 eigen by hand via the dependent-rows
   route (F6, normal form); bottleneck parameter count at a fresh width (C7, no numel,
   reasoning required).
-- P5 (integrative-arc, 90 pts, ~7 sub-parts): OUR arc on a fresh committed text corpus
+- P5 (integrative-arc, 90 pts, **12 sub-parts: 9×5 + 3×15** — self-review: the exam's
+  5-pt-atom texture (24 of 37 sub-parts at 5 pts) demands granular atoms, not seven 13-pt
+  chunks; the three 15-pt slots are the reasoning-required theory/proof beats): OUR arc on a fresh committed text corpus
   (seeded generator): tokenize/dedup semantics → embed via cached GloVe → stack W →
   row-normalize (no np.linalg on that sub-part) → S = WWᵀ + one theory sub-part
   (range/symmetry, reasoning) → SVD of W (np.linalg.svd allowed) → spectral-from-SVD with
@@ -121,7 +124,16 @@ Round 2 anything. Changing blueprint.yaml (any texture change is its own plan).
 
 ## Plan Review
 
-(4-way gate verdicts land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-06)
+
+- **Verdict**: APPROVE WITH NITS (amendments applied pre-gate)
+1. `[FIXED-pre-gate]` P2's 25 points over 3 MC is not divisible — split pinned 10/10/5.
+2. `[FIXED-pre-gate]` P5's "~7 sub-parts" contradicted the exam's 5-pt-atom texture —
+   re-pinned as 12 sub-parts (9×5 + 3×15), the granularity blueprint-check's texture
+   band expects.
+3. `[VERIFIED]` Section sums 50/45/90/65/50 = 300 against the anchors; 8 total MC sub-parts
+   matches the 2026 anchor; all named concepts spot-checked taught (dependent-rows eigen F6,
+   bottleneck C7, GloVe C8, contract register C10).
 
 ## Content Review
 
