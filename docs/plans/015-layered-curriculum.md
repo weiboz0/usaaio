@@ -76,17 +76,25 @@ Before implementing any Plan 015 task:
    resulting `origin/main`.
 2. Recompute unit/problem/hour counts from manifests; never carry the draft's 109 concepts,
    337 unit-practice problems, 47 lesson sessions, or 199 scheduled hours as constants.
-3. Audit Plan 014's final diff against these reconciliation rules:
+3. Create `docs/audits/015-plan014-reconciliation.md` recording Plan 014's final commit
+   hash (or an explicit abandonment disposition), its delivered artifact counts, and the
+   disposition of every overlapping topic.
+   Audit the final diff against these reconciliation rules:
    - its synthesis work is complementary and may become evidence in this audit;
    - `softmax` and `cross-entropy-loss` transfer to the neural-training content tranche,
      not to Plan 015's architecture implementation;
-   - any graded BatchNorm behavior either receives a real concept id, honest teaching, and
-     at least three practices, or is removed/deferred from Plan 014;
-   - statements that Bayes, attention, KL, mixtures, or related R2 families are merely a
-     future-risk watch-list are corrected: they are confirmed official/observed gaps, even
-     when deferred for capacity;
+   - if Plan 014 ships its short BatchNorm subsection/clinic under existing tags, record it
+     as **partial evidence only**; it cannot make `batch-normalization` covered, and the
+     neural-training content tranche still owns the real concept id and ≥3 practices;
+   - Plan 014's historical "future-risk" wording does not control the new roadmap: Bayes,
+     attention, KL, mixtures, and related families receive their official/observed status
+     here without rewriting the already-reviewed Plan 014 record;
    - no content is counted as covered merely because it appears in plan prose.
-4. Append the reconciliation commit, final counts, and any changed ownership to this plan's
+4. `scope-check` validates that the reconciliation record exists, names a resolution state
+   (`merged` or `abandoned`), and that a `merged` Plan 014 commit is an ancestor of HEAD.
+   `abandoned` requires the branch/PR reference, date, reason, and explicit owner decision;
+   it does not make any proposed Plan 014 content evidence.
+5. Append the reconciliation commit, final counts, and any changed ownership to this plan's
    post-execution report.
 
 **Hard stop:** do not resolve a Plan 014 conflict by editing its active worktree or by
@@ -102,12 +110,27 @@ silently duplicating its files.
 
 `curriculum/sources.yaml` records stable source ids, URL/local-path metadata, retrieval or
 competition date, authority (`official-syllabus`, `official-round-policy`, `past-paper`,
-`design-rationale`), and whether the source is committed or local-only.
+`design-rationale`), a SHA-256 of the retrieved source bytes or normalized extracted text,
+the normalization method, and whether the source is committed or local-only.
 Do not copy source prose into this file.
 
 `curriculum/official-topics.yaml` decomposes broad official bullets into atomic audit
 targets without yet claiming coverage.
-Every entry has:
+It first records the official category hierarchy and its round policy:
+
+```yaml
+categories:
+  - id: deep-learning-foundation
+    source_refs: [official-syllabus-2026-08-05, official-round-policy-2027]
+    required_for: [round-1, round-2]
+  - id: transformers
+    source_refs: [official-syllabus-2026-08-05, official-round-policy-2027]
+    required_for: [round-2]
+```
+
+Category ids correspond exactly to sibling headings on the official syllabus.
+For example, `transformers` is not a child of `deep-learning-foundation` or `cnn-basics`.
+Every atomic entry then has:
 
 ```yaml
 - id: linear-regression-estimator-derivation
@@ -123,15 +146,17 @@ and `competition-workflow`.
 Atomic targets split only when the official expectation or prerequisite structure demands
 distinct evidence; avoid turning every vocabulary word into a false standalone topic.
 
-**Round rule:** a topic in a category explicitly listed for 2027 Round 1 is required for
-both rounds.
-The remaining official categories are Round-2 requirements.
+**Round rule:** an atomic topic inherits `required_for` from its exact parent category.
+It may add a round supported by another source, but may never remove an inherited round.
+Categories explicitly listed on the 2027 Round 1 page are required for both rounds;
+the remaining sibling categories are Round-2 requirements.
 Past-paper-only capabilities may be required for the corresponding round when their
 repeated or integrative role justifies it; otherwise they are `bridge` or `optional`, never
 quietly promoted to official status.
 
 **Acceptance:** a reviewer can trace every bullet and every explicit example/expectation on
-the official syllabus to one or more atomic ids, and every atomic id back to a source.
+the official syllabus to one or more atomic ids, and every atomic id back to a hashed source
+and exact parent category.
 
 ## Task 2 — Exhaustive shipped-material audit
 
@@ -152,8 +177,13 @@ The inventory generator reads all current producers, not just concept tags:
 - every shipped mock manifest and its statement/solution notebooks;
 - `docs/course-structure.md` for delivery-hour claims.
 
-For notebooks, record path, cell/heading anchors, declared concept ids, relevant API tokens,
-and problem identifiers.
+For notebooks, record path, stable heading path plus cell ordinal, declared concept ids,
+relevant API tokens, and problem identifiers.
+The generator parses notebooks into a canonical semantic view: ignore execution counts,
+outputs, volatile notebook/cell metadata, and random cell ids; normalize line endings; and
+hash ordered markdown/code sources plus stable manifest fields.
+Evidence anchors use `path + heading path + cell ordinal within that heading`; the human
+heading remains findable while the ordinal disambiguates repeated headings.
 Do not infer semantic coverage from keyword presence.
 The generated inventory supplies candidates; the audit report records a human judgment for
 each official atomic target across four independent dimensions:
@@ -194,8 +224,11 @@ optional totals in the post-execution report.
 - Create `curriculum/coverage-map.yaml`.
 - Extend `tools/model.py` with roadmap dataclasses/loaders.
 - Create `tools/checks/scope.py`.
+- Create `tools/render_curriculum_roadmap.py`.
 - Register `scope-check` in `tools/cli.py` and `scripts/ci-local.sh`.
 - Add `tests/test_scope.py` and integration coverage in `tests/test_integration.py`.
+- Extend `scripts/pre-merge-guard.sh --pr` to reject roadmap knowledge-point or planned-unit
+  ownership collisions against the simulated `origin/main` union.
 
 The coverage map is the canonical planning contract, separate from the shipped syllabus.
 Its top-level keys are `roadmap_version`, `layers`, `planned_units`, and
@@ -218,22 +251,33 @@ Each knowledge point records:
   source_refs: [official-syllabus-2026-08-05]
   depends_on: [matrix-multiplication, gradient]
   shipped_concepts: [linear-regression, mse-loss]
-  evidence:
-    lessons: [units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb]
-    practice_ids: []
-    assessment_ids: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+        - path: units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb
+          heading: Linear regression
+          cell_ordinal: 0
+      practice_ids: [C2-p01, C2-p02, C2-p03]
+    derivation:
+      lesson_anchors: []
+      practice_ids: []
   disposition: extend-existing-unit
   destination: C2-linear-models
-  modalities_missing: [derivation]
+  deficits:
+    modalities_missing: [derivation]
+    practice_shortfall: 0
   rationale: Current material teaches only the gradient view and explicitly omits normal equations.
 ```
 
 Allowed `requirement` values are `required`, `bridge`, and `optional`.
 Allowed `coverage` values are `covered`, `partial`, `missing`, and `optional`.
 Allowed dispositions are `keep`, `extend-existing-unit`, `new-unit`, and `defer-optional`.
+`roadmap_version` is `1`; `scope-check` rejects unsupported versions.
+Increment it only for a backward-incompatible schema change, not for ordinary coverage
+updates.
 
 `planned_units` assigns stable provisional ids, titles, layers, prerequisites, owned
-knowledge points, and an estimated hour **range**.
+knowledge points, provisional concept ids, and an estimated hour **range**.
 These ids are roadmap ids only; they do not enter `syllabus.md` or reserve future plan
 numbers until a content plan actually branches and passes the collision guard.
 
@@ -241,21 +285,39 @@ numbers until a content plan actually branches and passes the collision guard.
 
 1. missing or duplicate official atomic targets;
 2. unknown source, concept, layer, dependency, destination-unit, or evidence references;
-3. a dependency cycle or a Round 1 point that depends on Round-2-only material;
-4. an official required point labelled optional/deferred;
-5. `covered` without every required modality and without shipped lesson/practice evidence;
-6. `covered` concepts that are absent from the shipped `syllabus.md` contract;
-7. `partial`/`missing` entries with no destination and missing-modality declaration;
-8. planned concepts leaking into current `syllabus.md` or unit `teaches` lists before their
-   teaching content and ≥3 practices ship;
-9. two planned units claiming ownership of the same knowledge point.
+3. a topic whose `required_for` removes a round inherited from its parent category;
+4. a Round-1-required point assigned to `round-2-extension`/`optional-enrichment`, owned by
+   a Round-2 unit, or depending on Round-2-only material;
+5. an official required point labelled optional/deferred;
+6. a dependency cycle;
+7. `covered` without typed, existing inventory anchors for every required modality and at
+   least three distinct shipped unit-practice ids overall;
+8. `covered` concepts that are absent from the shipped `syllabus.md` contract;
+9. `covered` unless its deficit set is empty and `practice_shortfall` is zero; `partial`
+   unless it has at least one missing modality or a positive practice shortfall; `missing`
+   unless it lists every required modality and a shortfall of three;
+10. `partial`/`missing` entries with no destination;
+11. a planned unit's provisional concept id appearing in current `syllabus.md` or unit
+    `teaches` lists before its teaching and ≥3 practices ship;
+12. two planned units claiming ownership of the same knowledge point;
+13. a missing/invalid Plan 014 reconciliation record.
 
-Every failure mode gets a deliberately broken fixture proving a nonzero result.
+Every failure mode gets a deliberately broken fixture proving a nonzero result, including
+unrelated-but-valid lesson/practice references, an R1 target placed in an R2 unit, and a
+`partial` row with an empty deficit set.
 `scope-check` reports gaps but treats an acknowledged `partial` or `missing` roadmap entry as
 schema-valid; the purpose is to make debt explicit, not to block all work until the entire
 multi-semester curriculum exists.
+The checker proves referential and modality completeness, not semantic truth; the gate's
+row-by-row curriculum review remains responsible for whether an anchor honestly supports
+the claimed knowledge point.
 Semantic duplication cannot be proved from ids alone, so the curriculum review separately
 checks that a Round 2 unit depends on shipped/shared teaching instead of rewriting it.
+
+`audit_curriculum.py --check` regenerates the normalized material inventory in memory and
+fails on a diff.
+`render_curriculum_roadmap.py --check` does the same for the human-readable roadmap.
+Both commands are wired into `ci-local.sh`, so generated evidence cannot go stale.
 
 ## Task 4 — Publish the student path and correct completion claims
 
@@ -336,6 +398,8 @@ Run, in order:
 ```bash
 python -m pytest tests/test_audit_curriculum.py tests/test_scope.py \
   tests/test_model.py tests/test_prereq_coverage.py tests/test_integration.py -q
+python tools/audit_curriculum.py --check
+python tools/render_curriculum_roadmap.py --check
 python -m tools.cli scope-check
 python -m tools.cli prereq-check
 python -m tools.cli coverage-check
@@ -346,7 +410,9 @@ git diff --check
 Acceptance requires:
 
 - all roadmap/schema negative fixtures fail for the intended reason;
-- the inventory generator is deterministic (`generate`, copy/hash, regenerate, compare);
+- the inventory generator is deterministic over its documented normalized semantic view;
+- CI freshness checks fail after a source notebook/manifest or roadmap mutation until the
+  corresponding generated artifact is refreshed;
 - every official topic has a disposition and round assignment;
 - every `covered` claim has exact shipped evidence and all required modalities;
 - manual spot checks cover every `covered` row and every `partial` row, not a percentage
@@ -391,7 +457,31 @@ the existing `ci-local.sh` contract.
 
 ## Plan Review
 
-**Status:** draft; 4-way gate not yet run.
+### Round 1 — 2026-08-05 — **REJECT (3/4 external slots reject; fixes applied, re-review pending)**
+
+- **[claude-self] REJECT.** The first draft did not define a canonical notebook anchor,
+  could not distinguish provisional concepts from partial coverage of shipped concepts, and
+  did not enforce source freshness or exact round inheritance.
+  Fixed by normalized semantic inventory, typed modality evidence/deficits, explicit
+  category inheritance, source hashes, and generated-artifact freshness checks.
+- **[codex] REJECT.** Blockers: generic evidence could self-attest `covered`; R1-required
+  topics could be placed in R2; Plan 014's BatchNorm reconciliation was impossible after
+  merge under Plan 015's no-notebook scope.
+  Fixed by typed per-modality anchors + three distinct unit practices, layer/owner
+  consistency checks, and treating Plan 014's BN clinic as partial evidence whose actual
+  concept/practice completion remains with the neural-training tranche.
+- **[fable] REJECT** (temporary independent GPT-5.6-sol replacement).
+  Independently confirmed the same three blockers and added stale generated inventory/
+  roadmap risk.
+  Fixed by `audit_curriculum.py --check` and `render_curriculum_roadmap.py --check` in CI.
+- **[glm] REJECT.** Valid blockers: reconciliation closure was unrecorded, partial rows
+  could carry empty deficits, notebook normalization/anchors and source hashes were
+  unspecified, and future roadmap ownership lacked merge-union protection.
+  Fixed with a reconciliation artifact/ancestor check, exact deficit invariants,
+  normalization/anchors/hashes, and an extended pre-merge guard.
+  Its claim that transformer topics sit inside a Round-1 category was factually rejected:
+  the official page presents `Transformers` as a sibling syllabus category; the revised
+  hierarchy now makes that distinction machine-readable.
 
 ## Post-Execution Report
 
