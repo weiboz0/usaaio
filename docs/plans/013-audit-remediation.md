@@ -191,4 +191,12 @@ coverage (≥3 machine-enforced, incl. the 4 new ids), hygiene, tolerance — AL
 
 ## Content Review
 
-(Pre-PR gate findings land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-08)
+
+- **Verdict**: Approved
+- Duties performed live during the build: 18/18 reconciliation with per-anchor verification;
+  18/18 local re-executions; the single Task-1 finding (C5-p16) adjudicated BY MEASUREMENT
+  (gaps ~1e-9 quantified before disposing) with the disposition recorded; A3's verifier run
+  65/65 + MC integrity table reviewed; all four machine checks PASS incl. the two new
+  guards; the tranche-1 statement/solution conflict risk (concurrent writers) checked —
+  final tolerance + register verifiers both pass on the merged result, proving no clobber.
