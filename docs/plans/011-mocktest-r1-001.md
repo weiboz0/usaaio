@@ -401,6 +401,23 @@ final ci at final status).
 2. `[FIXED]` [glm] p05-9 grader note added to rubric (full-SVD sigma stays (100,) — graders
    must not expect (220,)).
 
+### Review 4 — [glm] GLM 5.2, engineering+notebook+tooling (2026-08-07)
+
+- **Verdict**: Approved with suggestions (5/5 blind-solves incl. both P9 f1 values to 16
+  digits; P9 methodology-honesty audit PASS; fidelity/tooling/leakage clean).
+1. `[FIXED-by-precedent]` [glm] p08-2/3 provenance → covered by the
+   generation_parameters.engineering_register_precedent entry recorded this round (the
+   documented-rationale option the reviewer offered).
+2. `[FIXED-in-tooling-round]` [glm] answerkey cell-leg coverage for prose-string keys →
+   the universal-marker-leg fix in flight; the binding chain for notebook-backed answers is
+   closed at ci execution by the in-cell asserts (documented in the tool).
+3. `[FIXED]` [glm] P9 hidden-test honesty convention → DECISION RECORDED here: the held-back
+   split is hidden from the STUDENT REGISTER by protocol (the C10-taught device), not by
+   technical secrecy — the repo is public and the generator seeded by design (determinism is
+   what makes grading reproducible); a real administration would distribute only the
+   rendered problem package (build/ PDFs + problems/), which contains no generator flag
+   documentation. 4. `[FIXED]` [glm] all 10 r1-001 notebooks nbformat-normalized.
+
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
 
 - **Verdict**: Approved
