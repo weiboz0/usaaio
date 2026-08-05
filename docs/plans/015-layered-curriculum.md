@@ -127,6 +127,9 @@ A later source refresh fetches the page explicitly, records a new dated source i
 re-adjudicates affected topics in a separate reviewed change.
 `scope-check` fails after `review_after`, forcing a live source review at least once per
 competition cycle rather than silently treating the snapshot as current forever.
+The failure message names `curriculum/sources.yaml` and instructs the maintainer to open a
+source-refresh change that repeats Task 1 and re-adjudicates affected rows; there is no
+silent waiver for unrelated PRs.
 
 `curriculum/official-topics.yaml` decomposes broad official bullets into atomic audit
 targets without yet claiming coverage.
@@ -220,14 +223,19 @@ Input paths are sorted by POSIX relative-path bytes; parsed YAML is loaded with 
 repository-pinned PyYAML version and emitted as canonical JSON with recursively sorted keys,
 UTF-8, and fixed separators.
 Do not infer semantic coverage from keyword presence.
+`audit_curriculum.py` owns only `material-inventory.yaml`.
+`render_curriculum_roadmap.py` is the sole writer of both generated Markdown documents.
 The generated inventory supplies candidates; the audit report records a human judgment for
-each official atomic target across four independent dimensions:
+each official atomic target across its required modalities plus the overall practice rule:
 
 | Dimension | Passing evidence |
 |---|---|
 | Theory | Definition, assumptions, interpretation, and boundary/counterexample where relevant. |
-| Derivation/proof | The requested result is derived or proved, not merely stated or delegated to a library. |
-| Programming | A student implements the core mechanism at the required abstraction level; black-box calls do not satisfy a from-scratch requirement. |
+| Derivation | The requested calculation/result is derived, not merely stated or delegated to a library. |
+| Proof | A validity, equivalence, bound, or counterexample claim is justified from stated assumptions. |
+| Implementation | A student implements the core mechanism at the required abstraction level; black-box calls do not satisfy a from-scratch requirement. |
+| Model training | A student executes and diagnoses the complete train/evaluate loop at the required manual or framework level. |
+| Competition workflow | A student produces the required notebook/markdown/submission artifact under runtime, API, reproducibility, and evaluation constraints. |
 | Practice/assessment | At least three honest unit practices for a taught concept, including the required answer forms/depth; mock-only exposure is not teaching coverage. |
 
 Each audit row carries `requirement: required | bridge | optional`, independently carries
@@ -417,9 +425,9 @@ Correct the current prose so that:
 
 - `syllabus.md` calls its YAML the shipped-content contract, not the complete official
   syllabus;
-- `docs/course-structure.md` labels the existing 26-week/199-hour calendar as the currently
-  shipped R1-first schedule and does not imply that the planned extensions fit into its zero
-  slack;
+- `docs/course-structure.md` labels the existing 26-week calendar using its recomputed
+  post-Plan-014 hour total as the currently shipped R1-first schedule and does not imply
+  that the planned extensions fit into its zero slack;
 - `TODO.md` no longer says Plan 010 made the curriculum complete or Plan 012 made the
   roadmap complete;
 - generated roadmap tables show R1 and R2 exits, current status, destination, prerequisites,
@@ -467,20 +475,13 @@ It must not improve its numbers by merging distinct concepts into a vague tag.
 Run, in order:
 
 ```bash
-PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
-  UV_NO_SYNC=1 uv run --offline pytest \
-  tests/test_audit_curriculum.py tests/test_scope.py \
+uv run pytest tests/test_audit_curriculum.py tests/test_scope.py \
   tests/test_model.py tests/test_prereq_coverage.py tests/test_integration.py -q
-PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
-  UV_NO_SYNC=1 uv run --offline python tools/audit_curriculum.py --check
-PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
-  UV_NO_SYNC=1 uv run --offline python tools/render_curriculum_roadmap.py --check
-PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
-  UV_NO_SYNC=1 uv run --offline usaaio-tools scope-check
-PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
-  UV_NO_SYNC=1 uv run --offline usaaio-tools prereq-check
-PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
-  UV_NO_SYNC=1 uv run --offline usaaio-tools coverage-check
+uv run python tools/audit_curriculum.py --check
+uv run python tools/render_curriculum_roadmap.py --check
+uv run usaaio-tools scope-check
+uv run usaaio-tools prereq-check
+uv run usaaio-tools coverage-check
 bash scripts/ci-local.sh
 git diff --check
 ```
@@ -504,11 +505,13 @@ Acceptance requires:
 
 Because this plan changes tooling and curriculum-governance documentation but ships no
 units, practices, or mock tests, no solution-notebook execution is newly required beyond
-the existing `ci-local.sh` contract.
+the existing `ci-local.sh` contract; that command still executes all existing solution
+notebooks unchanged.
 
 ## Task 7 — Review and ship
 
-1. Run the mandatory 4-way plan-review gate before implementation.
+1. Run the mandatory 4-way plan-review gate before implementation; do not begin Task 0 or
+   later until all four verdicts are `APPROVE` or `APPROVE WITH NITS` with no open blocker.
 2. After implementation, run a 4-way review with two explicit scopes:
    - schema/tooling anti-vacuity and producer-to-consumer coverage;
    - curriculum judgments, round assignments, prerequisite systematics, and evidence
@@ -533,7 +536,7 @@ the existing `ci-local.sh` contract.
 - Adding planned concepts/units to the shipped `syllabus.md` YAML before their content
   exists.
 - Generating a Round 2 mock blueprint or mock test.
-- Promising that the present 199-hour schedule can absorb the gaps without a capacity
+- Promising that the recomputed current schedule can absorb the gaps without a capacity
   tradeoff.
 - Making Student's t-tests, importance sampling, or other adjacent topics required without
   new evidence and a recorded scope decision.
@@ -541,7 +544,7 @@ the existing `ci-local.sh` contract.
 
 ## Plan Review
 
-### Round 1 — 2026-08-05 — **REJECT (3/4 external slots reject; fixes applied, re-review pending)**
+### Round 1 — 2026-08-05 — **REJECT (resolved in Rounds 2–3 below)**
 
 - **[claude-self] REJECT.** The first draft did not define a canonical notebook anchor,
   could not distinguish provisional concepts from partial coverage of shipped concepts, and
@@ -566,6 +569,27 @@ the existing `ci-local.sh` contract.
   Its claim that transformer topics sit inside a Round-1 category was factually rejected:
   the official page presents `Transformers` as a sibling syllabus category; the revised
   hierarchy now makes that distinction machine-readable.
+
+### Rounds 2–3 — 2026-08-05 — **PASS (4/4)**
+
+- **[claude-self] APPROVE.** Rechecked the final category DAG, typed/primary evidence,
+  exhaustive checker-derived coverage states, generated-document ownership/freshness,
+  dynamic schedule baseline, and Plan 014 boundary; no open blocker.
+- **[codex] REJECT → APPROVE.** Its second-round unrelated-evidence predicate and
+  third-round incomplete coverage-state cross-product were fixed.
+  Final re-verdict: no remaining findings.
+- **[fable] REJECT → APPROVE WITH NITS** (temporary independent GPT-5.6-sol replacement).
+  Its category-parent, generated-audit freshness, and `uv` command blockers were fixed;
+  final schedule-label nit was fixed by removing the last hard-coded baseline.
+- **[glm] REJECT → APPROVE.** Two adversarial rounds drove source/category normalization,
+  evidence/state invariants, ownership/collision handling, source-review expiry, and
+  deterministic generation.
+  Final friendly re-verdict had only documentation nits: all modality evidence shapes and a
+  single audit-document generator are now explicit; the refresh remediation and existing
+  notebook-execution behavior are clarified.
+
+**GATE RESULT: PASS — 4/4.** Implementation remains blocked on Task 0 until Plan 014 is
+merged or explicitly abandoned.
 
 ## Post-Execution Report
 
