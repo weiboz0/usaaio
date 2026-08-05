@@ -24,6 +24,13 @@ for mocktest_dir in "${mocktest_dirs[@]}"; do
     "$quarto_bin" render test.md --to typst --output-dir build --no-execute
   )
 
+  theory_docs=("${mocktest_dir}"theory/*.md)
+  if [[ -e "${theory_docs[0]}" ]]; then
+    for doc in "${theory_docs[@]}"; do
+      echo "rendering: ${doc}"
+      (cd "${mocktest_dir}" && "$quarto_bin" render "theory/$(basename "$doc")" --to typst --output-dir ../build --no-execute)
+    done
+  fi
   problem_notebooks=("${mocktest_dir}"problems/*.ipynb)
   for notebook in "${problem_notebooks[@]}"; do
     notebook_name=$(basename "$notebook")

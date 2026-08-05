@@ -31,3 +31,16 @@ Apply the C10 register mechanically, one point each:
 - **W-C2:** an honest limitation or next step.
 
 The exemplar summary earns **6/6**: every item above is a checkable sentence tied to notebook output.
+
+
+## Performance-points mapping (defined at reconciliation — the mapping the fragment reserved)
+
+Held-back f1-macro (computed by the grading register) maps to the 28 performance points as:
+
+- f1 < 0.55 → 0 points (a contract-passing majority-class baseline sits near here)
+- 0.55 ≤ f1 < 0.75 → linear: points = round(28 · (f1 − 0.55) / 0.20)
+- f1 ≥ 0.75 → 28 points
+
+Anchors: the exemplar solution (honest validation methodology) scores 0.686 → 19 points;
+a strong-but-realistic 0.75+ earns full marks; the hard gates (contract, kNN-only, imports,
+run-clean) remain pass/fail on top and zero the whole problem when violated.
