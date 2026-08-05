@@ -24,6 +24,18 @@ cannot express — a graded problem whose parts consume results across units in 
 If the audit finds ≥4 arcs coverable by retagging, this plan drops to a retagging pass plus
 the residual arcs, and Task 1's tooling shrinks accordingly. Record the verdict here.
 
+> **PRELIMINARY EVIDENCE (orchestrator, read-only, 2026-08-05 — pre-gate scan):** a textual
+> scan for foreign-concept surface forms across all 337 unit practice problems finds **116
+> with a foreign-concept signal**. Strongest unit→foreign-owner directions:
+> C3←F4 (18), C10←C1 (17), C9←F1 (12), F3←F1 (12), C10←F4 (9), C9←F6 (8), C4←C1 (7),
+> C9←F5 (7). **Three of these directions map onto proposed arcs** (F4+C2+C3 gradient chain;
+> C8+F6+C9 compression; C1+C4+C10 applied arc), so the cheap option looks materially viable
+> for part of the set. **Caveat, and why this is evidence not a verdict:** a textual signal
+> is an UPPER BOUND — mentioning "variance" (e.g. C1-p03) is usually scaffolding, not
+> substantive exercise of F5's concept, which is the bar this plan sets. Task 0b's real work
+> is the per-candidate semantic judgment; this scan only proves the audit is worth running
+> and gives it a starting list.
+
 ## Task 1 — The synthesis set (only for what Task 0b leaves uncovered)
 
 New top-level `synthesis/` directory (NOT a syllabus unit — no new concepts):
