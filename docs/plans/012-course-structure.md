@@ -75,7 +75,8 @@ arithmetic-verification duty (design §2 exemption stated).
 
 ### Review 3 — [codex] GPT-5.6-terra (2026-08-07)
 
-- **Verdict**: Changes requested → response below, re-verdict pending
+- **Verdict**: Changes requested → **Approved** (re-verdict: §7's session-granularity rule
+  + all five shared-week sequences verified)
 1. `[WONTFIX-with-reasoning + FIXED-clarification]` [codex] Strict week-granular prereq
    ordering FAIL on the five shared weeks: the plan pinned SESSION-granular topological
    integrity, and every shared week's "then" notation is strict in-week sequence (a unit's
@@ -111,7 +112,8 @@ handled in the table spec.
 
 ### Review 3 — [codex] GPT-5.6-terra (2026-08-07)
 
-- **Verdict**: Changes requested → response below, re-verdict pending
+- **Verdict**: Changes requested → **Approved** (re-verdict: §7's session-granularity rule
+  + all five shared-week sequences verified)
 1. `[WONTFIX-with-reasoning + FIXED-clarification]` [codex] Strict week-granular prereq
    ordering FAIL on the five shared weeks: the plan pinned SESSION-granular topological
    integrity, and every shared week's "then" notation is strict in-week sequence (a unit's
