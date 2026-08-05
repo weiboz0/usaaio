@@ -159,6 +159,23 @@ C10's harness + problems vs p09 (fresh SYNTHETIC dataset — never breast-cancer
 fresh function name predict_labels; same-register constraints are the teachable). Verdict
 recorded in this plan.
 
+> **CORPUS VERDICT (orchestrator, 2026-08-06): PASS — no isomorphs.**
+> - vs p05-12 (spectral-from-SVD construction): F6 p13 delivers thin/full INVARIANT checks and
+>   p14 a cross-route eigenvector comparison on a seeded 5×5 with known separated spectrum —
+>   neither reproduces the exam's construct-Q-and-λ deliverable; the bridge itself is lesson
+>   content (the sanctioned teachable).
+> - vs p05-13 (‖S‖_F = √Σσ⁴ proof): taught as the capstone's WORKED example (generic route);
+>   the assessed proofs are DIFFERENT identities (p15: ‖W‖²_F = Σσ²; p16: rank-r error).
+> - vs p05-14/15 (Eckart-Young construction + error plot): our register STATES optimality and
+>   assesses error computation via the tail identity — F6 p12/p18 deliver error ARRAYS with
+>   identity-vs-direct cross-checks; C9 p07/p09 deliver certified compressions and budget→r*
+>   DICTS with two-sided certificates, explicitly no plot deliverable; C9 p12's proof derives
+>   the error value, never optimality. Fresh matrices throughout (seeded synthetic; fresh
+>   10/24/48-word GloVe stacks).
+> - C10 vs p09: apiary-telemetry synthetic dataset (never medical), fresh contract name
+>   predict_labels, deterministic-regeneration harness; the kNN-only/f1-macro/hidden-test
+>   REGISTER is the teachable, structurally re-instantiated.
+
 Shared: A/B/C sets; ≈30/45/25; ≥2 checkpoints/section; pitfalls/exam-connections/going-deeper
 unit-wide (F6 → C9 by id; C9 → C10 by id; C10 → mocktests). SEED = 20260804. All-NumPy float64
 register (no torch anywhere in this tranche; C9-02's gensim cells use the C8 cache header).
