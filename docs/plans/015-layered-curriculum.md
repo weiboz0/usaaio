@@ -102,6 +102,8 @@ Before implementing any Plan 015 task:
 
 **Hard stop:** do not resolve a Plan 014 conflict by editing its active worktree or by
 silently duplicating its files.
+There is no time-based auto-abandonment: if Plan 014 remains active when execution reaches
+this step, mark Plan 015 blocked and ask the owner to finish or explicitly abandon Plan 014.
 
 ## Task 1 — Freeze the source taxonomy and round boundary
 
@@ -113,13 +115,18 @@ silently duplicating its files.
 
 `curriculum/sources.yaml` records stable source ids, URL/local-path metadata, retrieval or
 competition date, authority (`official-syllabus`, `official-round-policy`, `past-paper`,
-`design-rationale`), a SHA-256 of the retrieved source bytes or normalized extracted text,
-the normalization method, and whether the source is committed or local-only.
-Do not copy source prose into this file.
+`design-rationale`), a SHA-256 of a canonical JSON array containing only the manually
+verified official heading/bullet paths used by the audit, the normalization method
+(`official-topic-paths-v1`: Unicode NFC, whitespace collapse, source order), a mandatory
+`review_after` date, and whether the supporting source is committed or local-only.
+Only the short heading/bullet labels needed to reproduce the hash may be stored; do not copy
+paragraph prose, examples, or past-problem text into this file.
 The hash pins the dated snapshot used by this audit; CI does not claim that a live remote
 page remains unchanged forever.
 A later source refresh fetches the page explicitly, records a new dated source id/hash, and
 re-adjudicates affected topics in a separate reviewed change.
+`scope-check` fails after `review_after`, forcing a live source review at least once per
+competition cycle rather than silently treating the snapshot as current forever.
 
 `curriculum/official-topics.yaml` decomposes broad official bullets into atomic audit
 targets without yet claiming coverage.
@@ -205,9 +212,13 @@ markdown attachment names plus byte hashes; ignore the notebook `metadata` objec
 `metadata`, cell `id`, `execution_count`, and outputs entirely.
 For YAML manifests, hash the complete parsed YAML object after recursive key sorting; no
 field allowlist is used.
-Heading paths recognize ATX markdown headings after Unicode NFC normalization.
+Heading paths recognize both ATX and Setext markdown headings after Unicode NFC
+normalization.
 Evidence anchors use `path + normalized heading path + cell ordinal within that heading`;
 the human heading remains findable while the ordinal disambiguates repeated headings.
+Input paths are sorted by POSIX relative-path bytes; parsed YAML is loaded with the
+repository-pinned PyYAML version and emitted as canonical JSON with recursively sorted keys,
+UTF-8, and fixed separators.
 Do not infer semantic coverage from keyword presence.
 The generated inventory supplies candidates; the audit report records a human judgment for
 each official atomic target across four independent dimensions:
@@ -285,15 +296,18 @@ Each knowledge point records:
         - path: units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb
           heading: Linear regression
           cell_ordinal: 0
-      practice_ids: [C2-p01, C2-p02, C2-p03]
+          role: primary
+      practices:
+        - {id: C2-p01, role: primary}
+        - {id: C2-p02, role: primary}
+        - {id: C2-p03, role: primary}
     derivation:
       lesson_anchors: []
-      practice_ids: []
+      practices: []
   disposition: extend-existing-unit
   destination: C2-linear-models
   deficits:
     modalities_missing: [derivation]
-    practice_shortfall: 0
   rationale: Current material teaches only the gradient view and explicitly omits normal equations.
 ```
 
@@ -326,17 +340,24 @@ numbers until a content plan actually branches and passes the collision guard.
    unit-practice id for **each** required modality, or without at least three distinct
    shipped unit-practice ids in the union; mechanically, every cited practice's manifest
    concept tags must intersect `shipped_concepts`, and every lesson anchor must be under a
-   unit whose `teaches` set intersects `shipped_concepts`;
+   unit whose `teaches` set intersects `shipped_concepts`; each accepted evidence record
+   must declare `role: primary`, with the gate manually verifying that judgment row by row;
 8. `covered` concepts that are absent from the shipped `syllabus.md` contract;
-9. any violation of this exhaustive state table:
-   - `covered`: `modalities_missing: []`, `practice_shortfall: 0`, and rule 7 satisfied;
-   - `partial`: a proper non-empty subset of required modalities is missing **or**
-     `practice_shortfall` is 1 or 2;
-   - `missing`: every required modality is missing and `practice_shortfall: 3`;
+9. any violation of this exhaustive, checker-derived state rule:
+   - `covered`: every required modality has accepted primary evidence and the union contains
+     at least three distinct qualifying unit-practice ids;
+   - `missing`: no required modality has accepted primary evidence and there are zero
+     qualifying practice ids;
+   - `partial`: every other combination, including taught-without-practice,
+     practice-without-teaching, or only some modalities/depths covered;
+   `modalities_missing` must exactly equal the required modalities lacking accepted evidence,
+   while practice shortfall is computed as `max(0, 3 - distinct_qualifying_practices)` and
+   is not a self-reported field;
 10. `partial`/`missing` entries with no destination;
 11. a planned unit's provisional concept id appearing in current `syllabus.md` or unit
     `teaches` lists before its teaching and ≥3 practices ship;
-12. two planned units claiming ownership of the same knowledge point;
+12. any knowledge point with zero or multiple destination owners across both existing-unit
+    extensions and planned units;
 13. a missing/invalid Plan 014 reconciliation record;
 14. an invalid planned-unit hour range or a Round-1 addition without `schedule_action`.
 
@@ -361,6 +382,9 @@ evidence cannot go stale.
 Normalization fixtures perturb every ignored notebook field and must leave the inventory
 unchanged; changing cell source, attachment bytes, or any parsed manifest value must make
 `--check` fail.
+All input-order permutations must render identical bytes.
+The merge gate is conjunctive: `scope-check` can validate an evidence reference while
+`ci-local.sh` independently executes its solution notebook; either failure blocks merge.
 
 ## Task 4 — Publish the student path and correct completion claims
 
@@ -404,9 +428,10 @@ Correct the current prose so that:
 **Capacity rule:** Plan 015 may estimate ranges, but no follow-on content plan may append
 material to a full unit or the zero-slack 26-week calendar without an explicit split,
 replacement, or schedule extension.
-The generated roadmap sums ranges per layer and reports the delta from the current 199-hour
-schedule; it does not reject expansion when `schedule_action: extend` makes that choice
-explicit.
+The generated roadmap recomputes the post-Plan-014 manifested/scheduled baseline from
+manifests and `docs/course-structure.md`, sums ranges per layer, and reports the delta from
+that recomputed value; it never carries the draft's 199-hour figure as a constant.
+It does not reject expansion when `schedule_action: extend` makes that choice explicit.
 The 16–24 practice band and ≥3-per-concept rule remain binding.
 
 ## Task 5 — Publish the dependency-ordered content tranches
