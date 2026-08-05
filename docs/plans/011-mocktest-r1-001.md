@@ -211,6 +211,11 @@ explicit sampling rule.
    matches the 2026 anchor; all named concepts spot-checked taught (dependent-rows eigen F6,
    bottleneck C7, GloVe C8, contract register C10).
 
+### Review 5 — [glm] re-verdict (2026-08-06): APPROVE WITH NITS → resolved
+All ledgers verified arithmetically in-range. NIT: per-beat P5 tags summed numpy 25/LA 50
+vs the ledger's 30/45 (LA landing exactly at the 80 ceiling) → beat 5.14 retagged numpy
+(float-counting register), restoring the ledger with margin (LA 75, numpy 50).
+
 ### Review 4 — [codex] GPT-5.6-sol (2026-08-06): REJECT → resolved
 Blocker (live): P4's cnn-vision cluster violated math-computation's allowed-cluster list —
 P4 rebuilt as linear-algebra (Frobenius + outer-product reconstruction), bottleneck count
