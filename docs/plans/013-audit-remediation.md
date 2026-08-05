@@ -193,7 +193,11 @@ coverage (≥3 machine-enforced, incl. the 4 new ids), hygiene, tolerance — AL
 
 ### Review 2 — [codex] GPT-5.6-terra (2026-08-08)
 
-- **Verdict**: Changes requested → fixes in flight/applied, re-verdict pending
+- **Verdict**: Changes requested → **Approved** (two re-verdicts: the first found
+  tolerance.py's glob allowlist missed a hypothetical `overview.ipynb`; no such file exists
+  — the overview IS `lesson.ipynb`, already scanned — but the allowlist design was fragile,
+  so it was REPLACED with a full-tree scan of `units/**` + `mocktests/**` (763 notebooks,
+  build artifacts excluded) plus two regression tests. Final: nothing outstanding.)
 - Blind-solve 5/5 agree; 15 retrofit sites + 10 register samples verified; both guards PASS.
 1. `[FIXED-in-flight]` Must Fix: tolerance.py misses aliased/`from`-imported family calls
    (`import numpy as n`, `from numpy import isclose`) — a bare comparison could bypass ci.
