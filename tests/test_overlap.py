@@ -108,7 +108,7 @@ def test_overlap_passes_original_fixture(tmp_path):
     assert check_overlap(tmp_path).ok
 
 
-def test_mock_cosine_ignores_mandated_register_boilerplate(tmp_path):
+def test_mock_spec_cosine_ignores_mandated_register_boilerplate(tmp_path):
     mock_register = """
 Total: 25 points.
 Part 2.3 (5 points)
@@ -136,14 +136,47 @@ Write your result in the unique form p/q, with relatively prime integers p and q
 What is p+q?
     """
     write_reference(tmp_path, corpus_register + "classify basalt lanterns")
-    write_manifest(tmp_path, "fresh zephyr problem", files=["statement.md"])
+    write_manifest(
+        tmp_path,
+        mock_register + "derive zephyr covariances",
+        files=["statement.md"],
+    )
     statement = tmp_path / "mocktests" / "r1-001" / "statement.md"
-    statement.write_text(mock_register + "derive zephyr covariances")
+    statement.write_text("fresh statement about zephyr covariances")
 
     report = check_overlap(tmp_path)
 
     assert report.ok
     assert not report.errors
+
+
+def test_mock_statement_file_topic_similarity_is_not_cosine_scanned(tmp_path):
+    reference = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu"
+    same_terms_different_order = (
+        "mu lambda kappa iota theta eta zeta epsilon delta gamma beta alpha"
+    )
+    write_reference(tmp_path, reference)
+    write_manifest(tmp_path, "fresh prompt about harbor census", files=["statement.md"])
+    statement = tmp_path / "mocktests" / "r1-001" / "statement.md"
+    statement.write_text(same_terms_different_order)
+
+    report = check_overlap(tmp_path)
+
+    assert report.ok
+    assert not report.errors
+
+
+def test_mock_statement_file_verbatim_shingles_still_error(tmp_path):
+    copied = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda"
+    write_reference(tmp_path, copied)
+    write_manifest(tmp_path, "fresh prompt about harbor census", files=["statement.md"])
+    statement = tmp_path / "mocktests" / "r1-001" / "statement.md"
+    statement.write_text(copied)
+
+    report = check_overlap(tmp_path)
+
+    assert not report.ok
+    assert any("shingles=4" in error for error in report.errors)
 
 
 def test_mock_register_filter_preserves_real_content_detection(tmp_path):

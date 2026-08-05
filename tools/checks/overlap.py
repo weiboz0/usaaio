@@ -1,3 +1,10 @@
+"""Detect reference overlap at the granularity appropriate to each artifact.
+
+Following the plan-004 unit-path precedent, short structured mock manifest specs
+provide the TF-IDF cosine signal. Full mock statement files, like unit practice
+files, are checked only for verbatim-copy risk with lexical shingles.
+"""
+
 from __future__ import annotations
 
 import math
@@ -149,18 +156,18 @@ def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None, list[str]]:
     return parts, None, failures
 
 
-def _problem_text(root: Path, manifest_path: Path, problem) -> tuple[str, list[str]]:
+def _problem_texts(root: Path, manifest_path: Path, problem) -> tuple[str, str, list[str]]:
     warnings: list[str] = []
-    texts = [problem.spec]
+    statement_texts: list[str] = []
     if not problem.files:
         warnings.append(f"{manifest_path}: {problem.id} has no files; scanning spec only")
     for rel in problem.files:
         path = manifest_path.parent / rel
         if path.exists():
-            texts.append(path.read_text(errors="ignore"))
+            statement_texts.append(path.read_text(errors="ignore"))
         else:
             warnings.append(f"{manifest_path}: {problem.id} listed missing file {rel}")
-    return "\n".join(texts), warnings
+    return problem.spec, "\n".join(statement_texts), warnings
 
 
 def _notebook_text(path: Path) -> str:
@@ -191,11 +198,14 @@ def check_overlap(root: str | Path) -> Report:
     warnings: list[str] = list(corpus_failures)
     for manifest in load_mock_manifests(root):
         for problem in manifest.problems:
-            text, text_warnings = _problem_text(root, manifest.path, problem)
+            spec_text, statement_text, text_warnings = _problem_texts(
+                root, manifest.path, problem
+            )
             warnings.extend(text_warnings)
-            text = _without_boilerplate(text)
-            problem_shingles = _shingles(text)
-            cosine_text = _without_mock_register_boilerplate(text)
+            problem_shingles = _shingles(_without_boilerplate(statement_text))
+            cosine_text = _without_mock_register_boilerplate(
+                _without_boilerplate(spec_text)
+            )
             for label, _, reference_shingles, reference_cosine_text in corpus_shingles:
                 overlap = len(problem_shingles & reference_shingles)
                 cosine = _cosine(cosine_text, reference_cosine_text, doc_count, base_dfs)
