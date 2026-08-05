@@ -87,6 +87,39 @@ vs F6's capstone LESSON (the chain appears there as teaching; the mock arc must 
 data domain (committed text corpus + GloVe vs seeded synthetic matrix), numbers, and
 sub-part framing — recorded verdict required)**, P9 vs C10's harness problems).
 
+**RECONCILIATION (2026-08-07): 40/40 AGREE.** P1-P4: 12/12 exact (MC keys C/D/B/E/A + C/D/C;
+numerics 775/24, 1/13, {9,−2}, 160, −164). P5-P8: 27/27 (all anchors match — 131,648;
+4,074,560/11,275; r*=3; corpus census 311/220). P9: methodological agreement (open task,
+different valid recipes; exemplar val 0.7896 → heldout 0.6860 — the overfitting phenomenon
+organically reproduced a third time). Solver-flagged gap (no f1→points mapping) closed: the
+28 performance points map linearly over [0.55, 0.75] with the exemplar anchoring 19/28;
+hard gates zero the problem. answers.md + rubric.md merged from fragments; all 40 answer_key
+fields backfilled (p09 as pointer form); manifest flipped FINAL at the end of this task per
+the gate ruling.
+
+**FIDELITY VERDICTS (per-section, duty #7):** concept-block PASS (imperative register,
+per-part reasoning/coding flags, five options A-E, 10-pt atoms, fresh scenarios);
+math-computation PASS (normal-form decode instructions with gcd/sign constraints — the
+distinctive USAAIO pattern present); integrative-arc PASS (single narrative journey, later
+parts consume earlier variables explicitly, 14 sub-parts of exam-granularity atoms);
+engineering PASS (exact snake_case/My_CamelCase identifiers, shape contracts, banned-API
+zero-point clauses, complete runnable starters); open-ended-notebook PASS (hidden-test
+protocol, single model family, contract function, summary-cell requirement — the 2026
+P9 register). Style_rules checklist: all seven satisfied.
+
+**NO-DUPLICATION VERDICT:** overlap-scan vs corpus: clean (0 errors; adapted-tagged
+sub-parts warn as designed). Manual isomorph pass vs our 319 unit problems: the P5 arc's
+data domain (committed fresh text corpus, 220-token GloVe stack) differs from every unit
+problem and from F6's capstone (seeded synthetic (200,40) measurement matrix — different
+domain, numbers, and deliverable framing; RECORDED VERDICT: not an isomorph); P7's width
+88 / cut children[:6]+layer3[:2] grep-verified absent from units; P8 geometry fresh;
+P9's street-tree theme distinct from C10's apiary. PASS both directions.
+
+**PDF pipeline shakedown (recorded):** three real defects found and fixed while turning the
+build green — test.md had no body (rendered empty), theory/*.md weren't rendered at all
+(build-pdf extended), and quarto's typst path drops LaTeX \[ \]/\( \) delimiters
+(statements converted to $-form; math verified present in every rendered PDF via pdftotext).
+
 ## Task 5 — Verification (NAMED)
 
 ci-local ALL GREEN with the two NEW checks live (answerkey-check real; PDF build real,
