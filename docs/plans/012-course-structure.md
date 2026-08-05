@@ -49,7 +49,14 @@ arithmetic-verification duty (design §2 exemption stated).
 
 ## Plan Review
 
-(4-way gate verdicts land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
+
+- **Verdict**: APPROVE
+- Arithmetic verified by direct manifest computation: totals 3,900/7,160/640 = 11,700 min;
+  Semester 1 (F1,F2,F4,F3,F5,C1,C2,C3,C4) = 6,065 min = 101.1 h; Semester 2 = 5,635 min =
+  93.9 h + the 3-h mock; 26 × 7.5 = 195. DAG: the stated order verified topological (C8's
+  foundation-only prereqs make the C7 ∥ C8 parallelism legal; C9's four prereqs all
+  precede it; C4's all in semester 1).
 
 ## Content Review
 
