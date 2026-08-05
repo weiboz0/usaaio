@@ -1,8 +1,7 @@
 """Generate the original text corpus for mock test r1-001, Problem 5."""
 
-from pathlib import Path
 import random
-
+from pathlib import Path
 
 SEED = 20260806
 
