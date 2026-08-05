@@ -4,7 +4,8 @@
 machine-auditable USAAIO curriculum with two explicit exit paths: a Round 1 path and a
 Round 2 extension path.
 This plan inventories every official knowledge point and every shipped lesson/practice,
-records whether the required theory, derivation, programming, and assessment depth exists,
+records its requirement class (`required`, `bridge`, or `optional`) separately from whether
+the required theory, derivation, programming, and assessment depth exists,
 and publishes the dependency-ordered content backlog.
 It does **not** claim that planned topics are already taught and does **not** ship teaching
 notebooks itself.
@@ -77,7 +78,8 @@ Before implementing any Plan 015 task:
 2. Recompute unit/problem/hour counts from manifests; never carry the draft's 109 concepts,
    337 unit-practice problems, 47 lesson sessions, or 199 scheduled hours as constants.
 3. Create `docs/audits/015-plan014-reconciliation.md` recording Plan 014's final commit
-   hash (or an explicit abandonment disposition), its delivered artifact counts, and the
+   **squash-merge commit on main** (or an explicit abandonment disposition), its delivered
+   artifact counts, and the
    disposition of every overlapping topic.
    Audit the final diff against these reconciliation rules:
    - its synthesis work is complementary and may become evidence in this audit;
@@ -91,7 +93,8 @@ Before implementing any Plan 015 task:
      here without rewriting the already-reviewed Plan 014 record;
    - no content is counted as covered merely because it appears in plan prose.
 4. `scope-check` validates that the reconciliation record exists, names a resolution state
-   (`merged` or `abandoned`), and that a `merged` Plan 014 commit is an ancestor of HEAD.
+   (`merged` or `abandoned`), and that a recorded Plan 014 squash commit is an ancestor of
+   HEAD.
    `abandoned` requires the branch/PR reference, date, reason, and explicit owner decision;
    it does not make any proposed Plan 014 content evidence.
 5. Append the reconciliation commit, final counts, and any changed ownership to this plan's
@@ -113,6 +116,10 @@ competition date, authority (`official-syllabus`, `official-round-policy`, `past
 `design-rationale`), a SHA-256 of the retrieved source bytes or normalized extracted text,
 the normalization method, and whether the source is committed or local-only.
 Do not copy source prose into this file.
+The hash pins the dated snapshot used by this audit; CI does not claim that a live remote
+page remains unchanged forever.
+A later source refresh fetches the page explicitly, records a new dated source id/hash, and
+re-adjudicates affected topics in a separate reviewed change.
 
 `curriculum/official-topics.yaml` decomposes broad official bullets into atomic audit
 targets without yet claiming coverage.
@@ -120,16 +127,29 @@ It first records the official category hierarchy and its round policy:
 
 ```yaml
 categories:
+  - id: machine-learning
+    parent: null
+    source_refs: [official-syllabus-2026-08-05, official-round-policy-2027]
+    required_for: [round-1, round-2]
+  - id: supervised-learning
+    parent: machine-learning
+    source_refs: [official-syllabus-2026-08-05]
+    required_for: [round-1, round-2]
   - id: deep-learning-foundation
+    parent: null
     source_refs: [official-syllabus-2026-08-05, official-round-policy-2027]
     required_for: [round-1, round-2]
   - id: transformers
+    parent: null
     source_refs: [official-syllabus-2026-08-05, official-round-policy-2027]
     required_for: [round-2]
 ```
 
 Category ids correspond exactly to sibling headings on the official syllabus.
 For example, `transformers` is not a child of `deep-learning-foundation` or `cnn-basics`.
+Nested subcategories such as `supervised-learning` declare a `parent` edge and inherit every
+round from the full category-ancestor chain; `scope-check` validates the category DAG before
+validating atomic topics.
 Every atomic entry then has:
 
 ```yaml
@@ -163,7 +183,7 @@ and exact parent category.
 ### Files
 
 - Create `tools/audit_curriculum.py` for inventory generation only.
-- Create `docs/audits/015-coverage-audit.md` for the adjudicated findings.
+- Create generated `docs/audits/015-coverage-audit.md` for the adjudicated findings.
 - Create `curriculum/material-inventory.yaml` as generated, deterministic evidence.
 - Add `tests/test_audit_curriculum.py`.
 
@@ -179,11 +199,15 @@ The inventory generator reads all current producers, not just concept tags:
 
 For notebooks, record path, stable heading path plus cell ordinal, declared concept ids,
 relevant API tokens, and problem identifiers.
-The generator parses notebooks into a canonical semantic view: ignore execution counts,
-outputs, volatile notebook/cell metadata, and random cell ids; normalize line endings; and
-hash ordered markdown/code sources plus stable manifest fields.
-Evidence anchors use `path + heading path + cell ordinal within that heading`; the human
-heading remains findable while the ordinal disambiguates repeated headings.
+The generator parses notebooks into an exact canonical semantic view.
+For every cell, preserve only `cell_type`, Unicode-NFC/line-ending-normalized `source`, and
+markdown attachment names plus byte hashes; ignore the notebook `metadata` object, cell
+`metadata`, cell `id`, `execution_count`, and outputs entirely.
+For YAML manifests, hash the complete parsed YAML object after recursive key sorting; no
+field allowlist is used.
+Heading paths recognize ATX markdown headings after Unicode NFC normalization.
+Evidence anchors use `path + normalized heading path + cell ordinal within that heading`;
+the human heading remains findable while the ordinal disambiguates repeated headings.
 Do not infer semantic coverage from keyword presence.
 The generated inventory supplies candidates; the audit report records a human judgment for
 each official atomic target across four independent dimensions:
@@ -195,8 +219,12 @@ each official atomic target across four independent dimensions:
 | Programming | A student implements the core mechanism at the required abstraction level; black-box calls do not satisfy a from-scratch requirement. |
 | Practice/assessment | At least three honest unit practices for a taught concept, including the required answer forms/depth; mock-only exposure is not teaching coverage. |
 
-Each audit row carries `coverage: covered | partial | missing | optional`, exact lesson
-anchors, practice ids, assessment ids, and a one-sentence consequence.
+Each audit row carries `requirement: required | bridge | optional`, independently carries
+`coverage: covered | partial | missing`, and records exact lesson anchors, practice ids,
+assessment ids, and a one-sentence consequence.
+The human adjudication is stored once in `curriculum/coverage-map.yaml` (`rationale`,
+`consequence`, typed evidence, and deficits); `docs/audits/015-coverage-audit.md` is generated
+from that canonical data plus `material-inventory.yaml` and is never edited independently.
 `covered` requires evidence in every modality required by the atomic target.
 A nearby topic, a mention in a "Going deeper" section, a plan claim, or an unrelated concept
 tag is insufficient.
@@ -214,8 +242,8 @@ Explicitly audit the examples that motivated this plan:
 
 The audit is exhaustive at the **atomic-target** level and corpus-wide at the evidence-search
 level.
-Record the exact count of notebooks/problems searched and the final covered/partial/missing/
-optional totals in the post-execution report.
+Record the exact count of notebooks/problems searched, the required/bridge/optional totals,
+and the independent covered/partial/missing totals in the post-execution report.
 
 ## Task 3 — Add the machine-readable layered roadmap contract
 
@@ -270,14 +298,16 @@ Each knowledge point records:
 ```
 
 Allowed `requirement` values are `required`, `bridge`, and `optional`.
-Allowed `coverage` values are `covered`, `partial`, `missing`, and `optional`.
+Allowed `coverage` values are `covered`, `partial`, and `missing`.
 Allowed dispositions are `keep`, `extend-existing-unit`, `new-unit`, and `defer-optional`.
 `roadmap_version` is `1`; `scope-check` rejects unsupported versions.
 Increment it only for a backward-incompatible schema change, not for ordinary coverage
 updates.
 
 `planned_units` assigns stable provisional ids, titles, layers, prerequisites, owned
-knowledge points, provisional concept ids, and an estimated hour **range**.
+knowledge points, provisional concept ids, a non-negative estimated hour **range** with
+`max >= min`, and `schedule_action: split | replace | extend` for every Round-1 addition to
+the current zero-slack calendar.
 These ids are roadmap ids only; they do not enter `syllabus.md` or reserve future plan
 numbers until a content plan actually branches and passes the collision guard.
 
@@ -285,22 +315,30 @@ numbers until a content plan actually branches and passes the collision guard.
 
 1. missing or duplicate official atomic targets;
 2. unknown source, concept, layer, dependency, destination-unit, or evidence references;
-3. a topic whose `required_for` removes a round inherited from its parent category;
+3. a category cycle, unknown category parent, or category/topic whose `required_for` removes
+   a round inherited from its full ancestor chain;
 4. a Round-1-required point assigned to `round-2-extension`/`optional-enrichment`, owned by
    a Round-2 unit, or depending on Round-2-only material;
-5. an official required point labelled optional/deferred;
+5. an official required point with `requirement: optional`, or any row using the removed
+   `coverage: optional` value;
 6. a dependency cycle;
-7. `covered` without typed, existing inventory anchors for every required modality and at
-   least three distinct shipped unit-practice ids overall;
+7. `covered` without typed, existing inventory anchors and at least one distinct shipped
+   unit-practice id for **each** required modality, or without at least three distinct
+   shipped unit-practice ids in the union; mechanically, every cited practice's manifest
+   concept tags must intersect `shipped_concepts`, and every lesson anchor must be under a
+   unit whose `teaches` set intersects `shipped_concepts`;
 8. `covered` concepts that are absent from the shipped `syllabus.md` contract;
-9. `covered` unless its deficit set is empty and `practice_shortfall` is zero; `partial`
-   unless it has at least one missing modality or a positive practice shortfall; `missing`
-   unless it lists every required modality and a shortfall of three;
+9. any violation of this exhaustive state table:
+   - `covered`: `modalities_missing: []`, `practice_shortfall: 0`, and rule 7 satisfied;
+   - `partial`: a proper non-empty subset of required modalities is missing **or**
+     `practice_shortfall` is 1 or 2;
+   - `missing`: every required modality is missing and `practice_shortfall: 3`;
 10. `partial`/`missing` entries with no destination;
 11. a planned unit's provisional concept id appearing in current `syllabus.md` or unit
     `teaches` lists before its teaching and ≥3 practices ship;
 12. two planned units claiming ownership of the same knowledge point;
-13. a missing/invalid Plan 014 reconciliation record.
+13. a missing/invalid Plan 014 reconciliation record;
+14. an invalid planned-unit hour range or a Round-1 addition without `schedule_action`.
 
 Every failure mode gets a deliberately broken fixture proving a nonzero result, including
 unrelated-but-valid lesson/practice references, an R1 target placed in an R2 unit, and a
@@ -316,8 +354,13 @@ checks that a Round 2 unit depends on shipped/shared teaching instead of rewriti
 
 `audit_curriculum.py --check` regenerates the normalized material inventory in memory and
 fails on a diff.
-`render_curriculum_roadmap.py --check` does the same for the human-readable roadmap.
-Both commands are wired into `ci-local.sh`, so generated evidence cannot go stale.
+`render_curriculum_roadmap.py --check` does the same for both generated documents:
+`docs/audits/015-coverage-audit.md` and `docs/curriculum-roadmap.md`.
+Both commands are wired into `ci-local.sh`, so generated inventory, audit, and roadmap
+evidence cannot go stale.
+Normalization fixtures perturb every ignored notebook field and must leave the inventory
+unchanged; changing cell source, attachment bytes, or any parsed manifest value must make
+`--check` fail.
 
 ## Task 4 — Publish the student path and correct completion claims
 
@@ -361,6 +404,9 @@ Correct the current prose so that:
 **Capacity rule:** Plan 015 may estimate ranges, but no follow-on content plan may append
 material to a full unit or the zero-slack 26-week calendar without an explicit split,
 replacement, or schedule extension.
+The generated roadmap sums ranges per layer and reports the delta from the current 199-hour
+schedule; it does not reject expansion when `schedule_action: extend` makes that choice
+explicit.
 The 16–24 practice band and ≥3-per-concept rule remain binding.
 
 ## Task 5 — Publish the dependency-ordered content tranches
@@ -396,13 +442,20 @@ It must not improve its numbers by merging distinct concepts into a vague tag.
 Run, in order:
 
 ```bash
-python -m pytest tests/test_audit_curriculum.py tests/test_scope.py \
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
+  UV_NO_SYNC=1 uv run --offline pytest \
+  tests/test_audit_curriculum.py tests/test_scope.py \
   tests/test_model.py tests/test_prereq_coverage.py tests/test_integration.py -q
-python tools/audit_curriculum.py --check
-python tools/render_curriculum_roadmap.py --check
-python -m tools.cli scope-check
-python -m tools.cli prereq-check
-python -m tools.cli coverage-check
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
+  UV_NO_SYNC=1 uv run --offline python tools/audit_curriculum.py --check
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
+  UV_NO_SYNC=1 uv run --offline python tools/render_curriculum_roadmap.py --check
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
+  UV_NO_SYNC=1 uv run --offline usaaio-tools scope-check
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
+  UV_NO_SYNC=1 uv run --offline usaaio-tools prereq-check
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/usaaio-uv-cache \
+  UV_NO_SYNC=1 uv run --offline usaaio-tools coverage-check
 bash scripts/ci-local.sh
 git diff --check
 ```
@@ -441,6 +494,12 @@ the existing `ci-local.sh` contract.
    verification output, and all review verdicts in the post-execution report.
 5. Update `TODO.md`, open the PR, run `scripts/pre-merge-guard.sh --pr`, and squash-merge
    only with all gates green.
+   Immediately before merge, fetch `origin/main`, require the branch merge-base to equal
+   that fresh base (GitHub's up-to-date-branch requirement), rerun the guard, and record the
+   checked base SHA.
+   If the base moves before merge or GitHub reports the branch stale, rebase and repeat the
+   guard/review-sensitive checks; the local guard narrows the race but does not claim to
+   replace server-side up-to-date enforcement.
 
 ## Out of scope
 
