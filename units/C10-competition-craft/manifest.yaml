@@ -11,7 +11,7 @@ prereq_units: [C4-classical-ml-practice]
 estimated_minutes:
   lesson: 250
   lesson_sessions: [80, 85, 85]
-  practice: 440
+  practice: 535
   review: 45
 practice:
 - id: C10-p01
@@ -140,3 +140,45 @@ practice:
   concepts: [writeup-quality]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb
+- id: C10-p19
+  set: A
+  type: drill
+  difficulty: intro
+  concepts: [normal-form-answers]
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb
+- id: C10-p20
+  set: B
+  type: drill
+  difficulty: core
+  concepts: [normal-form-answers]
+  path: practice/p20.ipynb
+  solution_path: practice/p20_solution.ipynb
+- id: C10-p21
+  set: C
+  type: mc
+  difficulty: advanced
+  concepts: [normal-form-answers]
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+- id: C10-p22
+  set: B
+  type: scenario
+  difficulty: core
+  concepts: [api-constraint-compliance]
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb
+- id: C10-p23
+  set: C
+  type: scenario
+  difficulty: advanced
+  concepts: [api-constraint-compliance]
+  path: practice/p23.ipynb
+  solution_path: practice/p23_solution.ipynb
+- id: C10-p24
+  set: C
+  type: constrained-coding
+  difficulty: advanced
+  concepts: [api-constraint-compliance]
+  path: practice/p24.ipynb
+  solution_path: practice/p24_solution.ipynb

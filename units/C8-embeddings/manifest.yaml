@@ -31,7 +31,7 @@ estimated_minutes:
   - 80
   - 85
   - 85
-  practice: 470
+  practice: 500
   review: 45
 practice:
 - id: C8-p01
@@ -195,3 +195,11 @@ practice:
   - embedding-matrices
   path: practice/p20.ipynb
   solution_path: practice/p20_solution.ipynb
+- id: C8-p21
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts:
+  - nearest-neighbor-search
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb

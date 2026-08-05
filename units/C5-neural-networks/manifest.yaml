@@ -9,7 +9,7 @@ prereq_units: [C3-gradient-descent, F5-probability]
 estimated_minutes:
   lesson: 250
   lesson_sessions: [80, 85, 85]
-  practice: 500
+  practice: 550
   review: 45
 practice:
 - id: C5-p01
@@ -152,3 +152,17 @@ practice:
   concepts: [perceptron]
   path: practice/p20.ipynb
   solution_path: practice/p20_solution.ipynb
+- id: C5-p21
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [perceptron]
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+- id: C5-p22
+  set: B
+  type: proof
+  difficulty: advanced
+  concepts: [perceptron, decision-boundaries-geometric]
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb

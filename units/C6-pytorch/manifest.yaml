@@ -9,7 +9,7 @@ prereq_units: [C5-neural-networks]
 estimated_minutes:
   lesson: 250
   lesson_sessions: [80, 85, 85]
-  practice: 470
+  practice: 520
   review: 45
 practice:
 - id: C6-p01
@@ -152,3 +152,17 @@ practice:
   concepts: [nn-module]
   path: practice/p20.ipynb
   solution_path: practice/p20_solution.ipynb
+- id: C6-p21
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [torch-tensors]
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+- id: C6-p22
+  set: C
+  type: scenario
+  difficulty: advanced
+  concepts: [torch-tensors]
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb

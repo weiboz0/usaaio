@@ -9,7 +9,7 @@ prereq_units: [C6-pytorch]
 estimated_minutes:
   lesson: 255
   lesson_sessions: [85, 85, 85]
-  practice: 520
+  practice: 642
   review: 45
 practice:
 - id: C7-p01
@@ -166,3 +166,31 @@ practice:
   concepts: [feature-hierarchy]
   path: practice/p22.ipynb
   solution_path: practice/p22_solution.ipynb
+- id: C7-p23
+  set: A
+  type: mc-normal-form
+  difficulty: intro
+  concepts: [tensor-shape-tracing]
+  path: practice/p23.ipynb
+  solution_path: practice/p23_solution.ipynb
+- id: C7-p24
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [tensor-shape-tracing]
+  path: practice/p24.ipynb
+  solution_path: practice/p24_solution.ipynb
+- id: C7-p25
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [tensor-shape-tracing]
+  path: practice/p25.ipynb
+  solution_path: practice/p25_solution.ipynb
+- id: C7-p26
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [convolution, tensor-shape-tracing]  # dual-tag (plan 013 Task 4)
+  path: practice/p26.ipynb
+  solution_path: practice/p26_solution.ipynb

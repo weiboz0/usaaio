@@ -7,7 +7,7 @@ prereq_units: [C1-ml-fundamentals, F1-scientific-python, F2-vectors, F5-probabil
 estimated_minutes:
   lesson: 250
   lesson_sessions: [80, 85, 85]
-  practice: 460
+  practice: 560
   review: 45
 practice:
 - id: C4-p01
@@ -150,3 +150,24 @@ practice:
   concepts: [pandas-basics, csv-data-loading]
   path: practice/p20.ipynb
   solution_path: practice/p20_solution.ipynb
+- id: C4-p21
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [tabular-feature-engineering]
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+- id: C4-p22
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [tabular-feature-engineering]
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb
+- id: C4-p23
+  set: C
+  type: scenario
+  difficulty: advanced
+  concepts: [tabular-feature-engineering]
+  path: practice/p23.ipynb
+  solution_path: practice/p23_solution.ipynb

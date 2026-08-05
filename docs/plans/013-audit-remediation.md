@@ -172,6 +172,15 @@ Guard family widened (torch.allclose/assert_allclose/math.isclose), exit semanti
 non-empty exempt reason enforced, repo-wide-scan-vs-offender-list clarified, teaching
 anchors cited for the C6/C8 ceiling items, craft-cluster dominance rule pinned.
 
+## Task 1 Findings Ledger
+
+**FINDING-1 (C5-p16, batch 1c hard stop — adjudicated, disposition: WIDEN-WITH-REASON).**
+The retrofit set atol=1e-10 on sim_stds' 16-digit literals; measured cross-build gap ~1e-9
+(same-seed accumulation-order noise between the authoring sandbox's numpy build and local).
+Values genuine; contract corrected to atol=1e-6, rtol=0 with an in-cell rationale comment —
+still ~6000× tighter than the pre-retrofit default-rtol slack. 2-way: sol flagged + stopped
+per protocol; orchestrator measured and disposed. No statement change → no re-solve.
+
 ## Content Review
 
 (Pre-PR gate findings land here.)
