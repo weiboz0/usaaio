@@ -372,7 +372,9 @@ final ci at final status).
 
 ### Review 2 — [codex] GPT-5.6-terra (2026-08-07)
 
-- **Verdict**: Changes requested → responses below, re-verdict pending
+- **Verdict**: Changes requested → **Approved** (re-verdict: precedent rationale accepted,
+  40/40 markers verified under the universal leg, warnings-only drift detector confirmed;
+  no remaining issues)
 - Blind-solve: 19/19 match (the full P5 chain + samples across all sections).
 1. `[WONTFIX-with-reasoning + FIXED-in-part]` [codex] Must Fix (provenance — more adapted
    tags on the P5 chain and P7/P8): partially RELITIGATES the plan gate's arc-texture ruling
