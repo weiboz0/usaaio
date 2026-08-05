@@ -1,6 +1,6 @@
 unit: C7-cnn-transfer
 concepts_taught: [convolution, feature-maps, receptive-field, feature-hierarchy,
-  resnet-architecture, bottleneck-blocks, model-truncation, layer-freezing, transfer-learning]
+  resnet-architecture, bottleneck-blocks, model-truncation, layer-freezing, transfer-learning, tensor-shape-tracing]
 concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting, vectorization,
   aggregation-axis, random-seeding, matplotlib-basics, torch-tensors, nn-module, custom-layers,
   manual-weights, requires-grad, parameter-counting, python-inheritance, mlp-architecture,

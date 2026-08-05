@@ -1,6 +1,7 @@
 unit: C10-competition-craft
 concepts_taught: [notebook-discipline, hidden-test-protocol, prediction-function-contract,
-  metric-driven-iteration, writeup-quality]
+  metric-driven-iteration, writeup-quality, normal-form-answers,
+  api-constraint-compliance]
 concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting, vectorization,
   aggregation-axis, random-seeding, matplotlib-basics, pandas-basics, csv-data-loading, knn,
   feature-scaling, sklearn-pipelines, cross-validation, train-test-split, overfitting,

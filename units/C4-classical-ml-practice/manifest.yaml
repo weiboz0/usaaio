@@ -1,5 +1,5 @@
 unit: C4-classical-ml-practice
-concepts_taught: [knn, feature-scaling, pandas-basics, csv-data-loading, sklearn-pipelines, cross-validation]
+concepts_taught: [knn, feature-scaling, pandas-basics, csv-data-loading, sklearn-pipelines, cross-validation, tabular-feature-engineering]
 concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting, vectorization, aggregation-axis,
   random-seeding, matplotlib-basics, vectors-and-norms, distance-metrics, variance, train-test-split,
   overfitting, accuracy-precision-recall, f1-score, supervised-vs-unsupervised]
