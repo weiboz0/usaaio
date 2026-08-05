@@ -370,4 +370,14 @@ final ci at final status).
 
 ## Content Review
 
-(Pre-PR gate findings land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
+
+- **Verdict**: Approved
+- Duties across Tasks 4-5 + this review: 40/40 reconciliation with per-anchor verification;
+  independent recomputes incl. p02-2 (775/24 exact) and p04-2 (−164 — my first shortcut used
+  the wrong residual convention and disagreed; recomputing from the statement's own
+  definition confirmed the key, a useful reminder that the statement text is the contract);
+  fidelity + no-duplication verdicts recorded with evidence; all five solution notebooks +
+  answerkey-check + PDF build executed locally; ci-local ALL GREEN with zero stubs;
+  leakage sweeps clean; the three PDF-shakedown fixes and two overlap-tool commits verified
+  by behavior (scan PASS at 0 errors with honest adapted warnings, 70/70 tests).
