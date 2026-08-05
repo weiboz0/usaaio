@@ -13,7 +13,7 @@ two tools that turn ci's last stub lines green (answer-key reproduction; Quarto 
 0a. **Quarto**: user-space install (official tarball → `~/.local/quarto`, symlink on PATH via
     `~/.local/bin`); PDF via the BUNDLED typst engine (`format: typst` — no TeX install).
     Record the version. If the download is blocked, record and fall back to
-    `nbconvert --to html` as a TEMPORARY build with a loud plan note (decision recorded here:
+    `nbconvert --to html` as a TEMPORARY build (HTML, NOT a PDF — recorded honestly) with a loud plan note (decision recorded here:
     quarto+typst is the design-pinned route).
 0b. **Answer-key reproduction comparator** (`tools/checks/answerkey.py` + CLI subcommand
     `answerkey-check`): for every final mocktest manifest problem with an `answer_key`,
@@ -90,37 +90,82 @@ Round 2 anything. Changing blueprint.yaml (any texture change is its own plan).
 
 ## Slot specs (Task 1 detail — drafted here, recorded in the manifest)
 
-- P1 (concept-block, 25 pts, 5 MC × 5): supervised-vs-unsupervised task identification;
-  overfitting from a learning-curve description; train-test-split leakage scenario;
-  f1-macro vs accuracy on imbalance; clustering-concept vs classification. Units C1/C4.
-- P2 (concept-block, 25 pts, 3 MC **split 10/10/5** — self-review: 25 is not divisible by 3,
-  the split must be stated): feature-hierarchy depth ordering from described activation
-  statistics (C7 register, NO image, 10); requires-grad audit reading (C6, 10);
-  cosine-similarity range/meaning (C8/F2, 5). All five-option.
-- P3 (math-computation, 20 pts, 2 sub-parts): tanh-derivative chain evaluation at a point
-  (F4, normal form); weighted-sum variance with the 1/√C conclusion on FRESH numbers
-  (C5/F5 register, reasoning required).
-- P4 (math-computation, 25 pts, 2 sub-parts): 2×2 eigen by hand via the dependent-rows
-  route (F6, normal form); bottleneck parameter count at a fresh width (C7, no numel,
-  reasoning required).
-- P5 (integrative-arc, 90 pts, **12 sub-parts: 9×5 + 3×15** — self-review: the exam's
-  5-pt-atom texture (24 of 37 sub-parts at 5 pts) demands granular atoms, not seven 13-pt
-  chunks; the three 15-pt slots are the reasoning-required theory/proof beats): OUR arc on a fresh committed text corpus
-  (seeded generator): tokenize/dedup semantics → embed via cached GloVe → stack W →
-  row-normalize (no np.linalg on that sub-part) → S = WWᵀ + one theory sub-part
-  (range/symmetry, reasoning) → SVD of W (np.linalg.svd allowed) → spectral-from-SVD with
-  the thin/full distinction → rank-r error curve from the tail identity + a budget
-  question. Units C8/F6/C9/F2/F3.
-- P6 (engineering, 20 pts, 2 sub-parts): NumPy constrained coding — broadcasting
-  normalization + masked argmax retrieval with ban clauses (F1/C8 register).
-- P7 (engineering, 25 pts, 3 sub-parts): torch inference engineering — fresh DenseLayer-
-  style module to spec with registered frozen params; parameter counting no-numel;
-  truncation/freezing audit on resnet50 (cached weights; C6/C7 register).
-- P8 (engineering, 20 pts, 2 sub-parts): perceptron/region membership build (C5 register,
-  NumPy, fresh geometry) + step/ReLU piecewise function construction with bans.
-- P9 (open-ended-notebook, 50 pts): fresh seeded tabular theme (pick: urban tree health
-  from street-census features — not apiary, not medical), 600/200 split, kNN-only,
-  f1-macro, predict-function contract, summary-cell rubric. C10 register verbatim.
+**Texture ledger (verified against blueprint invariants):** sub-parts
+5+3+2+2+14+4+5+4+1 = **40** ∈ [33, 41] ✓; five-point atoms 30/40 = **0.75** ≥ 0.55 ✓
+(P2's 3 + P3's 1 + P4's 1 + P5's 12 + P6-P8's 13); programming points
+40(P5 code) + 20 + 25 + 20 + 50 = **155**/300 = 0.517 ∈ [0.45, 0.55] ✓; problem count 9 ✓;
+arc sub-parts 14 ∈ [12, 16] ✓; section sums 50/45/90/65/50 = 300 = the anchors ✓.
+
+**Cluster ledger (test-global, all within min/max):** ml-concepts 50 (P1) · calculus 5 (P2a) ·
+probability-statistics 10 (P2b-c) · linear-algebra 60 (P3 15 + P5 45) · cnn-vision 15 (P4) ·
+nlp-embeddings 15 (P5 first three) · numpy 50 (P5 30 + P6 20) · pytorch 45 (P7 25 + P8 20) ·
+applied-ml 50 (P9). Sum 300 ✓.
+
+**Difficulty ledger (point shares):** intro 70 (0.233 ∈ [.15,.30]) · core 135 (0.45 ∈
+[.35,.55]) · advanced 95 (0.317 ∈ [.25,.40]) — per-sub-part bands assigned in the manifest.
+
+- **P1** (concept-block, 50 = 5 MC × 10, the pinned 10-point-atom style, opening position):
+  supervised-vs-unsupervised task identification; overfitting from a learning-curve
+  description; train-test-split leakage scenario; f1-macro vs accuracy on imbalance;
+  clustering-concept vs classification. Units C1/C4. All five-option A-E.
+- **P2** (math-computation, 15 = 5+5+5): tanh-derivative chain evaluation at a point (F4,
+  normal form, 5, calculus); weighted-sum variance setup (F5/C5, 5, prob-stat); the 1/√C
+  conclusion on FRESH numbers (5, prob-stat, reasoning required).
+- **P3** (math-computation, 15 = 5+10): eigenvalue check of a given pair (5, normal form);
+  2×2 eigen by hand via the dependent-rows route (10, reasoning required). F6,
+  linear-algebra.
+- **P4** (math-computation, 15 = 5+10): receptive-field formula application on a fresh conv
+  stack (5, normal form); bottleneck parameter count at a fresh width, no numel (10,
+  reasoning required). C7, cnn-vision.
+- **P5** (integrative-arc, 90 = 12×5 + 2×15, 14 sub-parts, later parts consume earlier):
+  OUR arc on a fresh committed text corpus (seeded generator). Beats (5 pts each unless
+  noted): 5.1 tokenize + census (code, nlp) · 5.2 dedup semantics (theory, nlp) · 5.3
+  filter + embed via cached GloVe (code, nlp) · 5.4 stack W rows-are-tokens (code, numpy) ·
+  5.5 row-normalize, np.linalg banned HERE (code, numpy) · 5.6 cosine range (theory,
+  numpy) · **5.7 S = WWᵀ + symmetry/diagonal, 15 (theory, reasoning required, LA;
+  provenance: adapted ← r1-2026-p05-6)** · 5.8 SVD of W, np.linalg.svd allowed (code, LA) ·
+  5.9 thin-vs-full shapes (theory, LA) · 5.10 spectral-from-SVD, zero-padded λ (code, LA) ·
+  **5.11 rank-r error identity derivation, 15 (proof, reasoning required, LA; provenance:
+  adapted ← r1-2026-p05-14)** · 5.12 error-vs-r values from the tail identity (code,
+  numpy) · 5.13 budget → r* with certificate (code, numpy) · 5.14 storage arithmetic
+  (theory, LA). Units C8/F6/C9/F2/F3/F1.
+- **P6** (engineering, 20 = 4×5, NumPy): broadcasting normalization; masked argmax
+  retrieval; piecewise ReLU-combination function; seeded census — all with ban clauses +
+  zero-point penalties, exact snake_case identifiers. F1/C5/C8 registers.
+- **P7** (engineering, 25 = 5×5, torch): fresh My_CamelCase module to spec with registered
+  frozen params; forward-pass shape contract; parameter count no-numel; resnet50 truncation
+  build (cached weights); freezing audit. C6/C7 registers.
+- **P8** (engineering, 20 = 4×5, torch): threshold-gate module; two-half-plane region
+  detector wiring (fresh geometry); composed inference MLP with manual weights; parameter
+  audit. C5/C6 registers (torch side — cluster pytorch).
+- **P9** (open-ended-notebook, 50, 1 sub-part): fresh seeded tabular theme (urban tree
+  health from street-census features — not apiary, not medical), 600/200 split, kNN-only +
+  named closers, f1-macro, predict-function contract, run-clean + summary-cell rubric.
+  C10 register. applied-ml.
+
+**Provenance pre-commitment (gate finding):** the arc STRUCTURE is the blueprint's required
+rotation texture, not a provenance event; sub-parts are original EXCEPT 5.7 and 5.11, which
+mirror specific exam sub-part registers closely enough to carry `provenance: adapted` +
+`adapted-from` tags up front. Original share 38/40 = 0.95 ≥ 0.7 ✓. Any reviewer may
+escalate additional sub-parts to adapted at the gate.
+
+**Deliverable ownership (gate finding):** `test.md` front matter + manifest `time_budget`
+(20/25/55/45/35 = 180, the schema's advisory split) → Task 1 (orchestrator, from the
+scaffolder template). `rubric.md` (per-problem partial credit) + `solutions/answers.md` →
+Task 3 (solution side). PDF spot-check of test.md + problems → Task 5.
+
+**Comparator binding rule (gate finding):** solution notebooks ASSERT their answer literal
+in-cell (`ANSWER = <literal>` followed by an assert comparing ANSWER to the computed value
+at the stated tolerance) so ci's solution-execution step binds literal↔computation; the
+comparator then statically cross-checks manifest `answer_key` ↔ the tagged cell's literal
+(cell metadata tag `answer:<problem-id>`) ↔ answers.md's `- <problem-id>: answer: <X>`
+markers. Literal parse rule: plain int/float/str literals only (no np.* wrappers). A stale
+literal therefore fails ci step 3 (the in-notebook assert), not just the comparator.
+
+**Gate blind-solve sampling (recorded deviation from duty 1):** full 40-sub-part × 4-reviewer
+blind solving is disproportionate; each reviewer blind-solves ≥8 sub-parts spanning all five
+sections AND either the complete P5 chain or the complete P9 task. Recorded here as the
+explicit sampling rule.
 
 ## Plan Review
 
