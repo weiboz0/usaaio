@@ -49,7 +49,7 @@ clusters [nlp-embeddings, linear-algebra, numpy]; difficulty draw {intro .23, co
 advanced .32}; 9 problems; 180 min. Slot specs (one paragraph per gradable sub-part) drafted
 in this plan → recorded as `spec:` fields in the manifest. Section shape mirrors the 2026
 texture: P1-P2 concept-block MC (8 MC sub-parts), P3-P4 math-computation, P5 the integrative
-arc (embeddings → similarity → SVD → low-rank, 12 sub-parts per the slot spec — OUR OWN arc on fresh data,
+arc (embeddings → similarity → SVD → low-rank, 14 sub-parts per the slot spec — OUR OWN arc on fresh data,
 never the exam's), P6-P8 engineering (numpy/torch-free-mix per clusters), P9 the 50-pt
 open-ended notebook task (C10's register: hidden-test protocol, kNN-only, f1-macro,
 predict-function contract — FRESH dataset theme, not apiary, not medical).
@@ -118,7 +118,7 @@ Round 2 anything. Changing blueprint.yaml (any texture change is its own plan).
 arc sub-parts 14 ∈ [12, 16] ✓; section sums 50/45/90/65/50 = 300 = the anchors ✓.
 
 **Cluster ledger (test-global, all within min/max; every problem's clusters drawn from its
-SECTION's allowed list — gate blocker fixed):** ml-concepts 50 (P1) · calculus 5 (P2a) ·
+SECTION's allowed list — gate blocker fixed):** ml-concepts 50 (P1) · calculus-multivar 5 (P2a) ·
 probability-statistics 10 (P2b-c) · linear-algebra 75 (P3 15 + P4 15 + P5 45; ≤ 80) ·
 nlp-embeddings 15 (P5 first three) · numpy 50 (P5 30 + P6 20) · pytorch 35 (P7 15 + P8 20;
 ≥ 30) · cnn-vision 10 (P7; ≤ 20, = target) · applied-ml 50 (P9). Sum 300 ✓.
@@ -210,6 +210,12 @@ explicit sampling rule.
 3. `[VERIFIED]` Section sums 50/45/90/65/50 = 300 against the anchors; 8 total MC sub-parts
    matches the 2026 anchor; all named concepts spot-checked taught (dependent-rows eigen F6,
    bottleneck C7, GloVe C8, contract register C10).
+
+### Review 6 — [fable] re-verdict (2026-08-06): APPROVE WITH NITS → resolved
+Independent re-derivation of all ledgers confirms; WONTFIX on the arc texture ACCEPTED
+(blueprint-mandated rotation + recorded-verdict differentiation). Nit 1 raced the 5.14
+retag; nit 2 (Task 1 said 12 vs the spec's 14) and nit 3 (canonical id calculus-multivar)
+fixed.
 
 ### Review 5 — [glm] re-verdict (2026-08-06): APPROVE WITH NITS → resolved
 All ledgers verified arithmetically in-range. NIT: per-beat P5 tags summed numpy 25/LA 50
