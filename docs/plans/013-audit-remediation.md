@@ -191,6 +191,59 @@ coverage (≥3 machine-enforced, incl. the 4 new ids), hygiene, tolerance — AL
 
 ## Content Review
 
+### Review 2 — [codex] GPT-5.6-terra (2026-08-08)
+
+- **Verdict**: Changes requested → fixes in flight/applied, re-verdict pending
+- Blind-solve 5/5 agree; 15 retrofit sites + 10 register samples verified; both guards PASS.
+1. `[FIXED-in-flight]` Must Fix: tolerance.py misses aliased/`from`-imported family calls
+   (`import numpy as n`, `from numpy import isclose`) — a bare comparison could bypass ci.
+   → sol batch resolves imports/aliases.
+2. `[FIXED-in-flight]` Must Fix: C4-p22's audit is self-reported (student assigns
+   `selector_n_samples`, so fitting on the full table still "passes"). → replaced with the
+   discriminating `f_classif` score comparison (same finding as [opus] blocker 3).
+3. `[FIXED]` Must Fix: C7-p24 printed the observed trace in the student notebook, so the
+   scored hand trace could be copied. → verification cell is now PRECOMMIT-GATED (raises
+   until the trace is committed) and reports agreement only, never the observed shapes;
+   solution mirrors the contract and re-executes PASS.
+
+### Review 3 — [opus] Independent Opus (2026-08-08)
+
+- **Verdict**: Changes requested → blockers fixed, remainder in flight
+- 15/18 blind-solved, 15/15 agree; 18/18 new solutions + 11 lessons + 98 cross-check
+  solutions executed; retrofit proven MONOTONE-TIGHTENING across 629 sites with exactly one
+  loosened site (the recorded C5-p16 disposition); MC cross-read zero drift.
+1. `[FIXED]` BLOCKER: 12 tranche-1 statements printed the priced ban clause twice (six also
+   kept a third legacy unpriced form) — the 65/65 verifier is existence-only and blind to
+   duplication. → de-duplicated; verifier re-run 65/65.
+2. `[FIXED]` BLOCKER: F2-p09/p15 read "Reasoning is not required. Work the problem by
+   hand…" — the mechanical inversion left a dangling imperative (exactly the no-regex-prose
+   hazard the plan warned of). → rewritten ("No derivation is scored — work it out by
+   hand…").
+3. `[FIXED-in-flight]` BLOCKER: C4-p22's vacuous audit (same as codex #2).
+4-7. `[FIXED-in-flight]` MAJORs: C7-p07's unpriced ban + verify-register's type-scoped ban
+   rule (it fires only on "constrained", leaving challenge/scenario/mc bans unguarded);
+   tolerance guard doesn't scan lessons (12 live violations measured); C4-p23's exact-string
+   grading. `[FIXED]` F1's missing `review:` manifest key.
+8-19. `[FIXED-in-flight / NOTED]` suggestions: alias-import evasion, multi-line exempt
+   binding, test gaps, C3-p13 rationale, `atol=0,rtol=0`→`array_equal` in the four new
+   problems, C9's §7½ locator, C5-p21 numpy-int acceptance, C6-p21 dtype spelling,
+   verify-register ci wiring + hardcoded 65.
+
+### Review 4 — [glm] GLM 5.2, retrofits+tooling (2026-08-08)
+
+- **Verdict**: Approved. Guard semantics verified empirically (all six call forms, both-or-
+  exempt, parse→1, zero→3); tolerance/coverage/register runs PASS; 12 sites + 8 statements
+  + all four flag inversions checked against solutions. Nits noted (redundant glob, raw
+  json.loads, hardcoded 65) — the last two are folded into the sol batch.
+
+### Review 5 — [glm] GLM 5.2, new content (2026-08-08)
+
+- **Verdict**: Approved with suggestions. 4/4 blind-solves agree; all four new ids TAUGHT
+  with worked example + checkpoint and ≥3 exercising problems; manifests accurate; no answer
+  leaks. `[WONTFIX-with-reason]` set-assignment nit (C7-p23 in set A, C10-p21 in set C,
+  C10-p20 core drill in set B): all three are plan-pinned and unit-standards defines sets by
+  progression, not by type — annotation, not defect.
+
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-08)
 
 - **Verdict**: Approved
