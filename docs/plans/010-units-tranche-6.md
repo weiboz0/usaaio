@@ -46,15 +46,17 @@ frobenius-norm)
   (F3 outer-products); `np.linalg.eigh` for the symmetric case; energy interpretation),
   `03-svd` (any W = U Σ Vᵀ; singular values; the S = WWᵀ bridge (λ = σ², Q = U) DERIVED in
   component form; `np.linalg.svd`; shapes for tall/wide matrices; full_matrices=False),
-  `04-frobenius-and-low-rank` (‖·‖_F from entries; ‖W‖_F² = Σσᵢ² derived via ‖W‖_F² =
-  trace(WᵀW) route written component-wise; truncated W_r = U[:, :r] Σ_r V[:, :r]ᵀ; the
+  `04-frobenius-and-low-rank` (‖·‖_F from entries; ‖W‖_F² = Σσᵢ² derived COMPONENT-WISE from
+  the SVD expansion W = Σₖ σₖ uₖvₖᵀ — squared entries summed, cross terms killed by the
+  orthonormality of the uₖ/vₖ (dot products of unit vectors, F2's register; NO trace — trace
+  is untaught in this curriculum, self-review catch); truncated W_r = U[:, :r] Σ_r V[:, :r]ᵀ; the
   error identity; storage arithmetic rN vs N²; Eckart–Young stated),
   `05-synthesis-capstone` (the full chain on a seeded (200, 40) matrix: W → S → SVD →
   spectral-from-SVD → rank-r sweep → error-vs-r curve; worked ‖S‖_F-in-terms-of-σ derivation
   (= sqrt(Σσᵢ⁴), the exam's P5-13 register taught GENERICALLY with the derivation route);
   worked normal-form MC).
 - **24 problems** (top of band — double unit): floors ≥4 MC (≥1 normal-form), ≥6 constrained,
-  ≥2 proof (‖W‖_F² = Σσᵢ² via trace route; the rank-r error identity), ≥2 integrative,
+  ≥2 proof (‖W‖_F² = Σσᵢ² via the component/orthonormality route; the rank-r error identity), ≥2 integrative,
   ≥2 scenario, ≥2 challenge (= 18) + 2 drills + 2 constrained + 2 MC. 6 concepts × 3 = 18 ≤ 24:
   NO dual-tags required (flag any used).
 - estimated_minutes: lesson ~425 (5 × 85), practice ~560, review 45.
@@ -147,7 +149,18 @@ DERIVED pieces are the norm identities and the λ = σ² bridge).
 
 ## Plan Review
 
-(4-way gate verdicts land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-05)
+
+- **Verdict**: APPROVE WITH NITS (amendment applied pre-gate)
+1. `[FIXED-pre-gate]` The ‖W‖²_F = Σσ² derivation was routed "via trace(WᵀW)" — but trace is
+   taught NOWHERE in the curriculum (grep-verified). Rerouted component-wise through the SVD
+   expansion + orthonormality (F2/F3 register). Exactly the silently-assumed-concept class the
+   gates exist to catch.
+2. `[NOTED]` F6's 5-session/24-problem shape is the double-length answer; C9/C10 at 18 with
+   floors exactly met; no dual-tags needed anywhere in the tranche (arithmetic verified:
+   18≤24, 12≤18, 15≤18).
+3. `[NOTED]` C10's "hidden" test is deterministic-regeneration — hidden from the student
+   REGISTER, executable by ci; the honesty framing lives in the statement device.
 
 ## Content Review
 
