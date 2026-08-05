@@ -190,17 +190,15 @@ specs in the plan BEFORE prose — Task 1 transcribes, zero free choices):**
   Frobenius norm of a small matrix (5, normal form, F6); sum-of-squares gradient derivation
   at a point — ∂/∂wⱼ of a squared-residual sum, evaluated (10, reasoning required, F4).
 - **P5** (integrative-arc, 90 = 12×5 + 2×15, 14 sub-parts, later parts consume earlier):
-  OUR arc on a fresh committed text corpus (seeded generator). Beats (5 pts each unless
-  noted): 5.1 tokenize + census (code, nlp) · 5.2 dedup semantics (theory, nlp) · 5.3
-  filter + embed via cached GloVe (code, nlp) · 5.4 stack W rows-are-tokens (code, numpy) ·
-  5.5 row-normalize, np.linalg banned HERE (code, numpy) · 5.6 cosine range (theory,
-  numpy) · **5.7 S = WWᵀ + symmetry/diagonal, 15 (theory, reasoning required, LA;
-  provenance: adapted ← r1-2026-p05-6)** · 5.8 SVD of W, np.linalg.svd allowed (code, LA) ·
-  5.9 thin-vs-full shapes (theory, LA) · 5.10 spectral-from-SVD, zero-padded λ (code, LA) ·
-  **5.11 rank-r error identity derivation, 15 (proof, reasoning required, LA; provenance:
-  adapted ← r1-2026-p05-14)** · 5.12 error-vs-r values from the tail identity (code,
-  numpy) · 5.13 budget → r* with certificate (code, numpy) · 5.14 storage arithmetic
-  (theory, LA). Units C8/F6/C9/F2/F3/F1.
+  OUR arc on a fresh committed text corpus (seeded generator). Beats (**clusters/points/difficulty per THE SPEC TABLE above — authoritative; this prose
+  names content only**): 5.1 tokenize + census · 5.2 dedup semantics · 5.3 filter + embed
+  via cached GloVe · 5.4 stack W rows-are-tokens · 5.5 row-normalize (np.linalg banned
+  HERE) · 5.6 cosine range · 5.7 S = WWᵀ + symmetry/diagonal (15, reasoning; adapted ←
+  r1-2026-p05-6) · 5.8 SVD of W (np.linalg.svd allowed) · 5.9 thin-vs-full shapes ·
+  5.10 spectral-from-SVD, zero-padded λ · 5.11 rank-r error identity derivation (15,
+  proof; adapted ← r1-2026-p05-14) · 5.12 error-vs-r from the tail identity · 5.13
+  budget → r* with certificate · 5.14 storage arithmetic.
+  Units C8/F6/C9/F2/F3/F1.
 - **P6** (engineering, 20 = 4×5, NumPy): broadcasting normalization; masked argmax
   retrieval; piecewise ReLU-combination function; seeded census — all with ban clauses +
   zero-point penalties, exact snake_case identifiers. F1/C5/C8 registers.
