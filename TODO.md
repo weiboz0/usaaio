@@ -9,7 +9,7 @@
 - [x] 006 — units tranche 2: F4+F3+F5 (docs/plans/006-units-tranche-2.md)
 - [x] 007 — units tranche 3: C4+C2+C3 (docs/plans/007-units-tranche-3.md)
 - [x] 008 — units tranche 4: C5+C6 (merged)
-- [ ] 009 — units tranche 5: C7+C8
+- [x] 009 — units tranche 5: C7+C8 (merged)
 - [ ] 010 — units tranche 6: F6+C9+C10
 - [ ] 011 — first full mock test r1-001 through the pipeline (owns answer-key reproduction + PDF build)
 - [ ] 012 — course-structure doc (units -> semesters/weeks pacing)
