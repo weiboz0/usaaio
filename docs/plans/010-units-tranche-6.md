@@ -306,7 +306,7 @@ Task 9. Trace nit raced the self-review fix (already component-routed).
 
 ### Review 2 — [codex] GPT-5.6-terra (2026-08-06)
 
-- **Verdict**: Changes requested → fix applied, re-verdict pending
+- **Verdict**: Changes requested → **Approved** (re-verdict: p18 fix verified, no remaining findings)
 - Blind-solve: 9/9 agree across all three units (incl. F6 p13's full-form invariant route,
   C9's budget dict, C10's postmortem).
 1. `[FIXED]` [codex] Must Fix: C10 p18's key scored W-A2 = 0 (total 2) against the
@@ -321,6 +321,16 @@ Task 9. Trace nit raced the self-review fix (already component-routed).
 - **Verdict**: Approved (3/3 blind-solves incl. the rank-r proof anchor to 1.8e-14; narration
   audit clean across all 5 lessons + review; foundation-register, bridge, invariant-scope,
   legality-line, and manifest checks all clean).
+### Review 4 — [glm] GLM 5.2, per-unit C10 (2026-08-06)
+
+- **Verdict**: Approved with suggestions (3/3 blind-solves; all spot-checks pass with
+  independent anchor re-execution).
+1. `[FIXED]` [glm] N: confusion_matrix onboarding — lesson 02 now carries the C4
+   trust-but-test sentence (orientation verified on a hand-checkable example).
+2. `[FIXED]` [glm] N: C1-vs-C4 phrasing drift — preamble now says "taught in C1 and
+   practiced in C4". Lesson re-executed PASS, staged copy refreshed.
+
+### (glm F6 finding, continued)
 1. `[WONTFIX]` [glm] N: generic "dataset" wording in L04/L05 — ordinary English for a table
    of measurements; no ML register invoked, no prereq-closure issue (reviewer marked it
    optional).
