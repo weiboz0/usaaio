@@ -1,7 +1,8 @@
 # Plan 011 — Mock Test r1-001 + the two ci capstones
 
 > **For agentic workers:** the proven content cycle adapts to test assembly (per-task
-> commits; Fable drafts statements, outlines gitignored; gpt-5.6-sol blind-solves;
+> commits; gpt-5.6-sol drafts statements (user directive 2026-08-06), outlines gitignored;
+> a SEPARATE gpt-5.6-sol session blind-solves;
 > reconciliation before the gate; measured claims beat plausible ones; isclose = stated
 > atol + rtol=0; per-unit/per-section gate dispatch for opencode; no regex prose edits).
 
@@ -54,10 +55,14 @@ open-ended notebook task (C10's register: hidden-test protocol, kNN-only, f1-mac
 predict-function contract — FRESH dataset theme, not apiary, not medical).
 Manifest committed with `status: draft` → blueprint-check runs loud-draft until the gate.
 
-## Task 2 — Statements (Fable drafters, parallel by section-group)
+## Task 2 — Statements (gpt-5.6-sol drafters — USER DIRECTIVE 2026-08-06 recorded in
+CLAUDE.md dispatch: sol now drafts statements AND lesson content; statements/solutions run
+in SEPARATE fresh codex sessions to preserve session-level blind independence — parallel
+by section-group)
 
-Three drafters: (A) P1-P4 theory/math statements, (B) P5 arc + P6-P8 engineering notebooks,
-(C) P9 notebook task + data generators (seeded, committed scripts, small artifacts only).
+Three sol drafters: (A) P1-P4 theory/math statements, (B) P5 arc + P6-P8 engineering
+notebooks, (C) P9 notebook task + data generators (seeded, committed scripts, small
+artifacts only).
 Student register: complete runnable starter code; five-option MC; normal-form numerics;
 reasoning-required flags; banned-API zero-point clauses; exact identifiers — style_rules
 from blueprint.yaml are BINDING. Tested-only-if-taught: every concept id must be taught by
