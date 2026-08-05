@@ -290,4 +290,16 @@ Task 9. Trace nit raced the self-review fix (already component-routed).
 
 ## Content Review
 
-(Pre-PR gate findings land here.)
+### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-06)
+
+- **Verdict**: Approved
+- Duties: all 14 lesson/review notebooks executed and staged (.gate10-executed/) — one
+  staging-harness cwd artifact identified and corrected (C10 lessons read data/ relatively;
+  nbclient needed resources.metadata.path — ci's jupyter execute was never affected);
+  narration audit via exhaustive narrated-float-vs-output diffing on C10 (3 apparent misses
+  all benign: two hand-computed worked fractions, one hypothetical checkpoint datum) plus
+  anchor checks across F6/C9 (capstone r=5, C9 budget r*=17/0.1400, preservation
+  0.9322/0.5877) — zero contradictions. Independent recomputes during reconciliation
+  covered 9 problems incl. 4 proofs across the three units — all agree. Verification
+  battery: five checks PASS, F6/C9/C10 register sweeps clean, 60/60 asserts, harness
+  byte-identical on both enumerated artifacts.
