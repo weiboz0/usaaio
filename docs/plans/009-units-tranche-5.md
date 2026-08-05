@@ -263,6 +263,24 @@ property (no remote runner exists; the gate is ci-local.sh). Re-verdict requeste
   gensim-vocabulary sweep CLEAN, 42/42 asserts, float32-register presence confirmed in all
   10 weights-loading C7 solutions.
 
+### Review 4 — [glm] GLM 5.2 (2026-08-05, split per-unit after two timeout failures)
+
+- **Verdict**: C7 **Approved** (3/3 blind-solves incl. p14 proof + own torch recomputation of
+  the freeze chains; full narration audit; zero blocking findings); C8 **Approved with
+  suggestions** (3/3 blind-solves incl. p11 anchor recomputed to 1e-17 agreement; torch sweep
+  0 hits; accessibility PASS).
+- Process note: the single full-scope invocation hit opencode's internal 20-min timeout twice;
+  re-dispatched as two time-boxed per-unit reviews auditing the staged .gate9-executed/ copies
+  instead of executing — recorded for future tranches.
+1. `[FIXED]` [glm] N (C7): p04 distractor-A rationale thin → traced concretely (1/3 → 4).
+2. `[WONTFIX]` [glm] N (C7): p18 asserts keep default rtol — GLM's own analysis: p18's anchors
+   come from a student-implemented statistics pipeline where small rtol correctly admits
+   equivalent-but-not-bit-identical implementations, unlike C8's fixed-artifact anchors.
+3. `[FIXED]` [glm] Should Fix (C8): p20 solution had 2 bare np.allclose calls → explicit
+   atol=1e-12, rtol=0; re-executed PASS.
+4. `[FIXED]` [glm] N (C8): p11(d) non-associativity gloss added ("the tolerance IS the
+   contract").
+
 ### Review 3 — [opus] Independent Opus (2026-08-05)
 
 - **Verdict**: Changes requested → **Approved** (re-verdict 1 verified all 13 fixes but caught
