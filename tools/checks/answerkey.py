@@ -1,5 +1,14 @@
 """Statically cross-check mock-test answer keys against solution artifacts.
 
+Every direct manifest key must exactly match its ``answers.md`` marker after
+whitespace normalization.  The tagged-cell leg applies only to direct numeric keys
+whose problem ``files`` name a student notebook with a solution-notebook counterpart;
+theory-only problems under ``theory/`` therefore use the universal marker leg alone.
+Pointer keys retain their explicit tagged-cell comparison.  Together with solution
+execution, this realizes the plan's three-way rule without requiring nonexistent
+theory cells.  Prose-string notebook answers remain bound to computation by their
+executed in-cell assertions.
+
 Tagged solution cells are never executed here.  The parser walks Python's AST and
 uses the last simple ``ANSWER = <literal>`` assignment in the tagged cell.  Accepted
 literals are plain ``int``, ``float``, and ``str`` values (including signed numeric
@@ -114,25 +123,41 @@ def _numeric_equal(left: Numeric, right: Numeric, tolerance: float) -> bool:
     return math.isclose(float(left), float(right), rel_tol=0.0, abs_tol=tolerance)
 
 
+def _normalized_text(value: object) -> str:
+    return " ".join(str(value).split())
+
+
+def _solution_notebook_counterparts(
+    problem: ManifestProblem, solutions: Path
+) -> list[Path]:
+    counterparts: list[Path] = []
+    for rel in problem.files:
+        student_path = Path(rel)
+        if student_path.suffix != ".ipynb":
+            continue
+        candidates = (
+            solutions / f"{student_path.stem}_solution.ipynb",
+            solutions / student_path.name,
+        )
+        counterpart = next((path for path in candidates if path.exists()), None)
+        if counterpart is not None and counterpart not in counterparts:
+            counterparts.append(counterpart)
+    return counterparts
+
+
 def _check_direct_key(
     problem: ManifestProblem,
     marker: str,
     notebooks: list[Path],
 ) -> list[str]:
     expected = problem.answer_key
-    if not _is_numeric(expected):
-        if marker != str(expected):
-            return [f"{problem.id}: answers.md has {marker!r}, expected {expected!r}"]
-        return []
-
     errors: list[str] = []
+    if _normalized_text(marker) != _normalized_text(expected):
+        errors.append(f"{problem.id}: answers.md has {marker!r}, expected {expected!r}")
+    if not _is_numeric(expected) or not notebooks:
+        return errors
+
     tolerance = _tolerance(problem)
-    marker_value = _marker_literal(marker)
-    if not _is_numeric(marker_value) or not _numeric_equal(expected, marker_value, tolerance):
-        errors.append(
-            f"{problem.id}: answers.md has {marker!r}, expected {expected!r} "
-            f"within atol={tolerance}"
-        )
     cell_value, cell_errors = _tagged_literal(notebooks, f"answer:{problem.id}")
     errors.extend(f"{problem.id}: {error}" for error in cell_errors)
     if cell_value is not None and (
@@ -165,7 +190,6 @@ def _check_manifest(manifest: MockManifest) -> list[str]:
     solutions = manifest.path.parent / "solutions"
     answers = solutions / "answers.md"
     markers, errors = _markers(answers)
-    notebooks = sorted(solutions.glob("*.ipynb"))
     for problem in manifest.problems:
         if problem.answer_key is None:
             continue
@@ -177,6 +201,7 @@ def _check_manifest(manifest: MockManifest) -> list[str]:
         if pointer is not None:
             errors.extend(_check_pointer(problem, marker, solutions, pointer))
         else:
+            notebooks = _solution_notebook_counterparts(problem, solutions)
             errors.extend(_check_direct_key(problem, marker, notebooks))
     return errors
 

@@ -1,8 +1,9 @@
 """Detect reference overlap at the granularity appropriate to each artifact.
 
 Following the plan-004 unit-path precedent, short structured mock manifest specs
-provide the TF-IDF cosine signal. Full mock statement files, like unit practice
-files, are checked only for verbatim-copy risk with lexical shingles.
+provide the failing TF-IDF cosine signal. Full mock statement files retain their
+verbatim-copy shingle check and also receive a higher-threshold, warning-only cosine
+drift signal reported once per statement-file/corpus-part pair.
 """
 
 from __future__ import annotations
@@ -22,6 +23,7 @@ from tools.model import Report, _parse_yaml, load_mock_manifests
 SHINGLE_SIZE = 8
 SHINGLE_THRESHOLD = 2
 COSINE_THRESHOLD = 0.35
+FILE_COSINE_WARNING_THRESHOLD = 0.5
 REMEDY = "reference corpus absent; run bash scripts/fetch-reference.sh"
 
 # Register mandated by mocktests/blueprint.yaml style_rules must not dominate
@@ -179,6 +181,12 @@ def _notebook_text(path: Path) -> str:
     )
 
 
+def _statement_file_text(path: Path) -> str:
+    if path.suffix == ".ipynb":
+        return _notebook_text(path)
+    return path.read_text(errors="ignore")
+
+
 def check_overlap(root: str | Path) -> Report:
     root = Path(root)
     corpus, skipped, corpus_failures = _corpus(root)
@@ -196,12 +204,18 @@ def check_overlap(root: str | Path) -> Report:
     doc_count = len(corpus_texts) + 1
     errors: list[str] = []
     warnings: list[str] = list(corpus_failures)
+    statement_paths: set[Path] = set()
     for manifest in load_mock_manifests(root):
         for problem in manifest.problems:
             spec_text, statement_text, text_warnings = _problem_texts(
                 root, manifest.path, problem
             )
             warnings.extend(text_warnings)
+            statement_paths.update(
+                manifest.path.parent / rel
+                for rel in problem.files
+                if (manifest.path.parent / rel).exists()
+            )
             problem_shingles = _shingles(_without_boilerplate(statement_text))
             cosine_text = _without_mock_register_boilerplate(
                 _without_boilerplate(spec_text)
@@ -216,6 +230,17 @@ def check_overlap(root: str | Path) -> Report:
                     else:
                         errors.append(hit)
                     break
+    for path in sorted(statement_paths):
+        cosine_text = _without_mock_register_boilerplate(
+            _without_boilerplate(_statement_file_text(path))
+        )
+        for label, _, _, reference_cosine_text in corpus_shingles:
+            cosine = _cosine(cosine_text, reference_cosine_text, doc_count, base_dfs)
+            if cosine >= FILE_COSINE_WARNING_THRESHOLD:
+                warnings.append(
+                    f"{path} has file-level cosine drift with {label} "
+                    f"(cosine={cosine:.2f})"
+                )
     for path in sorted(root.glob("units/*/practice/*.ipynb")):
         text = _without_boilerplate(_notebook_text(path))
         notebook_shingles = _shingles(text)

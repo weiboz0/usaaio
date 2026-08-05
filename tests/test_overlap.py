@@ -13,6 +13,7 @@ def write_manifest(
     provenance: str = "original",
     adapted_from: str = "",
     files: list[str] | None = None,
+    problem_ids: list[str] | None = None,
 ) -> None:
     test_dir = root / "mocktests" / "r1-001"
     test_dir.mkdir(parents=True)
@@ -20,15 +21,9 @@ def write_manifest(
     files_block = ""
     if files:
         files_block = "    files:\n" + "".join(f"      - {path}\n" for path in files)
-    test_dir.joinpath("manifest.yaml").write_text(
+    problem_blocks = "".join(
         f"""
-test: r1-001
-blueprint_version: 1
-duration_minutes: 180
-total_points: 300
-time_budget: {{}}
-problems:
-  - id: p01
+  - id: {problem_id}
     section: concept-block
     units: []
     concepts: []
@@ -40,7 +35,18 @@ problems:
     provenance: {provenance}
 {adapted_line}    spec: {json.dumps(spec)}
     answer_key: A
-{files_block}
+{files_block}"""
+        for problem_id in (problem_ids or ["p01"])
+    )
+    test_dir.joinpath("manifest.yaml").write_text(
+        f"""
+test: r1-001
+blueprint_version: 1
+duration_minutes: 180
+total_points: 300
+time_budget: {{}}
+problems:
+{problem_blocks}
 """
     )
 
@@ -150,20 +156,47 @@ What is p+q?
     assert not report.errors
 
 
-def test_mock_statement_file_topic_similarity_is_not_cosine_scanned(tmp_path):
-    reference = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu"
-    same_terms_different_order = (
-        "mu lambda kappa iota theta eta zeta epsilon delta gamma beta alpha"
-    )
+def test_mock_statement_file_cosine_near_point_four_is_silent(tmp_path):
+    reference = "alpha beta gamma delta epsilon zeta eta"
+    topical_but_distinct = "delta gamma beta alpha harbor island jasmine"
     write_reference(tmp_path, reference)
     write_manifest(tmp_path, "fresh prompt about harbor census", files=["statement.md"])
     statement = tmp_path / "mocktests" / "r1-001" / "statement.md"
-    statement.write_text(same_terms_different_order)
+    statement.write_text(topical_but_distinct)
 
     report = check_overlap(tmp_path)
 
     assert report.ok
     assert not report.errors
+    assert not any("file-level cosine" in warning for warning in report.warnings)
+
+
+def test_mock_statement_file_cosine_above_point_five_warns_once_and_passes(
+    tmp_path, capsys
+):
+    reference = "alpha beta gamma delta epsilon zeta eta"
+    same_terms_different_order = "eta zeta epsilon delta gamma beta alpha"
+    write_reference(tmp_path, reference)
+    write_manifest(
+        tmp_path,
+        "fresh prompt about harbor census",
+        files=["statement.md"],
+        problem_ids=["p01-1", "p01-2"],
+    )
+    statement = tmp_path / "mocktests" / "r1-001" / "statement.md"
+    statement.write_text(same_terms_different_order)
+
+    report = check_overlap(tmp_path)
+    cosine_warnings = [
+        warning for warning in report.warnings if "file-level cosine" in warning
+    ]
+
+    assert report.ok
+    assert not report.errors
+    assert len(cosine_warnings) == 1
+    assert str(statement) in cosine_warnings[0]
+    assert print_report(report) == 0
+    assert "WARNING overlap-scan" in capsys.readouterr().out
 
 
 def test_mock_statement_file_verbatim_shingles_still_error(tmp_path):
