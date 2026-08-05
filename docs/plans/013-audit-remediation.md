@@ -212,7 +212,18 @@ coverage (≥3 machine-enforced, incl. the 4 new ids), hygiene, tolerance — AL
 
 ### Review 3 — [opus] Independent Opus (2026-08-08)
 
-- **Verdict**: Changes requested → blockers fixed, remainder in flight
+- **Verdict**: Changes requested → **Approved with suggestions** (re-verdict verified all
+  3 blockers + majors 4-7 at `4e97124`; it RAN C4-p22 both ways — train-fit True,
+  full-table False, with `selected_idx` identical for both, proving the score comparison
+  does the real work — and recomputed C7-p24's trace independently; ci ALL GREEN 342/342.)
+- Re-verdict's three non-blocking notes: `[FIXED]` C7-p24's `zip()` truncated a short
+  committed trace to `trace_ok: True` → explicit length gate raises first (a real grading
+  hole in this plan's own new problem); `[FIXED]` C4-p22 now bans hardcoding
+  `selection_is_train_only` (matching C5-p21's analogue); `[DEFERRED to plan 014, recorded]`
+  ci step 3 executes only solution notebooks, so the 12 newly-tightened LESSON tolerance
+  contracts are unguarded by ci — all 8 touched lessons were executed by hand this round
+  and by the reviewer, both clean; widening ci's execution scope to lessons is a tooling
+  change deserving its own gate rather than a scope expansion in this plan's tail.
 - 15/18 blind-solved, 15/15 agree; 18/18 new solutions + 11 lessons + 98 cross-check
   solutions executed; retrofit proven MONOTONE-TIGHTENING across 629 sites with exactly one
   loosened site (the recorded C5-p16 disposition); MC cross-read zero drift.
