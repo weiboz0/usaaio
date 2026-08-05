@@ -217,6 +217,10 @@ component-routed). MINOR 4: eigh-ascending → pinned [::-1] reorder idiom. NIT 
 wording corrected (bottom of the 24-30 double band, deliberate). NIT 6: claim-by-claim rubric
 restored to the header contract.
 
+**GATE RESULT: PASS — 4/4** (claude-self AWN pre-empted trace; fable AWN→resolved incl. two
+majors; glm AWN→resolved; codex REJECT×3→APPROVE — thin/full bridge + degenerate-eigenspace
+invariants, the tranche's hardest catches). Implementation may begin.
+
 ### Review 4c — [codex] re-verdict 2 (2026-08-05): REJECT → fixed
 Remaining blocker: sign-fixing cannot reconcile the 160-fold-degenerate null-space bases
 (arbitrary orthogonal rotations). → Capstone verification re-pinned to INVARIANTS
