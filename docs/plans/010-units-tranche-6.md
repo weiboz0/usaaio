@@ -332,7 +332,8 @@ Task 9. Trace nit raced the self-review fix (already component-routed).
    p15, outline, and original solver) and the STATEMENT's hedge rewritten to say exactly
    what "own terms" means (no double-penalizing; the protocol clause is what fails).
    Cross-reviewer conflict with codex's earlier ruling resolved on cross-artifact
-   consistency; codex asked to confirm.
+   consistency; codex cross-check returned: **CONSISTENT** — both reviewers now agree on
+   the final state (protocol-and-value criterion; mislabel isolated to audit (b)).
 3. `[FIXED-prior]` [opus] Must Fix: C9 p12 trace route — already fixed in the glm-C9 round
    (raced; verified trace-free at HEAD).
 4. `[FIXED]` [opus] Should Fix: C10 L03's "expect a little below 0.82" replaced with the
