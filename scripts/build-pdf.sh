@@ -25,7 +25,7 @@ for mocktest_dir in "${mocktest_dirs[@]}"; do
   )
 
   theory_docs=("${mocktest_dir}"theory/*.md)
-  if [[ -e "${theory_docs[0]}" ]]; then
+  if ((${#theory_docs[@]})); then
     for doc in "${theory_docs[@]}"; do
       echo "rendering: ${doc}"
       (cd "${mocktest_dir}" && "$quarto_bin" render "theory/$(basename "$doc")" --to typst --output-dir ../build --no-execute)

@@ -1,9 +1,10 @@
 """Detect reference overlap at the granularity appropriate to each artifact.
 
 Following the plan-004 unit-path precedent, short structured mock manifest specs
-provide the failing TF-IDF cosine signal. Full mock statement files retain their
-verbatim-copy shingle check and also receive a higher-threshold, warning-only cosine
-drift signal reported once per statement-file/corpus-part pair.
+provide the failing TF-IDF cosine signal against both reference text and a distinct
+reference-summary stream. Full mock statement files retain their verbatim-copy
+shingle check and also receive a higher-threshold, warning-only cosine drift signal
+reported once per statement-file/corpus-part pair.
 """
 
 from __future__ import annotations
@@ -116,16 +117,33 @@ def _collect_text_fields(node: Any) -> list[str]:
     return []
 
 
-def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None, list[str]]:
+def _collect_summary_fields(node: Any) -> list[str]:
+    if isinstance(node, dict):
+        summaries = [str(node["summary"])] if node.get("summary") else []
+        for value in node.values():
+            summaries.extend(_collect_summary_fields(value))
+        return summaries
+    if isinstance(node, list):
+        summaries: list[str] = []
+        for value in node:
+            summaries.extend(_collect_summary_fields(value))
+        return summaries
+    return []
+
+
+def _corpus(
+    root: Path,
+) -> tuple[list[tuple[str, str]], list[tuple[str, str]], str | None, list[str]]:
     reference = root / "reference"
     # PDFs alone are a valid corpus (spec Task 5); index.yaml text fields are additive.
     if not reference.exists() or not (
         any(reference.glob("*/index.yaml")) or any(reference.glob("*/*.pdf"))
     ):
-        return [], REMEDY, []
+        return [], [], REMEDY, []
     if shutil.which("pdftotext") is None:
-        return [], f"pdftotext unavailable; {REMEDY}", []
+        return [], [], f"pdftotext unavailable; {REMEDY}", []
     parts: list[tuple[str, str]] = []
+    summaries: list[tuple[str, str]] = []
     failures: list[str] = []
     for ref_dir in sorted(reference.glob("*")):
         if not ref_dir.is_dir():
@@ -133,10 +151,13 @@ def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None, list[str]]:
         index = ref_dir / "index.yaml"
         if index.exists():
             try:
-                for offset, text in enumerate(_collect_text_fields(_parse_yaml(index.read_text()))):
+                parsed_index = _parse_yaml(index.read_text())
+                for offset, text in enumerate(_collect_text_fields(parsed_index)):
                     parts.append((f"{index}#text-{offset}", text))
+                for offset, summary in enumerate(_collect_summary_fields(parsed_index)):
+                    summaries.append((f"{index}#summary-{offset}", summary))
             except (OSError, ValueError) as exc:
-                return [], f"{index}: cannot read corpus index ({exc}); {REMEDY}", []
+                return [], [], f"{index}: cannot read corpus index ({exc}); {REMEDY}", []
         for pdf in sorted(ref_dir.glob("*.pdf")):
             proc = subprocess.run(
                 ["pdftotext", str(pdf), "-"],
@@ -154,8 +175,8 @@ def _corpus(root: Path) -> tuple[list[tuple[str, str]], str | None, list[str]]:
                     f"corpus part NOT scanned (pdftotext failed, rc={proc.returncode}): {pdf}"
                 )
     if not parts:
-        return [], REMEDY, failures
-    return parts, None, failures
+        return [], [], REMEDY, failures
+    return parts, summaries, None, failures
 
 
 def _problem_texts(root: Path, manifest_path: Path, problem) -> tuple[str, str, list[str]]:
@@ -189,7 +210,7 @@ def _statement_file_text(path: Path) -> str:
 
 def check_overlap(root: str | Path) -> Report:
     root = Path(root)
-    corpus, skipped, corpus_failures = _corpus(root)
+    corpus, summary_corpus, skipped, corpus_failures = _corpus(root)
     if skipped:
         return Report(name="overlap-scan", ok=True, skipped=skipped)
     corpus_texts = [text for _, text in corpus]
@@ -202,6 +223,12 @@ def check_overlap(root: str | Path) -> Report:
     ]
     base_dfs = _corpus_dfs(corpus_cosine_texts)
     doc_count = len(corpus_texts) + 1
+    summary_cosine_texts = [
+        (label, _without_mock_register_boilerplate(text))
+        for label, text in summary_corpus
+    ]
+    summary_base_dfs = _corpus_dfs([text for _, text in summary_cosine_texts])
+    summary_doc_count = len(summary_cosine_texts) + 1
     errors: list[str] = []
     warnings: list[str] = list(corpus_failures)
     statement_paths: set[Path] = set()
@@ -229,7 +256,22 @@ def check_overlap(root: str | Path) -> Report:
                         warnings.append(hit)
                     else:
                         errors.append(hit)
-                    break
+            for label, reference_cosine_text in summary_cosine_texts:
+                cosine = _cosine(
+                    cosine_text,
+                    reference_cosine_text,
+                    summary_doc_count,
+                    summary_base_dfs,
+                )
+                if cosine >= COSINE_THRESHOLD:
+                    hit = (
+                        f"{manifest.path}: {problem.id} overlaps {label} "
+                        f"(summary-cosine={cosine:.2f})"
+                    )
+                    if problem.provenance == "adapted" and problem.adapted_from:
+                        warnings.append(hit)
+                    else:
+                        errors.append(hit)
     for path in sorted(statement_paths):
         cosine_text = _without_mock_register_boilerplate(
             _without_boilerplate(_statement_file_text(path))

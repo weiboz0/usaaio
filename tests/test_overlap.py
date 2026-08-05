@@ -51,14 +51,22 @@ problems:
     )
 
 
-def write_reference(root: Path, text: str) -> None:
-    ref = root / "reference" / "r1-fixture"
+def write_reference(
+    root: Path,
+    text: str,
+    *,
+    ref_id: str = "r1-fixture",
+    summary: str | None = None,
+) -> None:
+    ref = root / "reference" / ref_id
     ref.mkdir(parents=True)
+    summary_line = f"    summary: {json.dumps(summary)}\n" if summary else ""
     ref.joinpath("index.yaml").write_text(
         f"""
 test: fixture
 problems:
   - id: ref-p01
+{summary_line}
     text: {json.dumps(text)}
 """
     )
@@ -106,6 +114,56 @@ def test_overlap_accepts_tagged_adaptation(tmp_path):
     report = check_overlap(tmp_path)
     assert report.ok
     assert any("overlaps" in warning for warning in report.warnings)
+
+
+def test_mock_spec_cosine_scans_distinct_summary_stream(tmp_path):
+    write_reference(
+        tmp_path,
+        "unrelated source statement about quartz lanterns",
+        summary="alpha beta gamma delta epsilon zeta eta theta",
+    )
+    write_manifest(tmp_path, "theta eta zeta epsilon delta gamma beta alpha")
+
+    report = check_overlap(tmp_path)
+
+    assert not report.ok
+    assert any("#summary-0" in error and "cosine=" in error for error in report.errors)
+
+
+def test_summary_stream_is_not_used_for_statement_overlap(tmp_path):
+    copied_summary = "alpha beta gamma delta epsilon zeta eta theta iota kappa"
+    write_reference(
+        tmp_path,
+        "unrelated source statement about quartz lanterns",
+        summary=copied_summary,
+    )
+    write_manifest(
+        tmp_path,
+        "fresh prompt about harbor census",
+        files=["statement.md"],
+    )
+    statement = tmp_path / "mocktests" / "r1-001" / "statement.md"
+    statement.write_text(copied_summary)
+
+    report = check_overlap(tmp_path)
+
+    assert report.ok
+    assert not report.errors
+    assert not any("file-level cosine" in warning for warning in report.warnings)
+
+
+def test_mock_problem_reports_every_overlapping_reference(tmp_path):
+    copied = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda"
+    write_reference(tmp_path, copied, ref_id="r1-first")
+    write_reference(tmp_path, copied, ref_id="r1-second")
+    write_manifest(tmp_path, copied)
+
+    report = check_overlap(tmp_path)
+
+    overlap_errors = [error for error in report.errors if " overlaps " in error]
+    assert len(overlap_errors) == 2
+    assert any("r1-first" in error for error in overlap_errors)
+    assert any("r1-second" in error for error in overlap_errors)
 
 
 def test_overlap_passes_original_fixture(tmp_path):
