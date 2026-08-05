@@ -18,8 +18,9 @@ tolerance-family call — `np.isclose`, `np.allclose`, `torch.allclose`, `torch.
 C6/C7; rtol-only sites exist too — the rule is BOTH-or-exempt, catching bare, atol-only,
 AND rtol-only forms) — must state BOTH atol and rtol explicitly. Escape hatch: `# tol-exempt: <non-empty
 reason>` on the call line (empty reason = violation; the recorded C7-p18 WONTFIX is the
-one planned use). Exit semantics: 0 = all calls compliant; 1 = any violation; 3 = loud
-skip if zero scanned notebooks exist. Guard scans SOLUTION notebooks AND statement notebooks' CODE cells (gate finding: 18
+one planned use). Exit semantics: 0 = all calls compliant; 1 = any violation AND any parse/read failure of
+an existing notebook (a failure to scan is never a skip — gate finding: exit-3 laundering
+would yield ALL GREEN without scanning); 3 = ONLY the zero-scannable-notebooks case. Guard scans SOLUTION notebooks AND statement notebooks' CODE cells (gate finding: 18
 statements carry isclose in starter/verification cells — they define the contract students
 see; markdown prose stays out of scope by construction). Guard runs REPO-WIDE.
 **Task 0 also extends tools/checks/coverage.py to enforce ≥3 practice per taught concept
@@ -37,18 +38,22 @@ contract: same-pipeline float64 anchors → `atol=<stated or 1e-9>, rtol=0`; del
 loose checks (e.g. simulation vs closed form) keep their intent explicit
 (`atol=<band>, rtol=0` or a tol-exempt comment with reason). EVERY touched notebook
 re-executed; **an assert that FAILS after tightening is a FINDING adjudicated ERRATA-STYLE
-(orchestrator + a fresh sol session, 2-way) — never silently widened; if a statement's
-STATED tolerance must change, the amended-statement→re-solve rule applies (gate finding:
-adjudication + rule scope now named).** Units: F2, C1, F1, C4, C2, F4, C5, C3, F3,
+(orchestrator + a fresh sol session, 2-way) with a MANDATORY recorded disposition in this
+plan — fix-content / widen-with-reason / exempt-with-reason; no default path (gate
+finding); if a statement's STATED tolerance must change, the amended-statement→re-solve
+rule applies.** Units: F2, C1, F1, C4, C2, F4, C5, C3, F3,
 C7, C8, C6.
 
 ## Task 2 — A2-A6 small fixes (orchestrator inline where trivial, sol otherwise)
 
 A2 C8-p11 statement de-corruption (restore `np.allclose`, relocate the gloss after the
-sentence). A3 tranche-1 register retrofit (F1/F2/C1, 65 problems): Type/Difficulty/Concepts
-headers; reasoning flags on 23 MC + 4 inverted flags fixed (flag means "derivation is
-scored", never "work by hand"); zero-points ban clauses on every constrained item (F1
-especially); MC options to the exam's `A.` form. A4 F5 ddof section — DIRECTION PINNED (gate finding): every existing F5 computation stays
+sentence). A3 tranche-1 register retrofit (F1/F2/C1, 65 problems) — EXECUTION + VERIFICATION pinned
+(gate finding: 10/65 spot-review left 55 unguarded): headers are GENERATED from each
+problem's manifest entry (the source of truth — no hand-typing); a post-edit VERIFIER
+script re-asserts all 65 (header matches manifest; a reasoning flag present on every MC;
+a zero-points clause on every constrained item; options in `A.` form) — 65/65 automated,
+plus the human letter/order cross-read on every reformatted MC. Flag semantics: "Reasoning
+is required" = the derivation is scored, never "work it by hand". A4 F5 ddof section — DIRECTION PINNED (gate finding): every existing F5 computation stays
 ddof=0, framed as population/empirical variance; the new section introduces ddof=1 as the
 sample ESTIMATOR without relabeling any prior cell; C9's back-reference then points at the
 estimator paragraph, C4's at the population paragraph.
@@ -78,7 +83,8 @@ New ids (syllabus.md concepts + unit teaches lists + manifests):
 - `api-constraint-compliance` → C10 lesson-01 subsection (reading ban lists; pricing;
   workaround-closure habits) + 3 problems (audit-a-submission×2, write-under-ban×1).
 NOT taken: the parameter-counting split (B4) — RECORDED DECISION: retag cost across
-C6/C7/mocktest manifests + blueprint cluster mapping outweighs tooling visibility; both
+C6/C7/mocktest manifests outweighs tooling visibility (cluster mapping derives from
+syllabus concepts automatically — cost claim corrected per gate); both
 skills demonstrably exercised (C6-p04/p11/p12 hand-arithmetic; C7 audits).
 Blueprint impact check: new ids need `clusters:` entries (competition-craft ×2 folds to
 applied-ml; tensor-shape-tracing → cnn-vision; tabular-feature-engineering → applied-ml);
@@ -136,6 +142,14 @@ none. Watch-list topics.
 2. `[VERIFIED]` New-id arithmetic: tensor-shape-tracing 3+1(dual)=4, the other three ids
    3 each; closures derive in-chain for C7/C4/C10; convolution keeps its count through
    the dual-tag while gaining its advanced ceiling.
+
+### Review 4 — [codex] GPT-5.6-sol (2026-08-07): REJECT → resolved
+Major 1 raced the fable-round coverage-≥3 extension (already in). Major 2: exit-3
+laundering closed (parse/read failures = exit 1; 3 only for zero-scannable). Major 3:
+A3 now generator-from-manifest + a 65/65 automated post-verifier + full MC cross-read.
+Minor 4: C7-p18 exemption replaced with explicit behavior-preserving values (escape ships
+with zero planned uses); tightening-failure dispositions made mandatory-and-recorded.
+Nit 5: B4 cost claim corrected. Re-verdict requested.
 
 ### Review 3 — [fable] Independent Fable 5 (2026-08-07): REJECT → **APPROVE WITH NITS**
 (re-verdict: all six resolved; stale self-review note annotated superseded)
