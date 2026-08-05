@@ -6,6 +6,7 @@ concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, aggregati
                 random-seeding, matplotlib-basics]
 prereq_units: [F1-scientific-python]
 estimated_minutes:
+  lesson: 240
   lesson_sessions: [75, 85, 80]   # lessons/01..03; lesson.ipynb overview ~10 min extra
   review: 30
   practice: 420
