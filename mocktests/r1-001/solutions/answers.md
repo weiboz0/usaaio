@@ -309,32 +309,51 @@
 
 # Mock Test r1-001 — P5–P8 Answers
 
-- r1-001-p05-1: answer: 311 (token-count invariant)
+- r1-001-p05-1: answer: 311
+  (Invariant: token-count invariant)
 - r1-001-p05-2: answer: hash-dependent set order; multiplicity and sequence order are lost
-- r1-001-p05-3: answer: 220 (embedded-token-count invariant; OOV count is 0)
-- r1-001-p05-4: answer: 220 (row-count invariant for `W_raw.shape == (220, 100)`)
-- r1-001-p05-5: answer: 220 (unit-row-count invariant)
+- r1-001-p05-3: answer: 220
+  (Invariant: embedded-token-count invariant; OOV count is 0)
+- r1-001-p05-4: answer: 220
+  (Invariant: row-count invariant for `W_raw.shape == (220, 100)`)
+- r1-001-p05-5: answer: 220
+  (Invariant: unit-row-count invariant)
 - r1-001-p05-6: answer: [-1, 1]; -1 for opposite unit rows, 1 for identical unit rows
 - r1-001-p05-7: answer: S is symmetric and every diagonal entry is 1
-- r1-001-p05-8: answer: 100 (singular-value-count invariant)
+- r1-001-p05-8: answer: 100
+  (Invariant: singular-value-count invariant)
 - r1-001-p05-9: answer: thin: (220,100),(100,),(100,100); full: (220,220),(100,),(100,100); S adds 120 zeros
-- r1-001-p05-10: answer: 220.0 (sum-of-full-eigenvalues invariant)
-- r1-001-p05-11: answer: sum(sigma[r:]**4) / sum(sigma**4)
-- r1-001-p05-12: answer: 100 (relative-error-vector-length invariant)
+- r1-001-p05-10: answer: 220.0
+  (Invariant: sum-of-full-eigenvalues invariant)
+- r1-001-p05-11: answer: sum
+  (Invariant: sigma[r:]**4) / sum(sigma**4)
+- r1-001-p05-12: answer: 100
+  (Invariant: relative-error-vector-length invariant)
 - r1-001-p05-13: answer: 3
-- r1-001-p05-14: answer: 663 (stored-scalar-count invariant; dense S stores 48400)
-- r1-001-p06-1: answer: 20.0 (standardized-array squared-energy invariant)
+- r1-001-p05-14: answer: 663
+  (Invariant: stored-scalar-count invariant; dense S stores 48400)
+- r1-001-p06-1: answer: 20.0
+  (Invariant: standardized-array squared-energy invariant)
 - r1-001-p06-2: answer: 0
-- r1-001-p06-3: answer: 24.0 (sum of supplied-probe outputs invariant)
-- r1-001-p06-4: answer: 86 (sum of seeded census array invariant)
-- r1-001-p07-1: answer: 16 (registered-scalar-count invariant for supplied shape probe)
-- r1-001-p07-2: answer: -3.5 (sum of `manual_output` invariant)
+- r1-001-p06-3: answer: 24.0
+  (Invariant: sum of supplied-probe outputs invariant)
+- r1-001-p06-4: answer: 86
+  (Invariant: sum of seeded census array invariant)
+- r1-001-p07-1: answer: 16
+  (Invariant: registered-scalar-count invariant for supplied shape probe)
+- r1-001-p07-2: answer: -3.5
+  (Invariant: sum of `manual_output` invariant)
 - r1-001-p07-3: answer: 131648
-- r1-001-p07-4: answer: 1024 (output-channel-count invariant; shape is (1,1024,10,10))
-- r1-001-p07-5: answer: 4074560 (frozen-scalar-count invariant; trainable count is 11275)
-- r1-001-p08-1: answer: 2.0 (sum of inclusive-step probe outputs invariant)
-- r1-001-p08-2: answer: -5.0 (sum of all plane weights and biases invariant)
-- r1-001-p08-3: answer: 2.0 (sum of region-membership probe outputs invariant)
+- r1-001-p07-4: answer: 1024
+  (Invariant: output-channel-count invariant; shape is (1,1024,10,10))
+- r1-001-p07-5: answer: 4074560
+  (Invariant: frozen-scalar-count invariant; trainable count is 11275)
+- r1-001-p08-1: answer: 2.0
+  (Invariant: sum of inclusive-step probe outputs invariant)
+- r1-001-p08-2: answer: -5.0
+  (Invariant: sum of all plane weights and biases invariant)
+- r1-001-p08-3: answer: 2.0
+  (Invariant: sum of region-membership probe outputs invariant)
 - r1-001-p08-4: answer: 9
 
 ## Full proof for Part 5.7
