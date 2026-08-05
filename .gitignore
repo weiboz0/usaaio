@@ -23,3 +23,6 @@ reference/*
 # by `make_dataset.py --with-test` and must never be committed (public repo;
 # committing it would break the hidden-test teaching device).
 units/C10-competition-craft/data/heldout.csv
+
+# Mock test r1-001 P9 grading data is regenerated from its seeded script.
+mocktests/r1-001/data/p09_heldout.csv
