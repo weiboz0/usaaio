@@ -13,24 +13,33 @@ and six ceiling-raising items. (Enrichment tranche = plan 014, separate.)
 
 `tools/checks/tolerance.py` + CLI `tolerance-check` (wired into ci step 4): scan all
 `units/*/practice/*_solution.ipynb` and `mocktests/*/solutions/*.ipynb` code cells; every
-tolerance-family call — `np.isclose`, `np.allclose`, `torch.allclose`,
-`np.testing.assert_allclose`, `math.isclose` (gate finding: the corpus uses torch.allclose
-too) — must state BOTH atol and rtol explicitly. Escape hatch: `# tol-exempt: <non-empty
+tolerance-family call — `np.isclose`, `np.allclose`, `torch.allclose`, `torch.isclose`,
+`np.testing.assert_allclose`, `math.isclose` (gate findings: 13 torch sites exist in
+C6/C7; rtol-only sites exist too — the rule is BOTH-or-exempt, catching bare, atol-only,
+AND rtol-only forms) — must state BOTH atol and rtol explicitly. Escape hatch: `# tol-exempt: <non-empty
 reason>` on the call line (empty reason = violation; the recorded C7-p18 WONTFIX is the
 one planned use). Exit semantics: 0 = all calls compliant; 1 = any violation; 3 = loud
-skip if zero scanned notebooks exist. Guard runs REPO-WIDE (F5 uses none; C5/C9/C10/F6
-already compliant per the audit — Task 1's 12-unit list is the offender inventory, not a
-scan exclusion).
+skip if zero scanned notebooks exist. Guard scans SOLUTION notebooks AND statement notebooks' CODE cells (gate finding: 18
+statements carry isclose in starter/verification cells — they define the contract students
+see; markdown prose stays out of scope by construction). Guard runs REPO-WIDE.
+**Task 0 also extends tools/checks/coverage.py to enforce ≥3 practice per taught concept
+(gate finding: it enforces only ≥1 today, falsifying the old Task-6 claim; the ≥3 rule is
+the v2 standard reviewers were enforcing by hand). Run repo-wide immediately — any existing
+concept below 3 is a FINDING adjudicated errata-style, not silently waived.**
 
 ## Task 1 — A1: the retrofit itself (sol, batched per unit; then orchestrator re-executes)
 
-Script-assisted but VERIFIED per line (no blind regex): for each of the ~382 offending
-call sites (fully-bare + atol-only; unit counts recorded in the audit), set the intended
+Script-assisted but VERIFIED per line (no blind regex): the CANONICAL inventory is the
+Task-0 guard's own violation list (gate finding: hand recounts disagree — my 382 vs the
+reviewer's ~469; the guard is the single source of truth, estimate ~470 sites across
+solutions + statement code cells). For each site, set the intended
 contract: same-pipeline float64 anchors → `atol=<stated or 1e-9>, rtol=0`; deliberately
 loose checks (e.g. simulation vs closed form) keep their intent explicit
 (`atol=<band>, rtol=0` or a tol-exempt comment with reason). EVERY touched notebook
-re-executed; **an assert that FAILS after tightening is a FINDING (possible real drift a
-la plan-009), reported not silently widened.** Units: F2, C1, F1, C4, C2, F4, C5, C3, F3,
+re-executed; **an assert that FAILS after tightening is a FINDING adjudicated ERRATA-STYLE
+(orchestrator + a fresh sol session, 2-way) — never silently widened; if a statement's
+STATED tolerance must change, the amended-statement→re-solve rule applies (gate finding:
+adjudication + rule scope now named).** Units: F2, C1, F1, C4, C2, F4, C5, C3, F3,
 C7, C8, C6.
 
 ## Task 2 — A2-A6 small fixes (orchestrator inline where trivial, sol otherwise)
@@ -39,8 +48,10 @@ A2 C8-p11 statement de-corruption (restore `np.allclose`, relocate the gloss aft
 sentence). A3 tranche-1 register retrofit (F1/F2/C1, 65 problems): Type/Difficulty/Concepts
 headers; reasoning flags on 23 MC + 4 inverted flags fixed (flag means "derivation is
 scored", never "work by hand"); zero-points ban clauses on every constrained item (F1
-especially); MC options to the exam's `A.` form. A4 F5 ddof section (population vs sample,
-np.var default, when each is right) + pitfall entry + fix C9's and C4's back-references.
+especially); MC options to the exam's `A.` form. A4 F5 ddof section — DIRECTION PINNED (gate finding): every existing F5 computation stays
+ddof=0, framed as population/empirical variance; the new section introduces ddof=1 as the
+sample ESTIMATOR without relabeling any prior cell; C9's back-reference then points at the
+estimator paragraph, C4's at the population paragraph.
 A5 C8-p04 retag → cosine-similarity (manifest + spec text). A6: add "zero points" to the
 ~8 incomplete ban clauses (F3-p08/p09, F4-p09/p14/p17, F5-p14, C7-p17 numel, F6-p22
 variant); remove C6-p19-solution's stray np.random.seed; C1 `lesson:` total + F1 `review:`
@@ -84,7 +95,7 @@ the aliasing fact gets a one-line lesson addition if L01 lacks it, checked at dr
 C8/nearest-neighbor-search: +1 advanced (ties + self-exclusion adversarial contract —
 self-exclusion is taught in C8-03; the tie-handling convention is glossed in the
 statement, argsort-stability register). C7/convolution: +1 advanced (multi-layer shape trace, nn.functional banned) —
-NOTE: doubles as tensor-shape-tracing practice; dual-tag flagged.
+tagged BOTH [convolution, tensor-shape-tracing] explicitly (dual-tag flagged).
 
 ## Task 5 — Statements/solutions cycle for Tasks 3-4 content
 
@@ -96,15 +107,16 @@ trace vs p08-2; feature-eng vs p09; decode drills vs p02 register) — fresh dat
 ## Task 6 — Verification (NAMED)
 
 Five checks + NEW tolerance-check PASS repo-wide; full ci ALL GREEN (all ~340 solutions,
-mocktest, PDFs); accessibility sweeps unchanged-units clean; coverage-check proves the 4
-new ids at ≥3.
+mocktest, PDFs); accessibility sweeps unchanged-units clean; the EXTENDED coverage-check proves ≥3 repo-wide including the 4 new ids (machine-checked
+now, per the Task-0 extension).
 
 ## Task 7 — Ship
 
 Content gate 4-way (self + codex terra + opus + glm ×2 by scope: retrofit+fixes /
 new-content+tooling); blind-solve ≥3 new problems per reviewer incl. ≥1 proof-form;
-register-verification duty on the tranche-1 retrofit (spot 10 of the 65). Post-exec
-report, TODO, PR, guard, squash-merge.
+register-verification duty on the tranche-1 retrofit (spot 10 of the 65). A3 verification duty strengthened (gate finding): statement↔solution letter/order
+cross-read for EVERY MC reformat (not a 10/65 spot — answerkey.py covers mocktests only,
+not units). Post-exec report, TODO, PR, guard, squash-merge.
 
 ## Out of scope
 
@@ -123,6 +135,15 @@ none. Watch-list topics.
 2. `[VERIFIED]` New-id arithmetic: tensor-shape-tracing 3+1(dual)=4, the other three ids
    3 each; closures derive in-chain for C7/C4/C10; convolution keeps its count through
    the dual-tag while gaining its advanced ceiling.
+
+### Review 3 — [fable] Independent Fable 5 (2026-08-07): REJECT → all resolved
+Majors: coverage-check ≥1-not-≥3 claim falsified → Task 0 now EXTENDS coverage.py to ≥3
+(repo-wide immediate run, failures errata-adjudicated); guard family completed (torch.isclose,
+rtol-only class); inventory authority moved to the guard itself (~470 est. vs my stale 382).
+Moderates: statement code cells scanned; Task-1 adjudication named (errata-style 2-way +
+re-solve rule scope); A3 cross-read duty for every MC reformat. Minor: A4 ddof direction
+pinned (existing F5 stays ddof=0). Its verified-fine list (flag semantics vs analysis.md,
+dual-tag arithmetic, cluster folds, C10-only append) noted.
 
 ### Review 2 — [glm] GLM 5.2 (2026-08-07): APPROVE WITH NITS → all resolved
 Guard family widened (torch.allclose/assert_allclose/math.isclose), exit semantics pinned,
