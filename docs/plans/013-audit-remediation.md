@@ -143,7 +143,13 @@ none. Watch-list topics.
    3 each; closures derive in-chain for C7/C4/C10; convolution keeps its count through
    the dual-tag while gaining its advanced ceiling.
 
-### Review 4 — [codex] GPT-5.6-sol (2026-08-07): REJECT → resolved
+**GATE RESULT: PASS — 4/4** (claude-self AWN pre-empted; glm AWN resolved; fable
+REJECT→AWN resolved; codex REJECT→AWN — final nit (stale exempt phrase) fixed below).
+Implementation may begin.
+
+### Review 4 — [codex] GPT-5.6-sol (2026-08-07): REJECT → resolved (re-verdict AWN; the
+surviving "one planned use" phrase excised — Task 0 and Review 4 now agree: explicit
+values for C7-p18, escape ships unused)
 Major 1 raced the fable-round coverage-≥3 extension (already in). Major 2: exit-3
 laundering closed (parse/read failures = exit 1; 3 only for zero-scannable). Major 3:
 A3 now generator-from-manifest + a 65/65 automated post-verifier + full MC cross-read.
