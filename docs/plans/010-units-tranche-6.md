@@ -303,3 +303,24 @@ Task 9. Trace nit raced the self-review fix (already component-routed).
   covered 9 problems incl. 4 proofs across the three units — all agree. Verification
   battery: five checks PASS, F6/C9/C10 register sweeps clean, 60/60 asserts, harness
   byte-identical on both enumerated artifacts.
+
+### Review 2 — [codex] GPT-5.6-terra (2026-08-06)
+
+- **Verdict**: Changes requested → fix applied, re-verdict pending
+- Blind-solve: 9/9 agree across all three units (incl. F6 p13's full-form invariant route,
+  C9's budget dict, C10's postmortem).
+1. `[FIXED]` [codex] Must Fix: C10 p18's key scored W-A2 = 0 (total 2) against the
+   statement's explicit "judge on its own terms — a value is present" instruction. Notable
+   failure mode: the drafter's outline AND the blind solver misread the statement
+   IDENTICALLY, so reconciliation agreement masked the error — only an independent gate read
+   caught it. → Key corrected to W-A2 = 1 / total 3 in definition + assert + prose cells
+   (commit a0e8f49); re-executed PASS; outline annotated.
+
+### Review 3 — [glm] GLM 5.2, per-unit F6 (2026-08-06)
+
+- **Verdict**: Approved (3/3 blind-solves incl. the rank-r proof anchor to 1.8e-14; narration
+  audit clean across all 5 lessons + review; foundation-register, bridge, invariant-scope,
+  legality-line, and manifest checks all clean).
+1. `[WONTFIX]` [glm] N: generic "dataset" wording in L04/L05 — ordinary English for a table
+   of measurements; no ML register invoked, no prereq-closure issue (reviewer marked it
+   optional).
