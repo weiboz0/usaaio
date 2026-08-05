@@ -290,6 +290,12 @@ Task 9. Trace nit raced the self-review fix (already component-routed).
 
 ## Content Review
 
+**GATE RESULT: PASS — 4/4** (claude-self Approved; codex CR→Approved + the p18 cross-check
+CONSISTENT; opus CR→Approved-with-suggestions, all items resolved; glm per-unit ×3 —
+F6 Approved, C9 AWS resolved, C10 AWS resolved). 21 roster blind-solves, 21/21 agreement.
+Two cross-reviewer conflicts in this gate (p18 W-A2; trace route) both resolved on
+cross-artifact evidence with explicit reconfirmation.
+
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-06)
 
 - **Verdict**: Approved
@@ -318,7 +324,10 @@ Task 9. Trace nit raced the self-review fix (already component-routed).
 
 ### Review 6 — [opus] Independent Opus (2026-08-06)
 
-- **Verdict**: Changes requested → all findings fixed at commit `d82e3dd`, re-verdict pending
+- **Verdict**: Changes requested → **Approved with suggestions** (re-verdict at 7931e0c:
+  capstone measurement reproduced, p18 six-artifact consistency verified, all fixes clean;
+  4 residual cosmetic nits → 3 FIXED (p18 clause wording + de-spoiler, L03 line breaks),
+  1 WONTFIX (trailing newlines — repo-wide pre-existing, no ci check))
 - Duties: 17/17 lessons/reviews/overviews + 60/60 solutions executed in its own runs;
   9/9 blind-solves agree (5 proofs); 85/85 isclose calls verified atol+rtol=0; exhaustive
   clean-sweep list recorded in its report.
