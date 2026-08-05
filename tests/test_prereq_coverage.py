@@ -37,11 +37,25 @@ units:
     )
 
 
-def write_unit(root: Path, unit: str = "U2", taught: str = "b", used: str = "a") -> Path:
+def write_unit(
+    root: Path,
+    unit: str = "U2",
+    taught: str = "b",
+    used: str = "a",
+    practice_count: int = 3,
+) -> Path:
     unit_dir = root / "units" / unit
     (unit_dir / "practice").mkdir(parents=True)
-    (unit_dir / "practice" / "p01.ipynb").write_text("{}")
-    (unit_dir / "practice" / "p01_solution.ipynb").write_text("{}")
+    for number in range(1, practice_count + 1):
+        (unit_dir / "practice" / f"p{number:02}.ipynb").write_text("{}")
+        (unit_dir / "practice" / f"p{number:02}_solution.ipynb").write_text("{}")
+    practice = "\n".join(
+        f"""  - id: p{number:02}
+    concepts: [{taught}]
+    path: practice/p{number:02}.ipynb
+    solution_path: practice/p{number:02}_solution.ipynb"""
+        for number in range(1, practice_count + 1)
+    )
     (unit_dir / "manifest.yaml").write_text(
         f"""
 unit: {unit}
@@ -49,10 +63,7 @@ concepts_taught: [{taught}]
 concepts_used: [{used}]
 prereq_units: [U1]
 practice:
-  - id: p01
-    concepts: [{taught}]
-    path: practice/p01.ipynb
-    solution_path: practice/p01_solution.ipynb
+{practice}
 """
     )
     return unit_dir
@@ -147,3 +158,79 @@ def test_coverage_missing_practice_file(tmp_path):
     report = check_coverage(tmp_path)
     assert not report.ok
     assert any("missing practice path" in error for error in report.errors)
+
+
+def test_coverage_requires_three_tagged_problems_per_taught_concept(tmp_path):
+    write_syllabus(tmp_path)
+    write_unit(tmp_path, practice_count=2)
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "taught concept b has 2 tagged practice problems; requires at least 3" in error
+        for error in report.errors
+    )
+
+
+def test_coverage_does_not_count_duplicate_problem_ids(tmp_path):
+    write_syllabus(tmp_path)
+    write_unit(tmp_path, practice_count=1)
+    (tmp_path / "units" / "U2" / "manifest.yaml").write_text(
+        """
+unit: U2
+concepts_taught: [b]
+concepts_used: [a]
+prereq_units: [U1]
+practice:
+  - &duplicate
+    id: p01
+    concepts: [b]
+    path: practice/p01.ipynb
+    solution_path: practice/p01_solution.ipynb
+  - *duplicate
+  - *duplicate
+"""
+    )
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "taught concept b has 1 tagged practice problems; requires at least 3" in error
+        for error in report.errors
+    )
+
+
+def test_coverage_does_not_count_duplicate_problem_paths(tmp_path):
+    write_syllabus(tmp_path)
+    write_unit(tmp_path, practice_count=1)
+    (tmp_path / "units" / "U2" / "manifest.yaml").write_text(
+        """
+unit: U2
+concepts_taught: [b]
+concepts_used: [a]
+prereq_units: [U1]
+practice:
+  - id: p01
+    concepts: [b]
+    path: practice/p01.ipynb
+    solution_path: practice/p01_solution.ipynb
+  - id: p02
+    concepts: [b]
+    path: practice/p01.ipynb
+    solution_path: practice/p01_solution.ipynb
+  - id: p03
+    concepts: [b]
+    path: practice/p01.ipynb
+    solution_path: practice/p01_solution.ipynb
+"""
+    )
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "taught concept b has 1 tagged practice problems; requires at least 3" in error
+        for error in report.errors
+    )

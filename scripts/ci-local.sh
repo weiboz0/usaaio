@@ -37,7 +37,7 @@ fi
 uv run usaaio-tools answerkey-check || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 
 step "4/6 manifest + content checks"
-for c in prereq-check coverage-check hygiene-check blueprint-check overlap-scan; do
+for c in prereq-check coverage-check tolerance-check hygiene-check blueprint-check overlap-scan; do
   echo "running: $c"
   uv run usaaio-tools "$c" || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 done

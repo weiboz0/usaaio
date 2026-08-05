@@ -13,6 +13,7 @@ from tools.checks.hygiene import check_hygiene
 from tools.checks.new_mocktest import scaffold_mocktest
 from tools.checks.overlap import check_overlap
 from tools.checks.prereq import check_prereq
+from tools.checks.tolerance import check_tolerance
 from tools.model import Report
 
 CheckFn = Callable[[str | Path], Report]
@@ -22,8 +23,9 @@ SUBCOMMANDS: dict[str, tuple[str, CheckFn | None]] = {
     "blueprint-check": ("verify a mock test against mocktests/blueprint.yaml", check_blueprint),
     "overlap-scan": ("flag problems too similar to the reference corpus", check_overlap),
     "prereq-check": ("verify the unit DAG and concept closure", check_prereq),
-    "coverage-check": ("verify every taught concept has a practice problem", check_coverage),
+    "coverage-check": ("verify every taught concept has at least three practice problems", check_coverage),
     "hygiene-check": ("verify student notebooks contain no solutions or outputs", check_hygiene),
+    "tolerance-check": ("verify calls state absolute and relative tolerances", check_tolerance),
     "new-mocktest": ("scaffold a mock test from the blueprint", None),
 }
 

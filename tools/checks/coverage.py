@@ -12,10 +12,22 @@ def check_coverage(root: str | Path) -> Report:
     vocabulary = set(syllabus.baseline) | set(syllabus.concepts)
     errors: list[str] = []
     for manifest in manifests:
-        practiced = {concept for problem in manifest.practice for concept in problem.concepts}
-        missing = set(manifest.concepts_taught) - practiced
+        practice_ids: dict[str, set[str]] = {}
+        practice_paths: dict[str, set[str]] = {}
+        for problem in manifest.practice:
+            for concept in set(problem.concepts):
+                practice_ids.setdefault(concept, set()).add(problem.id)
+                practice_paths.setdefault(concept, set()).add(problem.path)
+        missing = set(manifest.concepts_taught) - set(practice_ids)
         if missing:
             errors.append(f"{manifest.path}: taught concepts without practice {sorted(missing)}")
+        for concept in sorted(set(manifest.concepts_taught) - missing):
+            count = min(len(practice_ids[concept]), len(practice_paths[concept]))
+            if count < 3:
+                errors.append(
+                    f"{manifest.path}: taught concept {concept} has {count} tagged practice "
+                    "problems; requires at least 3"
+                )
         unit_dir = manifest.path.parent
         for problem in manifest.practice:
             if not (unit_dir / problem.path).exists():
