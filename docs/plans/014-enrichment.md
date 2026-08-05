@@ -114,7 +114,8 @@ blind-solve ≥3 synthesis arcs per reviewer; post-exec report, TODO, PR, guard,
    2026-08-09 16:00; gate slot 3 is a second, independent sol session prompted not to
    assume slot 2's findings.
 
-### Review 2 — [glm] GLM 5.2 (2026-08-05): REJECT → all resolved
+### Review 2 — [glm] GLM 5.2 (2026-08-05): REJECT → **APPROVE** (re-verdict: all seven
+verified with line references; nothing remaining)
 MAJOR (synthesis CI-invisibility — ci's find, assert glob, hygiene, overlap all exclude the
 new tree, making Task 6 vacuously green): Task 1 now enumerates ALL EIGHT consumers plus a
 broken-fixture acceptance test per consumer, so no check is accepted on a green run alone.
