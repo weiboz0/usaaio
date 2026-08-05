@@ -12,8 +12,9 @@ two tools that turn ci's last stub lines green (answer-key reproduction; Quarto 
 
 0a. **Quarto**: user-space install (official tarball → `~/.local/quarto`, symlink on PATH via
     `~/.local/bin`); PDF via the BUNDLED typst engine (`format: typst` — no TeX install).
-    Record the version. If the download is blocked, record and fall back to
-    `nbconvert --to html` as a TEMPORARY build (HTML, NOT a PDF — recorded honestly) with a loud plan note (decision recorded here:
+    Pin the version (1.6.x line) + verify the tarball's published sha256; record both. If the download is blocked, record and fall back to
+    `nbconvert --to html` as a TEMPORARY build (HTML, NOT a PDF — recorded honestly; the
+    TEMPORARY build does NOT satisfy Task 5's PDF gate — merge blocks until quarto lands) (decision recorded here:
     quarto+typst is the design-pinned route).
 0b. **Answer-key reproduction comparator** (`tools/checks/answerkey.py` + CLI subcommand
     `answerkey-check`): for every final mocktest manifest problem with an `answer_key`,
@@ -24,7 +25,12 @@ two tools that turn ci's last stub lines green (answer-key reproduction; Quarto 
     nothing — READ the tagged cell's last `ANSWER = ...` literal (solution execution is
     already ci step 3; the comparator is a static cross-check, keeping it fast and
     order-independent). Exit contract: 0 pass / 1 fail / 3 loud-skip when no final mocktest
-    manifests exist. Tests in tests/ (pytest), including a fixture mocktest.
+    manifests exist (ci-local's existing `|| {{ rc=$?; [[ $rc -eq 3 ]] || exit $rc; }}` pattern
+handles the loud-skip under set -e). **Task 0b also extends tools/model.py's manifest schema
+with the optional `answer_tolerance` field (schema change + tests), and the numeric
+comparison parses the reproduced value from the SAME tagged answer cell's literal — one
+parse site, documented in the tool's docstring.** Tests in tests/ (pytest), including a
+fixture mocktest.
 0c. **PDF build wiring** (`scripts/build-pdf.sh` + ci step 5): quarto-render test.md +
     problems/*.ipynb (student register ONLY — solutions never rendered; **`execute: false`
     pinned in the render config — quarto executes notebooks by default, which would both
@@ -70,20 +76,25 @@ directions: (1) FIDELITY — structural comparison against reference/analysis.md
 + per-section fidelity verdicts recorded here; (2) NO-DUPLICATION — overlap-scan against
 the corpus (provenance tags where adapted) AND a manual isomorph pass against our own 319
 unit problems (a mock test must not repeat unit practice either; targets: the P5 arc vs
-C8/C9/F6 problems, P9 vs C10's harness problems).
+C8/C9/F6 PROBLEMS — none of which runs the full chain, by plan-010 design — **and explicitly
+vs F6's capstone LESSON (the chain appears there as teaching; the mock arc must differ in
+data domain (committed text corpus + GloVe vs seeded synthetic matrix), numbers, and
+sub-part framing — recorded verdict required)**, P9 vs C10's harness problems).
 
 ## Task 5 — Verification (NAMED)
 
 ci-local ALL GREEN with the two NEW checks live (answerkey-check real; PDF build real,
-rendered artifacts spot-opened); **the draft→final manifest flip happens in Task 6 AFTER
-the content gate passes (wording clarified — gate finding), with one final ci run at
-final status before the PR**;
+rendered artifacts spot-opened); **the draft→final flip happens at the END of Task 4 (post-reconciliation, PRE-gate — gate
+blocker: drafts exit-3-skip blueprint/answer-key validation, so ALL GREEN at draft status
+never validates the real manifest; the gate must review the FINAL-status artifact with all
+checks live)**;
 tooling pytest suite green; comparator loud-skip path exercised in tests.
 
 ## Task 6 — Ship
 
-Content gate 4-way (self + codex 5.6-terra + opus + glm per-section×2 — theory+arc /
-engineering+notebook): blind-solve ≥4 sub-parts per reviewer incl ≥1 proof-form and ≥1
+Content gate 4-way (self + codex 5.6-terra + opus + glm ×2 grouped as theory+arc /
+engineering+notebook — a SCOPE-cap application of the 010 timeout lesson, not a literal
+per-section rule; each glm invocation stays inside the budget that failed at 3-unit scope): blind-solve ≥4 sub-parts per reviewer incl ≥1 proof-form and ≥1
 programming; FIDELITY duty per docs/content-review-gate.md #7 (per-section verdicts);
 tooling code review of Task 0 in the same round. Post-exec report, TODO tick, PR, guard,
 squash-merge.
@@ -101,10 +112,16 @@ Round 2 anything. Changing blueprint.yaml (any texture change is its own plan).
 40(P5 code) + 20 + 25 + 20 + 50 = **155**/300 = 0.517 ∈ [0.45, 0.55] ✓; problem count 9 ✓;
 arc sub-parts 14 ∈ [12, 16] ✓; section sums 50/45/90/65/50 = 300 = the anchors ✓.
 
-**Cluster ledger (test-global, all within min/max):** ml-concepts 50 (P1) · calculus 5 (P2a) ·
-probability-statistics 10 (P2b-c) · linear-algebra 60 (P3 15 + P5 45) · cnn-vision 15 (P4) ·
-nlp-embeddings 15 (P5 first three) · numpy 50 (P5 30 + P6 20) · pytorch 45 (P7 25 + P8 20) ·
-applied-ml 50 (P9). Sum 300 ✓.
+**Cluster ledger (test-global, all within min/max; every problem's clusters drawn from its
+SECTION's allowed list — gate blocker fixed):** ml-concepts 50 (P1) · calculus 5 (P2a) ·
+probability-statistics 10 (P2b-c) · linear-algebra 75 (P3 15 + P4 15 + P5 45; ≤ 80) ·
+nlp-embeddings 15 (P5 first three) · numpy 50 (P5 30 + P6 20) · pytorch 35 (P7 15 + P8 20;
+≥ 30) · cnn-vision 10 (P7; ≤ 20, = target) · applied-ml 50 (P9). Sum 300 ✓.
+
+**Per-sub-part completion rule:** these specs pin section/points/type/cluster per sub-part;
+Task 1 completes each manifest entry's {difficulty, answer_form, concepts (canonical ids),
+provenance} under the aggregate ledgers below — recorded as spec: fields so the manifest
+alone is authoritative (zero free choices REMAINING after Task 1's commit).
 
 **Difficulty ledger (point shares):** intro 70 (0.233 ∈ [.15,.30]) · core 135 (0.45 ∈
 [.35,.55]) · advanced 95 (0.317 ∈ [.25,.40]) — per-sub-part bands assigned in the manifest.
@@ -119,9 +136,11 @@ applied-ml 50 (P9). Sum 300 ✓.
 - **P3** (math-computation, 15 = 5+10): eigenvalue check of a given pair (5, normal form);
   2×2 eigen by hand via the dependent-rows route (10, reasoning required). F6,
   linear-algebra.
-- **P4** (math-computation, 15 = 5+10): receptive-field formula application on a fresh conv
-  stack (5, normal form); bottleneck parameter count at a fresh width, no numel (10,
-  reasoning required). C7, cnn-vision.
+- **P4** (math-computation, 15 = 5+10; cluster linear-algebra — math-computation's
+  allowed-cluster list is [linear-algebra, calculus-multivar, probability-statistics];
+  cnn-vision content MOVED to P7 where the section allows it — gate blocker): Frobenius
+  norm of a small matrix (5, normal form); outer-product reconstruction Σλqqᵀ with an
+  orthonormality justification step (10, reasoning required). F6/F3.
 - **P5** (integrative-arc, 90 = 12×5 + 2×15, 14 sub-parts, later parts consume earlier):
   OUR arc on a fresh committed text corpus (seeded generator). Beats (5 pts each unless
   noted): 5.1 tokenize + census (code, nlp) · 5.2 dedup semantics (theory, nlp) · 5.3
@@ -137,9 +156,11 @@ applied-ml 50 (P9). Sum 300 ✓.
 - **P6** (engineering, 20 = 4×5, NumPy): broadcasting normalization; masked argmax
   retrieval; piecewise ReLU-combination function; seeded census — all with ban clauses +
   zero-point penalties, exact snake_case identifiers. F1/C5/C8 registers.
-- **P7** (engineering, 25 = 5×5, torch): fresh My_CamelCase module to spec with registered
-  frozen params; forward-pass shape contract; parameter count no-numel; resnet50 truncation
-  build (cached weights); freezing audit. C6/C7 registers.
+- **P7** (engineering, 25 = 5×5, clusters pytorch 15 + cnn-vision 10): fresh My_CamelCase
+  module to spec with registered frozen params (pytorch); forward-pass shape contract
+  (pytorch); bottleneck parameter count at a fresh width, no numel (cnn-vision — moved from
+  P4); resnet50 truncation build, cached weights (cnn-vision); freezing audit (pytorch).
+  C6/C7 registers.
 - **P8** (engineering, 20 = 4×5, torch): threshold-gate module; two-half-plane region
   detector wiring (fresh geometry); composed inference MLP with manual weights; parameter
   audit. C5/C6 registers (torch side — cluster pytorch).
@@ -184,6 +205,22 @@ explicit sampling rule.
 3. `[VERIFIED]` Section sums 50/45/90/65/50 = 300 against the anchors; 8 total MC sub-parts
    matches the 2026 anchor; all named concepts spot-checked taught (dependent-rows eigen F6,
    bottleneck C7, GloVe C8, contract register C10).
+
+### Review 4 — [codex] GPT-5.6-sol (2026-08-06): REJECT → resolved
+Blocker (live): P4's cnn-vision cluster violated math-computation's allowed-cluster list —
+P4 rebuilt as linear-algebra (Frobenius + outer-product reconstruction), bottleneck count
+moved to P7 (engineering allows cnn-vision); cluster ledger rebalanced (LA 75, pytorch 35,
+cnn 10 — all in range). Blocker (stale): its 32-sub-part count predates the 40-sub-part
+rebuild; the residue (per-sub-part manifest completeness) addressed via the Task-1
+completion rule. Blocker 3 → **WONTFIX with reasoning**: the arc chain is the BLUEPRINT'S
+required rotation texture and the exam's own shape (fidelity duty); plan-010's pin governed
+UNIT problems, none of which runs the chain; Task 4 now explicitly compares the arc against
+F6's capstone lesson with a recorded-verdict requirement. Major 4: draft→final flip moved
+to end of Task 4 (pre-gate) so the gate reviews the final-status artifact with all checks
+live. Major 5: answer_tolerance schema extension + single parse site + exit-3 pattern
+specified. Major 7: glm grouping reworded as the scope-cap application it is. Minor 6:
+quarto version+sha256 pin; fallback explicitly cannot satisfy the PDF gate. Re-verdict
+requested.
 
 ### Review 2 — [fable] Independent Fable 5 (2026-08-06): REJECT → resolved
 BLOCKER (sub-part texture 27 vs min 33; arc 7 vs min 12; atom share unreachable) → slot
