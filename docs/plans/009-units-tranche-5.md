@@ -263,6 +263,32 @@ property (no remote runner exists; the gate is ci-local.sh). Re-verdict requeste
   gensim-vocabulary sweep CLEAN, 42/42 asserts, float32-register presence confirmed in all
   10 weights-loading C7 solutions.
 
+### Review 3 — [opus] Independent Opus (2026-08-05)
+
+- **Verdict**: Changes requested → all findings fixed at commit `0cbfe87`, re-verdict pending
+- Duties: 10/10 notebooks + 42/42 solutions executed in its own runs; ~30 narration claims
+  verified; 12/12 blind-solves agree (4 proofs); p13 amendment judged SOUND (J≤r verified
+  against the actual resnet chain).
+1. `[FIXED]` [opus] Must Fix: C8 p14's starter code comment still read "theme 0: strings"
+   beside the amended prose. → "concert hall".
+2. `[FIXED]` [opus] Must Fix: C7 p18's rough spec read as dividing by 2×MAD; the reference
+   computes (dx+dy)/(2·scale) where /2 averages the axes. → Statement now states the
+   average-of-two-axes form with the formula inline; solution prose aligned; both re-executed.
+3. `[FIXED]` [opus] Should Fix: C8 asserts left numpy's DEFAULT rtol=1e-5 in force — the
+   float64 contract wasn't enforced (float32 bypass demonstrated on p05). → rtol=0 added to
+   every atol-stated isclose/allclose in 13 C8 solutions (all still PASS — anchors were
+   genuinely tight); the rtol-default hazard now TAUGHT in C8-02 Pitfall 4 and both review
+   habit lines.
+4. `[FIXED]` [opus] Should Fix: p18(c) amendment had over-corrected into giving the answer
+   away. → Reworded to ask via the displayed-vs-searched distinction without the conclusion.
+5. `[FIXED]` [opus] Should Fix: C8 p04 solution rationales vacuous. → Each trap traced
+   (A parallel-decode 1/1, B raw-dot 24/1, C dropped cross term 12/25, E off-by-two slip).
+6-13. `[FIXED]` [opus] Nits: p13 "probe you write below"; overview says span+telescoping;
+   p19 literal-arithmetic wording reconciled + p15/p16/p19 echo nelement/np.prod closers;
+   p10 divmod glossed; C7/C8 p03 distractors padded (length tell); C7 review's unused
+   torch imports → markdown reminder; C8 manifest drops matrices-as-linear-maps.
+   `[NOTED]` difficulty mix 27/50/23 within tolerance.
+
 ### Review 2 — [codex] GPT-5.6-terra (2026-08-05)
 
 - **Verdict**: Changes requested → **Approved** (re-verdict: p13 fix verified, no remaining findings)
