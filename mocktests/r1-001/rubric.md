@@ -1,5 +1,8 @@
 # r1-001 — Scoring Rubric (per-problem partial credit)
 
+> Grader note (p05-9): with full_matrices=True the sigma vector REMAINS shape (100,) —
+> only U widens to (220, 220). Do not expect a (220,) spectrum.
+
 # Mock Test r1-001: Rubric Fragments for Problems 1–4
 
 ## Problem 1

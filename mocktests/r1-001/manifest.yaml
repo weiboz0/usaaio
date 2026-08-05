@@ -18,6 +18,12 @@ generation_parameters:
     intro: 0.23
     core: 0.45
     advanced: 0.32
+  arc_precedent: 'r1-2026-p05 (STRUCTURAL: the embeddings->similarity->SVD->low-rank journey is the blueprint''s
+    rotation-index-0 mandated texture; per-sub-part provenance tags mark only direct item adaptations
+    — plan-011 gate ruling)'
+  engineering_register_precedent: 'r1-2026-p07/p08 (REGISTER: threshold/half-plane module builds and bottleneck/truncation
+    counting are the exam''s engineering register taught by units C5-C7; fresh geometry, widths, cuts,
+    and contracts throughout)'
 duration_minutes: 180
 total_points: 300
 time_budget:
@@ -125,7 +131,8 @@ problems:
   answer_form: multiple-choice
   provenance: adapted
   spec: '5-pt intro numeric normal-form MC: evaluate d/dx tanh(ax+b) at a point; gcd normal form p/q,
-    answer p+q.'
+    answer p+q. [Register note: adapted as a numeric normal-form MC from a reasoning-required derivation
+    source.]'
   adapted-from: r1-2026-p04-1
   answer_key: C
   files:
@@ -359,7 +366,8 @@ problems:
   type: theory
   answer_form: proof
   provenance: adapted
-  spec: '15-pt advanced reasoning-required: express S entrywise from W, prove symmetry and the unit diagonal.'
+  spec: '15-pt advanced reasoning-required: express S entrywise from W, prove symmetry and the unit diagonal.
+    [Register note: deepened — short-answer source adapted into a full reasoning-required proof.]'
   adapted-from: r1-2026-p05-6
   answer_key: S is symmetric and every diagonal entry is 1
   files:
@@ -432,7 +440,8 @@ problems:
   answer_form: proof
   provenance: adapted
   spec: '15-pt advanced reasoning-required: derive the rank-r relative squared Frobenius error of S_r
-    in terms of the sigma.'
+    in terms of the sigma. [Register note: deepened — construction source adapted into a full derivation
+    proof.]'
   adapted-from: r1-2026-p05-14
   answer_key: sum(sigma[r:]**4) / sum(sigma**4)
   files:

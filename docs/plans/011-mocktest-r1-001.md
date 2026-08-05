@@ -370,6 +370,37 @@ final ci at final status).
 
 ## Content Review
 
+### Review 2 — [codex] GPT-5.6-terra (2026-08-07)
+
+- **Verdict**: Changes requested → responses below, re-verdict pending
+- Blind-solve: 19/19 match (the full P5 chain + samples across all sections).
+1. `[WONTFIX-with-reasoning + FIXED-in-part]` [codex] Must Fix (provenance — more adapted
+   tags on the P5 chain and P7/P8): partially RELITIGATES the plan gate's arc-texture ruling
+   (fable ACCEPTED at re-verdict; codex APPROVED the plan carrying it): the arc journey is
+   the blueprint's rotation-mandated texture and the engineering patterns are the exam
+   REGISTER taught by units C5-C7 — register-instantiation with fresh data/geometry/numbers
+   is what a mock test IS; per-sub-part tags for structural kinship would also break the
+   0.7 original-share rule codex itself notes. FIXED-in-part: the kinship is now
+   acknowledged HONESTLY at the right level — generation_parameters.arc_precedent +
+   engineering_register_precedent entries record the structural/register lineage explicitly.
+   Cross-reviewer note: glm's parallel review argues two EXISTING tags overstate lineage —
+   the per-sub-part tag bar sits where the plan put it.
+2. `[FIXED]` [codex] Must Fix (real tooling bug): answerkey-check skipped the marker leg for
+   non-numeric keys — MC letters were never verified. → Universal marker leg + cell leg for
+   notebook-backed problems (theory sub-parts have no cell — documented); tests added.
+3. `[FIXED]` [codex] Should Fix: file-level semantic drift detection restored as a
+   WARNING-only per-file-pair cosine at a higher threshold (never affects exit code) —
+   keeps the granularity split while retaining paraphrase visibility.
+
+### Review 3 — [glm] GLM 5.2, theory+arc (2026-08-07)
+
+- **Verdict**: Approved with suggestions (6/6 blind-solves match incl. two proofs; fidelity
+  PASS on all three in-scope sections with the section-anchor mirroring verified).
+1. `[FIXED]` [glm] Register-change annotations: p02-1/p05-7/p05-11's adapted tags now carry
+   register notes in their manifest spec fields (numeric-MC-from-proof; deepened-to-proof ×2).
+2. `[FIXED]` [glm] p05-9 grader note added to rubric (full-SVD sigma stays (100,) — graders
+   must not expect (220,)).
+
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
 
 - **Verdict**: Approved
