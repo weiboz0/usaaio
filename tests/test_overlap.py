@@ -7,10 +7,19 @@ from tools.checks.overlap import check_overlap
 from tools.cli import print_report
 
 
-def write_manifest(root: Path, spec: str, provenance: str = "original", adapted_from: str = "") -> None:
+def write_manifest(
+    root: Path,
+    spec: str,
+    provenance: str = "original",
+    adapted_from: str = "",
+    files: list[str] | None = None,
+) -> None:
     test_dir = root / "mocktests" / "r1-001"
     test_dir.mkdir(parents=True)
     adapted_line = f"    adapted-from: {adapted_from}\n" if adapted_from else ""
+    files_block = ""
+    if files:
+        files_block = "    files:\n" + "".join(f"      - {path}\n" for path in files)
     test_dir.joinpath("manifest.yaml").write_text(
         f"""
 test: r1-001
@@ -31,6 +40,7 @@ problems:
     provenance: {provenance}
 {adapted_line}    spec: {json.dumps(spec)}
     answer_key: A
+{files_block}
 """
     )
 
@@ -98,6 +108,55 @@ def test_overlap_passes_original_fixture(tmp_path):
     assert check_overlap(tmp_path).ok
 
 
+def test_mock_cosine_ignores_mandated_register_boilerplate(tmp_path):
+    mock_register = """
+Total: 25 points.
+Part 2.3 (5 points)
+Reasoning is required.
+Coding is not allowed.
+- A. amber
+- B. birch
+- C. copper
+- D. dune
+- E. elm
+Write the result in the unique form p/q, where p and q are integers, q > 0, and gcd(p, q) = 1.
+What is p + q?
+"""
+    corpus_register = """
+- E. quartz
+- D. river
+- C. slate
+- B. timber
+- A. umber
+Coding is not allowed.
+Reasoning is required.
+Part 2.3 (5 points)
+Total: 25 points.
+Write your result in the unique form p/q, with relatively prime integers p and q and positive q.
+What is p+q?
+    """
+    write_reference(tmp_path, corpus_register + "classify basalt lanterns")
+    write_manifest(tmp_path, "fresh zephyr problem", files=["statement.md"])
+    statement = tmp_path / "mocktests" / "r1-001" / "statement.md"
+    statement.write_text(mock_register + "derive zephyr covariances")
+
+    report = check_overlap(tmp_path)
+
+    assert report.ok
+    assert not report.errors
+
+
+def test_mock_register_filter_preserves_real_content_detection(tmp_path):
+    copied = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda"
+    write_reference(tmp_path, f"Reasoning is required. Coding is not allowed. {copied}")
+    write_manifest(tmp_path, f"Coding is not allowed. Reasoning is required. {copied}")
+
+    report = check_overlap(tmp_path)
+
+    assert not report.ok
+    assert any("shingles=" in error for error in report.errors)
+
+
 def test_overlap_scans_unit_practice(tmp_path):
     copied = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda"
     write_reference(tmp_path, copied)
@@ -140,6 +199,17 @@ def test_overlap_units_shingle_only(tmp_path):
 
     assert report.ok
     assert not report.errors
+
+
+def test_mock_register_filter_leaves_unit_real_content_detection_unchanged(tmp_path):
+    copied = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda"
+    write_reference(tmp_path, copied)
+    notebook = write_notebook(tmp_path, "copied.ipynb", markdown=copied)
+
+    report = check_overlap(tmp_path)
+
+    assert not report.ok
+    assert any(str(notebook) in error for error in report.errors)
 
 
 def test_overlap_loud_skip_preserved(tmp_path, monkeypatch, capsys):

@@ -17,6 +17,18 @@ SHINGLE_THRESHOLD = 2
 COSINE_THRESHOLD = 0.35
 REMEDY = "reference corpus absent; run bash scripts/fetch-reference.sh"
 
+# Register mandated by mocktests/blueprint.yaml style_rules must not dominate
+# mock-test cosine similarity. These patterns intentionally cover only that register.
+MOCK_REGISTER_BOILERPLATE_PATTERNS = (
+    r"(?im)^\s*(?:\*\*)?Total:\s*\d+\s+points?\.?(?:\*\*)?\s*$",
+    r"(?i)(?:#+\s*)?Part\s+\d+\.\d+\s*\(\s*\d+\s+points?\s*\)",
+    r"(?i)\bReasoning\s+(?:is\s+)?(?:not\s+)?required\b[.;]?",
+    r"(?i)\bCoding\s+(?:is\s+)?(?:not\s+)?(?:allowed|required|needed)\b[.;]?",
+    r"(?im)^\s*[-*]?\s*(?:\*\*)?[A-E][.)](?:\*\*)?\s*",
+    r"(?im)\bWrite\s+[^\n]*?\s+in\s+the\s+unique\s+form\b[^\n]*",
+    r"(?i)\bWhat\s+is\s+\$?p\s*\+\s*q\$?\s*\?",
+)
+
 
 def _words(text: str) -> list[str]:
     return re.findall(r"[a-z0-9]+", text.lower())
@@ -39,6 +51,12 @@ def _without_boilerplate(text: str) -> str:
             continue
         lines.append(line)
     return "\n".join(lines)
+
+
+def _without_mock_register_boilerplate(text: str) -> str:
+    for pattern in MOCK_REGISTER_BOILERPLATE_PATTERNS:
+        text = re.sub(pattern, " ", text)
+    return text
 
 
 def _tf(text: str) -> Counter[str]:
@@ -160,10 +178,14 @@ def check_overlap(root: str | Path) -> Report:
     if skipped:
         return Report(name="overlap-scan", ok=True, skipped=skipped)
     corpus_texts = [text for _, text in corpus]
+    corpus_cosine_texts = [_without_mock_register_boilerplate(text) for text in corpus_texts]
     # Hoisted per-corpus precomputation: shingles per reference doc + document frequencies
     # (previously recomputed inside the per-problem loop — O(P x R x |corpus|)).
-    corpus_shingles = [(label, text, _shingles(text)) for label, text in corpus]
-    base_dfs = _corpus_dfs(corpus_texts)
+    corpus_shingles = [
+        (label, text, _shingles(text), _without_mock_register_boilerplate(text))
+        for label, text in corpus
+    ]
+    base_dfs = _corpus_dfs(corpus_cosine_texts)
     doc_count = len(corpus_texts) + 1
     errors: list[str] = []
     warnings: list[str] = list(corpus_failures)
@@ -173,9 +195,10 @@ def check_overlap(root: str | Path) -> Report:
             warnings.extend(text_warnings)
             text = _without_boilerplate(text)
             problem_shingles = _shingles(text)
-            for label, reference_text, reference_shingles in corpus_shingles:
+            cosine_text = _without_mock_register_boilerplate(text)
+            for label, _, reference_shingles, reference_cosine_text in corpus_shingles:
                 overlap = len(problem_shingles & reference_shingles)
-                cosine = _cosine(text, reference_text, doc_count, base_dfs)
+                cosine = _cosine(cosine_text, reference_cosine_text, doc_count, base_dfs)
                 if overlap >= SHINGLE_THRESHOLD or cosine >= COSINE_THRESHOLD:
                     hit = f"{manifest.path}: {problem.id} overlaps {label} (shingles={overlap}, cosine={cosine:.2f})"
                     if problem.provenance == "adapted" and problem.adapted_from:
@@ -186,7 +209,7 @@ def check_overlap(root: str | Path) -> Report:
     for path in sorted(root.glob("units/*/practice/*.ipynb")):
         text = _without_boilerplate(_notebook_text(path))
         notebook_shingles = _shingles(text)
-        for label, _, reference_shingles in corpus_shingles:
+        for label, _, reference_shingles, _ in corpus_shingles:
             overlap = len(notebook_shingles & reference_shingles)
             if overlap >= SHINGLE_THRESHOLD:
                 errors.append(f"{path} overlaps {label} (shingles={overlap})")
