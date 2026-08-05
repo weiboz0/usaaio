@@ -252,6 +252,14 @@ explicit sampling rule.
    matches the 2026 anchor; all named concepts spot-checked taught (dependent-rows eigen F6,
    bottleneck C7, GloVe C8, contract register C10).
 
+**GATE RESULT: PASS — 4/4** (claude-self AWN pre-empted; fable REJECT→AWN→resolved;
+glm REJECT→AWN→resolved; codex REJECT×4→APPROVE across five rounds — the spec table is now
+manifest-grade). Implementation may begin.
+
+### Review 9 — [codex] re-verdict 4 (2026-08-06): REJECT → fixed
+Surviving duplicate P5 tagged block replaced wholesale; table sole authority; grep-clean.
+Fifth verdict: **APPROVE**.
+
 ### Review 8 — [codex] re-verdict 3 (2026-08-06): REJECT → fixed
 Cluster-follows-concepts enforced: p05-8/p05-14 → linear-algebra; the LA overflow this
 caused (85 > 80) rebalanced by making p04-2 a calculus-multivar beat (sum-of-squares
