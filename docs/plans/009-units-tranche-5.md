@@ -204,6 +204,29 @@ C8 p18(c) rephrased to the pool-vs-displayed-top-5 form. All 42 solutions re-exe
 of transfer heads only). Image datasets/augmentation (C7 uses synthetic tensors + the pretrained
 weights themselves; no HuggingFace pulls). SVD/low-rank (C9's — C8 stops at the Gram matrix).
 
+## Post-Execution Report (2026-08-05)
+
+**Shipped:** C7-cnn-transfer and C8-embeddings at the v2 bar — **12 of 16 syllabus units live.**
+- Per unit: 3 lesson sessions + overview + review + practice with solutions (C7: 22 problems,
+  5 flagged dual-tags; C8: 20 problems, 1 dual-tag). 42 new gate-verified problems (259 repo-wide).
+- **Deps:** torchvision **0.28.0+cpu** (resolved from the pinned explicit pytorch index without
+  bumping torch 2.13.0+cpu) + gensim **4.4.0**; artifacts cached under gitignored
+  reference/cache/ (resnet50 IMAGENET1K_V1 = 25,557,032 params; glove-wiki-gigaword-100
+  400k×100). Split-by-library cache headers keep C8 torch-string-free.
+- **Split-author:** 42/42 reconciliation, zero re-solves (project cumulative **221/221**);
+  3 solver-flagged ambiguities closed as answer-preserving amendments.
+- **Corpus duty:** PASS (P6/P8/P5 arcs — inverted-device and fresh-geometry strategies).
+- **Content gate:** 4/4 after 2 codex + 3 opus + 2 glm rounds; ~24 findings resolved. Standouts:
+  opus's rtol=0 catch (numpy's default rtol silently voided the float64 contract — 13 solutions
+  tightened, all still pass) and two fix-introduced defects caught by re-verify passes.
+- **Process lessons recorded:** full-scope opencode reviews exceed its 20-min internal timeout —
+  dispatch per-unit, audit staged executed copies instead of executing; regex edits to prose
+  are dangerous — read the sentence after every mechanical insertion.
+- **Verification:** five checks PASS; ci-local ALL GREEN (fresh run at merge HEAD).
+
+**Next:** plan 010 — F6-svd-spectral (double-length) + C9-dimensionality-reduction +
+C10-competition-craft, completing the 16-unit curriculum; then 011 mock test r1-001.
+
 ## Plan Review
 
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-04)
