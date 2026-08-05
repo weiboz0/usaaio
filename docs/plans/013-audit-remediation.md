@@ -130,6 +130,36 @@ Plan 014 (enrichment: synthesis set, clinics, softmax/cross-entropy, bias-varian
 callback, covariance/underfitting items). B4 (recorded above). Mock-test edits beyond
 none. Watch-list topics.
 
+## Post-Execution Report (2026-08-05)
+
+**Shipped:** the audit's corrective tranche — two permanent guards, a 434-site contract
+retrofit, a 65-problem register retrofit, five defect fixes, four new vocabulary ids with
+teaching + practice, and six ceiling-raising problems.
+- **New machine checks (permanent):** `tolerance-check` — every tolerance-family call must
+  state atol AND rtol, scanning **763 notebooks** across `units/**` + `mocktests/**` (the
+  filename allowlist was removed after the gate showed it could silently exempt future
+  paths); `coverage-check` upgraded from ≥1 to **≥3 practice per taught concept** (the v2
+  rule was reviewer-enforced prose until now); `verify-register.py` wired into ci, checking
+  **337 problems** repo-wide (it began as a hardcoded 65-problem snapshot).
+- **Retrofit:** 434 sites re-contracted; an independent reviewer proved the change set
+  MONOTONE-TIGHTENING across all 629 then-existing sites with exactly one loosening — the
+  recorded C5-p16 disposition (cross-build accumulation noise measured at ~5e-9; contract
+  set to 1e-6, still ~6000× tighter than the pre-retrofit slack). 12 further sites found in
+  lessons once the guard's scope widened.
+- **Register:** 65 tranche-1 problems now carry manifest-generated headers, reasoning flags
+  (4 inversions corrected), priced ban clauses, and the exam's `A.` option form.
+- **Vocabulary:** syllabus 105 → 109 (`tensor-shape-tracing`, `tabular-feature-engineering`,
+  `normal-form-answers`, `api-constraint-compliance`), each taught in a new lesson section
+  and machine-verified at ≥3 practice.
+- **Content:** 18 new problems (337 total), reconciled 18/18 blind with zero ambiguities.
+- **Gate value:** the round's decisive catches were things no check could see — a leakage
+  audit that compared a student-assigned number to itself (found independently by two
+  reviewers), a verification cell that printed the answers it graded, 12 statements with
+  duplicated ban clauses, and a `zip()` that silently passed a short answer.
+
+**Next:** plan 014 (enrichment: synthesis set, clinics, softmax/cross-entropy, callbacks),
+which also inherits the deferred ci-lesson-execution question.
+
 ## Plan Review
 
 ### Review 1 — [claude-self] Claude Fable 5, inline (2026-08-07)
@@ -190,6 +220,11 @@ the decode drills use fresh fractions; register-instantiation only. Verification
 coverage (≥3 machine-enforced, incl. the 4 new ids), hygiene, tolerance — ALL PASS.
 
 ## Content Review
+
+**GATE RESULT: PASS — 4/4** (claude-self Approved; codex CR→CR→Approved across three rounds;
+opus CR→Approved-with-suggestions, its re-verdict notes fixed; glm Approved (retrofits/
+tooling) + Approved-with-suggestions (new content)). All blockers closed; the two deep
+reviewers independently converged on C4-p22's vacuous audit.
 
 ### Review 2 — [codex] GPT-5.6-terra (2026-08-08)
 
