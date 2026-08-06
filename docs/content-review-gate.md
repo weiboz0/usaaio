@@ -8,7 +8,7 @@ The pre-PR quality gate for teaching content and mock tests
 | # | Reviewer | Dispatch | Model |
 |---|----------|----------|-------|
 | 1 | Self-review | active session inline | active session model |
-| 2 | Sol reviewer | fresh read-only subagent (request `--model gpt-5.6-sol`) | GPT-5.6-sol |
+| 2 | Opus reviewer | `claudecode:claudecode-review` subagent, fresh and read-only (request `--model claude-opus-5`) | Claude Opus 5 |
 | 3 | Terra reviewer | separate fresh read-only subagent (request `--model gpt-5.6-terra`) | GPT-5.6-terra |
 | 4 | GLM | `opencode:opencode-review` subagent, read-only | opencode-go/glm-5.2 |
 
@@ -41,7 +41,7 @@ Findings append to the plan file's `## Content Review`, one review round per rev
     1. `[OPEN]` Finding with file/section reference. Priority: Must Fix / Should Fix / Nice to Have.
 
 Authors respond inline with `→ Response:` and retag `[FIXED]` / `[WONTFIX]` (with reason).
-Source tags: `[self]` / `[sol]` / `[terra]` / `[glm]`.
+Source tags: `[self]` / `[opus]` / `[terra]` / `[glm]`.
 
 ## Acceptance
 

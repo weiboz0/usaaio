@@ -81,13 +81,13 @@ while the named plan is unshipped.
 | # | Reviewer | Dispatch | Model |
 |---|----------|----------|-------|
 | 1 | Self-review | active session inline; record in `## Plan Review` | active session model |
-| 2 | Sol reviewer | fresh read-only subagent (request `--model gpt-5.6-sol`) | GPT-5.6-sol |
+| 2 | Opus reviewer | `claudecode:claudecode-review` subagent, fresh and read-only (request `--model claude-opus-5`) | Claude Opus 5 |
 | 3 | Terra reviewer | separate fresh read-only subagent (request `--model gpt-5.6-terra`) | GPT-5.6-terra |
 | 4 | GLM | `opencode:opencode-review` subagent, read-only | opencode-go/glm-5.2 |
 
 Dispatch 2–4 in parallel with the inline self-review (one message).
 Consensus is full blocking: all four APPROVE / APPROVE WITH NITS, no open blockers.
-Verdicts recorded in the plan file's `## Plan Review`, tagged `[self]` / `[sol]` /
+Verdicts recorded in the plan file's `## Plan Review`, tagged `[self]` / `[opus]` /
 `[terra]` / `[glm]`.
 Reviewers MUST REJECT a plan shipping units/mock tests without a named verification phase
 (design §2 "verification phase" rule; docs-only and tooling-only plans state the exemption
@@ -95,9 +95,9 @@ in `## Out of scope`).
 
 ## Content-review gate (mandatory — 4-way, pre-PR)
 
-Same roster: active-session self-review, GPT-5.6-sol, GPT-5.6-terra, and GLM-5.2.
+Same roster: active-session self-review, Claude Opus 5, GPT-5.6-terra, and GLM-5.2.
 Duties and format: `docs/content-review-gate.md`.
-Findings tagged `[self]` / `[sol]` / `[terra]` / `[glm]` with
+Findings tagged `[self]` / `[opus]` / `[terra]` / `[glm]` with
 `[OPEN]` / `[FIXED]` / `[WONTFIX]` in the plan file's `## Content Review`;
 all `[OPEN]` resolve before merge.
 

@@ -464,7 +464,8 @@ counts reconciled to the manifests.
 ## Phase 8 — Four-way content gate and delivery
 
 1. Run the required four-way content-review gate from a clean implementation commit:
-   active-session self-review, GPT-5.6-sol, GPT-5.6-terra, and GLM-5.2.
+   active-session self-review, Claude Opus 5 (`claude-opus-5`), GPT-5.6-terra, and
+   GLM-5.2.
    Every reviewer reads the final diff, checks source/solution isolation, and blind-solves
    every changed or new student-facing statement before reading its solution.  Risk-selected
    deep checks may supplement but never replace the all-problem duty.
@@ -504,7 +505,11 @@ counts reconciled to the manifests.
   `overview.ipynb` files.  Every affected existing/new unit index is now correctly named
   `lesson.ipynb`, matching the shipped unit standard and repository layout.
 
-### Review 2 — GPT-5.6-sol
+### Review 2 — Claude Opus 5
+
+- **Status:** pending after the reviewer-roster change requested during Phase 0.
+
+### Supplemental review — GPT-5.6-sol (pre-roster change)
 
 - **First verdict:** REJECT.
 - `[sol] [FIXED]` Phase 6 confused 21 syllabus concepts with 17 atomic coverage targets.
@@ -552,8 +557,10 @@ counts reconciled to the manifests.
   All three are now pinned above.
 - **Final verdict:** APPROVE WITH NITS; all nits are fixed above.
 
-**GATE RESULT: PASS — 4/4.** Self APPROVE, Sol APPROVE WITH NITS, Terra APPROVE, and
-GLM-5.2 APPROVE WITH NITS; every finding and nit is resolved in the plan.
+**GATE RESULT: PENDING AFTER ROSTER CHANGE.** The original self/Sol/Terra/GLM gate passed,
+but the user replaced the redundant Sol slot with Claude Opus 5 while Phase 0 was under
+review.  Phase 1 cannot start until Opus reviews the final plan and the new roster reaches
+4/4.
 
 ## Content Review
 
