@@ -116,9 +116,12 @@ no new content tree is needed).
 
 - **id** F6-p25 · **set** C · **type** integrative · **difficulty** advanced
 - **concepts** `[gram-matrices, spectral-decomposition, low-rank-approximation,
-  frobenius-norm]` — `gram-matrices` is F3's, a LEGAL foreign tag (F3 is F6's prereq) and the
-  first cross-unit tag in the corpus to be exercised in an integrative chain; the new
+  frobenius-norm]` — `gram-matrices` is F3's, a LEGAL foreign tag (F3 is F6's prereq); the new
   problem-level closure guard validates it.
+  *(Gate correction, `[glm]`: an earlier draft called this "the first cross-unit tag in the
+  corpus to be exercised in an integrative chain." That is false after the retag pass — C9-p14,
+  F6-p17 and C7-p16 all do exactly that. The accurate claim is that p25 is the first problem
+  AUTHORED as a purpose-built cross-unit synthesis problem.)*
 - **The chain (each part consumes the previous, exam-arc texture):**
   (a) from a fresh seeded W (shape (9, 4), integer entries), build the Gram matrix
   `S = W Wᵀ` in F3's register — `@`, `np.matmul`, `np.dot` BANNED (zero points), broadcasting
@@ -365,7 +368,155 @@ All six re-executed locally 6/6; prereq/coverage/hygiene/tolerance/blueprint PAS
 
 ## Content Review
 
-(Pre-PR gate findings land here.)
+Roster: `[claude-self]` inline · `[codex]` gpt-5.6-terra · `[opus]` independent Agent ·
+`[glm]` opencode, dispatched twice by scope (A = the six new statements, B = retag pass +
+docs/standards + plan-file consistency).
+Round-1 verdicts: `[glm-A]` REJECT · `[codex]` REJECT · `[glm-B]` APPROVE WITH NITS ·
+`[opus]` REJECT.
+
+**Blind-solve reconciliation.** `[opus]` independently solved all six new problems before
+reading any solution and agreed with the shipped answer on every one, including F6-p25's four
+nonzero eigenvalues, C3-p19's five diagnoses, C7-p27's three tuples, C9-p19's r* = 4, C1-p24,
+and F5-p19's covariance-zero-but-dependent witness. **No answer-key disagreement was found by
+any reviewer.** Every finding below is structural — which is the point worth recording: the
+answers were right and the instruments around them were not.
+
+### Blockers
+
+- `[opus]` **F6-p25 was a near-isomorph of F6-p17, eight problems away in the same unit.**
+  p17 already grades a Gram `S = WWᵀ` from a tall-thin seeded `W`, `eigh` plus the pinned
+  `[::-1]` reorder, the nonzero count *with a written justification required before running the
+  code*, a reconstruction gap, an `np.cumsum` budget beat, and a Frobenius tie-out. p25 repeated
+  essentially all of it at (9,4). p17's own solution even contains p25's full-column-rank
+  argument verbatim. Root cause: the corpus duty was run against the mock and against the
+  external reference corpus, and never against the unit's own neighbours — and `overlap-scan`
+  cannot catch this, because it scans only the external corpus, never intra-repo.
+  **[FIXED]** p25 was re-authored on a **rank-deficient** `W`, so the shape-only prediction is
+  genuinely wrong (shape gives a lower bound of five; the true count is six) and the punchline
+  becomes *the rank is the ceiling, not the column count*. See the reconciliation note below.
+- `[opus]` `[glm-A]` `[claude-self]` **C9-p19's test → validation relabel had been applied to
+  the statement only.** The solution still restated a "held-out **test** split", a "test
+  accuracy" column, "train-test gap", and closed with a caveat about "the table's word `test`"
+  that the corrected table no longer contains. **[FIXED]** — relabelled throughout, and the
+  caveat rewritten rather than deleted so the hidden-test point survives against the new text.
+- `[glm-A]` **F6-p25's answer scaffold declared three stale names** (`r_star`, `budget_ok`,
+  `minimality_ok`) left from the superseded budget beat, while omitting all three variables the
+  prose required. A student following the scaffold could not satisfy the problem's own contract.
+  **[FIXED]** (and superseded by the re-authoring).
+
+### Instrument integrity — the C3-p19 cluster
+
+- `[opus]` **The graded answer was the identity permutation.** `derive_fault_code` returned
+  `[0,1,2,3,4]` in exactly the order the statement listed the five canonical strings, so
+  assigning the bullets top-to-bottom scored `all_agree: True` without reading a single trace.
+  **[FIXED]** — transcripts re-ordered to `[2,4,0,3,1]`, bullet list shuffled independently,
+  naive assignment verified to fail, blind guess now 1/120.
+- `[opus]` **Transcript A was not diagnosable from its trace.** It satisfied both the
+  `eta-too-large` and `un-zeroed-accumulator` rules and returned the former only because that
+  branch was tested first; neither trace exposed the growing effective step that is the
+  accumulator's real signature, so A and D were separable only by elimination.
+  **[FIXED]** — added `step_over_eta_grad` (1.0 when the update uses the current gradient alone;
+  1,2,3,4,5 when gradients accumulate). Every transcript now matches **exactly one** signature,
+  asserted by the grader, so the verdict no longer depends on branch order.
+- `[opus]` `[glm-A]` **Positional feedback and an honor-only artifact ban.** `agreement` printed
+  per-position, recoverable in a few re-runs, and `derive_fault_code` read a student-mutable
+  global. **[FIXED]** — single `all_agree` verdict plus a SHA-256 checksum of the transcripts.
+- `[opus]` **C7-p27's `prediction_frozen` and `prediction_inference` were both
+  `(False, False, True)`**, leaving the problem's own thesis — that the three controls are
+  independent — unmeasured. **[FIXED]** — a fourth observable, `torch.is_inference(output)`,
+  separates them; per-case feedback likewise collapsed to `all_agree`.
+
+### Tag honesty — the plan's highest-risk surface
+
+Seven decorative tags were found by hand across three reviewers and removed. All were added by
+this plan's own retag pass, and all were coverage-verified safe before removal.
+
+| Problem | Tag | Found by |
+|---|---|---|
+| C4-p14 | `accuracy-precision-recall` (computes accuracy only) | `[codex]` |
+| F4-p18 | `aggregation-axis` (flat-index argmin by design) | `[codex]` `[claude-self]` |
+| F5-p07 | `aggregation-axis` (1-D `.sum()`) | `[codex]` `[claude-self]` |
+| C7-p06 | `aggregation-axis` | `[claude-self]` |
+| C9-p06 | `broadcasting`, `aggregation-axis` | `[claude-self]` |
+| C10-p16 | `overfitting` (the diagnoses are protocol violations) | `[glm-B]` |
+| C7-p27 | `resnet-architecture` (no residual, block, or skip) | `[opus]` |
+
+**[FIXED]** all seven. Two structural points are worth recording:
+
+1. `[claude-self]` **The retag manufactured no coverage.** Measured across all 16 manifests,
+   **zero** taught concepts crossed the ≥3 threshold as a result of this branch. Because
+   coverage is counted per-manifest and all 332 added tags are *foreign* concepts, a cross-unit
+   tag adds a prerequisite obligation and no coverage credit. `[glm-B]` reached the same
+   conclusion independently. The tags therefore cannot have been motivated by coverage gaming —
+   but that also means nothing mechanical was defending their honesty.
+2. `[codex]` **`prereq-check`'s `concepts_used` leg is manifest consistency, not honesty.** It
+   cannot see a decorative tag, which is precisely why all seven had to be found by hand.
+   **[WONTFIX — deferred with a named owner]**: real per-problem evidence for each foreign tag
+   is its own plan; recorded in `TODO.md`.
+
+### Standards — the band amendment, rejected 3-0
+
+`[opus]` `[codex]` `[glm-B]` independently rejected the concept-scaled ceiling this plan
+proposed, and independently showed its rationale was arithmetically wrong: the ≥3 rule obliges
+C7 to 30 taught-concept instances, and C7 already delivers 34 of them across 27 problems at
+2.48 tags per problem, so 24 problems was never the binding constraint. `[glm-B]` further noted
+the formula reintroduced the same contradiction for any hypothetical >13-concept unit, and that
+the plan refused to break the band for C5 while breaking it for C7 in the same document.
+
+**[FIXED]** The amendment is reverted. `[opus]`'s alternative was adopted because it uses a
+mechanism the standards already had: C7 takes the existing **24–30 double-length band** via
+`length: double` in `syllabus.md`, earned on load (10 taught concepts and 672 practice minutes,
+both corpus maxima — F6 holds the same marking on lesson load). `docs/unit-standards.md` records
+the general lesson: when a unit overflows the band, ask whether it is genuinely double-length,
+not whether the band should be wider. The real question — whether 10 concepts is too many for
+one unit — is a *capacity* decision and is deferred, with C5's identical question, to `TODO.md`.
+
+### Tooling
+
+- `[codex]` **`verify-register.py` printed "343/343 passed" while enforcing header equality for
+  3 of 16 units.** Assurance far stronger than the check delivered, and this plan's retag rests
+  entirely on headers agreeing with manifests. **[FIXED]** — repo-wide, with concepts and
+  difficulty compared exactly and type by prefix (the corpus legitimately writes both the raw
+  manifest id and the expanded label). Corruption-tested against C6, a unit the old check
+  ignored entirely. Enabling it surfaced no real drift once blank-line and type-label variance
+  were handled correctly.
+- `[codex]` `ci-local.sh` lesson discovery swallowed `find` failures, so an unreadable subtree
+  would have produced a green run that executed nothing. **[FIXED]**.
+- `[codex]` **Practice-problem closure admits any concept the unit teaches anywhere**, so a
+  concept taught in a later session can satisfy an earlier problem — weaker than the
+  session-granular integrity `docs/course-structure.md` §7 claims. **[WONTFIX — deferred with a
+  named owner]**: needs an ordered lesson/concept model; recorded in `TODO.md`.
+
+### Content
+
+- `[opus]` **C1-p24's model answer recommended a "two-feature decision tree".** No tree, forest,
+  or boosting concept exists anywhere in the 109-concept syllabus. Self-containedness is law.
+  **[FIXED]** — rewritten to stay in register.
+- `[opus]` **F5-p19's preamble announced part (c)'s answer**, declaring the Rademacher
+  substitution invalid before (c) asks the student to determine it. **[FIXED]**.
+- `[claude-self]` The F6-p25 statement amendment left a dangling clause splitting
+  "set `predicted_zero_count` … and `observed_zero_count`". **[FIXED]**, then superseded.
+
+### Accepted without change
+
+- `[opus]` A live kernel retains `lam_desc` across re-runs, so F6-p25's no-peeking constraint
+  is structural but not airtight. **[WONTFIX]** — inherent to the notebook format; the
+  precommit slot is the strongest available mitigation.
+- `[glm-B]` The retag certifies tool-level competence (broadcasting, aggregation) alongside
+  conceptual integration, a weaker notion than the original synthesis-set spec. Recorded as an
+  accurate characterization rather than a defect; the plan states the shrink explicitly.
+
+### Process findings against this gate itself
+
+- `[opus]` **Artifacts were modified mid-round.** F6-p25 was fixed after the briefing was issued
+  and after `.gate14-executed/` was captured, so the narration-vs-output duty for p25 was posed
+  against a snapshot that no longer ships. `[glm-B]` independently flagged the stale copy.
+  Accepted as a real process defect. Round 2 re-stages the executed copies first and gates the
+  re-authored p25 against them.
+- `[glm-B]` The briefing cited `mocktests/r1-001/problems/p05-p09.ipynb`; the file is `p05.ipynb`
+  (`[opus]` flagged the same). Briefing error, corrected for round 2.
+- `[glm-B]` The plan claimed p25 carried "the first cross-unit tag exercised in an integrative
+  chain" — false after the retag. **[FIXED]** in place, with the accurate claim substituted.
 
 ## Out of scope
 
