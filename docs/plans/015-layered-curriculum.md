@@ -448,23 +448,28 @@ The audit report and roadmap end with this ordered queue.
 Do not reserve plan numbers in advance; the next plan takes the next free number after
 running the collision guard.
 
-1. **Round 1 mathematical completion:** conditional probability, Bayes, Hoeffding,
-   closed-form linear-regression estimator, rank/pseudoinverse conditions, PCA eigenproblem
-   and NumPy class, PSD/kernel proofs, convexity, constrained optimization, and duality.
+1. **Round 1 foundation, workflow, and mathematical completion:** first close F1 seaborn
+   and C10 Colab/Markdown/round-policy gaps; then add conditional probability, Bayes,
+   Hoeffding, the closed-form linear-regression estimator with rank/pseudoinverse conditions,
+   the PCA eigenproblem and NumPy class, PSD/kernel proofs, convexity, constrained
+   optimization, and duality.
 2. **Round 1 neural-training completion:** reuse the shipped manual forward-propagation
    prerequisite, then add softmax, cross-entropy, manual backpropagation, a trained fully
-   connected network from scratch, and PyTorch autograd/optimizers;
-   BatchNorm and dropout receive explicit concept ownership and practice.
+   connected network from scratch, complete C6 model training through PyTorch
+   autograd/optimizers, and add C7 CNN training; BatchNorm and dropout receive explicit
+   concept ownership and practice.
 3. **Round 1 classical-model breadth:** logistic regression, SVM, decision trees,
    ensembles, and k-means, with comparison and implementation exercises.
 4. **Round 2 transformers and NLP:** self/multi-head attention, positional encoding,
-   transformer architecture and complexity, from-scratch attention, NLP applications,
-   pre-training, and fine-tuning.
+   transformer architecture and complexity, from-scratch attention,
+   LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP
+   applications, pre-training, and fine-tuning.
 5. **Round 2 advanced vision and generative modeling:** object detection, UNet,
    autoencoders/VAE, GAN, DDPM, and Stable Diffusion; multivariate Gaussian,
    reparameterization, and KL are taught before their consumers.
-6. **Round 2 open-ended/GPU capstone:** inverse problems, image tasks, mixture-parameter
-   estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
+6. **Round 2 open-ended/GPU capstone:** semi-supervised/pseudo-label image learning,
+   inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU
+   workflow, and model evaluation.
 
 Each future tranche must read the final Plan 015 coverage rows, own a closed prerequisite
 slice, update both the shipped syllabus and roadmap atomically, add ≥3 honest practices per
