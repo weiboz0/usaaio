@@ -107,6 +107,40 @@ synthesis can never rescue a unit's ≥3.**
 `docs/unit-standards.md` gains a short "Synthesis set" section defining the contract, AND its
 stale "coverage-check enforces ≥1" line is corrected to ≥3 (plan 013 made it machine-enforced).
 
+## Task 1b — The one residual synthesis problem: **F6-p25** (fully specified)
+
+The s01 arc is the only one the retag audit could not close: F6-p09/p17/p21 stop at spectral
+reconstruction, so `low-rank-approximation` never joins a Gram→spectrum chain in one graded
+problem. Placed IN-UNIT (F6 holds 24 problems; the double-unit band is 24-30, so p25 fits and
+no new content tree is needed).
+
+- **id** F6-p25 · **set** C · **type** integrative · **difficulty** advanced
+- **concepts** `[gram-matrices, spectral-decomposition, low-rank-approximation,
+  frobenius-norm]` — `gram-matrices` is F3's, a LEGAL foreign tag (F3 is F6's prereq) and the
+  first cross-unit tag in the corpus to be exercised in an integrative chain; the new
+  problem-level closure guard validates it.
+- **The chain (each part consumes the previous, exam-arc texture):**
+  (a) from a fresh seeded W (shape (9, 4), integer entries), build the Gram matrix
+  `S = W Wᵀ` in F3's register — `@`, `np.matmul`, `np.dot` BANNED (zero points), broadcasting
+  + axis sums only; assert symmetry and the rank ceiling.
+  (b) spectral-decompose S with `np.linalg.eigh` + the pinned `[::-1]` reorder; report
+  `lam_desc`; assert the reconstruction `‖QΛQᵀ − S‖_F` below a stated tolerance
+  (atol stated, rtol=0).
+  (c) show numerically that S's nonzero eigenvalues equal the squares of W's singular values
+  (the F6-03 bridge) — assert elementwise agreement over the nonzero block only, with the
+  zero-block handled by the invariant route (never a column-wise comparison).
+  (d) rank-r truncation of S for r = 1..4 computed FROM THE SPECTRUM (tail identity, one
+  `cumsum`; building any S_r explicitly is BANNED, zero points); report `rel_err2`.
+  (e) the budget question: smallest r with relative squared error ≤ 0.05, with the two-sided
+  certificate asserted.
+  (f) one written part: why the Gram route bounds the achievable rank, and what that implies
+  for the storage argument.
+- **Answer check** closes with asserts pinning `lam_desc`, the bridge gap, `rel_err2`, and
+  `r_star`; all tolerance calls state atol AND rtol (the guard enforces it).
+- **Fresh content:** seeded W distinct from every existing F6/C9 matrix (grep-verify before
+  fixing constants); the chain must NOT reproduce r1-001's P5 beats — the orchestrator records
+  the per-arc comparison verdict required by the gate.
+
 ## Task 2 — Error clinics (2 problems + 1 section) — PLACEMENTS PINNED (gate finding:
 "C3 (or C5)" / "C9 or C5" left curriculum placement to drafters)
 
