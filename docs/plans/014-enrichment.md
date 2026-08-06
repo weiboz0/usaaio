@@ -50,6 +50,12 @@ the residual arcs, and Task 1's tooling shrinks accordingly. Record the verdict 
 > three otherwise-qualifying candidates (F3-p16, F4-p13, C2-p18) were REJECTED for violating
 > prereq closure.
 >
+> **Authority for the change:** this is not a unilateral scope edit — Task 0b's
+> gate-approved decision rule states verbatim that "if the audit finds ≥4 arcs coverable by
+> retagging, this plan drops to a retagging pass plus the residual arcs, and Task 1's tooling
+> shrinks accordingly." Five arcs qualified, so the reduction is the approved plan executing
+> as written. Recorded here so a later reader does not mistake it for drift.
+>
 > **CONSEQUENCE — this plan shrinks:** no `synthesis/` tree of six arcs. Task 1 becomes a
 > retagging pass plus ONE synthesis problem, and the eight-consumer tooling work reduces
 > accordingly (a single problem still needs a home; it is placed as **F6-p25** inside the
