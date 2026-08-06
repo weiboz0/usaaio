@@ -43,7 +43,7 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [matrices-as-linear-maps]
+  concepts: [matrices-as-linear-maps, vectors-and-norms, broadcasting, aggregation-axis]
   path: practice/p05.ipynb
   solution_path: practice/p05_solution.ipynb
 - id: F3-p06
@@ -57,49 +57,49 @@ practice:
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [matrix-multiplication, gram-matrices]
+  concepts: [matrix-multiplication, gram-matrices, dot-product, broadcasting, aggregation-axis]
   path: practice/p07.ipynb
   solution_path: practice/p07_solution.ipynb
 - id: F3-p08
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [matrix-from-action]
+  concepts: [matrix-from-action, broadcasting, aggregation-axis]
   path: practice/p08.ipynb
   solution_path: practice/p08_solution.ipynb
 - id: F3-p09
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [outer-products]
+  concepts: [outer-products, broadcasting]
   path: practice/p09.ipynb
   solution_path: practice/p09_solution.ipynb
 - id: F3-p10
   set: B
   type: constrained-coding
   difficulty: advanced
-  concepts: [gram-matrices]
+  concepts: [gram-matrices, vectors-and-norms, cosine-similarity, broadcasting, aggregation-axis]
   path: practice/p10.ipynb
   solution_path: practice/p10_solution.ipynb
 - id: F3-p11
   set: B
   type: proof
   difficulty: advanced
-  concepts: [outer-products, rank]
+  concepts: [outer-products, rank, broadcasting]
   path: practice/p11.ipynb
   solution_path: practice/p11_solution.ipynb
 - id: F3-p12
   set: B
   type: proof
   difficulty: advanced
-  concepts: [linear-independence-span, invertibility-via-rank]
+  concepts: [linear-independence-span, invertibility-via-rank, broadcasting, aggregation-axis]
   path: practice/p12.ipynb
   solution_path: practice/p12_solution.ipynb
 - id: F3-p13
   set: C
   type: integrative
   difficulty: advanced
-  concepts: [matrix-from-action, matrix-multiplication, outer-products]
+  concepts: [matrix-from-action, matrix-multiplication, outer-products, broadcasting]
   path: practice/p13.ipynb
   solution_path: practice/p13_solution.ipynb
 - id: F3-p14
@@ -113,7 +113,7 @@ practice:
   set: C
   type: scenario
   difficulty: core
-  concepts: [matrices-as-linear-maps, matrix-from-action]
+  concepts: [matrices-as-linear-maps, matrix-from-action, broadcasting, aggregation-axis]
   path: practice/p15.ipynb
   solution_path: practice/p15_solution.ipynb
 - id: F3-p16
@@ -127,14 +127,14 @@ practice:
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [outer-products, matrix-from-action, rank]
+  concepts: [outer-products, matrix-from-action, rank, broadcasting]
   path: practice/p17.ipynb
   solution_path: practice/p17_solution.ipynb
 - id: F3-p18
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [linear-independence-span, rank, invertibility-via-rank]
+  concepts: [linear-independence-span, rank, invertibility-via-rank, broadcasting, aggregation-axis]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb
 - id: F3-p19

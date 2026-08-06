@@ -3,7 +3,7 @@ concepts_taught: [supervised-vs-unsupervised, clustering-concept, train-test-spl
                   bias-variance-intuition, accuracy-precision-recall, f1-score, f1-macro,
                   class-imbalance]
 concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, aggregation-axis,
-                random-seeding, matplotlib-basics]
+                random-seeding, matplotlib-basics, broadcasting]
 prereq_units: [F1-scientific-python]
 estimated_minutes:
   lesson: 240
@@ -33,7 +33,7 @@ practice:
   # --- Set C: integration + challenge ---
   - {id: C1-p08, type: scenario, set: C, concepts: [class-imbalance, accuracy-precision-recall], difficulty: core, path: practice/p08.ipynb, solution_path: practice/p08_solution.ipynb}
   - {id: C1-p13, type: integrative, set: C, concepts: [f1-macro, accuracy-precision-recall, class-imbalance], difficulty: core, path: practice/p13.ipynb, solution_path: practice/p13_solution.ipynb}
-  - {id: C1-p14, type: challenge, set: C, concepts: [accuracy-precision-recall, f1-score, train-test-split], difficulty: advanced, path: practice/p14.ipynb, solution_path: practice/p14_solution.ipynb}
+  - {id: C1-p14, type: challenge, set: C, concepts: [accuracy-precision-recall, f1-score, train-test-split, broadcasting, aggregation-axis, matplotlib-basics], difficulty: advanced, path: practice/p14.ipynb, solution_path: practice/p14_solution.ipynb}
   - {id: C1-p20, type: integrative, set: C, concepts: [train-test-split, overfitting, accuracy-precision-recall], difficulty: core, path: practice/p20.ipynb, solution_path: practice/p20_solution.ipynb}
   - {id: C1-p21, type: scenario, set: C, concepts: [supervised-vs-unsupervised, clustering-concept], difficulty: core, path: practice/p21.ipynb, solution_path: practice/p21_solution.ipynb}
   - {id: C1-p22, type: challenge, set: C, concepts: [clustering-concept], difficulty: advanced, path: practice/p22.ipynb, solution_path: practice/p22_solution.ipynb}

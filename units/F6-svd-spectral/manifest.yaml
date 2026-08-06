@@ -72,7 +72,7 @@ practice:
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [spectral-decomposition]
+  concepts: [spectral-decomposition, outer-products]
   path: practice/p09.ipynb
   solution_path: practice/p09_solution.ipynb
 - id: F6-p10
@@ -128,7 +128,7 @@ practice:
   set: C
   type: integrative
   difficulty: core
-  concepts: [spectral-decomposition]
+  concepts: [spectral-decomposition, gram-matrices, rank]
   path: practice/p17.ipynb
   solution_path: practice/p17_solution.ipynb
 - id: F6-p18
@@ -156,14 +156,14 @@ practice:
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [svd]
+  concepts: [svd, gram-matrices, matrix-multiplication, orthogonality-orthonormality]
   path: practice/p21.ipynb
   solution_path: practice/p21_solution.ipynb
 - id: F6-p22
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [eigenvalues-eigenvectors]
+  concepts: [eigenvalues-eigenvectors, vectors-and-norms, unit-vectors, dot-product, matrix-multiplication]
   path: practice/p22.ipynb
   solution_path: practice/p22_solution.ipynb
 - id: F6-p23

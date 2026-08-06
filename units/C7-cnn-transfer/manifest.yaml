@@ -51,14 +51,14 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [convolution]
+  concepts: [convolution, array-indexing-slicing, elementwise-ops, aggregation-axis]
   path: practice/p06.ipynb
   solution_path: practice/p06_solution.ipynb
 - id: C7-p07
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [convolution, feature-maps]  # dual-tag (arithmetic requirement, plan 009)
+  concepts: [convolution, feature-maps, torch-tensors, nn-module, manual-weights, requires-grad]  # dual-tag (arithmetic requirement, plan 009)
   path: practice/p07.ipynb
   solution_path: practice/p07_solution.ipynb
 - id: C7-p08
@@ -72,28 +72,28 @@ practice:
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [model-truncation]
+  concepts: [model-truncation, torch-tensors, nn-module]
   path: practice/p09.ipynb
   solution_path: practice/p09_solution.ipynb
 - id: C7-p10
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [layer-freezing]
+  concepts: [layer-freezing, nn-module, requires-grad, parameter-counting]
   path: practice/p10.ipynb
   solution_path: practice/p10_solution.ipynb
 - id: C7-p11
   set: B
   type: constrained-coding
   difficulty: advanced
-  concepts: [transfer-learning, model-truncation]  # dual-tag (arithmetic requirement, plan 009)
+  concepts: [transfer-learning, model-truncation, python-inheritance, nn-module, custom-layers, requires-grad, parameter-counting]  # dual-tag (arithmetic requirement, plan 009)
   path: practice/p11.ipynb
   solution_path: practice/p11_solution.ipynb
 - id: C7-p12
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [resnet-architecture]
+  concepts: [resnet-architecture, parameter-counting]
   path: practice/p12.ipynb
   solution_path: practice/p12_solution.ipynb
 - id: C7-p13
@@ -107,28 +107,28 @@ practice:
   set: B
   type: proof
   difficulty: advanced
-  concepts: [bottleneck-blocks]
+  concepts: [bottleneck-blocks, parameter-counting]
   path: practice/p14.ipynb
   solution_path: practice/p14_solution.ipynb
 - id: C7-p15
   set: C
   type: integrative
   difficulty: core
-  concepts: [resnet-architecture, bottleneck-blocks]  # dual-tag (arithmetic requirement, plan 009)
+  concepts: [resnet-architecture, bottleneck-blocks, parameter-counting]  # dual-tag (arithmetic requirement, plan 009)
   path: practice/p15.ipynb
   solution_path: practice/p15_solution.ipynb
 - id: C7-p16
   set: C
   type: integrative
   difficulty: advanced
-  concepts: [model-truncation, layer-freezing]  # dual-tag (arithmetic requirement, plan 009)
+  concepts: [model-truncation, layer-freezing, nn-module, requires-grad, parameter-counting]  # dual-tag (arithmetic requirement, plan 009)
   path: practice/p16.ipynb
   solution_path: practice/p16_solution.ipynb
 - id: C7-p17
   set: C
   type: scenario
   difficulty: core
-  concepts: [transfer-learning]
+  concepts: [transfer-learning, nn-module, requires-grad, parameter-counting]
   path: practice/p17.ipynb
   solution_path: practice/p17_solution.ipynb
 - id: C7-p18
@@ -142,7 +142,7 @@ practice:
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [transfer-learning, layer-freezing]  # dual-tag (arithmetic requirement, plan 009)
+  concepts: [transfer-learning, layer-freezing, nn-module, requires-grad, parameter-counting]  # dual-tag (arithmetic requirement, plan 009)
   path: practice/p19.ipynb
   solution_path: practice/p19_solution.ipynb
 - id: C7-p20
@@ -156,7 +156,7 @@ practice:
   set: A
   type: drill
   difficulty: intro
-  concepts: [feature-maps]
+  concepts: [feature-maps, torch-tensors, nn-module, parameter-counting]
   path: practice/p21.ipynb
   solution_path: practice/p21_solution.ipynb
 - id: C7-p22
