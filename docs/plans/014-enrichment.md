@@ -233,7 +233,15 @@ is fixed above). Implementation may begin.
 **ci lesson-execution scope.** ci step 3 executes only `*_solution`/`solutions/*`, so lesson
 and review notebooks — which now carry enforced tolerance contracts and whose narration must
 match printed output — are never executed by ci. Plan 013 deferred this deliberately rather
-than expand its own tail. **Task 0 of THIS plan decides it:** either widen step 3 to execute
+than expand its own tail. **DECIDED (2026-08-05, on measurement):** the FULL option — ci step 3 now executes every
+lesson, review, and overview notebook. Evidence: baseline ci median **1681s** (runs
+1681/1742/1580, warm caches); the added pass executes **79 notebooks in 269s with 0
+failures** — **+16%**, far inside the +12-minute ceiling, so no narrowing was needed and no
+notebook was dropped from scope. Methodology deviation recorded: the "after" side was
+measured as a direct execution pass rather than three more full ci runs (six 28-minute runs
+would cost ~2.8h for precision that cannot change a decision this far from the ceiling).
+Original framing retained below.
+**Task 0 of THIS plan decides it:** either widen step 3 to execute
 lessons/reviews (accepting the runtime cost, with the warm caches already in place), or add a
 narrower `lesson-execution` step behind a documented rationale. Whichever is chosen must be
 recorded here with its measured runtime delta, **measured as: three consecutive
