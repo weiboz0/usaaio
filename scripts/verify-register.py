@@ -55,6 +55,23 @@ def _expected_header(problem: dict) -> str:
     )
 
 
+def _type_matches(actual: str, type_label: str, raw_type: str) -> bool:
+    """The corpus writes a problem's type either as the raw manifest id ("scenario") or as
+    its expanded label ("scenario analysis"), optionally followed by a gloss — a parenthetical
+    ("integrative (parts consume earlier results)") or a slash alternative ("proof / derivation").
+
+    Anything else after the prefix is drift, not house style: a bare `startswith` would accept
+    "constrained coding ENTIRELY WRONG", which is how this check was first written and how it
+    was caught.
+    """
+    for prefix in (type_label, raw_type):
+        if actual.startswith(prefix):
+            remainder = actual[len(prefix):]
+            if remainder == "" or remainder.startswith(" (") or remainder.startswith(" / "):
+                return True
+    return False
+
+
 def _check_problem(unit: str, problem: dict) -> list[str]:
     path = ROOT / "units" / unit / problem["path"]
     notebook = json.loads(path.read_text())
@@ -89,10 +106,7 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
             if fields["Difficulty"] != problem["difficulty"]:
                 errors.append("header difficulty does not match the manifest")
             type_label = TYPE_LABELS.get(problem["type"], problem["type"].replace("-", " "))
-            if not (
-                fields["Type"].startswith(type_label)
-                or fields["Type"].startswith(problem["type"])
-            ):
+            if not _type_matches(fields["Type"], type_label, problem["type"]):
                 errors.append("header type does not match the manifest")
 
     # The multiple-choice option-format checks stay scoped to the tranche-1 units that were
