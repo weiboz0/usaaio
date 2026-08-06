@@ -16,6 +16,7 @@
 - [x] 013 — audit remediation (merged)
 - [x] 014 — enrichment tranche (merged — retag pass, 2 error clinics, F6-p25 synthesis problem, targeted items)
 - [x] 015 — layered official-topic audit and R1/R2 roadmap (one curriculum graph, two exit gates)
+- [ ] 016 — R1 foundation, workflow, and mathematical completion (active)
 
 ## Deferred, with a named owner plan still to be written
 
