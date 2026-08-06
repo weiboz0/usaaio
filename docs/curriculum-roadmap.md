@@ -30,6 +30,8 @@ Planned hours are estimates and are not manifested time.
 
 ### Estimated major existing-unit extensions
 
+These four ranges are renderer-owned editorial estimates, not fields in the canonical coverage map.
+
 | Existing unit | Minimum hours | Maximum hours |
 |---|---:|---:|
 | F5 | 8 | 12 |
@@ -42,6 +44,16 @@ Minimum estimated scoped delta: **232–349 hours**.
 Additional existing-unit corrections in C10, F1, C6, and C8 are not yet estimated, so this is not a complete roadmap total.
 
 Baseline plus planned-unit subtotal: **407.78–509.78 manifested-baseline hours** and **411.78–513.78 scheduled-baseline hours**.
+Baseline plus minimum estimated scoped delta: **437.78–554.78 manifested-baseline hours** and **441.78–558.78 scheduled-baseline hours**.
+
+## Non-required candidates
+
+These topics were adjudicated explicitly but remain outside atomic required coverage unless a future source or consumer promotes them.
+
+| Candidate | Related category | Decision | Source refs |
+|---|---|---|---|
+| importance-sampling | probability-statistics | optional; not an atomic audit target | plan-015-preliminary-decisions |
+| student-t-test | probability-statistics | optional; not an atomic audit target | plan-015-preliminary-decisions |
 
 ## Layered knowledge points
 
@@ -100,8 +112,6 @@ Baseline plus planned-unit subtotal: **407.78–509.78 manifested-baseline hours
 | logistic-regression | required | missing | implementation, model-training, theory | P015-R1-CLASSICAL-BREADTH | gradient-descent-optimization, linear-regression, loss-functions |
 | loss-functions | required | covered | — | C2-linear-models | multivariable-derivatives, supervised-learning-foundations |
 | multilayer-perceptron-model | required | partial | model-training | P015-R1-NEURAL-TRAINING | affine-neural-network-layer, loss-functions |
-| nlp-tokenization | required | covered | — | C8-embeddings | python-programming |
-| nlp-word-embeddings | required | partial | model-training | C8-embeddings | linear-algebra-foundations, nlp-tokenization |
 | noncoding-and-coding-task-switching | required | covered | — | C10-competition-craft | markdown-text-communication, python-programming |
 | numpy-pca-class-from-scratch | required | partial | implementation | C9-dimensionality-reduction | pca-centered-covariance-eigenproblem-derivation, principal-component-analysis, python-programming |
 | ols-normal-equations-rank-and-pseudoinverse | required | partial | derivation, implementation | C2-linear-models | linear-regression, matrix-multiplication, multivariable-derivatives, rank |
@@ -136,7 +146,9 @@ Baseline plus planned-unit subtotal: **407.78–509.78 manifested-baseline hours
 | multivariate-gaussian | bridge | missing | derivation, implementation, theory | P015-R2-VISION-GEN | eigenvalues-and-eigenvectors, probability-and-statistics-foundations |
 | nlp-fine-tuning | required | missing | implementation, model-training, theory | P015-R2-TRANSFORMERS-NLP | nlp-pretraining, pytorch-autograd-and-optimizer-training |
 | nlp-pretraining | required | missing | implementation, model-training, theory | P015-R2-TRANSFORMERS-NLP | nlp-transformers |
+| nlp-tokenization | required | covered | — | C8-embeddings | python-programming |
 | nlp-transformers | required | missing | implementation, model-training, theory | P015-R2-TRANSFORMERS-NLP | nlp-tokenization, transformer-architecture-foundations |
+| nlp-word-embeddings | required | partial | model-training | C8-embeddings | linear-algebra-foundations, nlp-tokenization |
 | object-detection | required | missing | implementation, model-training, theory | P015-R2-VISION-GEN | convolutional-neural-network-basics |
 | open-ended-experiment-design | bridge | missing | competition-workflow, model-training | P015-R2-CAPSTONE | end-to-end-model-selection, gpu-colab-l4-workflow |
 | open-ended-model-evaluation | bridge | missing | competition-workflow, model-training | P015-R2-CAPSTONE | hidden-test-model-evaluation, open-ended-experiment-design |

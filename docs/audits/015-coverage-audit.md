@@ -35,6 +35,8 @@ Planned hours are estimates and are not manifested time.
 
 ### Estimated major existing-unit extensions
 
+These four ranges are renderer-owned editorial estimates, not fields in the canonical coverage map.
+
 | Existing unit | Minimum hours | Maximum hours |
 |---|---:|---:|
 | F5 | 8 | 12 |
@@ -47,6 +49,16 @@ Minimum estimated scoped delta: **232–349 hours**.
 Additional existing-unit corrections in C10, F1, C6, and C8 are not yet estimated, so this is not a complete roadmap total.
 
 Baseline plus planned-unit subtotal: **407.78–509.78 manifested-baseline hours** and **411.78–513.78 scheduled-baseline hours**.
+Baseline plus minimum estimated scoped delta: **437.78–554.78 manifested-baseline hours** and **441.78–558.78 scheduled-baseline hours**.
+
+## Non-required candidates
+
+These topics were adjudicated explicitly but remain outside atomic required coverage unless a future source or consumer promotes them.
+
+| Candidate | Related category | Decision | Source refs |
+|---|---|---|---|
+| importance-sampling | probability-statistics | optional; not an atomic audit target | plan-015-preliminary-decisions |
+| student-t-test | probability-statistics | optional; not an atomic audit target | plan-015-preliminary-decisions |
 
 ## Atomic-target audit
 
@@ -83,15 +95,15 @@ Assessments: r1-001-p07-2, r1-001-p08-2
 - **Coverage:** covered
 - **Destination:** C5-neural-networks
 - **Dependencies:** linear-algebra-foundations
-- **Shipped concepts:** activation-functions, manual-weights, mlp-architecture
+- **Shipped concepts:** activation-functions, manual-weights, matrices-as-linear-maps, mlp-architecture
 - **Modalities missing:** —
-- **Rationale:** C5 distinguishes affine from linear maps, derives composition with translation terms, and implements several maps.
+- **Rationale:** F3's origin-preservation test proves a nonzero shift is not linear; C5 then derives affine composition with bias/translation terms and implements it.
 - **Consequence:** Students can use affine transformations despite their later unit ownership.
 
 - **implementation lessons:** units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1
 - **implementation practices:** C5-p08, C5-p18, C6-p09
 - **implementation assessments:** r1-001-p08-2
-- **theory lessons:** units/C5-neural-networks/lessons/01-perceptrons-and-activations.ipynb :: C5-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear :: cell 1
+- **theory lessons:** units/C5-neural-networks/lessons/01-perceptrons-and-activations.ipynb :: C5-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear :: cell 1, units/F3-matrices/lessons/01-matrices-as-maps.ipynb :: F3-matrices — Session 1: Matrices as Maps > 3. The Linearity Contract :: cell 1
 - **theory practices:** C5-p11, C5-p18, C6-p09
 - **theory assessments:** r1-001-p07-2
 
@@ -1405,7 +1417,7 @@ Assessments: —
 
 ### nlp-tokenization
 
-- **Layer:** round-1-core
+- **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** covered
 - **Destination:** C8-embeddings
@@ -1454,7 +1466,7 @@ Assessments: —
 
 ### nlp-word-embeddings
 
-- **Layer:** round-1-core
+- **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** partial
 - **Destination:** C8-embeddings

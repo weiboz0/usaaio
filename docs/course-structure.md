@@ -59,15 +59,15 @@ In a mixed row, “then” gives the within-week instructional order.
 | 20 | S2 | C7 (prereqs: C6): 135 practice minutes and 45 review minutes; C8 (prereqs: F2, F3, F1): 99 practice minutes and 45 review minutes; then F6 (prereqs: F3): sessions 1–2 and 29 practice minutes. | 170 | 353 | C7 and C8 review gates. |
 | 21 | S2 | F6 (prereqs: F3): sessions 3–4 and 268 practice minutes. | 170 | 268 | No unit-review gate. |
 | 22 | S2 | F6 (prereqs: F3): session 5, 308 practice minutes, and 45 review minutes. | 85 | 353 | F6 review gate. |
-| 23 | S2 | C9 (prereqs: F6, C8, F5, C1): sessions 1–2 and 272 practice minutes. | 165 | 272 | No unit-review gate. |
-| 24 | S2 | C9 (prereqs: F6, C8, F5, C1): session 3, 178 practice minutes, and 45 review minutes; then C10 (prereqs: C4): session 1 and 81 practice minutes. | 165 | 304 | C9 review gate. |
+| 23 | S2 | C9 (prereqs: F6, C8, F5, C1): sessions 1–2 and 273 practice minutes. | 165 | 273 | No unit-review gate. |
+| 24 | S2 | C9 (prereqs: F6, C8, F5, C1): session 3, 177 practice minutes, and 45 review minutes; then C10 (prereqs: C4): session 1 and 81 practice minutes. | 165 | 303 | C9 review gate. |
 | 25 | S2 | C10 (prereqs: C4): sessions 2–3 and 285 practice minutes. | 170 | 285 | No unit-review gate. |
 | 26 | S2 | C10 (prereqs: C4): 169 practice minutes and 45 review minutes; then r1-001 mock for 180 minutes; then debrief for 60 minutes. | 240 | 214 | C10 review gate, r1-001 summative gate, and debrief. |
 
 The verified S1 column sums are 1,970 in-class minutes + 4,300 independent minutes = 6,270 minutes.
 The verified S2 column sums are 2,170 in-class minutes + 4,147 independent minutes = 6,317 minutes, where the in-class total includes the 180-minute mock and 60-minute debrief.
 The S1 average is 482.31 minutes, so its ±10% band is 434.08–530.54 minutes, and the table's S1 rows range from 435 to 521 minutes.
-The S2 average is 485.92 minutes, so its ±10% band is 437.33–534.52 minutes, and the table's S2 rows range from 437 to 534 minutes.
+The S2 average is 485.92 minutes, so its ±10% band is 437.33–534.52 minutes, and the table's S2 rows range from 438 to 534 minutes.
 
 ## 4. Milestones and assessment
 

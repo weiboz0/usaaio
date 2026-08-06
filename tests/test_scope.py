@@ -1269,9 +1269,14 @@ def test_real_renderer_distinguishes_planned_major_extension_and_minimum_scoped_
 
     for document in rendered.values():
         assert "| **Planned-unit subtotal** | **202** | **304** |" in document
+        assert "renderer-owned editorial estimates" in document
         assert "Estimated major existing-unit extensions subtotal: **30–45 hours**" in document
         assert "Minimum estimated scoped delta: **232–349 hours**" in document
         assert "C10, F1, C6, and C8 are not yet estimated" in document
+        assert "**437.78–554.78 manifested-baseline hours**" in document
+        assert "**441.78–558.78 scheduled-baseline hours**" in document
+        assert "student-t-test" in document
+        assert "importance-sampling" in document
         assert "Total roadmap delta" not in document
 
 

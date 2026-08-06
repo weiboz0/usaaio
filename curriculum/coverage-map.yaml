@@ -233,10 +233,10 @@ knowledge_points:
     coverage: covered
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     depends_on: [linear-algebra-foundations]
-    shipped_concepts: [activation-functions, mlp-architecture, manual-weights]
+    shipped_concepts: [matrices-as-linear-maps, activation-functions, mlp-architecture, manual-weights]
     evidence_by_modality:
       theory:
-        lesson_anchors: [{path: units/C5-neural-networks/lessons/01-perceptrons-and-activations.ipynb, heading: 'C5-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear', cell_ordinal: 1, role: primary}]
+        lesson_anchors: [{path: units/F3-matrices/lessons/01-matrices-as-maps.ipynb, heading: 'F3-matrices — Session 1: Matrices as Maps > 3. The Linearity Contract', cell_ordinal: 1, role: primary}, {path: units/C5-neural-networks/lessons/01-perceptrons-and-activations.ipynb, heading: 'C5-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear', cell_ordinal: 1, role: primary}]
         practices: [{id: C5-p11, role: primary}, {id: C5-p18, role: primary}, {id: C6-p09, role: primary}]
         assessments: [{id: r1-001-p07-2, role: primary}]
       implementation:
@@ -246,7 +246,7 @@ knowledge_points:
     disposition: keep
     destination: C5-neural-networks
     deficits: {modalities_missing: []}
-    rationale: C5 distinguishes affine from linear maps, derives composition with translation terms, and implements several maps.
+    rationale: F3's origin-preservation test proves a nonzero shift is not linear; C5 then derives affine composition with bias/translation terms and implements it.
     consequence: Students can use affine transformations despite their later unit ownership.
   - id: matrix-decompositions
     layer: shared-foundation
@@ -1374,7 +1374,7 @@ knowledge_points:
     rationale: No graph representation, message passing, graph attention, or training exists.
     consequence: The official graph-transformer application is absent.
   - id: nlp-tokenization
-    layer: round-1-core
+    layer: round-2-extension
     requirement: required
     coverage: covered
     source_refs: [official-syllabus-2026-08-06]
@@ -1395,7 +1395,7 @@ knowledge_points:
     rationale: The shipped R1 embedding unit honestly teaches and practices tokenization.
     consequence: Round 2 must reuse C8 rather than duplicate tokenization.
   - id: nlp-word-embeddings
-    layer: round-1-core
+    layer: round-2-extension
     requirement: required
     coverage: partial
     source_refs: [official-syllabus-2026-08-06]
