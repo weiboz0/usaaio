@@ -12,6 +12,31 @@ def check_coverage(root: str | Path) -> Report:
     vocabulary = set(syllabus.baseline) | set(syllabus.concepts)
     errors: list[str] = []
     for manifest in manifests:
+        unit = syllabus.units.get(manifest.unit_id)
+        if unit is not None and unit.length == "double":
+            lesson_count = len(manifest.lesson_sessions or [])
+            if manifest.lesson_sessions is None:
+                errors.append(
+                    f"{manifest.path}: double-length unit {manifest.unit_id} has 0 lesson "
+                    "sessions (missing estimated_minutes.lesson_sessions); requires 4-6"
+                )
+            elif not 4 <= lesson_count <= 6:
+                errors.append(
+                    f"{manifest.path}: double-length unit {manifest.unit_id} has "
+                    f"{lesson_count} lesson sessions; requires 4-6"
+                )
+            distinct_ids = len({problem.id for problem in manifest.practice})
+            if not 24 <= distinct_ids <= 30:
+                errors.append(
+                    f"{manifest.path}: double-length unit {manifest.unit_id} has "
+                    f"{distinct_ids} distinct practice ids; requires 24-30"
+                )
+            distinct_paths = len({problem.path for problem in manifest.practice})
+            if not 24 <= distinct_paths <= 30:
+                errors.append(
+                    f"{manifest.path}: double-length unit {manifest.unit_id} has "
+                    f"{distinct_paths} distinct practice paths; requires 24-30"
+                )
         practice_ids: dict[str, set[str]] = {}
         practice_paths: dict[str, set[str]] = {}
         for problem in manifest.practice:

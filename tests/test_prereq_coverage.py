@@ -6,7 +6,14 @@ from tools.checks.prereq import check_prereq
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def write_syllabus(root: Path, unit_extra: str = "", units_extra: str = "") -> None:
+def write_syllabus(
+    root: Path,
+    unit_extra: str = "",
+    units_extra: str = "",
+    second_unit: str = "U2",
+    second_length: str | None = None,
+) -> None:
+    length_line = f"    length: {second_length}\n" if second_length else ""
     root.joinpath("syllabus.md").write_text(
         f"""
 <!-- syllabus-canonical -->
@@ -26,9 +33,10 @@ units:
     prereqs: []
     teaches: [a]
     {unit_extra}
-  - id: U2
+  - id: {second_unit}
     track: core
     title: Two
+{length_line}\
     prereqs: [U1]
     teaches: [b]
 {units_extra}
@@ -45,6 +53,7 @@ def write_unit(
     prereq_units: str = "U1",
     practice_concept: str | None = None,
     practice_count: int = 3,
+    lesson_sessions: list[int] | None = None,
 ) -> Path:
     unit_dir = root / "units" / unit
     (unit_dir / "practice").mkdir(parents=True)
@@ -58,12 +67,20 @@ def write_unit(
     solution_path: practice/p{number:02}_solution.ipynb"""
         for number in range(1, practice_count + 1)
     )
+    estimated_minutes = ""
+    if lesson_sessions is not None:
+        session_values = ", ".join(str(value) for value in lesson_sessions)
+        estimated_minutes = (
+            "estimated_minutes:\n"
+            f"  lesson_sessions: [{session_values}]\n"
+        )
     (unit_dir / "manifest.yaml").write_text(
         f"""
 unit: {unit}
 concepts_taught: [{taught}]
 concepts_used: [{used}]
 prereq_units: [{prereq_units}]
+{estimated_minutes}\
 practice:
 {practice}
 """
@@ -289,3 +306,168 @@ practice:
         "taught concept b has 1 tagged practice problems; requires at least 3" in error
         for error in report.errors
     )
+
+
+def test_double_length_coverage_requires_lesson_sessions(tmp_path):
+    write_syllabus(tmp_path, second_length="double")
+    unit_dir = write_unit(tmp_path, practice_count=24)
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{unit_dir / 'manifest.yaml'}: double-length unit U2 has 0 lesson sessions "
+        "(missing estimated_minutes.lesson_sessions); requires 4-6"
+    ) in report.errors
+
+
+def test_double_length_coverage_rejects_lesson_count_below_band(tmp_path):
+    write_syllabus(tmp_path, second_length="double")
+    unit_dir = write_unit(tmp_path, practice_count=24, lesson_sessions=[85] * 3)
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{unit_dir / 'manifest.yaml'}: double-length unit U2 has 3 lesson sessions; "
+        "requires 4-6"
+    ) in report.errors
+
+
+def test_double_length_coverage_rejects_lesson_count_above_band(tmp_path):
+    write_syllabus(tmp_path, second_length="double")
+    unit_dir = write_unit(tmp_path, practice_count=24, lesson_sessions=[60] * 7)
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{unit_dir / 'manifest.yaml'}: double-length unit U2 has 7 lesson sessions; "
+        "requires 4-6"
+    ) in report.errors
+
+
+def test_double_length_coverage_rejects_practice_count_below_band(tmp_path):
+    write_syllabus(tmp_path, second_length="double")
+    unit_dir = write_unit(tmp_path, practice_count=23, lesson_sessions=[85] * 4)
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{unit_dir / 'manifest.yaml'}: double-length unit U2 has 23 distinct practice ids; "
+        "requires 24-30"
+    ) in report.errors
+    assert (
+        f"{unit_dir / 'manifest.yaml'}: double-length unit U2 has 23 distinct practice paths; "
+        "requires 24-30"
+    ) in report.errors
+
+
+def test_double_length_coverage_rejects_practice_count_above_band(tmp_path):
+    write_syllabus(tmp_path, second_length="double")
+    unit_dir = write_unit(tmp_path, practice_count=31, lesson_sessions=[85] * 6)
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{unit_dir / 'manifest.yaml'}: double-length unit U2 has 31 distinct practice ids; "
+        "requires 24-30"
+    ) in report.errors
+    assert (
+        f"{unit_dir / 'manifest.yaml'}: double-length unit U2 has 31 distinct practice paths; "
+        "requires 24-30"
+    ) in report.errors
+
+
+def test_double_length_coverage_counts_distinct_practice_ids_and_paths(tmp_path):
+    write_syllabus(tmp_path, second_length="double")
+    unit_dir = write_unit(tmp_path, practice_count=24, lesson_sessions=[85] * 4)
+    manifest_path = unit_dir / "manifest.yaml"
+    manifest_text = manifest_path.read_text()
+    manifest_text = manifest_text.replace("id: p24", "id: p23")
+    manifest_text = manifest_text.replace(
+        "path: practice/p24.ipynb", "path: practice/p23.ipynb"
+    )
+    manifest_path.write_text(manifest_text)
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{manifest_path}: double-length unit U2 has 23 distinct practice ids; "
+        "requires 24-30"
+    ) in report.errors
+    assert (
+        f"{manifest_path}: double-length unit U2 has 23 distinct practice paths; "
+        "requires 24-30"
+    ) in report.errors
+
+
+def test_double_length_coverage_accepts_compliant_unit(tmp_path):
+    write_syllabus(tmp_path, second_length="double")
+    write_unit(tmp_path, practice_count=24, lesson_sessions=[85] * 4)
+
+    report = check_coverage(tmp_path)
+
+    assert report.ok
+    assert report.errors == []
+
+
+def test_double_length_coverage_real_f6_passes():
+    report = check_coverage(ROOT)
+
+    assert not any("double-length unit F6-svd-spectral" in error for error in report.errors)
+
+
+def test_normal_length_planned_f5_shape_passes(tmp_path):
+    write_syllabus(tmp_path, second_unit="F5-probability")
+    write_unit(
+        tmp_path,
+        unit="F5-probability",
+        practice_count=19,
+        lesson_sessions=[80, 85, 85],
+    )
+
+    report = check_coverage(tmp_path)
+
+    assert report.ok
+    assert report.errors == []
+
+
+def test_hypothetical_double_length_c7_rejects_three_sessions(tmp_path):
+    write_syllabus(
+        tmp_path,
+        second_unit="C7-cnn-transfer",
+        second_length="double",
+    )
+    unit_dir = write_unit(
+        tmp_path,
+        unit="C7-cnn-transfer",
+        practice_count=27,
+        lesson_sessions=[85, 85, 85],
+    )
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{unit_dir / 'manifest.yaml'}: double-length unit C7-cnn-transfer has 3 lesson "
+        "sessions; requires 4-6"
+    ) in report.errors
+
+
+def test_normal_length_c7_overflow_behavior_is_unchanged(tmp_path):
+    write_syllabus(tmp_path, second_unit="C7-cnn-transfer")
+    write_unit(
+        tmp_path,
+        unit="C7-cnn-transfer",
+        practice_count=27,
+        lesson_sessions=[85, 85, 85],
+    )
+
+    report = check_coverage(tmp_path)
+
+    assert report.ok
+    assert not any("double-length unit C7-cnn-transfer" in error for error in report.errors)
