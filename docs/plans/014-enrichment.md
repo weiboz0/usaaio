@@ -593,6 +593,45 @@ in work done to fix round 1 — which is the argument for running a second round
   pinned while "do not read the verifier" stays honor-only. **[WONTFIX]** — inherent to
   single-notebook delivery, and named here alongside the `lam_desc` limit rather than papered over.
 
+### Round 3 — INCOMPLETE, blocked on reviewer capacity
+
+**This gate is NOT closed and the plan is NOT ready to merge.**
+
+Round 2 ended 3-0 REJECT. Every round-2 finding has been fixed and the fixes verified, but the
+session hit its subagent cap (200/200) before round-3 verdicts could be collected, so there are
+no independent verdicts on the round-2 fixes. The gate is full-blocking by design and autopilot
+does not skip it, so the branch stops here pending a round-3 dispatch.
+
+What *was* done in place of the dispatch — orchestrator self-verification of every round-2 fix,
+recorded so a round-3 reviewer can check the work rather than repeat it:
+
+- **C3-p19 transcript D, re-derived independently.** Recomputing the implied learning rate for
+  all five transcripts found D *still* marginally violating the triangle-inequality ceiling that
+  round 2's fix existed to satisfy: rounding the ratios to two decimals pushed three of five
+  above the bound (2.05 > 2.0460, 2.51 > 2.5085, 2.95 > 2.9474). **[FIXED]** — floored rather
+  than rounded, giving `[1.0, 1.54, 2.04, 2.5, 2.94]` with `step_dot_grad` recomputed to match.
+  Verified: strictly under the ceiling at every step, implied η constant at 0.050, ratios
+  strictly increasing, signatures `[2],[4],[0],[3],[1]`, derived codes `[2,4,0,3,1]`, digest
+  matching the shipped artifact. The answer key does not move.
+- **The other four transcripts** were checked the same way. A and E pin a constant η (0.050 and
+  0.0050). C drifts within 0.046–0.049, which `[opus]` inspected and accepted in round 2. B's
+  implied η drifts widely, which is expected and arguably diagnostic: B's residual has the wrong
+  shape, so no coherent gradient identity should hold for it. Recorded rather than silently
+  accepted, because a reviewer may disagree about B.
+- **The discrimination pointer** was verified to select exactly C and D under the shipped data.
+- **The type-gloss allowlist** was attacked with all six of `[opus]`'s constructed drift cases,
+  including `mc` absorbing `mc-normal-form`'s label. All six rejected; all four legitimate
+  glosses accepted.
+- **The solution-header check** was corruption-tested and reproduces round 1's C9-p19 failure.
+- `verify-register.py` 343/343; 127 unit tests; prereq/coverage/hygiene/tolerance/blueprint PASS;
+  every touched solution re-executes clean in a fresh kernel.
+
+**What a round-3 reviewer still owes this plan:** independent verdicts on the round-2 fixes, and
+in particular an independent judgment on (a) whether transcript B's inconsistent implied learning
+rate is acceptable, (b) whether recording C7's non-conformance is an honest resolution or a
+third dodge, and (c) a fresh adversarial pass on `verify-register.py`, which has now been
+tightened twice in response to findings and may still be wrong in a way two rounds have missed.
+
 ## Post-execution report
 
 **Shipped.** 267 files changed (+2698 / -381). The corpus goes from 337 to 343 practice
@@ -633,7 +672,7 @@ problem eight slots away in its own unit; C9-p19 taught students to select a mod
 called "test". None of these is visible to any check the repo has, and none would have been
 caught by re-solving the problem, because the answers were right.
 
-**Verification.** `scripts/ci-local.sh` ALL GREEN. `verify-register.py` 343/343 (repo-wide, and
+**Verification.** `scripts/ci-local.sh` ALL GREEN (final run pending the round-3 close). `verify-register.py` 343/343 (repo-wide, and
 corruption-tested against a unit the old check ignored). `prereq-check`, `coverage-check`,
 `hygiene-check`, `tolerance-check`, `blueprint-check` PASS. 119 unit tests pass. All six new
 solutions execute clean in a fresh kernel, verified locally rather than on the authoring
