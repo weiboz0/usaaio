@@ -530,3 +530,50 @@ one unit — is a *capacity* decision and is deferred, with C5's identical quest
 
 r1-002/r1-003 generation. Training loops/optimizers (watch-list). k-means, big-O, the
 R2-evidence family (attention/KL/Bayes/mixtures) — documented watch-list, revisit on evidence.
+
+
+## Post-execution report
+
+**Shipped.** 267 files changed (+2698 / -381). The corpus goes from 337 to 343 practice
+problems across 16 units.
+
+- **Retag pass** — 93 problems gained 332 cross-unit concept tags, closing the audit's headline
+  finding that 0 of 337 practice problems carried any. Seven of those tags were removed at the
+  gate as decorative, leaving 325.
+- **Six new problems** — F6-p25 (the one purpose-built cross-unit synthesis problem), two error
+  clinics (C3-p19 broken-descent, C7-p27 eval/freeze/inference), and three targeted items
+  (C9-p19 rank selection, C1-p24 underfitting, F5-p19 zero-covariance-but-dependent).
+- **Tooling** — `prereq-check` gained problem-level closure for unit practice and a
+  `concepts_used` consistency leg; `ci-local.sh` step 3 now executes all 79 lesson notebooks
+  (+269s on a 1681s baseline, measured not assumed); `verify-register.py` now enforces header
+  agreement across all 16 units rather than 3.
+- **Docs** — `docs/unit-standards.md` corrected a stale "coverage-check enforces ≥1" and records
+  how band membership is decided; `syllabus.md` marks C7 `length: double`; `TODO.md` carries five
+  deferred items with named owners.
+
+**Deviations from the plan as approved, all recorded above rather than applied silently:**
+
+1. **Task 1 shrank from a six-arc `synthesis/` tree to a retag pass plus one problem.** This was
+   Task 0b's gate-approved decision rule executing as written: the audit found 5 of 6 arcs
+   already existed and needed only tagging. The eight-consumer tooling work went away with it.
+2. **Task 3 (softmax + cross-entropy) was deferred to plan 015** at the plan gate's direction,
+   because it cannot be placed without resolving C5's capacity first.
+3. **A proposed amendment to the problem-count band was reverted at the content gate**, 3-0,
+   after three reviewers independently showed its arithmetic was wrong. C7's overflow is instead
+   resolved by the double-length mechanism the standards already had.
+4. **F6-p25 was re-authored during the gate** after it was found to be a near-isomorph of F6-p17.
+   The replacement is built on a rank-deficient `W` and teaches a lesson p17 does not.
+
+**What the gate was worth.** Two rounds, four reviewers, twenty findings. No reviewer found a
+single wrong answer — the blind solves agreed everywhere. Every finding was structural, and the
+three that mattered most would each have shipped a problem that looked correct and graded wrong:
+C3-p19's answer was the identity permutation of its own printed bullet list; F6-p25 duplicated a
+problem eight slots away in its own unit; C9-p19 taught students to select a model on a split it
+called "test". None of these is visible to any check the repo has, and none would have been
+caught by re-solving the problem, because the answers were right.
+
+**Verification.** `scripts/ci-local.sh` ALL GREEN. `verify-register.py` 343/343 (repo-wide, and
+corruption-tested against a unit the old check ignored). `prereq-check`, `coverage-check`,
+`hygiene-check`, `tolerance-check`, `blueprint-check` PASS. 119 unit tests pass. All six new
+solutions execute clean in a fresh kernel, verified locally rather than on the authoring
+session's word — codex's sandbox could not create kernel sockets, so its own run was not proof.
