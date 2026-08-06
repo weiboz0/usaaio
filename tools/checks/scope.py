@@ -609,8 +609,9 @@ def _check_roadmap(
     errors: list[str],
     warnings: list[str],
 ) -> None:
-    if raw.get("roadmap_version") != 1:
-        errors.append(f"unsupported roadmap_version {raw.get('roadmap_version')!r}; expected 1")
+    roadmap_version = raw.get("roadmap_version")
+    if type(roadmap_version) is not int or roadmap_version != 1:
+        errors.append(f"unsupported roadmap_version {roadmap_version!r}; expected integer 1")
     if raw.get("layers") != LAYERS:
         errors.append(f"layers must exactly equal {LAYERS}")
     expected_keys = {"roadmap_version", "layers", "planned_units", "knowledge_points"}

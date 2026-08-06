@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import math
 import re
 import sys
 from dataclasses import dataclass
@@ -123,12 +124,19 @@ def _format_number(value: float) -> str:
 
 
 def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
-    by_layer = {layer: [0.0, 0.0] for layer in LAYERS}
+    hour_values = {layer: ([], []) for layer in LAYERS}
     for unit in roadmap.planned_units:
-        by_layer[unit.layer][0] += unit.estimated_hours.minimum
-        by_layer[unit.layer][1] += unit.estimated_hours.maximum
-    minimum = sum(values[0] for values in by_layer.values())
-    maximum = sum(values[1] for values in by_layer.values())
+        hour_values[unit.layer][0].append(unit.estimated_hours.minimum)
+        hour_values[unit.layer][1].append(unit.estimated_hours.maximum)
+    by_layer = {
+        layer: (
+            math.fsum(sorted(values[0])),
+            math.fsum(sorted(values[1])),
+        )
+        for layer, values in hour_values.items()
+    }
+    minimum = math.fsum(sorted(values[0] for values in by_layer.values()))
+    maximum = math.fsum(sorted(values[1] for values in by_layer.values()))
     manifested_hours = baseline.manifested_minutes / 60
     scheduled_hours = baseline.scheduled_minutes / 60
     lines = [

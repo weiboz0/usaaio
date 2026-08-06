@@ -333,6 +333,14 @@ def test_schema_enums_versions_layers_and_source_freshness_fail(
     _assert_error(_report_after(tmp_path, mutate), message)
 
 
+@pytest.mark.parametrize("value", [True, 1.0], ids=["boolean", "float"])
+def test_roadmap_version_requires_exact_integer_type(tmp_path: Path, value: object) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        data["roadmap"]["roadmap_version"] = value
+
+    _assert_error(_report_after(tmp_path, mutate), "unsupported roadmap_version")
+
+
 @pytest.mark.parametrize(
     ("field", "value", "message"),
     [
@@ -1051,6 +1059,35 @@ def test_renderer_is_input_order_independent(tmp_path: Path) -> None:
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
 
     assert renderer.render_documents(tmp_path) == first
+
+
+def test_renderer_fractional_hour_totals_are_planned_unit_order_independent(
+    tmp_path: Path,
+) -> None:
+    contract = _base_contract(tmp_path)
+    units = [
+        {
+            "id": f"optional-{index}",
+            "title": f"Optional {index}",
+            "layer": "optional-enrichment",
+            "prerequisites": [],
+            "knowledge_points": [],
+            "provisional_concepts": [f"optional-concept-{index}"],
+            "estimated_hours": {"min": hours, "max": hours},
+        }
+        for index, hours in enumerate((0.001, 0.059, 0.555), start=1)
+    ]
+    contract["roadmap"]["planned_units"] = units
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
+    first = renderer.render_documents(tmp_path)
+    contract["roadmap"]["planned_units"] = list(reversed(units))
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
+
+    second = renderer.render_documents(tmp_path)
+
+    assert second == first
+    for document in second.values():
+        assert "| optional-enrichment | 0.61 | 0.61 |" in document
 
 
 def test_renderer_check_detects_stale_output_without_overwriting(tmp_path: Path) -> None:
