@@ -3,7 +3,10 @@
 The bar every teaching unit must meet
 (user directives, 2026-08-04 ×2: materials constitute a FORMAL MULTI-SEMESTER TRAINING
 COURSE; depth, coverage, and variety must reach that level — not tutoring notes).
-Applies to plan 005's units retroactively and all later tranches.
+Applies to plan 005's units retroactively and every later **shipped teaching unit**, whether
+the unit belongs to shared foundation, Round 1 core, Round 2 extension, or optional enrichment.
+A roadmap row or provisional unit does not satisfy this standard: it becomes coverage only
+when the lesson, review, manifest, and honest practice set ship together.
 Verification: coverage/hygiene/prereq checks enforce the mechanical parts;
 the content gate's reviewers enforce the qualitative parts against this document.
 
@@ -35,6 +38,8 @@ the content gate's reviewers enforce the qualitative parts against this document
   in the manifest (`difficulty:` informational field).
 - Every taught concept exercised by **≥3 problems** — `coverage-check` enforces this
   MACHINE-SIDE since plan 013 (it previously enforced only ≥1 and left the rest to reviewers).
+  The same floor applies in every curriculum layer. Round 2 GPU depth does not waive the
+  practice contract; any future exception requires an explicit standards change and gate.
 
 ### Recorded non-conformance
 

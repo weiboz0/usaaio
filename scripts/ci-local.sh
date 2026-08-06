@@ -7,13 +7,13 @@ cd "$(dirname "$0")/.."
 
 step() { echo; echo "=== $1 ==="; }
 
-step "1/7 lint (ruff)"
+step "1/8 lint (ruff)"
 uv run ruff check tools/ tests/
 
-step "2/7 unit tests (pytest)"
+step "2/8 unit tests (pytest)"
 uv run pytest -q
 
-step "3/7 solution- and lesson-notebook execution"
+step "3/8 solution- and lesson-notebook execution"
 # Discovery failures must fail CI here too. The lesson discovery below was hardened first;
 # leaving this one swallowing errors was the larger hole, since this is the search that finds
 # every solution notebook in the repo (gate finding, plan 014 round 3).
@@ -58,19 +58,23 @@ if [[ -n "$lessons" ]]; then
 fi
 uv run usaaio-tools answerkey-check || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 
-step "4/7 register verification"
+step "4/8 register verification"
 python3 scripts/verify-register.py || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 
-step "5/7 manifest + content checks"
-for c in prereq-check coverage-check tolerance-check hygiene-check blueprint-check overlap-scan; do
+step "5/8 generated curriculum evidence"
+uv run python -m tools.audit_curriculum --check
+uv run python -m tools.render_curriculum_roadmap --check
+
+step "6/8 manifest + content checks"
+for c in prereq-check coverage-check scope-check tolerance-check hygiene-check blueprint-check overlap-scan; do
   echo "running: $c"
   uv run usaaio-tools "$c" || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 done
 
-step "6/7 PDF build (quarto)"
+step "7/8 PDF build (quarto)"
 bash scripts/build-pdf.sh || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 
-step "7/7 pre-merge-guard"
+step "8/8 pre-merge-guard"
 bash scripts/pre-merge-guard.sh
 
 echo

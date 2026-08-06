@@ -1,0 +1,1740 @@
+roadmap_version: 1
+
+layers:
+  - shared-foundation
+  - round-1-core
+  - round-2-extension
+  - optional-enrichment
+
+planned_units:
+  - id: P015-R1-MATH-KERNEL-OPT
+    title: Kernel Validity and Convex Optimization
+    layer: shared-foundation
+    prerequisites: [F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent]
+    knowledge_points: [valid-kernel-positive-definite-proof, convex-sets-functions-and-optimality, constrained-optimization-lagrangian-duality]
+    provisional_concepts: [positive-semidefinite-matrices, kernel-validity, convex-sets, convex-functions, first-order-optimality, lagrangians, optimization-duality]
+    estimated_hours: {min: 14, max: 20}
+    schedule_action: extend
+  - id: P015-R1-NEURAL-TRAINING
+    title: Neural Losses, Backpropagation, and Training
+    layer: round-1-core
+    prerequisites: [F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch]
+    knowledge_points: [pytorch-autograd-and-optimizer-training, multilayer-perceptron-model, batch-normalization, dropout, backpropagation-by-hand, softmax, cross-entropy-loss, fully-connected-network-from-scratch]
+    provisional_concepts: [softmax, cross-entropy-loss, manual-backpropagation, autograd-training, torch-optimizers, trained-mlp, batch-normalization, dropout]
+    estimated_hours: {min: 30, max: 44}
+    schedule_action: extend
+  - id: P015-R1-CLASSICAL-BREADTH
+    title: Classical Supervised and Unsupervised Models
+    layer: round-1-core
+    prerequisites: [C1-ml-fundamentals, C2-linear-models, C3-gradient-descent, C4-classical-ml-practice, P015-R1-MATH-KERNEL-OPT]
+    knowledge_points: [logistic-regression, support-vector-machine, decision-trees, ensemble-learning, k-means-clustering]
+    provisional_concepts: [logistic-regression, svm, decision-trees, ensemble-learning, k-means]
+    estimated_hours: {min: 32, max: 48}
+    schedule_action: extend
+  - id: P015-R2-TRANSFORMERS-NLP
+    title: Attention, Transformers, and NLP
+    layer: round-2-extension
+    prerequisites: [C6-pytorch, C7-cnn-transfer, C8-embeddings, P015-R1-NEURAL-TRAINING]
+    knowledge_points: [attention-mechanism-foundations, self-attention, multi-head-attention, positional-encoding, attention-complexity-analysis, attention-from-scratch, transformer-architecture-foundations, transformer-nlp-applications, vision-transformers, graph-neural-network-transformer-applications, nlp-transformers, nlp-pretraining, nlp-fine-tuning]
+    provisional_concepts: [attention, self-attention, multi-head-attention, positional-encoding, transformer-blocks, layer-normalization, residual-connections, position-wise-feed-forward-network, attention-complexity, nlp-transformers, pretraining, fine-tuning, vision-transformers, graph-attention]
+    estimated_hours: {min: 42, max: 64}
+    schedule_action: extend
+  - id: P015-R2-VISION-GEN
+    title: Advanced Vision and Generative Modeling
+    layer: round-2-extension
+    prerequisites: [C7-cnn-transfer, P015-R1-NEURAL-TRAINING, P015-R2-TRANSFORMERS-NLP]
+    knowledge_points: [object-detection, unet, autoencoder, variational-autoencoder, generative-adversarial-network, denoising-diffusion-probabilistic-models, stable-diffusion, multivariate-gaussian, gaussian-reparameterization, kl-divergence]
+    provisional_concepts: [object-detection, unet, autoencoders, vae, reparameterization, kl-divergence, gans, ddpm, stable-diffusion, multivariate-gaussian]
+    estimated_hours: {min: 54, max: 82}
+    schedule_action: extend
+  - id: P015-R2-CAPSTONE
+    title: GPU Scientific Modeling Capstone
+    layer: round-2-extension
+    prerequisites: [C10-competition-craft, P015-R1-CLASSICAL-BREADTH, P015-R2-TRANSFORMERS-NLP, P015-R2-VISION-GEN]
+    knowledge_points: [gpu-colab-l4-workflow, semi-supervised-pseudo-labeling, scientific-ml-inverse-problems, open-ended-experiment-design, open-ended-model-evaluation, mixture-parameter-regression]
+    provisional_concepts: [colab-gpu-workflow, semi-supervised-learning, pseudo-labeling, inverse-problems, scientific-ml, experiment-design, ablation-analysis, mixture-parameter-estimation]
+    estimated_hours: {min: 30, max: 46}
+    schedule_action: extend
+
+knowledge_points:
+  - id: colab-markdown-solution-authoring
+    layer: shared-foundation
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: []
+    shipped_concepts: []
+    evidence_by_modality:
+      competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C10-competition-craft
+    deficits: {modalities_missing: [competition-workflow]}
+    rationale: No shipped cell mentions or demonstrates Google Colab solution authoring; generic notebooks are not platform-workflow evidence.
+    consequence: Students are not prepared for the official Colab solution-authoring surface.
+  - id: markdown-text-communication
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: []
+    shipped_concepts: [writeup-quality, notebook-discipline]
+    evidence_by_modality:
+      competition-workflow:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/03-notebook-and-writeup.ipynb, heading: 'C10-competition-craft — Session 3: The Notebook and the Writeup > 3. The Writeup: Approach, Intuition, Alternatives > Checkpoint 3', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p15, role: primary}, {id: C10-p17, role: primary}, {id: C10-p18, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+    disposition: keep
+    destination: C10-competition-craft
+    deficits: {modalities_missing: []}
+    rationale: The lesson gives a reproducible three-part writeup contract and three practices grade written communication.
+    consequence: Students can communicate reasoning in notebook text.
+  - id: markdown-code-snippets
+    layer: shared-foundation
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [markdown-text-communication]
+    shipped_concepts: []
+    evidence_by_modality:
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C10-competition-craft
+    deficits: {modalities_missing: [implementation, competition-workflow]}
+    rationale: Code cells are common, but no lesson or practice teaches code snippets embedded in Markdown.
+    consequence: Students lack the official mixed prose-and-code authoring skill.
+  - id: markdown-math-formulae
+    layer: shared-foundation
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [markdown-text-communication]
+    shipped_concepts: [multivar-chain-rule, l1-regularization, learning-rate]
+    evidence_by_modality:
+      derivation:
+        lesson_anchors: []
+        practices: [{id: F4-p17, role: primary}, {id: C2-p11, role: primary}, {id: C3-p10, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+      competition-workflow:
+        lesson_anchors: []
+        practices: [{id: F4-p17, role: primary}, {id: C2-p11, role: primary}, {id: C3-p10, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+    disposition: extend-existing-unit
+    destination: C10-competition-craft
+    deficits: {modalities_missing: [derivation, competition-workflow]}
+    rationale: Students enter mathematical work in Markdown practices, but no primary lesson teaches formula syntax or formula-bearing submission workflow.
+    consequence: Practice without teaching cannot establish reliable Markdown-math authoring.
+  - id: colab-coding-submission
+    layer: shared-foundation
+    requirement: required
+    coverage: missing
+    source_refs: [official-round-policy-2027-2026-08-06]
+    depends_on: [colab-markdown-solution-authoring]
+    shipped_concepts: []
+    evidence_by_modality:
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C10-competition-craft
+    deficits: {modalities_missing: [implementation, competition-workflow]}
+    rationale: C10 teaches generic notebook submission, but the corpus contains no Colab-specific coding or submission evidence.
+    consequence: Platform-specific submission failures remain unaddressed.
+  - id: cpu-and-gpu-round-boundary
+    layer: round-1-core
+    requirement: required
+    coverage: partial
+    source_refs: [official-round-policy-2027-2026-08-06]
+    depends_on: [colab-coding-submission]
+    shipped_concepts: [torch-tensors]
+    evidence_by_modality:
+      competition-workflow:
+        lesson_anchors: [{path: units/C6-pytorch/lessons/01-tensors-and-inheritance.ipynb, heading: 'C6-pytorch — Session 1: Torch Tensors and Python Inheritance > 1. Tensors: NumPy Arrays with a Passport', cell_ordinal: 1, role: primary}]
+        practices: []
+        assessments: []
+    disposition: extend-existing-unit
+    destination: C10-competition-craft
+    deficits: {modalities_missing: []}
+    rationale: C6 states that course work is CPU-only and briefly names CUDA, but no practice distinguishes R1 CPU policy from R2 GPU availability.
+    consequence: The lesson-only fact is not an operational round-boundary skill.
+  - id: noncoding-and-coding-task-switching
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-round-policy-2027-2026-08-06]
+    depends_on: [python-programming, markdown-text-communication]
+    shipped_concepts: [normal-form-answers, prediction-function-contract, notebook-discipline, hidden-test-protocol, writeup-quality]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/01-the-contract.ipynb, heading: 'C10-competition-craft — Session 1: The Contract > 2. The Task and the Harness', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p12, role: primary}, {id: C10-p16, role: primary}, {id: C10-p18, role: primary}]
+        assessments: [{id: r1-001-p01-1, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/03-notebook-and-writeup.ipynb, heading: 'C10-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p13, role: primary}, {id: C10-p17, role: primary}, {id: C10-p18, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+      competition-workflow:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/01-the-contract.ipynb, heading: 'C10-competition-craft — Session 1: The Contract > 2. The Task and the Harness', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p13, role: primary}, {id: C10-p14, role: primary}, {id: C10-p18, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+    disposition: keep
+    destination: C10-competition-craft
+    deficits: {modalities_missing: []}
+    rationale: The course explicitly alternates reasoning-only, constrained-code, and full-notebook forms.
+    consequence: Students can switch answer modes under competition constraints.
+  - id: theory-and-programming-integration
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [noncoding-and-coding-task-switching]
+    shipped_concepts: [metric-driven-iteration, writeup-quality, prediction-function-contract, hidden-test-protocol]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/02-metric-driven-iteration.ipynb, heading: 'C10-competition-craft — Session 2: Metric-Driven Iteration > 5. The Iteration Loop', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p12, role: primary}, {id: C10-p15, role: primary}, {id: C10-p18, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/03-notebook-and-writeup.ipynb, heading: 'C10-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p13, role: primary}, {id: C10-p17, role: primary}, {id: C10-p18, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+      competition-workflow:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/03-notebook-and-writeup.ipynb, heading: 'C10-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p13, role: primary}, {id: C10-p17, role: primary}, {id: C10-p18, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+    disposition: keep
+    destination: C10-competition-craft
+    deficits: {modalities_missing: []}
+    rationale: The mini-competition makes construction, evaluation, diagnosis, and written justification one graded artifact.
+    consequence: Students practice the official theory-plus-programming expectation.
+  - id: linear-algebra-foundations
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [numpy-programming]
+    shipped_concepts: [matrices-as-linear-maps, matrix-multiplication, rank, linear-independence-span]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/F3-matrices/lessons/01-matrices-as-maps.ipynb, heading: 'F3-matrices — Session 1: Matrices as Maps > 3. The Linearity Contract', cell_ordinal: 1, role: primary}, {path: units/F3-matrices/lessons/03-rank-independence-and-outer-products.ipynb, heading: 'F3-matrices — Session 3: Rank, Independence, and Outer Products > 3. Rank: Counting Independent Directions', cell_ordinal: 1, role: primary}]
+        practices: [{id: F3-p01, role: primary}, {id: F3-p03, role: primary}, {id: F3-p12, role: primary}]
+        assessments: [{id: r1-001-p03-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/F3-matrices/lessons/02-multiplication-and-gram-matrices.ipynb, heading: 'F3-matrices — Session 2: Multiplication and Gram Matrices > 3. Multiplication Is Composition', cell_ordinal: 1, role: primary}]
+        practices: [{id: F3-p02, role: primary}, {id: F3-p07, role: primary}, {id: F3-p20, role: primary}]
+        assessments: [{id: r1-001-p05-7, role: primary}]
+    disposition: keep
+    destination: F3-matrices
+    deficits: {modalities_missing: []}
+    rationale: F3 teaches maps, composition, span, rank, and executable matrix operations with direct practices.
+    consequence: The linear-algebra base is ready for downstream models.
+  - id: affine-transformations
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [linear-algebra-foundations]
+    shipped_concepts: [matrices-as-linear-maps, activation-functions, mlp-architecture, manual-weights]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/F3-matrices/lessons/01-matrices-as-maps.ipynb, heading: 'F3-matrices — Session 1: Matrices as Maps > 3. The Linearity Contract', cell_ordinal: 1, role: primary}, {path: units/C5-neural-networks/lessons/01-perceptrons-and-activations.ipynb, heading: 'C5-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p11, role: primary}, {id: C5-p18, role: primary}, {id: C6-p09, role: primary}]
+        assessments: [{id: r1-001-p07-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb, heading: 'C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation`', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p08, role: primary}, {id: C5-p18, role: primary}, {id: C6-p09, role: primary}]
+        assessments: [{id: r1-001-p08-2, role: primary}]
+    disposition: keep
+    destination: C5-neural-networks
+    deficits: {modalities_missing: []}
+    rationale: F3's origin-preservation test proves a nonzero shift is not linear; C5 then derives affine composition with bias/translation terms and implements it.
+    consequence: Students can use affine transformations despite their later unit ownership.
+  - id: matrix-decompositions
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [linear-algebra-foundations, eigenvalues-and-eigenvectors]
+    shipped_concepts: [spectral-decomposition, svd]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/F6-svd-spectral/lessons/02-spectral-decomposition.ipynb, heading: 'F6-svd-spectral — Session 2: The Spectral Decomposition > 3. The Spectral Decomposition $S = Q \Lambda Q^{\mathsf T}$', cell_ordinal: 1, role: primary}, {path: units/F6-svd-spectral/lessons/03-svd.ipynb, heading: 'F6-svd-spectral — Session 3: The Singular Value Decomposition > 5. The Bridge, Derived: the SVD of $W$ Solves the Spectral Problem > Checkpoint 5', cell_ordinal: 1, role: primary}]
+        practices: [{id: F6-p03, role: primary}, {id: F6-p06, role: primary}, {id: F6-p10, role: primary}]
+        assessments: [{id: r1-001-p05-8, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/F6-svd-spectral/lessons/03-svd.ipynb, heading: 'F6-svd-spectral — Session 3: The Singular Value Decomposition > 5. The Bridge, Derived: the SVD of $W$ Solves the Spectral Problem > Checkpoint 5', cell_ordinal: 1, role: primary}]
+        practices: [{id: F6-p10, role: primary}, {id: F6-p13, role: primary}, {id: F6-p21, role: primary}]
+        assessments: [{id: r1-001-p05-10, role: primary}]
+    disposition: keep
+    destination: F6-svd-spectral
+    deficits: {modalities_missing: []}
+    rationale: Spectral decomposition and SVD are taught, related, reconstructed, and repeatedly implemented.
+    consequence: Decomposition prerequisites are available to PCA and advanced models.
+  - id: eigenvalues-and-eigenvectors
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [linear-algebra-foundations]
+    shipped_concepts: [eigenvalues-eigenvectors, spectral-decomposition]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/F6-svd-spectral/lessons/01-eigenvalues-and-eigenvectors.ipynb, heading: 'F6-svd-spectral — Session 1: Eigenvalues and Eigenvectors > 2. The Eigen Equation $S q = \lambda q$', cell_ordinal: 1, role: primary}]
+        practices: [{id: F6-p01, role: primary}, {id: F6-p07, role: primary}, {id: F6-p24, role: primary}]
+        assessments: [{id: r1-001-p03-1, role: primary}]
+      derivation:
+        lesson_anchors: [{path: units/F6-svd-spectral/lessons/01-eigenvalues-and-eigenvectors.ipynb, heading: 'F6-svd-spectral — Session 1: Eigenvalues and Eigenvectors > 3. Finding Eigenvalues by Hand: the Dependent-Rows Route', cell_ordinal: 1, role: primary}]
+        practices: [{id: F6-p07, role: primary}, {id: F6-p22, role: primary}, {id: F6-p24, role: primary}]
+        assessments: [{id: r1-001-p03-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/F6-svd-spectral/lessons/01-eigenvalues-and-eigenvectors.ipynb, heading: 'F6-svd-spectral — Session 1: Eigenvalues and Eigenvectors > 2. The Eigen Equation $S q = \lambda q$', cell_ordinal: 1, role: primary}]
+        practices: [{id: F6-p07, role: primary}, {id: F6-p22, role: primary}, {id: F6-p24, role: primary}]
+        assessments: [{id: r1-001-p03-2, role: primary}]
+    disposition: keep
+    destination: F6-svd-spectral
+    deficits: {modalities_missing: []}
+    rationale: The eigen equation, hand solution route, NumPy verification, and repeated derivations meet all modalities.
+    consequence: Students can reason about and compute eigensystems.
+  - id: valid-kernel-positive-definite-proof
+    layer: shared-foundation
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [gram-matrices, eigenvalues-and-eigenvectors]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      proof: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-MATH-KERNEL-OPT
+    deficits: {modalities_missing: [theory, proof]}
+    rationale: Incidental PSD energy language never becomes a kernel definition, validity criterion, proof, or counterexample.
+    consequence: Students cannot answer the official kernel-validity proof task.
+  - id: probability-and-statistics-foundations
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [numpy-programming]
+    shipped_concepts: [random-variables, expectation, variance, independence, gaussian-distribution, sampling-simulation, covariance]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/F5-probability/lessons/01-random-variables-and-expectation.ipynb, heading: 'F5-probability — Session 01: Random Variables and Expectation > 2. Random variables', cell_ordinal: 1, role: primary}, {path: units/F5-probability/lessons/02-variance-and-independence.ipynb, heading: 'F5-probability — Session 02: Variance and Independence > 1. Measuring spread: variance', cell_ordinal: 1, role: primary}]
+        practices: [{id: F5-p01, role: primary}, {id: F5-p03, role: primary}, {id: F5-p08, role: primary}]
+        assessments: [{id: r1-001-p02-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/F5-probability/lessons/03-gaussian-simulation-covariance.ipynb, heading: 'F5-probability — Session 03: The Gaussian, Simulation, and Covariance > 2. The Gaussian, stated', cell_ordinal: 1, role: primary}, {path: units/F5-probability/lessons/03-gaussian-simulation-covariance.ipynb, heading: 'F5-probability — Session 03: The Gaussian, Simulation, and Covariance > 6. Covariance', cell_ordinal: 1, role: primary}]
+        practices: [{id: F5-p05, role: primary}, {id: F5-p09, role: primary}, {id: F5-p18, role: primary}]
+        assessments: [{id: r1-001-p02-3, role: primary}]
+    disposition: keep
+    destination: F5-probability
+    deficits: {modalities_missing: []}
+    rationale: F5 covers the declared elementary probability/statistics contract with reasoning and simulation practice.
+    consequence: The base Gaussian and sampling foundation is shipped, but later rows remain independent gaps.
+  - id: conditional-probability
+    layer: shared-foundation
+    requirement: bridge
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [probability-and-statistics-foundations]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: F5-probability
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: Independence is taught, but conditioning, conditional distributions, and conditional simulation never appear.
+    consequence: Bayes and later probabilistic models lack prerequisite closure.
+  - id: bayes-rule
+    layer: shared-foundation
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [conditional-probability]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: F5-probability
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: No prior-likelihood-posterior calculation or coded update appears.
+    consequence: Students cannot solve the officially named Bayes tasks.
+  - id: hoeffding-inequality
+    layer: shared-foundation
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [probability-and-statistics-foundations]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: F5-probability
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: Sampling experiments lack any concentration bound or use of Hoeffding's inequality.
+    consequence: Students cannot quantify finite-sample deviations.
+  - id: multivariable-derivatives
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: []
+    shipped_concepts: [partial-derivatives, gradient, multivar-chain-rule, sum-of-squares-gradients, tanh-derivative]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/F4-multivar-calculus/lessons/01-partials-and-the-gradient.ipynb, heading: 'F4-multivar-calculus — Session 1: Partial Derivatives and the Gradient > 2. Partial Derivatives: Freeze, Then Differentiate', cell_ordinal: 1, role: primary}]
+        practices: [{id: F4-p01, role: primary}, {id: F4-p03, role: primary}, {id: F4-p12, role: primary}]
+        assessments: [{id: r1-001-p02-1, role: primary}]
+      derivation:
+        lesson_anchors: [{path: units/F4-multivar-calculus/lessons/02-chain-rule-and-sums-of-squares.ipynb, heading: 'F4-multivar-calculus — Session 2: The Chain Rule, tanh, and Sums of Squares > 2. The Multivariable Chain Rule: Every Route Contributes', cell_ordinal: 1, role: primary}]
+        practices: [{id: F4-p08, role: primary}, {id: F4-p12, role: primary}, {id: F4-p17, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/F4-multivar-calculus/lessons/01-partials-and-the-gradient.ipynb, heading: 'F4-multivar-calculus — Session 1: Partial Derivatives and the Gradient > 4. The Gradient: All Partials in One Vector', cell_ordinal: 1, role: primary}]
+        practices: [{id: F4-p05, role: primary}, {id: F4-p10, role: primary}, {id: F4-p18, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+    disposition: keep
+    destination: F4-multivar-calculus
+    deficits: {modalities_missing: []}
+    rationale: F4 develops partials, gradients, chain rule, analytic derivations, and numerical checks.
+    consequence: Calculus prerequisites for optimization are satisfied.
+  - id: convex-sets-functions-and-optimality
+    layer: shared-foundation
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [multivariable-derivatives, linear-algebra-foundations]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-MATH-KERNEL-OPT
+    deficits: {modalities_missing: [theory, derivation]}
+    rationale: Convex appears only for polygons and one parabola description; no convex-function or first-order-optimality theory is taught.
+    consequence: Later optimization and SVM arguments lack formal foundations.
+  - id: gradient-descent-optimization
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [multivariable-derivatives, loss-functions]
+    shipped_concepts: [loss-surfaces, gradient-descent, learning-rate, stochastic-gd]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C3-gradient-descent/lessons/01-surfaces-and-descent.ipynb, heading: 'C3-gradient-descent — Session 1: Loss Surfaces and the Descent Step > 3. The Descent Step', cell_ordinal: 1, role: primary}]
+        practices: [{id: C3-p01, role: primary}, {id: C3-p04, role: primary}, {id: C3-p17, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+      derivation:
+        lesson_anchors: [{path: units/C3-gradient-descent/lessons/01-surfaces-and-descent.ipynb, heading: 'C3-gradient-descent — Session 1: Loss Surfaces and the Descent Step > 3. The Descent Step', cell_ordinal: 1, role: primary}]
+        practices: [{id: C3-p02, role: primary}, {id: C3-p10, role: primary}, {id: C3-p17, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C3-gradient-descent/lessons/02-learning-rates-and-stochasticity.ipynb, heading: 'C3-gradient-descent — Session 2: Learning Rates and Stochasticity > 2. The Payoff: Fitting the C2 Linear Model End to End', cell_ordinal: 1, role: primary}]
+        practices: [{id: C3-p05, role: primary}, {id: C3-p13, role: primary}, {id: C3-p19, role: primary}]
+        assessments: []
+    disposition: keep
+    destination: C3-gradient-descent
+    deficits: {modalities_missing: []}
+    rationale: C3 derives update behavior and makes students implement and diagnose full and stochastic descent.
+    consequence: First-order optimization is available for linear and future neural models.
+  - id: constrained-optimization-lagrangian-duality
+    layer: shared-foundation
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [convex-sets-functions-and-optimality, multivariable-derivatives]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-MATH-KERNEL-OPT
+    deficits: {modalities_missing: [theory, derivation]}
+    rationale: No Lagrangian, constrained optimality, primal-dual formulation, or duality argument occurs.
+    consequence: SVM and constrained-model derivations cannot be taught with prerequisite closure.
+  - id: python-programming
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: []
+    shipped_concepts: [python-inheritance]
+    evidence_by_modality:
+      implementation:
+        lesson_anchors: [{path: units/C6-pytorch/lessons/01-tensors-and-inheritance.ipynb, heading: 'C6-pytorch — Session 1: Torch Tensors and Python Inheritance > 5. Classes in Ten Minutes (Plain Python)', cell_ordinal: 1, role: primary}]
+        practices: [{id: C6-p02, role: primary}, {id: C6-p06, role: primary}, {id: C6-p17, role: primary}]
+        assessments: [{id: r1-001-p07-1, role: primary}]
+    disposition: keep
+    destination: C6-pytorch
+    deficits: {modalities_missing: []}
+    rationale: Basic Python is the declared baseline and C6 explicitly teaches classes and inheritance with graded implementations.
+    consequence: The Python prerequisite is operationally covered.
+  - id: numpy-programming
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [python-programming]
+    shipped_concepts: [numpy-arrays, broadcasting, vectorization]
+    evidence_by_modality:
+      implementation:
+        lesson_anchors: [{path: units/F1-scientific-python/lessons/01-arrays-and-indexing.ipynb, heading: 'F1-scientific-python — Session 01: Arrays and Indexing > 2. Creating arrays', cell_ordinal: 1, role: primary}, {path: units/F1-scientific-python/lessons/02-broadcasting-and-vectorization.ipynb, heading: 'F1-scientific-python — Session 02: Broadcasting, Vectorization, and Axis Aggregations > 5. Vectorization: replacing loops with array operations', cell_ordinal: 1, role: primary}]
+        practices: [{id: F1-p01, role: primary}, {id: F1-p03, role: primary}, {id: F1-p07, role: primary}]
+        assessments: [{id: r1-001-p05-4, role: primary}, {id: r1-001-p06-1, role: primary}]
+    disposition: keep
+    destination: F1-scientific-python
+    deficits: {modalities_missing: []}
+    rationale: F1 directly teaches and heavily practices arrays, broadcasting, indexing, aggregation, and vectorization.
+    consequence: NumPy is ready for all downstream numerical units.
+  - id: pandas-programming
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [python-programming, numpy-programming]
+    shipped_concepts: [pandas-basics, csv-data-loading]
+    evidence_by_modality:
+      implementation:
+        lesson_anchors: [{path: units/C4-classical-ml-practice/lessons/01-pandas-and-data-loading.ipynb, heading: 'C4-classical-ml-practice — Session 1: Pandas and Data Loading > 1. From Arrays to Tables', cell_ordinal: 1, role: primary}]
+        practices: [{id: C4-p01, role: primary}, {id: C4-p05, role: primary}, {id: C4-p20, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+    disposition: keep
+    destination: C4-classical-ml-practice
+    deficits: {modalities_missing: []}
+    rationale: Tables, selection, masks, grouping, CSV loading, and NumPy bridging are taught and practiced.
+    consequence: Tabular competition workflows have a sufficient pandas base.
+  - id: matplotlib-pyplot-programming
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [numpy-programming]
+    shipped_concepts: [matplotlib-basics]
+    evidence_by_modality:
+      implementation:
+        lesson_anchors: [{path: units/F1-scientific-python/lessons/03-randomness-and-plotting.ipynb, heading: 'F1-scientific-python — Session 03: Random Numbers and Plotting > 4. Line plots', cell_ordinal: 1, role: primary}]
+        practices: [{id: F1-p06, role: primary}, {id: F1-p11, role: primary}, {id: F1-p20, role: primary}]
+        assessments: []
+    disposition: keep
+    destination: F1-scientific-python
+    deficits: {modalities_missing: []}
+    rationale: Line, scatter, and histogram construction plus plotting critiques provide direct practice.
+    consequence: Students can create and diagnose basic pyplot figures.
+  - id: seaborn-programming
+    layer: shared-foundation
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [pandas-programming, matplotlib-pyplot-programming]
+    shipped_concepts: []
+    evidence_by_modality:
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: F1-scientific-python
+    deficits: {modalities_missing: [implementation]}
+    rationale: The corpus contains no seaborn import, API use, lesson, or practice.
+    consequence: Matplotlib coverage cannot satisfy the separately named official library.
+  - id: scikit-learn-programming
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [numpy-programming, pandas-programming]
+    shipped_concepts: [sklearn-pipelines, knn, cross-validation]
+    evidence_by_modality:
+      implementation:
+        lesson_anchors: [{path: units/C4-classical-ml-practice/lessons/02-knn-and-scaling.ipynb, heading: 'C4-classical-ml-practice — Session 2: k-Nearest Neighbors and Feature Scaling > 7. Enter sklearn — a Wrapper You Can Verify', cell_ordinal: 1, role: primary}, {path: units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb, heading: 'C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 3. Pipelines: the Whole Recipe as One Object', cell_ordinal: 1, role: primary}]
+        practices: [{id: C4-p09, role: primary}, {id: C4-p11, role: primary}, {id: C4-p15, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+    disposition: keep
+    destination: C4-classical-ml-practice
+    deficits: {modalities_missing: []}
+    rationale: C4 teaches estimator, pipeline, and validation APIs with direct implementations.
+    consequence: Students can use the required sklearn surface.
+  - id: constrained-api-implementation
+    layer: shared-foundation
+    requirement: required
+    coverage: covered
+    source_refs: [reference-analysis-2026-08-03, r1-2026-index-local]
+    depends_on: [python-programming, numpy-programming]
+    shipped_concepts: [vectorization, api-constraint-compliance]
+    evidence_by_modality:
+      implementation:
+        lesson_anchors: [{path: units/F1-scientific-python/lessons/02-broadcasting-and-vectorization.ipynb, heading: 'F1-scientific-python — Session 02: Broadcasting, Vectorization, and Axis Aggregations > 5. Vectorization: replacing loops with array operations', cell_ordinal: 1, role: primary}]
+        practices: [{id: F1-p07, role: primary}, {id: C10-p22, role: primary}, {id: C10-p23, role: primary}]
+        assessments: [{id: r1-001-p05-5, role: primary}, {id: r1-001-p06-1, role: primary}]
+      competition-workflow:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/01-the-contract.ipynb, heading: 'C10-competition-craft — Session 1: The Contract > 2. The Task and the Harness', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p22, role: primary}, {id: C10-p23, role: primary}, {id: C10-p24, role: primary}]
+        assessments: [{id: r1-001-p05-5, role: primary}]
+    disposition: keep
+    destination: C10-competition-craft
+    deficits: {modalities_missing: []}
+    rationale: Zero-point API bans are explicitly taught, priced, audited, and exercised.
+    consequence: Students can implement under machine-checked restrictions.
+  - id: supervised-learning-foundations
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [probability-and-statistics-foundations, python-programming]
+    shipped_concepts: [supervised-vs-unsupervised, train-test-split, overfitting]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C1-ml-fundamentals/lessons/01-learning-and-task-types.ipynb, heading: 'C1 Session 1 — Learning from Data and the Types of Learning Tasks > 2. Supervised Learning: Data with Answers Attached', cell_ordinal: 1, role: primary}]
+        practices: [{id: C1-p01, role: primary}, {id: C1-p15, role: primary}, {id: C1-p21, role: primary}]
+        assessments: [{id: r1-001-p01-1, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C1-ml-fundamentals/lessons/02-generalization-train-test-overfitting.ipynb, heading: 'C1 Session 2 — Generalization: Train/Test Discipline and Overfitting > 5. Flexible Rules, Rigid Rules', cell_ordinal: 1, role: primary}]
+        practices: [{id: C1-p02, role: primary}, {id: C1-p03, role: primary}, {id: C1-p20, role: primary}]
+        assessments: [{id: r1-001-p01-3, role: primary}]
+    disposition: keep
+    destination: C1-ml-fundamentals
+    deficits: {modalities_missing: []}
+    rationale: Labeled-task framing, splitting, fitting simple rules, and generalization are taught and practiced.
+    consequence: Supervised-model units have a sound base.
+  - id: linear-regression
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [linear-algebra-foundations, multivariable-derivatives, supervised-learning-foundations]
+    shipped_concepts: [linear-regression, mse-loss, gradient-descent]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb, heading: 'C2-linear-models — Session 1: Linear Regression and the MSE Loss > 1. From Data to a Prediction Rule', cell_ordinal: 1, role: primary}, {path: units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb, heading: 'C2-linear-models — Session 1: Linear Regression and the MSE Loss > 3. Misses, Residuals, and the MSE', cell_ordinal: 1, role: primary}]
+        practices: [{id: C2-p01, role: primary}, {id: C2-p04, role: primary}, {id: C2-p18, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb, heading: 'C2-linear-models — Session 1: Linear Regression and the MSE Loss > 1. From Data to a Prediction Rule', cell_ordinal: 1, role: primary}]
+        practices: [{id: C2-p05, role: primary}, {id: C2-p09, role: primary}, {id: C3-p13, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+      model-training:
+        lesson_anchors: [{path: units/C3-gradient-descent/lessons/02-learning-rates-and-stochasticity.ipynb, heading: 'C3-gradient-descent — Session 2: Learning Rates and Stochasticity > 2. The Payoff: Fitting the C2 Linear Model End to End', cell_ordinal: 1, role: primary}]
+        practices: [{id: C3-p13, role: primary}, {id: C3-p14, role: primary}, {id: C3-p18, role: primary}]
+        assessments: []
+    disposition: keep
+    destination: C2-linear-models
+    deficits: {modalities_missing: []}
+    rationale: The model and loss are taught in C2 and genuinely fit end to end in C3.
+    consequence: Base linear regression is covered independently of the OLS gap.
+  - id: linear-regression-estimator-derivation
+    layer: round-1-core
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [linear-regression, matrix-multiplication, multivariable-derivatives]
+    shipped_concepts: []
+    evidence_by_modality:
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C2-linear-models
+    deficits: {modalities_missing: [derivation]}
+    rationale: C2 teaches the model and MSE but explicitly omits the normal-equation derivation of the closed-form estimator.
+    consequence: Students cannot perform the officially required estimator derivation.
+  - id: ols-rank-identifiability-and-pseudoinverse
+    layer: round-1-core
+    requirement: bridge
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [linear-regression-estimator-derivation, rank]
+    shipped_concepts: [linear-regression, mse-loss, rank, invertibility-via-rank]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb, heading: 'C2-linear-models — Session 1: Linear Regression and the MSE Loss > 3. Misses, Residuals, and the MSE', cell_ordinal: 1, role: primary}, {path: units/F3-matrices/lessons/03-rank-independence-and-outer-products.ipynb, heading: 'F3-matrices — Session 3: Rank, Independence, and Outer Products > 3. Rank: Counting Independent Directions', cell_ordinal: 1, role: primary}]
+        practices: []
+        assessments: []
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C2-linear-models
+    deficits: {modalities_missing: [derivation, implementation]}
+    rationale: Residual geometry and rank are taught, but full-column-rank identifiability and pseudoinverse behavior are not.
+    consequence: The official estimator derivation lacks its necessary rank-deficient boundary conditions.
+  - id: logistic-regression
+    layer: round-1-core
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [linear-regression, loss-functions, gradient-descent-optimization]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-CLASSICAL-BREADTH
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: A single answer-key mention is not teaching; no sigmoid, logit objective, classifier, or training exists.
+    consequence: A named official classical model is absent.
+  - id: support-vector-machine
+    layer: round-1-core
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [valid-kernel-positive-definite-proof, constrained-optimization-lagrangian-duality]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-CLASSICAL-BREADTH
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: No margin, hinge loss, support vector, primal-dual SVM, kernel classifier, or training task exists.
+    consequence: The official SVM family and its kernel consumer remain missing.
+  - id: decision-trees
+    layer: round-1-core
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [supervised-learning-foundations, loss-functions]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-CLASSICAL-BREADTH
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: No split criterion, recursive construction, pruning, implementation, or fitted tree exists.
+    consequence: Tree-based modeling is absent.
+  - id: knn
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [distance-metrics, supervised-learning-foundations]
+    shipped_concepts: [knn, feature-scaling]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C4-classical-ml-practice/lessons/02-knn-and-scaling.ipynb, heading: 'C4-classical-ml-practice — Session 2: k-Nearest Neighbors and Feature Scaling > 3. kNN From First Principles', cell_ordinal: 1, role: primary}]
+        practices: [{id: C4-p02, role: primary}, {id: C4-p04, role: primary}, {id: C4-p12, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C4-classical-ml-practice/lessons/02-knn-and-scaling.ipynb, heading: 'C4-classical-ml-practice — Session 2: k-Nearest Neighbors and Feature Scaling > 7. Enter sklearn — a Wrapper You Can Verify', cell_ordinal: 1, role: primary}]
+        practices: [{id: C4-p04, role: primary}, {id: C4-p11, role: primary}, {id: C4-p14, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+      model-training:
+        lesson_anchors: [{path: units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb, heading: 'C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck', cell_ordinal: 1, role: primary}]
+        practices: [{id: C4-p15, role: primary}, {id: C4-p16, role: primary}, {id: C4-p18, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+    disposition: keep
+    destination: C4-classical-ml-practice
+    deficits: {modalities_missing: []}
+    rationale: First-principles prediction, scaling, sklearn fitting, validation, and selection are all practiced.
+    consequence: kNN is a complete shipped model family.
+  - id: ensemble-learning
+    layer: round-1-core
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [decision-trees, bias-variance-tradeoff]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-CLASSICAL-BREADTH
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: No bagging, boosting, random forest, voting, or ensemble training appears.
+    consequence: Official ensemble breadth is absent.
+  - id: bias-variance-tradeoff
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [supervised-learning-foundations]
+    shipped_concepts: [bias-variance-intuition, overfitting]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C1-ml-fundamentals/lessons/02-generalization-train-test-overfitting.ipynb, heading: 'C1 Session 2 — Generalization: Train/Test Discipline and Overfitting > 5. Flexible Rules, Rigid Rules', cell_ordinal: 1, role: primary}]
+        practices: [{id: C1-p07, role: primary}, {id: C1-p19, role: primary}, {id: C1-p24, role: primary}]
+        assessments: [{id: r1-001-p01-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C1-ml-fundamentals/lessons/02-generalization-train-test-overfitting.ipynb, heading: 'C1 Session 2 — Generalization: Train/Test Discipline and Overfitting > 5. Flexible Rules, Rigid Rules', cell_ordinal: 1, role: primary}]
+        practices: [{id: C1-p03, role: primary}, {id: C1-p19, role: primary}, {id: C1-p24, role: primary}]
+        assessments: [{id: r1-001-p01-2, role: primary}]
+    disposition: keep
+    destination: C1-ml-fundamentals
+    deficits: {modalities_missing: []}
+    rationale: Flexible-versus-rigid behavior, memorization, and underfitting are reasoned through and experimentally compared.
+    consequence: The intended introductory tradeoff depth is covered.
+  - id: cross-validation
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [train-test-split, supervised-learning-foundations]
+    shipped_concepts: [cross-validation, sklearn-pipelines]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb, heading: 'C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck', cell_ordinal: 1, role: primary}]
+        practices: [{id: C4-p03, role: primary}, {id: C4-p13, role: primary}, {id: C4-p19, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb, heading: 'C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck', cell_ordinal: 1, role: primary}]
+        practices: [{id: C4-p10, role: primary}, {id: C4-p15, role: primary}, {id: C4-p17, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+      model-training:
+        lesson_anchors: [{path: units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb, heading: 'C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck', cell_ordinal: 1, role: primary}]
+        practices: [{id: C4-p10, role: primary}, {id: C4-p15, role: primary}, {id: C4-p19, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+    disposition: keep
+    destination: C4-classical-ml-practice
+    deficits: {modalities_missing: []}
+    rationale: Fold semantics, manual CV, pipeline-inside-CV, and model selection are directly graded.
+    consequence: Students can perform honest repeated validation.
+  - id: loss-functions
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [multivariable-derivatives, supervised-learning-foundations]
+    shipped_concepts: [mse-loss, l1-regularization, l2-regularization]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb, heading: 'C2-linear-models — Session 1: Linear Regression and the MSE Loss > 3. Misses, Residuals, and the MSE', cell_ordinal: 1, role: primary}]
+        practices: [{id: C2-p02, role: primary}, {id: C2-p03, role: primary}, {id: C2-p16, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+      derivation:
+        lesson_anchors: [{path: units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb, heading: 'C2-linear-models — Session 1: Linear Regression and the MSE Loss > 5. The Gradient of the MSE at Given Weights', cell_ordinal: 1, role: primary}]
+        practices: [{id: C2-p11, role: primary}, {id: C2-p12, role: primary}, {id: C2-p18, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb, heading: 'C2-linear-models — Session 1: Linear Regression and the MSE Loss > 5. The Gradient of the MSE at Given Weights', cell_ordinal: 1, role: primary}]
+        practices: [{id: C2-p06, role: primary}, {id: C2-p07, role: primary}, {id: C2-p13, role: primary}]
+        assessments: [{id: r1-001-p04-2, role: primary}]
+    disposition: keep
+    destination: C2-linear-models
+    deficits: {modalities_missing: []}
+    rationale: MSE and penalized objectives are defined, differentiated, minimized in constrained cases, and implemented.
+    consequence: Classical optimization has a sufficient loss foundation.
+  - id: end-to-end-model-selection
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [reference-analysis-2026-08-03, r1-2026-index-local]
+    depends_on: [cross-validation, loss-functions]
+    shipped_concepts: [cross-validation, sklearn-pipelines, metric-driven-iteration, prediction-function-contract]
+    evidence_by_modality:
+      implementation:
+        lesson_anchors: [{path: units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb, heading: 'C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 3. Pipelines: the Whole Recipe as One Object', cell_ordinal: 1, role: primary}]
+        practices: [{id: C4-p15, role: primary}, {id: C10-p17, role: primary}, {id: C10-p18, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+      model-training:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/02-metric-driven-iteration.ipynb, heading: 'C10-competition-craft — Session 2: Metric-Driven Iteration > 5. The Iteration Loop', cell_ordinal: 1, role: primary}]
+        practices: [{id: C4-p15, role: primary}, {id: C10-p17, role: primary}, {id: C10-p18, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+      competition-workflow:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/03-notebook-and-writeup.ipynb, heading: 'C10-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p13, role: primary}, {id: C10-p17, role: primary}, {id: C10-p18, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+    disposition: keep
+    destination: C10-competition-craft
+    deficits: {modalities_missing: []}
+    rationale: The course goes from data through fixed validation, bounded selection, refit, packaging, and writeup.
+    consequence: Students can deliver a complete R1 applied-model submission.
+  - id: hidden-test-model-evaluation
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [reference-analysis-2026-08-03, r1-2026-index-local]
+    depends_on: [end-to-end-model-selection]
+    shipped_concepts: [hidden-test-protocol, metric-driven-iteration, prediction-function-contract, writeup-quality]
+    evidence_by_modality:
+      model-training:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/02-metric-driven-iteration.ipynb, heading: 'C10-competition-craft — Session 2: Metric-Driven Iteration > 5. The Iteration Loop', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p09, role: primary}, {id: C10-p12, role: primary}, {id: C10-p17, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+      competition-workflow:
+        lesson_anchors: [{path: units/C10-competition-craft/lessons/01-the-contract.ipynb, heading: 'C10-competition-craft — Session 1: The Contract > 3. The Prediction-Function Contract', cell_ordinal: 1, role: primary}]
+        practices: [{id: C10-p12, role: primary}, {id: C10-p16, role: primary}, {id: C10-p17, role: primary}]
+        assessments: [{id: r1-001-p09, role: primary}]
+    disposition: keep
+    destination: C10-competition-craft
+    deficits: {modalities_missing: []}
+    rationale: Hidden-test isolation, selection optimism, contract checks, and final fitting are explicitly taught and practiced.
+    consequence: Students understand honest hidden-test evaluation.
+  - id: unsupervised-learning-foundations
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [probability-and-statistics-foundations, linear-algebra-foundations]
+    shipped_concepts: [supervised-vs-unsupervised, clustering-concept, pca]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C1-ml-fundamentals/lessons/01-learning-and-task-types.ipynb, heading: 'C1 Session 1 — Learning from Data and the Types of Learning Tasks > 3. Unsupervised Learning and Clustering', cell_ordinal: 1, role: primary}]
+        practices: [{id: C1-p01, role: primary}, {id: C1-p17, role: primary}, {id: C1-p21, role: primary}]
+        assessments: [{id: r1-001-p01-5, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 1. Centering: the Mean Vector and $X_c$', cell_ordinal: 1, role: primary}]
+        practices: [{id: C1-p17, role: primary}, {id: C1-p22, role: primary}, {id: C9-p05, role: primary}]
+        assessments: [{id: r1-001-p01-5, role: primary}]
+    disposition: keep
+    destination: C1-ml-fundamentals
+    deficits: {modalities_missing: []}
+    rationale: Unlabeled-task framing, toy clustering, and PCA provide theory and executable examples.
+    consequence: Unsupervised-learning basics are present independently of the k-means gap.
+  - id: k-means-clustering
+    layer: round-1-core
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [unsupervised-learning-foundations, distance-metrics, expectation]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-CLASSICAL-BREADTH
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: C1 toy split rules are not Lloyd's algorithm; no centroid update, objective descent, initialization, or fitted k-means exists.
+    consequence: The named official clustering algorithm is missing.
+  - id: principal-component-analysis
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [matrix-decompositions, probability-and-statistics-foundations]
+    shipped_concepts: [pca, svd, variance]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 1. Centering: the Mean Vector and $X_c$', cell_ordinal: 1, role: primary}, {path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 2. Variance Along a Direction', cell_ordinal: 1, role: primary}, {path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data', cell_ordinal: 1, role: primary}]
+        practices: [{id: C9-p01, role: primary}, {id: C9-p04, role: primary}, {id: C9-p19, role: primary}]
+        assessments: []
+      implementation:
+        lesson_anchors: [{path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data', cell_ordinal: 1, role: primary}]
+        practices: [{id: C9-p05, role: primary}, {id: C9-p11, role: primary}, {id: C9-p13, role: primary}]
+        assessments: []
+    disposition: keep
+    destination: C9-dimensionality-reduction
+    deficits: {modalities_missing: []}
+    rationale: Centering, directional variance, SVD directions, scores, explained variance, and projections are taught and practiced.
+    consequence: Base PCA is covered independently of its official derivation and class requirements.
+  - id: pca-centered-covariance-eigenproblem-derivation
+    layer: round-1-core
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [principal-component-analysis, eigenvalues-and-eigenvectors, covariance]
+    shipped_concepts: [pca, variance, covariance, eigenvalues-eigenvectors]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 2. Variance Along a Direction', cell_ordinal: 1, role: primary}, {path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data', cell_ordinal: 1, role: primary}]
+        practices: []
+        assessments: []
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C9-dimensionality-reduction
+    deficits: {modalities_missing: [derivation]}
+    rationale: C9 derives directional variance and states the SVD route but never constructs covariance or derives its eigenproblem.
+    consequence: Students cannot supply the official PCA derivation.
+  - id: numpy-pca-class-from-scratch
+    layer: round-1-core
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [principal-component-analysis, pca-centered-covariance-eigenproblem-derivation, python-programming]
+    shipped_concepts: [pca, numpy-arrays, svd]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 1. Centering: the Mean Vector and $X_c$', cell_ordinal: 1, role: primary}, {path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data', cell_ordinal: 1, role: primary}]
+        practices: []
+        assessments: []
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C9-dimensionality-reduction
+    deficits: {modalities_missing: [implementation]}
+    rationale: Students perform individual PCA computations but never implement a reusable NumPy fit-transform-inverse class.
+    consequence: The official from-scratch class expectation is unmet.
+  - id: pca-black-box-insufficiency
+    layer: round-1-core
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [pca-centered-covariance-eigenproblem-derivation, numpy-pca-class-from-scratch]
+    shipped_concepts: [pca, svd, variance]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 2. Variance Along a Direction', cell_ordinal: 1, role: primary}, {path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data', cell_ordinal: 1, role: primary}]
+        practices: [{id: C9-p01, role: primary}, {id: C9-p04, role: primary}]
+        assessments: []
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation:
+        lesson_anchors: [{path: units/C9-dimensionality-reduction/lessons/01-pca.ipynb, heading: 'C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data', cell_ordinal: 1, role: primary}]
+        practices: [{id: C9-p05, role: primary}, {id: C9-p11, role: primary}, {id: C9-p13, role: primary}]
+        assessments: []
+    disposition: extend-existing-unit
+    destination: C9-dimensionality-reduction
+    deficits: {modalities_missing: [derivation]}
+    rationale: The unit bans sklearn and computes PCA mechanics directly, but the covariance-eigenproblem derivation is absent.
+    consequence: Students know black-box use is insufficient but cannot complete the official derivation.
+  - id: pytorch-deep-learning-programming
+    layer: round-1-core
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [python-programming, numpy-programming]
+    shipped_concepts: [torch-tensors, nn-module, custom-layers]
+    evidence_by_modality:
+      implementation:
+        lesson_anchors: [{path: units/C6-pytorch/lessons/01-tensors-and-inheritance.ipynb, heading: 'C6-pytorch — Session 1: Torch Tensors and Python Inheritance > 1. Tensors: NumPy Arrays with a Passport', cell_ordinal: 1, role: primary}, {path: units/C6-pytorch/lessons/02-nn-module-and-custom-layers.ipynb, heading: 'C6-pytorch — Session 2: `nn.Module` and Custom Layers > 3. Registering Numbers: `nn.Parameter` and `DenseLayer`', cell_ordinal: 1, role: primary}]
+        practices: [{id: C6-p08, role: primary}, {id: C6-p13, role: primary}, {id: C6-p20, role: primary}]
+        assessments: [{id: r1-001-p07-1, role: primary}, {id: r1-001-p08-3, role: primary}]
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C6-pytorch
+    deficits: {modalities_missing: [model-training]}
+    rationale: PyTorch tensors and modules are strongly implemented, but C6 explicitly remains inference-only.
+    consequence: Students cannot yet train and evaluate a deep-learning model in PyTorch.
+  - id: pytorch-not-tensorflow-workflow
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [pytorch-deep-learning-programming]
+    shipped_concepts: [torch-tensors, nn-module, custom-layers]
+    evidence_by_modality:
+      competition-workflow:
+        lesson_anchors: [{path: units/C6-pytorch/lessons/01-tensors-and-inheritance.ipynb, heading: 'C6-pytorch — Session 1: Torch Tensors and Python Inheritance > 1. Tensors: NumPy Arrays with a Passport', cell_ordinal: 1, role: primary}, {path: units/C6-pytorch/lessons/02-nn-module-and-custom-layers.ipynb, heading: 'C6-pytorch — Session 2: `nn.Module` and Custom Layers > 3. Registering Numbers: `nn.Parameter` and `DenseLayer`', cell_ordinal: 1, role: primary}]
+        practices: [{id: C6-p08, role: primary}, {id: C6-p13, role: primary}, {id: C6-p20, role: primary}]
+        assessments: [{id: r1-001-p07-1, role: primary}, {id: r1-001-p08-3, role: primary}]
+    disposition: keep
+    destination: C6-pytorch
+    deficits: {modalities_missing: []}
+    rationale: The C6/C7 and mock engineering path consistently requires PyTorch and presents no TensorFlow alternative.
+    consequence: Students practice the required framework workflow.
+  - id: pytorch-autograd-and-optimizer-training
+    layer: round-1-core
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [backpropagation-by-hand, pytorch-deep-learning-programming]
+    shipped_concepts: [requires-grad, layer-freezing]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C6-pytorch/lessons/02-nn-module-and-custom-layers.ipynb, heading: 'C6-pytorch — Session 2: `nn.Module` and Custom Layers > 4. The `requires_grad` Flag, Up Close', cell_ordinal: 1, role: primary}, {path: units/C7-cnn-transfer/lessons/02-resnet-reading.ipynb, heading: "C7-cnn-transfer — Session 2: Reading ResNet-50 > 1. Loading a Pretrained Model, Reproducibly > BatchNorm's three independent controls", cell_ordinal: 1, role: primary}]
+        practices: [{id: C7-p27, role: primary}]
+        assessments: []
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-NEURAL-TRAINING
+    deficits: {modalities_missing: [implementation, model-training]}
+    rationale: The clinic distinguishes module mode, parameter trainability, and graph recording, but backward and optimizers are banned.
+    consequence: Neural autograd and optimizer training remain unshipped.
+  - id: multilayer-perceptron-model
+    layer: round-1-core
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [affine-neural-network-layer, loss-functions]
+    shipped_concepts: [mlp-architecture, activation-functions, manual-weights, decision-boundaries-geometric]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb, heading: 'C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation`', cell_ordinal: 1, role: primary}, {path: units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb, heading: 'C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p04, role: primary}, {id: C5-p08, role: primary}, {id: C5-p18, role: primary}]
+        assessments: [{id: r1-001-p08-3, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb, heading: 'C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p08, role: primary}, {id: C5-p13, role: primary}, {id: C5-p18, role: primary}]
+        assessments: [{id: r1-001-p08-3, role: primary}]
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-NEURAL-TRAINING
+    deficits: {modalities_missing: [model-training]}
+    rationale: MLP architecture and inference are well taught, but all weights are supplied or manually designed.
+    consequence: The model family lacks learned-weight training.
+  - id: affine-neural-network-layer
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [affine-transformations]
+    shipped_concepts: [mlp-architecture, activation-functions, manual-weights, custom-layers]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C5-neural-networks/lessons/01-perceptrons-and-activations.ipynb, heading: 'C5-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p11, role: primary}, {id: C5-p18, role: primary}, {id: C6-p09, role: primary}]
+        assessments: [{id: r1-001-p07-2, role: primary}]
+      derivation:
+        lesson_anchors: [{path: units/C5-neural-networks/lessons/01-perceptrons-and-activations.ipynb, heading: 'C5-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p04, role: primary}, {id: C5-p11, role: primary}, {id: C5-p18, role: primary}]
+        assessments: [{id: r1-001-p08-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb, heading: 'C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation`', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p08, role: primary}, {id: C5-p18, role: primary}, {id: C6-p09, role: primary}]
+        assessments: [{id: r1-001-p07-2, role: primary}]
+    disposition: keep
+    destination: C5-neural-networks
+    deficits: {modalities_missing: []}
+    rationale: Component formulas, bias, composition, NumPy implementation, manual design, and PyTorch implementation are exercised.
+    consequence: The essential affine layer is fully covered.
+  - id: batch-normalization
+    layer: round-1-core
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [probability-and-statistics-foundations, pytorch-autograd-and-optimizer-training]
+    shipped_concepts: [layer-freezing, requires-grad, resnet-architecture]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C7-cnn-transfer/lessons/02-resnet-reading.ipynb, heading: "C7-cnn-transfer — Session 2: Reading ResNet-50 > 1. Loading a Pretrained Model, Reproducibly > BatchNorm's three independent controls", cell_ordinal: 1, role: primary}]
+        practices: [{id: C7-p27, role: primary}]
+        assessments: []
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-NEURAL-TRAINING
+    deficits: {modalities_missing: [derivation, implementation, model-training]}
+    rationale: The clinic teaches train/eval statistics, buffers, and graph controls but does not derive, implement, or train with normalization.
+    consequence: BatchNorm is not yet a genuinely taught and practiced essential layer.
+  - id: dropout
+    layer: round-1-core
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [multilayer-perceptron-model, pytorch-autograd-and-optimizer-training]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-NEURAL-TRAINING
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: Dropout does not occur in any lesson, practice, solution, or mock.
+    consequence: A named essential layer is wholly absent.
+  - id: forward-propagation-by-hand
+    layer: round-1-core
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [affine-neural-network-layer]
+    shipped_concepts: [mlp-architecture, perceptron, activation-functions]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb, heading: 'C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p04, role: primary}, {id: C5-p08, role: primary}, {id: C5-p14, role: primary}]
+        assessments: [{id: r1-001-p08-3, role: primary}]
+      derivation:
+        lesson_anchors: [{path: units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb, heading: 'C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p04, role: primary}, {id: C5-p08, role: primary}, {id: C5-p14, role: primary}]
+        assessments: [{id: r1-001-p08-3, role: primary}]
+    disposition: keep
+    destination: C5-neural-networks
+    deficits: {modalities_missing: []}
+    rationale: Students repeatedly compute exact preactivations, activations, hidden states, and outputs by hand before code verification.
+    consequence: Forward propagation meets the official by-hand expectation.
+  - id: backpropagation-by-hand
+    layer: round-1-core
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [forward-propagation-by-hand, multivariable-derivatives]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-NEURAL-TRAINING
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: C5 explicitly puts backpropagation beyond scope; generic chain-rule exercises do not propagate gradients through a network.
+    consequence: Neural-gradient reasoning is absent.
+  - id: softmax
+    layer: round-1-core
+    requirement: bridge
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [affine-neural-network-layer, probability-and-statistics-foundations]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-NEURAL-TRAINING
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: No softmax definition, stabilization argument, Jacobian, or implementation exists.
+    consequence: Multiclass neural output reasoning is blocked.
+  - id: cross-entropy-loss
+    layer: round-1-core
+    requirement: bridge
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [softmax, loss-functions]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-NEURAL-TRAINING
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: No binary or multiclass cross-entropy, likelihood connection, gradient, or implementation exists.
+    consequence: Neural classification training lacks its core objective.
+  - id: fully-connected-network-from-scratch
+    layer: round-1-core
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    depends_on: [backpropagation-by-hand, softmax, cross-entropy-loss]
+    shipped_concepts: [mlp-architecture, activation-functions, manual-weights, decision-boundaries-geometric]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb, heading: 'C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation`', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p08, role: primary}, {id: C5-p13, role: primary}, {id: C5-p18, role: primary}]
+        assessments: [{id: r1-001-p08-3, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb, heading: 'C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy', cell_ordinal: 1, role: primary}]
+        practices: [{id: C5-p08, role: primary}, {id: C5-p13, role: primary}, {id: C5-p18, role: primary}]
+        assessments: [{id: r1-001-p08-3, role: primary}]
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R1-NEURAL-TRAINING
+    deficits: {modalities_missing: [model-training]}
+    rationale: Students build inference networks from scratch, but the official expectation includes learning the weights.
+    consequence: A complete from-scratch training implementation is missing.
+  - id: convolutional-neural-network-basics
+    layer: round-1-core
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    depends_on: [pytorch-autograd-and-optimizer-training]
+    shipped_concepts: [convolution, feature-maps, receptive-field, feature-hierarchy]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb, heading: 'C7-cnn-transfer — Session 1: Convolution and Feature Maps > 3. Convolution in 2-D', cell_ordinal: 1, role: primary}, {path: units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb, heading: 'C7-cnn-transfer — Session 1: Convolution and Feature Maps > 6. Feature Maps: a Bank of Detectors, Stacked', cell_ordinal: 1, role: primary}]
+        practices: [{id: C7-p01, role: primary}, {id: C7-p03, role: primary}, {id: C7-p05, role: primary}]
+        assessments: [{id: r1-001-p07-3, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb, heading: 'C7-cnn-transfer — Session 1: Convolution and Feature Maps > 3. Convolution in 2-D', cell_ordinal: 1, role: primary}]
+        practices: [{id: C7-p06, role: primary}, {id: C7-p07, role: primary}, {id: C7-p26, role: primary}]
+        assessments: [{id: r1-001-p07-4, role: primary}]
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C7-cnn-transfer
+    deficits: {modalities_missing: [model-training]}
+    rationale: Convolution mechanics and architecture are covered, but the unit only loads and inspects pretrained networks.
+    consequence: Students cannot train and diagnose a CNN end to end.
+  - id: attention-mechanism-foundations
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [linear-algebra-foundations, softmax]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: No query-key-value, score, weighting, or attention computation exists.
+    consequence: Every transformer topic lacks its first prerequisite.
+  - id: self-attention
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, r2-2026-index-local]
+    depends_on: [attention-mechanism-foundations]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: No sequence self-attention exists.
+    consequence: Students cannot model within-sequence interactions.
+  - id: multi-head-attention
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, r2-2026-index-local]
+    depends_on: [self-attention]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: No head splitting, projections, concatenation, or implementation exists.
+    consequence: Multi-head transformer blocks cannot be understood or built.
+  - id: positional-encoding
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, plan-015-preliminary-decisions]
+    depends_on: [self-attention]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, implementation]}
+    rationale: No positional signal or encoding implementation exists.
+    consequence: Students cannot explain how order enters attention models.
+  - id: attention-complexity-analysis
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local]
+    depends_on: [self-attention]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, derivation]}
+    rationale: No sequence-length memory or time analysis exists.
+    consequence: Students cannot reason about standard versus linear attention costs.
+  - id: attention-from-scratch
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, r2-2026-index-local, plan-015-preliminary-decisions]
+    depends_on: [multi-head-attention, positional-encoding, pytorch-autograd-and-optimizer-training]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: No attention module or trained attention model exists.
+    consequence: The official from-scratch attention expectation is wholly unmet.
+  - id: transformer-architecture-foundations
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [attention-from-scratch, multilayer-perceptron-model]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: Transformer occurrences refer only to sklearn transformers; no attention-residual-LayerNorm-feed-forward block architecture exists.
+    consequence: The standard transformer block and its normalization/residual system are absent.
+  - id: transformer-nlp-applications
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [transformer-architecture-foundations, nlp-tokenization]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: Existing NLP uses fixed GloVe retrieval, not transformer applications.
+    consequence: Students cannot apply transformers to NLP tasks.
+  - id: vision-transformers
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [transformer-architecture-foundations, convolutional-neural-network-basics]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: No image patching, class token, ViT implementation, or training exists.
+    consequence: The official vision-transformer application is missing.
+  - id: graph-neural-network-transformer-applications
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [transformer-architecture-foundations]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: No graph representation, message passing, graph attention, or training exists.
+    consequence: The official graph-transformer application is absent.
+  - id: nlp-tokenization
+    layer: round-2-extension
+    requirement: required
+    coverage: covered
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [python-programming]
+    shipped_concepts: [tokenization]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb, heading: 'C8-embeddings — Session 1: Tokens and Embeddings > 1. From Text to Tokens', cell_ordinal: 1, role: primary}]
+        practices: [{id: C8-p01, role: primary}, {id: C8-p06, role: primary}, {id: C8-p15, role: primary}]
+        assessments: [{id: r1-001-p05-1, role: primary}, {id: r1-001-p05-2, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb, heading: 'C8-embeddings — Session 1: Tokens and Embeddings > 1. From Text to Tokens', cell_ordinal: 1, role: primary}]
+        practices: [{id: C8-p01, role: primary}, {id: C8-p06, role: primary}, {id: C8-p15, role: primary}]
+        assessments: [{id: r1-001-p05-1, role: primary}, {id: r1-001-p05-2, role: primary}]
+    disposition: keep
+    destination: C8-embeddings
+    deficits: {modalities_missing: []}
+    rationale: The shipped R1 embedding unit honestly teaches and practices tokenization.
+    consequence: Round 2 must reuse C8 rather than duplicate tokenization.
+  - id: nlp-word-embeddings
+    layer: round-2-extension
+    requirement: required
+    coverage: partial
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [nlp-tokenization, linear-algebra-foundations]
+    shipped_concepts: [word-embeddings, gensim-usage, embedding-matrices]
+    evidence_by_modality:
+      theory:
+        lesson_anchors: [{path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb, heading: 'C8-embeddings — Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors', cell_ordinal: 1, role: primary}]
+        practices: [{id: C8-p02, role: primary}, {id: C8-p12, role: primary}, {id: C8-p17, role: primary}]
+        assessments: [{id: r1-001-p05-3, role: primary}]
+      implementation:
+        lesson_anchors: [{path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb, heading: 'C8-embeddings — Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors', cell_ordinal: 1, role: primary}]
+        practices: [{id: C8-p05, role: primary}, {id: C8-p13, role: primary}, {id: C8-p17, role: primary}]
+        assessments: [{id: r1-001-p05-3, role: primary}, {id: r1-001-p05-4, role: primary}]
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C8-embeddings
+    deficits: {modalities_missing: [model-training]}
+    rationale: Students load and use fixed GloVe vectors but never train embeddings.
+    consequence: Embedding use is strong while embedding model training remains absent.
+  - id: nlp-transformers
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [transformer-architecture-foundations, nlp-tokenization]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: No NLP transformer exists.
+    consequence: The central modern NLP family is missing.
+  - id: nlp-pretraining
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [nlp-transformers]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: Loading pretrained GloVe or ResNet is not teaching or executing a pretraining objective.
+    consequence: Students cannot reason about or run pretraining.
+  - id: nlp-fine-tuning
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [nlp-pretraining, pytorch-autograd-and-optimizer-training]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-TRANSFORMERS-NLP
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: C7 discusses hypothetical transfer adjustment but performs no NLP fine-tuning.
+    consequence: Students cannot adapt pretrained NLP models.
+  - id: object-detection
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [convolutional-neural-network-basics]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-VISION-GEN
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: Existing CNN work has no boxes, localization loss, detector, or training.
+    consequence: Object detection is absent.
+  - id: unet
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [convolutional-neural-network-basics]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-VISION-GEN
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: No encoder-decoder, skip concatenation, segmentation, or UNet training exists.
+    consequence: UNet and its diffusion prerequisite role are absent.
+  - id: autoencoder
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [fully-connected-network-from-scratch, loss-functions]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-VISION-GEN
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: Dimensionality reduction is PCA and SVD only; no learned encoder-decoder exists.
+    consequence: Autoencoder and VAE prerequisites are missing.
+  - id: variational-autoencoder
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [autoencoder, multivariate-gaussian, gaussian-reparameterization, kl-divergence]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-VISION-GEN
+    deficits: {modalities_missing: [theory, derivation, implementation, model-training]}
+    rationale: No latent probabilistic model, ELBO, reparameterized encoder, or VAE training exists.
+    consequence: The official VAE family is wholly absent.
+  - id: generative-adversarial-network
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [fully-connected-network-from-scratch, convolutional-neural-network-basics]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-VISION-GEN
+    deficits: {modalities_missing: [theory, derivation, implementation, model-training]}
+    rationale: No generator-discriminator game, objective, implementation, or training exists.
+    consequence: GAN coverage is absent.
+  - id: denoising-diffusion-probabilistic-models
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06, r2-2026-index-local]
+    depends_on: [unet, multivariate-gaussian, gaussian-reparameterization, kl-divergence]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-VISION-GEN
+    deficits: {modalities_missing: [theory, derivation, implementation, model-training]}
+    rationale: No forward noising, reverse denoising, schedule, noise objective, or DDPM training exists.
+    consequence: Diffusion-model theory and practice are absent.
+  - id: stable-diffusion
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [denoising-diffusion-probabilistic-models, variational-autoencoder, transformer-nlp-applications]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-VISION-GEN
+    deficits: {modalities_missing: [theory, implementation, model-training]}
+    rationale: No latent diffusion, text conditioning, pipeline use, or training exists.
+    consequence: Stable Diffusion is absent.
+  - id: multivariate-gaussian
+    layer: round-2-extension
+    requirement: bridge
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, plan-015-preliminary-decisions]
+    depends_on: [probability-and-statistics-foundations, eigenvalues-and-eigenvectors]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-VISION-GEN
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: F5 teaches scalar Gaussians and generic covariance but never a Gaussian vector or covariance-matrix density.
+    consequence: VAE and diffusion prerequisites are not closed.
+  - id: gaussian-reparameterization
+    layer: round-2-extension
+    requirement: bridge
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, plan-015-preliminary-decisions]
+    depends_on: [multivariate-gaussian, pytorch-autograd-and-optimizer-training]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-VISION-GEN
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: No location-scale reparameterization or differentiable latent sampling exists.
+    consequence: Gradient-based latent-variable training is blocked.
+  - id: kl-divergence
+    layer: round-2-extension
+    requirement: bridge
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, plan-015-preliminary-decisions]
+    depends_on: [conditional-probability, expectation, multivariate-gaussian]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-VISION-GEN
+    deficits: {modalities_missing: [theory, derivation, implementation]}
+    rationale: No entropy, distributional cross-entropy, KL definition, Gaussian KL derivation, or implementation exists.
+    consequence: VAE and diffusion objectives lack a prerequisite.
+  - id: gpu-colab-l4-workflow
+    layer: round-2-extension
+    requirement: required
+    coverage: missing
+    source_refs: [official-round-policy-2027-2026-08-06]
+    depends_on: [colab-coding-submission, pytorch-autograd-and-optimizer-training]
+    shipped_concepts: []
+    evidence_by_modality:
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+      competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-CAPSTONE
+    deficits: {modalities_missing: [implementation, model-training, competition-workflow]}
+    rationale: The only device teaching says the course is CPU-only; no Colab L4, device movement, memory handling, or GPU training is practiced.
+    consequence: Students cannot execute the official R2 GPU workflow.
+  - id: semi-supervised-pseudo-labeling
+    layer: round-2-extension
+    requirement: bridge
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    depends_on: [convolutional-neural-network-basics, k-means-clustering, open-ended-experiment-design]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+      competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-CAPSTONE
+    deficits: {modalities_missing: [theory, implementation, model-training, competition-workflow]}
+    rationale: No limited-label learning, pseudo-label selection, clustering-assisted labeling, or leakage-safe validation workflow exists.
+    consequence: The observed R2 semi-supervised image-modeling capability is missing.
+  - id: scientific-ml-inverse-problems
+    layer: round-2-extension
+    requirement: bridge
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    depends_on: [end-to-end-model-selection, pytorch-autograd-and-optimizer-training]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+      competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-CAPSTONE
+    deficits: {modalities_missing: [theory, implementation, model-training, competition-workflow]}
+    rationale: No inverse-problem formulation, observation operator, learned inversion, or competition workflow exists.
+    consequence: An observed R2 scientific-modeling capability is missing.
+  - id: open-ended-experiment-design
+    layer: round-2-extension
+    requirement: bridge
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    depends_on: [end-to-end-model-selection, gpu-colab-l4-workflow]
+    shipped_concepts: []
+    evidence_by_modality:
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+      competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-CAPSTONE
+    deficits: {modalities_missing: [model-training, competition-workflow]}
+    rationale: C10's bounded kNN campaign is useful prerequisite practice but not open-ended architecture or experiment design.
+    consequence: Students cannot plan a broad R2 modeling investigation.
+  - id: open-ended-model-evaluation
+    layer: round-2-extension
+    requirement: bridge
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    depends_on: [open-ended-experiment-design, hidden-test-model-evaluation]
+    shipped_concepts: []
+    evidence_by_modality:
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+      competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-CAPSTONE
+    deficits: {modalities_missing: [model-training, competition-workflow]}
+    rationale: Existing evaluation is a pinned R1 tabular protocol without scientific diagnostics, ablations, robustness, or family comparison.
+    consequence: Students cannot defend open-ended R2 model choices.
+  - id: mixture-parameter-regression
+    layer: round-2-extension
+    requirement: bridge
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    depends_on: [multivariate-gaussian, linear-regression, open-ended-experiment-design]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+      competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-CAPSTONE
+    deficits: {modalities_missing: [theory, implementation, model-training, competition-workflow]}
+    rationale: No mixture-function process, parameter identifiability, regression model, or evaluation workflow exists.
+    consequence: An observed R2 parameter-estimation capability is missing.

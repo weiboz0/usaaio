@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
+
+import yaml
 
 from tools.checks.blueprint import check_blueprint
 from tools.checks.coverage import check_coverage
@@ -139,3 +142,148 @@ def test_ci_flags_draft_manifest_loudly(tmp_path):
     )
     assert proc.returncode == 3
     assert "DRAFT manifest" in proc.stdout
+
+
+def test_scope_cli_is_registered_and_loader_errors_are_blocking(tmp_path):
+    seed_repo(tmp_path)
+
+    proc = subprocess.run(
+        [sys.executable, "-m", "tools.cli", "--root", str(tmp_path), "scope-check"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 1
+    assert "curriculum/sources.yaml" in proc.stderr
+    assert "invalid choice" not in proc.stderr
+
+
+def test_ci_local_wires_inventory_scope_and_generated_document_checks():
+    script = (ROOT / "scripts" / "ci-local.sh").read_text()
+
+    assert "python -m tools.audit_curriculum --check" in script
+    assert 'usaaio-tools "$c"' in script
+    assert "scope-check" in script
+    assert "python -m tools.render_curriculum_roadmap --check" in script
+
+
+def test_pre_merge_guard_runs_embedded_yaml_with_uv_python():
+    script = (ROOT / "scripts" / "pre-merge-guard.sh").read_text()
+
+    assert "uv run python -" in script
+    assert "python3 -" not in script
+
+
+def _git(cwd: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", *args], cwd=cwd, capture_output=True, text=True, check=True
+    )
+
+
+def _roadmap(destination: str | None, planned_id: str | None) -> str:
+    return yaml.safe_dump(
+        {
+            "roadmap_version": 1,
+            "layers": [],
+            "planned_units": (
+                [{"id": planned_id, "knowledge_points": ["topic-a"]}] if planned_id else []
+            ),
+            "knowledge_points": (
+                [{"id": "topic-a", "destination": destination}] if destination else []
+            ),
+        },
+        sort_keys=False,
+    )
+
+
+def _fake_uv_environment(tmp_path: Path) -> dict[str, str]:
+    executable = tmp_path / "bin" / "uv"
+    executable.parent.mkdir()
+    executable.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "[[ $1 == run ]]\n"
+        "shift\n"
+        "[[ $1 == python ]]\n"
+        "shift\n"
+        'exec "$TEST_PYTHON" "$@"\n'
+    )
+    executable.chmod(0o755)
+    env = os.environ.copy()
+    env["PATH"] = f"{executable.parent}:{env['PATH']}"
+    env["TEST_PYTHON"] = sys.executable
+    return env
+
+
+def test_pre_merge_guard_pr_mode_fails_when_origin_main_is_unavailable(tmp_path: Path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    script = repo / "scripts" / "pre-merge-guard.sh"
+    script.parent.mkdir()
+    script.write_bytes((ROOT / "scripts" / "pre-merge-guard.sh").read_bytes())
+    script.chmod(0o755)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh", "--pr"],
+        cwd=repo,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 1
+    assert "origin/main" in proc.stderr
+    assert "unverified" in proc.stderr
+
+
+def test_pre_merge_guard_rejects_parallel_roadmap_ownership_collisions(tmp_path):
+    repo = tmp_path / "repo"
+    remote = tmp_path / "remote.git"
+    other = tmp_path / "other"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    script = repo / "scripts" / "pre-merge-guard.sh"
+    script.parent.mkdir()
+    script.write_bytes((ROOT / "scripts" / "pre-merge-guard.sh").read_bytes())
+    script.chmod(0o755)
+    coverage = repo / "curriculum" / "coverage-map.yaml"
+    coverage.parent.mkdir()
+    coverage.write_text(_roadmap(None, None))
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+    _git(tmp_path, "init", "--bare", str(remote))
+    _git(repo, "remote", "add", "origin", str(remote))
+    _git(repo, "push", "-u", "origin", "main")
+    _git(repo, "checkout", "-b", "feature")
+    coverage.write_text(_roadmap("U-feature", "P-collision"))
+
+    _git(tmp_path, "clone", "-b", "main", str(remote), str(other))
+    _git(other, "config", "user.email", "test@example.com")
+    _git(other, "config", "user.name", "Test")
+    other.joinpath("curriculum", "coverage-map.yaml").write_text(
+        _roadmap("U-main", "P-collision")
+    )
+    _git(other, "add", ".")
+    _git(other, "commit", "-m", "parallel roadmap")
+    _git(other, "push", "origin", "main")
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh", "--pr"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 1
+    assert "roadmap knowledge-point ownership collision: topic-a" in proc.stdout
+    assert "roadmap planned-unit ownership collision: P-collision" in proc.stdout
