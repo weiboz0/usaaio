@@ -53,23 +53,37 @@ EXPECTED_UNIT_SHAPES = {
     "F7-kernels-convex-optimization": ([85, 85, 85, 85], 20, (340, 640, 45)),
 }
 
-# Temporary Phase 1 register-first boundary. Remove IDs as later phases create both files;
+# Temporary Phase 2 register-first boundary. Remove IDs as later phases create both files;
 # the final content phase deletes this exception and restores full-green coverage here.
 PLAN016_PENDING_PRACTICE_IDS = {
-    "F1-scientific-python": tuple(range(22, 25)),
     "F5-probability": tuple(range(20, 26)),
     "C2-linear-models": tuple(range(19, 25)),
     "C9-dimensionality-reduction": tuple(range(20, 25)),
     "F7-kernels-convex-optimization": tuple(range(1, 21)),
 }
 
-PLAN016_C10_PENDING_PRACTICE_CONCEPTS = (
-    "colab-coding-submission",
+PLAN016_C10_PROMOTED_CONCEPTS = (
     "colab-markdown-solution-authoring",
-    "cpu-and-gpu-round-boundary",
     "markdown-code-snippets",
     "markdown-math-formulae",
+    "colab-coding-submission",
+    "cpu-and-gpu-round-boundary",
 )
+
+F1_SEABORN_ARRAY_ONLY_FILES = {
+    Path("lesson.ipynb"),
+    Path("lessons/01-arrays-and-indexing.ipynb"),
+    Path("lessons/02-broadcasting-and-vectorization.ipynb"),
+    Path("lessons/03-randomness-and-plotting.ipynb"),
+    Path("lessons/04-seaborn-with-arrays.ipynb"),
+    Path("review.ipynb"),
+    Path("practice/p22.ipynb"),
+    Path("practice/p22_solution.ipynb"),
+    Path("practice/p23.ipynb"),
+    Path("practice/p23_solution.ipynb"),
+    Path("practice/p24.ipynb"),
+    Path("practice/p24_solution.ipynb"),
+}
 
 
 def _manifest(unit_id: str) -> dict[str, object]:
@@ -112,11 +126,6 @@ def _plan016_expected_coverage_errors() -> set[str]:
             stem = f"practice/p{number:02}"
             errors.add(f"{manifest}: missing practice path {stem}.ipynb")
             errors.add(f"{manifest}: missing solution path {stem}_solution.ipynb")
-    c10_manifest = ROOT / "units" / "C10-competition-craft" / "manifest.yaml"
-    errors.add(
-        f"{c10_manifest}: taught concepts without practice "
-        f"{list(PLAN016_C10_PENDING_PRACTICE_CONCEPTS)}"
-    )
     return errors
 
 
@@ -308,9 +317,10 @@ def test_plan016_existing_unit_register_extensions_are_exact():
         problem["id"]: problem for problem in _manifest("C10-competition-craft")["practice"]
     }
     expected_c10_concepts = {
-        "C10-p15": ["writeup-quality"],
+        "C10-p15": ["writeup-quality", *PLAN016_C10_PROMOTED_CONCEPTS],
         "C10-p17": [
             "writeup-quality",
+            *PLAN016_C10_PROMOTED_CONCEPTS,
             "train-test-split",
             "f1-macro",
             "knn",
@@ -319,6 +329,7 @@ def test_plan016_existing_unit_register_extensions_are_exact():
         ],
         "C10-p18": [
             "writeup-quality",
+            *PLAN016_C10_PROMOTED_CONCEPTS,
             "train-test-split",
             "class-imbalance",
             "accuracy-precision-recall",
@@ -330,9 +341,12 @@ def test_plan016_existing_unit_register_extensions_are_exact():
     }
     for problem_id, expected_concepts in expected_c10_concepts.items():
         assert c10[problem_id]["concepts"] == expected_concepts
-        assert not set(c10[problem_id]["concepts"]) & set(
-            PLAN016_C10_PENDING_PRACTICE_CONCEPTS
-        )
+    for concept in PLAN016_C10_PROMOTED_CONCEPTS:
+        assert [
+            problem_id
+            for problem_id, problem in c10.items()
+            if concept in problem["concepts"]
+        ] == ["C10-p15", "C10-p17", "C10-p18"]
 
 
 def test_plan016_f1_register_rows_are_under_truthful_set_comments():
@@ -343,6 +357,33 @@ def test_plan016_f1_register_rows_are_under_truthful_set_comments():
     assert "id: F1-p22" in set_a
     assert "id: F1-p23" in set_b
     assert "id: F1-p24" in set_c
+
+
+def test_f1_seaborn_array_only_boundary():
+    unit_dir = ROOT / "units" / "F1-scientific-python"
+    actual_files = {
+        path.relative_to(unit_dir) for path in (unit_dir / "lessons").glob("*.ipynb")
+    }
+    actual_files.update(
+        path.relative_to(unit_dir)
+        for path in (unit_dir / "practice").glob("p2[234]*.ipynb")
+    )
+    actual_files.update({Path("lesson.ipynb"), Path("review.ipynb")})
+
+    assert len(F1_SEABORN_ARRAY_ONLY_FILES) == 12
+    assert actual_files == F1_SEABORN_ARRAY_ONLY_FILES
+    assert all((unit_dir / relative).is_file() for relative in F1_SEABORN_ARRAY_ONLY_FILES)
+
+    forbidden = {
+        "import pandas": re.compile(r"\bimport\s+pandas\b", re.IGNORECASE),
+        "from pandas": re.compile(r"\bfrom\s+pandas\b", re.IGNORECASE),
+        "pd.": re.compile(r"\bpd\s*\."),
+        "DataFrame": re.compile(r"\bdataframe\b", re.IGNORECASE),
+    }
+    for relative in sorted(F1_SEABORN_ARRAY_ONLY_FILES):
+        text = (unit_dir / relative).read_text()
+        hits = [name for name, pattern in forbidden.items() if pattern.search(text)]
+        assert hits == [], f"{relative}: forbidden pandas surface {hits}"
 
 
 def test_plan016_f7_manifest_has_exact_foundation_contract_and_register():
@@ -507,12 +548,12 @@ def test_plan016_syllabus_narrative_order_and_dependency_contract():
     assert "Double-length units (F5, F6) use 4–6 sessions." in standards
 
 
-def test_plan016_phase1_coverage_fails_only_for_pending_content_paths():
+def test_plan016_phase2_coverage_fails_only_for_pending_content_paths():
     report = check_coverage(ROOT)
     expected_errors = _plan016_expected_coverage_errors()
 
-    assert sum(len(numbers) for numbers in PLAN016_PENDING_PRACTICE_IDS.values()) == 40
-    assert len(expected_errors) == 81
+    assert sum(len(numbers) for numbers in PLAN016_PENDING_PRACTICE_IDS.values()) == 37
+    assert len(expected_errors) == 74
     assert not report.ok
     assert report.warnings == []
     assert len(report.errors) == len(expected_errors)
