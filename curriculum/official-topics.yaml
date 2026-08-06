@@ -10,12 +10,17 @@ allowed_modalities:
 
 # Official categories use the official sibling labels as stable ids.
 # Nested categories inherit every round from their full ancestor chain.
-# The one observed root is separated so Round 2 paper capabilities are not
-# misreported as official syllabus categories.
+# Policy and observed roots are separated so competition constraints and Round
+# 2 paper capabilities are not misreported as official syllabus categories.
 categories:
   - id: markdown-colab
     parent: null
     kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: competition-policy
+    parent: null
+    kind: official-policy
     source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
     required_for: [round-1, round-2]
   - id: mathematical-foundations
@@ -157,17 +162,17 @@ atomic_targets:
     required_for: [round-1, round-2]
     modalities: [implementation, competition-workflow]
   - id: cpu-and-gpu-round-boundary
-    parent: markdown-colab
+    parent: competition-policy
     source_refs: [official-round-policy-2027-2026-08-06]
     required_for: [round-1, round-2]
     modalities: [competition-workflow]
   - id: noncoding-and-coding-task-switching
-    parent: markdown-colab
+    parent: competition-policy
     source_refs: [official-round-policy-2027-2026-08-06]
     required_for: [round-1, round-2]
     modalities: [theory, implementation, competition-workflow]
   - id: theory-and-programming-integration
-    parent: markdown-colab
+    parent: competition-policy
     source_refs: [official-syllabus-2026-08-06]
     required_for: [round-1, round-2]
     modalities: [theory, implementation, competition-workflow]
@@ -287,16 +292,15 @@ atomic_targets:
     source_refs: [official-syllabus-2026-08-06]
     required_for: [round-1, round-2]
     modalities: [theory, implementation, model-training]
-  - id: linear-regression-estimator-derivation
-    parent: supervised-learning
-    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
-    required_for: [round-1, round-2]
-    modalities: [theory, derivation]
   - id: ols-normal-equations-rank-and-pseudoinverse
     parent: supervised-learning
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     required_for: [round-1, round-2]
     modalities: [theory, derivation, implementation]
+    acceptance:
+      - derive the OLS estimator from MSE through the normal equations
+      - state the full-column-rank and identifiability conditions
+      - explain pseudoinverse behavior when the full-rank condition fails
   - id: logistic-regression
     parent: supervised-learning
     source_refs: [official-syllabus-2026-08-06]
@@ -483,11 +487,7 @@ atomic_targets:
     source_refs: [official-syllabus-2026-08-06]
     required_for: [round-2]
     modalities: [theory, derivation, implementation]
-  - id: transformer-depth-of-understanding
-    parent: transformer-architecture
-    source_refs: [official-syllabus-2026-08-06]
-    required_for: [round-2]
-    modalities: [theory, derivation, implementation]
+    acceptance: solid-and-deep-understanding
   - id: transformer-nlp-applications
     parent: transformer-applications
     source_refs: [official-syllabus-2026-08-06]
