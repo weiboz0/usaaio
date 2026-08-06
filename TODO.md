@@ -33,4 +33,10 @@
       the unit teaches anywhere, so a concept taught in a later session can satisfy an earlier
       problem. `docs/course-structure.md` §7 claims session-granular integrity that the checker
       does not yet enforce.
+- [ ] **Intra-repo overlap detection.** `overlap-scan` compares our problems against the
+      external reference corpus only, never against each other. Plan 014's gate caught F6-p25
+      shipping as a near-isomorph of F6-p17 — same unit, eight problems apart — by human
+      reading alone, after the plan's own corpus duty had checked the mock and the external
+      corpus and skipped the unit's own neighbours. A problem-vs-problem pass over
+      `units/*/practice/` and `mocktests/` would have caught it mechanically.
 - [ ] r1-002 / r1-003 via the blueprint's arc rotation (indices 1 and 2).
