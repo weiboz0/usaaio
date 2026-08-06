@@ -592,6 +592,180 @@ Plan 014 was merged or explicitly abandoned. Execution update, 2026-08-06: Plan 
 at the squash commit recorded in `docs/audits/015-plan014-reconciliation.md`; the block is
 resolved and the post-014 baseline was recomputed before implementation.
 
+## Content Review
+
+### Review 1 — Claude self (2026-08-06)
+
+- **Verdict:** Approved.
+- `[claude-self] [FIXED]` The preliminary taxonomy conflated direct official requirements
+  with prerequisite-closure topics.
+  The final graph separates 80 direct requirements from 12 pedagogical bridges and keeps
+  the official linear-regression estimator derivation distinct from the OLS
+  rank/identifiability/pseudoinverse bridge.
+- `[claude-self] [FIXED]` Generated documents originally exposed missing modalities but
+  not a practice-only deficit.
+  The renderer now publishes a checker-derived practice shortfall for every atomic target
+  from the same shared threshold used by `scope-check`.
+- `[claude-self] [FIXED]` The corpus table originally labelled the 765-unit-notebook
+  subtotal as all inventoried notebooks.
+  It now reports 765 unit notebooks, 10 mock notebooks, and 775 total notebooks literally.
+- Blind solving is not applicable because this plan changes audit/tooling/governance
+  artifacts and ships no student problems or solutions.
+
+### Review 2 — Codex GPT-5.6-terra (2026-08-06)
+
+- **Initial verdict:** Changes requested.
+- `[codex] [FIXED]` Conditional probability, OLS rank/pseudoinverse conditions, softmax,
+  and cross-entropy were incorrectly reported as direct official requirements.
+  Commit `d814e74` moved them to typed pedagogical-bridge parents and introduced the
+  distinct required estimator-derivation target.
+- `[codex] [FIXED]` The post-execution report was still empty at the re-review checkpoint.
+  It is populated below with the required sources, corpus, reconciliation, review, and
+  verification evidence.
+- **Final re-verdict:** Pending the report-completion recheck.
+
+### Review 3 — independent Opus (2026-08-06)
+
+- **Final verdict:** Approved with suggestions.
+- `[opus] [FIXED]` Eleven first-pass findings covered schedule-band arithmetic, omitted
+  ViT/GNN queue work, estimated-hour provenance, affine evidence, optional-topic
+  visibility, past-paper acceptance markers, layer/dependency semantics, combined time
+  totals, and the placement of early-shipped C8 topics.
+  Commits through `0227459` resolved all eleven and the first re-review found no blocker.
+- `[opus] [FIXED]` The audit and roadmap hid practice-only shortfalls, and the corpus table
+  mislabeled the 765-unit-notebook subtotal.
+  Commit `8d25484` added fail-first regression tests, renders all 92 shortfalls, and reports
+  the 775-notebook total.
+- `[opus] [FIXED]` The checker and renderer initially duplicated the three-practice
+  threshold.
+  Commit `bbb724e` exports one shared constant and pins that ownership with a regression
+  test.
+- `[opus] [FIXED]` This content-review record and the post-execution report were deferred
+  until final CI completed; both are now present.
+
+### Review 4 — GLM-5.2 (2026-08-06)
+
+- **Final verdict:** Approved.
+- `[glm] [FIXED]` The plan named a fixture directory while the implementation used inline
+  parametrized negative fixtures.
+  Commit `cc2ec99` records the actual design in Task 1; 23 parameter groups in
+  `tests/test_scope.py` and four in `tests/test_audit_curriculum.py` provide the intended
+  anti-vacuity coverage.
+- `[glm] [FIXED]` The final review verified the 92-row bijection, 80/12 requirement split,
+  Plan 014 ancestry and counts, source hashes, exit totals, generated freshness, and
+  representative evidence semantics with no remaining finding.
+
+### Supplemental independent semantic review — Codex GPT-5.6-sol (2026-08-06)
+
+- **Verdict:** Approved.
+- `[codex] [FIXED]` The independent review confirmed the semi-supervised bridge,
+  transformer and Stable Diffusion prerequisites, complete tranche ownership, official L4
+  policy classification, direct-versus-bridge split, Plan 014 ancestry, and final counts.
+
+**GATE RESULT:** Pending only the Codex report-completion re-verdict; no content or tooling
+finding remains open.
+
 ## Post-Execution Report
 
-Not started.
+### Delivered artifacts
+
+- Added the canonical dated source register, official-topic/category DAG, typed coverage
+  map, deterministic material inventory, and Plan 014 reconciliation.
+- Added `scope-check`, inventory generation/check mode, the single audit/roadmap renderer,
+  CLI/CI wiring, pre-merge union-collision protection, and fail-first negative and renderer
+  tests.
+- Generated the evidence-bound coverage audit and dependency-ordered layered roadmap.
+  The roadmap implements one knowledge graph with a Round 1 exit and a cumulative Round 2
+  exit; it does not maintain duplicate Round 1 and Round 2 teaching materials.
+- Updated the syllabus/course architecture and `TODO.md` without claiming planned material
+  is shipped.
+
+### Sources and epistemic boundary
+
+- Official syllabus and 2027 round-policy pages were retrieved 2026-08-06 and are pinned by
+  normalized topic-path SHA-256 values in `curriculum/sources.yaml`.
+- The committed 2026 reference analysis and local-only Round 1/Round 2 indexes and Round 2
+  rationale were retrieved 2026-08-03.
+- The local 2026 Round 2 index remains light evidence and is not generalized into a complete
+  Round 2 syllabus.
+- Source review expires 2027-06-01; `scope-check` will reject the stale source register
+  after that date.
+
+### Final corpus and coverage
+
+| Measure | Final value |
+|---|---:|
+| Total inventoried notebooks | 775 |
+| Unit notebooks | 765 |
+| Mock notebooks | 10 |
+| Canonical concepts | 109 |
+| Unit manifests | 16 |
+| Unit practices/problems | 343 |
+| Lesson sessions | 47 |
+| Unit lesson/review/overview notebooks | 79 |
+| Atomic audit targets | 92 |
+| Direct official requirements | 80 |
+| Pedagogical bridges | 12 |
+| Covered targets | 30 |
+| Partial targets | 13 |
+| Missing targets | 49 |
+| Round 1 required/bridge targets | 61 |
+| Round 1 acknowledged gaps | 32 |
+| Round 2 required/bridge targets | 92 |
+| Round 2 acknowledged gaps | 62 |
+
+The two adjacent questions requested during planning remain explicit non-required
+candidates: Student's t-test and importance sampling are useful optional enrichment, but
+the inspected evidence does not justify making either an atomic competition requirement.
+The direct official linear-regression estimator derivation is missing; the related
+rank/identifiability/pseudoinverse closure is a separate partial bridge.
+
+### Plan 014 reconciliation and time baseline
+
+- Plan 014 is merged at squash commit `b486d72`; that commit is an ancestor of the final
+  Plan 015 branch.
+- The post-merge baseline was recomputed from canonical YAML rather than copied from Plan
+  014 prose: 3,900 lesson + 7,767 practice + 680 review = 12,347 manifested minutes.
+- Adding the 180-minute mock and 60-minute debrief gives 12,587 scheduled minutes.
+- The planned-unit subtotal is 202–304 hours.
+  Renderer-owned estimates for major F5/C2/C9/C7 extensions add 30–45 hours, so the minimum
+  estimated scoped delta is 232–349 hours; C10/F1/C6/C8 corrections remain unestimated and
+  the roadmap does not claim the current schedule can absorb the work.
+
+### Verification evidence
+
+The final uninterrupted clean-commit run used:
+
+```text
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache bash scripts/ci-local.sh
+```
+
+It completed with `ci-local: ALL GREEN` and produced the following evidence:
+
+- Ruff passed.
+- Pytest passed: 290 tests, with five existing `MissingIDFieldWarning` warnings.
+- Fresh Jupyter execution passed for all 343 unit solution notebooks, all five mock solution
+  notebooks, and all 79 lesson/review/overview notebooks.
+- Answer-check assertions were present in all 343 unit solutions.
+- Register verification passed 343/343 problems.
+- Material inventory freshness, `prereq-check`, `coverage-check`, `scope-check`,
+  `tolerance-check`, `hygiene-check`, `blueprint-check`, and `overlap-scan` passed.
+  `scope-check` emitted the intended 62 acknowledged-gap warnings; `overlap-scan` emitted
+  six non-blocking existing similarity warnings.
+- The mock-test PDF and all nine problem PDFs built successfully.
+- The ordinary pre-merge guard passed.
+
+The interrupted earlier CI attempts are not counted as final evidence.
+No fallback cell execution was used in the final run.
+Because no student problem or solution changed, blind solving was not applicable.
+
+### Review and shipping state
+
+- Claude self: Approved.
+- Codex GPT-5.6-terra: Changes requested on the empty report; report-completion re-verdict
+  pending.
+- Independent Opus: Approved with suggestions; every suggestion is fixed above.
+- GLM-5.2: Approved.
+- Supplemental independent semantic Codex review: Approved.
+- PR creation, `scripts/pre-merge-guard.sh --pr`, fresh-base equality, and squash merge remain
+  to be recorded after the report-completion re-verdict.
