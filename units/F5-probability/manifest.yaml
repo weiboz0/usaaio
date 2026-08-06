@@ -56,7 +56,7 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [variance, elementwise-ops, aggregation-axis]
+  concepts: [variance, elementwise-ops]
   path: practice/p07.ipynb
   solution_path: practice/p07_solution.ipynb
 - id: F5-p08

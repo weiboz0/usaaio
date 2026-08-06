@@ -105,7 +105,7 @@ practice:
   set: C
   type: integrative
   difficulty: core
-  concepts: [pandas-basics, csv-data-loading, knn, feature-scaling, random-seeding, broadcasting, aggregation-axis, distance-metrics, train-test-split, accuracy-precision-recall]
+  concepts: [pandas-basics, csv-data-loading, knn, feature-scaling, random-seeding, broadcasting, aggregation-axis, distance-metrics, train-test-split]
   path: practice/p14.ipynb
   solution_path: practice/p14_solution.ipynb
 - id: C4-p15

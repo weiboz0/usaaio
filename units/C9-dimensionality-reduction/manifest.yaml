@@ -53,7 +53,7 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [truncated-svd-practice, svd, singular-values, frobenius-norm, broadcasting, aggregation-axis]
+  concepts: [truncated-svd-practice, svd, singular-values, frobenius-norm]
   path: practice/p06.ipynb
   solution_path: practice/p06_solution.ipynb
 - id: C9-p07

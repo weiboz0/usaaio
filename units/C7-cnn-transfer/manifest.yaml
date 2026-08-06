@@ -51,7 +51,7 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [convolution, array-indexing-slicing, elementwise-ops, aggregation-axis]
+  concepts: [convolution, array-indexing-slicing, elementwise-ops]
   path: practice/p06.ipynb
   solution_path: practice/p06_solution.ipynb
 - id: C7-p07

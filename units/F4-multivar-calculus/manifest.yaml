@@ -132,6 +132,6 @@ practice:
   set: C
   type: challenge
   difficulty: core
-  concepts: [gradient, partial-derivatives, tanh-derivative, broadcasting, aggregation-axis]
+  concepts: [gradient, partial-derivatives, tanh-derivative, broadcasting]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb
