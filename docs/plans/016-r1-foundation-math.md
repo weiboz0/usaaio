@@ -459,8 +459,15 @@ practice ids, including both proof/refutation and computational evidence where r
    - delete the completed foundation/math tranche from `TRANCHE_QUEUE` so neural-training
      is first;
    - remove C10 and F1 from the sentence listing unestimated corrections;
+   - replace the now-false "These four ranges" prose with the singular statement
+     "This range is a renderer-owned editorial estimate, not a field in the canonical
+     coverage map.";
    - add tests that no unit owning shipped Plan 016 concepts remains in the extension table
-     and the queue begins with Round 1 neural-training completion.
+     and the queue begins with Round 1 neural-training completion.  Rebase the real-repo
+     baseline/delta assertions to 14,767 / 15,007 minutes and the 8–12-hour remaining
+     extension subtotal; update the unestimated-corrections text assertion; replace the
+     six-tranche queue test with a five-tranche test led by neural training and remove its
+     completed F5/C2/C9-extension assertions; assert the new singular estimate wording.
 3. Run the audit and roadmap renderers in write mode, inspect the diff, then run both in
    `--check` mode.  The inventory must include every new/renamed notebook and no stale path.
 4. Extend rather than compress the calendar.  Recompute totals from manifests; expected
@@ -572,7 +579,10 @@ counts reconciled to the manifests.
 - `[opus] [FIXED]` `.codex-buddy/` is ignored, clean porcelain status is a shipping gate,
   the 31 weeks are pinned as 16 + 15 with mock weeks, and the content gate explicitly
   reviews Phase 0 tooling.
-- **Re-review status:** pending.
+- `[opus] [FIXED]` The approve-with-nits re-review found stale "four ranges" renderer prose
+  and underspecified old-total/six-tranche test updates.  Phase 6 now pins the singular
+  wording plus every affected baseline, delta, unestimated-text, and five-tranche assertion.
+- **Final verdict:** APPROVE WITH NITS; both nits are fixed above.
 
 ### Supplemental review — GPT-5.6-sol (pre-roster change)
 
@@ -622,10 +632,9 @@ counts reconciled to the manifests.
   All three are now pinned above.
 - **Final verdict:** APPROVE WITH NITS; all nits are fixed above.
 
-**GATE RESULT: PENDING OPUS RE-REVIEW.** The original self/Sol/Terra/GLM gate passed, then
-the user replaced the redundant Sol slot with Claude Opus 5 during Phase 0.  Opus rejected
-the first revised roster pass with the fixed findings above; Phase 1 cannot start until its
-re-review approves and the new self/Opus/Terra/GLM roster reaches 4/4.
+**GATE RESULT: PASS — 4/4.** The current roster is self APPROVE, Claude Opus 5 APPROVE
+WITH NITS, GPT-5.6-terra APPROVE, and GLM-5.2 APPROVE WITH NITS.  Every blocker, concern,
+and nit is fixed in the final plan; the earlier GPT-5.6-sol pass is supplemental only.
 
 ## Content Review
 
