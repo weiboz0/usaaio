@@ -51,6 +51,37 @@ C2 +275, C9 +255, and F7 +1,025.
 The expected repository totals are 14,647 manifested minutes and 14,887 scheduled minutes,
 laid out as a prerequisite-valid 31-week course near eight hours per week.
 
+### Canonical cluster and track assignments
+
+F7's exact syllabus track is `foundation`.
+The 21 new concept ids use the existing cluster vocabulary as follows; implementation may
+not invent a new cluster or leave these choices to notebook authors.
+
+| Cluster | New concept ids |
+|---|---|
+| `python-scientific` | `seaborn-programming` |
+| `competition-craft` | `colab-markdown-solution-authoring`, `markdown-code-snippets`, `markdown-math-formulae`, `colab-coding-submission`, `cpu-and-gpu-round-boundary` |
+| `probability-statistics` | `conditional-probability`, `bayes-rule`, `hoeffding-inequality` |
+| `ml-concepts` | `linear-regression-estimator-derivation`, `ols-rank-identifiability-and-pseudoinverse`, `pca-centered-covariance-eigenproblem-derivation`, `numpy-pca-class-from-scratch`, `pca-black-box-insufficiency` |
+| `linear-algebra` | `positive-semidefinite-matrices`, `kernel-validity`, `convex-sets` |
+| `calculus-multivar` | `convex-functions`, `first-order-optimality`, `lagrangians`, `optimization-duality` |
+
+### Atomic coverage targets
+
+Plan 016 ships 21 syllabus concepts but promotes exactly 17 Plan 015 atomic coverage rows.
+The mapping is pinned so concept ownership cannot be confused with roadmap status:
+
+| Atomic target(s) | Shipped concept mapping |
+|---|---|
+| the five C10 targets with the same ids | their five one-to-one C10 concepts |
+| `seaborn-programming` | `seaborn-programming` |
+| `conditional-probability`, `bayes-rule`, `hoeffding-inequality` | the three one-to-one F5 concepts |
+| `linear-regression-estimator-derivation`, `ols-rank-identifiability-and-pseudoinverse` | the two one-to-one C2 concepts |
+| `pca-centered-covariance-eigenproblem-derivation`, `numpy-pca-class-from-scratch`, `pca-black-box-insufficiency` | the three one-to-one C9 concepts |
+| `valid-kernel-positive-definite-proof` | `positive-semidefinite-matrices`, `kernel-validity` |
+| `convex-sets-functions-and-optimality` | `convex-sets`, `convex-functions`, `first-order-optimality` |
+| `constrained-optimization-lagrangian-duality` | `lagrangians`, `optimization-duality` |
+
 ### Out of scope
 
 - Plan 017 neural-network training, softmax/cross-entropy, BatchNorm, and dropout content.
@@ -90,6 +121,8 @@ laid out as a prerequisite-valid 31-week course near eight hours per week.
 ### Files
 
 - Modify `tests/test_prereq_coverage.py`.
+- Modify `tests/test_model.py`.
+- Modify `tools/model.py`.
 - Modify `tools/checks/coverage.py`.
 - Modify `TODO.md` only to register Plan 016 as active.
 
@@ -98,27 +131,34 @@ laid out as a prerequisite-valid 31-week course near eight hours per week.
 1. Confirm the branch is `feature/plan-016-r1-foundation-math`, both local reference index
    symlinks resolve, `scripts/pre-merge-guard.sh` passes, and the baseline full CI is green.
    Record exact commands and counts in the post-execution report.
-2. Add fail-first fixtures proving a syllabus unit with `length: double` fails below four or
+2. Extend `UnitManifest` with parsed `lesson_sessions: list[int] | None` from
+   `estimated_minutes.lesson_sessions`; keep the field optional for legacy/minimal
+   non-double fixtures, reject malformed non-list/non-integer values in model tests, and
+   make a missing value an actionable coverage error for a double-length unit.
+3. Add fail-first fixtures proving a syllabus unit with `length: double` fails below four or
    above six lesson sessions and below 24 or above 30 practices; a compliant 4–6/24–30
-   fixture passes.  A normal unit remains governed by existing policy and this change does
-   not retroactively legalize C7.
-3. Run the focused tests and capture the expected red output before changing the checker:
+   fixture passes.  Pin real F6 as a passing double-length regression, the final F5 shape as
+   a fixture before its content exists, and a hypothetical C7 `length: double` with its
+   current three sessions as failing.  Normal C7 remains its recorded non-conformance; the
+   new logic runs only when `unit.length == "double"` and does not legalize normal overflow.
+4. Run the focused tests and capture the expected red output before changing the checker:
 
    ```bash
-   uv run pytest tests/test_prereq_coverage.py -q
+   uv run pytest tests/test_model.py tests/test_prereq_coverage.py -q
    ```
 
-4. Implement the smallest checker change by joining loaded syllabus unit metadata to the
+5. Implement the smallest checker change by joining loaded syllabus unit metadata to the
    corresponding manifest.  Count `estimated_minutes.lesson_sessions` and distinct practice
    ids/paths; issue actionable errors naming the unit, observed count, and required band.
-5. Rerun the focused test green, then run `ruff check tools/checks/coverage.py
-   tests/test_prereq_coverage.py`.
+6. Rerun the focused tests green, then run `ruff check tools/model.py
+   tools/checks/coverage.py tests/test_model.py tests/test_prereq_coverage.py`.
 
 ### Acceptance
 
 - Red-before-green evidence is recorded.
 - `length: double` is enforceable rather than documentary.
-- Existing coverage semantics and the 290-test baseline remain intact.
+- All original 290 baseline tests still pass; new contract tests increase rather than
+  replace that count.
 
 ## Phase 1 — Canonical ownership and manifest skeleton
 
@@ -132,20 +172,33 @@ laid out as a prerequisite-valid 31-week course near eight hours per week.
 - Modify `units/C9-dimensionality-reduction/manifest.yaml`.
 - Create `units/F7-kernels-convex-optimization/manifest.yaml`.
 - Modify `pyproject.toml` and `uv.lock` for a pinned seaborn dependency.
+- Modify `curriculum/coverage-map.yaml` for the controlled seaborn dependency and planned
+  F7-owner conversion.
+- Modify `tests/test_scope.py`.
 - Add/modify exact ownership regression tests in `tests/test_integration.py` or the narrowest
   existing curriculum-contract test module.
 
 ### Steps
 
-1. Add the 21 concept ids to the canonical concept vocabulary and exactly one owner each.
-   Correct `seaborn-programming` dependencies from the provisional pandas edge to NumPy and
-   matplotlib.  Set F7 prerequisites exactly to `F3-matrices`, `F4-multivar-calculus`,
-   `F6-svd-spectral`, and `C3-gradient-descent`.
-2. Add fail-first assertions for owner uniqueness, exact prerequisite edges, F5
+1. Add the 21 concept ids with the pinned clusters above to the canonical concept vocabulary
+   and exactly one owner each.  Set F7 to `track: foundation` and prerequisites exactly to
+   `F3-matrices`, `F4-multivar-calculus`, `F6-svd-spectral`, and
+   `C3-gradient-descent`.
+2. Make the controlled roadmap conversion explicit and fail-first tested:
+   - change `seaborn-programming.depends_on` from pandas + matplotlib to
+     `numpy-programming` + `matplotlib-pyplot-programming` and preserve the array-only
+     rationale;
+   - remove `P015-R1-MATH-KERNEL-OPT` from `planned_units`;
+   - change all three F7 atomic rows from `new-unit`/the provisional id to
+     `extend-existing-unit`/`F7-kernels-convex-optimization` and populate their exact
+     shipped-concept mapping above;
+   - replace the provisional math-unit prerequisite in `P015-R1-CLASSICAL-BREADTH` with
+     `F7-kernels-convex-optimization`.
+3. Add fail-first assertions for owner uniqueness, exact clusters/prerequisite edges, F5
    `length: double`, the final session/problem counts, and the pinned minute totals.
-3. Extend manifests with the problem records specified below.  Until notebooks exist,
+4. Extend manifests with the problem records specified below.  Until notebooks exist,
    `coverage-check` must fail for missing paths; do not weaken that failure.
-4. Add and lock seaborn, then run the focused contract tests, manifest validation, and
+5. Add and lock seaborn, then run the focused contract tests, manifest validation, and
    `prereq-check`.
 
 ### Acceptance
@@ -176,6 +229,10 @@ laid out as a prerequisite-valid 31-week course near eight hours per week.
 - `F1-p24` (40 min, integrative): diagnose and repair a reproducible seaborn comparison,
   including a justified matplotlib boundary.
 
+All three F1 statements and solutions prohibit `import pandas`, `from pandas`, `pd.`, and
+`DataFrame` use; a static regression test enforces this boundary.  Seaborn's internal
+dependency on pandas does not make the C4 pandas API student-facing in F1.
+
 ### C10 rewrite contract
 
 - `C10-p15` becomes a Colab Markdown authoring/repair scenario with separately scored text,
@@ -184,6 +241,19 @@ laid out as a prerequisite-valid 31-week course near eight hours per week.
   Markdown snippets/formulae, restart/run-all discipline, and output/file contracts.
 - `C10-p18` becomes a round-policy audit that grades the Round 1 CPU versus Round 2 L4/GPU
   boundary without teaching the later GPU workflow.
+
+Each rewritten problem preserves an honest, separately scored `writeup-quality` deliverable
+and contains one separately scored deliverable for every new C10 concept:
+
+| Practice | `writeup-quality` | Colab authoring | fenced code | Markdown math | coding submission | CPU/GPU boundary |
+|---|---|---|---|---|---|---|
+| `C10-p15` | approach + intuition paragraph | choose/repair text and code cells | repair a fenced function excerpt | derive and render one metric formula | required identifier + restart/run-all + download checks | identify and correct an illegal R1 GPU claim |
+| `C10-p17` | approach + alternatives in the mini-competition writeup | assemble the mixed-cell response | render the `predict_labels` excerpt | render and explain the scored metric | portability, state-loss, output, and `.ipynb` preflight | write the R1 CPU declaration and contrast the R2 L4 allowance |
+| `C10-p18` | corrected approach/alternatives section | repair wrong cell types in the flawed submission | repair its malformed fenced snippet | repair and interpret its malformed formula | audit identifiers, restart/run-all, file and download contract | diagnose the illegal GPU and state the exact round boundary |
+
+The manifest tags all six concepts on all three ids only after the statement exposes these
+six scored rows.  This preserves the existing three-practice `writeup-quality` and
+`markdown-text-communication` evidence while satisfying the five new three-practice floors.
 
 ### Steps and acceptance
 
@@ -215,7 +285,7 @@ laid out as a prerequisite-valid 31-week course near eight hours per week.
 - `F5-p21`: constrained empirical conditioning and Bayes implementation.
 - `F5-p22`: proof/derivation using total probability and Bayes, with a base-rate trap.
 - `F5-p23`: Hoeffding normal-form calculation with assumption and constant checks.
-- `F5-p24`: seeded simulation versus the theoretical Hoeffding envelope.
+- `F5-p24`: simulation with `SEED = 20260804` versus the theoretical Hoeffding envelope.
 - `F5-p25`: integrative conditional/Bayes/concentration decision problem.
 
 ### Steps and acceptance
@@ -236,7 +306,9 @@ coverage, and double-length tests.
 - Create C2 statements `practice/p19.ipynb` through `p24.ipynb` and blind solutions; modify
   overview/review.
 - Create `units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb`.
-- Rename existing C9 lessons `02-*` to `03-*` and `03-*` to `04-*`, updating all references.
+- Rename existing C9 lessons in collision-safe order: move current `03-*` to `04-*`, then
+  current `02-*` to `03-*`, then create the new `02-*`; use no forced overwrite and update
+  all references.
 - Create C9 statements `practice/p20.ipynb` through `p24.ipynb` and blind solutions; modify
   overview/review.
 
@@ -296,14 +368,28 @@ prerequisite, and coverage checks.
 
 ### Practice register
 
-`p01` PSD MC; `p02` kernel-quantifier MC; `p03` convex-set MC; `p04` convex-quadratic
-normal form; `p05` `psd_report`; `p06` `poly2_gram`; `p07` negative-eigen witness; `p08`
-affine-halfspace convex combinations; `p09` Jensen gaps; `p10` `kkt_residuals`; `p11`
-Gram/kernel proof; `p12` quadratic convexity/supporting-gradient proof; `p13` polynomial
-kernel proof/refutation; `p14` constrained quadratic/KKT/dual integration; `p15` sampled
-validity versus proof scenario; `p16` local descent versus global convexity scenario; `p17`
-kernel closure/feature-map challenge; `p18` constrained dual/zero-gap challenge; `p19`
-segment/Jensen drill; `p20` weak-duality/activity/slackness drill.
+| ID | Set | Type | Difficulty | Contract |
+|---|---|---|---|---|
+| p01 | A | MC, five options A–E | intro | PSD classification |
+| p02 | A | MC, five options A–E | intro | kernel quantifier |
+| p03 | A | MC, five options A–E | intro | convex-set witness |
+| p04 | B | numeric normal-form MC, five options A–E | core | convex quadratic with reduced-fraction/gcd/sign contract |
+| p05 | A | constrained coding | intro | `psd_report` |
+| p06 | B | constrained coding | core | `poly2_gram` |
+| p07 | B | constrained coding | core | negative-eigen witness |
+| p08 | A | constrained coding | intro | affine-halfspace convex combinations |
+| p09 | B | constrained coding | core | Jensen gaps |
+| p10 | B | constrained coding | advanced | `kkt_residuals` |
+| p11 | B | proof | core | Gram/kernel proof; `Reasoning is required` |
+| p12 | B | proof | advanced | quadratic convexity/supporting-gradient proof; `Reasoning is required` |
+| p13 | C | integrative multi-part | core | compute polynomial Gram matrix, consume it in a feature-map proof, then consume both results to refute a perturbed kernel |
+| p14 | C | integrative multi-part | advanced | constrained quadratic → KKT → dual chain |
+| p15 | C | scenario | core | sampled validity versus proof |
+| p16 | C | scenario | core | local descent versus global convexity |
+| p17 | C | challenge | advanced | kernel closure/feature maps |
+| p18 | C | challenge | advanced | constrained dual/zero gap |
+| p19 | A | drill | intro | segment/Jensen violations |
+| p20 | B | drill | core | weak duality/activity/slackness |
 
 The distribution is exactly four MC/normal-form, six coding, two proof, two integrative,
 two scenario, two challenge, and two drills; six intro, nine core, and five advanced.
@@ -331,7 +417,7 @@ practice ids, including both proof/refutation and computational evidence where r
 
 ### Steps
 
-1. For each of the 21 targets, name exact lesson heading/cell anchors and primary practice
+1. For each of the 17 atomic targets, name exact lesson heading/cell anchors and primary practice
    ids for every required modality.  Do not promote from plan prose or a solution alone.
 2. Run the audit and roadmap renderers in write mode, inspect the diff, then run both in
    `--check` mode.  The inventory must include every new/renamed notebook and no stale path.
@@ -339,16 +425,17 @@ practice ids, including both proof/refutation and computational evidence where r
    values are 14,647 manifested and 14,887 scheduled minutes, 383 unit practices, 57 lesson
    sessions, and 17 units.  If content-driven minute estimates differ, reconcile the
    manifests, arithmetic, and design explicitly rather than silently changing one source.
-4. Confirm every Plan 016 target is checker-derived `covered`, the overall acknowledged
-   Round 1 gap count has fallen by exactly the number of targets that were not already
-   covered, and no unrelated row regresses.
+4. Confirm all 17 Plan 016 targets are checker-derived `covered`, the acknowledged Round 1
+   gap count falls exactly from 32 to 15, no unrelated row regresses, the provisional F7
+   planned unit is absent, and the Plan 018 classical node depends on shipped F7.
 
 ## Phase 7 — Named verification phase
 
 Run from a clean commit, in this order:
 
 ```bash
-uv run pytest tests/test_prereq_coverage.py tests/test_integration.py -q
+uv run pytest tests/test_model.py tests/test_prereq_coverage.py tests/test_scope.py \
+  tests/test_integration.py -q
 uv run python tools/audit_curriculum.py --check
 uv run python tools/render_curriculum_roadmap.py --check
 uv run usaaio-tools prereq-check
@@ -362,8 +449,9 @@ git diff --check
 ```
 
 Additionally, run fresh Jupyter execution for every changed/new solution and every changed
-lesson/review/overview before the full CI; fallback cell execution is not fresh-kernel
-evidence and must be reported separately if the environment blocks Jupyter.
+lesson/review/overview before the full CI.  A blocked fresh Jupyter run is a hard shipping
+stop: fallback cell execution may aid diagnosis but cannot authorize the content gate, PR,
+or merge.
 
 Acceptance requires full green CI, zero stale generated artifacts, zero missing/duplicate
 register entries, no student outputs or answer leakage, explicit tolerances, and exact final
@@ -373,14 +461,18 @@ counts reconciled to the manifests.
 
 1. Run the required four-way content-review gate from a clean implementation commit:
    active-session self-review, GPT-5.6-sol, GPT-5.6-terra, and GLM-5.2.
-   Every reviewer reads the final diff, checks source/solution isolation, blind-solves a
-   risk-selected sample across all six owners, and returns one verdict.
+   Every reviewer reads the final diff, checks source/solution isolation, and blind-solves
+   every changed or new student-facing statement before reading its solution.  Risk-selected
+   deep checks may supplement but never replace the all-problem duty.
 2. Record every finding below as `[reviewer] [OPEN|FIXED|WONTFIX]`; fix all blockers and
    rerun affected verification.  The gate passes only at 4/4 with no `[OPEN]` finding.
 3. Populate the post-execution report with delivered files/counts, source boundary,
    fail-first evidence, fresh execution evidence, full-CI output, review verdicts, and any
    divergence from the pinned design.
-4. Push the feature branch, open a PR, fetch `origin/main`, run
+4. After all content-gate fixes and report edits, commit the final tree and rerun the entire
+   `bash scripts/ci-local.sh` plus `git diff --check`; focused affected checks are not a
+   substitute.  This second clean-commit full run is the final shipping evidence.
+5. Push the feature branch, open a PR, fetch `origin/main`, run
    `bash scripts/pre-merge-guard.sh --pr`, squash-merge, and verify the squash commit on
    `main`.  Never merge if CI or the PR-aware guard fails.
 
@@ -399,18 +491,53 @@ counts reconciled to the manifests.
   author/solver isolation, exact content contracts, named verification, content gate,
   shipping lifecycle, and 2,300-minute schedule extension are explicit and mutually
   consistent.  No open finding remains.
+- `[self] [FIXED]` The consolidated external review exposed distinctions the first inline
+  pass missed: 17 atomic targets versus 21 concepts, model support for session counts,
+  C10's six-way evidence preservation, planned-node replacement, and a second final CI.
+  The revised plan pins each contract explicitly; inline re-review finds no remaining
+  contradiction.
 
 ### Review 2 — GPT-5.6-sol
 
-- **Status:** pending.
+- **First verdict:** REJECT.
+- `[sol] [FIXED]` Phase 6 confused 21 syllabus concepts with 17 atomic coverage targets.
+  The plan now pins the complete mapping and the expected Round 1 gap change 32 → 15.
+- `[sol] [FIXED]` The three C10 rewrites could lose `writeup-quality` or acquire decorative
+  new tags.  The target × practice matrix now preserves the existing objective and exposes
+  six separately scored deliverables in each of p15, p17, and p18.
+- `[sol] [FIXED]` The content gate used sampled blind solving and the shipping phase lacked
+  a post-review full CI.  Every reviewer must now solve every changed/new statement, and a
+  second clean-commit full CI is mandatory after all fixes/report edits.
+- `[sol] [FIXED]` Cluster assignments, F7's `foundation` track, and the double-length
+  model/loader data path are now fully specified.
+- **Re-review status:** pending.
 
 ### Review 3 — GPT-5.6-terra
 
-- **Status:** pending.
+- **First verdict:** REJECT.
+- `[terra] [FIXED]` Phase 0 now extends `UnitManifest`, validates malformed/missing session
+  data, and pins F5/F6/C7 regressions with logic restricted to `length == "double"`.
+- `[terra] [FIXED]` The plan now removes the provisional F7 node, converts its three atomic
+  rows and exact concept mappings to shipped F7, updates the future classical prerequisite,
+  and asserts 17—not 21—promotions.
+- `[terra] [FIXED]` The seaborn pandas→NumPy/matplotlib dependency amendment and its
+  taught-order regression are explicit Phase 1 work.
+- `[terra] [FIXED]` The C10 evidence matrix and all-problem blind gate resolve the two
+  remaining blockers.
+- `[terra] [FIXED]` F7 now pins four five-option MCs, every set/type/difficulty, and p13 as
+  an integrative chain rather than an extra proof.
+- **Re-review status:** pending.
 
 ### Review 4 — GLM-5.2
 
-- **Status:** pending.
+- **First verdict:** REJECT.
+- `[glm] [FIXED]` C9 renames now use collision-safe `03→04`, `02→03`, create-new-02 order
+  with no forced overwrite.
+- `[glm] [FIXED]` C10 preserves three honest `writeup-quality` carriers; F7-p13 is pinned
+  as integrative; F1 bans pandas APIs; F5-p24 uses `SEED = 20260804`; blocked fresh Jupyter
+  is a hard stop; Sol/Terra dispatch models are explicit; and double-length logic is
+  conditional on the syllabus label.
+- **Re-review status:** pending.
 
 **GATE RESULT: PENDING.** No implementation may start before 4/4 approval.
 

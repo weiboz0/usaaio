@@ -8,8 +8,8 @@ The pre-PR quality gate for teaching content and mock tests
 | # | Reviewer | Dispatch | Model |
 |---|----------|----------|-------|
 | 1 | Self-review | active session inline | active session model |
-| 2 | Sol reviewer | fresh read-only subagent | GPT-5.6-sol |
-| 3 | Terra reviewer | separate fresh read-only subagent | GPT-5.6-terra |
+| 2 | Sol reviewer | fresh read-only subagent (request `--model gpt-5.6-sol`) | GPT-5.6-sol |
+| 3 | Terra reviewer | separate fresh read-only subagent (request `--model gpt-5.6-terra`) | GPT-5.6-terra |
 | 4 | GLM | `opencode:opencode-review` subagent, read-only | opencode-go/glm-5.2 |
 
 Dispatch 2–4 in parallel with the inline self-review.
