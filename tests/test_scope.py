@@ -1225,6 +1225,40 @@ def test_renderer_owns_both_documents_and_keeps_assessments_separate(tmp_path: P
     assert "Modalities missing" in roadmap
 
 
+def test_renderer_labels_unit_and_total_inventoried_notebook_counts(tmp_path: Path) -> None:
+    contract = _base_contract(tmp_path)
+    contract["inventory"]["counts"] = {
+        "unit_notebooks": 765,
+        "mock_notebooks": 10,
+        "unit_practices": 343,
+    }
+    _write_yaml(tmp_path / "curriculum" / "material-inventory.yaml", contract["inventory"])
+
+    audit = renderer.render_documents(tmp_path)[
+        Path("docs/audits/015-coverage-audit.md")
+    ]
+
+    assert "| Unit notebooks | 765 |" in audit
+    assert "| Total inventoried notebooks | 775 |" in audit
+
+
+def test_renderer_surfaces_checker_derived_practice_shortfall(tmp_path: Path) -> None:
+    contract = _base_contract(tmp_path)
+    point = contract["roadmap"]["knowledge_points"][0]
+    point["coverage"] = "partial"
+    point["evidence_by_modality"]["theory"]["practices"] = []
+    point["deficits"]["modalities_missing"] = []
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
+
+    rendered = renderer.render_documents(tmp_path)
+    audit = rendered[Path("docs/audits/015-coverage-audit.md")]
+    roadmap = rendered[Path("docs/curriculum-roadmap.md")]
+
+    assert "- **Practice shortfall:** 3" in audit
+    assert "| Knowledge point | Requirement | Coverage | Modalities missing | Practice shortfall |" in roadmap
+    assert "| topic-a | required | partial | — | 3 |" in roadmap
+
+
 def test_renderer_recomputes_real_post_plan014_baseline() -> None:
     baseline = renderer.current_time_baseline(Path(__file__).parents[1])
 

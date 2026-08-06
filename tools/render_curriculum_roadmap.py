@@ -101,6 +101,16 @@ def _joined(values: list[str]) -> str:
     return ", ".join(sorted(values, key=str.encode)) if values else "—"
 
 
+def _practice_shortfall(point: KnowledgePoint) -> int:
+    practices = {
+        item.id
+        for evidence in point.evidence_by_modality.values()
+        for item in evidence.practices
+        if item.role == "primary"
+    }
+    return max(0, 3 - len(practices))
+
+
 def _number(value: object) -> int:
     return int(value) if value is not None else 0
 
@@ -329,11 +339,15 @@ def _render_audit(
         "|---|---:|",
     ]
     for label, key in (
-        ("Inventoried notebooks", "unit_notebooks"),
-        ("Unit practices", "unit_practices"),
+        ("Unit notebooks", "unit_notebooks"),
         ("Mock notebooks", "mock_notebooks"),
+        ("Unit practices", "unit_practices"),
     ):
         lines.append(f"| {label} | {_cell(counts.get(key, 0))} |")
+    total_notebooks = _number(counts.get("unit_notebooks")) + _number(
+        counts.get("mock_notebooks")
+    )
+    lines.append(f"| Total inventoried notebooks | {total_notebooks} |")
     for label, values in (("Requirement", requirement_counts), ("Coverage", coverage_counts)):
         for name in sorted(values, key=str.encode):
             lines.append(f"| {label}: {name} | {values[name]} |")
@@ -353,6 +367,7 @@ def _render_audit(
                 f"- **Dependencies:** {_joined(point.depends_on)}",
                 f"- **Shipped concepts:** {_joined(point.shipped_concepts)}",
                 f"- **Modalities missing:** {_joined(point.modalities_missing)}",
+                f"- **Practice shortfall:** {_practice_shortfall(point)}",
                 f"- **Rationale:** {point.rationale}",
                 f"- **Consequence:** {point.consequence}",
                 "",
@@ -439,8 +454,8 @@ def _render_roadmap(
             [
                 f"### {layer}",
                 "",
-                "| Knowledge point | Requirement | Coverage | Modalities missing | Destination | Dependencies |",
-                "|---|---|---|---|---|---|",
+                "| Knowledge point | Requirement | Coverage | Modalities missing | Practice shortfall | Destination | Dependencies |",
+                "|---|---|---|---|---:|---|---|",
             ]
         )
         points = sorted(
@@ -448,7 +463,7 @@ def _render_roadmap(
             key=lambda item: item.id.encode("utf-8"),
         )
         if not points:
-            lines.append("| — | — | — | — | — | — |")
+            lines.append("| — | — | — | — | — | — | — |")
         for point in points:
             lines.append(
                 "| "
@@ -459,6 +474,7 @@ def _render_roadmap(
                         point.requirement,
                         point.coverage,
                         _joined(point.modalities_missing),
+                        _practice_shortfall(point),
                         point.destination,
                         _joined(point.depends_on),
                     )

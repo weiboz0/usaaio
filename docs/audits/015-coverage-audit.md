@@ -9,9 +9,10 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Inventoried notebooks | 765 |
-| Unit practices | 343 |
+| Unit notebooks | 765 |
 | Mock notebooks | 10 |
+| Unit practices | 343 |
+| Total inventoried notebooks | 775 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
@@ -71,6 +72,7 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 - **Dependencies:** affine-transformations
 - **Shipped concepts:** activation-functions, custom-layers, manual-weights, mlp-architecture
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Component formulas, bias, composition, NumPy implementation, manual design, and PyTorch implementation are exercised.
 - **Consequence:** The essential affine layer is fully covered.
 
@@ -97,6 +99,7 @@ Assessments: r1-001-p07-2, r1-001-p08-2
 - **Dependencies:** linear-algebra-foundations
 - **Shipped concepts:** activation-functions, manual-weights, matrices-as-linear-maps, mlp-architecture
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** F3's origin-preservation test proves a nonzero shift is not linear; C5 then derives affine composition with bias/translation terms and implements it.
 - **Consequence:** Students can use affine transformations despite their later unit ownership.
 
@@ -120,6 +123,7 @@ Assessments: r1-001-p07-2, r1-001-p08-2
 - **Dependencies:** self-attention
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No sequence-length memory or time analysis exists.
 - **Consequence:** Students cannot reason about standard versus linear attention costs.
 
@@ -143,6 +147,7 @@ Assessments: —
 - **Dependencies:** multi-head-attention, positional-encoding, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No attention module or trained attention model exists.
 - **Consequence:** The official from-scratch attention expectation is wholly unmet.
 
@@ -169,6 +174,7 @@ Assessments: —
 - **Dependencies:** linear-algebra-foundations, softmax
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No query-key-value, score, weighting, or attention computation exists.
 - **Consequence:** Every transformer topic lacks its first prerequisite.
 
@@ -195,6 +201,7 @@ Assessments: —
 - **Dependencies:** fully-connected-network-from-scratch, loss-functions
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** Dimensionality reduction is PCA and SVD only; no learned encoder-decoder exists.
 - **Consequence:** Autoencoder and VAE prerequisites are missing.
 
@@ -221,6 +228,7 @@ Assessments: —
 - **Dependencies:** forward-propagation-by-hand, multivariable-derivatives
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** C5 explicitly puts backpropagation beyond scope; generic chain-rule exercises do not propagate gradients through a network.
 - **Consequence:** Neural-gradient reasoning is absent.
 
@@ -247,6 +255,7 @@ Assessments: —
 - **Dependencies:** probability-and-statistics-foundations, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** layer-freezing, requires-grad, resnet-architecture
 - **Modalities missing:** derivation, implementation, model-training
+- **Practice shortfall:** 2
 - **Rationale:** The clinic teaches train/eval statistics, buffers, and graph controls but does not derive, implement, or train with normalization.
 - **Consequence:** BatchNorm is not yet a genuinely taught and practiced essential layer.
 
@@ -276,6 +285,7 @@ Assessments: —
 - **Dependencies:** conditional-probability
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No prior-likelihood-posterior calculation or coded update appears.
 - **Consequence:** Students cannot solve the officially named Bayes tasks.
 
@@ -302,6 +312,7 @@ Assessments: —
 - **Dependencies:** supervised-learning-foundations
 - **Shipped concepts:** bias-variance-intuition, overfitting
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Flexible-versus-rigid behavior, memorization, and underfitting are reasoned through and experimentally compared.
 - **Consequence:** The intended introductory tradeoff depth is covered.
 
@@ -325,6 +336,7 @@ Assessments: r1-001-p01-2
 - **Dependencies:** colab-markdown-solution-authoring
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, implementation
+- **Practice shortfall:** 3
 - **Rationale:** C10 teaches generic notebook submission, but the corpus contains no Colab-specific coding or submission evidence.
 - **Consequence:** Platform-specific submission failures remain unaddressed.
 
@@ -348,6 +360,7 @@ Assessments: —
 - **Dependencies:** —
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow
+- **Practice shortfall:** 3
 - **Rationale:** No shipped cell mentions or demonstrates Google Colab solution authoring; generic notebooks are not platform-workflow evidence.
 - **Consequence:** Students are not prepared for the official Colab solution-authoring surface.
 
@@ -368,6 +381,7 @@ Assessments: —
 - **Dependencies:** probability-and-statistics-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** Independence is taught, but conditioning, conditional distributions, and conditional simulation never appear.
 - **Consequence:** Bayes and later probabilistic models lack prerequisite closure.
 
@@ -394,6 +408,7 @@ Assessments: —
 - **Dependencies:** numpy-programming, python-programming
 - **Shipped concepts:** api-constraint-compliance, vectorization
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Zero-point API bans are explicitly taught, priced, audited, and exercised.
 - **Consequence:** Students can implement under machine-checked restrictions.
 
@@ -417,6 +432,7 @@ Assessments: r1-001-p05-5, r1-001-p06-1
 - **Dependencies:** convex-sets-functions-and-optimality, multivariable-derivatives
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No Lagrangian, constrained optimality, primal-dual formulation, or duality argument occurs.
 - **Consequence:** SVM and constrained-model derivations cannot be taught with prerequisite closure.
 
@@ -440,6 +456,7 @@ Assessments: —
 - **Dependencies:** linear-algebra-foundations, multivariable-derivatives
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, theory
+- **Practice shortfall:** 3
 - **Rationale:** Convex appears only for polygons and one parabola description; no convex-function or first-order-optimality theory is taught.
 - **Consequence:** Later optimization and SVM arguments lack formal foundations.
 
@@ -463,6 +480,7 @@ Assessments: —
 - **Dependencies:** pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** convolution, feature-hierarchy, feature-maps, receptive-field
 - **Modalities missing:** model-training
+- **Practice shortfall:** 0
 - **Rationale:** Convolution mechanics and architecture are covered, but the unit only loads and inspects pretrained networks.
 - **Consequence:** Students cannot train and diagnose a CNN end to end.
 
@@ -489,6 +507,7 @@ Assessments: r1-001-p07-3, r1-001-p07-4
 - **Dependencies:** colab-coding-submission
 - **Shipped concepts:** torch-tensors
 - **Modalities missing:** —
+- **Practice shortfall:** 3
 - **Rationale:** C6 states that course work is CPU-only and briefly names CUDA, but no practice distinguishes R1 CPU policy from R2 GPU availability.
 - **Consequence:** The lesson-only fact is not an operational round-boundary skill.
 
@@ -509,6 +528,7 @@ Assessments: —
 - **Dependencies:** loss-functions, softmax
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No binary or multiclass cross-entropy, likelihood connection, gradient, or implementation exists.
 - **Consequence:** Neural classification training lacks its core objective.
 
@@ -535,6 +555,7 @@ Assessments: —
 - **Dependencies:** supervised-learning-foundations, train-test-split
 - **Shipped concepts:** cross-validation, sklearn-pipelines
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Fold semantics, manual CV, pipeline-inside-CV, and model selection are directly graded.
 - **Consequence:** Students can perform honest repeated validation.
 
@@ -561,6 +582,7 @@ Assessments: r1-001-p09
 - **Dependencies:** loss-functions, supervised-learning-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No split criterion, recursive construction, pruning, implementation, or fitted tree exists.
 - **Consequence:** Tree-based modeling is absent.
 
@@ -587,6 +609,7 @@ Assessments: —
 - **Dependencies:** gaussian-reparameterization, kl-divergence, multivariate-gaussian, unet
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No forward noising, reverse denoising, schedule, noise objective, or DDPM training exists.
 - **Consequence:** Diffusion-model theory and practice are absent.
 
@@ -616,6 +639,7 @@ Assessments: —
 - **Dependencies:** multilayer-perceptron-model, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** Dropout does not occur in any lesson, practice, solution, or mock.
 - **Consequence:** A named essential layer is wholly absent.
 
@@ -642,6 +666,7 @@ Assessments: —
 - **Dependencies:** linear-algebra-foundations
 - **Shipped concepts:** eigenvalues-eigenvectors, spectral-decomposition
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** The eigen equation, hand solution route, NumPy verification, and repeated derivations meet all modalities.
 - **Consequence:** Students can reason about and compute eigensystems.
 
@@ -668,6 +693,7 @@ Assessments: r1-001-p03-1, r1-001-p03-2
 - **Dependencies:** cross-validation, loss-functions
 - **Shipped concepts:** cross-validation, metric-driven-iteration, prediction-function-contract, sklearn-pipelines
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** The course goes from data through fixed validation, bounded selection, refit, packaging, and writeup.
 - **Consequence:** Students can deliver a complete R1 applied-model submission.
 
@@ -694,6 +720,7 @@ Assessments: r1-001-p09
 - **Dependencies:** bias-variance-tradeoff, decision-trees
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No bagging, boosting, random forest, voting, or ensemble training appears.
 - **Consequence:** Official ensemble breadth is absent.
 
@@ -720,6 +747,7 @@ Assessments: —
 - **Dependencies:** affine-neural-network-layer
 - **Shipped concepts:** activation-functions, mlp-architecture, perceptron
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Students repeatedly compute exact preactivations, activations, hidden states, and outputs by hand before code verification.
 - **Consequence:** Forward propagation meets the official by-hand expectation.
 
@@ -743,6 +771,7 @@ Assessments: r1-001-p08-3
 - **Dependencies:** backpropagation-by-hand, cross-entropy-loss, softmax
 - **Shipped concepts:** activation-functions, decision-boundaries-geometric, manual-weights, mlp-architecture
 - **Modalities missing:** model-training
+- **Practice shortfall:** 0
 - **Rationale:** Students build inference networks from scratch, but the official expectation includes learning the weights.
 - **Consequence:** A complete from-scratch training implementation is missing.
 
@@ -769,6 +798,7 @@ Assessments: r1-001-p08-3
 - **Dependencies:** multivariate-gaussian, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No location-scale reparameterization or differentiable latent sampling exists.
 - **Consequence:** Gradient-based latent-variable training is blocked.
 
@@ -795,6 +825,7 @@ Assessments: —
 - **Dependencies:** convolutional-neural-network-basics, fully-connected-network-from-scratch
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No generator-discriminator game, objective, implementation, or training exists.
 - **Consequence:** GAN coverage is absent.
 
@@ -824,6 +855,7 @@ Assessments: —
 - **Dependencies:** colab-coding-submission, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, implementation, model-training
+- **Practice shortfall:** 3
 - **Rationale:** The only device teaching says the course is CPU-only; no Colab L4, device movement, memory handling, or GPU training is practiced.
 - **Consequence:** Students cannot execute the official R2 GPU workflow.
 
@@ -850,6 +882,7 @@ Assessments: —
 - **Dependencies:** loss-functions, multivariable-derivatives
 - **Shipped concepts:** gradient-descent, learning-rate, loss-surfaces, stochastic-gd
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** C3 derives update behavior and makes students implement and diagnose full and stochastic descent.
 - **Consequence:** First-order optimization is available for linear and future neural models.
 
@@ -876,6 +909,7 @@ Assessments: r1-001-p04-2
 - **Dependencies:** transformer-architecture-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No graph representation, message passing, graph attention, or training exists.
 - **Consequence:** The official graph-transformer application is absent.
 
@@ -902,6 +936,7 @@ Assessments: —
 - **Dependencies:** end-to-end-model-selection
 - **Shipped concepts:** hidden-test-protocol, metric-driven-iteration, prediction-function-contract, writeup-quality
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Hidden-test isolation, selection optimism, contract checks, and final fitting are explicitly taught and practiced.
 - **Consequence:** Students understand honest hidden-test evaluation.
 
@@ -925,6 +960,7 @@ Assessments: r1-001-p09
 - **Dependencies:** probability-and-statistics-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** Sampling experiments lack any concentration bound or use of Hoeffding's inequality.
 - **Consequence:** Students cannot quantify finite-sample deviations.
 
@@ -951,6 +987,7 @@ Assessments: —
 - **Dependencies:** distance-metrics, expectation, unsupervised-learning-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** C1 toy split rules are not Lloyd's algorithm; no centroid update, objective descent, initialization, or fitted k-means exists.
 - **Consequence:** The named official clustering algorithm is missing.
 
@@ -977,6 +1014,7 @@ Assessments: —
 - **Dependencies:** conditional-probability, expectation, multivariate-gaussian
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No entropy, distributional cross-entropy, KL definition, Gaussian KL derivation, or implementation exists.
 - **Consequence:** VAE and diffusion objectives lack a prerequisite.
 
@@ -1003,6 +1041,7 @@ Assessments: —
 - **Dependencies:** distance-metrics, supervised-learning-foundations
 - **Shipped concepts:** feature-scaling, knn
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** First-principles prediction, scaling, sklearn fitting, validation, and selection are all practiced.
 - **Consequence:** kNN is a complete shipped model family.
 
@@ -1029,6 +1068,7 @@ Assessments: r1-001-p09
 - **Dependencies:** numpy-programming
 - **Shipped concepts:** linear-independence-span, matrices-as-linear-maps, matrix-multiplication, rank
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** F3 teaches maps, composition, span, rank, and executable matrix operations with direct practices.
 - **Consequence:** The linear-algebra base is ready for downstream models.
 
@@ -1052,6 +1092,7 @@ Assessments: r1-001-p03-2, r1-001-p05-7
 - **Dependencies:** linear-algebra-foundations, multivariable-derivatives, supervised-learning-foundations
 - **Shipped concepts:** gradient-descent, linear-regression, mse-loss
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** The model and loss are taught in C2 and genuinely fit end to end in C3.
 - **Consequence:** Base linear regression is covered independently of the OLS gap.
 
@@ -1078,6 +1119,7 @@ Assessments: r1-001-p04-2
 - **Dependencies:** linear-regression, matrix-multiplication, multivariable-derivatives
 - **Shipped concepts:** —
 - **Modalities missing:** derivation
+- **Practice shortfall:** 3
 - **Rationale:** C2 teaches the model and MSE but explicitly omits the normal-equation derivation of the closed-form estimator.
 - **Consequence:** Students cannot perform the officially required estimator derivation.
 
@@ -1098,6 +1140,7 @@ Assessments: —
 - **Dependencies:** gradient-descent-optimization, linear-regression, loss-functions
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** A single answer-key mention is not teaching; no sigmoid, logit objective, classifier, or training exists.
 - **Consequence:** A named official classical model is absent.
 
@@ -1124,6 +1167,7 @@ Assessments: —
 - **Dependencies:** multivariable-derivatives, supervised-learning-foundations
 - **Shipped concepts:** l1-regularization, l2-regularization, mse-loss
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** MSE and penalized objectives are defined, differentiated, minimized in constrained cases, and implemented.
 - **Consequence:** Classical optimization has a sufficient loss foundation.
 
@@ -1150,6 +1194,7 @@ Assessments: r1-001-p04-2
 - **Dependencies:** markdown-text-communication
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, implementation
+- **Practice shortfall:** 3
 - **Rationale:** Code cells are common, but no lesson or practice teaches code snippets embedded in Markdown.
 - **Consequence:** Students lack the official mixed prose-and-code authoring skill.
 
@@ -1173,6 +1218,7 @@ Assessments: —
 - **Dependencies:** markdown-text-communication
 - **Shipped concepts:** l1-regularization, learning-rate, multivar-chain-rule
 - **Modalities missing:** competition-workflow, derivation
+- **Practice shortfall:** 0
 - **Rationale:** Students enter mathematical work in Markdown practices, but no primary lesson teaches formula syntax or formula-bearing submission workflow.
 - **Consequence:** Practice without teaching cannot establish reliable Markdown-math authoring.
 
@@ -1196,6 +1242,7 @@ Assessments: r1-001-p04-2
 - **Dependencies:** —
 - **Shipped concepts:** notebook-discipline, writeup-quality
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** The lesson gives a reproducible three-part writeup contract and three practices grade written communication.
 - **Consequence:** Students can communicate reasoning in notebook text.
 
@@ -1216,6 +1263,7 @@ Assessments: r1-001-p09
 - **Dependencies:** numpy-programming
 - **Shipped concepts:** matplotlib-basics
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Line, scatter, and histogram construction plus plotting critiques provide direct practice.
 - **Consequence:** Students can create and diagnose basic pyplot figures.
 
@@ -1236,6 +1284,7 @@ Assessments: —
 - **Dependencies:** eigenvalues-and-eigenvectors, linear-algebra-foundations
 - **Shipped concepts:** spectral-decomposition, svd
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Spectral decomposition and SVD are taught, related, reconstructed, and repeatedly implemented.
 - **Consequence:** Decomposition prerequisites are available to PCA and advanced models.
 
@@ -1259,6 +1308,7 @@ Assessments: r1-001-p05-10, r1-001-p05-8
 - **Dependencies:** linear-regression, multivariate-gaussian, open-ended-experiment-design
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No mixture-function process, parameter identifiability, regression model, or evaluation workflow exists.
 - **Consequence:** An observed R2 parameter-estimation capability is missing.
 
@@ -1288,6 +1338,7 @@ Assessments: —
 - **Dependencies:** self-attention
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No head splitting, projections, concatenation, or implementation exists.
 - **Consequence:** Multi-head transformer blocks cannot be understood or built.
 
@@ -1314,6 +1365,7 @@ Assessments: —
 - **Dependencies:** affine-neural-network-layer, loss-functions
 - **Shipped concepts:** activation-functions, decision-boundaries-geometric, manual-weights, mlp-architecture
 - **Modalities missing:** model-training
+- **Practice shortfall:** 0
 - **Rationale:** MLP architecture and inference are well taught, but all weights are supplied or manually designed.
 - **Consequence:** The model family lacks learned-weight training.
 
@@ -1340,6 +1392,7 @@ Assessments: r1-001-p08-3
 - **Dependencies:** —
 - **Shipped concepts:** gradient, multivar-chain-rule, partial-derivatives, sum-of-squares-gradients, tanh-derivative
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** F4 develops partials, gradients, chain rule, analytic derivations, and numerical checks.
 - **Consequence:** Calculus prerequisites for optimization are satisfied.
 
@@ -1366,6 +1419,7 @@ Assessments: r1-001-p02-1, r1-001-p04-2
 - **Dependencies:** eigenvalues-and-eigenvectors, probability-and-statistics-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** F5 teaches scalar Gaussians and generic covariance but never a Gaussian vector or covariance-matrix density.
 - **Consequence:** VAE and diffusion prerequisites are not closed.
 
@@ -1392,6 +1446,7 @@ Assessments: —
 - **Dependencies:** nlp-pretraining, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** C7 discusses hypothetical transfer adjustment but performs no NLP fine-tuning.
 - **Consequence:** Students cannot adapt pretrained NLP models.
 
@@ -1418,6 +1473,7 @@ Assessments: —
 - **Dependencies:** nlp-transformers
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** Loading pretrained GloVe or ResNet is not teaching or executing a pretraining objective.
 - **Consequence:** Students cannot reason about or run pretraining.
 
@@ -1444,6 +1500,7 @@ Assessments: —
 - **Dependencies:** python-programming
 - **Shipped concepts:** tokenization
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** The shipped R1 embedding unit honestly teaches and practices tokenization.
 - **Consequence:** Round 2 must reuse C8 rather than duplicate tokenization.
 
@@ -1467,6 +1524,7 @@ Assessments: r1-001-p05-1, r1-001-p05-2
 - **Dependencies:** nlp-tokenization, transformer-architecture-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No NLP transformer exists.
 - **Consequence:** The central modern NLP family is missing.
 
@@ -1493,6 +1551,7 @@ Assessments: —
 - **Dependencies:** linear-algebra-foundations, nlp-tokenization
 - **Shipped concepts:** embedding-matrices, gensim-usage, word-embeddings
 - **Modalities missing:** model-training
+- **Practice shortfall:** 0
 - **Rationale:** Students load and use fixed GloVe vectors but never train embeddings.
 - **Consequence:** Embedding use is strong while embedding model training remains absent.
 
@@ -1519,6 +1578,7 @@ Assessments: r1-001-p05-3, r1-001-p05-4
 - **Dependencies:** markdown-text-communication, python-programming
 - **Shipped concepts:** hidden-test-protocol, normal-form-answers, notebook-discipline, prediction-function-contract, writeup-quality
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** The course explicitly alternates reasoning-only, constrained-code, and full-notebook forms.
 - **Consequence:** Students can switch answer modes under competition constraints.
 
@@ -1545,6 +1605,7 @@ Assessments: r1-001-p01-1, r1-001-p09
 - **Dependencies:** pca-centered-covariance-eigenproblem-derivation, principal-component-analysis, python-programming
 - **Shipped concepts:** numpy-arrays, pca, svd
 - **Modalities missing:** implementation
+- **Practice shortfall:** 3
 - **Rationale:** Students perform individual PCA computations but never implement a reusable NumPy fit-transform-inverse class.
 - **Consequence:** The official from-scratch class expectation is unmet.
 
@@ -1568,6 +1629,7 @@ Assessments: —
 - **Dependencies:** python-programming
 - **Shipped concepts:** broadcasting, numpy-arrays, vectorization
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** F1 directly teaches and heavily practices arrays, broadcasting, indexing, aggregation, and vectorization.
 - **Consequence:** NumPy is ready for all downstream numerical units.
 
@@ -1588,6 +1650,7 @@ Assessments: r1-001-p05-4, r1-001-p06-1
 - **Dependencies:** convolutional-neural-network-basics
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** Existing CNN work has no boxes, localization loss, detector, or training.
 - **Consequence:** Object detection is absent.
 
@@ -1614,6 +1677,7 @@ Assessments: —
 - **Dependencies:** linear-regression-estimator-derivation, rank
 - **Shipped concepts:** invertibility-via-rank, linear-regression, mse-loss, rank
 - **Modalities missing:** derivation, implementation
+- **Practice shortfall:** 3
 - **Rationale:** Residual geometry and rank are taught, but full-column-rank identifiability and pseudoinverse behavior are not.
 - **Consequence:** The official estimator derivation lacks its necessary rank-deficient boundary conditions.
 
@@ -1640,6 +1704,7 @@ Assessments: —
 - **Dependencies:** end-to-end-model-selection, gpu-colab-l4-workflow
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, model-training
+- **Practice shortfall:** 3
 - **Rationale:** C10's bounded kNN campaign is useful prerequisite practice but not open-ended architecture or experiment design.
 - **Consequence:** Students cannot plan a broad R2 modeling investigation.
 
@@ -1663,6 +1728,7 @@ Assessments: —
 - **Dependencies:** hidden-test-model-evaluation, open-ended-experiment-design
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, model-training
+- **Practice shortfall:** 3
 - **Rationale:** Existing evaluation is a pinned R1 tabular protocol without scientific diagnostics, ablations, robustness, or family comparison.
 - **Consequence:** Students cannot defend open-ended R2 model choices.
 
@@ -1686,6 +1752,7 @@ Assessments: —
 - **Dependencies:** numpy-programming, python-programming
 - **Shipped concepts:** csv-data-loading, pandas-basics
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Tables, selection, masks, grouping, CSV loading, and NumPy bridging are taught and practiced.
 - **Consequence:** Tabular competition workflows have a sufficient pandas base.
 
@@ -1706,6 +1773,7 @@ Assessments: r1-001-p09
 - **Dependencies:** numpy-pca-class-from-scratch, pca-centered-covariance-eigenproblem-derivation
 - **Shipped concepts:** pca, svd, variance
 - **Modalities missing:** derivation
+- **Practice shortfall:** 0
 - **Rationale:** The unit bans sklearn and computes PCA mechanics directly, but the covariance-eigenproblem derivation is absent.
 - **Consequence:** Students know black-box use is insufficient but cannot complete the official derivation.
 
@@ -1732,6 +1800,7 @@ Assessments: —
 - **Dependencies:** covariance, eigenvalues-and-eigenvectors, principal-component-analysis
 - **Shipped concepts:** covariance, eigenvalues-eigenvectors, pca, variance
 - **Modalities missing:** derivation
+- **Practice shortfall:** 3
 - **Rationale:** C9 derives directional variance and states the SVD route but never constructs covariance or derives its eigenproblem.
 - **Consequence:** Students cannot supply the official PCA derivation.
 
@@ -1755,6 +1824,7 @@ Assessments: —
 - **Dependencies:** self-attention
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No positional signal or encoding implementation exists.
 - **Consequence:** Students cannot explain how order enters attention models.
 
@@ -1778,6 +1848,7 @@ Assessments: —
 - **Dependencies:** matrix-decompositions, probability-and-statistics-foundations
 - **Shipped concepts:** pca, svd, variance
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Centering, directional variance, SVD directions, scores, explained variance, and projections are taught and practiced.
 - **Consequence:** Base PCA is covered independently of its official derivation and class requirements.
 
@@ -1801,6 +1872,7 @@ Assessments: —
 - **Dependencies:** numpy-programming
 - **Shipped concepts:** covariance, expectation, gaussian-distribution, independence, random-variables, sampling-simulation, variance
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** F5 covers the declared elementary probability/statistics contract with reasoning and simulation practice.
 - **Consequence:** The base Gaussian and sampling foundation is shipped, but later rows remain independent gaps.
 
@@ -1824,6 +1896,7 @@ Assessments: r1-001-p02-2, r1-001-p02-3
 - **Dependencies:** —
 - **Shipped concepts:** python-inheritance
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Basic Python is the declared baseline and C6 explicitly teaches classes and inheritance with graded implementations.
 - **Consequence:** The Python prerequisite is operationally covered.
 
@@ -1844,6 +1917,7 @@ Assessments: r1-001-p07-1
 - **Dependencies:** backpropagation-by-hand, pytorch-deep-learning-programming
 - **Shipped concepts:** layer-freezing, requires-grad
 - **Modalities missing:** implementation, model-training
+- **Practice shortfall:** 2
 - **Rationale:** The clinic distinguishes module mode, parameter trainability, and graph recording, but backward and optimizers are banned.
 - **Consequence:** Neural autograd and optimizer training remain unshipped.
 
@@ -1870,6 +1944,7 @@ Assessments: —
 - **Dependencies:** numpy-programming, python-programming
 - **Shipped concepts:** custom-layers, nn-module, torch-tensors
 - **Modalities missing:** model-training
+- **Practice shortfall:** 0
 - **Rationale:** PyTorch tensors and modules are strongly implemented, but C6 explicitly remains inference-only.
 - **Consequence:** Students cannot yet train and evaluate a deep-learning model in PyTorch.
 
@@ -1893,6 +1968,7 @@ Assessments: r1-001-p07-1, r1-001-p08-3
 - **Dependencies:** pytorch-deep-learning-programming
 - **Shipped concepts:** custom-layers, nn-module, torch-tensors
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** The C6/C7 and mock engineering path consistently requires PyTorch and presents no TensorFlow alternative.
 - **Consequence:** Students practice the required framework workflow.
 
@@ -1913,6 +1989,7 @@ Assessments: r1-001-p07-1, r1-001-p08-3
 - **Dependencies:** end-to-end-model-selection, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No inverse-problem formulation, observation operator, learned inversion, or competition workflow exists.
 - **Consequence:** An observed R2 scientific-modeling capability is missing.
 
@@ -1942,6 +2019,7 @@ Assessments: —
 - **Dependencies:** numpy-programming, pandas-programming
 - **Shipped concepts:** cross-validation, knn, sklearn-pipelines
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** C4 teaches estimator, pipeline, and validation APIs with direct implementations.
 - **Consequence:** Students can use the required sklearn surface.
 
@@ -1962,6 +2040,7 @@ Assessments: r1-001-p09
 - **Dependencies:** matplotlib-pyplot-programming, pandas-programming
 - **Shipped concepts:** —
 - **Modalities missing:** implementation
+- **Practice shortfall:** 3
 - **Rationale:** The corpus contains no seaborn import, API use, lesson, or practice.
 - **Consequence:** Matplotlib coverage cannot satisfy the separately named official library.
 
@@ -1982,6 +2061,7 @@ Assessments: —
 - **Dependencies:** attention-mechanism-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No sequence self-attention exists.
 - **Consequence:** Students cannot model within-sequence interactions.
 
@@ -2008,6 +2088,7 @@ Assessments: —
 - **Dependencies:** convolutional-neural-network-basics, k-means-clustering, open-ended-experiment-design
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No limited-label learning, pseudo-label selection, clustering-assisted labeling, or leakage-safe validation workflow exists.
 - **Consequence:** The observed R2 semi-supervised image-modeling capability is missing.
 
@@ -2037,6 +2118,7 @@ Assessments: —
 - **Dependencies:** affine-neural-network-layer, probability-and-statistics-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** No softmax definition, stabilization argument, Jacobian, or implementation exists.
 - **Consequence:** Multiclass neural output reasoning is blocked.
 
@@ -2063,6 +2145,7 @@ Assessments: —
 - **Dependencies:** denoising-diffusion-probabilistic-models, transformer-nlp-applications, variational-autoencoder
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No latent diffusion, text conditioning, pipeline use, or training exists.
 - **Consequence:** Stable Diffusion is absent.
 
@@ -2089,6 +2172,7 @@ Assessments: —
 - **Dependencies:** probability-and-statistics-foundations, python-programming
 - **Shipped concepts:** overfitting, supervised-vs-unsupervised, train-test-split
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Labeled-task framing, splitting, fitting simple rules, and generalization are taught and practiced.
 - **Consequence:** Supervised-model units have a sound base.
 
@@ -2112,6 +2196,7 @@ Assessments: r1-001-p01-1, r1-001-p01-3
 - **Dependencies:** constrained-optimization-lagrangian-duality, valid-kernel-positive-definite-proof
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No margin, hinge loss, support vector, primal-dual SVM, kernel classifier, or training task exists.
 - **Consequence:** The official SVM family and its kernel consumer remain missing.
 
@@ -2138,6 +2223,7 @@ Assessments: —
 - **Dependencies:** noncoding-and-coding-task-switching
 - **Shipped concepts:** hidden-test-protocol, metric-driven-iteration, prediction-function-contract, writeup-quality
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** The mini-competition makes construction, evaluation, diagnosis, and written justification one graded artifact.
 - **Consequence:** Students practice the official theory-plus-programming expectation.
 
@@ -2164,6 +2250,7 @@ Assessments: r1-001-p09
 - **Dependencies:** attention-from-scratch, multilayer-perceptron-model
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
+- **Practice shortfall:** 3
 - **Rationale:** Transformer occurrences refer only to sklearn transformers; no attention-residual-LayerNorm-feed-forward block architecture exists.
 - **Consequence:** The standard transformer block and its normalization/residual system are absent.
 
@@ -2190,6 +2277,7 @@ Assessments: —
 - **Dependencies:** nlp-tokenization, transformer-architecture-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** Existing NLP uses fixed GloVe retrieval, not transformer applications.
 - **Consequence:** Students cannot apply transformers to NLP tasks.
 
@@ -2216,6 +2304,7 @@ Assessments: —
 - **Dependencies:** convolutional-neural-network-basics
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No encoder-decoder, skip concatenation, segmentation, or UNet training exists.
 - **Consequence:** UNet and its diffusion prerequisite role are absent.
 
@@ -2242,6 +2331,7 @@ Assessments: —
 - **Dependencies:** linear-algebra-foundations, probability-and-statistics-foundations
 - **Shipped concepts:** clustering-concept, pca, supervised-vs-unsupervised
 - **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Unlabeled-task framing, toy clustering, and PCA provide theory and executable examples.
 - **Consequence:** Unsupervised-learning basics are present independently of the k-means gap.
 
@@ -2265,6 +2355,7 @@ Assessments: r1-001-p01-5
 - **Dependencies:** eigenvalues-and-eigenvectors, gram-matrices
 - **Shipped concepts:** —
 - **Modalities missing:** proof, theory
+- **Practice shortfall:** 3
 - **Rationale:** Incidental PSD energy language never becomes a kernel definition, validity criterion, proof, or counterexample.
 - **Consequence:** Students cannot answer the official kernel-validity proof task.
 
@@ -2288,6 +2379,7 @@ Assessments: —
 - **Dependencies:** autoencoder, gaussian-reparameterization, kl-divergence, multivariate-gaussian
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No latent probabilistic model, ELBO, reparameterized encoder, or VAE training exists.
 - **Consequence:** The official VAE family is wholly absent.
 
@@ -2317,6 +2409,7 @@ Assessments: —
 - **Dependencies:** convolutional-neural-network-basics, transformer-architecture-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
+- **Practice shortfall:** 3
 - **Rationale:** No image patching, class token, ViT implementation, or training exists.
 - **Consequence:** The official vision-transformer application is missing.
 
