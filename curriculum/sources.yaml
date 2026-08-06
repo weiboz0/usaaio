@@ -1,0 +1,172 @@
+source_schema_version: 1
+
+canonical_path_normalization:
+  id: official-topic-paths-v1
+  unicode: NFC
+  whitespace: collapse
+  ordering: source-order
+  serialization: 'JSON UTF-8 array; ensure_ascii=false; separators=(",", ":")'
+
+sources:
+  - id: official-syllabus-2026-08-06
+    title: USA-NA-AIO Syllabus
+    authority: official-syllabus
+    url: https://www.usaaio.org/syllabus
+    retrieved: 2026-08-06
+    review_after: 2027-06-01
+    committed: false
+    local_only: false
+    normalization: official-topic-paths-v1
+    topic_paths_sha256: 319183eed38d5ccb53c4e3ac6301bcb46df1ac1cc7a76b6162c77cab3c40aade
+    topic_paths:
+      - USA-NA-AIO Syllabus > Markdown programming in Google Colab
+      - USA-NA-AIO Syllabus > Markdown programming in Google Colab > solutions in Colab text cells
+      - USA-NA-AIO Syllabus > Markdown programming in Google Colab > text words
+      - USA-NA-AIO Syllabus > Markdown programming in Google Colab > code snippets
+      - USA-NA-AIO Syllabus > Markdown programming in Google Colab > math formulae
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Linear algebra
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Linear algebra > affine transformations
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Linear algebra > matrix decompositions
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Linear algebra > eigenvalues and eigenvectors
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Probability and statistics
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Probability and statistics > Bayes' rule
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Probability and statistics > Hoeffding's inequality
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Derivatives in multi-variable calculus
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Convex optimization
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Convex optimization > gradient descent algorithm
+      - USA-NA-AIO Syllabus > Mathematical foundations for AI > Convex optimization > duality
+      - USA-NA-AIO Syllabus > Basic coding
+      - USA-NA-AIO Syllabus > Basic coding > Python
+      - USA-NA-AIO Syllabus > Basic coding > NumPy
+      - USA-NA-AIO Syllabus > Basic coding > pandas
+      - USA-NA-AIO Syllabus > Basic coding > matplotlib.pyplot
+      - USA-NA-AIO Syllabus > Basic coding > seaborn
+      - USA-NA-AIO Syllabus > Basic coding > scikit-learn
+      - USA-NA-AIO Syllabus > Machine learning
+      - USA-NA-AIO Syllabus > Machine learning > Supervised learning
+      - USA-NA-AIO Syllabus > Machine learning > Supervised learning > linear regression
+      - USA-NA-AIO Syllabus > Machine learning > Supervised learning > logistic regression
+      - USA-NA-AIO Syllabus > Machine learning > Supervised learning > support vector machine
+      - USA-NA-AIO Syllabus > Machine learning > Supervised learning > decision trees
+      - USA-NA-AIO Syllabus > Machine learning > Supervised learning > kNN
+      - USA-NA-AIO Syllabus > Machine learning > Supervised learning > ensemble learning
+      - USA-NA-AIO Syllabus > Machine learning > Supervised learning > bias-variance tradeoff
+      - USA-NA-AIO Syllabus > Machine learning > Supervised learning > cross-validation
+      - USA-NA-AIO Syllabus > Machine learning > Supervised learning > loss functions
+      - USA-NA-AIO Syllabus > Machine learning > Unsupervised learning
+      - USA-NA-AIO Syllabus > Machine learning > Unsupervised learning > k-means clustering
+      - USA-NA-AIO Syllabus > Machine learning > Unsupervised learning > principal component analysis
+      - USA-NA-AIO Syllabus > Advanced coding for deep learning (PyTorch)
+      - USA-NA-AIO Syllabus > Advanced coding for deep learning (PyTorch) > PyTorch not TensorFlow
+      - USA-NA-AIO Syllabus > Deep learning foundation
+      - USA-NA-AIO Syllabus > Deep learning foundation > Multi-layer perceptron model
+      - USA-NA-AIO Syllabus > Deep learning foundation > Essential layers
+      - USA-NA-AIO Syllabus > Deep learning foundation > Essential layers > affine transformation
+      - USA-NA-AIO Syllabus > Deep learning foundation > Essential layers > batch normalization
+      - USA-NA-AIO Syllabus > Deep learning foundation > Essential layers > dropout
+      - USA-NA-AIO Syllabus > Deep learning foundation > forward propagation and backpropagation mathematical computations by hand
+      - USA-NA-AIO Syllabus > Transformers
+      - USA-NA-AIO Syllabus > Transformers > solid and deep understanding
+      - USA-NA-AIO Syllabus > Transformers > Attention mechanisms
+      - USA-NA-AIO Syllabus > Transformers > Transformers architecture
+      - USA-NA-AIO Syllabus > Transformers > Applications
+      - USA-NA-AIO Syllabus > Transformers > Applications > natural language processing
+      - USA-NA-AIO Syllabus > Transformers > Applications > vision transformers
+      - USA-NA-AIO Syllabus > Transformers > Applications > graph neural networks
+      - USA-NA-AIO Syllabus > Natural language processing
+      - USA-NA-AIO Syllabus > Natural language processing > Tokenization
+      - USA-NA-AIO Syllabus > Natural language processing > Word embeddings
+      - USA-NA-AIO Syllabus > Natural language processing > Transformers
+      - USA-NA-AIO Syllabus > Natural language processing > Pre-training
+      - USA-NA-AIO Syllabus > Natural language processing > Fine-tuning
+      - USA-NA-AIO Syllabus > Computer vision and generative AI
+      - USA-NA-AIO Syllabus > Computer vision and generative AI > Convolutional neural network
+      - USA-NA-AIO Syllabus > Computer vision and generative AI > Object detection
+      - USA-NA-AIO Syllabus > Computer vision and generative AI > UNet
+      - USA-NA-AIO Syllabus > Computer vision and generative AI > Autoencoder
+      - USA-NA-AIO Syllabus > Computer vision and generative AI > Variational autoencoder
+      - USA-NA-AIO Syllabus > Computer vision and generative AI > Generative adversarial network
+      - USA-NA-AIO Syllabus > Computer vision and generative AI > Denoising diffusion probabilistic models
+      - USA-NA-AIO Syllabus > Computer vision and generative AI > Stable diffusion
+      - USA-NA-AIO Syllabus > explicit expectations > theory and programming
+      - USA-NA-AIO Syllabus > explicit expectations > derive an estimator in linear regression
+      - USA-NA-AIO Syllabus > explicit expectations > prove whether a matrix is a valid positive-definite kernel
+      - USA-NA-AIO Syllabus > explicit expectations > fully connected neural network from scratch with reasoning
+      - USA-NA-AIO Syllabus > explicit expectations > NumPy PCA class from scratch
+      - USA-NA-AIO Syllabus > explicit expectations > PCA eigenvalue problem derivation
+      - USA-NA-AIO Syllabus > explicit expectations > scikit-learn PCA is not sufficient as a black box
+
+  - id: official-round-policy-2027-2026-08-06
+    title: 2027 USA-NA-AIO round policy
+    authority: official-round-policy
+    url: https://www.usaaio.org/2027-usa-na-aio
+    retrieved: 2026-08-06
+    competition_year: 2027
+    review_after: 2027-06-01
+    committed: false
+    local_only: false
+    normalization: official-topic-paths-v1
+    topic_paths_sha256: 244d6bb5b01f2e62b6d43f219449a3153790add9092943fe937694dba30a85bd
+    topic_paths:
+      - 2027 USA-NA-AIO > Round 1 > Topics on the syllabus covered in Round 1 > Markdown programming in Google Colab
+      - 2027 USA-NA-AIO > Round 1 > Topics on the syllabus covered in Round 1 > Mathematical foundations for AI
+      - 2027 USA-NA-AIO > Round 1 > Topics on the syllabus covered in Round 1 > Basic coding
+      - 2027 USA-NA-AIO > Round 1 > Topics on the syllabus covered in Round 1 > Machine learning
+      - 2027 USA-NA-AIO > Round 1 > Topics on the syllabus covered in Round 1 > Advanced coding for deep learning (PyTorch)
+      - 2027 USA-NA-AIO > Round 1 > Topics on the syllabus covered in Round 1 > Deep learning foundation
+      - 2027 USA-NA-AIO > Round 1 > Topics on the syllabus covered in Round 1 > Basics of convolutional neural network (CNN)
+      - 2027 USA-NA-AIO > Round 1 > Format > non-coding tasks and coding tasks
+      - 2027 USA-NA-AIO > Round 1 > Format > coding tasks answered on Google Colab
+      - 2027 USA-NA-AIO > Round 1 > Format > all code runs on CPUs; GPUs neither needed nor allowed
+      - 2027 USA-NA-AIO > Round 2 > Topics on the syllabus covered in Round 2 > Everything
+      - 2027 USA-NA-AIO > Round 2 > Format > same as Round 1 except some problems may require GPUs
+      - 2027 USA-NA-AIO > Round 2 > GPU resources on Google Colab > L4 GPU
+
+  - id: reference-analysis-2026-08-03
+    title: Committed derived analysis of the 2026 reference corpus
+    authority: design-rationale
+    path: reference/analysis.md
+    retrieved: 2026-08-03
+    review_after: 2027-06-01
+    committed: true
+    local_only: false
+
+  - id: r1-2026-index-local
+    title: Local 2026 Round 1 problem index
+    authority: past-paper
+    path: reference/r1-2026/index.yaml
+    competition_year: 2026
+    retrieved: 2026-08-03
+    review_after: 2027-06-01
+    committed: false
+    local_only: true
+
+  - id: r2-2026-index-local
+    title: Local 2026 Round 2 light problem index
+    authority: past-paper
+    path: reference/r2-2026/index.yaml
+    competition_year: 2026
+    retrieved: 2026-08-03
+    review_after: 2027-06-01
+    committed: false
+    local_only: true
+
+  - id: r2-2026-rationale-local
+    title: Local 2026 Round 2 published design rationale
+    authority: design-rationale
+    path: reference/r2-2026/rationale.pdf
+    competition_year: 2026
+    retrieved: 2026-08-03
+    review_after: 2027-06-01
+    committed: false
+    local_only: true
+
+  - id: plan-015-preliminary-decisions
+    title: Plan 015 reviewed preliminary curriculum decisions
+    authority: design-rationale
+    path: docs/plans/015-layered-curriculum.md
+    recorded: 2026-08-05
+    review_after: 2027-06-01
+    committed: true
+    local_only: false

@@ -1,0 +1,624 @@
+official_topics_schema_version: 1
+
+allowed_modalities:
+  - theory
+  - derivation
+  - proof
+  - implementation
+  - model-training
+  - competition-workflow
+
+# Official categories use the official sibling labels as stable ids.
+# Nested categories inherit every round from their full ancestor chain.
+# The one observed root is separated so Round 2 paper capabilities are not
+# misreported as official syllabus categories.
+categories:
+  - id: markdown-colab
+    parent: null
+    kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: mathematical-foundations
+    parent: null
+    kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: linear-algebra
+    parent: mathematical-foundations
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: probability-statistics
+    parent: mathematical-foundations
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: multivariable-calculus
+    parent: mathematical-foundations
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: convex-optimization
+    parent: mathematical-foundations
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: basic-coding
+    parent: null
+    kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: machine-learning
+    parent: null
+    kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: supervised-learning
+    parent: machine-learning
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: unsupervised-learning
+    parent: machine-learning
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: pytorch
+    parent: null
+    kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: deep-learning-foundation
+    parent: null
+    kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: essential-layers
+    parent: deep-learning-foundation
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: neural-network-computation
+    parent: deep-learning-foundation
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: cnn-basics
+    parent: null
+    kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: transformers
+    parent: null
+    kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-2]
+  - id: attention-mechanisms
+    parent: transformers
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+  - id: transformer-architecture
+    parent: transformers
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+  - id: transformer-applications
+    parent: transformers
+    kind: official-subcategory
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+  - id: nlp
+    parent: null
+    kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-2]
+  - id: computer-vision-generative
+    parent: null
+    kind: official
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-2]
+  - id: generative-model-prerequisites
+    parent: computer-vision-generative
+    kind: pedagogical-bridge
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+  - id: observed-round-2-capabilities
+    parent: null
+    kind: observed
+    source_refs: [official-round-policy-2027-2026-08-06, reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local]
+    required_for: [round-2]
+
+atomic_targets:
+  # Markdown / Colab and round workflow.
+  - id: colab-markdown-solution-authoring
+    parent: markdown-colab
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [competition-workflow]
+  - id: markdown-text-communication
+    parent: markdown-colab
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [competition-workflow]
+  - id: markdown-code-snippets
+    parent: markdown-colab
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [implementation, competition-workflow]
+  - id: markdown-math-formulae
+    parent: markdown-colab
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [derivation, competition-workflow]
+  - id: colab-coding-submission
+    parent: markdown-colab
+    source_refs: [official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [implementation, competition-workflow]
+  - id: cpu-and-gpu-round-boundary
+    parent: markdown-colab
+    source_refs: [official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [competition-workflow]
+  - id: noncoding-and-coding-task-switching
+    parent: markdown-colab
+    source_refs: [official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, competition-workflow]
+  - id: theory-and-programming-integration
+    parent: markdown-colab
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, competition-workflow]
+
+  # Mathematical foundations.
+  - id: linear-algebra-foundations
+    parent: linear-algebra
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation]
+  - id: affine-transformations
+    parent: linear-algebra
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation]
+  - id: matrix-decompositions
+    parent: linear-algebra
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation]
+  - id: eigenvalues-and-eigenvectors
+    parent: linear-algebra
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: valid-kernel-positive-definite-proof
+    parent: linear-algebra
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, proof]
+  - id: probability-and-statistics-foundations
+    parent: probability-statistics
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation]
+  - id: conditional-probability
+    parent: probability-statistics
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: bayes-rule
+    parent: probability-statistics
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: hoeffding-inequality
+    parent: probability-statistics
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: multivariable-derivatives
+    parent: multivariable-calculus
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: convex-sets-functions-and-optimality
+    parent: convex-optimization
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation]
+  - id: gradient-descent-optimization
+    parent: convex-optimization
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: constrained-optimization-lagrangian-duality
+    parent: convex-optimization
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation]
+
+  # Basic coding surface.
+  - id: python-programming
+    parent: basic-coding
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [implementation]
+  - id: numpy-programming
+    parent: basic-coding
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [implementation]
+  - id: pandas-programming
+    parent: basic-coding
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [implementation]
+  - id: matplotlib-pyplot-programming
+    parent: basic-coding
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [implementation]
+  - id: seaborn-programming
+    parent: basic-coding
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [implementation]
+  - id: scikit-learn-programming
+    parent: basic-coding
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [implementation]
+  - id: constrained-api-implementation
+    parent: basic-coding
+    source_refs: [reference-analysis-2026-08-03, r1-2026-index-local]
+    required_for: [round-1, round-2]
+    modalities: [implementation, competition-workflow]
+
+  # Machine learning.
+  - id: supervised-learning-foundations
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation]
+  - id: linear-regression
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: linear-regression-estimator-derivation
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation]
+  - id: ols-normal-equations-rank-and-pseudoinverse
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: logistic-regression
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: support-vector-machine
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: decision-trees
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: knn
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: ensemble-learning
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: bias-variance-tradeoff
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation]
+  - id: cross-validation
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: loss-functions
+    parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: end-to-end-model-selection
+    parent: supervised-learning
+    source_refs: [reference-analysis-2026-08-03, r1-2026-index-local]
+    required_for: [round-1, round-2]
+    modalities: [implementation, model-training, competition-workflow]
+  - id: hidden-test-model-evaluation
+    parent: supervised-learning
+    source_refs: [reference-analysis-2026-08-03, r1-2026-index-local]
+    required_for: [round-1, round-2]
+    modalities: [model-training, competition-workflow]
+  - id: unsupervised-learning-foundations
+    parent: unsupervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation]
+  - id: k-means-clustering
+    parent: unsupervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: principal-component-analysis
+    parent: unsupervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation]
+  - id: pca-centered-covariance-eigenproblem-derivation
+    parent: unsupervised-learning
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation]
+  - id: numpy-pca-class-from-scratch
+    parent: unsupervised-learning
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation]
+  - id: pca-black-box-insufficiency
+    parent: unsupervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+
+  # PyTorch and deep-learning foundation.
+  - id: pytorch-deep-learning-programming
+    parent: pytorch
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [implementation, model-training]
+  - id: pytorch-not-tensorflow-workflow
+    parent: pytorch
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [competition-workflow]
+  - id: pytorch-autograd-and-optimizer-training
+    parent: pytorch
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: multilayer-perceptron-model
+    parent: deep-learning-foundation
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: affine-neural-network-layer
+    parent: essential-layers
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: batch-normalization
+    parent: essential-layers
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation, model-training]
+  - id: dropout
+    parent: essential-layers
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+  - id: forward-propagation-by-hand
+    parent: neural-network-computation
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation]
+  - id: backpropagation-by-hand
+    parent: neural-network-computation
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: softmax
+    parent: neural-network-computation
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: cross-entropy-loss
+    parent: neural-network-computation
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, derivation, implementation]
+  - id: fully-connected-network-from-scratch
+    parent: neural-network-computation
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+
+  # CNN basics are a Round 1 sibling category in the official round policy.
+  - id: convolutional-neural-network-basics
+    parent: cnn-basics
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [theory, implementation, model-training]
+
+  # Round 2 official transformer and NLP siblings.
+  - id: attention-mechanism-foundations
+    parent: attention-mechanisms
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation]
+  - id: self-attention
+    parent: attention-mechanisms
+    source_refs: [official-syllabus-2026-08-06, r2-2026-index-local]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation]
+  - id: multi-head-attention
+    parent: attention-mechanisms
+    source_refs: [official-syllabus-2026-08-06, r2-2026-index-local]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation]
+  - id: positional-encoding
+    parent: attention-mechanisms
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [theory, implementation]
+  - id: attention-complexity-analysis
+    parent: attention-mechanisms
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local]
+    required_for: [round-2]
+    modalities: [theory, derivation]
+  - id: attention-from-scratch
+    parent: attention-mechanisms
+    source_refs: [official-syllabus-2026-08-06, r2-2026-index-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: transformer-architecture-foundations
+    parent: transformer-architecture
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation]
+  - id: transformer-depth-of-understanding
+    parent: transformer-architecture
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation]
+  - id: transformer-nlp-applications
+    parent: transformer-applications
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: vision-transformers
+    parent: transformer-applications
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: graph-neural-network-transformer-applications
+    parent: transformer-applications
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: nlp-tokenization
+    parent: nlp
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation]
+  - id: nlp-word-embeddings
+    parent: nlp
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: nlp-transformers
+    parent: nlp
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: nlp-pretraining
+    parent: nlp
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: nlp-fine-tuning
+    parent: nlp
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+
+  # Round 2 advanced vision, generative models, and their bridges.
+  - id: object-detection
+    parent: computer-vision-generative
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: unet
+    parent: computer-vision-generative
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: autoencoder
+    parent: computer-vision-generative
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: variational-autoencoder
+    parent: computer-vision-generative
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation, model-training]
+  - id: generative-adversarial-network
+    parent: computer-vision-generative
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation, model-training]
+  - id: denoising-diffusion-probabilistic-models
+    parent: computer-vision-generative
+    source_refs: [official-syllabus-2026-08-06, r2-2026-index-local]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation, model-training]
+  - id: stable-diffusion
+    parent: computer-vision-generative
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training]
+  - id: multivariate-gaussian
+    parent: generative-model-prerequisites
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation]
+  - id: gaussian-reparameterization
+    parent: generative-model-prerequisites
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation]
+  - id: kl-divergence
+    parent: generative-model-prerequisites
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [theory, derivation, implementation]
+
+  # Observed Round 2 integration capabilities, not official syllabus bullets.
+  - id: gpu-colab-l4-workflow
+    parent: observed-round-2-capabilities
+    source_refs: [official-round-policy-2027-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [implementation, model-training, competition-workflow]
+  - id: scientific-ml-inverse-problems
+    parent: observed-round-2-capabilities
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training, competition-workflow]
+  - id: open-ended-experiment-design
+    parent: observed-round-2-capabilities
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [model-training, competition-workflow]
+  - id: open-ended-model-evaluation
+    parent: observed-round-2-capabilities
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [model-training, competition-workflow]
+  - id: mixture-parameter-regression
+    parent: observed-round-2-capabilities
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training, competition-workflow]
+
+# These decisions are recorded outside atomic_targets deliberately.
+# They are not official or observed requirements and therefore must not inherit
+# a required round from an official category.
+non_required_candidates:
+  - id: student-t-test
+    related_category: probability-statistics
+    source_refs: [plan-015-preliminary-decisions]
+    requirement: optional
+    audit_target: false
+  - id: importance-sampling
+    related_category: probability-statistics
+    source_refs: [plan-015-preliminary-decisions]
+    requirement: optional
+    audit_target: false
