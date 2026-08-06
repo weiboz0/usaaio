@@ -1,14 +1,16 @@
 unit: C2-linear-models
-concepts_taught: [linear-regression, mse-loss, l1-regularization, l2-regularization, sparsity]
+concepts_taught: [linear-regression, mse-loss, l1-regularization, l2-regularization, sparsity,
+  linear-regression-estimator-derivation, ols-rank-identifiability-and-pseudoinverse]
 concepts_used: [numpy-arrays, elementwise-ops, broadcasting, vectorization, aggregation-axis, random-seeding,
   matplotlib-basics, vectors-and-norms, projection, residuals, matrices-as-linear-maps, matrix-multiplication,
-  partial-derivatives, gradient, sum-of-squares-gradients, train-test-split, overfitting]
+  rank, invertibility-via-rank, partial-derivatives, gradient, sum-of-squares-gradients,
+  train-test-split, overfitting]
 prereq_units: [F3-matrices, F4-multivar-calculus, C1-ml-fundamentals]
 estimated_minutes:
-  lesson: 170
-  lesson_sessions: [85, 85]
-  practice: 420
-  review: 40
+  lesson: 260
+  lesson_sessions: [85, 90, 85]
+  practice: 590
+  review: 55
 practice:
 - id: C2-p01
   set: A
@@ -136,3 +138,45 @@ practice:
   concepts: [mse-loss, linear-regression]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb
+- id: C2-p19
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [linear-regression-estimator-derivation]
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb
+- id: C2-p20
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [linear-regression-estimator-derivation]
+  path: practice/p20.ipynb
+  solution_path: practice/p20_solution.ipynb
+- id: C2-p21
+  set: C
+  type: integrative
+  difficulty: core
+  concepts: [linear-regression-estimator-derivation]
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+- id: C2-p22
+  set: B
+  type: proof
+  difficulty: advanced
+  concepts: [ols-rank-identifiability-and-pseudoinverse]
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb
+- id: C2-p23
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [ols-rank-identifiability-and-pseudoinverse]
+  path: practice/p23.ipynb
+  solution_path: practice/p23_solution.ipynb
+- id: C2-p24
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [ols-rank-identifiability-and-pseudoinverse]
+  path: practice/p24.ipynb
+  solution_path: practice/p24_solution.ipynb

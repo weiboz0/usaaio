@@ -7,14 +7,6 @@ layers:
   - optional-enrichment
 
 planned_units:
-  - id: P015-R1-MATH-KERNEL-OPT
-    title: Kernel Validity and Convex Optimization
-    layer: shared-foundation
-    prerequisites: [F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent]
-    knowledge_points: [valid-kernel-positive-definite-proof, convex-sets-functions-and-optimality, constrained-optimization-lagrangian-duality]
-    provisional_concepts: [positive-semidefinite-matrices, kernel-validity, convex-sets, convex-functions, first-order-optimality, lagrangians, optimization-duality]
-    estimated_hours: {min: 14, max: 20}
-    schedule_action: extend
   - id: P015-R1-NEURAL-TRAINING
     title: Neural Losses, Backpropagation, and Training
     layer: round-1-core
@@ -26,7 +18,7 @@ planned_units:
   - id: P015-R1-CLASSICAL-BREADTH
     title: Classical Supervised and Unsupervised Models
     layer: round-1-core
-    prerequisites: [C1-ml-fundamentals, C2-linear-models, C3-gradient-descent, C4-classical-ml-practice, P015-R1-MATH-KERNEL-OPT]
+    prerequisites: [C1-ml-fundamentals, C2-linear-models, C3-gradient-descent, C4-classical-ml-practice, F7-kernels-convex-optimization]
     knowledge_points: [logistic-regression, support-vector-machine, decision-trees, ensemble-learning, k-means-clustering]
     provisional_concepts: [logistic-regression, svm, decision-trees, ensemble-learning, k-means]
     estimated_hours: {min: 32, max: 48}
@@ -300,12 +292,12 @@ knowledge_points:
     coverage: missing
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     depends_on: [gram-matrices, eigenvalues-and-eigenvectors]
-    shipped_concepts: []
+    shipped_concepts: [positive-semidefinite-matrices, kernel-validity]
     evidence_by_modality:
       theory: {lesson_anchors: [], practices: [], assessments: []}
       proof: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-MATH-KERNEL-OPT
+    disposition: extend-existing-unit
+    destination: F7-kernels-convex-optimization
     deficits: {modalities_missing: [theory, proof]}
     rationale: Incidental PSD energy language never becomes a kernel definition, validity criterion, proof, or counterexample.
     consequence: Students cannot answer the official kernel-validity proof task.
@@ -409,12 +401,12 @@ knowledge_points:
     coverage: missing
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     depends_on: [multivariable-derivatives, linear-algebra-foundations]
-    shipped_concepts: []
+    shipped_concepts: [convex-sets, convex-functions, first-order-optimality]
     evidence_by_modality:
       theory: {lesson_anchors: [], practices: [], assessments: []}
       derivation: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-MATH-KERNEL-OPT
+    disposition: extend-existing-unit
+    destination: F7-kernels-convex-optimization
     deficits: {modalities_missing: [theory, derivation]}
     rationale: Convex appears only for polygons and one parabola description; no convex-function or first-order-optimality theory is taught.
     consequence: Later optimization and SVM arguments lack formal foundations.
@@ -449,12 +441,12 @@ knowledge_points:
     coverage: missing
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     depends_on: [convex-sets-functions-and-optimality, multivariable-derivatives]
-    shipped_concepts: []
+    shipped_concepts: [lagrangians, optimization-duality]
     evidence_by_modality:
       theory: {lesson_anchors: [], practices: [], assessments: []}
       derivation: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-MATH-KERNEL-OPT
+    disposition: extend-existing-unit
+    destination: F7-kernels-convex-optimization
     deficits: {modalities_missing: [theory, derivation]}
     rationale: No Lagrangian, constrained optimality, primal-dual formulation, or duality argument occurs.
     consequence: SVM and constrained-model derivations cannot be taught with prerequisite closure.
@@ -531,14 +523,14 @@ knowledge_points:
     requirement: required
     coverage: missing
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
-    depends_on: [pandas-programming, matplotlib-pyplot-programming]
+    depends_on: [numpy-programming, matplotlib-pyplot-programming]
     shipped_concepts: []
     evidence_by_modality:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
     disposition: extend-existing-unit
     destination: F1-scientific-python
     deficits: {modalities_missing: [implementation]}
-    rationale: The corpus contains no seaborn import, API use, lesson, or practice.
+    rationale: The corpus contains no seaborn import, API use, lesson, or practice; the planned extension uses array-only inputs and does not require pandas.
     consequence: Matplotlib coverage cannot satisfy the separately named official library.
   - id: scikit-learn-programming
     layer: shared-foundation

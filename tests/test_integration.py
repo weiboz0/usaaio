@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 import sys
+import tomllib
+from collections import Counter
 from pathlib import Path
 
 import yaml
@@ -13,14 +16,373 @@ from tools.checks.hygiene import check_hygiene
 from tools.checks.new_mocktest import scaffold_mocktest
 from tools.checks.overlap import check_overlap
 from tools.checks.prereq import check_prereq
+from tools.model import load_syllabus, load_unit_manifests
 
 ROOT = Path(__file__).resolve().parents[1]
+
+NEW_CONCEPT_CLUSTERS = {
+    "seaborn-programming": "python-scientific",
+    "colab-markdown-solution-authoring": "competition-craft",
+    "markdown-code-snippets": "competition-craft",
+    "markdown-math-formulae": "competition-craft",
+    "colab-coding-submission": "competition-craft",
+    "cpu-and-gpu-round-boundary": "competition-craft",
+    "conditional-probability": "probability-statistics",
+    "bayes-rule": "probability-statistics",
+    "hoeffding-inequality": "probability-statistics",
+    "linear-regression-estimator-derivation": "ml-concepts",
+    "ols-rank-identifiability-and-pseudoinverse": "ml-concepts",
+    "pca-centered-covariance-eigenproblem-derivation": "ml-concepts",
+    "numpy-pca-class-from-scratch": "ml-concepts",
+    "pca-black-box-insufficiency": "ml-concepts",
+    "positive-semidefinite-matrices": "linear-algebra",
+    "kernel-validity": "linear-algebra",
+    "convex-sets": "linear-algebra",
+    "convex-functions": "calculus-multivar",
+    "first-order-optimality": "calculus-multivar",
+    "lagrangians": "calculus-multivar",
+    "optimization-duality": "calculus-multivar",
+}
+
+EXPECTED_UNIT_SHAPES = {
+    "F1-scientific-python": ([75, 90, 75, 70], 24, (310, 515, 50)),
+    "C10-competition-craft": ([80, 85, 85, 85], 24, (335, 730, 55)),
+    "F5-probability": ([80, 85, 85, 85, 80], 25, (415, 650, 55)),
+    "C2-linear-models": ([85, 90, 85], 24, (260, 590, 55)),
+    "C9-dimensionality-reduction": ([80, 90, 85, 85], 24, (340, 600, 60)),
+    "F7-kernels-convex-optimization": ([85, 85, 85, 85], 20, (340, 640, 45)),
+}
+
+
+def _manifest(unit_id: str) -> dict[str, object]:
+    return yaml.safe_load((ROOT / "units" / unit_id / "manifest.yaml").read_text())
+
+
+def _canonical_syllabus_yaml() -> dict[str, object]:
+    text = (ROOT / "syllabus.md").read_text()
+    fenced = re.search(
+        r"<!-- syllabus-canonical -->\s*```yaml\n(.*?)\n```", text, re.DOTALL
+    )
+    assert fenced is not None
+    return yaml.safe_load(fenced.group(1))
 
 
 def seed_repo(root: Path) -> None:
     (root / "mocktests").mkdir(parents=True)
     (root / "mocktests" / "blueprint.yaml").write_text((ROOT / "mocktests" / "blueprint.yaml").read_text())
     (root / "syllabus.md").write_text((ROOT / "syllabus.md").read_text())
+
+
+def test_plan016_new_concepts_have_exact_clusters_and_single_owners():
+    syllabus = load_syllabus(ROOT)
+
+    assert len(NEW_CONCEPT_CLUSTERS) == 21
+    assert {concept: syllabus.concepts.get(concept) for concept in NEW_CONCEPT_CLUSTERS} == (
+        NEW_CONCEPT_CLUSTERS
+    )
+
+    syllabus_owner_counts = Counter(
+        concept for unit in syllabus.units.values() for concept in unit.teaches
+    )
+    manifest_owner_counts = Counter(
+        concept
+        for manifest in load_unit_manifests(ROOT)
+        for concept in manifest.concepts_taught
+    )
+    assert {concept: syllabus_owner_counts[concept] for concept in NEW_CONCEPT_CLUSTERS} == {
+        concept: 1 for concept in NEW_CONCEPT_CLUSTERS
+    }
+    assert {concept: manifest_owner_counts[concept] for concept in NEW_CONCEPT_CLUSTERS} == {
+        concept: 1 for concept in NEW_CONCEPT_CLUSTERS
+    }
+
+
+def test_plan016_manifests_have_exact_final_counts_and_minutes():
+    for unit_id, (sessions, practice_count, minute_totals) in EXPECTED_UNIT_SHAPES.items():
+        manifest = _manifest(unit_id)
+        minutes = manifest["estimated_minutes"]
+        assert minutes["lesson_sessions"] == sessions
+        assert (minutes["lesson"], minutes["practice"], minutes["review"]) == minute_totals
+        assert len(manifest["practice"]) == practice_count
+
+    manifests = load_unit_manifests(ROOT)
+    assert sum(len(manifest.practice) for manifest in manifests) == 383
+    assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 57
+    assert sum(
+        sum(_manifest(manifest.unit_id)["estimated_minutes"][field] for field in (
+            "lesson",
+            "practice",
+            "review",
+        ))
+        for manifest in manifests
+    ) == 14767
+
+
+def test_plan016_existing_unit_register_extensions_are_exact():
+    expected = {
+        "F1-scientific-python": {
+            "F1-p22": ("A", "constrained-coding", "intro", ["seaborn-programming"]),
+            "F1-p23": ("B", "constrained-coding", "core", ["seaborn-programming"]),
+            "F1-p24": (
+                "C",
+                "integrative",
+                "advanced",
+                ["seaborn-programming", "random-seeding", "aggregation-axis"],
+            ),
+        },
+        "F5-probability": {
+            "F5-p20": ("A", "drill", "intro", ["conditional-probability"]),
+            "F5-p21": (
+                "B",
+                "constrained-coding",
+                "core",
+                ["conditional-probability", "bayes-rule"],
+            ),
+            "F5-p22": (
+                "B",
+                "proof",
+                "core",
+                ["conditional-probability", "bayes-rule"],
+            ),
+            "F5-p23": ("B", "mc-normal-form", "core", ["hoeffding-inequality"]),
+            "F5-p24": (
+                "B",
+                "constrained-coding",
+                "core",
+                ["hoeffding-inequality"],
+            ),
+            "F5-p25": (
+                "C",
+                "integrative",
+                "advanced",
+                [
+                    "conditional-probability",
+                    "bayes-rule",
+                    "hoeffding-inequality",
+                    "sampling-simulation",
+                ],
+            ),
+        },
+        "C2-linear-models": {
+            "C2-p19": (
+                "B",
+                "proof",
+                "core",
+                ["linear-regression-estimator-derivation"],
+            ),
+            "C2-p20": (
+                "B",
+                "constrained-coding",
+                "core",
+                ["linear-regression-estimator-derivation"],
+            ),
+            "C2-p21": (
+                "C",
+                "integrative",
+                "core",
+                ["linear-regression-estimator-derivation"],
+            ),
+            "C2-p22": (
+                "B",
+                "proof",
+                "advanced",
+                ["ols-rank-identifiability-and-pseudoinverse"],
+            ),
+            "C2-p23": (
+                "B",
+                "constrained-coding",
+                "core",
+                ["ols-rank-identifiability-and-pseudoinverse"],
+            ),
+            "C2-p24": (
+                "C",
+                "challenge",
+                "advanced",
+                ["ols-rank-identifiability-and-pseudoinverse"],
+            ),
+        },
+        "C9-dimensionality-reduction": {
+            "C9-p20": (
+                "B",
+                "proof",
+                "core",
+                ["pca-centered-covariance-eigenproblem-derivation"],
+            ),
+            "C9-p21": (
+                "B",
+                "proof",
+                "advanced",
+                ["pca-centered-covariance-eigenproblem-derivation"],
+            ),
+            "C9-p22": (
+                "B",
+                "constrained-coding",
+                "core",
+                ["numpy-pca-class-from-scratch", "pca-black-box-insufficiency"],
+            ),
+            "C9-p23": (
+                "C",
+                "integrative",
+                "advanced",
+                [
+                    "pca-centered-covariance-eigenproblem-derivation",
+                    "numpy-pca-class-from-scratch",
+                    "pca-black-box-insufficiency",
+                ],
+            ),
+            "C9-p24": (
+                "C",
+                "challenge",
+                "advanced",
+                ["numpy-pca-class-from-scratch", "pca-black-box-insufficiency"],
+            ),
+        },
+    }
+    for unit_id, expected_problems in expected.items():
+        actual = {
+            problem["id"]: (
+                problem["set"],
+                problem["type"],
+                problem["difficulty"],
+                problem["concepts"],
+            )
+            for problem in _manifest(unit_id)["practice"]
+            if problem["id"] in expected_problems
+        }
+        assert actual == expected_problems
+
+    c10 = {problem["id"]: problem for problem in _manifest("C10-competition-craft")["practice"]}
+    new_c10 = set(NEW_CONCEPT_CLUSTERS) & {
+        "colab-markdown-solution-authoring",
+        "markdown-code-snippets",
+        "markdown-math-formulae",
+        "colab-coding-submission",
+        "cpu-and-gpu-round-boundary",
+    }
+    for problem_id in ("C10-p15", "C10-p17", "C10-p18"):
+        assert set(c10[problem_id]["concepts"]) >= new_c10 | {"writeup-quality"}
+
+
+def test_plan016_f7_manifest_has_exact_foundation_contract_and_register():
+    syllabus = load_syllabus(ROOT)
+    unit = syllabus.units["F7-kernels-convex-optimization"]
+    assert unit.track == "foundation"
+    assert unit.prereqs == [
+        "F3-matrices",
+        "F4-multivar-calculus",
+        "F6-svd-spectral",
+        "C3-gradient-descent",
+    ]
+    assert unit.teaches == [
+        "positive-semidefinite-matrices",
+        "kernel-validity",
+        "convex-sets",
+        "convex-functions",
+        "first-order-optimality",
+        "lagrangians",
+        "optimization-duality",
+    ]
+
+    manifest = _manifest(unit.id)
+    expected_rows = [
+        ("F7-p01", "A", "mc", "intro", ["positive-semidefinite-matrices"]),
+        ("F7-p02", "A", "mc", "intro", ["kernel-validity"]),
+        ("F7-p03", "A", "mc", "intro", ["convex-sets"]),
+        ("F7-p04", "B", "mc-normal-form", "core", ["convex-functions", "first-order-optimality"]),
+        ("F7-p05", "A", "constrained-coding", "intro", ["positive-semidefinite-matrices"]),
+        ("F7-p06", "B", "constrained-coding", "core", ["positive-semidefinite-matrices", "kernel-validity"]),
+        ("F7-p07", "B", "constrained-coding", "core", ["positive-semidefinite-matrices", "kernel-validity"]),
+        ("F7-p08", "A", "constrained-coding", "intro", ["convex-sets"]),
+        ("F7-p09", "B", "constrained-coding", "core", ["convex-functions"]),
+        ("F7-p10", "B", "constrained-coding", "advanced", ["lagrangians", "optimization-duality"]),
+        ("F7-p11", "B", "proof", "core", ["positive-semidefinite-matrices", "kernel-validity"]),
+        ("F7-p12", "B", "proof", "advanced", ["positive-semidefinite-matrices", "convex-functions", "first-order-optimality"]),
+        ("F7-p13", "C", "integrative", "core", ["positive-semidefinite-matrices", "kernel-validity"]),
+        ("F7-p14", "C", "integrative", "advanced", ["convex-sets", "convex-functions", "first-order-optimality", "lagrangians", "optimization-duality"]),
+        ("F7-p15", "C", "scenario", "core", ["positive-semidefinite-matrices", "kernel-validity"]),
+        ("F7-p16", "C", "scenario", "core", ["convex-functions", "first-order-optimality"]),
+        ("F7-p17", "C", "challenge", "advanced", ["kernel-validity"]),
+        ("F7-p18", "C", "challenge", "advanced", ["lagrangians", "optimization-duality"]),
+        ("F7-p19", "A", "drill", "intro", ["convex-sets", "convex-functions"]),
+        ("F7-p20", "B", "drill", "core", ["lagrangians", "optimization-duality"]),
+    ]
+    assert [
+        (row["id"], row["set"], row["type"], row["difficulty"], row["concepts"])
+        for row in manifest["practice"]
+    ] == expected_rows
+
+
+def test_plan016_coverage_map_conversion_is_controlled():
+    roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
+    planned = {unit["id"]: unit for unit in roadmap["planned_units"]}
+    points = {point["id"]: point for point in roadmap["knowledge_points"]}
+
+    assert "P015-R1-MATH-KERNEL-OPT" not in planned
+    assert planned["P015-R1-CLASSICAL-BREADTH"]["prerequisites"] == [
+        "C1-ml-fundamentals",
+        "C2-linear-models",
+        "C3-gradient-descent",
+        "C4-classical-ml-practice",
+        "F7-kernels-convex-optimization",
+    ]
+    assert points["seaborn-programming"]["depends_on"] == [
+        "numpy-programming",
+        "matplotlib-pyplot-programming",
+    ]
+    assert "array" in points["seaborn-programming"]["rationale"].lower()
+    expected_mappings = {
+        "valid-kernel-positive-definite-proof": [
+            "positive-semidefinite-matrices",
+            "kernel-validity",
+        ],
+        "convex-sets-functions-and-optimality": [
+            "convex-sets",
+            "convex-functions",
+            "first-order-optimality",
+        ],
+        "constrained-optimization-lagrangian-duality": [
+            "lagrangians",
+            "optimization-duality",
+        ],
+    }
+    for point_id, shipped_concepts in expected_mappings.items():
+        point = points[point_id]
+        assert point["coverage"] == "missing"
+        assert point["evidence_by_modality"]
+        assert all(
+            not evidence["lesson_anchors"]
+            and not evidence["practices"]
+            and not evidence["assessments"]
+            for evidence in point["evidence_by_modality"].values()
+        )
+        assert point["disposition"] == "extend-existing-unit"
+        assert point["destination"] == "F7-kernels-convex-optimization"
+        assert point["shipped_concepts"] == shipped_concepts
+
+
+def test_plan016_syllabus_narrative_order_and_dependency_contract():
+    syllabus = _canonical_syllabus_yaml()
+    units = {unit["id"]: unit for unit in syllabus["units"]}
+    assert units["F5-probability"]["length"] == "double"
+    assert units["F6-svd-spectral"]["length"] == "double"
+    text = (ROOT / "syllabus.md").read_text()
+    assert "F5" in text and "F6" in text and "double-length" in text
+    assert "F7-kernels-convex-optimization" in text
+    assert "derivation" in text and "pseudoinverse" in text and "identifiability" in text
+    order = re.search(r"^F1 → .* → C10$", text, re.MULTILINE)
+    assert order is not None
+    ordered_units = order.group(0).split(" → ")
+    assert len(ordered_units) == 17
+    assert ordered_units[-5:] == ["C8", "F6", "F7", "C9", "C10"]
+    assert ordered_units.index("F3") < ordered_units.index("F7")
+    assert ordered_units.index("F4") < ordered_units.index("F7")
+    assert ordered_units.index("C3") < ordered_units.index("F7")
+
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text())
+    assert any(dependency.startswith("seaborn>=") for dependency in project["project"]["dependencies"])
+    assert re.search(r'^name = "seaborn"$', (ROOT / "uv.lock").read_text(), re.MULTILINE)
+    standards = (ROOT / "docs" / "unit-standards.md").read_text()
+    assert "Double-length units (F5, F6) use 4–6 sessions." in standards
 
 
 def test_ci_checks_green_on_current_repo():
@@ -104,20 +466,20 @@ def test_full_pipeline_on_synthetic_test(tmp_path):
     (unit_dir / "manifest.yaml").write_text(
         """
 unit: F1-scientific-python
-concepts_taught: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics]
+concepts_taught: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics, seaborn-programming]
 concepts_used: [variables-and-types]
 prereq_units: []
 practice:
   - id: p01
-    concepts: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics]
+    concepts: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics, seaborn-programming]
     path: practice/p01.ipynb
     solution_path: practice/p01_solution.ipynb
   - id: p02
-    concepts: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics]
+    concepts: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics, seaborn-programming]
     path: practice/p02.ipynb
     solution_path: practice/p02_solution.ipynb
   - id: p03
-    concepts: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics]
+    concepts: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics, seaborn-programming]
     path: practice/p03.ipynb
     solution_path: practice/p03_solution.ipynb
 """

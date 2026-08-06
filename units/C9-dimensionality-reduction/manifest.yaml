@@ -1,18 +1,20 @@
 unit: C9-dimensionality-reduction
-concepts_taught: [pca, truncated-svd-practice, umap-concept, local-vs-global-structure]
+concepts_taught: [pca, truncated-svd-practice, umap-concept, local-vs-global-structure,
+  pca-centered-covariance-eigenproblem-derivation, numpy-pca-class-from-scratch,
+  pca-black-box-insufficiency]
 concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting, vectorization,
   aggregation-axis, random-seeding, matplotlib-basics, vectors-and-norms, dot-product,
   cosine-similarity, unit-vectors, distance-metrics, matrix-multiplication, outer-products,
   eigenvalues-eigenvectors, spectral-decomposition, svd, singular-values, low-rank-approximation,
   frobenius-norm, word-embeddings, embedding-matrices, similarity-matrices, gensim-usage,
   nearest-neighbor-search, expectation, variance, supervised-vs-unsupervised, clustering-concept,
-  bias-variance-intuition, overfitting, projection]
+  bias-variance-intuition, overfitting, projection, covariance, rank]
 prereq_units: [F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals]
 estimated_minutes:
-  lesson: 250
-  lesson_sessions: [80, 85, 85]
-  practice: 450
-  review: 45
+  lesson: 340
+  lesson_sessions: [80, 90, 85, 85]
+  practice: 600
+  review: 60
 practice:
 - id: C9-p01
   set: A
@@ -147,3 +149,39 @@ practice:
   concepts: [pca, bias-variance-intuition, overfitting]
   path: practice/p19.ipynb
   solution_path: practice/p19_solution.ipynb
+- id: C9-p20
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [pca-centered-covariance-eigenproblem-derivation]
+  path: practice/p20.ipynb
+  solution_path: practice/p20_solution.ipynb
+- id: C9-p21
+  set: B
+  type: proof
+  difficulty: advanced
+  concepts: [pca-centered-covariance-eigenproblem-derivation]
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+- id: C9-p22
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [numpy-pca-class-from-scratch, pca-black-box-insufficiency]
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb
+- id: C9-p23
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [pca-centered-covariance-eigenproblem-derivation, numpy-pca-class-from-scratch,
+    pca-black-box-insufficiency]
+  path: practice/p23.ipynb
+  solution_path: practice/p23_solution.ipynb
+- id: C9-p24
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [numpy-pca-class-from-scratch, pca-black-box-insufficiency]
+  path: practice/p24.ipynb
+  solution_path: practice/p24_solution.ipynb

@@ -17,7 +17,7 @@ the content gate's reviewers enforce the qualitative parts against this document
   ~6–10 sections with worked examples and checkpoints).
   A root `lesson.ipynb` remains as the unit overview/index (goals, session map,
   prerequisites recap, how-to-study guidance).
-- Double-length units (F6) use 4–6 sessions.
+- Double-length units (F5, F6) use 4–6 sessions.
 - `estimated_minutes` in the manifest lists per-session lesson minutes plus practice.
 
 ## Practice sets

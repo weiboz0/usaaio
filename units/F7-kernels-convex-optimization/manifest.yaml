@@ -1,0 +1,154 @@
+unit: F7-kernels-convex-optimization
+concepts_taught: [positive-semidefinite-matrices, kernel-validity, convex-sets,
+  convex-functions, first-order-optimality, lagrangians, optimization-duality]
+concepts_used: [matrices-as-linear-maps, matrix-multiplication, rank, invertibility-via-rank,
+  gram-matrices, eigenvalues-eigenvectors, spectral-decomposition, partial-derivatives,
+  gradient, multivar-chain-rule, loss-surfaces, gradient-descent]
+prereq_units: [F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent]
+estimated_minutes:
+  lesson: 340
+  lesson_sessions: [85, 85, 85, 85]
+  practice: 640
+  review: 45
+practice:
+- id: F7-p01
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [positive-semidefinite-matrices]
+  path: practice/p01.ipynb
+  solution_path: practice/p01_solution.ipynb
+- id: F7-p02
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [kernel-validity]
+  path: practice/p02.ipynb
+  solution_path: practice/p02_solution.ipynb
+- id: F7-p03
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [convex-sets]
+  path: practice/p03.ipynb
+  solution_path: practice/p03_solution.ipynb
+- id: F7-p04
+  set: B
+  type: mc-normal-form
+  difficulty: core
+  concepts: [convex-functions, first-order-optimality]
+  path: practice/p04.ipynb
+  solution_path: practice/p04_solution.ipynb
+- id: F7-p05
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [positive-semidefinite-matrices]
+  path: practice/p05.ipynb
+  solution_path: practice/p05_solution.ipynb
+- id: F7-p06
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [positive-semidefinite-matrices, kernel-validity]
+  path: practice/p06.ipynb
+  solution_path: practice/p06_solution.ipynb
+- id: F7-p07
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [positive-semidefinite-matrices, kernel-validity]
+  path: practice/p07.ipynb
+  solution_path: practice/p07_solution.ipynb
+- id: F7-p08
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [convex-sets]
+  path: practice/p08.ipynb
+  solution_path: practice/p08_solution.ipynb
+- id: F7-p09
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [convex-functions]
+  path: practice/p09.ipynb
+  solution_path: practice/p09_solution.ipynb
+- id: F7-p10
+  set: B
+  type: constrained-coding
+  difficulty: advanced
+  concepts: [lagrangians, optimization-duality]
+  path: practice/p10.ipynb
+  solution_path: practice/p10_solution.ipynb
+- id: F7-p11
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [positive-semidefinite-matrices, kernel-validity]
+  path: practice/p11.ipynb
+  solution_path: practice/p11_solution.ipynb
+- id: F7-p12
+  set: B
+  type: proof
+  difficulty: advanced
+  concepts: [positive-semidefinite-matrices, convex-functions, first-order-optimality]
+  path: practice/p12.ipynb
+  solution_path: practice/p12_solution.ipynb
+- id: F7-p13
+  set: C
+  type: integrative
+  difficulty: core
+  concepts: [positive-semidefinite-matrices, kernel-validity]
+  path: practice/p13.ipynb
+  solution_path: practice/p13_solution.ipynb
+- id: F7-p14
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [convex-sets, convex-functions, first-order-optimality, lagrangians,
+    optimization-duality]
+  path: practice/p14.ipynb
+  solution_path: practice/p14_solution.ipynb
+- id: F7-p15
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [positive-semidefinite-matrices, kernel-validity]
+  path: practice/p15.ipynb
+  solution_path: practice/p15_solution.ipynb
+- id: F7-p16
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [convex-functions, first-order-optimality]
+  path: practice/p16.ipynb
+  solution_path: practice/p16_solution.ipynb
+- id: F7-p17
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [kernel-validity]
+  path: practice/p17.ipynb
+  solution_path: practice/p17_solution.ipynb
+- id: F7-p18
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [lagrangians, optimization-duality]
+  path: practice/p18.ipynb
+  solution_path: practice/p18_solution.ipynb
+- id: F7-p19
+  set: A
+  type: drill
+  difficulty: intro
+  concepts: [convex-sets, convex-functions]
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb
+- id: F7-p20
+  set: B
+  type: drill
+  difficulty: core
+  concepts: [lagrangians, optimization-duality]
+  path: practice/p20.ipynb
+  solution_path: practice/p20_solution.ipynb

@@ -1267,11 +1267,11 @@ def test_renderer_and_scope_checker_share_the_practice_threshold() -> None:
     )
 
 
-def test_renderer_recomputes_real_post_plan014_baseline() -> None:
+def test_renderer_recomputes_real_plan016_phase1_baseline() -> None:
     baseline = renderer.current_time_baseline(Path(__file__).parents[1])
 
-    assert baseline.manifested_minutes == 12347
-    assert baseline.scheduled_minutes == 12587
+    assert baseline.manifested_minutes == 14767
+    assert baseline.scheduled_minutes == 15007
 
 
 def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: Path) -> None:
@@ -1310,13 +1310,13 @@ def test_real_renderer_distinguishes_planned_major_extension_and_minimum_scoped_
     rendered = renderer.render_documents(Path(__file__).parents[1])
 
     for document in rendered.values():
-        assert "| **Planned-unit subtotal** | **202** | **304** |" in document
+        assert "| **Planned-unit subtotal** | **188** | **284** |" in document
         assert "renderer-owned editorial estimates" in document
         assert "Estimated major existing-unit extensions subtotal: **30–45 hours**" in document
-        assert "Minimum estimated scoped delta: **232–349 hours**" in document
+        assert "Minimum estimated scoped delta: **218–329 hours**" in document
         assert "C10, F1, C6, and C8 are not yet estimated" in document
-        assert "**437.78–554.78 manifested-baseline hours**" in document
-        assert "**441.78–558.78 scheduled-baseline hours**" in document
+        assert "**464.12–575.12 manifested-baseline hours**" in document
+        assert "**468.12–579.12 scheduled-baseline hours**" in document
         assert "student-t-test" in document
         assert "importance-sampling" in document
         assert "Total roadmap delta" not in document
