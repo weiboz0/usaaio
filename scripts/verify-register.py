@@ -43,15 +43,20 @@ BOLD_BAN_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 HEADER_FIELD_RE = re.compile(r"\*\*(Type|Difficulty|Concepts):\*\*\s*([^·]*?)\s*(?=·|$)")
-# Exhaustive list of the glosses the corpus appends after a type name. See _type_matches.
-ALLOWED_TYPE_GLOSSES = frozenset(
-    {
-        "",
-        " (multi-part; parts consume earlier results)",
-        " (parts consume earlier results)",
-        " / derivation",
-    }
-)
+# Glosses the corpus appends after a type name, keyed BY TYPE. Keying matters: a global list
+# let `scenario analysis (parts consume earlier results)` pass, borrowing a gloss that only
+# describes integrative problems. Any type not listed here admits no gloss at all.
+TYPE_GLOSSES = {
+    "integrative": frozenset(
+        {
+            "",
+            " (multi-part; parts consume earlier results)",
+            " (parts consume earlier results)",
+        }
+    ),
+    "proof": frozenset({"", " / derivation"}),
+}
+NO_GLOSS = frozenset({""})
 ZERO_POINT_RE = re.compile(r"\b(?:zero|0)[\s-]+points?\b", re.IGNORECASE)
 
 
@@ -73,14 +78,16 @@ def _type_matches(actual: str, type_label: str, raw_type: str) -> bool:
     """The corpus writes a problem's type either as the raw manifest id ("scenario") or as its
     expanded label ("scenario analysis"), optionally followed by one of a few house glosses.
 
-    The permitted glosses are ENUMERATED rather than described by shape. Two successive gate
-    findings landed here: a bare `startswith` accepted "constrained coding ENTIRELY WRONG", and
-    allowing any parenthetical or slash suffix then accepted "scenario (actually multiple
-    choice)". Anything outside this list is drift, and a genuinely new house gloss should be
-    added here deliberately rather than admitted by a permissive pattern.
+    The permitted glosses are ENUMERATED per type rather than described by shape. Three
+    successive gate findings landed here: a bare `startswith` accepted "constrained coding
+    ENTIRELY WRONG"; allowing any parenthetical or slash suffix then accepted "scenario
+    (actually multiple choice)"; and a single global gloss list then let one type borrow
+    another's gloss. A genuinely new house gloss should be added here deliberately, against the
+    type it belongs to, rather than admitted by a permissive pattern.
     """
+    allowed = TYPE_GLOSSES.get(raw_type, NO_GLOSS)
     for prefix in (type_label, raw_type):
-        if actual.startswith(prefix) and actual[len(prefix):] in ALLOWED_TYPE_GLOSSES:
+        if actual.startswith(prefix) and actual[len(prefix):] in allowed:
             return True
     return False
 
@@ -101,15 +108,27 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
     markdown = [_source(cell) for cell in notebook["cells"] if cell["cell_type"] == "markdown"]
     if not markdown:
         return []
-    body = [line for line in markdown[0].splitlines() if line.strip()]
-    header = next((line for line in body if line.startswith("**Type:**")), None)
+    # Search EVERY markdown cell, not just the first. Scanning only the first cell let a
+    # solution opt out of the whole check by relocating its header lower down, taking a wrong
+    # title with it (gate finding, plan 014 round 4). Absence remains legal — 338 of 343
+    # solutions carry no header — but a header anywhere is checked.
+    header = next(
+        (
+            line
+            for cell in markdown
+            for line in cell.splitlines()
+            if line.startswith("**Type:**")
+        ),
+        None,
+    )
     if header is None:
         return []
     # A solution that carries a header must also own the right title. Without this a solution
     # could be retitled to another problem's number and still pass every field check — the same
     # mis-attribution the statement title check exists to catch (gate finding, plan 014).
+    body = [line for line in markdown[0].splitlines() if line.strip()]
     expected_title = f"# {unit} — Practice {problem['id'].split('-')[-1]} — Solution"
-    if body[0] != expected_title:
+    if not body or body[0] != expected_title:
         return [f"{problem['id']}: solution title does not match the manifest"]
     fields = dict(HEADER_FIELD_RE.findall(header))
     if set(fields) != {"Type", "Difficulty", "Concepts"}:

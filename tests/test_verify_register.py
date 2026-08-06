@@ -279,3 +279,53 @@ def test_solution_title_mis_attribution_is_caught(tmp_path, monkeypatch):
     monkeypatch.setattr(verify_register, "ROOT", tmp_path)
     errors = verify_register._check_solution_header(unit, problem)
     assert any("solution title" in error for error in errors)
+
+
+def test_type_gloss_is_scoped_to_its_own_type():
+    """A single global gloss list let one type borrow another's gloss (plan 014 round 4)."""
+    assert verify_register._type_matches(
+        "integrative (parts consume earlier results)", "integrative", "integrative"
+    )
+    assert verify_register._type_matches("proof / derivation", "proof", "proof")
+    # ... but neither gloss travels to a type it does not describe.
+    assert not verify_register._type_matches(
+        "scenario analysis (parts consume earlier results)", "scenario analysis", "scenario"
+    )
+    assert not verify_register._type_matches(
+        "proof (parts consume earlier results)", "proof", "proof"
+    )
+    assert not verify_register._type_matches(
+        "scenario analysis / derivation", "scenario analysis", "scenario"
+    )
+
+
+def test_relocated_solution_header_cannot_opt_out(tmp_path, monkeypatch):
+    """Scanning only the first markdown cell let a solution dodge the check by moving its
+    header lower down and taking a wrong title with it (plan 014 round 4).
+    """
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
+    )
+    solution = tmp_path / "units" / unit / "practice" / "p01_solution.ipynb"
+    solution.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {"cell_type": "markdown", "source": "# Some Other Title\n\nprose"},
+                    {
+                        "cell_type": "markdown",
+                        "source": "**Type:** scenario analysis · **Difficulty:** core "
+                        "· **Concepts:** testing",
+                    },
+                ]
+            }
+        )
+    )
+    problem["solution_path"] = "practice/p01_solution.ipynb"
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    errors = verify_register._check_solution_header(unit, problem)
+    assert any("solution title" in error for error in errors)
