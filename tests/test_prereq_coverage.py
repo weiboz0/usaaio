@@ -42,6 +42,8 @@ def write_unit(
     unit: str = "U2",
     taught: str = "b",
     used: str = "a",
+    prereq_units: str = "U1",
+    practice_concept: str | None = None,
     practice_count: int = 3,
 ) -> Path:
     unit_dir = root / "units" / unit
@@ -51,7 +53,7 @@ def write_unit(
         (unit_dir / "practice" / f"p{number:02}_solution.ipynb").write_text("{}")
     practice = "\n".join(
         f"""  - id: p{number:02}
-    concepts: [{taught}]
+    concepts: [{practice_concept or taught}]
     path: practice/p{number:02}.ipynb
     solution_path: practice/p{number:02}_solution.ipynb"""
         for number in range(1, practice_count + 1)
@@ -61,7 +63,7 @@ def write_unit(
 unit: {unit}
 concepts_taught: [{taught}]
 concepts_used: [{used}]
-prereq_units: [U1]
+prereq_units: [{prereq_units}]
 practice:
 {practice}
 """
@@ -127,6 +129,59 @@ problems:
     report = check_prereq(tmp_path)
     assert not report.ok
     assert any("tests untaught concept b" in error for error in report.errors)
+
+
+def test_unit_practice_allows_foreign_tag_from_prereq_unit(tmp_path):
+    write_syllabus(tmp_path)
+    write_unit(tmp_path, practice_concept="a")
+
+    report = check_prereq(tmp_path)
+
+    assert report.ok
+    assert report.errors == []
+
+
+def test_unit_practice_rejects_tag_from_later_unit(tmp_path):
+    write_syllabus(tmp_path)
+    unit_dir = write_unit(
+        tmp_path,
+        unit="U1",
+        taught="a",
+        used="",
+        prereq_units="",
+        practice_concept="b",
+    )
+
+    report = check_prereq(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{unit_dir / 'manifest.yaml'}: practice problem p01 tags concept b owned by unit U2; "
+        "not taught by unit U1 or its prerequisites"
+    ) in report.errors
+
+
+def test_unit_practice_allows_same_unit_tag(tmp_path):
+    write_syllabus(tmp_path)
+    write_unit(tmp_path)
+
+    report = check_prereq(tmp_path)
+
+    assert report.ok
+    assert report.errors == []
+
+
+def test_unit_practice_foreign_tag_must_be_declared_in_concepts_used(tmp_path):
+    write_syllabus(tmp_path)
+    unit_dir = write_unit(tmp_path, used="", practice_concept="a")
+
+    report = check_prereq(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{unit_dir / 'manifest.yaml'}: practice problem p01 tags foreign concept a "
+        "missing from concepts_used"
+    ) in report.errors
 
 
 def test_coverage_pass_and_gap(tmp_path):
