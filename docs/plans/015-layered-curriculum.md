@@ -65,7 +65,8 @@ The exhaustive audit may refine placement and prerequisites but may not silently
 | Batch normalization and dropout | **BatchNorm partial after Plan 014; dropout missing; both require completion.** | Round 1 | Give each honest concept ownership and at least three practices under the repository coverage rule; the existing BatchNorm controls clinic is useful theory evidence but does not cover derivation, implementation, or training. |
 | Transformers and NLP beyond embeddings | **Current gap; required for Round 2.** | Round 2 extension | Attention, multi-head/self-attention, positional encoding, transformer architecture, complexity, from-scratch implementation, NLP transformers, pre-training/fine-tuning, and application bridges to vision transformers and graph neural networks. |
 | Advanced vision and generative AI | **Current gap; required for Round 2.** | Round 2 extension | Object detection, UNet, autoencoders, VAE, GAN, DDPM, and Stable Diffusion, with prerequisite closure and both theory/programming. |
-| Scientific/open-ended modeling | **Observed Round 2 capability, not a single official bullet.** | Round 2 capstone | GPU workflow, inverse problems, mixture/parameter regression, experiment design, and open-ended model evaluation, taught as integration rather than as an unstructured topic dump. |
+| GPU execution workflow | **Official Round 2 policy requirement.** | Round 2 capstone | Colab L4 setup, device movement, memory handling, and GPU training workflow. |
+| Scientific/open-ended modeling | **Observed Round 2 capability, not a single official bullet.** | Round 2 capstone | Semi-supervised/pseudo-label learning, inverse problems, mixture/parameter regression, experiment design, and open-ended model evaluation, taught as integration rather than as an unstructured topic dump. |
 
 ## Task 0 — Reconcile the concurrent Plan 014 branch before execution
 
@@ -463,7 +464,8 @@ running the collision guard.
 4. **Round 2 transformers and NLP:** self/multi-head attention, positional encoding,
    transformer architecture and complexity, from-scratch attention,
    LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP
-   applications, pre-training, and fine-tuning.
+   applications, pre-training, and fine-tuning, followed by vision-transformer and graph
+   neural-network applications.
 5. **Round 2 advanced vision and generative modeling:** object detection, UNet,
    autoencoders/VAE, GAN, DDPM, and Stable Diffusion; multivariate Gaussian,
    reparameterization, and KL are taught before their consumers.

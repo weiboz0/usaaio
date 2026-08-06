@@ -25,7 +25,7 @@ generated views of that map.
 The Round 1 exit includes every target officially required for Round 1, whether it belongs to
 shared foundation or Round 1 core. Passing a single indexed paper is not the definition of
 that exit. The Round 2 exit includes the Round 1 foundation plus the official Round 2-only
-targets and the observed integration/GPU capabilities.
+targets and GPU execution policy, then the observed integration capabilities.
 
 ## Systematic topic decisions
 

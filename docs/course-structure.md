@@ -87,7 +87,9 @@ The optional mock therefore replaces challenge-practice time in the S1-end revie
 All lesson, practice,
 and review minutes come from `units/*/manifest.yaml`, all prerequisite edges come from `syllabus.md`,
 and the mock's duration and points come from `mocktests/r1-001/manifest.yaml`.
-The lesson total deliberately sums every `lesson_sessions` list because C1 has no `lesson` scalar, while the review total treats F1's omitted review field as zero.
+The lesson total deliberately sums every `lesson_sessions` list because C1 has no `lesson`
+scalar, while the review total sums every manifested review field, including F1's 40-minute
+review.
 <!-- Maintainer regeneration command: python3 -c 'import glob,yaml;
 ms=[yaml.safe_load(open(p))["estimated_minutes"] for p in glob.glob("units/*/manifest.yaml")];
 print(sum(sum(m["lesson_sessions"]) for m in ms),sum(m["practice"] for m in ms),sum(m.get("review",0) for m in ms))' -->

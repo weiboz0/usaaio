@@ -1295,6 +1295,8 @@ def test_both_documents_end_with_fixed_six_tranche_queue(tmp_path: Path) -> None
             "Each tranche updates the shipped syllabus and roadmap atomically."
         )
         assert "F5 extension" in document
+        assert "vision-transformer" in document
+        assert "graph-neural-network" in document
         assert "C2 extension" in document
         assert "C9 extension" in document
         assert "C7 CNN training" in document

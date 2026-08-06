@@ -58,7 +58,8 @@ TRANCHE_QUEUE = (
             "Self/multi-head attention, positional encoding, transformer architecture and "
             "complexity, from-scratch attention, LayerNorm/residual/feed-forward block "
             "structure, C8 word-embedding training, NLP applications, pre-training, and "
-            "fine-tuning."
+            "fine-tuning, followed by vision-transformer and graph-neural-network "
+            "applications."
         ),
     ),
     (
