@@ -117,8 +117,7 @@ practice:
   set: C
   type: scenario
   difficulty: core
-  concepts: [writeup-quality, colab-markdown-solution-authoring, markdown-code-snippets,
-    markdown-math-formulae, colab-coding-submission, cpu-and-gpu-round-boundary]
+  concepts: [writeup-quality]
   path: practice/p15.ipynb
   solution_path: practice/p15_solution.ipynb
 - id: C10-p16
@@ -132,19 +131,16 @@ practice:
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [writeup-quality, colab-markdown-solution-authoring, markdown-code-snippets,
-    markdown-math-formulae, colab-coding-submission, cpu-and-gpu-round-boundary,
-    train-test-split, f1-macro, knn, feature-scaling, sklearn-pipelines]
+  concepts: [writeup-quality, train-test-split, f1-macro, knn, feature-scaling,
+    sklearn-pipelines]
   path: practice/p17.ipynb
   solution_path: practice/p17_solution.ipynb
 - id: C10-p18
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [writeup-quality, colab-markdown-solution-authoring, markdown-code-snippets,
-    markdown-math-formulae, colab-coding-submission, cpu-and-gpu-round-boundary,
-    train-test-split, class-imbalance, accuracy-precision-recall, f1-macro, knn,
-    feature-scaling, sklearn-pipelines]
+  concepts: [writeup-quality, train-test-split, class-imbalance, accuracy-precision-recall,
+    f1-macro, knn, feature-scaling, sklearn-pipelines]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb
 - id: C10-p19

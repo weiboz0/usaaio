@@ -305,7 +305,7 @@ stated component-wise (`sum-of-squares-gradients`) so no matrix calculus is need
 `F5-probability` is a double-length unit: it connects `variance-of-sums` and
 `sampling-simulation` to `conditional-probability`, `bayes-rule`, and
 `hoeffding-inequality`.
-`F6-svd-spectral` is the other flagged double-length unit:
+`F6-svd-spectral` is the other double-length unit:
 `svd`, `spectral-decomposition`, and `low-rank-approximation` anchored the heaviest
 sub-parts of the 2026 integrative arc.
 `F7-kernels-convex-optimization` completes the shared mathematical foundation by turning
@@ -319,12 +319,10 @@ PSD structure into `kernel-validity` proofs and extending gradient intuition to
 `bias-variance-intuition` is deliberately intuitive; its statistical vocabulary
 (`variance`, `expectation`) firms up in F5 and is exercised in C5's
 `weight-init-variance` derivation.
-`C2-linear-models` now pairs the gradient view with a session-02 closed-form
-`linear-regression-estimator-derivation`; it also treats rank, identifiability, and
-`ols-rank-identifiability-and-pseudoinverse` behavior as part of the shipped contract.
-Fitting itself is deferred to `C3-gradient-descent`; C2 practice evaluates and
-differentiates `mse-loss` for given parameters and reasons about `sparsity` —
-so every C2 concept has practice without a training loop.
+`C2-linear-models` session 02 ships closed-form unregularized OLS fitting and the
+`linear-regression-estimator-derivation`, including rank, identifiability, and
+pseudoinverse behavior.
+Only iterative gradient-based fitting remains deferred to `C3-gradient-descent`.
 `C4-classical-ml-practice` teaches the `knn` + `pandas-basics` + `sklearn-pipelines`
 craft that the 50-point applied problem demands;
 `C10-competition-craft` turns that into exam technique

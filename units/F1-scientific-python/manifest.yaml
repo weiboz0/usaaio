@@ -13,6 +13,7 @@ practice:
   - {id: F1-p05, type: drill, concepts: [random-seeding], path: practice/p05.ipynb, solution_path: practice/p05_solution.ipynb, set: A, difficulty: intro}
   - {id: F1-p06, type: drill, concepts: [matplotlib-basics], path: practice/p06.ipynb, solution_path: practice/p06_solution.ipynb, set: A, difficulty: core}
   - {id: F1-p15, type: drill, concepts: [vectorization, elementwise-ops], path: practice/p15.ipynb, solution_path: practice/p15_solution.ipynb, set: A, difficulty: intro}
+  - {id: F1-p22, type: constrained-coding, concepts: [seaborn-programming], path: practice/p22.ipynb, solution_path: practice/p22_solution.ipynb, set: A, difficulty: intro}
   # --- Set B: exam register ---
   - {id: F1-p03, type: constrained-coding, concepts: [broadcasting, vectorization], path: practice/p03.ipynb, solution_path: practice/p03_solution.ipynb, set: B, difficulty: core}
   - {id: F1-p08, type: mc, concepts: [broadcasting, numpy-arrays], path: practice/p08.ipynb, solution_path: practice/p08_solution.ipynb, set: B, difficulty: core}
@@ -23,6 +24,7 @@ practice:
   - {id: F1-p17, type: constrained-coding, concepts: [elementwise-ops, vectorization], path: practice/p17.ipynb, solution_path: practice/p17_solution.ipynb, set: B, difficulty: core}
   - {id: F1-p18, type: mc, concepts: [array-indexing-slicing, aggregation-axis], path: practice/p18.ipynb, solution_path: practice/p18_solution.ipynb, set: B, difficulty: core}
   - {id: F1-p19, type: proof, concepts: [broadcasting, elementwise-ops], path: practice/p19.ipynb, solution_path: practice/p19_solution.ipynb, set: B, difficulty: advanced}
+  - {id: F1-p23, type: constrained-coding, concepts: [seaborn-programming], path: practice/p23.ipynb, solution_path: practice/p23_solution.ipynb, set: B, difficulty: core}
   # --- Set C: integration + challenge ---
   - {id: F1-p07, type: integrative-constrained, concepts: [vectorization, aggregation-axis], path: practice/p07.ipynb, solution_path: practice/p07_solution.ipynb, set: C, difficulty: advanced}
   - {id: F1-p11, type: integrative, concepts: [random-seeding, aggregation-axis, matplotlib-basics], path: practice/p11.ipynb, solution_path: practice/p11_solution.ipynb, set: C, difficulty: core}
@@ -30,6 +32,4 @@ practice:
   - {id: F1-p13, type: challenge-constrained, concepts: [vectorization, array-indexing-slicing, elementwise-ops], path: practice/p13.ipynb, solution_path: practice/p13_solution.ipynb, set: C, difficulty: advanced}
   - {id: F1-p20, type: scenario, concepts: [matplotlib-basics, random-seeding], path: practice/p20.ipynb, solution_path: practice/p20_solution.ipynb, set: C, difficulty: core}
   - {id: F1-p21, type: challenge-constrained, concepts: [broadcasting, vectorization, matplotlib-basics], path: practice/p21.ipynb, solution_path: practice/p21_solution.ipynb, set: C, difficulty: advanced}
-  - {id: F1-p22, type: constrained-coding, concepts: [seaborn-programming], path: practice/p22.ipynb, solution_path: practice/p22_solution.ipynb, set: A, difficulty: intro}
-  - {id: F1-p23, type: constrained-coding, concepts: [seaborn-programming], path: practice/p23.ipynb, solution_path: practice/p23_solution.ipynb, set: B, difficulty: core}
   - {id: F1-p24, type: integrative, concepts: [seaborn-programming, random-seeding, aggregation-axis], path: practice/p24.ipynb, solution_path: practice/p24_solution.ipynb, set: C, difficulty: advanced}

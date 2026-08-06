@@ -63,6 +63,14 @@ PLAN016_PENDING_PRACTICE_IDS = {
     "F7-kernels-convex-optimization": tuple(range(1, 21)),
 }
 
+PLAN016_C10_PENDING_PRACTICE_CONCEPTS = (
+    "colab-coding-submission",
+    "colab-markdown-solution-authoring",
+    "cpu-and-gpu-round-boundary",
+    "markdown-code-snippets",
+    "markdown-math-formulae",
+)
+
 
 def _manifest(unit_id: str) -> dict[str, object]:
     return yaml.safe_load((ROOT / "units" / unit_id / "manifest.yaml").read_text())
@@ -77,7 +85,26 @@ def _canonical_syllabus_yaml() -> dict[str, object]:
     return yaml.safe_load(fenced.group(1))
 
 
-def _plan016_expected_missing_path_errors() -> set[str]:
+def _syllabus_narrative() -> str:
+    text = (ROOT / "syllabus.md").read_text()
+    canonical_end = re.search(
+        r"<!-- syllabus-canonical -->\s*```yaml\n.*?\n```", text, re.DOTALL
+    )
+    assert canonical_end is not None
+    return text[canonical_end.end() :]
+
+
+def _narrative_section(narrative: str, heading: str) -> str:
+    match = re.search(
+        rf"^## {re.escape(heading)}\n\n(.*?)(?=^## |\Z)",
+        narrative,
+        re.MULTILINE | re.DOTALL,
+    )
+    assert match is not None
+    return match.group(1)
+
+
+def _plan016_expected_coverage_errors() -> set[str]:
     errors: set[str] = set()
     for unit_id, numbers in PLAN016_PENDING_PRACTICE_IDS.items():
         manifest = ROOT / "units" / unit_id / "manifest.yaml"
@@ -85,6 +112,11 @@ def _plan016_expected_missing_path_errors() -> set[str]:
             stem = f"practice/p{number:02}"
             errors.add(f"{manifest}: missing practice path {stem}.ipynb")
             errors.add(f"{manifest}: missing solution path {stem}_solution.ipynb")
+    c10_manifest = ROOT / "units" / "C10-competition-craft" / "manifest.yaml"
+    errors.add(
+        f"{c10_manifest}: taught concepts without practice "
+        f"{list(PLAN016_C10_PENDING_PRACTICE_CONCEPTS)}"
+    )
     return errors
 
 
@@ -272,16 +304,45 @@ def test_plan016_existing_unit_register_extensions_are_exact():
         }
         assert actual == expected_problems
 
-    c10 = {problem["id"]: problem for problem in _manifest("C10-competition-craft")["practice"]}
-    new_c10 = set(NEW_CONCEPT_CLUSTERS) & {
-        "colab-markdown-solution-authoring",
-        "markdown-code-snippets",
-        "markdown-math-formulae",
-        "colab-coding-submission",
-        "cpu-and-gpu-round-boundary",
+    c10 = {
+        problem["id"]: problem for problem in _manifest("C10-competition-craft")["practice"]
     }
-    for problem_id in ("C10-p15", "C10-p17", "C10-p18"):
-        assert set(c10[problem_id]["concepts"]) >= new_c10 | {"writeup-quality"}
+    expected_c10_concepts = {
+        "C10-p15": ["writeup-quality"],
+        "C10-p17": [
+            "writeup-quality",
+            "train-test-split",
+            "f1-macro",
+            "knn",
+            "feature-scaling",
+            "sklearn-pipelines",
+        ],
+        "C10-p18": [
+            "writeup-quality",
+            "train-test-split",
+            "class-imbalance",
+            "accuracy-precision-recall",
+            "f1-macro",
+            "knn",
+            "feature-scaling",
+            "sklearn-pipelines",
+        ],
+    }
+    for problem_id, expected_concepts in expected_c10_concepts.items():
+        assert c10[problem_id]["concepts"] == expected_concepts
+        assert not set(c10[problem_id]["concepts"]) & set(
+            PLAN016_C10_PENDING_PRACTICE_CONCEPTS
+        )
+
+
+def test_plan016_f1_register_rows_are_under_truthful_set_comments():
+    text = (ROOT / "units" / "F1-scientific-python" / "manifest.yaml").read_text()
+    set_a, after_a = text.split("# --- Set B: exam register ---", 1)
+    set_b, set_c = after_a.split("# --- Set C: integration + challenge ---", 1)
+
+    assert "id: F1-p22" in set_a
+    assert "id: F1-p23" in set_b
+    assert "id: F1-p24" in set_c
 
 
 def test_plan016_f7_manifest_has_exact_foundation_contract_and_register():
@@ -386,18 +447,58 @@ def test_plan016_syllabus_narrative_order_and_dependency_contract():
     units = {unit["id"]: unit for unit in syllabus["units"]}
     assert units["F5-probability"]["length"] == "double"
     assert units["F6-svd-spectral"]["length"] == "double"
-    text = (ROOT / "syllabus.md").read_text()
-    assert "F5" in text and "F6" in text and "double-length" in text
-    assert "F7-kernels-convex-optimization" in text
-    assert "derivation" in text and "pseudoinverse" in text and "identifiability" in text
-    order = re.search(r"^F1 → .* → C10$", text, re.MULTILINE)
+    narrative = _syllabus_narrative()
+    foundation = _narrative_section(narrative, "Foundation track — rationale")
+    core = _narrative_section(narrative, "Core track — rationale")
+    normalized_foundation = " ".join(foundation.split())
+    normalized_core = " ".join(core.split())
+    assert "`F5-probability` is a double-length unit" in normalized_foundation
+    assert "`F6-svd-spectral` is the other double-length unit" in normalized_foundation
+    assert "`F7-kernels-convex-optimization`" in normalized_foundation
+    assert (
+        "`C2-linear-models` session 02 ships closed-form unregularized OLS fitting and the "
+        "`linear-regression-estimator-derivation`, including rank, identifiability, and "
+        "pseudoinverse behavior."
+    ) in normalized_core
+    assert (
+        "Only iterative gradient-based fitting remains deferred to `C3-gradient-descent`."
+    ) in normalized_core
+    assert "Fitting itself is deferred to `C3-gradient-descent`" not in normalized_core
+
+    order_section = _narrative_section(
+        narrative, "Suggested order (one feasible topological sort)"
+    )
+    order = re.search(r"^F1 → .* → C10$", order_section, re.MULTILINE)
     assert order is not None
-    ordered_units = order.group(0).split(" → ")
-    assert len(ordered_units) == 17
-    assert ordered_units[-5:] == ["C8", "F6", "F7", "C9", "C10"]
-    assert ordered_units.index("F3") < ordered_units.index("F7")
-    assert ordered_units.index("F4") < ordered_units.index("F7")
-    assert ordered_units.index("C3") < ordered_units.index("F7")
+    by_short_id = {unit_id.split("-", 1)[0]: unit_id for unit_id in units}
+    ordered_unit_ids = [by_short_id[short_id] for short_id in order.group(0).split(" → ")]
+    expected_order = [
+        "F1-scientific-python",
+        "F2-vectors",
+        "C1-ml-fundamentals",
+        "F4-multivar-calculus",
+        "F3-matrices",
+        "F5-probability",
+        "C4-classical-ml-practice",
+        "C2-linear-models",
+        "C3-gradient-descent",
+        "C5-neural-networks",
+        "C6-pytorch",
+        "C7-cnn-transfer",
+        "C8-embeddings",
+        "F6-svd-spectral",
+        "F7-kernels-convex-optimization",
+        "C9-dimensionality-reduction",
+        "C10-competition-craft",
+    ]
+    assert ordered_unit_ids == expected_order
+    assert set(ordered_unit_ids) == set(units)
+    assert len(ordered_unit_ids) == len(set(ordered_unit_ids)) == 17
+    positions = {unit_id: index for index, unit_id in enumerate(ordered_unit_ids)}
+    for unit_id in ordered_unit_ids:
+        assert all(
+            positions[prereq] < positions[unit_id] for prereq in units[unit_id]["prereqs"]
+        )
 
     project = tomllib.loads((ROOT / "pyproject.toml").read_text())
     assert any(dependency.startswith("seaborn>=") for dependency in project["project"]["dependencies"])
@@ -408,10 +509,10 @@ def test_plan016_syllabus_narrative_order_and_dependency_contract():
 
 def test_plan016_phase1_coverage_fails_only_for_pending_content_paths():
     report = check_coverage(ROOT)
-    expected_errors = _plan016_expected_missing_path_errors()
+    expected_errors = _plan016_expected_coverage_errors()
 
     assert sum(len(numbers) for numbers in PLAN016_PENDING_PRACTICE_IDS.values()) == 40
-    assert len(expected_errors) == 80
+    assert len(expected_errors) == 81
     assert not report.ok
     assert report.warnings == []
     assert len(report.errors) == len(expected_errors)
