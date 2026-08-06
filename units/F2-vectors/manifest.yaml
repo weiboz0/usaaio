@@ -9,7 +9,7 @@ practice:
   # Set A — fundamentals (drills, one per core skill)
   - {id: F2-p01, concepts: [vectors-and-norms], path: practice/p01.ipynb, solution_path: practice/p01_solution.ipynb,
      set: A, difficulty: intro, type: constrained-coding}
-  - {id: F2-p02, concepts: [distance-metrics, vectors-and-norms], path: practice/p02.ipynb, solution_path: practice/p02_solution.ipynb,
+  - {id: F2-p02, concepts: [distance-metrics, vectors-and-norms, broadcasting, aggregation-axis], path: practice/p02.ipynb, solution_path: practice/p02_solution.ipynb,
      set: A, difficulty: intro, type: constrained-coding}
   - {id: F2-p03, concepts: [dot-product, cosine-similarity], path: practice/p03.ipynb, solution_path: practice/p03_solution.ipynb,
      set: A, difficulty: intro, type: drill}
@@ -18,7 +18,7 @@ practice:
   - {id: F2-p05, concepts: [projection, residuals], path: practice/p05.ipynb, solution_path: practice/p05_solution.ipynb,
      set: A, difficulty: core, type: drill}
   # Set B — exam register (constrained coding, normal-form MC, reasoning-required)
-  - {id: F2-p06, concepts: [projection, cosine-similarity], path: practice/p06.ipynb, solution_path: practice/p06_solution.ipynb,
+  - {id: F2-p06, concepts: [projection, cosine-similarity, broadcasting, aggregation-axis], path: practice/p06.ipynb, solution_path: practice/p06_solution.ipynb,
      set: B, difficulty: advanced, type: constrained-coding}
   - {id: F2-p07, concepts: [orthogonality-orthonormality, dot-product], path: practice/p07.ipynb, solution_path: practice/p07_solution.ipynb,
      set: B, difficulty: advanced, type: proof}
@@ -26,7 +26,7 @@ practice:
      set: B, difficulty: intro, type: mc}
   - {id: F2-p09, concepts: [unit-vectors, vectors-and-norms], path: practice/p09.ipynb, solution_path: practice/p09_solution.ipynb,
      set: B, difficulty: core, type: mc-normal-form}
-  - {id: F2-p10, concepts: [distance-metrics, vectors-and-norms], path: practice/p10.ipynb, solution_path: practice/p10_solution.ipynb,
+  - {id: F2-p10, concepts: [distance-metrics, vectors-and-norms, elementwise-ops, broadcasting, aggregation-axis], path: practice/p10.ipynb, solution_path: practice/p10_solution.ipynb,
      set: B, difficulty: core, type: constrained-coding}
   - {id: F2-p14, concepts: [projection, residuals], path: practice/p14.ipynb, solution_path: practice/p14_solution.ipynb,
      set: B, difficulty: intro, type: mc}
@@ -39,7 +39,7 @@ practice:
   - {id: F2-p18, concepts: [residuals, dot-product, projection], path: practice/p18.ipynb, solution_path: practice/p18_solution.ipynb,
      set: B, difficulty: advanced, type: proof}
   # Set C — integration + challenge (multi-part arcs, scenarios, advanced tier)
-  - {id: F2-p11, concepts: [unit-vectors, projection, residuals], path: practice/p11.ipynb, solution_path: practice/p11_solution.ipynb,
+  - {id: F2-p11, concepts: [unit-vectors, projection, residuals, broadcasting, aggregation-axis], path: practice/p11.ipynb, solution_path: practice/p11_solution.ipynb,
      set: C, difficulty: core, type: integrative}
   - {id: F2-p12, concepts: [distance-metrics, cosine-similarity], path: practice/p12.ipynb, solution_path: practice/p12_solution.ipynb,
      set: C, difficulty: core, type: scenario}

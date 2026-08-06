@@ -44,7 +44,7 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [torch-tensors]
+  concepts: [torch-tensors, broadcasting, aggregation-axis]
   path: practice/p05.ipynb
   solution_path: practice/p05_solution.ipynb
 - id: C6-p06
@@ -100,7 +100,7 @@ practice:
   set: C
   type: integrative
   difficulty: core
-  concepts: [nn-module, manual-weights]  # dual-tag (arithmetic requirement, plan 008)
+  concepts: [nn-module, manual-weights, threshold-activation]  # dual-tag (arithmetic requirement, plan 008)
   path: practice/p13.ipynb
   solution_path: practice/p13_solution.ipynb
 - id: C6-p14

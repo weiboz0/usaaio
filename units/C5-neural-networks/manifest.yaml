@@ -44,7 +44,7 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [perceptron]
+  concepts: [perceptron, broadcasting, aggregation-axis]
   path: practice/p05.ipynb
   solution_path: practice/p05_solution.ipynb
 - id: C5-p06
@@ -65,7 +65,7 @@ practice:
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [mlp-architecture]
+  concepts: [mlp-architecture, broadcasting, aggregation-axis]
   path: practice/p08.ipynb
   solution_path: practice/p08_solution.ipynb
 - id: C5-p09
@@ -93,7 +93,7 @@ practice:
   set: B
   type: proof
   difficulty: advanced
-  concepts: [weight-init-variance]
+  concepts: [weight-init-variance, random-variables, expectation, variance, independence, variance-of-sums, sampling-simulation]
   path: practice/p12.ipynb
   solution_path: practice/p12_solution.ipynb
 - id: C5-p13
@@ -121,14 +121,14 @@ practice:
   set: C
   type: scenario
   difficulty: core
-  concepts: [weight-init-variance]
+  concepts: [weight-init-variance, variance, variance-of-sums, sampling-simulation]
   path: practice/p16.ipynb
   solution_path: practice/p16_solution.ipynb
 - id: C5-p17
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [decision-boundaries-geometric]
+  concepts: [decision-boundaries-geometric, broadcasting, aggregation-axis]
   path: practice/p17.ipynb
   solution_path: practice/p17_solution.ipynb
 - id: C5-p18

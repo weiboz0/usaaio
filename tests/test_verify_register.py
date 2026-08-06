@@ -110,3 +110,233 @@ def test_main_accepts_any_registered_problem_count(tmp_path, monkeypatch, capsys
 
     assert verify_register.main() == 0
     assert "register verification: 1/1 passed (1 problems checked)" in capsys.readouterr().out
+
+
+# --- Header agreement is enforced repo-wide (plan 014 gate). The type field admits only an
+# --- enumerated set of house glosses; two earlier, more permissive forms of this check each
+# --- let drift through and were caught at the gate.
+
+def test_type_gloss_allowlist_accepts_house_forms():
+    assert verify_register._type_matches("scenario analysis", "scenario analysis", "scenario")
+    assert verify_register._type_matches("scenario", "scenario analysis", "scenario")
+    assert verify_register._type_matches(
+        "integrative (parts consume earlier results)", "integrative", "integrative"
+    )
+    assert verify_register._type_matches(
+        "integrative (multi-part; parts consume earlier results)", "integrative", "integrative"
+    )
+    assert verify_register._type_matches("proof / derivation", "proof", "proof")
+
+
+def test_type_gloss_allowlist_rejects_drift():
+    # A bare startswith accepted this.
+    assert not verify_register._type_matches(
+        "scenario analysis ENTIRELY WRONG", "scenario analysis", "scenario"
+    )
+    # Allowing any parenthetical or slash suffix accepted these two.
+    assert not verify_register._type_matches(
+        "scenario (actually multiple choice)", "scenario analysis", "scenario"
+    )
+    assert not verify_register._type_matches(
+        "scenario / multiple choice", "scenario analysis", "scenario"
+    )
+    assert not verify_register._type_matches("proof", "scenario analysis", "scenario")
+
+
+def test_header_concept_and_difficulty_drift_is_caught(tmp_path, monkeypatch):
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** advanced · **Concepts:** testing",
+    )
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    # The manifest says difficulty "core"; the header says "advanced".
+    errors = verify_register._check_problem(unit, problem)
+    assert any("difficulty" in error for error in errors)
+
+
+def test_reordered_concepts_are_caught(tmp_path, monkeypatch):
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** beta, alpha",
+    )
+    problem["concepts"] = ["alpha", "beta"]
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    errors = verify_register._check_problem(unit, problem)
+    assert any("concepts" in error for error in errors)
+
+
+def test_blank_lines_around_the_header_are_tolerated(tmp_path, monkeypatch):
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "\n\n# C7-example — Practice p01\n\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
+    )
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    assert verify_register._check_problem(unit, problem) == []
+
+
+def test_statement_without_markdown_reports_instead_of_crashing(tmp_path, monkeypatch):
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
+    )
+    path = tmp_path / "units" / unit / "practice" / "p01.ipynb"
+    path.write_text(json.dumps({"cells": [{"cell_type": "code", "source": "x = 1"}]}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    errors = verify_register._check_problem(unit, problem)
+    assert errors and "no markdown cell" in errors[0]
+
+
+def test_solution_header_drift_is_caught(tmp_path, monkeypatch):
+    """A solution that repeats the manifest's claims must not be allowed to drift from them.
+    Plan 014 shipped a statement reading "validation" beside a solution still reading "test";
+    nothing checked the second copy.
+    """
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
+    )
+    solution = tmp_path / "units" / unit / "practice" / "p01_solution.ipynb"
+    solution.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "markdown",
+                        "source": "# C7-example — Practice p01 — Solution\n\n"
+                        "**Type:** scenario analysis · **Difficulty:** core "
+                        "· **Concepts:** something-else",
+                    }
+                ]
+            }
+        )
+    )
+    problem["solution_path"] = "practice/p01_solution.ipynb"
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    errors = verify_register._check_solution_header(unit, problem)
+    assert any("solution header concepts" in error for error in errors)
+
+
+def test_solution_without_a_header_skips_the_field_checks(tmp_path, monkeypatch):
+    """328 of 343 solutions carry no metadata header; that is the convention, not a defect.
+    The TITLE is still checked on every solution — only the field checks are skipped.
+    """
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
+    )
+    solution = tmp_path / "units" / unit / "practice" / "p01_solution.ipynb"
+    solution.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "markdown",
+                        "source": "# C7-example — Practice p01 — Solution\n\nWorking below.",
+                    }
+                ]
+            }
+        )
+    )
+    problem["solution_path"] = "practice/p01_solution.ipynb"
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    assert verify_register._check_solution_header(unit, problem) == []
+
+
+def test_solution_title_mis_attribution_is_caught(tmp_path, monkeypatch):
+    """A solution retitled to another problem's number passed every field check until plan
+    014's round 3: the fields all belonged to the manifest entry, only the title lied.
+    """
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
+    )
+    solution = tmp_path / "units" / unit / "practice" / "p01_solution.ipynb"
+    solution.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "markdown",
+                        "source": "# C7-example — Practice p99 — Solution\n\n"
+                        "**Type:** scenario analysis · **Difficulty:** core "
+                        "· **Concepts:** testing",
+                    }
+                ]
+            }
+        )
+    )
+    problem["solution_path"] = "practice/p01_solution.ipynb"
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    errors = verify_register._check_solution_header(unit, problem)
+    assert any("solution title" in error for error in errors)
+
+
+def test_type_gloss_is_scoped_to_its_own_type():
+    """A single global gloss list let one type borrow another's gloss (plan 014 round 4)."""
+    assert verify_register._type_matches(
+        "integrative (parts consume earlier results)", "integrative", "integrative"
+    )
+    assert verify_register._type_matches("proof / derivation", "proof", "proof")
+    # ... but neither gloss travels to a type it does not describe.
+    assert not verify_register._type_matches(
+        "scenario analysis (parts consume earlier results)", "scenario analysis", "scenario"
+    )
+    assert not verify_register._type_matches(
+        "proof (parts consume earlier results)", "proof", "proof"
+    )
+    assert not verify_register._type_matches(
+        "scenario analysis / derivation", "scenario analysis", "scenario"
+    )
+
+
+def test_relocated_solution_header_cannot_opt_out(tmp_path, monkeypatch):
+    """Scanning only the first markdown cell let a solution dodge the check by moving its
+    header lower down and taking a wrong title with it (plan 014 round 4).
+    """
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
+    )
+    solution = tmp_path / "units" / unit / "practice" / "p01_solution.ipynb"
+    solution.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {"cell_type": "markdown", "source": "# Some Other Title\n\nprose"},
+                    {
+                        "cell_type": "markdown",
+                        "source": "**Type:** scenario analysis · **Difficulty:** core "
+                        "· **Concepts:** testing",
+                    },
+                ]
+            }
+        )
+    )
+    problem["solution_path"] = "practice/p01_solution.ipynb"
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    errors = verify_register._check_solution_header(unit, problem)
+    assert any("solution title" in error for error in errors)

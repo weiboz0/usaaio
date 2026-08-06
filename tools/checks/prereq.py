@@ -77,6 +77,9 @@ def check_prereq(root: str | Path) -> Report:
     for concept, cluster in syllabus.concepts.items():
         if cluster not in syllabus.clusters:
             errors.append(f"{concept}: unknown cluster {cluster}")
+    concept_owners = {
+        concept: unit.id for unit in syllabus.units.values() for concept in unit.teaches
+    }
 
     for manifest in units:
         unit = syllabus.units.get(manifest.unit_id)
@@ -91,6 +94,21 @@ def check_prereq(root: str | Path) -> Report:
         for concept in manifest.concepts_used:
             if concept not in allowed:
                 errors.append(f"{manifest.path}: uses untaught concept {concept}")
+        practice_allowed = allowed | set(unit.teaches)
+        declared_used = set(manifest.concepts_used)
+        for problem in manifest.practice:
+            for concept in problem.concepts:
+                if concept not in practice_allowed:
+                    owner = concept_owners.get(concept, "<unknown>")
+                    errors.append(
+                        f"{manifest.path}: practice problem {problem.id} tags concept {concept} "
+                        f"owned by unit {owner}; not taught by unit {unit.id} or its prerequisites"
+                    )
+                if concept not in unit.teaches and concept not in declared_used:
+                    errors.append(
+                        f"{manifest.path}: practice problem {problem.id} tags foreign concept "
+                        f"{concept} missing from concepts_used"
+                    )
 
     shipped_units = {manifest.unit_id for manifest in units}
     for mock in mocks:

@@ -3,13 +3,13 @@ concepts_taught: [supervised-vs-unsupervised, clustering-concept, train-test-spl
                   bias-variance-intuition, accuracy-precision-recall, f1-score, f1-macro,
                   class-imbalance]
 concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, aggregation-axis,
-                random-seeding, matplotlib-basics]
+                random-seeding, matplotlib-basics, broadcasting]
 prereq_units: [F1-scientific-python]
 estimated_minutes:
   lesson: 240
   lesson_sessions: [75, 85, 80]   # lessons/01..03; lesson.ipynb overview ~10 min extra
   review: 30
-  practice: 420
+  practice: 435
 practice:
   # --- Set A: fundamentals drills ---
   - {id: C1-p01, type: mc-multipart, set: A, concepts: [supervised-vs-unsupervised, clustering-concept], difficulty: intro, path: practice/p01.ipynb, solution_path: practice/p01_solution.ipynb}
@@ -33,7 +33,8 @@ practice:
   # --- Set C: integration + challenge ---
   - {id: C1-p08, type: scenario, set: C, concepts: [class-imbalance, accuracy-precision-recall], difficulty: core, path: practice/p08.ipynb, solution_path: practice/p08_solution.ipynb}
   - {id: C1-p13, type: integrative, set: C, concepts: [f1-macro, accuracy-precision-recall, class-imbalance], difficulty: core, path: practice/p13.ipynb, solution_path: practice/p13_solution.ipynb}
-  - {id: C1-p14, type: challenge, set: C, concepts: [accuracy-precision-recall, f1-score, train-test-split], difficulty: advanced, path: practice/p14.ipynb, solution_path: practice/p14_solution.ipynb}
+  - {id: C1-p14, type: challenge, set: C, concepts: [accuracy-precision-recall, f1-score, train-test-split, broadcasting, aggregation-axis, matplotlib-basics], difficulty: advanced, path: practice/p14.ipynb, solution_path: practice/p14_solution.ipynb}
   - {id: C1-p20, type: integrative, set: C, concepts: [train-test-split, overfitting, accuracy-precision-recall], difficulty: core, path: practice/p20.ipynb, solution_path: practice/p20_solution.ipynb}
   - {id: C1-p21, type: scenario, set: C, concepts: [supervised-vs-unsupervised, clustering-concept], difficulty: core, path: practice/p21.ipynb, solution_path: practice/p21_solution.ipynb}
   - {id: C1-p22, type: challenge, set: C, concepts: [clustering-concept], difficulty: advanced, path: practice/p22.ipynb, solution_path: practice/p22_solution.ipynb}
+  - {id: C1-p24, type: scenario, set: C, concepts: [bias-variance-intuition, overfitting], difficulty: core, path: practice/p24.ipynb, solution_path: practice/p24_solution.ipynb}

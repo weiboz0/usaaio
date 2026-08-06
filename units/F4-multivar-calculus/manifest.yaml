@@ -55,7 +55,7 @@ practice:
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [sum-of-squares-gradients]
+  concepts: [sum-of-squares-gradients, broadcasting, aggregation-axis]
   path: practice/p07.ipynb
   solution_path: practice/p07_solution.ipynb
 - id: F4-p08
@@ -76,7 +76,7 @@ practice:
   set: B
   type: constrained-coding
   difficulty: advanced
-  concepts: [sum-of-squares-gradients, gradient]
+  concepts: [sum-of-squares-gradients, gradient, broadcasting, aggregation-axis]
   path: practice/p10.ipynb
   solution_path: practice/p10_solution.ipynb
 - id: F4-p11
@@ -132,6 +132,6 @@ practice:
   set: C
   type: challenge
   difficulty: core
-  concepts: [gradient, partial-derivatives, tanh-derivative]
+  concepts: [gradient, partial-derivatives, tanh-derivative, broadcasting]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb

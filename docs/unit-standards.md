@@ -33,8 +33,46 @@ the content gate's reviewers enforce the qualitative parts against this document
   earlier results), 2 scenario analyses, 2 challenge problems (advanced, within closure).
 - **Difficulty spread:** roughly 30% intro / 45% core / 25% advanced, tagged per problem
   in the manifest (`difficulty:` informational field).
-- Every taught concept exercised by **≥3 problems** (coverage-check enforces ≥1;
-  reviewers enforce the rest).
+- Every taught concept exercised by **≥3 problems** — `coverage-check` enforces this
+  MACHINE-SIDE since plan 013 (it previously enforced only ≥1 and left the rest to reviewers).
+
+### Recorded non-conformance
+
+**`C7-cnn-transfer` ships 27 problems against a 24 ceiling. It is over the band, and that is
+recorded here rather than legalized.**
+C7 is not double-length: it runs three lesson sessions where the rule above requires 4–6.
+Its 10 taught concepts and 672 practice minutes are both corpus maxima, which explains the
+overflow without excusing it.
+The resolution is a unit *capacity* decision — split C7, rehome concepts such as
+`feature-hierarchy`, `receptive-field`, or `tensor-shape-tracing`, or trim — and it is deferred
+to a dedicated plan; see `TODO.md`.
+`C5-neural-networks` carries the same open question.
+
+This entry exists because plan 014 tried twice to make the overflow legal and its content gate
+rejected both attempts.
+
+The first proposed a ceiling scaling at +2 problems per taught concept beyond 7, on the argument
+that the ≥3 rule forces a 10-concept unit past 24 problems.
+It does not.
+Measured on C7 as shipped: 27 problems, 65 tag instances, of which **33 are C7's own concepts**
+(1.22 per problem; the other 32 are foreign tags that earn no coverage credit).
+Seven of its ten concepts sit at exactly 3, and 8 of its 27 problems tag no floor-critical
+concept at all.
+Those eight are each *individually* droppable but not *jointly* so — removing all eight would
+take `tensor-shape-tracing` to 0, `convolution` to 1 and `layer-freezing` to 2.
+The largest subset that can go while every concept stays at ≥3 is **three** (for example
+C7-p01, C7-p10 and C7-p23), and that lands C7 at exactly 24.
+So a trim to the band exists without touching coverage, and the coverage rule was never the
+binding constraint — which is the whole basis on which the amendment was rejected.
+
+The second attempt marked C7 `length: double`, which a reviewer rejected as an unenforced label
+that contradicts the session rule above — C7 runs three sessions where double-length means 4–6,
+so the flag would have meant one thing on F6 and another on C7 with nothing recording the
+difference.
+The generalizable lesson, and the reason this is written down: **when a unit overflows a
+standard, record the non-conformance and fix the unit — do not reshape the standard, and do not
+reach for an existing exemption the unit does not actually qualify for.**
+A standard that moves to accommodate its own artifacts has stopped being one.
 
 ## Per-unit review material
 

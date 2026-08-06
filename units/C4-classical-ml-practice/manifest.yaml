@@ -56,7 +56,7 @@ practice:
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [knn]
+  concepts: [knn, distance-metrics, accuracy-precision-recall, broadcasting, aggregation-axis]
   path: practice/p07.ipynb
   solution_path: practice/p07_solution.ipynb
 - id: C4-p08
@@ -91,7 +91,7 @@ practice:
   set: B
   type: proof
   difficulty: advanced
-  concepts: [feature-scaling, knn]
+  concepts: [feature-scaling, knn, distance-metrics, variance]
   path: practice/p12.ipynb
   solution_path: practice/p12_solution.ipynb
 - id: C4-p13
@@ -105,7 +105,7 @@ practice:
   set: C
   type: integrative
   difficulty: core
-  concepts: [pandas-basics, csv-data-loading, knn, feature-scaling]
+  concepts: [pandas-basics, csv-data-loading, knn, feature-scaling, random-seeding, broadcasting, aggregation-axis, distance-metrics, train-test-split]
   path: practice/p14.ipynb
   solution_path: practice/p14_solution.ipynb
 - id: C4-p15

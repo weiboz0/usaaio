@@ -42,7 +42,7 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [linear-regression]
+  concepts: [linear-regression, elementwise-ops, broadcasting, aggregation-axis]
   path: practice/p05.ipynb
   solution_path: practice/p05_solution.ipynb
 - id: C2-p06
@@ -56,7 +56,7 @@ practice:
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [l2-regularization]
+  concepts: [l2-regularization, partial-derivatives, gradient, sum-of-squares-gradients, broadcasting, aggregation-axis]
   path: practice/p07.ipynb
   solution_path: practice/p07_solution.ipynb
 - id: C2-p08
@@ -70,7 +70,7 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [linear-regression, mse-loss]
+  concepts: [linear-regression, mse-loss, residuals, broadcasting, aggregation-axis]
   path: practice/p09.ipynb
   solution_path: practice/p09_solution.ipynb
 - id: C2-p10
@@ -98,7 +98,7 @@ practice:
   set: C
   type: integrative
   difficulty: core
-  concepts: [linear-regression, mse-loss, l2-regularization]
+  concepts: [linear-regression, mse-loss, l2-regularization, residuals, partial-derivatives, gradient, sum-of-squares-gradients, broadcasting, aggregation-axis]
   path: practice/p13.ipynb
   solution_path: practice/p13_solution.ipynb
 - id: C2-p14

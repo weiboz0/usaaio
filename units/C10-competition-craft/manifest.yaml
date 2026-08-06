@@ -6,7 +6,7 @@ concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcast
   aggregation-axis, random-seeding, matplotlib-basics, pandas-basics, csv-data-loading, knn,
   feature-scaling, sklearn-pipelines, cross-validation, train-test-split, overfitting,
   accuracy-precision-recall, f1-score, f1-macro, supervised-vs-unsupervised, distance-metrics,
-  vectors-and-norms, random-variables, expectation, sampling-simulation]
+  vectors-and-norms, random-variables, expectation, sampling-simulation, class-imbalance]
 prereq_units: [C4-classical-ml-practice]
 estimated_minutes:
   lesson: 250
@@ -32,49 +32,49 @@ practice:
   set: B
   type: mc
   difficulty: core
-  concepts: [metric-driven-iteration]
+  concepts: [metric-driven-iteration, train-test-split, overfitting, accuracy-precision-recall, f1-macro, random-seeding]
   path: practice/p03.ipynb
   solution_path: practice/p03_solution.ipynb
 - id: C10-p04
   set: B
   type: mc-normal-form
   difficulty: core
-  concepts: [metric-driven-iteration]
+  concepts: [metric-driven-iteration, accuracy-precision-recall, f1-score, f1-macro]
   path: practice/p04.ipynb
   solution_path: practice/p04_solution.ipynb
 - id: C10-p05
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [prediction-function-contract]
+  concepts: [prediction-function-contract, pandas-basics, csv-data-loading, knn, feature-scaling, sklearn-pipelines]
   path: practice/p05.ipynb
   solution_path: practice/p05_solution.ipynb
 - id: C10-p06
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [notebook-discipline]
+  concepts: [notebook-discipline, train-test-split, random-seeding]
   path: practice/p06.ipynb
   solution_path: practice/p06_solution.ipynb
 - id: C10-p07
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [metric-driven-iteration]
+  concepts: [metric-driven-iteration, accuracy-precision-recall, f1-score, f1-macro, broadcasting]
   path: practice/p07.ipynb
   solution_path: practice/p07_solution.ipynb
 - id: C10-p08
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [prediction-function-contract]
+  concepts: [prediction-function-contract, train-test-split, f1-macro, knn, feature-scaling, sklearn-pipelines]
   path: practice/p08.ipynb
   solution_path: practice/p08_solution.ipynb
 - id: C10-p09
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [hidden-test-protocol]
+  concepts: [hidden-test-protocol, train-test-split, overfitting, f1-macro, knn, feature-scaling, sklearn-pipelines]
   path: practice/p09.ipynb
   solution_path: practice/p09_solution.ipynb
 - id: C10-p10
@@ -88,28 +88,28 @@ practice:
   set: B
   type: proof
   difficulty: core
-  concepts: [metric-driven-iteration]
+  concepts: [metric-driven-iteration, accuracy-precision-recall, f1-score, f1-macro, class-imbalance]
   path: practice/p11.ipynb
   solution_path: practice/p11_solution.ipynb
 - id: C10-p12
   set: B
   type: proof
   difficulty: advanced
-  concepts: [hidden-test-protocol]
+  concepts: [hidden-test-protocol, random-variables, expectation, sampling-simulation, accuracy-precision-recall]
   path: practice/p12.ipynb
   solution_path: practice/p12_solution.ipynb
 - id: C10-p13
   set: C
   type: integrative
   difficulty: core
-  concepts: [prediction-function-contract]
+  concepts: [prediction-function-contract, train-test-split, accuracy-precision-recall, f1-score, f1-macro, class-imbalance, knn, feature-scaling, sklearn-pipelines]
   path: practice/p13.ipynb
   solution_path: practice/p13_solution.ipynb
 - id: C10-p14
   set: C
   type: integrative
   difficulty: advanced
-  concepts: [notebook-discipline]
+  concepts: [notebook-discipline, train-test-split, f1-macro, knn, feature-scaling, sklearn-pipelines]
   path: practice/p14.ipynb
   solution_path: practice/p14_solution.ipynb
 - id: C10-p15
@@ -123,21 +123,21 @@ practice:
   set: C
   type: scenario
   difficulty: core
-  concepts: [hidden-test-protocol]
+  concepts: [hidden-test-protocol, train-test-split]
   path: practice/p16.ipynb
   solution_path: practice/p16_solution.ipynb
 - id: C10-p17
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [writeup-quality]
+  concepts: [writeup-quality, train-test-split, f1-macro, knn, feature-scaling, sklearn-pipelines]
   path: practice/p17.ipynb
   solution_path: practice/p17_solution.ipynb
 - id: C10-p18
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [writeup-quality]
+  concepts: [writeup-quality, train-test-split, class-imbalance, accuracy-precision-recall, f1-macro, knn, feature-scaling, sklearn-pipelines]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb
 - id: C10-p19

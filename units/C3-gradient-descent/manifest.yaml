@@ -7,7 +7,7 @@ prereq_units: [F4-multivar-calculus, C2-linear-models]
 estimated_minutes:
   lesson: 170
   lesson_sessions: [85, 85]
-  practice: 400
+  practice: 430
   review: 40
 practice:
 - id: C3-p01
@@ -49,7 +49,7 @@ practice:
   set: A
   type: constrained-coding
   difficulty: intro
-  concepts: [loss-surfaces]
+  concepts: [loss-surfaces, linear-regression, mse-loss, broadcasting, aggregation-axis]
   path: practice/p06.ipynb
   solution_path: practice/p06_solution.ipynb
 - id: C3-p07
@@ -63,14 +63,14 @@ practice:
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [stochastic-gd]
+  concepts: [stochastic-gd, linear-regression, mse-loss, gradient, sum-of-squares-gradients, broadcasting, aggregation-axis]
   path: practice/p08.ipynb
   solution_path: practice/p08_solution.ipynb
 - id: C3-p09
   set: B
   type: constrained-coding
   difficulty: core
-  concepts: [gradient-descent]
+  concepts: [gradient-descent, linear-regression, mse-loss, gradient, sum-of-squares-gradients, broadcasting, aggregation-axis]
   path: practice/p09.ipynb
   solution_path: practice/p09_solution.ipynb
 - id: C3-p10
@@ -98,28 +98,28 @@ practice:
   set: C
   type: integrative
   difficulty: core
-  concepts: [gradient-descent, learning-rate, loss-surfaces]
+  concepts: [gradient-descent, learning-rate, loss-surfaces, linear-regression, mse-loss, partial-derivatives, gradient, sum-of-squares-gradients, broadcasting, aggregation-axis]
   path: practice/p13.ipynb
   solution_path: practice/p13_solution.ipynb
 - id: C3-p14
   set: C
   type: integrative
   difficulty: advanced
-  concepts: [stochastic-gd, gradient-descent, learning-rate]
+  concepts: [stochastic-gd, gradient-descent, learning-rate, linear-regression, mse-loss, gradient, sum-of-squares-gradients]
   path: practice/p14.ipynb
   solution_path: practice/p14_solution.ipynb
 - id: C3-p15
   set: C
   type: scenario
   difficulty: core
-  concepts: [learning-rate]
+  concepts: [learning-rate, mse-loss, gradient, sum-of-squares-gradients]
   path: practice/p15.ipynb
   solution_path: practice/p15_solution.ipynb
 - id: C3-p16
   set: C
   type: scenario
   difficulty: core
-  concepts: [stochastic-gd]
+  concepts: [stochastic-gd, linear-regression, mse-loss]
   path: practice/p16.ipynb
   solution_path: practice/p16_solution.ipynb
 - id: C3-p17
@@ -133,6 +133,13 @@ practice:
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [learning-rate, stochastic-gd]
+  concepts: [learning-rate, stochastic-gd, linear-regression, mse-loss]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb
+- id: C3-p19
+  set: C
+  type: scenario
+  difficulty: advanced
+  concepts: [gradient-descent, learning-rate, mse-loss]
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb
