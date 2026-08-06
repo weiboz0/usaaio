@@ -11,6 +11,26 @@
 - [x] 008 — units tranche 4: C5+C6 (merged)
 - [x] 009 — units tranche 5: C7+C8 (merged)
 - [x] 010 — units tranche 6: F6+C9+C10 (merged — curriculum complete)
-- [ ] 011 — first full mock test r1-001 through the pipeline (owns answer-key reproduction + PDF build)
+- [x] 011 — first full mock test r1-001 through the pipeline (merged — owns answer-key reproduction + PDF build)
 - [x] 012 — course-structure doc (merged — roadmap complete) (units -> semesters/weeks pacing)
 - [x] 013 — audit remediation (merged)
+- [ ] 014 — enrichment tranche (retag pass, 2 error clinics, F6-p25 synthesis problem, targeted items)
+
+## Deferred, with a named owner plan still to be written
+
+- [ ] softmax + cross-entropy-loss into C5 — deferred from plan 014 Task 3. Must resolve C5's
+      capacity explicitly, place the section after `mlp-architecture`, respect the
+      no-autograd-training boundary, and note the CE-gradient proof's F4 dependency.
+- [ ] **Unit capacity: C7 and C5.** C7 ships 27 problems against the 16–24 band as a recorded
+      exception (`docs/unit-standards.md`), and C5 carries the same unresolved question. Plan
+      014's gate rejected widening the band and required the capacity question be asked
+      directly: split the unit, rehome concepts (`feature-hierarchy`, `receptive-field`,
+      `tensor-shape-tracing` are the C7 candidates), or trim.
+- [ ] **Real tag-honesty enforcement.** `prereq-check`'s `concepts_used` leg is manifest
+      consistency only, so it cannot see a decorative tag. Plan 014's gate found 7 decorative
+      tags by hand that the check passed. Needs per-problem evidence for each foreign tag.
+- [ ] **Ordered prerequisite closure for unit practice.** Closure currently admits any concept
+      the unit teaches anywhere, so a concept taught in a later session can satisfy an earlier
+      problem. `docs/course-structure.md` §7 claims session-granular integrity that the checker
+      does not yet enforce.
+- [ ] r1-002 / r1-003 via the blueprint's arc rotation (indices 1 and 2).

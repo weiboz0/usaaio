@@ -40,7 +40,10 @@ fi
 # output the prose must match; leaving them unexecuted made every such contract unguarded.
 # Measured cost: 269s over 79 notebooks against a 1681s baseline (+16%), well inside the
 # plan's +12-minute ceiling, so the FULL option was taken rather than a sampled subset.
-lessons=$(find units -name '*.ipynb' -not -path '*/practice/*' 2>/dev/null || true)
+# A discovery failure must fail CI rather than silently reduce coverage to zero notebooks
+# (gate finding, plan 014): `2>/dev/null || true` would turn an unreadable subtree into a
+# green run that executed nothing.
+lessons=$(find units -name '*.ipynb' -not -path '*/practice/*' -not -path '*/.ipynb_checkpoints/*')
 if [[ -n "$lessons" ]]; then
   n_lessons=0
   while IFS= read -r nb; do

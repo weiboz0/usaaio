@@ -184,7 +184,7 @@ units:
   - id: F6-svd-spectral
     track: foundation
     title: Eigenvalues, SVD, and Low-Rank Structure
-    length: double   # heaviest unit in the roster; lesson splits into two sittings
+    length: double   # heaviest LESSON load in the roster (425 min); splits into two sittings
     prereqs: [F3-matrices]
     teaches: [eigenvalues-eigenvectors, spectral-decomposition, svd, singular-values,
               low-rank-approximation, frobenius-norm]
@@ -226,6 +226,7 @@ units:
   - id: C7-cnn-transfer
     track: core
     title: CNNs, ResNet, and Transfer Learning
+    length: double   # 10 taught concepts and 672 practice minutes, both corpus maxima
     prereqs: [C6-pytorch]
     teaches: [convolution, feature-maps, receptive-field, feature-hierarchy,
               resnet-architecture, bottleneck-blocks, model-truncation, layer-freezing,

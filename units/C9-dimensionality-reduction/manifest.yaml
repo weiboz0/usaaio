@@ -144,6 +144,6 @@ practice:
   set: C
   type: scenario
   difficulty: core
-  concepts: [pca, variance, bias-variance-intuition, overfitting]
+  concepts: [pca, bias-variance-intuition, overfitting]
   path: practice/p19.ipynb
   solution_path: practice/p19_solution.ipynb

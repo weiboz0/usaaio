@@ -19,13 +19,7 @@ the content gate's reviewers enforce the qualitative parts against this document
 
 ## Practice sets
 
-- **Count:** 16–24 problems per unit (double-length units: 24–30) for units teaching **≤7
-  concepts**; for concept-heavy units the ceiling rises by **+2 problems per taught concept
-  beyond 7**, capped at 30. *Rationale (plan 014): the ≥3-problems-per-concept rule is
-  machine-enforced, so a 10-concept unit needs ≥30 concept-instances — roughly 25–27 problems
-  even with dual-tagging. The flat band was written for 6–7-concept units and mechanically
-  contradicts the coverage rule above it. Current effect: C7 (10 concepts) ceiling 30, C1
-  (9) 28, the 8-concept units 26; every other unit unchanged.* Organized as
+- **Count:** 16–24 problems per unit (double-length units: 24–30), organized as
   **problem sets** mirroring homework cadence:
   - Set A — fundamentals (drills per concept, intro/core),
   - Set B — exam register (constrained coding, normal-form MC, reasoning-required),
@@ -41,6 +35,30 @@ the content gate's reviewers enforce the qualitative parts against this document
   in the manifest (`difficulty:` informational field).
 - Every taught concept exercised by **≥3 problems** — `coverage-check` enforces this
   MACHINE-SIDE since plan 013 (it previously enforced only ≥1 and left the rest to reviewers).
+
+### Which band a unit sits in
+
+A unit takes the 24–30 band only by being marked `length: double` in `syllabus.md`, and that
+marking has to be earned on load.
+`F6-svd-spectral` holds it on lesson load (425 lesson minutes, the corpus maximum).
+`C7-cnn-transfer` holds it from plan 014 on practice load: 10 taught concepts and 672 practice
+minutes, both corpus maxima, which is what puts its 27 problems inside 24–30.
+
+Plan 014 first proposed a different rule — a ceiling scaling at +2 problems per taught concept
+beyond 7 — and its content gate rejected that unanimously.
+Three reviewers independently showed the stated rationale was arithmetically wrong: the ≥3 rule
+obliges C7 to 30 taught-concept instances, and C7 already delivers 34 of them across 27 problems
+at 2.48 tags per problem, so 24 problems were never the binding constraint.
+The lesson is recorded because it generalizes: **when a unit overflows the band, ask whether it
+is genuinely double-length, not whether the band should be wider.**
+Widening a rule to fit the artifact it was written to constrain is how a standard stops meaning
+anything.
+
+The deeper question C7 raises — whether 10 concepts is simply too many for one unit, and whether
+`feature-hierarchy`, `receptive-field`, or `tensor-shape-tracing` should be rehomed — is a unit
+*capacity* decision, not a band decision.
+C5 carries the same open question.
+Both are deferred to a dedicated plan; see `TODO.md`.
 
 ## Per-unit review material
 

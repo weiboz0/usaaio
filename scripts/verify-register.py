@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Verify registered statement metadata and every bolded ban's pricing.
 
-All unit manifests are authoritative for problem paths. The original tranche-1
-units retain their header and multiple-choice checks; ban pricing is repo-wide.
+All unit manifests are authoritative for problem paths. Header agreement (title,
+concepts, difficulty, type) and ban pricing are checked repo-wide; the stricter
+multiple-choice option-format checks remain scoped to the tranche-1 units that
+were authored against that exact register.
 """
 
 from __future__ import annotations
@@ -35,6 +37,7 @@ BOLD_BAN_RE = re.compile(
     r"\*\*((?:Additionally\s+)?Banned\b[^:]*:.*?)\*\*",
     re.IGNORECASE | re.DOTALL,
 )
+HEADER_FIELD_RE = re.compile(r"\*\*(Type|Difficulty|Concepts):\*\*\s*([^·]*?)\s*(?=·|$)")
 ZERO_POINT_RE = re.compile(r"\b(?:zero|0)[\s-]+points?\b", re.IGNORECASE)
 
 
@@ -59,13 +62,42 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
     errors: list[str] = []
 
     all_markdown = "\n".join(markdown)
-    if unit in REGISTER_UNITS:
-        expected_title = f"# {unit} — Practice {problem['id'].split('-')[-1]}"
-        top_lines = markdown[0].splitlines()
-        expected_top = [expected_title, "", _expected_header(problem)]
-        if top_lines[:3] != expected_top:
-            errors.append("header does not match the manifest at the statement top")
 
+    # Header equality is checked for EVERY unit. It was scoped to REGISTER_UNITS until plan
+    # 014, whose gate observed that a "343/343 passed" line covering three of sixteen units
+    # reads as far stronger assurance than it was — and this plan's retag pass rests entirely
+    # on headers agreeing with manifests.
+    expected_title = f"# {unit} — Practice {problem['id'].split('-')[-1]}"
+    # Leading and interleaved blank lines vary across tranches and carry no meaning, so compare
+    # the first two non-empty lines rather than fixed indices.
+    body = [line for line in markdown[0].splitlines() if line.strip()]
+    if not body or body[0] != expected_title:
+        errors.append("statement title does not match the manifest")
+    elif len(body) < 2:
+        errors.append("statement has no metadata header under its title")
+    else:
+        fields = dict(HEADER_FIELD_RE.findall(body[1]))
+        if set(fields) != {"Type", "Difficulty", "Concepts"}:
+            errors.append("header is missing one of Type / Difficulty / Concepts")
+        else:
+            # Concepts and difficulty are load-bearing and compared exactly — the retag pass
+            # depends on headers agreeing with manifests. The Type field is prose that the
+            # corpus writes either as the raw manifest id ("scenario") or as its expanded
+            # label, sometimes with a parenthetical gloss, so it is matched by prefix.
+            if fields["Concepts"] != ", ".join(problem["concepts"]):
+                errors.append("header concepts do not match the manifest")
+            if fields["Difficulty"] != problem["difficulty"]:
+                errors.append("header difficulty does not match the manifest")
+            type_label = TYPE_LABELS.get(problem["type"], problem["type"].replace("-", " "))
+            if not (
+                fields["Type"].startswith(type_label)
+                or fields["Type"].startswith(problem["type"])
+            ):
+                errors.append("header type does not match the manifest")
+
+    # The multiple-choice option-format checks stay scoped to the tranche-1 units that were
+    # authored against that exact register; widening them is a separate, evidence-led change.
+    if unit in REGISTER_UNITS:
         if problem["type"].startswith("mc"):
             if not re.search(r"\bReasoning is (?:not )?required\.", all_markdown):
                 errors.append("MC reasoning flag is missing")

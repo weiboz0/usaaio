@@ -198,6 +198,6 @@ practice:
   set: C
   type: scenario
   difficulty: advanced
-  concepts: [layer-freezing, requires-grad, resnet-architecture]
+  concepts: [layer-freezing, requires-grad]
   path: practice/p27.ipynb
   solution_path: practice/p27_solution.ipynb

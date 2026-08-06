@@ -123,7 +123,7 @@ practice:
   set: C
   type: scenario
   difficulty: core
-  concepts: [hidden-test-protocol, train-test-split, overfitting]
+  concepts: [hidden-test-protocol, train-test-split]
   path: practice/p16.ipynb
   solution_path: practice/p16_solution.ipynb
 - id: C10-p17
