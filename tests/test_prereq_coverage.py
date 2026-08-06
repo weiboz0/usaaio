@@ -421,13 +421,17 @@ def test_double_length_coverage_real_f6_passes():
     assert not any("double-length unit F6-svd-spectral" in error for error in report.errors)
 
 
-def test_normal_length_planned_f5_shape_passes(tmp_path):
-    write_syllabus(tmp_path, second_unit="F5-probability")
+def test_double_length_planned_f5_shape_passes(tmp_path):
+    write_syllabus(
+        tmp_path,
+        second_unit="F5-probability",
+        second_length="double",
+    )
     write_unit(
         tmp_path,
         unit="F5-probability",
-        practice_count=19,
-        lesson_sessions=[80, 85, 85],
+        practice_count=25,
+        lesson_sessions=[85] * 5,
     )
 
     report = check_coverage(tmp_path)
