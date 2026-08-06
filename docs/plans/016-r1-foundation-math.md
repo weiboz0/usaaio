@@ -40,15 +40,15 @@ The implementation starts from `main` at `0f5d3bb`, where Plans 014 and 015 are 
 | Owner | New concepts | Final sessions / practices | Manifest minutes |
 |---|---|---:|---:|
 | F1 | `seaborn-programming` | 4 / 24 | 310 lesson + 515 practice + 50 review = 875 |
-| C10 | `colab-markdown-solution-authoring`, `markdown-code-snippets`, `markdown-math-formulae`, `colab-coding-submission`, `cpu-and-gpu-round-boundary` | 4 / 24 | 335 + 610 + 55 = 1,000 |
+| C10 | `colab-markdown-solution-authoring`, `markdown-code-snippets`, `markdown-math-formulae`, `colab-coding-submission`, `cpu-and-gpu-round-boundary` | 4 / 24 | 335 + 730 + 55 = 1,120 |
 | F5 | `conditional-probability`, `bayes-rule`, `hoeffding-inequality` | 5 / 25 | 415 + 650 + 55 = 1,120 |
 | C2 | `linear-regression-estimator-derivation`, `ols-rank-identifiability-and-pseudoinverse` | 3 / 24 | 260 + 590 + 55 = 905 |
 | C9 | `pca-centered-covariance-eigenproblem-derivation`, `numpy-pca-class-from-scratch`, `pca-black-box-insufficiency` | 4 / 24 | 340 + 600 + 60 = 1,000 |
 | F7 | `positive-semidefinite-matrices`, `kernel-validity`, `convex-sets`, `convex-functions`, `first-order-optimality`, `lagrangians`, `optimization-duality` | 4 / 20 | 340 + 640 + 45 = 1,025 |
 
-The pinned net addition is 2,300 manifested minutes: F1 +175, C10 +170, F5 +400,
+The pinned net addition is 2,420 manifested minutes: F1 +175, C10 +290, F5 +400,
 C2 +275, C9 +255, and F7 +1,025.
-The expected repository totals are 14,647 manifested minutes and 14,887 scheduled minutes,
+The expected repository totals are 14,767 manifested minutes and 15,007 scheduled minutes,
 laid out as a prerequisite-valid 31-week course near eight hours per week.
 
 ### Canonical cluster and track assignments
@@ -124,6 +124,7 @@ The mapping is pinned so concept ownership cannot be confused with roadmap statu
 - Modify `tests/test_model.py`.
 - Modify `tools/model.py`.
 - Modify `tools/checks/coverage.py`.
+- Modify `.gitignore` to exclude project-local `.codex-buddy/` reviewer/runtime state.
 - Modify `TODO.md` only to register Plan 016 as active.
 
 ### Steps
@@ -152,6 +153,8 @@ The mapping is pinned so concept ownership cannot be confused with roadmap statu
    ids/paths; issue actionable errors naming the unit, observed count, and required band.
 6. Rerun the focused tests green, then run `ruff check tools/model.py
    tools/checks/coverage.py tests/test_model.py tests/test_prereq_coverage.py`.
+7. Add `.codex-buddy/` to `.gitignore`; reviewer prompts, session logs, and runtime scratch
+   are local evidence and must never enter this public repository.
 
 ### Acceptance
 
@@ -175,6 +178,7 @@ The mapping is pinned so concept ownership cannot be confused with roadmap statu
 - Modify `curriculum/coverage-map.yaml` for the controlled seaborn dependency and planned
   F7-owner conversion.
 - Modify `tests/test_scope.py`.
+- Modify `docs/unit-standards.md` so the double-length parenthetical names F5 and F6.
 - Modify `tests/test_integration.py` for exact ownership and the named
   `test_f1_seaborn_array_only_boundary` regression.
 
@@ -200,11 +204,20 @@ The mapping is pinned so concept ownership cannot be confused with roadmap statu
    `coverage-check` must fail for missing paths; do not weaken that failure.
 5. Add and lock seaborn, then run the focused contract tests, manifest validation, and
    `prereq-check`.
+6. Reconcile the narrative portion of `syllabus.md`, not only its YAML fence:
+   - name both F5 and F6 as double-length;
+   - add F7 and its kernel/convexity role to the foundation rationale;
+   - state that C2 session 02 now ships the estimator derivation and rank/pseudoinverse
+     bridges instead of calling them missing;
+   - list all 17 units in the shipped topological order, with
+     `... → C8 → F6 → F7 → C9 → C10` after F7's other prerequisites have appeared.
 
 ### Acceptance
 
 - All 21 concepts exist in the shipped syllabus and have one owner.
 - F7 sits after all four prerequisites and before Plan 018's future SVM consumer.
+- No syllabus prose asserts that a Plan 016 concept is missing; the suggested order names
+  all 17 shipped units; `docs/unit-standards.md` names F5 and F6 as double-length.
 - The expected intermediate failure is missing notebook evidence, not schema or ownership
   drift.
 
@@ -257,6 +270,11 @@ The manifest tags the five new concepts plus existing `writeup-quality` on all t
 only after the statement exposes these six scored rows.  This preserves the existing
 three-practice `writeup-quality` and
 `markdown-text-communication` evidence while satisfying the five new three-practice floors.
+The rewritten problem budgets are pinned at 90 minutes for p15, 135 for p17, and 105 for
+p18.  The manifest reserves 400 minutes for the other 21 practices and 330 for these three,
+so C10 practice totals 730 minutes; the unit total is 1,120 and its Plan 016 increment is
+290 minutes.  Authors may simplify subparts within these budgets but may not compress a
+scored concept into a token mention.
 
 ### Steps and acceptance
 
@@ -292,11 +310,19 @@ three-practice `writeup-quality` and
 - `F5-p24`: simulation with `SEED = 20260804` versus the theoretical Hoeffding envelope.
 - `F5-p25`: integrative conditional/Bayes/concentration decision problem.
 
+Session 05 teaches the event subadditivity/union-bound lemma
+`P(A ∪ B) ≤ P(A) + P(B)` immediately before deriving the two-sided Hoeffding factor of
+two from the upper- and lower-tail events.  This is an in-lesson prerequisite lemma under
+`hoeffding-inequality`, not a new standalone syllabus concept.  p23 may grade that short
+derivation; no problem may assume the union bound without this teaching anchor.
+
 ### Steps and acceptance
 
 Use separate GPT-5.6-sol statement and blind-solution sessions.
 Review denominators, zero-probability conditioning, direction of Bayes updates, boundedness,
 independence, widths, tail constants, union bounds, and vacuous bounds.
+Acceptance includes a lesson checkpoint deriving the two-sided constant through the taught
+subadditivity lemma and a p23 solution that cites the same route.
 Fresh-execute all six solutions and run F5 register, tolerance, hygiene, prerequisite,
 coverage, and double-length tests.
 
@@ -415,6 +441,8 @@ practice ids, including both proof/refutation and computational evidence where r
 - Regenerate `curriculum/material-inventory.yaml`.
 - Regenerate `docs/audits/015-coverage-audit.md`.
 - Regenerate `docs/curriculum-roadmap.md`.
+- Modify `tools/render_curriculum_roadmap.py`.
+- Modify `tests/test_scope.py` for completed-tranche and disposition regressions.
 - Modify `docs/course-structure.md` to a 31-week prerequisite-valid schedule.
 - Modify `TODO.md` to mark Plan 016 complete and leave Plans 017–018 as the next R1 queue.
 - Modify this plan's post-execution report.
@@ -423,15 +451,31 @@ practice ids, including both proof/refutation and computational evidence where r
 
 1. For each of the 17 atomic targets, name exact lesson heading/cell anchors and primary practice
    ids for every required modality.  Do not promote from plan prose or a solution alone.
-2. Run the audit and roadmap renderers in write mode, inspect the diff, then run both in
+   Once checker-derived coverage is `covered`, set all 17 dispositions to `keep`, including
+   the three F7 rows, and add a scope regression that every covered row uses `keep`.
+2. Update the roadmap renderer before regeneration:
+   - remove F5, C2, and C9 from `MAJOR_EXISTING_UNIT_EXTENSIONS`, leaving only C7 and an
+     8–12-hour subtotal;
+   - delete the completed foundation/math tranche from `TRANCHE_QUEUE` so neural-training
+     is first;
+   - remove C10 and F1 from the sentence listing unestimated corrections;
+   - add tests that no unit owning shipped Plan 016 concepts remains in the extension table
+     and the queue begins with Round 1 neural-training completion.
+3. Run the audit and roadmap renderers in write mode, inspect the diff, then run both in
    `--check` mode.  The inventory must include every new/renamed notebook and no stale path.
-3. Extend rather than compress the calendar.  Recompute totals from manifests; expected
-   values are 14,647 manifested and 14,887 scheduled minutes, 383 unit practices, 57 lesson
+4. Extend rather than compress the calendar.  Recompute totals from manifests; expected
+   values are 14,767 manifested and 15,007 scheduled minutes, 383 unit practices, 57 lesson
    sessions, and 17 units.  If content-driven minute estimates differ, reconcile the
    manifests, arithmetic, and design explicitly rather than silently changing one source.
-4. Confirm all 17 Plan 016 targets are checker-derived `covered`, the acknowledged Round 1
+   Preserve a two-semester model as 16 weeks + 15 weeks: Semester 1 is Weeks 1–16,
+   Semester 2 is Weeks 17–31, r1-001 plus debrief is in Week 31, and optional r1-002
+   displaces C-set/challenge practice in Week 16 rather than adding time.
+5. Confirm all 17 Plan 016 targets are checker-derived `covered`, the acknowledged Round 1
    gap count falls exactly from 32 to 15, no unrelated row regresses, the provisional F7
-   planned unit is absent, and the Plan 018 classical node depends on shipped F7.
+   planned unit is absent, and the Plan 018 classical node depends on shipped F7.  Confirm
+   the renderer has no completed Plan 016 unit in its pending extension table, the queue
+   begins with neural training, every covered disposition is `keep`, and the semester
+   boundary plus both mock-test weeks are stated and prerequisite-valid.
 
 ## Phase 7 — Named verification phase
 
@@ -450,6 +494,7 @@ uv run usaaio-tools hygiene-check
 uv run usaaio-tools overlap-scan
 bash scripts/ci-local.sh
 git diff --check
+test -z "$(git status --porcelain)"
 ```
 
 Additionally, run fresh Jupyter execution for every changed/new solution and every changed
@@ -468,7 +513,9 @@ counts reconciled to the manifests.
    GLM-5.2.
    Every reviewer reads the final diff, checks source/solution isolation, and blind-solves
    every changed or new student-facing statement before reading its solution.  Risk-selected
-   deep checks may supplement but never replace the all-problem duty.
+   deep checks may supplement but never replace the all-problem duty.  The same roster also
+   conventionally code-reviews the `tools/` and `tests/` diff as required by
+   `docs/content-review-gate.md`.
 2. Record every finding below as `[reviewer] [OPEN|FIXED|WONTFIX]`; fix all blockers and
    rerun affected verification.  The gate passes only at 4/4 with no `[OPEN]` finding.
 3. Populate the post-execution report with delivered files/counts, source boundary,
@@ -476,7 +523,9 @@ counts reconciled to the manifests.
    divergence from the pinned design.
 4. After all content-gate fixes and report edits, commit the final tree and rerun the entire
    `bash scripts/ci-local.sh` plus `git diff --check`; focused affected checks are not a
-   substitute.  This second clean-commit full run is the final shipping evidence.
+   substitute.  Require `git status --porcelain` to be empty before push; ignored
+   `.codex-buddy/` state is never staged.  This second clean-commit full run is the final
+   shipping evidence.
 5. Push the feature branch, open a PR, fetch `origin/main`, run
    `bash scripts/pre-merge-guard.sh --pr`, squash-merge, and verify the squash commit on
    `main`.  Never merge if CI or the PR-aware guard fails.
@@ -494,7 +543,7 @@ counts reconciled to the manifests.
   validation to the focused tests and `scripts/ci-local.sh`.
 - `[self]` Scope, ownership, prerequisite closure, double-length enforcement,
   author/solver isolation, exact content contracts, named verification, content gate,
-  shipping lifecycle, and 2,300-minute schedule extension are explicit and mutually
+  shipping lifecycle, and 2,420-minute schedule extension are explicit and mutually
   consistent.  No open finding remains.
 - `[self] [FIXED]` The consolidated external review exposed distinctions the first inline
   pass missed: 17 atomic targets versus 21 concepts, model support for session counts,
@@ -507,7 +556,23 @@ counts reconciled to the manifests.
 
 ### Review 2 — Claude Opus 5
 
-- **Status:** pending after the reviewer-roster change requested during Phase 0.
+- **First verdict:** REJECT.
+- `[opus] [FIXED]` The roadmap renderer would have retained Plan 016's F5/C2/C9 estimates
+  and tranche queue after shipping.  Phase 6 now updates the renderer, removes completed
+  work, and pins freshness/queue regressions.
+- `[opus] [FIXED]` Syllabus prose would still have called the C2 derivation missing, omitted
+  F7 from the shipped path, and named only F6 as double-length.  Phase 1 now reconciles all
+  narrative and standards text and asserts all 17 units appear.
+- `[opus] [FIXED]` C10's three carrier problems were underbudgeted.  They now have explicit
+  90/135/105-minute budgets, 730 total practice minutes, a 290-minute unit increment, and
+  fully recomputed course totals.
+- `[opus] [FIXED]` All 17 completed rows now pin disposition `keep`; F5 teaches the
+  union-bound lemma used for the two-sided Hoeffding constant; both receive regression or
+  content acceptance checks.
+- `[opus] [FIXED]` `.codex-buddy/` is ignored, clean porcelain status is a shipping gate,
+  the 31 weeks are pinned as 16 + 15 with mock weeks, and the content gate explicitly
+  reviews Phase 0 tooling.
+- **Re-review status:** pending.
 
 ### Supplemental review — GPT-5.6-sol (pre-roster change)
 
@@ -557,10 +622,10 @@ counts reconciled to the manifests.
   All three are now pinned above.
 - **Final verdict:** APPROVE WITH NITS; all nits are fixed above.
 
-**GATE RESULT: PENDING AFTER ROSTER CHANGE.** The original self/Sol/Terra/GLM gate passed,
-but the user replaced the redundant Sol slot with Claude Opus 5 while Phase 0 was under
-review.  Phase 1 cannot start until Opus reviews the final plan and the new roster reaches
-4/4.
+**GATE RESULT: PENDING OPUS RE-REVIEW.** The original self/Sol/Terra/GLM gate passed, then
+the user replaced the redundant Sol slot with Claude Opus 5 during Phase 0.  Opus rejected
+the first revised roster pass with the fixed findings above; Phase 1 cannot start until its
+re-review approves and the new self/Opus/Terra/GLM roster reaches 4/4.
 
 ## Content Review
 

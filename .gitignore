@@ -3,6 +3,7 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+.codex-buddy/
 
 # Build outputs (rendered PDFs etc.)
 build/

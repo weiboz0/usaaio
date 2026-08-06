@@ -67,6 +67,10 @@ Selected existing C10 problems are rewritten into authoring, repair, and submiss
 tasks; the unit remains at 24 problems.
 Generic notebook use, prose quality, or a passing mention of CUDA is not sufficient
 evidence.
+The rewritten p15, p17, and p18 are budgeted as 90-, 135-, and 105-minute capstones so
+their five new scored workflow deliverables, preserved writeup objective, and existing
+model-selection responsibilities are substantive rather than decorative.
+C10's final practice budget is 730 minutes.
 
 ### F5 conditional probability, Bayes, and concentration
 
@@ -154,9 +158,9 @@ Manifest lesson/practice/review minutes are recomputed after the notebook conten
 then `docs/course-structure.md` is regenerated into a prerequisite-valid approximately
 eight-hour weekly schedule.
 Existing lessons and reviews are never displaced.
-The pinned design estimates add 2,300 manifested minutes: F1 +175, C10 +170, F5 +400,
+The pinned design estimates add 2,420 manifested minutes: F1 +175, C10 +290, F5 +400,
 C2 +275, C9 +255, and F7 +1,025.
-That produces 14,647 manifested and 14,887 scheduled minutes, which is planned as a
+That produces 14,767 manifested and 15,007 scheduled minutes, which is planned as a
 31-week course near eight hours per week rather than hidden inside the current 26 weeks.
 The later Plans 017 and 018 extend this same schedule; they do not create separate Round 1
 course copies.
