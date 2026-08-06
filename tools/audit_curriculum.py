@@ -272,6 +272,17 @@ def _declared_notebook(
     return candidate
 
 
+def _validate_discovered_notebook(path: Path, base: Path, relative_path: str) -> None:
+    if path.is_symlink():
+        raise InventoryError(f"{relative_path}: notebook symlinks are not allowed")
+    try:
+        path.resolve(strict=True).relative_to(base.resolve(strict=True))
+    except (OSError, ValueError) as exc:
+        raise InventoryError(
+            f"{relative_path}: discovered notebook escapes its material directory"
+        ) from exc
+
+
 def _inject_declarations(
     record: dict[str, Any],
     *,
@@ -314,6 +325,7 @@ def _unit_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
         manifest = manifests_by_dir.get(unit_dir)
         if not isinstance(manifest, dict):
             raise InventoryError(f"{relative}: no unit manifest found")
+        _validate_discovered_notebook(path, unit_dir, relative)
         unit_id = str(manifest.get("unit", ""))
         within_unit = path.relative_to(unit_dir).as_posix()
         concepts = list(manifest.get("concepts_taught") or [])
@@ -347,6 +359,7 @@ def _mock_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
         manifest = manifest_by_dir.get(mock_dir)
         if not isinstance(manifest, dict):
             raise InventoryError(f"{relative}: no mock manifest found")
+        _validate_discovered_notebook(path, mock_dir, relative)
         within_mock = path.relative_to(mock_dir).as_posix()
         concepts: list[str] = []
         units: list[str] = []
@@ -445,6 +458,7 @@ def _synthesis_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[st
         manifest = manifests[manifest_dir]
         if not isinstance(manifest, dict):
             raise InventoryError(f"{relative}: synthesis manifest must be a mapping")
+        _validate_discovered_notebook(path, manifest_dir, relative)
         within_manifest = path.relative_to(manifest_dir).as_posix()
         units = _string_list(
             manifest.get("unit_ids", manifest.get("units", manifest.get("unit")))

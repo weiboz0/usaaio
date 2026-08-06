@@ -348,6 +348,30 @@ def test_declared_unit_notebooks_cannot_escape_the_unit(
         audit.build_inventory(tmp_path)
 
 
+@pytest.mark.parametrize("material_tree", ["unit", "mock", "synthesis"])
+def test_undeclared_notebook_symlinks_are_rejected(
+    tmp_path: Path, material_tree: str
+) -> None:
+    _make_minimal_repo(tmp_path)
+    outside = tmp_path / "outside.ipynb"
+    _write_notebook(outside, [_code("external.secret_api()\n")])
+    if material_tree == "unit":
+        link = tmp_path / "units" / "U1-vectors" / "orphan.ipynb"
+    elif material_tree == "mock":
+        link = tmp_path / "mocktests" / "r1-mini" / "problems" / "orphan.ipynb"
+    else:
+        synthesis = tmp_path / "synthesis" / "bridge"
+        synthesis.mkdir(parents=True)
+        (synthesis / "manifest.yaml").write_text(
+            yaml.safe_dump({"unit": "S-bridge", "concepts_taught": ["vectors"]})
+        )
+        link = synthesis / "orphan.ipynb"
+    link.symlink_to(outside)
+
+    with pytest.raises(audit.InventoryError, match="notebook symlinks are not allowed"):
+        audit.build_inventory(tmp_path)
+
+
 def test_missing_declared_mock_notebook_fails_loudly(tmp_path: Path) -> None:
     _make_minimal_repo(tmp_path)
     missing = tmp_path / "mocktests" / "r1-mini" / "solutions" / "p01_solution.ipynb"
