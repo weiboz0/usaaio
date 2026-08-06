@@ -688,6 +688,50 @@ round 3 found was documentation truth and tooling residue.
 - `[opus]` **NIT** the round-3 note overstated D as "strictly under the ceiling"; step 1 is exact
   equality, forced for any accumulator. **[FIXED]**.
 
+### Round 4 — CONSENSUS REACHED
+
+Round-4 verdicts: `[glm]` **APPROVE** · `[codex]` **APPROVE WITH NITS** · `[opus]` **APPROVE
+WITH NITS** · `[claude-self]` **APPROVE WITH NITS**. All nits fixed below; no open blockers.
+The gate is closed.
+
+- `[codex]` `[opus]` **The type-gloss allowlist was global, so one type could borrow another's
+  gloss** — `scenario analysis (parts consume earlier results)` passed although that gloss only
+  describes integrative problems. **[FIXED]** — glosses are keyed BY TYPE. This is the third
+  finding to land on this one comparison (bare `startswith`, then any parenthetical or slash
+  suffix, now cross-type borrowing), which is the argument for enumerating against the type
+  rather than loosening the shape a fourth time.
+- `[codex]` `[opus]` **`_check_solution_header` scanned only the first markdown cell**, so a
+  solution could opt out entirely by relocating its header lower down and taking a wrong title
+  with it. **[FIXED]** — every markdown cell is searched; corruption-tested with exactly that
+  construction.
+- `[opus]` **The solution-title check was gated behind header presence for no structural
+  reason.** Field checks genuinely apply only to the 5 solutions carrying a header, but every
+  solution has a title, so mis-attribution coverage sat at 5/343 when it could be 343/343.
+  **[FIXED]** — hoisted, 0 mismatches corpus-wide. It exposed a test whose fixture used a stub
+  title, conflating "no header" with "no title"; corrected so it tests what it claims.
+- `[opus]` **Three stale figures in prose, each invalidated by the commit that fixed its
+  neighbour**: "127 unit tests" (130), "326 of 343 solutions store no outputs" (the pre-clearing
+  count; 328 without / 15 with), and a diff stat the correcting commit itself moved.
+  **[FIXED]** — the insertion/deletion counts are dropped rather than restated, since a figure
+  that changes with the commit stating it cannot be kept true; the file count is stable.
+- `[opus]` **RETRACTED its own round-3 NIT** on F6-p25's visible rank-deficient construction,
+  having established that part (a) asks for the count the shape ALONE guarantees and the
+  solution pins `assert predicted_zero_count == 5` — so a student answering 6 from the visible
+  dependence gets part (a) wrong. The construction is the explanation part (c) asks for, not a
+  shortcut past it. Recorded because a reviewer correcting itself against the artifact is the
+  behaviour this gate exists to produce.
+- `[opus]` **NIT** the new C7 lesson cell stores no output while the notebook's other 15 do,
+  leaving execution counts non-contiguous. **[WONTFIX]** — cosmetic; CI executes lessons and the
+  cell was verified to run with all three assertions holding.
+
+**Independent re-derivation, not author's-word acceptance.** `[opus]` recomputed the C7
+arithmetic from the manifest (finding 12 valid 3-subsets, `(C7-p01, C7-p10, C7-p23)` among
+them), re-checked transcript D against the triangle bound at every step, recomputed the digest,
+and ran eleven mutations against the solution-title check. `[codex]` independently reproduced
+the digest, the singleton signature partition, both degeneracy probes, and every figure in the
+C7 passage. `[glm]` re-derived the C/D transcript selection from the shipped data and audited
+every notebook the gate commits touched for stale outputs.
+
 ## Post-execution report
 
 **Shipped.** 269 files changed. The corpus goes from 337 to 343 practice
@@ -724,7 +768,7 @@ problems across 16 units.
 4. **F6-p25 was re-authored during the gate** after it was found to be a near-isomorph of F6-p17.
    The replacement is built on a rank-deficient `W` and teaches a lesson p17 does not.
 
-**What the gate was worth.** Two rounds, four reviewers, twenty findings. No reviewer found a
+**What the gate was worth.** Four rounds, four reviewers, roughly forty findings. No reviewer found a
 single wrong answer — the blind solves agreed everywhere. Every finding was structural, and the
 three that mattered most would each have shipped a problem that looked correct and graded wrong:
 C3-p19's answer was the identity permutation of its own printed bullet list; F6-p25 duplicated a
@@ -732,8 +776,10 @@ problem eight slots away in its own unit; C9-p19 taught students to select a mod
 called "test". None of these is visible to any check the repo has, and none would have been
 caught by re-solving the problem, because the answers were right.
 
-**Verification.** `scripts/ci-local.sh` **ALL GREEN** on the final tree, with
-`pre-merge-guard: OK` (step 7/7). `verify-register.py` 343/343 (repo-wide, and
+**Verification.** `scripts/ci-local.sh` **ALL GREEN** on the final tree with
+`pre-merge-guard: OK` (step 7/7), re-run after the last commit rather than inherited from an
+earlier one — an earlier draft of this paragraph claimed a green that predated three commits,
+including one that changed `ci-local.sh` itself. `verify-register.py` 343/343 (repo-wide, and
 corruption-tested against a unit the old check ignored). `prereq-check`, `coverage-check`,
 `hygiene-check`, `tolerance-check`, `blueprint-check` PASS. 130 unit tests pass. All six new
 solutions execute clean in a fresh kernel, verified locally rather than on the authoring
