@@ -372,7 +372,7 @@ counts reconciled to the manifests.
 ## Phase 8 — Four-way content gate and delivery
 
 1. Run the required four-way content-review gate from a clean implementation commit:
-   Claude self, Codex GPT-5.6-terra, independent Opus, and GLM-5.2.
+   active-session self-review, GPT-5.6-sol, GPT-5.6-terra, and GLM-5.2.
    Every reviewer reads the final diff, checks source/solution isolation, blind-solves a
    risk-selected sample across all six owners, and returns one verdict.
 2. Record every finding below as `[reviewer] [OPEN|FIXED|WONTFIX]`; fix all blockers and
@@ -386,25 +386,25 @@ counts reconciled to the manifests.
 
 ## Plan Review
 
-### Review 1 — Claude self
+### Review 1 — self-review
 
 - **Verdict:** APPROVE.
-- `[claude-self] [FIXED]` The first draft carried incorrect final corpus counts.  The
+- `[self] [FIXED]` The first draft carried incorrect final corpus counts.  The
   arithmetic is now derived from the Plan 015 baseline: 343 + 40 = 383 practices and
   47 + 10 = 57 lesson sessions.
-- `[claude-self] [FIXED]` The verification list named a nonexistent `manifest-check`
+- `[self] [FIXED]` The verification list named a nonexistent `manifest-check`
   subcommand.  It now invokes only actual CLI checks and leaves full manifest/schema
   validation to the focused tests and `scripts/ci-local.sh`.
-- `[claude-self]` Scope, ownership, prerequisite closure, double-length enforcement,
+- `[self]` Scope, ownership, prerequisite closure, double-length enforcement,
   author/solver isolation, exact content contracts, named verification, content gate,
   shipping lifecycle, and 2,300-minute schedule extension are explicit and mutually
   consistent.  No open finding remains.
 
-### Review 2 — Codex GPT-5.6-sol
+### Review 2 — GPT-5.6-sol
 
 - **Status:** pending.
 
-### Review 3 — independent GPT-5.6-sol
+### Review 3 — GPT-5.6-terra
 
 - **Status:** pending.
 

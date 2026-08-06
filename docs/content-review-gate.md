@@ -7,9 +7,9 @@ The pre-PR quality gate for teaching content and mock tests
 
 | # | Reviewer | Dispatch | Model |
 |---|----------|----------|-------|
-| 1 | Claude self | inline | claude-opus (or session model) |
-| 2 | Codex | `codex:codex-rescue` subagent (request `--model gpt-5.6-terra`) | Codex GPT-5.6-terra |
-| 3 | Independent Opus | `Agent` general-purpose, `model: opus`, fresh context, read-only | claude-opus |
+| 1 | Self-review | active session inline | active session model |
+| 2 | Sol reviewer | fresh read-only subagent | GPT-5.6-sol |
+| 3 | Terra reviewer | separate fresh read-only subagent | GPT-5.6-terra |
 | 4 | GLM | `opencode:opencode-review` subagent, read-only | opencode-go/glm-5.2 |
 
 Dispatch 2–4 in parallel with the inline self-review.
@@ -41,7 +41,7 @@ Findings append to the plan file's `## Content Review`, one review round per rev
     1. `[OPEN]` Finding with file/section reference. Priority: Must Fix / Should Fix / Nice to Have.
 
 Authors respond inline with `→ Response:` and retag `[FIXED]` / `[WONTFIX]` (with reason).
-Source tags: `[claude-self]` / `[codex]` / `[opus]` / `[glm]`.
+Source tags: `[self]` / `[sol]` / `[terra]` / `[glm]`.
 
 ## Acceptance
 
