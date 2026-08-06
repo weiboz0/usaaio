@@ -255,6 +255,145 @@ def _number(value: object) -> float | None:
     return result if math.isfinite(result) else None
 
 
+def _is_string_list(value: object) -> bool:
+    return isinstance(value, list) and all(isinstance(item, str) for item in value)
+
+
+def _require_string_list(
+    row: dict[str, Any], field: str, label: str, errors: list[str]
+) -> bool:
+    if not _is_string_list(row.get(field)):
+        errors.append(f"{label}: {field} must be a list of strings")
+        return False
+    return True
+
+
+def _require_nonempty_string(
+    row: dict[str, Any], field: str, label: str, errors: list[str]
+) -> bool:
+    value = row.get(field)
+    if not isinstance(value, str) or not value.strip():
+        errors.append(f"{label} requires nonempty {field}")
+        return False
+    return True
+
+
+def _validate_evidence_schema(
+    evidence_by_modality: dict[Any, Any], label: str, errors: list[str]
+) -> bool:
+    valid = True
+    for modality, evidence in evidence_by_modality.items():
+        if not isinstance(modality, str):
+            errors.append(f"{label}: evidence modality names must be strings")
+            valid = False
+            continue
+        modality_label = f"{label}/{modality}"
+        if not isinstance(evidence, dict):
+            errors.append(f"{modality_label}: evidence must be a mapping")
+            valid = False
+            continue
+        for field in ("lesson_anchors", "practices", "assessments"):
+            value = evidence.get(field, [])
+            if not isinstance(value, list):
+                errors.append(f"{modality_label}: {field} must be a list")
+                valid = False
+                continue
+            for index, item in enumerate(value):
+                item_label = f"{modality_label} {field} row {index}"
+                if not isinstance(item, dict):
+                    errors.append(f"{item_label} must be a mapping")
+                    valid = False
+                    continue
+                if field == "lesson_anchors":
+                    for text_field in ("path", "heading", "role"):
+                        valid &= _require_nonempty_string(
+                            item, text_field, item_label, errors
+                        )
+                    ordinal = item.get("cell_ordinal")
+                    if isinstance(ordinal, bool) or not isinstance(ordinal, int):
+                        errors.append(f"{item_label}: cell_ordinal must be an integer")
+                        valid = False
+                else:
+                    for text_field in ("id", "role"):
+                        valid &= _require_nonempty_string(
+                            item, text_field, item_label, errors
+                        )
+    return valid
+
+
+def _validate_roadmap_schema(raw: dict[str, Any], errors: list[str]) -> bool:
+    valid = True
+    planned_raw = raw.get("planned_units")
+    points_raw = raw.get("knowledge_points")
+    if not isinstance(planned_raw, list):
+        errors.append("planned_units must be a list")
+        valid = False
+    if not isinstance(points_raw, list):
+        errors.append("knowledge_points must be a list")
+        valid = False
+    if not valid:
+        return False
+
+    assert isinstance(planned_raw, list)
+    assert isinstance(points_raw, list)
+    for index, row in enumerate(planned_raw):
+        label = f"planned_units row {index}"
+        if not isinstance(row, dict):
+            errors.append(f"{label} must be a mapping")
+            valid = False
+            continue
+        for field in ("id", "title", "layer"):
+            valid &= _require_nonempty_string(row, field, label, errors)
+        for field in ("prerequisites", "knowledge_points", "provisional_concepts"):
+            valid &= _require_string_list(row, field, label, errors)
+        if not isinstance(row.get("estimated_hours"), dict):
+            errors.append(f"{label}: estimated_hours must be a mapping")
+            valid = False
+        action = row.get("schedule_action")
+        if action is not None and not isinstance(action, str):
+            errors.append(f"{label}: schedule_action must be a string when present")
+            valid = False
+
+    for index, row in enumerate(points_raw):
+        label = f"knowledge_points row {index}"
+        if not isinstance(row, dict):
+            errors.append(f"{label} must be a mapping")
+            valid = False
+            continue
+        for field in (
+            "id",
+            "layer",
+            "requirement",
+            "coverage",
+            "disposition",
+            "rationale",
+            "consequence",
+        ):
+            valid &= _require_nonempty_string(row, field, label, errors)
+        for field in ("source_refs", "depends_on", "shipped_concepts"):
+            valid &= _require_string_list(row, field, label, errors)
+        destination = row.get("destination")
+        if destination is not None and not isinstance(destination, str):
+            errors.append(f"{label}: destination must be a string or null")
+            valid = False
+        evidence = row.get("evidence_by_modality")
+        if not isinstance(evidence, dict):
+            errors.append(f"{label}: evidence_by_modality must be a mapping")
+            valid = False
+        else:
+            valid &= _validate_evidence_schema(evidence, label, errors)
+        deficits = row.get("deficits")
+        if not isinstance(deficits, dict):
+            errors.append(f"{label}: deficits must be a mapping")
+            valid = False
+        elif not _is_string_list(deficits.get("modalities_missing")):
+            errors.append(
+                f"{label}: modalities_missing must be a list of strings"
+            )
+            valid = False
+    return valid
+
+
 def _check_planned_units(
     rows: list[dict[str, Any]],
     known_layers: set[str],
@@ -479,6 +618,8 @@ def _check_roadmap(
         errors.append(
             f"coverage-map top-level keys must exactly equal {sorted(expected_keys)}, got {sorted(raw)}"
         )
+    if not _validate_roadmap_schema(raw, errors):
+        return
     syllabus = load_syllabus(root)
     manifests = load_unit_manifests(root)
     existing_units = set(syllabus.units)
@@ -494,7 +635,7 @@ def _check_roadmap(
     inventory_anchors, inventory_problem_ids = _inventory_indexes(inventory)
     all_problem_ids = inventory_problem_ids | _mock_problem_ids(root)
 
-    point_rows = [row for row in raw.get("knowledge_points") or [] if isinstance(row, dict)]
+    point_rows = raw["knowledge_points"]
     point_ids = [str(row.get("id", "")) for row in point_rows]
     for duplicate in sorted(_duplicates(point_ids)):
         errors.append(f"duplicate knowledge point {duplicate}")
@@ -505,7 +646,7 @@ def _check_roadmap(
     for point_id in sorted(set(point_ids) - set(targets)):
         errors.append(f"extra non-official knowledge point {point_id}")
     points = {str(row.get("id", "")): row for row in point_rows}
-    planned_rows = [row for row in raw.get("planned_units") or [] if isinstance(row, dict)]
+    planned_rows = raw["planned_units"]
     planned = _check_planned_units(
         planned_rows,
         set(LAYERS),

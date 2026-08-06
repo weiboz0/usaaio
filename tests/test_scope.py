@@ -333,6 +333,97 @@ def test_schema_enums_versions_layers_and_source_freshness_fail(
     _assert_error(_report_after(tmp_path, mutate), message)
 
 
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("planned_units", {}, "planned_units must be a list"),
+        ("knowledge_points", {}, "knowledge_points must be a list"),
+    ],
+)
+def test_top_level_roadmap_collections_must_be_lists(
+    tmp_path: Path, field: str, value: object, message: str
+) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        data["roadmap"][field] = value
+
+    _assert_error(_report_after(tmp_path, mutate), message)
+
+
+@pytest.mark.parametrize(
+    ("collection", "index"), [("planned_units", 0), ("knowledge_points", 1)]
+)
+def test_roadmap_collection_rows_must_be_mappings(
+    tmp_path: Path, collection: str, index: int
+) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        data["roadmap"][collection].append("not-a-mapping")
+
+    _assert_error(_report_after(tmp_path, mutate), f"{collection} row {index} must be a mapping")
+
+
+def test_scalar_self_dependency_is_schema_error_not_cycle_bypass(tmp_path: Path) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        data["roadmap"]["knowledge_points"][0]["depends_on"] = "topic-a"
+
+    report = _report_after(tmp_path, mutate)
+
+    _assert_error(report, "depends_on must be a list of strings")
+    assert not any("dependency cycle" in error for error in report.errors)
+
+
+def test_scalar_modalities_missing_is_schema_error(tmp_path: Path) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        data["roadmap"]["knowledge_points"][0]["deficits"]["modalities_missing"] = "theory"
+
+    _assert_error(_report_after(tmp_path, mutate), "modalities_missing must be a list of strings")
+
+
+def test_planned_unit_title_is_required(tmp_path: Path) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        _add_r2_point(data)
+        data["roadmap"]["planned_units"][0].pop("title")
+
+    _assert_error(_report_after(tmp_path, mutate), "planned_units row 0 requires nonempty title")
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("prerequisites", "U1-core", "prerequisites must be a list of strings"),
+        ("knowledge_points", "topic-b", "knowledge_points must be a list of strings"),
+        ("provisional_concepts", "future-c", "provisional_concepts must be a list of strings"),
+        ("estimated_hours", [1, 2], "estimated_hours must be a mapping"),
+    ],
+)
+def test_planned_unit_required_field_types_fail(
+    tmp_path: Path, field: str, value: object, message: str
+) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        _add_r2_point(data)
+        data["roadmap"]["planned_units"][0][field] = value
+
+    _assert_error(_report_after(tmp_path, mutate), message)
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("source_refs", "source-1", "source_refs must be a list of strings"),
+        ("shipped_concepts", "c1", "shipped_concepts must be a list of strings"),
+        ("evidence_by_modality", [], "evidence_by_modality must be a mapping"),
+        ("deficits", [], "deficits must be a mapping"),
+        ("destination", 7, "destination must be a string or null"),
+    ],
+)
+def test_knowledge_point_required_field_types_fail(
+    tmp_path: Path, field: str, value: object, message: str
+) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        data["roadmap"]["knowledge_points"][0][field] = value
+
+    _assert_error(_report_after(tmp_path, mutate), message)
+
+
 def test_atomic_target_closure_rejects_missing_and_duplicate_rows(tmp_path: Path) -> None:
     missing = _report_after(tmp_path / "missing", lambda data: data["roadmap"].update(knowledge_points=[]))
     _assert_error(missing, "missing official atomic target topic-a")
@@ -972,3 +1063,18 @@ def test_renderer_check_detects_stale_output_without_overwriting(tmp_path: Path)
 
     assert renderer.main(["--root", str(tmp_path), "--check"]) == 1
     assert audit.read_text() == "stale\n"
+
+
+def test_scope_pass_implies_roadmap_loader_and_renderer_accept_contract(tmp_path: Path) -> None:
+    _base_contract(tmp_path)
+
+    report = check_scope(tmp_path)
+
+    assert report.ok, report.errors
+    loaded = model.load_roadmap(tmp_path)
+    rendered = renderer.render_documents(tmp_path)
+    assert loaded.knowledge_points[0].id == "topic-a"
+    assert set(rendered) == {
+        Path("docs/audits/015-coverage-audit.md"),
+        Path("docs/curriculum-roadmap.md"),
+    }
