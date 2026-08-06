@@ -138,8 +138,23 @@ no new content tree is needed).
 - **Answer check** closes with asserts pinning `lam_desc`, the bridge gap, `rel_err2`, and
   `r_star`; all tolerance calls state atol AND rtol (the guard enforces it).
 - **Fresh content:** seeded W distinct from every existing F6/C9 matrix (grep-verify before
-  fixing constants); the chain must NOT reproduce r1-001's P5 beats — the orchestrator records
-  the per-arc comparison verdict required by the gate.
+  fixing constants).
+
+> **CORPUS VERDICT — s01 vs r1-001's P5 (orchestrator, 2026-08-05): OVERLAP FOUND; SPEC
+> AMENDED.** Our own mock's P5 arc already runs S = WWᵀ → SVD → spectral-from-SVD →
+> rank-r error → budget → storage (beats p05-7 … p05-14). F6-p25 as first specified would
+> have repeated four of those beats with different numbers — close enough to an
+> isomorph-with-renamed-numbers to fail this project's own bar, even though the mock starts
+> from text and p25 from a seeded integer matrix.
+> **REQUIRED AMENDMENT (binding on the drafter):** re-centre F6-p25 on what the mock never
+> tests — **the rank ceiling the Gram construction forces**. With W of shape (9, 4),
+> rank(S) ≤ 4, so S has a guaranteed 5-dimensional null space. Part (c) becomes: predict the
+> exact count of zero eigenvalues BEFORE computing them, then verify; part (e) replaces the
+> budget question with: explain why no rank-r approximation for r > 4 can improve on r = 4,
+> and assert that `rel_err2` is exactly 0 (to tolerance) for r ≥ 4. **Drop the budget beat
+> entirely** — that beat is r1-001's. The low-rank beat survives as the CONSEQUENCE of the
+> ceiling, not as a budget exercise. This makes the problem test degenerate-spectrum
+> reasoning, which F6-p17 only gestures at and the mock never assesses.
 
 ## Task 2 — Error clinics (2 problems + 1 section) — PLACEMENTS PINNED (gate finding:
 "C3 (or C5)" / "C9 or C5" left curriculum placement to drafters)
