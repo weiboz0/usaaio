@@ -259,6 +259,39 @@ def test_declared_ids_are_recorded_without_coverage_inference(tmp_path: Path) ->
     assert "coverage" not in statement
 
 
+def test_synthesis_notebooks_keep_nearest_manifest_declarations(tmp_path: Path) -> None:
+    _make_minimal_repo(tmp_path)
+    synthesis = tmp_path / "synthesis" / "bridge"
+    synthesis.mkdir(parents=True)
+    (synthesis / "manifest.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "unit": "S-bridge",
+                "concepts_taught": ["vectors"],
+                "practice": [
+                    {
+                        "id": "S-p01",
+                        "concepts": ["vectors"],
+                        "path": "practice/p01.ipynb",
+                    }
+                ],
+            }
+        )
+    )
+    _write_notebook(synthesis / "practice" / "p01.ipynb", [_markdown("# Bridge\n")])
+
+    inventory = audit.build_inventory(tmp_path)
+    record = next(
+        item
+        for item in inventory["notebooks"]
+        if item["path"] == "synthesis/bridge/practice/p01.ipynb"
+    )
+
+    assert record["declared_unit_ids"] == ["S-bridge"]
+    assert record["declared_concept_ids"] == ["vectors"]
+    assert record["declared_problem_ids"] == ["S-p01"]
+
+
 def test_check_mode_catches_missing_and_stale_inventory_then_passes(tmp_path: Path, capsys) -> None:
     _make_minimal_repo(tmp_path)
 

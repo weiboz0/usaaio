@@ -300,6 +300,62 @@ def _mock_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
     return records
 
 
+def _string_list(value: object) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [str(item) for item in value]
+    return [str(value)]
+
+
+def _synthesis_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, Any]]:
+    """Inventory optional synthesis trees using their nearest manifest declarations."""
+    manifests = {
+        path.parent: _load_yaml(path, _posix(path, root)) for path in manifest_paths
+    }
+    records: list[dict[str, Any]] = []
+    paths = sorted(
+        root.glob("synthesis/**/*.ipynb"),
+        key=lambda item: _posix(item, root).encode("utf-8"),
+    )
+    for path in paths:
+        relative = _posix(path, root)
+        candidates = [directory for directory in manifests if directory in path.parents]
+        if not candidates:
+            raise InventoryError(f"{relative}: no synthesis manifest found")
+        manifest_dir = max(candidates, key=lambda item: len(item.parts))
+        manifest = manifests[manifest_dir]
+        if not isinstance(manifest, dict):
+            raise InventoryError(f"{relative}: synthesis manifest must be a mapping")
+        within_manifest = path.relative_to(manifest_dir).as_posix()
+        units = _string_list(
+            manifest.get("unit_ids", manifest.get("units", manifest.get("unit")))
+        )
+        concepts = _string_list(
+            manifest.get("concepts", manifest.get("concepts_taught"))
+        )
+        problem_ids: list[str] = []
+        for problem in (manifest.get("practice") or []) + (manifest.get("problems") or []):
+            if not isinstance(problem, dict):
+                continue
+            declared_paths = set(
+                _string_list(problem.get("files"))
+                + _string_list(problem.get("path"))
+                + _string_list(problem.get("solution_path"))
+            )
+            if within_manifest in declared_paths:
+                units = _string_list(problem.get("unit_ids", problem.get("units"))) or units
+                concepts = _string_list(problem.get("concepts")) or concepts
+                problem_ids = _string_list(problem.get("id"))
+                break
+        record = notebook_record(path, relative)
+        record["declared_unit_ids"] = sorted(set(units), key=str.encode)
+        record["declared_concept_ids"] = sorted(set(concepts), key=str.encode)
+        record["declared_problem_ids"] = sorted(set(problem_ids), key=str.encode)
+        records.append(record)
+    return records
+
+
 def build_inventory(root: str | Path) -> dict[str, Any]:
     root = Path(root).resolve()
     syllabus_record, syllabus = _syllabus_record(root / "syllabus.md")
@@ -310,8 +366,7 @@ def build_inventory(root: str | Path) -> dict[str, Any]:
     manifests = [syllabus_record] + [manifest_record(path, _posix(path, root)) for path in manifest_paths]
 
     notebooks = _unit_notebooks(root, unit_manifests) + _mock_notebooks(root, mock_manifests)
-    synthesis_notebooks = sorted(root.glob("synthesis/**/*.ipynb"), key=lambda item: _posix(item, root).encode("utf-8"))
-    notebooks.extend(notebook_record(path, _posix(path, root)) for path in synthesis_notebooks)
+    notebooks.extend(_synthesis_notebooks(root, synthesis_manifests))
     notebooks.sort(key=lambda item: item["path"].encode("utf-8"))
     manifests.sort(key=lambda item: item["path"].encode("utf-8"))
 
