@@ -808,7 +808,7 @@ input_paths:
 documents:
 - path: docs/course-structure.md
   kind: document
-  semantic_sha256: b112b830d773826bbf4bcf7c6279acdeb895e4b5fe71ff756628ba1367e5510d
+  semantic_sha256: bfe055cdcd1f9b609d6da132331d52acb69ec764cea99c8dac7471a79b5ec33e
 manifests:
 - path: mocktests/r1-001/manifest.yaml
   kind: yaml

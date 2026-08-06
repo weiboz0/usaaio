@@ -26,9 +26,9 @@ correctly make CI demand an owning unit and at least three shipped practice prob
 Plan 015 applies this authority order when sources disagree or differ in granularity:
 
 1. The current official syllabus defines required subject matter:
-   `https://www.usaaio.org/syllabus` (retrieved 2026-08-05).
+   `https://www.usaaio.org/syllabus` (retrieved 2026-08-06).
 2. The current competition page defines the round boundary:
-   `https://www.usaaio.org/2027-usa-na-aio` (retrieved 2026-08-05).
+   `https://www.usaaio.org/2027-usa-na-aio` (retrieved 2026-08-06).
    Round 1 covers the named foundation/basic-coding/ML/PyTorch/deep-learning/CNN
    categories; Round 2 covers everything on the syllabus and may require GPUs.
 3. Past papers and their rationale define observed depth and task texture, not the complete
@@ -61,8 +61,8 @@ The exhaustive audit may refine placement and prerequisites but may not silently
 | Kernels / positive semidefiniteness | **Current gap; required.** | Round 1 mathematical foundation / SVM bridge | Teach PSD matrices, kernel validity, and at least one proof/counterexample workflow; incidental PSD language in another unit does not count. |
 | Convex optimization | **Partial; required expansion.** | Round 1 | Convex sets/functions, first-order optimality, constrained formulation, Lagrangian intuition, and duality at the depth needed for linear/logistic models and SVM. |
 | Classical ML breadth | **Current gap beyond kNN/linear regression.** | Round 1 | Logistic regression, SVM, decision trees, ensemble learning, and k-means, each with theory/programming and comparison boundaries. |
-| Neural-network losses and training | **Current gap; required.** | Round 1 | Softmax, cross-entropy, forward propagation, backpropagation by hand, and a fully connected network from scratch. PyTorch autograd/optimizer use is taught only after the manual derivation, not used as a substitute for it. |
-| Batch normalization and dropout | **Current gap as standalone knowledge points; required.** | Round 1 | Give each honest concept ownership and at least three practices under the repository coverage rule; do not assess BatchNorm behavior only under `layer-freezing` or `resnet-architecture` tags. |
+| Neural-network losses and training | **Partial; completion required.** Manual forward propagation is covered; training is not. | Round 1 | Reuse the shipped forward-pass teaching, then add softmax, cross-entropy, backpropagation by hand, and a fully connected training loop from scratch. PyTorch autograd/optimizer use follows the manual derivation rather than substituting for it. |
+| Batch normalization and dropout | **BatchNorm partial after Plan 014; dropout missing; both require completion.** | Round 1 | Give each honest concept ownership and at least three practices under the repository coverage rule; the existing BatchNorm controls clinic is useful theory evidence but does not cover derivation, implementation, or training. |
 | Transformers and NLP beyond embeddings | **Current gap; required for Round 2.** | Round 2 extension | Attention, multi-head/self-attention, positional encoding, transformer architecture, complexity, from-scratch implementation, NLP transformers, pre-training/fine-tuning, and application bridges to vision transformers and graph neural networks. |
 | Advanced vision and generative AI | **Current gap; required for Round 2.** | Round 2 extension | Object detection, UNet, autoencoders, VAE, GAN, DDPM, and Stable Diffusion, with prerequisite closure and both theory/programming. |
 | Scientific/open-ended modeling | **Observed Round 2 capability, not a single official bullet.** | Round 2 capstone | GPU workflow, inverse problems, mixture/parameter regression, experiment design, and open-ended model evaluation, taught as integration rather than as an unstructured topic dump. |
@@ -139,19 +139,19 @@ It first records the official category hierarchy and its round policy:
 categories:
   - id: machine-learning
     parent: null
-    source_refs: [official-syllabus-2026-08-05, official-round-policy-2027]
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
     required_for: [round-1, round-2]
   - id: supervised-learning
     parent: machine-learning
-    source_refs: [official-syllabus-2026-08-05]
+    source_refs: [official-syllabus-2026-08-06]
     required_for: [round-1, round-2]
   - id: deep-learning-foundation
     parent: null
-    source_refs: [official-syllabus-2026-08-05, official-round-policy-2027]
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
     required_for: [round-1, round-2]
   - id: transformers
     parent: null
-    source_refs: [official-syllabus-2026-08-05, official-round-policy-2027]
+    source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
     required_for: [round-2]
 ```
 
@@ -163,9 +163,9 @@ validating atomic topics.
 Every atomic entry then has:
 
 ```yaml
-- id: linear-regression-estimator-derivation
+- id: ols-normal-equations-rank-and-pseudoinverse
   parent: supervised-learning
-  source_refs: [official-syllabus-2026-08-05]
+  source_refs: [official-syllabus-2026-08-06]
   required_for: [round-1, round-2]
   modalities: [theory, derivation]
 ```
@@ -291,11 +291,11 @@ Layers are fixed to:
 Each knowledge point records:
 
 ```yaml
-- id: linear-regression-estimator-derivation
+- id: ols-normal-equations-rank-and-pseudoinverse
   layer: round-1-core
   requirement: required
   coverage: partial
-  source_refs: [official-syllabus-2026-08-05]
+  source_refs: [official-syllabus-2026-08-06]
   depends_on: [matrix-multiplication, gradient]
   shipped_concepts: [linear-regression, mse-loss]
   evidence_by_modality:
@@ -451,8 +451,9 @@ running the collision guard.
 1. **Round 1 mathematical completion:** conditional probability, Bayes, Hoeffding,
    closed-form linear-regression estimator, rank/pseudoinverse conditions, PCA eigenproblem
    and NumPy class, PSD/kernel proofs, convexity, constrained optimization, and duality.
-2. **Round 1 neural-training completion:** softmax, cross-entropy, manual forward/backward
-   propagation, fully connected network from scratch, then PyTorch autograd/optimizers;
+2. **Round 1 neural-training completion:** reuse the shipped manual forward-propagation
+   prerequisite, then add softmax, cross-entropy, manual backpropagation, a trained fully
+   connected network from scratch, and PyTorch autograd/optimizers;
    BatchNorm and dropout receive explicit concept ownership and practice.
 3. **Round 1 classical-model breadth:** logistic regression, SVM, decision trees,
    ensembles, and k-means, with comparison and implementation exercises.
@@ -588,8 +589,10 @@ notebooks unchanged.
   single audit-document generator are now explicit; the refresh remediation and existing
   notebook-execution behavior are clarified.
 
-**GATE RESULT: PASS — 4/4.** Implementation remains blocked on Task 0 until Plan 014 is
-merged or explicitly abandoned.
+**GATE RESULT: PASS — 4/4.** At gate time implementation remained blocked on Task 0 until
+Plan 014 was merged or explicitly abandoned. Execution update, 2026-08-06: Plan 014 merged
+at the squash commit recorded in `docs/audits/015-plan014-reconciliation.md`; the block is
+resolved and the post-014 baseline was recomputed before implementation.
 
 ## Post-Execution Report
 

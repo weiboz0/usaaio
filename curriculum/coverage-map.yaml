@@ -34,9 +34,9 @@ planned_units:
   - id: P015-R2-TRANSFORMERS-NLP
     title: Attention, Transformers, and NLP
     layer: round-2-extension
-    prerequisites: [C6-pytorch, C8-embeddings, P015-R1-NEURAL-TRAINING]
+    prerequisites: [C6-pytorch, C7-cnn-transfer, C8-embeddings, P015-R1-NEURAL-TRAINING]
     knowledge_points: [attention-mechanism-foundations, self-attention, multi-head-attention, positional-encoding, attention-complexity-analysis, attention-from-scratch, transformer-architecture-foundations, transformer-nlp-applications, vision-transformers, graph-neural-network-transformer-applications, nlp-transformers, nlp-pretraining, nlp-fine-tuning]
-    provisional_concepts: [attention, self-attention, multi-head-attention, positional-encoding, transformer-blocks, attention-complexity, nlp-transformers, pretraining, fine-tuning, vision-transformers, graph-attention]
+    provisional_concepts: [attention, self-attention, multi-head-attention, positional-encoding, transformer-blocks, layer-normalization, residual-connections, position-wise-feed-forward-network, attention-complexity, nlp-transformers, pretraining, fine-tuning, vision-transformers, graph-attention]
     estimated_hours: {min: 42, max: 64}
     schedule_action: extend
   - id: P015-R2-VISION-GEN
@@ -50,9 +50,9 @@ planned_units:
   - id: P015-R2-CAPSTONE
     title: GPU Scientific Modeling Capstone
     layer: round-2-extension
-    prerequisites: [C10-competition-craft, P015-R2-TRANSFORMERS-NLP, P015-R2-VISION-GEN]
-    knowledge_points: [gpu-colab-l4-workflow, scientific-ml-inverse-problems, open-ended-experiment-design, open-ended-model-evaluation, mixture-parameter-regression]
-    provisional_concepts: [colab-gpu-workflow, inverse-problems, scientific-ml, experiment-design, ablation-analysis, mixture-parameter-estimation]
+    prerequisites: [C10-competition-craft, P015-R1-CLASSICAL-BREADTH, P015-R2-TRANSFORMERS-NLP, P015-R2-VISION-GEN]
+    knowledge_points: [gpu-colab-l4-workflow, semi-supervised-pseudo-labeling, scientific-ml-inverse-problems, open-ended-experiment-design, open-ended-model-evaluation, mixture-parameter-regression]
+    provisional_concepts: [colab-gpu-workflow, semi-supervised-learning, pseudo-labeling, inverse-problems, scientific-ml, experiment-design, ablation-analysis, mixture-parameter-estimation]
     estimated_hours: {min: 30, max: 46}
     schedule_action: extend
 
@@ -1314,7 +1314,7 @@ knowledge_points:
     requirement: required
     coverage: missing
     source_refs: [official-syllabus-2026-08-06]
-    depends_on: [attention-from-scratch, batch-normalization, dropout]
+    depends_on: [attention-from-scratch, multilayer-perceptron-model]
     shipped_concepts: []
     evidence_by_modality:
       theory: {lesson_anchors: [], practices: [], assessments: []}
@@ -1323,8 +1323,8 @@ knowledge_points:
     disposition: new-unit
     destination: P015-R2-TRANSFORMERS-NLP
     deficits: {modalities_missing: [theory, derivation, implementation]}
-    rationale: Transformer occurrences refer only to sklearn transformers; no transformer block architecture exists.
-    consequence: Round 2 transformer architecture is absent.
+    rationale: Transformer occurrences refer only to sklearn transformers; no attention-residual-LayerNorm-feed-forward block architecture exists.
+    consequence: The standard transformer block and its normalization/residual system are absent.
   - id: transformer-nlp-applications
     layer: round-2-extension
     requirement: required
@@ -1568,7 +1568,7 @@ knowledge_points:
     requirement: required
     coverage: missing
     source_refs: [official-syllabus-2026-08-06]
-    depends_on: [denoising-diffusion-probabilistic-models, autoencoder, transformer-nlp-applications]
+    depends_on: [denoising-diffusion-probabilistic-models, variational-autoencoder, transformer-nlp-applications]
     shipped_concepts: []
     evidence_by_modality:
       theory: {lesson_anchors: [], practices: [], assessments: []}
@@ -1629,9 +1629,9 @@ knowledge_points:
     consequence: VAE and diffusion objectives lack a prerequisite.
   - id: gpu-colab-l4-workflow
     layer: round-2-extension
-    requirement: bridge
+    requirement: required
     coverage: missing
-    source_refs: [official-round-policy-2027-2026-08-06, plan-015-preliminary-decisions]
+    source_refs: [official-round-policy-2027-2026-08-06]
     depends_on: [colab-coding-submission, pytorch-autograd-and-optimizer-training]
     shipped_concepts: []
     evidence_by_modality:
@@ -1642,7 +1642,24 @@ knowledge_points:
     destination: P015-R2-CAPSTONE
     deficits: {modalities_missing: [implementation, model-training, competition-workflow]}
     rationale: The only device teaching says the course is CPU-only; no Colab L4, device movement, memory handling, or GPU training is practiced.
-    consequence: Students cannot execute the observed R2 GPU workflow.
+    consequence: Students cannot execute the official R2 GPU workflow.
+  - id: semi-supervised-pseudo-labeling
+    layer: round-2-extension
+    requirement: bridge
+    coverage: missing
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    depends_on: [convolutional-neural-network-basics, k-means-clustering, open-ended-experiment-design]
+    shipped_concepts: []
+    evidence_by_modality:
+      theory: {lesson_anchors: [], practices: [], assessments: []}
+      implementation: {lesson_anchors: [], practices: [], assessments: []}
+      model-training: {lesson_anchors: [], practices: [], assessments: []}
+      competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: new-unit
+    destination: P015-R2-CAPSTONE
+    deficits: {modalities_missing: [theory, implementation, model-training, competition-workflow]}
+    rationale: No limited-label learning, pseudo-label selection, clustering-assisted labeling, or leakage-safe validation workflow exists.
+    consequence: The observed R2 semi-supervised image-modeling capability is missing.
   - id: scientific-ml-inverse-problems
     layer: round-2-extension
     requirement: bridge

@@ -27,21 +27,22 @@ MAJOR_EXISTING_UNIT_EXTENSIONS = (
 
 TRANCHE_QUEUE = (
     (
-        "Round 1 mathematical completion",
+        "Round 1 foundation, workflow, and mathematical completion",
         (
+            "First close F1 seaborn and C10 Colab/Markdown/round-policy workflow gaps; then "
             "F5 extension: conditional probability, Bayes, and Hoeffding; C2 extension: "
             "closed-form regression, rank, and pseudoinverse conditions; C9 extension: the "
-            "PCA eigenproblem and NumPy class; then PSD/kernel proofs, convexity, constrained "
-            "optimization, and duality."
+            "PCA eigenproblem and NumPy class; finish with PSD/kernel proofs, convexity, "
+            "constrained optimization, and duality."
         ),
     ),
     (
         "Round 1 neural-training completion",
         (
             "Softmax, cross-entropy, manual backpropagation, a fully connected network from "
-            "scratch, then PyTorch autograd/optimizers, explicit BatchNorm/dropout ownership, "
-            "and C7 CNN training. Forward propagation is already a shipped prerequisite, not "
-            "a new gap."
+            "scratch, then complete C6 model training through PyTorch autograd/optimizers, "
+            "explicit BatchNorm/dropout ownership, and C7 CNN training. Forward propagation "
+            "is already a shipped prerequisite, not a new gap."
         ),
     ),
     (
@@ -55,7 +56,8 @@ TRANCHE_QUEUE = (
         "Round 2 transformers and NLP",
         (
             "Self/multi-head attention, positional encoding, transformer architecture and "
-            "complexity, from-scratch attention, NLP applications, pre-training, and "
+            "complexity, from-scratch attention, LayerNorm/residual/feed-forward block "
+            "structure, C8 word-embedding training, NLP applications, pre-training, and "
             "fine-tuning."
         ),
     ),
@@ -69,8 +71,8 @@ TRANCHE_QUEUE = (
     (
         "Round 2 open-ended/GPU capstone",
         (
-            "Inverse problems, image tasks, mixture-parameter estimation, experiment design, "
-            "reproducibility, GPU workflow, and model evaluation."
+            "Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter "
+            "estimation, experiment design, reproducibility, GPU workflow, and model evaluation."
         ),
     ),
 )
@@ -200,7 +202,7 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
                 f"{_format_number(scoped_maximum)} hours**."
             ),
             (
-                "Smaller existing-unit corrections in C10, F1, C6, and C8 are not yet "
+                "Additional existing-unit corrections in C10, F1, C6, and C8 are not yet "
                 "estimated, so this is not a complete roadmap total."
             ),
             "",

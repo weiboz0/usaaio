@@ -10,17 +10,21 @@
 - [x] 007 — units tranche 3: C4+C2+C3 (docs/plans/007-units-tranche-3.md)
 - [x] 008 — units tranche 4: C5+C6 (merged)
 - [x] 009 — units tranche 5: C7+C8 (merged)
-- [x] 010 — units tranche 6: F6+C9+C10 (merged — curriculum complete)
+- [x] 010 — units tranche 6: F6+C9+C10 (merged — original 16-unit shipped sequence complete)
 - [x] 011 — first full mock test r1-001 through the pipeline (merged — owns answer-key reproduction + PDF build)
-- [x] 012 — course-structure doc (merged — roadmap complete) (units -> semesters/weeks pacing)
+- [x] 012 — course-structure doc (merged — original shipped schedule documented)
 - [x] 013 — audit remediation (merged)
 - [x] 014 — enrichment tranche (merged — retag pass, 2 error clinics, F6-p25 synthesis problem, targeted items)
+- [x] 015 — layered official-topic audit and R1/R2 roadmap (one curriculum graph, two exit gates)
 
 ## Deferred, with a named owner plan still to be written
 
-- [ ] softmax + cross-entropy-loss into C5 — deferred from plan 014 Task 3. Must resolve C5's
-      capacity explicitly, place the section after `mlp-architecture`, respect the
-      no-autograd-training boundary, and note the CE-gradient proof's F4 dependency.
+- [ ] **Execute the Plan 015 content tranches.** The canonical owner/order now lives in
+      `curriculum/coverage-map.yaml` and `docs/curriculum-roadmap.md`: R1 mathematics,
+      R1 neural training, R1 classical breadth, R2 transformers/NLP, R2 vision/generative,
+      then the R2 GPU capstone. Softmax/cross-entropy are owned by
+      `P015-R1-NEURAL-TRAINING`; future work must update the shipped syllabus and roadmap
+      atomically rather than maintaining a second gap list here.
 - [ ] **Unit capacity: C7 and C5.** C7 ships 27 problems against the 16–24 band — over it, and
       recorded as non-conformant in `docs/unit-standards.md` rather than excused. C5 carries the
       same unresolved question. Plan 014's gate rejected two attempts to make the overflow legal

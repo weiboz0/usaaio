@@ -23,6 +23,11 @@ categories:
     kind: official-policy
     source_refs: [official-syllabus-2026-08-06, official-round-policy-2027-2026-08-06]
     required_for: [round-1, round-2]
+  - id: round-2-gpu-policy
+    parent: null
+    kind: official-policy
+    source_refs: [official-round-policy-2027-2026-08-06]
+    required_for: [round-2]
   - id: mathematical-foundations
     parent: null
     kind: official
@@ -487,7 +492,7 @@ atomic_targets:
     source_refs: [official-syllabus-2026-08-06]
     required_for: [round-2]
     modalities: [theory, derivation, implementation]
-    acceptance: [solid-and-deep-understanding]
+    acceptance: [solid-and-deep-understanding, layer-normalization, residual-connections, position-wise-feed-forward-network]
   - id: transformer-nlp-applications
     parent: transformer-applications
     source_refs: [official-syllabus-2026-08-06]
@@ -581,12 +586,19 @@ atomic_targets:
     required_for: [round-2]
     modalities: [theory, derivation, implementation]
 
-  # Observed Round 2 integration capabilities, not official syllabus bullets.
+  # Official Round 2 execution policy.
   - id: gpu-colab-l4-workflow
-    parent: observed-round-2-capabilities
-    source_refs: [official-round-policy-2027-2026-08-06, plan-015-preliminary-decisions]
+    parent: round-2-gpu-policy
+    source_refs: [official-round-policy-2027-2026-08-06]
     required_for: [round-2]
     modalities: [implementation, model-training, competition-workflow]
+
+  # Observed Round 2 integration capabilities, not official syllabus bullets.
+  - id: semi-supervised-pseudo-labeling
+    parent: observed-round-2-capabilities
+    source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]
+    required_for: [round-2]
+    modalities: [theory, implementation, model-training, competition-workflow]
   - id: scientific-ml-inverse-problems
     parent: observed-round-2-capabilities
     source_refs: [reference-analysis-2026-08-03, r2-2026-index-local, r2-2026-rationale-local, plan-015-preliminary-decisions]

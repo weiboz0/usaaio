@@ -1,16 +1,20 @@
-# USAAIO Round 1 Syllabus
+# USAAIO Shipped Curriculum Syllabus
 
-The curriculum for a high schooler whose background is exactly **Calculus AB + basic Python**.
-Everything beyond that baseline is taught by a unit below;
-nothing may be used before it is taught (enforced by `prereq-check`, plan 004).
+This is the currently shipped, R1-first curriculum for a high schooler whose background is
+exactly **Calculus AB + basic Python**. Every concept declared in the contract below is taught
+before use (enforced by `prereq-check`). The contract is not a claim that every topic in the
+official Round 1 or Round 2 syllabus has shipped; audited gaps and their destinations live in
+`curriculum/coverage-map.yaml` and `docs/curriculum-roadmap.md`.
 
 **Machine-readable contract:** the YAML block immediately after the
 syllabus-canonical sentinel comment below is the canonical syllabus.
 Tooling parses exactly that fence; any other YAML fence in this repo is illustrative.
 Narrative text refers to concepts by their vocabulary `id` so prose and YAML cannot drift.
 
-Grounding: unit scope and sequencing derive from `reference/analysis.md`
-(2026 Round 1 paper, n=1 fully indexed, plus 2025 structural metadata).
+Grounding: shipped unit scope began from the indexed 2026 Round 1 paper. The current official
+and observed-source boundary is frozen in `curriculum/sources.yaml` and
+`curriculum/official-topics.yaml`; the coverage map reconciles those sources with this shipped
+contract.
 
 <!-- syllabus-canonical -->
 ```yaml
@@ -274,9 +278,9 @@ sub-parts of the 2026 integrative arc.
 `bias-variance-intuition` is deliberately intuitive; its statistical vocabulary
 (`variance`, `expectation`) firms up in F5 and is exercised in C5's
 `weight-init-variance` derivation.
-`C2-linear-models` is gradient-view only: normal equations require matrix inversion,
-which the vocabulary deliberately omits (`invertibility-via-rank` covers the exam's
-reasoning needs).
+`C2-linear-models` currently teaches the gradient view. The official closed-form OLS target —
+normal equations, rank/identifiability conditions, and pseudoinverse behavior — is therefore
+recorded as partial and assigned back to C2 in the roadmap rather than treated as unnecessary.
 Fitting itself is deferred to `C3-gradient-descent`; C2 practice evaluates and
 differentiates `mse-loss` for given parameters and reasons about `sparsity` —
 so every C2 concept has practice without a training loop.
@@ -296,3 +300,7 @@ F1 → F2 → C1 → F4 → F3 → F5 → C4 → C2 → C3 → C5 → C6 → C7 
 Foundation units interleave with core units so the student reaches applied work
 (C4) early — F5 precedes C4 because `feature-scaling` standardization needs `variance`;
 F6 is deferred until C8 motivates it (the similarity matrix begs for SVD).
+
+This order is the shipped path. The full architecture reuses it as shared foundation and
+Round 1 core, then attaches Round 2 extensions without duplicating probability, linear
+algebra, PyTorch, or other prerequisites; see `docs/curriculum-architecture.md`.

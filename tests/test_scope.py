@@ -1281,7 +1281,7 @@ def test_both_documents_end_with_fixed_six_tranche_queue(tmp_path: Path) -> None
     rendered = renderer.render_documents(tmp_path)
 
     titles = [
-        "Round 1 mathematical completion",
+        "Round 1 foundation, workflow, and mathematical completion",
         "Round 1 neural-training completion",
         "Round 1 classical-model breadth",
         "Round 2 transformers and NLP",
