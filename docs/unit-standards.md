@@ -33,8 +33,8 @@ the content gate's reviewers enforce the qualitative parts against this document
   earlier results), 2 scenario analyses, 2 challenge problems (advanced, within closure).
 - **Difficulty spread:** roughly 30% intro / 45% core / 25% advanced, tagged per problem
   in the manifest (`difficulty:` informational field).
-- Every taught concept exercised by **≥3 problems** (coverage-check enforces ≥1;
-  reviewers enforce the rest).
+- Every taught concept exercised by **≥3 problems** — `coverage-check` enforces this
+  MACHINE-SIDE since plan 013 (it previously enforced only ≥1 and left the rest to reviewers).
 
 ## Per-unit review material
 

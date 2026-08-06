@@ -36,7 +36,29 @@ the residual arcs, and Task 1's tooling shrinks accordingly. Record the verdict 
 > is the per-candidate semantic judgment; this scan only proves the audit is worth running
 > and gives it a starting list.
 
-## Task 1 — The synthesis set (only for what Task 0b leaves uncovered)
+> **TASK 0b VERDICT (executed 2026-08-05, independent sol session, read-only):**
+> **5 of the 6 planned arcs are ALREADY ACHIEVED by existing problems** and need only
+> retagging; **only s01 (Gram → spectrum → low-rank) requires a purpose-built problem.**
+> Per-arc: s01 PARTIAL (F6-p09/p17/p21 stop at spectral reconstruction — low-rank never
+> joins the same graded chain); s02 ACHIEVED (C3-p13, C3-p15); s03 ACHIEVED (C5-p12,
+> C5-p16); s04 ACHIEVED (C9-p14); s05 ACHIEVED (C10-p13/p17/p18); s06 ACHIEVED (C7-p11,
+> C7-p16). ~50 problems confirmed as substantive foreign-concept exercisers, under a stated
+> bar (a scored value, proof, constraint, diagnosis, or written justification must APPLY the
+> foreign concept; supplied objects, distractors, ban-list names and incidental mentions are
+> rejected). Borderlines were resolved conservatively — C1's qualitative "variance"
+> vocabulary NO; "GradientBoosting" in a ban list NO; C8's "rank" as list position NO — and
+> three otherwise-qualifying candidates (F3-p16, F4-p13, C2-p18) were REJECTED for violating
+> prereq closure.
+>
+> **CONSEQUENCE — this plan shrinks:** no `synthesis/` tree of six arcs. Task 1 becomes a
+> retagging pass plus ONE synthesis problem, and the eight-consumer tooling work reduces
+> accordingly (a single problem still needs a home; it is placed as **F6-p25** inside the
+> owning unit rather than a new top-level tree, so NO new consumer wiring is required at
+> all — the existing checks already cover `units/*/practice/`). The eight-consumer list and
+> its broken-fixture acceptance tests are therefore SUPERSEDED; the guard that matters
+> instead is problem-level closure enforcement for cross-unit tags (added this plan).
+
+## Task 1 — SUPERSEDED BY THE 0b VERDICT (retag pass + one in-unit problem)
 
 New top-level `synthesis/` directory (NOT a syllabus unit — no new concepts):
 `synthesis/manifest.yaml` + `synthesis/problems/sNN.ipynb` + `sNN_solution.ipynb`.
