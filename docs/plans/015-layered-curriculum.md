@@ -766,5 +766,10 @@ Because no student problem or solution changed, blind solving was not applicable
 - Independent Opus: Approved with suggestions; every suggestion is fixed above.
 - GLM-5.2: Approved.
 - Supplemental independent semantic Codex review: Approved.
-- PR creation, `scripts/pre-merge-guard.sh --pr`, fresh-base equality, and squash merge remain
-  to be recorded during shipping.
+- PR #16 was opened from `feature/plan-015-layered-curriculum` into `main`.
+- A fresh fetch resolved `origin/main` and the branch merge-base to the identical SHA
+  `5d197e5eef3ee1bf6d7812aa6807d0e802d28637`.
+- The first PR-aware guard invocation exposed that `uv` was absent from the bare shell
+  `PATH`; rerunning with the repository-standard `PATH=/home/chris/.local/bin:$PATH` and
+  `UV_CACHE_DIR=/tmp/uvcache` passed `scripts/pre-merge-guard.sh --pr`.
+- Squash merge remains to be recorded by the PR history.
