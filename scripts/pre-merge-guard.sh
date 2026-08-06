@@ -35,7 +35,8 @@ if [[ "$MODE" == "--pr" ]]; then
     refs+=(origin/main)
     check_roadmap_union=1
   else
-    echo "note: origin/main not reachable — checking worktree only"
+    echo "FAIL: origin/main fetch unavailable; --pr union is unverified" >&2
+    fail=1
   fi
 elif [[ -n "$MODE" ]]; then
   echo "usage: pre-merge-guard.sh [--pr]   (unknown argument: $MODE)" >&2
@@ -56,8 +57,15 @@ for dir in units mocktests; do
 done
 
 if [[ $check_roadmap_union -eq 1 ]]; then
-  base=$(git merge-base HEAD origin/main)
-  roadmap_collisions=$(python3 - "$base" <<'PY'
+  if ! base=$(git merge-base HEAD origin/main 2>/dev/null); then
+    echo "FAIL: origin/main merge-base unavailable; --pr union is unverified" >&2
+    fail=1
+    check_roadmap_union=0
+  fi
+fi
+
+if [[ $check_roadmap_union -eq 1 ]]; then
+  if ! roadmap_collisions=$(uv run python - "$base" <<'PY'
 import subprocess
 import sys
 from pathlib import Path
@@ -121,7 +129,11 @@ for label, base, worktree, main in zip(
                 f"(worktree={worktree.get(key)!r}, origin/main={main.get(key)!r})"
             )
 PY
-)
+); then
+    echo "FAIL: origin/main roadmap union could not be evaluated; --pr union is unverified" >&2
+    fail=1
+    roadmap_collisions=""
+  fi
   if [[ -n "$roadmap_collisions" ]]; then
     printf '%s\n' "$roadmap_collisions"
     fail=1

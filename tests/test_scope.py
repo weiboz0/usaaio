@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import os
+import re
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -150,17 +152,41 @@ units:
         )
     sources = {
         "source_schema_version": 1,
+        "canonical_path_normalization": {
+            "id": "official-topic-paths-v1",
+            "unicode": "NFC",
+            "whitespace": "collapse",
+            "ordering": "source-order",
+            "serialization": 'JSON UTF-8 array; ensure_ascii=false; separators=(",", ":")',
+        },
         "sources": [
             {
                 "id": "source-1",
+                "title": "Official topic source",
                 "authority": "official-syllabus",
+                "url": "https://example.invalid/syllabus",
+                "retrieved": "2026-08-06",
                 "review_after": "2099-01-01",
+                "committed": False,
+                "local_only": False,
+                "normalization": "official-topic-paths-v1",
+                "topic_paths_sha256": (
+                    "b3301dc168749bdd174ec9cddfc43a78d39f2aad60f25136502ea45fd2a1ce3a"
+                ),
+                "topic_paths": ["Official > Topic"],
             }
         ],
     }
     topics = {
         "official_topics_schema_version": 1,
-        "allowed_modalities": ["theory", "derivation"],
+        "allowed_modalities": [
+            "theory",
+            "derivation",
+            "proof",
+            "implementation",
+            "model-training",
+            "competition-workflow",
+        ],
         "categories": [
             {
                 "id": "foundation",
@@ -339,6 +365,167 @@ def test_roadmap_version_requires_exact_integer_type(tmp_path: Path, value: obje
         data["roadmap"]["roadmap_version"] = value
 
     _assert_error(_report_after(tmp_path, mutate), "unsupported roadmap_version")
+
+
+@pytest.mark.parametrize(
+    ("document", "field", "value", "message"),
+    [
+        ("sources", "source_schema_version", True, "source_schema_version"),
+        ("sources", "source_schema_version", 1.0, "source_schema_version"),
+        ("sources", "source_schema_version", 2, "source_schema_version"),
+        ("topics", "official_topics_schema_version", True, "official_topics_schema_version"),
+        ("topics", "official_topics_schema_version", 1.0, "official_topics_schema_version"),
+        ("topics", "official_topics_schema_version", 2, "official_topics_schema_version"),
+    ],
+)
+def test_source_and_topic_schema_versions_require_exact_integer_one(
+    tmp_path: Path,
+    document: str,
+    field: str,
+    value: object,
+    message: str,
+) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        data[document][field] = value
+
+    _assert_error(_report_after(tmp_path, mutate), message)
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        (lambda row: row.update(id=""), "requires nonempty id"),
+        (lambda row: row.pop("title"), "requires nonempty title"),
+        (lambda row: row.update(authority="blog"), "unknown authority"),
+        (lambda row: row.update(committed="false"), "committed must be a boolean"),
+        (lambda row: row.update(local_only="false"), "local_only must be a boolean"),
+        (lambda row: row.update(retrieved="2026/08/06"), "invalid retrieved"),
+        (lambda row: row.pop("url"), "exactly one of url or path"),
+        (lambda row: row.pop("topic_paths_sha256"), "topic_paths_sha256 is required"),
+        (
+            lambda row: [
+                row.pop(field)
+                for field in ("normalization", "topic_paths_sha256", "topic_paths")
+            ],
+            "official source requires a canonical topic-path pin",
+        ),
+        (lambda row: row.update(normalization="free-form"), "unknown normalization"),
+        (lambda row: row["topic_paths"].append("Official > Added"), "topic_paths_sha256 mismatch"),
+    ],
+)
+def test_source_rows_strictly_validate_required_fields_enums_and_pinned_hash(
+    tmp_path: Path,
+    mutation: Callable[[dict[str, Any]], object],
+    message: str,
+) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        mutation(data["sources"]["sources"][0])
+
+    _assert_error(_report_after(tmp_path, mutate), message)
+
+
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        ("sources", {}, "sources must be a list"),
+        (
+            "canonical_path_normalization",
+            {"id": "free-form"},
+            "canonical_path_normalization must exactly equal",
+        ),
+    ],
+)
+def test_source_manifest_top_level_contract_is_strict(
+    tmp_path: Path, field: str, value: object, message: str
+) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        data["sources"][field] = value
+
+    _assert_error(_report_after(tmp_path, mutate), message)
+
+
+def test_nonofficial_local_source_does_not_require_topic_path_pin(tmp_path: Path) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        data["sources"]["sources"].append(
+            {
+                "id": "local-analysis",
+                "title": "Local analysis",
+                "authority": "design-rationale",
+                "path": "reference/analysis.md",
+                "retrieved": "2026-08-06",
+                "review_after": "2099-01-01",
+                "committed": True,
+                "local_only": False,
+            }
+        )
+
+    report = _report_after(tmp_path, mutate)
+
+    assert report.ok, report.errors
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        (
+            lambda topics: topics.update(categories={}),
+            "categories must be a list",
+        ),
+        (
+            lambda topics: topics["atomic_targets"].append("not-a-mapping"),
+            "atomic_targets row 1 must be a mapping",
+        ),
+        (
+            lambda topics: topics.update(allowed_modalities=["theory", "invented"]),
+            "allowed_modalities must exactly equal",
+        ),
+        (
+            lambda topics: topics["categories"][0].update(kind="invented"),
+            "unknown category kind",
+        ),
+        (
+            lambda topics: topics["categories"][0].update(source_refs="source-1"),
+            "source_refs must be a list of strings",
+        ),
+        (
+            lambda topics: topics["atomic_targets"][0].update(modalities="theory"),
+            "modalities must be a list of strings",
+        ),
+        (
+            lambda topics: topics["non_required_candidates"].append(
+                {
+                    "id": "candidate-a",
+                    "related_category": "foundation",
+                    "source_refs": ["source-1"],
+                    "requirement": "required",
+                    "audit_target": False,
+                }
+            ),
+            "requirement must be optional",
+        ),
+        (
+            lambda topics: topics["non_required_candidates"].append(
+                {
+                    "id": "candidate-a",
+                    "related_category": "foundation",
+                    "source_refs": ["source-1"],
+                    "requirement": "optional",
+                    "audit_target": True,
+                }
+            ),
+            "audit_target must be false",
+        ),
+    ],
+)
+def test_topic_map_strictly_validates_collections_fields_and_enums(
+    tmp_path: Path,
+    mutation: Callable[[dict[str, Any]], object],
+    message: str,
+) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        mutation(data["topics"])
+
+    _assert_error(_report_after(tmp_path, mutate), message)
 
 
 @pytest.mark.parametrize(
@@ -759,7 +946,16 @@ def test_roadmap_rejects_non_official_knowledge_points(tmp_path: Path) -> None:
 def test_knowledge_point_source_refs_must_exactly_match_target(tmp_path: Path) -> None:
     def mutate(data: dict[str, Any]) -> None:
         data["sources"]["sources"].append(
-            {"id": "source-2", "authority": "design-rationale", "review_after": "2099-01-01"}
+            {
+                "id": "source-2",
+                "title": "Second source",
+                "authority": "design-rationale",
+                "path": "docs/source-2.md",
+                "recorded": "2026-08-06",
+                "review_after": "2099-01-01",
+                "committed": True,
+                "local_only": False,
+            }
         )
         data["roadmap"]["knowledge_points"][0]["source_refs"].append("source-2")
 
@@ -909,6 +1105,48 @@ def test_planned_unit_prerequisite_cycle_fails(tmp_path: Path) -> None:
     _assert_error(_report_after(tmp_path, mutate), "planned-unit prerequisite cycle")
 
 
+@pytest.mark.parametrize("later_layer", ["round-2-extension", "optional-enrichment"])
+@pytest.mark.parametrize("transitive", [False, True], ids=["direct", "transitive"])
+def test_round_1_planned_units_cannot_depend_on_later_layer_planned_units(
+    tmp_path: Path, transitive: bool, later_layer: str
+) -> None:
+    def mutate(data: dict[str, Any]) -> None:
+        _add_r2_point(data)
+        data["roadmap"]["planned_units"][0]["layer"] = later_layer
+        prerequisite = "R2-topic-b"
+        if transitive:
+            data["roadmap"]["planned_units"].append(
+                {
+                    "id": "R1-bridge",
+                    "title": "Round 1 bridge",
+                    "layer": "round-1-core",
+                    "prerequisites": ["R2-topic-b"],
+                    "knowledge_points": [],
+                    "provisional_concepts": ["round-1-bridge"],
+                    "estimated_hours": {"min": 1, "max": 1},
+                    "schedule_action": "extend",
+                }
+            )
+            prerequisite = "R1-bridge"
+        data["roadmap"]["planned_units"].append(
+            {
+                "id": "R1-entry",
+                "title": "Round 1 entry",
+                "layer": "shared-foundation",
+                "prerequisites": [prerequisite],
+                "knowledge_points": [],
+                "provisional_concepts": ["round-1-entry"],
+                "estimated_hours": {"min": 1, "max": 1},
+                "schedule_action": "extend",
+            }
+        )
+
+    _assert_error(
+        _report_after(tmp_path, mutate),
+        "cannot depend on later-layer planned unit R2-topic-b",
+    )
+
+
 def test_provisional_concepts_cannot_ship_early(tmp_path: Path) -> None:
     def mutate(data: dict[str, Any]) -> None:
         _add_r2_point(data)
@@ -927,6 +1165,33 @@ def test_plan014_reconciliation_is_required_and_structured(tmp_path: Path, broke
         path.write_text("Plan 014 is **abandoned**.\n")
 
     _assert_error(check_scope(tmp_path), "Plan 014 reconciliation")
+
+
+@pytest.mark.parametrize(
+    ("line", "message"),
+    [
+        ("- Branch/PR:   ", "Branch/PR must be nonempty"),
+        ("- Date: 2026/08/06", "Date must be an ISO date"),
+        ("- Reason:   ", "Reason must be nonempty"),
+        ("- Owner decision:   ", "Owner decision must be nonempty"),
+    ],
+)
+def test_plan014_abandonment_fields_are_nonempty_and_date_is_iso(
+    tmp_path: Path, line: str, message: str
+) -> None:
+    _base_contract(tmp_path)
+    path = tmp_path / "docs" / "audits" / "015-plan014-reconciliation.md"
+    labels = ("Branch/PR", "Date", "Reason", "Owner decision")
+    replacement_label = next(label for label in labels if line.startswith(f"- {label}:"))
+    text = path.read_text()
+    text = re.sub(
+        rf"(?m)^- {re.escape(replacement_label)}:.*$",
+        line,
+        text,
+    )
+    path.write_text(text)
+
+    _assert_error(check_scope(tmp_path), message)
 
 
 def test_plan014_merged_squash_commit_must_be_ancestor(tmp_path: Path) -> None:
@@ -991,9 +1256,23 @@ def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: 
         assert "Current scheduled baseline: **435 minutes / 7.25 hours**" in document
         assert "| round-2-extension | 1 | 2 |" in document
         assert "| optional-enrichment | 0.5 | 1.5 |" in document
-        assert "| **Total planned delta** | **1.5** | **3.5** |" in document
+        assert "| **Planned-unit subtotal** | **1.5** | **3.5** |" in document
+        assert "Estimated major existing-unit extensions subtotal: **30–45 hours**" in document
+        assert "Minimum estimated scoped delta: **31.5–48.5 hours**" in document
+        assert "C10, F1, C6, and C8 are not yet estimated" in document
         assert "**8.5–10.5 manifested-baseline hours**" in document
         assert "**8.75–10.75 scheduled-baseline hours**" in document
+
+
+def test_real_renderer_distinguishes_planned_major_extension_and_minimum_scoped_deltas() -> None:
+    rendered = renderer.render_documents(Path(__file__).parents[1])
+
+    for document in rendered.values():
+        assert "| **Planned-unit subtotal** | **202** | **304** |" in document
+        assert "Estimated major existing-unit extensions subtotal: **30–45 hours**" in document
+        assert "Minimum estimated scoped delta: **232–349 hours**" in document
+        assert "C10, F1, C6, and C8 are not yet estimated" in document
+        assert "Total roadmap delta" not in document
 
 
 def test_both_documents_end_with_fixed_six_tranche_queue(tmp_path: Path) -> None:
@@ -1100,6 +1379,56 @@ def test_renderer_check_detects_stale_output_without_overwriting(tmp_path: Path)
 
     assert renderer.main(["--root", str(tmp_path), "--check"]) == 1
     assert audit.read_text() == "stale\n"
+
+
+def test_renderer_rejects_symlinked_output_file_without_touching_target(tmp_path: Path) -> None:
+    _base_contract(tmp_path)
+    outside = tmp_path / "outside.md"
+    outside.write_text("sentinel\n")
+    output = tmp_path / "docs" / "audits" / "015-coverage-audit.md"
+    output.symlink_to(outside)
+
+    assert renderer.main(["--root", str(tmp_path)]) == 1
+    assert outside.read_text() == "sentinel\n"
+
+
+def test_renderer_rejects_symlinked_output_parent_without_writing_outside(
+    tmp_path: Path,
+) -> None:
+    _base_contract(tmp_path)
+    audits = tmp_path / "docs" / "audits"
+    reconciliation = audits / "015-plan014-reconciliation.md"
+    reconciliation_text = reconciliation.read_text()
+    reconciliation.unlink()
+    audits.rmdir()
+    outside = tmp_path / "outside-audits"
+    outside.mkdir()
+    outside.joinpath("015-plan014-reconciliation.md").write_text(reconciliation_text)
+    audits.symlink_to(outside, target_is_directory=True)
+
+    assert renderer.main(["--root", str(tmp_path)]) == 1
+    assert not outside.joinpath("015-coverage-audit.md").exists()
+
+
+def test_renderer_replaces_outputs_atomically_inside_their_parent_directories(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _base_contract(tmp_path)
+    replacements: list[tuple[Path, Path]] = []
+    real_replace = os.replace
+
+    def record_replace(source: str | os.PathLike[str], target: str | os.PathLike[str]) -> None:
+        replacements.append((Path(source), Path(target)))
+        real_replace(source, target)
+
+    monkeypatch.setattr(os, "replace", record_replace)
+
+    assert renderer.main(["--root", str(tmp_path)]) == 0
+    assert {target.relative_to(tmp_path) for _, target in replacements} == {
+        Path("docs/audits/015-coverage-audit.md"),
+        Path("docs/curriculum-roadmap.md"),
+    }
+    assert all(source.parent == target.parent for source, target in replacements)
 
 
 def test_scope_pass_implies_roadmap_loader_and_renderer_accept_contract(tmp_path: Path) -> None:

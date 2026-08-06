@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import argparse
 import math
+import os
 import re
 import sys
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -16,6 +18,12 @@ from tools.model import KnowledgePoint, Roadmap, load_roadmap
 
 AUDIT_PATH = Path("docs/audits/015-coverage-audit.md")
 ROADMAP_PATH = Path("docs/curriculum-roadmap.md")
+MAJOR_EXISTING_UNIT_EXTENSIONS = (
+    ("F5", 8.0, 12.0),
+    ("C2", 6.0, 9.0),
+    ("C9", 8.0, 12.0),
+    ("C7", 8.0, 12.0),
+)
 
 TRANCHE_QUEUE = (
     (
@@ -137,6 +145,10 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
     }
     minimum = math.fsum(sorted(values[0] for values in by_layer.values()))
     maximum = math.fsum(sorted(values[1] for values in by_layer.values()))
+    extension_minimum = math.fsum(item[1] for item in MAJOR_EXISTING_UNIT_EXTENSIONS)
+    extension_maximum = math.fsum(item[2] for item in MAJOR_EXISTING_UNIT_EXTENSIONS)
+    scoped_minimum = math.fsum((minimum, extension_minimum))
+    scoped_maximum = math.fsum((maximum, extension_maximum))
     manifested_hours = baseline.manifested_minutes / 60
     scheduled_hours = baseline.scheduled_minutes / 60
     lines = [
@@ -163,12 +175,37 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
     lines.extend(
         [
             (
-                f"| **Total planned delta** | **{_format_number(minimum)}** | "
+                f"| **Planned-unit subtotal** | **{_format_number(minimum)}** | "
                 f"**{_format_number(maximum)}** |"
             ),
             "",
+            "### Estimated major existing-unit extensions",
+            "",
+            "| Existing unit | Minimum hours | Maximum hours |",
+            "|---|---:|---:|",
+            *(
+                f"| {unit_id} | {_format_number(unit_minimum)} | "
+                f"{_format_number(unit_maximum)} |"
+                for unit_id, unit_minimum, unit_maximum in MAJOR_EXISTING_UNIT_EXTENSIONS
+            ),
+            "",
             (
-                "Baseline plus planned delta: "
+                "Estimated major existing-unit extensions subtotal: "
+                f"**{_format_number(extension_minimum)}–"
+                f"{_format_number(extension_maximum)} hours**."
+            ),
+            (
+                "Minimum estimated scoped delta: "
+                f"**{_format_number(scoped_minimum)}–"
+                f"{_format_number(scoped_maximum)} hours**."
+            ),
+            (
+                "Smaller existing-unit corrections in C10, F1, C6, and C8 are not yet "
+                "estimated, so this is not a complete roadmap total."
+            ),
+            "",
+            (
+                "Baseline plus planned-unit subtotal: "
                 f"**{_format_number(manifested_hours + minimum)}–"
                 f"{_format_number(manifested_hours + maximum)} manifested-baseline hours** "
                 f"and **{_format_number(scheduled_hours + minimum)}–"
@@ -411,6 +448,39 @@ def render_documents(root: str | Path) -> dict[Path, str]:
     }
 
 
+def _safe_output_path(root: Path, relative: Path) -> Path:
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ValueError(f"renderer output must be a relative path inside the repository: {relative}")
+    path = root / relative
+    current = root
+    for part in relative.parts:
+        current /= part
+        if current.is_symlink():
+            raise ValueError(f"renderer output path may not contain symlinks: {relative}")
+    try:
+        path.parent.resolve(strict=False).relative_to(root)
+    except ValueError as exc:
+        raise ValueError(f"renderer output escapes repository root: {relative}") from exc
+    return path
+
+
+def _atomic_write(path: Path, content: str) -> None:
+    descriptor, temporary_name = tempfile.mkstemp(
+        dir=path.parent,
+        prefix=f".{path.name}.",
+        suffix=".tmp",
+    )
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", default=".")
@@ -424,15 +494,28 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     rendered = render_documents(root)
     stale: list[str] = []
-    for relative, content in rendered.items():
-        path = root / relative
+    outputs: list[tuple[Path, Path, str]] = []
+    try:
+        for relative, content in rendered.items():
+            path = _safe_output_path(root, relative)
+            if not args.check:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path = _safe_output_path(root, relative)
+            outputs.append((relative, path, content))
+    except (OSError, ValueError) as exc:
+        print(f"ERROR renderer: {exc}", file=sys.stderr)
+        return 1
+    for relative, path, content in outputs:
         if args.check:
             current = path.read_text(encoding="utf-8") if path.is_file() else None
             if current != content:
                 stale.append(relative.as_posix())
             continue
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(content, encoding="utf-8")
+        try:
+            _atomic_write(path, content)
+        except OSError as exc:
+            print(f"ERROR renderer: could not write {relative}: {exc}", file=sys.stderr)
+            return 1
     if stale:
         for path in stale:
             print(f"STALE {path}", file=sys.stderr)

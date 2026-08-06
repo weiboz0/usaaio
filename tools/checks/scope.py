@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import datetime as dt
+import hashlib
+import json
 import math
 import re
 import subprocess
+import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
@@ -23,6 +26,34 @@ COVERAGE_STATES = {"covered", "partial", "missing"}
 DISPOSITIONS = {"keep", "extend-existing-unit", "new-unit", "defer-optional"}
 SCHEDULE_ACTIONS = {"split", "replace", "extend"}
 ROUNDS = {"round-1", "round-2"}
+SOURCE_AUTHORITIES = {
+    "official-syllabus",
+    "official-round-policy",
+    "past-paper",
+    "design-rationale",
+}
+CATEGORY_KINDS = {
+    "official",
+    "official-policy",
+    "official-subcategory",
+    "pedagogical-bridge",
+    "observed",
+}
+ALLOWED_MODALITIES = [
+    "theory",
+    "derivation",
+    "proof",
+    "implementation",
+    "model-training",
+    "competition-workflow",
+]
+CANONICAL_PATH_NORMALIZATION = {
+    "id": "official-topic-paths-v1",
+    "unicode": "NFC",
+    "whitespace": "collapse",
+    "ordering": "source-order",
+    "serialization": 'JSON UTF-8 array; ensure_ascii=false; separators=(",", ":")',
+}
 
 
 def _yaml(path: Path) -> dict[str, Any]:
@@ -80,12 +111,28 @@ def _check_reconciliation(root: Path, errors: list[str]) -> None:
         errors.append("Plan 014 reconciliation must name exactly one resolution: merged or abandoned")
         return
     if abandoned:
-        required = ("Branch/PR:", "Date:", "Reason:", "Owner decision:")
-        missing = [label for label in required if label.lower() not in text.lower()]
-        if missing:
-            errors.append(
-                "Plan 014 reconciliation abandonment is missing " + ", ".join(missing)
+        fields: dict[str, str] = {}
+        for label in ("Branch/PR", "Date", "Reason", "Owner decision"):
+            match = re.search(
+                rf"(?mi)^[ \t]*-[ \t]*{re.escape(label)}:[ \t]*([^\r\n]*)$",
+                text,
             )
+            if match is None:
+                errors.append(f"Plan 014 reconciliation abandonment is missing {label}:")
+                continue
+            value = match.group(1).strip()
+            if not value:
+                errors.append(f"Plan 014 reconciliation abandonment {label} must be nonempty")
+                continue
+            fields[label] = value
+        date_value = fields.get("Date")
+        if date_value is not None:
+            try:
+                if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_value):
+                    raise ValueError
+                dt.date.fromisoformat(date_value)
+            except ValueError:
+                errors.append("Plan 014 reconciliation abandonment Date must be an ISO date")
         return
     match = re.search(r"squash commit is\s+`([0-9a-f]{7,40})`", text, re.IGNORECASE)
     if match is None:
@@ -104,30 +151,134 @@ def _check_reconciliation(root: Path, errors: list[str]) -> None:
         )
 
 
+def _iso_date(
+    value: object, label: str, errors: list[str]
+) -> dt.date | None:
+    if isinstance(value, dt.datetime):
+        errors.append(f"{label} has invalid date {value!r}")
+        return None
+    if isinstance(value, dt.date):
+        return value
+    if not isinstance(value, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
+        errors.append(f"{label} has invalid date {value!r}")
+        return None
+    try:
+        return dt.date.fromisoformat(value)
+    except ValueError:
+        errors.append(f"{label} has invalid date {value!r}")
+        return None
+
+
+def _canonical_topic_paths_sha256(paths: list[str]) -> str:
+    normalized = [
+        " ".join(unicodedata.normalize("NFC", path).split())
+        for path in paths
+    ]
+    serialized = json.dumps(
+        normalized,
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(serialized).hexdigest()
+
+
 def _check_sources(raw: dict[str, Any], errors: list[str]) -> set[str]:
-    rows = raw.get("sources") or []
-    ids = [str(row.get("id", "")) for row in rows if isinstance(row, dict)]
+    version = raw.get("source_schema_version")
+    if type(version) is not int or version != 1:
+        errors.append(f"unsupported source_schema_version {version!r}; expected integer 1")
+    expected_keys = {"source_schema_version", "canonical_path_normalization", "sources"}
+    if set(raw) != expected_keys:
+        errors.append(
+            f"sources top-level keys must exactly equal {sorted(expected_keys)}, got {sorted(raw)}"
+        )
+    if raw.get("canonical_path_normalization") != CANONICAL_PATH_NORMALIZATION:
+        errors.append(
+            "canonical_path_normalization must exactly equal official-topic-paths-v1 contract"
+        )
+    rows = raw.get("sources")
+    if not isinstance(rows, list):
+        errors.append("sources must be a list")
+        return set()
+    ids = [
+        str(row.get("id", ""))
+        for row in rows
+        if isinstance(row, dict) and isinstance(row.get("id"), str)
+    ]
     for duplicate in sorted(_duplicates(ids)):
         errors.append(f"duplicate source id {duplicate}")
     today = dt.datetime.now(tz=dt.UTC).date()
-    for row in rows:
+    for index, row in enumerate(rows):
+        label = f"sources row {index}"
         if not isinstance(row, dict):
-            errors.append("curriculum/sources.yaml: each source must be a mapping")
+            errors.append(f"{label} must be a mapping")
             continue
-        source_id = str(row.get("id", "<missing>"))
-        value = row.get("review_after")
-        try:
-            review_after = value if isinstance(value, dt.date) else dt.date.fromisoformat(str(value))
-        except ValueError:
-            errors.append(f"source {source_id} has invalid review_after {value!r}")
-            continue
-        if today > review_after:
+        for field in ("id", "title"):
+            _require_nonempty_string(row, field, label, errors)
+        source_id = row.get("id") if isinstance(row.get("id"), str) else f"row-{index}"
+        authority = row.get("authority")
+        if authority not in SOURCE_AUTHORITIES:
+            errors.append(f"source {source_id}: unknown authority {authority!r}")
+        for field in ("committed", "local_only"):
+            if type(row.get(field)) is not bool:
+                errors.append(f"source {source_id}: {field} must be a boolean")
+        locations = [
+            field
+            for field in ("url", "path")
+            if isinstance(row.get(field), str) and row[field].strip()
+        ]
+        if len(locations) != 1:
+            errors.append(f"source {source_id}: exactly one of url or path must be nonempty")
+        date_fields = [field for field in ("retrieved", "recorded") if field in row]
+        if not date_fields and "competition_year" not in row:
+            errors.append(
+                f"source {source_id}: requires retrieved, recorded, or competition_year"
+            )
+        for field in date_fields:
+            _iso_date(row.get(field), f"source {source_id} invalid {field}", errors)
+        if "competition_year" in row:
+            year = row.get("competition_year")
+            if type(year) is not int or year < 2000:
+                errors.append(f"source {source_id}: competition_year must be an integer")
+        review_after = _iso_date(
+            row.get("review_after"), f"source {source_id} invalid review_after", errors
+        )
+        if review_after is not None and today > review_after:
             errors.append(
                 "curriculum/sources.yaml: source "
                 f"{source_id} passed review_after {review_after}; open a source-refresh change "
                 "that repeats Task 1 and re-adjudicates affected rows"
             )
-    return set(ids)
+        path_fields = {"normalization", "topic_paths_sha256", "topic_paths"}
+        present_path_fields = path_fields & set(row)
+        if authority in {"official-syllabus", "official-round-policy"} and not present_path_fields:
+            errors.append(
+                f"source {source_id}: official source requires a canonical topic-path pin"
+            )
+        if present_path_fields:
+            for field in sorted(path_fields - present_path_fields):
+                errors.append(f"source {source_id}: {field} is required with topic_paths")
+            if row.get("normalization") != "official-topic-paths-v1":
+                errors.append(
+                    f"source {source_id}: unknown normalization {row.get('normalization')!r}"
+                )
+            topic_paths = row.get("topic_paths")
+            if not _is_string_list(topic_paths) or not topic_paths or any(
+                not path.strip() for path in topic_paths
+            ):
+                errors.append(f"source {source_id}: topic_paths must be nonempty strings")
+            else:
+                expected_hash = _canonical_topic_paths_sha256(topic_paths)
+                declared_hash = row.get("topic_paths_sha256")
+                if not isinstance(declared_hash, str) or not re.fullmatch(
+                    r"[0-9a-f]{64}", declared_hash
+                ):
+                    errors.append(f"source {source_id}: topic_paths_sha256 must be lowercase SHA-256")
+                elif declared_hash != expected_hash:
+                    errors.append(
+                        f"source {source_id}: topic_paths_sha256 mismatch; "
+                        f"expected {expected_hash}"
+                    )
+    return {source_id for source_id in ids if source_id}
 
 
 def _check_source_refs(
@@ -138,11 +289,139 @@ def _check_source_refs(
             errors.append(f"{label}: unknown source {source}")
 
 
+def _validate_topics_schema(raw: dict[str, Any], errors: list[str]) -> bool:
+    valid = True
+    version = raw.get("official_topics_schema_version")
+    if type(version) is not int or version != 1:
+        errors.append(
+            f"unsupported official_topics_schema_version {version!r}; expected integer 1"
+        )
+        valid = False
+    expected_keys = {
+        "official_topics_schema_version",
+        "allowed_modalities",
+        "categories",
+        "atomic_targets",
+        "non_required_candidates",
+    }
+    if set(raw) != expected_keys:
+        errors.append(
+            f"official-topics top-level keys must exactly equal {sorted(expected_keys)}, "
+            f"got {sorted(raw)}"
+        )
+        valid = False
+    if raw.get("allowed_modalities") != ALLOWED_MODALITIES:
+        errors.append(f"allowed_modalities must exactly equal {ALLOWED_MODALITIES}")
+        valid = False
+    collections: dict[str, list[Any]] = {}
+    for field in ("categories", "atomic_targets", "non_required_candidates"):
+        value = raw.get(field)
+        if not isinstance(value, list):
+            errors.append(f"{field} must be a list")
+            valid = False
+        else:
+            collections[field] = value
+    if len(collections) != 3:
+        return False
+
+    category_fields = {"id", "parent", "kind", "source_refs", "required_for"}
+    for index, row in enumerate(collections["categories"]):
+        label = f"categories row {index}"
+        if not isinstance(row, dict):
+            errors.append(f"{label} must be a mapping")
+            valid = False
+            continue
+        if set(row) != category_fields:
+            errors.append(f"{label} fields must exactly equal {sorted(category_fields)}")
+            valid = False
+        valid &= _require_nonempty_string(row, "id", label, errors)
+        parent = row.get("parent")
+        if parent is not None and (not isinstance(parent, str) or not parent.strip()):
+            errors.append(f"{label}: parent must be a nonempty string or null")
+            valid = False
+        if row.get("kind") not in CATEGORY_KINDS:
+            errors.append(f"{label}: unknown category kind {row.get('kind')!r}")
+            valid = False
+        for field in ("source_refs", "required_for"):
+            if not _require_string_list(row, field, label, errors) or not row.get(field):
+                errors.append(f"{label}: {field} must be nonempty")
+                valid = False
+        if _is_string_list(row.get("required_for")) and not set(row["required_for"]) <= ROUNDS:
+            errors.append(f"{label}: unknown required_for value")
+            valid = False
+
+    target_fields = {"id", "parent", "source_refs", "required_for", "modalities"}
+    for index, row in enumerate(collections["atomic_targets"]):
+        label = f"atomic_targets row {index}"
+        if not isinstance(row, dict):
+            errors.append(f"{label} must be a mapping")
+            valid = False
+            continue
+        allowed = target_fields | {"acceptance"}
+        if not target_fields <= set(row) or not set(row) <= allowed:
+            errors.append(f"{label} fields must contain {sorted(target_fields)} and only {sorted(allowed)}")
+            valid = False
+        for field in ("id", "parent"):
+            valid &= _require_nonempty_string(row, field, label, errors)
+        for field in ("source_refs", "required_for", "modalities"):
+            if not _require_string_list(row, field, label, errors) or not row.get(field):
+                errors.append(f"{label}: {field} must be nonempty")
+                valid = False
+        if _is_string_list(row.get("required_for")) and not set(row["required_for"]) <= ROUNDS:
+            errors.append(f"{label}: unknown required_for value")
+            valid = False
+        if _is_string_list(row.get("modalities")) and not set(row["modalities"]) <= set(
+            ALLOWED_MODALITIES
+        ):
+            errors.append(f"{label}: unknown modalities")
+            valid = False
+        if "acceptance" in row and (
+            not _is_string_list(row["acceptance"])
+            or not row["acceptance"]
+            or any(not item.strip() for item in row["acceptance"])
+        ):
+            errors.append(f"{label}: acceptance must be a nonempty list of strings")
+            valid = False
+
+    candidate_fields = {
+        "id",
+        "related_category",
+        "source_refs",
+        "requirement",
+        "audit_target",
+    }
+    for index, row in enumerate(collections["non_required_candidates"]):
+        label = f"non_required_candidates row {index}"
+        if not isinstance(row, dict):
+            errors.append(f"{label} must be a mapping")
+            valid = False
+            continue
+        if set(row) != candidate_fields:
+            errors.append(f"{label} fields must exactly equal {sorted(candidate_fields)}")
+            valid = False
+        for field in ("id", "related_category"):
+            valid &= _require_nonempty_string(row, field, label, errors)
+        if not _require_string_list(row, "source_refs", label, errors) or not row.get(
+            "source_refs"
+        ):
+            errors.append(f"{label}: source_refs must be nonempty")
+            valid = False
+        if row.get("requirement") != "optional":
+            errors.append(f"{label}: requirement must be optional")
+            valid = False
+        if row.get("audit_target") is not False:
+            errors.append(f"{label}: audit_target must be false")
+            valid = False
+    return valid
+
+
 def _check_topics(
     raw: dict[str, Any], known_sources: set[str], errors: list[str]
 ) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
-    category_rows = [row for row in raw.get("categories") or [] if isinstance(row, dict)]
-    target_rows = [row for row in raw.get("atomic_targets") or [] if isinstance(row, dict)]
+    if not _validate_topics_schema(raw, errors):
+        return {}, {}
+    category_rows = raw["categories"]
+    target_rows = raw["atomic_targets"]
     category_ids = [str(row.get("id", "")) for row in category_rows]
     target_ids = [str(row.get("id", "")) for row in target_rows]
     for duplicate in sorted(_duplicates(category_ids)):
@@ -218,6 +497,19 @@ def _check_topics(
         if unknown_modalities:
             errors.append(
                 f"atomic target {target_id}: unknown modalities {sorted(unknown_modalities)}"
+            )
+    for row in raw["non_required_candidates"]:
+        candidate_id = str(row["id"])
+        _check_source_refs(
+            f"non-required candidate {candidate_id}",
+            row["source_refs"],
+            known_sources,
+            errors,
+        )
+        if row["related_category"] not in categories:
+            errors.append(
+                f"non-required candidate {candidate_id}: unknown related_category "
+                f"{row['related_category']}"
             )
     return categories, targets
 
@@ -451,6 +743,25 @@ def _check_planned_units(
     cycles = _cycle_nodes(prerequisite_graph)
     if cycles:
         errors.append("planned-unit prerequisite cycle: " + ", ".join(sorted(cycles)))
+    early_layers = {"shared-foundation", "round-1-core"}
+    later_layers = {"round-2-extension", "optional-enrichment"}
+    for unit_id, row in planned.items():
+        if row.get("layer") not in early_layers:
+            continue
+        pending = list(prerequisite_graph[unit_id])
+        visited: set[str] = set()
+        while pending:
+            dependency = pending.pop()
+            if dependency in visited:
+                continue
+            visited.add(dependency)
+            dependency_row = planned[dependency]
+            if dependency_row.get("layer") in later_layers:
+                errors.append(
+                    f"planned unit {unit_id} cannot depend on later-layer planned unit "
+                    f"{dependency}"
+                )
+            pending.extend(prerequisite_graph[dependency])
     return planned
 
 

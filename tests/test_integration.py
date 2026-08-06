@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -167,6 +168,13 @@ def test_ci_local_wires_inventory_scope_and_generated_document_checks():
     assert "python -m tools.render_curriculum_roadmap --check" in script
 
 
+def test_pre_merge_guard_runs_embedded_yaml_with_uv_python():
+    script = (ROOT / "scripts" / "pre-merge-guard.sh").read_text()
+
+    assert "uv run python -" in script
+    assert "python3 -" not in script
+
+
 def _git(cwd: Path, *args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         ["git", *args], cwd=cwd, capture_output=True, text=True, check=True
@@ -187,6 +195,51 @@ def _roadmap(destination: str | None, planned_id: str | None) -> str:
         },
         sort_keys=False,
     )
+
+
+def _fake_uv_environment(tmp_path: Path) -> dict[str, str]:
+    executable = tmp_path / "bin" / "uv"
+    executable.parent.mkdir()
+    executable.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "[[ $1 == run ]]\n"
+        "shift\n"
+        "[[ $1 == python ]]\n"
+        "shift\n"
+        'exec "$TEST_PYTHON" "$@"\n'
+    )
+    executable.chmod(0o755)
+    env = os.environ.copy()
+    env["PATH"] = f"{executable.parent}:{env['PATH']}"
+    env["TEST_PYTHON"] = sys.executable
+    return env
+
+
+def test_pre_merge_guard_pr_mode_fails_when_origin_main_is_unavailable(tmp_path: Path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    script = repo / "scripts" / "pre-merge-guard.sh"
+    script.parent.mkdir()
+    script.write_bytes((ROOT / "scripts" / "pre-merge-guard.sh").read_bytes())
+    script.chmod(0o755)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh", "--pr"],
+        cwd=repo,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 1
+    assert "origin/main" in proc.stderr
+    assert "unverified" in proc.stderr
 
 
 def test_pre_merge_guard_rejects_parallel_roadmap_ownership_collisions(tmp_path):
@@ -225,6 +278,7 @@ def test_pre_merge_guard_rejects_parallel_roadmap_ownership_collisions(tmp_path)
     proc = subprocess.run(
         ["bash", "scripts/pre-merge-guard.sh", "--pr"],
         cwd=repo,
+        env=_fake_uv_environment(tmp_path),
         capture_output=True,
         text=True,
         check=False,
