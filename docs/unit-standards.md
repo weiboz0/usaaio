@@ -36,29 +36,39 @@ the content gate's reviewers enforce the qualitative parts against this document
 - Every taught concept exercised by **≥3 problems** — `coverage-check` enforces this
   MACHINE-SIDE since plan 013 (it previously enforced only ≥1 and left the rest to reviewers).
 
-### Which band a unit sits in
+### Recorded non-conformance
 
-A unit takes the 24–30 band only by being marked `length: double` in `syllabus.md`, and that
-marking has to be earned on load.
-`F6-svd-spectral` holds it on lesson load (425 lesson minutes, the corpus maximum).
-`C7-cnn-transfer` holds it from plan 014 on practice load: 10 taught concepts and 672 practice
-minutes, both corpus maxima, which is what puts its 27 problems inside 24–30.
+**`C7-cnn-transfer` ships 27 problems against a 24 ceiling. It is over the band, and that is
+recorded here rather than legalized.**
+C7 is not double-length: it runs three lesson sessions where the rule above requires 4–6.
+Its 10 taught concepts and 672 practice minutes are both corpus maxima, which explains the
+overflow without excusing it.
+The resolution is a unit *capacity* decision — split C7, rehome concepts such as
+`feature-hierarchy`, `receptive-field`, or `tensor-shape-tracing`, or trim — and it is deferred
+to a dedicated plan; see `TODO.md`.
+`C5-neural-networks` carries the same open question.
 
-Plan 014 first proposed a different rule — a ceiling scaling at +2 problems per taught concept
-beyond 7 — and its content gate rejected that unanimously.
-Three reviewers independently showed the stated rationale was arithmetically wrong: the ≥3 rule
-obliges C7 to 30 taught-concept instances, and C7 already delivers 34 of them across 27 problems
-at 2.48 tags per problem, so 24 problems were never the binding constraint.
-The lesson is recorded because it generalizes: **when a unit overflows the band, ask whether it
-is genuinely double-length, not whether the band should be wider.**
-Widening a rule to fit the artifact it was written to constrain is how a standard stops meaning
-anything.
+This entry exists because plan 014 tried twice to make the overflow legal and its content gate
+rejected both attempts.
 
-The deeper question C7 raises — whether 10 concepts is simply too many for one unit, and whether
-`feature-hierarchy`, `receptive-field`, or `tensor-shape-tracing` should be rehomed — is a unit
-*capacity* decision, not a band decision.
-C5 carries the same open question.
-Both are deferred to a dedicated plan; see `TODO.md`.
+The first proposed a ceiling scaling at +2 problems per taught concept beyond 7, on the argument
+that the ≥3 rule forces a 10-concept unit past 24 problems.
+It does not.
+Measured on C7 as shipped: 27 problems, 65 tag instances, of which **33 are C7's own concepts**
+(1.22 per problem; the other 32 are foreign tags that earn no coverage credit).
+Seven of its ten concepts sit at exactly 3, and **8 of its 27 problems tag no floor-critical
+concept at all** — so C7 could shed those eight and still satisfy ≥3 everywhere.
+The coverage rule was never the binding constraint, which is the whole basis on which the
+amendment was rejected.
+
+The second attempt marked C7 `length: double`, which a reviewer rejected as an unenforced label
+that contradicts the session rule above — C7 runs three sessions where double-length means 4–6,
+so the flag would have meant one thing on F6 and another on C7 with nothing recording the
+difference.
+The generalizable lesson, and the reason this is written down: **when a unit overflows a
+standard, record the non-conformance and fix the unit — do not reshape the standard, and do not
+reach for an existing exemption the unit does not actually qualify for.**
+A standard that moves to accommodate its own artifacts has stopped being one.
 
 ## Per-unit review material
 

@@ -184,6 +184,6 @@ practice:
   set: C
   type: integrative
   difficulty: advanced
-  concepts: [gram-matrices, spectral-decomposition, low-rank-approximation, frobenius-norm]
+  concepts: [gram-matrices, spectral-decomposition, low-rank-approximation, frobenius-norm, rank]
   path: practice/p25.ipynb
   solution_path: practice/p25_solution.ipynb

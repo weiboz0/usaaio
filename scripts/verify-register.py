@@ -2,9 +2,14 @@
 """Verify registered statement metadata and every bolded ban's pricing.
 
 All unit manifests are authoritative for problem paths. Header agreement (title,
-concepts, difficulty, type) and ban pricing are checked repo-wide; the stricter
-multiple-choice option-format checks remain scoped to the tranche-1 units that
-were authored against that exact register.
+concepts, difficulty, type) and ban pricing are checked across every unit; solution
+notebooks are checked too, but only where they carry a header at all. The stricter
+multiple-choice option-format checks remain scoped to the tranche-1 units that were
+authored against that exact register.
+
+Scope note: "every unit" means every manifest under units/. Mock-test statements under
+mocktests/ carry their own per-part header register and are NOT covered here — the count
+this script prints is a count of unit practice problems.
 """
 
 from __future__ import annotations
@@ -38,6 +43,15 @@ BOLD_BAN_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 HEADER_FIELD_RE = re.compile(r"\*\*(Type|Difficulty|Concepts):\*\*\s*([^·]*?)\s*(?=·|$)")
+# Exhaustive list of the glosses the corpus appends after a type name. See _type_matches.
+ALLOWED_TYPE_GLOSSES = frozenset(
+    {
+        "",
+        " (multi-part; parts consume earlier results)",
+        " (parts consume earlier results)",
+        " / derivation",
+    }
+)
 ZERO_POINT_RE = re.compile(r"\b(?:zero|0)[\s-]+points?\b", re.IGNORECASE)
 
 
@@ -56,20 +70,53 @@ def _expected_header(problem: dict) -> str:
 
 
 def _type_matches(actual: str, type_label: str, raw_type: str) -> bool:
-    """The corpus writes a problem's type either as the raw manifest id ("scenario") or as
-    its expanded label ("scenario analysis"), optionally followed by a gloss — a parenthetical
-    ("integrative (parts consume earlier results)") or a slash alternative ("proof / derivation").
+    """The corpus writes a problem's type either as the raw manifest id ("scenario") or as its
+    expanded label ("scenario analysis"), optionally followed by one of a few house glosses.
 
-    Anything else after the prefix is drift, not house style: a bare `startswith` would accept
-    "constrained coding ENTIRELY WRONG", which is how this check was first written and how it
-    was caught.
+    The permitted glosses are ENUMERATED rather than described by shape. Two successive gate
+    findings landed here: a bare `startswith` accepted "constrained coding ENTIRELY WRONG", and
+    allowing any parenthetical or slash suffix then accepted "scenario (actually multiple
+    choice)". Anything outside this list is drift, and a genuinely new house gloss should be
+    added here deliberately rather than admitted by a permissive pattern.
     """
     for prefix in (type_label, raw_type):
-        if actual.startswith(prefix):
-            remainder = actual[len(prefix):]
-            if remainder == "" or remainder.startswith(" (") or remainder.startswith(" / "):
-                return True
+        if actual.startswith(prefix) and actual[len(prefix):] in ALLOWED_TYPE_GLOSSES:
+            return True
     return False
+
+
+def _check_solution_header(unit: str, problem: dict) -> list[str]:
+    """Most solutions carry no metadata header, which is the corpus convention. Where one IS
+    present it is a second copy of the manifest's claims, and an unenforced second copy is how
+    plan 014 shipped a statement saying "validation" beside a solution still saying "test".
+    So: optional, but checked when present.
+    """
+    relative = problem.get("solution_path")
+    if not relative:
+        return []
+    path = ROOT / "units" / unit / relative
+    if not path.exists():
+        return [f"{problem['id']}: solution_path does not exist"]
+    notebook = json.loads(path.read_text())
+    markdown = [_source(cell) for cell in notebook["cells"] if cell["cell_type"] == "markdown"]
+    if not markdown:
+        return []
+    body = [line for line in markdown[0].splitlines() if line.strip()]
+    header = next((line for line in body if line.startswith("**Type:**")), None)
+    if header is None:
+        return []
+    fields = dict(HEADER_FIELD_RE.findall(header))
+    if set(fields) != {"Type", "Difficulty", "Concepts"}:
+        return [f"{problem['id']}: solution header is missing one of Type / Difficulty / Concepts"]
+    errors = []
+    if fields["Concepts"] != ", ".join(problem["concepts"]):
+        errors.append("solution header concepts do not match the manifest")
+    if fields["Difficulty"] != problem["difficulty"]:
+        errors.append("solution header difficulty does not match the manifest")
+    type_label = TYPE_LABELS.get(problem["type"], problem["type"].replace("-", " "))
+    if not _type_matches(fields["Type"], type_label, problem["type"]):
+        errors.append("solution header type does not match the manifest")
+    return [f"{problem['id']}: {error}" for error in errors]
 
 
 def _check_problem(unit: str, problem: dict) -> list[str]:
@@ -77,6 +124,11 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
     notebook = json.loads(path.read_text())
     markdown = [_source(cell) for cell in notebook["cells"] if cell["cell_type"] == "markdown"]
     errors: list[str] = []
+
+    if not markdown:
+        # Report it as a per-problem failure rather than dying on an index error, so the run
+        # names the offending problem instead of just exiting (gate finding, plan 014).
+        return [f"{problem['id']}: statement has no markdown cell"]
 
     all_markdown = "\n".join(markdown)
 
@@ -141,6 +193,7 @@ def main() -> int:
         for problem in manifest["practice"]:
             checked += 1
             failures.extend(_check_problem(unit, problem))
+            failures.extend(_check_solution_header(unit, problem))
 
     if failures:
         failed_ids = {item.split(":", 1)[0] for item in failures}

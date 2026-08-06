@@ -410,7 +410,8 @@ answers were right and the instruments around them were not.
   `[0,1,2,3,4]` in exactly the order the statement listed the five canonical strings, so
   assigning the bullets top-to-bottom scored `all_agree: True` without reading a single trace.
   **[FIXED]** — transcripts re-ordered to `[2,4,0,3,1]`, bullet list shuffled independently,
-  naive assignment verified to fail, blind guess now 1/120.
+  naive assignment verified to fail. *(Round-2 correction, `[opus]`: the honest residual space is
+  6, not 120 — B and E are identifiable without any descent reasoning, leaving 3! for the rest.)*
 - `[opus]` **Transcript A was not diagnosable from its trace.** It satisfied both the
   `eta-too-large` and `un-zeroed-accumulator` rules and returned the former only because that
   branch was tested first; neither trace exposed the growing effective step that is the
@@ -531,6 +532,66 @@ one unit — is a *capacity* decision and is deferred, with C5's identical quest
 r1-002/r1-003 generation. Training loops/optimizers (watch-list). k-means, big-O, the
 R2-evidence family (attention/KL/Bayes/mixtures) — documented watch-list, revisit on evidence.
 
+
+### Round 2
+
+Round-2 verdicts: `[glm]` REJECT · `[codex]` REJECT · `[opus]` REJECT. Every round-2 finding was
+in work done to fix round 1 — which is the argument for running a second round at all.
+
+- `[opus]` **Transcript D was physically impossible, in the field added to fix round 1.**
+  `step_over_eta_grad = [1,2,3,4,5]` violates the triangle inequality against D's own
+  `grad_norm`: an accumulated step is bounded by `(Σ‖∇ⱼ‖)/‖∇ₖ‖`, which caps at
+  `[1.00, 1.54, 2.05, 2.51, 2.95]`. D was also the only transcript admitting no fixed learning
+  rate. **[FIXED]** — regenerated from an actual aligned-accumulator run at η = 0.05, verified
+  to give a constant implied η, strictly increasing ratios, and the same derived code, so the
+  answer key does not move. The checksum was recomputed and the solution's evidence sentence
+  rewritten to explain why the ratio grows *sublinearly*.
+- `[opus]` `[glm]` **The statement's discrimination pointer named the wrong pair.** The sentence
+  was written for C and D but described "rising loss with a growing gradient norm", which
+  actually selects A and C — a pair whose `step_over_eta_grad` is identical, so it pointed
+  students at the one field that cannot separate them, on the very discrimination the rebuild
+  existed to teach. **[FIXED]** — reworded to "growing gradient norm while every applied step
+  still points downhill", verified to select C and D and nothing else.
+- `[codex]` `[opus]` **The `length: double` marking was itself an ad-hoc escape.** The standards
+  define double-length as 4–6 lesson sessions; C7 runs three. **[FIXED]** — reverted. C7 is now
+  recorded plainly as over-band and non-conformant, with the capacity plan owning the fix.
+  `[opus]` further found the passage's cited arithmetic stale (34 instances / 2.48 per problem
+  were pre-removal values; the shipped figures are 33 and 2.41) and its reasoning wrong — it
+  divided own-concept instances by total tag density. **[FIXED]** — rewritten with measured
+  figures and the correct argument: 8 of C7's 27 problems tag no floor-critical concept, so a
+  trim is arithmetically available and the coverage rule was never binding.
+- `[glm]` `[opus]` **C7-p27's verifier told the student what the statement withheld.** A comment
+  named the two cases that agree, and the ban prohibited running but not *reading* the verifier.
+  **[FIXED]** — comment deleted, ban extended to "running or reading", and the stale
+  "tuple of three bools" message corrected to four.
+- `[opus]` **F6-p17 and F6-p25 held opposite standards for the same inference.** p17 asserted
+  "four linearly independent columns" of a random draw as though shape supplied it, while p25
+  now teaches that shape gives only a bound. **[FIXED]** — p17's part (a) asks for the bound and
+  the extra fact that makes it exact; its solution says so and points at p25 for the deficient case.
+- `[opus]` An eighth decorative tag: **`broadcasting` on C3-p19**, which contains no array code
+  at all — the student reads a printed shape tuple. Calibrated against C9-p06, where the same
+  tag was struck despite a stronger claim. **[FIXED]**. Conversely p25 did not tag `rank`, the
+  concept its thesis is about; **[FIXED]** by adding it.
+- `[codex]` `[opus]` **The type-gloss rule still admitted drift** — allowing any parenthetical
+  or slash suffix accepted "scenario (actually multiple choice)", and let `mc` absorb
+  `mc-normal-form`'s label. **[FIXED]** — the four glosses that actually occur are now an
+  explicit allowlist, with regression tests.
+- `[opus]` **`verify-register.py` checked statements only, and this plan's five new solutions
+  carry headers nothing enforced** — the same shape as round 1's C9-p19 blocker. **[FIXED]** —
+  solution headers are validated where present, corruption-tested, and the check reproduces the
+  round-1 C9-p19 failure.
+- `[codex]` The "exactly one signature" rule was not a general degeneracy guard: adjacent-step
+  comparisons are vacuously true for a one-step trace. **[FIXED]** — series length and equality
+  are asserted before any signature is evaluated.
+- `[glm]` p25's zero-detection tolerance in part (e) was unstated. **[FIXED]** — pinned to the
+  `atol=1e-9, rtol=0` part (c) already uses.
+- `[codex]` `[opus]` Docstring scope and IndexError hardening. **[FIXED]** — a statement with no
+  markdown cell is reported per-problem, and the docstring states that "every unit" excludes
+  `mocktests/`.
+- `[opus]` **C3-p19's grader is self-disclosing**: `fault_signatures` and `diagnosis_codes` sit
+  in the student notebook as a complete decision table, so the transcript is cryptographically
+  pinned while "do not read the verifier" stays honor-only. **[WONTFIX]** — inherent to
+  single-notebook delivery, and named here alongside the `lam_desc` limit rather than papered over.
 
 ## Post-execution report
 

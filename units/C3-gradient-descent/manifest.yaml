@@ -140,6 +140,6 @@ practice:
   set: C
   type: scenario
   difficulty: advanced
-  concepts: [gradient-descent, learning-rate, mse-loss, broadcasting]
+  concepts: [gradient-descent, learning-rate, mse-loss]
   path: practice/p19.ipynb
   solution_path: practice/p19_solution.ipynb

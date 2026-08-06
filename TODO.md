@@ -21,11 +21,14 @@
 - [ ] softmax + cross-entropy-loss into C5 — deferred from plan 014 Task 3. Must resolve C5's
       capacity explicitly, place the section after `mlp-architecture`, respect the
       no-autograd-training boundary, and note the CE-gradient proof's F4 dependency.
-- [ ] **Unit capacity: C7 and C5.** C7 ships 27 problems against the 16–24 band as a recorded
-      exception (`docs/unit-standards.md`), and C5 carries the same unresolved question. Plan
-      014's gate rejected widening the band and required the capacity question be asked
-      directly: split the unit, rehome concepts (`feature-hierarchy`, `receptive-field`,
-      `tensor-shape-tracing` are the C7 candidates), or trim.
+- [ ] **Unit capacity: C7 and C5.** C7 ships 27 problems against the 16–24 band — over it, and
+      recorded as non-conformant in `docs/unit-standards.md` rather than excused. C5 carries the
+      same unresolved question. Plan 014's gate rejected two attempts to make the overflow legal
+      (a concept-scaled ceiling, then a `length: double` marking) and required the capacity
+      question be asked directly: split the unit, rehome concepts (`feature-hierarchy`,
+      `receptive-field`, `tensor-shape-tracing` are the C7 candidates), or trim. Note 8 of C7's
+      27 problems tag no floor-critical concept, so a trim to the band is arithmetically
+      available without breaking coverage.
 - [ ] **Real tag-honesty enforcement.** `prereq-check`'s `concepts_used` leg is manifest
       consistency only, so it cannot see a decorative tag. Plan 014's gate found 7 decorative
       tags by hand that the check passed. Needs per-problem evidence for each foreign tag.

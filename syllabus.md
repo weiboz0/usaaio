@@ -226,7 +226,6 @@ units:
   - id: C7-cnn-transfer
     track: core
     title: CNNs, ResNet, and Transfer Learning
-    length: double   # 10 taught concepts and 672 practice minutes, both corpus maxima
     prereqs: [C6-pytorch]
     teaches: [convolution, feature-maps, receptive-field, feature-hierarchy,
               resnet-architecture, bottleneck-blocks, model-truncation, layer-freezing,
