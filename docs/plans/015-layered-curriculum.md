@@ -622,7 +622,7 @@ resolved and the post-014 baseline was recomputed before implementation.
 - `[codex] [FIXED]` The post-execution report was still empty at the re-review checkpoint.
   It is populated below with the required sources, corpus, reconciliation, review, and
   verification evidence.
-- **Final re-verdict:** Pending the report-completion recheck.
+- **Final re-verdict:** Approved with no open finding after the report-completion recheck.
 
 ### Review 3 — independent Opus (2026-08-06)
 
@@ -662,8 +662,7 @@ resolved and the post-014 baseline was recomputed before implementation.
   transformer and Stable Diffusion prerequisites, complete tranche ownership, official L4
   policy classification, direct-versus-bridge split, Plan 014 ancestry, and final counts.
 
-**GATE RESULT:** Pending only the Codex report-completion re-verdict; no content or tooling
-finding remains open.
+**GATE RESULT: PASS — 4/4.** No content, tooling, or report finding remains open.
 
 ## Post-Execution Report
 
@@ -762,10 +761,10 @@ Because no student problem or solution changed, blind solving was not applicable
 ### Review and shipping state
 
 - Claude self: Approved.
-- Codex GPT-5.6-terra: Changes requested on the empty report; report-completion re-verdict
-  pending.
+- Codex GPT-5.6-terra: Changes requested on the empty report, then Approved after report
+  completion with no open finding.
 - Independent Opus: Approved with suggestions; every suggestion is fixed above.
 - GLM-5.2: Approved.
 - Supplemental independent semantic Codex review: Approved.
 - PR creation, `scripts/pre-merge-guard.sh --pr`, fresh-base equality, and squash merge remain
-  to be recorded after the report-completion re-verdict.
+  to be recorded during shipping.
