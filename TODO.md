@@ -47,4 +47,8 @@
       C9-p05..p18) will silently go stale the moment their source is edited, which is exactly how
       plan 014's gate found two of its own solutions printing round-2 values against round-3
       source. Plan 014 cleared the two it touched; the rest are out of its scope.
+- [ ] **Lint `scripts/` in ci-local.** Step 1 runs `ruff check tools/ tests/` only, so
+      `scripts/verify-register.py` — which the gate leaned on heavily and which was edited in
+      four rounds — is unlinted. Plan 014 found and fixed a SIM102 there by running ruff wider
+      by hand; nothing in CI would have caught it.
 - [ ] r1-002 / r1-003 via the blueprint's arc rotation (indices 1 and 2).

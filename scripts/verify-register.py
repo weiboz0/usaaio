@@ -189,16 +189,13 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
 
     # The multiple-choice option-format checks stay scoped to the tranche-1 units that were
     # authored against that exact register; widening them is a separate, evidence-led change.
-    if unit in REGISTER_UNITS:
-        if problem["type"].startswith("mc"):
-            if not re.search(r"\bReasoning is (?:not )?required\.", all_markdown):
-                errors.append("MC reasoning flag is missing")
-            options = re.findall(r"(?m)^([A-E])\. ", all_markdown)
-            legacy = re.search(
-                r"(?m)^-\s+\*\*(?:\([A-E]\)|[A-E]\.)\*\*", all_markdown
-            )
-            if options != OPTION_LETTERS or legacy:
-                errors.append("MC options are not exactly A.-through-E. in order")
+    if unit in REGISTER_UNITS and problem["type"].startswith("mc"):
+        if not re.search(r"\bReasoning is (?:not )?required\.", all_markdown):
+            errors.append("MC reasoning flag is missing")
+        options = re.findall(r"(?m)^([A-E])\. ", all_markdown)
+        legacy = re.search(r"(?m)^-\s+\*\*(?:\([A-E]\)|[A-E]\.)\*\*", all_markdown)
+        if options != OPTION_LETTERS or legacy:
+            errors.append("MC options are not exactly A.-through-E. in order")
 
     for match in BOLD_BAN_RE.finditer(all_markdown):
         if not ZERO_POINT_RE.search(match.group(1)):
