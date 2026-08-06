@@ -252,6 +252,26 @@ def _posix(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
 
 
+def _declared_notebook(
+    base: Path, declared: object, manifest_relative: str, label: str
+) -> Path:
+    if not isinstance(declared, str):
+        raise InventoryError(f"{manifest_relative}: {label} must be a notebook path")
+    relative = Path(declared)
+    if relative.is_absolute() or ".." in relative.parts or relative.suffix != ".ipynb":
+        raise InventoryError(f"{manifest_relative}: {label} escapes its material directory")
+    candidate = base / relative
+    if not candidate.is_file():
+        raise InventoryError(f"{candidate.as_posix()}: declared notebook is missing")
+    try:
+        candidate.resolve(strict=True).relative_to(base.resolve(strict=True))
+    except (OSError, ValueError) as exc:
+        raise InventoryError(
+            f"{manifest_relative}: {label} escapes its material directory"
+        ) from exc
+    return candidate
+
+
 def _inject_declarations(
     record: dict[str, Any],
     *,
@@ -267,6 +287,7 @@ def _inject_declarations(
 def _unit_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     manifests_by_dir = {path.parent: _load_yaml(path, _posix(path, root)) for path in manifest_paths}
+    paths = set(root.glob("units/**/*.ipynb"))
     declared_paths: set[Path] = set()
     for unit_dir, manifest in manifests_by_dir.items():
         manifest_relative = _posix(unit_dir / "manifest.yaml", root)
@@ -275,18 +296,19 @@ def _unit_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
         for problem in manifest.get("practice") or []:
             for field in ("path", "solution_path"):
                 declared = problem.get(field)
-                if not isinstance(declared, str) or not declared.endswith(".ipynb"):
-                    raise InventoryError(
-                        f"{manifest_relative}: practice {problem.get('id')} has invalid {field}"
-                    )
-                candidate = unit_dir / declared
+                candidate = _declared_notebook(
+                    unit_dir,
+                    declared,
+                    manifest_relative,
+                    f"practice {problem.get('id')} {field}",
+                )
                 relative = _posix(candidate, root)
                 if candidate in declared_paths:
                     raise InventoryError(f"{relative}: notebook is declared more than once")
-                if not candidate.is_file():
-                    raise InventoryError(f"{relative}: declared notebook is missing")
                 declared_paths.add(candidate)
-    for path in sorted(root.glob("units/**/*.ipynb"), key=lambda item: _posix(item, root).encode("utf-8")):
+    if not declared_paths.issubset(paths):
+        raise InventoryError("unit manifests declare notebooks that were not inventoried")
+    for path in sorted(paths, key=lambda item: _posix(item, root).encode("utf-8")):
         relative = _posix(path, root)
         unit_dir = root / "units" / path.relative_to(root / "units").parts[0]
         manifest = manifests_by_dir.get(unit_dir)
@@ -354,12 +376,17 @@ def _mock_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
             for declared in problem.get("files") or []:
                 if not str(declared).endswith(".ipynb"):
                     continue
-                statement = mock_dir / str(declared)
-                solution = mock_dir / "solutions" / f"{statement.stem}_solution.ipynb"
+                statement = _declared_notebook(
+                    mock_dir, declared, manifest_relative, f"problem {problem.get('id')} file"
+                )
+                solution_relative = f"solutions/{statement.stem}_solution.ipynb"
+                solution = _declared_notebook(
+                    mock_dir,
+                    solution_relative,
+                    manifest_relative,
+                    f"problem {problem.get('id')} solution",
+                )
                 for candidate in (statement, solution):
-                    relative = _posix(candidate, root)
-                    if not candidate.is_file():
-                        raise InventoryError(f"{relative}: declared notebook is missing")
                     declared_paths.add(candidate)
         if not declared_paths.issubset(paths):
             raise InventoryError(f"{manifest_relative}: declared notebooks were not inventoried")
@@ -400,10 +427,13 @@ def _synthesis_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[st
             for declared in declared_values:
                 if not declared.endswith(".ipynb"):
                     continue
-                candidate = manifest_dir / declared
+                candidate = _declared_notebook(
+                    manifest_dir,
+                    declared,
+                    manifest_relative,
+                    f"problem {problem.get('id')} file",
+                )
                 relative = _posix(candidate, root)
-                if not candidate.is_file():
-                    raise InventoryError(f"{relative}: declared notebook is missing")
                 if candidate not in inventoried_paths:
                     raise InventoryError(f"{relative}: declared notebook was not inventoried")
     for path in paths:

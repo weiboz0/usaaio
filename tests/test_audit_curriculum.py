@@ -325,6 +325,29 @@ def test_missing_declared_unit_notebook_fails_loudly(tmp_path: Path) -> None:
         audit.build_inventory(tmp_path)
 
 
+@pytest.mark.parametrize("escape_kind", ["parent", "symlink"])
+def test_declared_unit_notebooks_cannot_escape_the_unit(
+    tmp_path: Path, escape_kind: str
+) -> None:
+    _make_minimal_repo(tmp_path)
+    outside = tmp_path / "outside.ipynb"
+    _write_notebook(outside, [_code("answer = 5\n")])
+    unit = tmp_path / "units" / "U1-vectors"
+    if escape_kind == "parent":
+        declared = "../../outside.ipynb"
+    else:
+        link = unit / "practice" / "escape.ipynb"
+        link.symlink_to(outside)
+        declared = "practice/escape.ipynb"
+    manifest_path = unit / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text())
+    manifest["practice"][0]["solution_path"] = declared
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
+
+    with pytest.raises(audit.InventoryError, match="escapes its material directory"):
+        audit.build_inventory(tmp_path)
+
+
 def test_missing_declared_mock_notebook_fails_loudly(tmp_path: Path) -> None:
     _make_minimal_repo(tmp_path)
     missing = tmp_path / "mocktests" / "r1-mini" / "solutions" / "p01_solution.ipynb"
