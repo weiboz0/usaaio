@@ -5,12 +5,13 @@ concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcast
   cosine-similarity, unit-vectors, distance-metrics, matrix-multiplication, outer-products,
   eigenvalues-eigenvectors, spectral-decomposition, svd, singular-values, low-rank-approximation,
   frobenius-norm, word-embeddings, embedding-matrices, similarity-matrices, gensim-usage,
-  nearest-neighbor-search, expectation, variance, supervised-vs-unsupervised, clustering-concept, projection]
+  nearest-neighbor-search, expectation, variance, supervised-vs-unsupervised, clustering-concept,
+  bias-variance-intuition, overfitting, projection]
 prereq_units: [F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals]
 estimated_minutes:
   lesson: 250
   lesson_sessions: [80, 85, 85]
-  practice: 430
+  practice: 450
   review: 45
 practice:
 - id: C9-p01
@@ -139,3 +140,10 @@ practice:
   concepts: [local-vs-global-structure, svd, distance-metrics, nearest-neighbor-search, broadcasting, aggregation-axis]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb
+- id: C9-p19
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [pca, variance, bias-variance-intuition, overfitting]
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb

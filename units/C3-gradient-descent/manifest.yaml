@@ -7,7 +7,7 @@ prereq_units: [F4-multivar-calculus, C2-linear-models]
 estimated_minutes:
   lesson: 170
   lesson_sessions: [85, 85]
-  practice: 400
+  practice: 430
   review: 40
 practice:
 - id: C3-p01
@@ -136,3 +136,10 @@ practice:
   concepts: [learning-rate, stochastic-gd, linear-regression, mse-loss]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb
+- id: C3-p19
+  set: C
+  type: scenario
+  difficulty: advanced
+  concepts: [gradient-descent, learning-rate, mse-loss, broadcasting, aggregation-axis]
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb

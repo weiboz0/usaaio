@@ -9,7 +9,7 @@ estimated_minutes:
   lesson: 240
   lesson_sessions: [75, 85, 80]   # lessons/01..03; lesson.ipynb overview ~10 min extra
   review: 30
-  practice: 420
+  practice: 435
 practice:
   # --- Set A: fundamentals drills ---
   - {id: C1-p01, type: mc-multipart, set: A, concepts: [supervised-vs-unsupervised, clustering-concept], difficulty: intro, path: practice/p01.ipynb, solution_path: practice/p01_solution.ipynb}
@@ -37,3 +37,4 @@ practice:
   - {id: C1-p20, type: integrative, set: C, concepts: [train-test-split, overfitting, accuracy-precision-recall], difficulty: core, path: practice/p20.ipynb, solution_path: practice/p20_solution.ipynb}
   - {id: C1-p21, type: scenario, set: C, concepts: [supervised-vs-unsupervised, clustering-concept], difficulty: core, path: practice/p21.ipynb, solution_path: practice/p21_solution.ipynb}
   - {id: C1-p22, type: challenge, set: C, concepts: [clustering-concept], difficulty: advanced, path: practice/p22.ipynb, solution_path: practice/p22_solution.ipynb}
+  - {id: C1-p24, type: scenario, set: C, concepts: [bias-variance-intuition, overfitting], difficulty: core, path: practice/p24.ipynb, solution_path: practice/p24_solution.ipynb}

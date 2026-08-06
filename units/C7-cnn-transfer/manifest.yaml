@@ -9,7 +9,7 @@ prereq_units: [C6-pytorch]
 estimated_minutes:
   lesson: 255
   lesson_sessions: [85, 85, 85]
-  practice: 642
+  practice: 672
   review: 45
 practice:
 - id: C7-p01
@@ -194,3 +194,10 @@ practice:
   concepts: [convolution, tensor-shape-tracing]  # dual-tag (plan 013 Task 4)
   path: practice/p26.ipynb
   solution_path: practice/p26_solution.ipynb
+- id: C7-p27
+  set: C
+  type: scenario
+  difficulty: advanced
+  concepts: [layer-freezing, requires-grad, resnet-architecture]
+  path: practice/p27.ipynb
+  solution_path: practice/p27_solution.ipynb
