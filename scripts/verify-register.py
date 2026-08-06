@@ -105,6 +105,12 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
     header = next((line for line in body if line.startswith("**Type:**")), None)
     if header is None:
         return []
+    # A solution that carries a header must also own the right title. Without this a solution
+    # could be retitled to another problem's number and still pass every field check — the same
+    # mis-attribution the statement title check exists to catch (gate finding, plan 014).
+    expected_title = f"# {unit} — Practice {problem['id'].split('-')[-1]} — Solution"
+    if body[0] != expected_title:
+        return [f"{problem['id']}: solution title does not match the manifest"]
     fields = dict(HEADER_FIELD_RE.findall(header))
     if set(fields) != {"Type", "Difficulty", "Concepts"}:
         return [f"{problem['id']}: solution header is missing one of Type / Difficulty / Concepts"]

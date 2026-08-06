@@ -610,7 +610,8 @@ recorded so a round-3 reviewer can check the work rather than repeat it:
   round 2's fix existed to satisfy: rounding the ratios to two decimals pushed three of five
   above the bound (2.05 > 2.0460, 2.51 > 2.5085, 2.95 > 2.9474). **[FIXED]** — floored rather
   than rounded, giving `[1.0, 1.54, 2.04, 2.5, 2.94]` with `step_dot_grad` recomputed to match.
-  Verified: strictly under the ceiling at every step, implied η constant at 0.050, ratios
+  Verified: at or under the ceiling at every step (step 1 is exact equality, which is
+  forced for any accumulator), implied η constant at 0.050, ratios
   strictly increasing, signatures `[2],[4],[0],[3],[1]`, derived codes `[2,4,0,3,1]`, digest
   matching the shipped artifact. The answer key does not move.
 - **The other four transcripts** were checked the same way. A and E pin a constant η (0.050 and
@@ -634,9 +635,62 @@ rate is acceptable, (b) whether recording C7's non-conformance is an honest reso
 third dodge, and (c) a fresh adversarial pass on `verify-register.py`, which has now been
 tightened twice in response to findings and may still be wrong in a way two rounds have missed.
 
+### Round 3
+
+Round-3 verdicts: `[glm]` REJECT · `[opus]` REJECT · `[codex]` pending.
+`[opus]` re-derived the transcript physics from scratch rather than checking the author's
+arithmetic, using the stronger identity `Sₖ·gₖ = (‖Sₖ‖² − ‖Sₖ₋₁‖² + ‖gₖ‖²)/2`, and confirmed the
+round-2 blocker genuinely closed: implied η = 0.050 to three figures with a 0.66% spread, every
+step satisfying both the triangle bound and Cauchy–Schwarz, digest matching, signature partition
+and derived codes unmoved. It also re-attacked `verify-register.py` across 16 mutations and
+judged the version sound. **All substantive artifact findings from rounds 1–2 are closed**; what
+round 3 found was documentation truth and tooling residue.
+
+- `[glm]` **MAJOR F6-p17's answer stub still asked the question the round-2 fix removed.** The
+  prompt was rewritten to ask for the shape-forced bound plus the fact making it exact; the
+  markdown slot the student actually writes into still read "Why was `n_nonzero` forced in
+  advance?" — verbatim the framing p25 now teaches is wrong, three cells below its own
+  correction. **[FIXED]**, along with `vecs_desc` never being named in the prose.
+- `[glm]` **MINOR two solutions carried stale stored outputs** contradicting their own source —
+  C3-p19 printing the round-2 letter order and pre-round-3 D values, C7-p27 printing the
+  per-case line the round-2 leak fix deleted. **[FIXED]** by clearing them: 326 of 343 solutions
+  store no outputs, so stripping matches the convention and removes the staleness class rather
+  than resetting its clock. The 15 pre-existing solutions that carry outputs are recorded in
+  `TODO.md`.
+- `[opus]` **MAJOR the C7 passage's arithmetic was wrong for the third time.** It claimed the 8
+  problems tagging no floor-critical concept could all be shed. They are individually droppable
+  but not jointly: removing all eight takes `tensor-shape-tracing` to 0, `convolution` to 1 and
+  `layer-freezing` to 2. Exhaustive search confirms the largest jointly-sheddable subset is
+  **three**, which lands C7 at exactly 24. **[FIXED]** with the verified figures. The conclusion
+  survives — a trim to the band exists — but the stated fact did not.
+- `[opus]` **MAJOR the post-execution report described the REVERTED resolution as shipped**,
+  claiming `syllabus.md` marks C7 `length: double` and that the double-length mechanism resolved
+  the overflow. Neither is true of the shipped tree. `AGENTS.md` designates post-execution
+  reports as how future sessions verify prior work, so this is the one place where staleness
+  actively misinforms. **[FIXED]**, along with stale test and diff-stat counts.
+- `[opus]` **MINOR the discrimination pointer's exclusivity claim was false** — C and D are also
+  separated by their loss curves, and the solution's own C evidence sentence leads with the loss.
+  **[FIXED]**: `step_over_eta_grad` now "gives a direct mechanical signature for those two".
+- `[opus]` **MINOR the `find`-swallowing fix went to the smaller discovery.** Round 2 hardened
+  lesson discovery while the line above it — the search that finds every solution notebook in the
+  repo — still swallowed failures. **[FIXED]**.
+- `[opus]` **MINOR `verify-register.py` never checked solution TITLES**, so a solution retitled to
+  another problem's number passed every field check. **[FIXED]** and corruption-tested with that
+  exact attack; a regression test pins it (128 tests).
+- `[opus]` Residual permissiveness accepted without change: a solution can opt out by relocating
+  its header out of the first markdown cell, extra header fields are ignored, and the gloss
+  allowlist is per-gloss rather than per-(type, gloss). None can produce a wrong grade, and the
+  solution-header leg covers 5 of 343 problems by construction. **[WONTFIX]**, recorded.
+- `[opus]` **NIT F6-p25's scaffold displays the rank-deficient construction in plain sight**, so a
+  student can answer `predicted_zero_count = 6` from the visible dependence and dissolve part
+  (c)'s question. **[WONTFIX]** — same honor-only family as the `lam_desc` re-run limit and
+  C3-p19's self-disclosing grader, and named alongside them rather than left implicit.
+- `[opus]` **NIT** the round-3 note overstated D as "strictly under the ceiling"; step 1 is exact
+  equality, forced for any accumulator. **[FIXED]**.
+
 ## Post-execution report
 
-**Shipped.** 267 files changed (+2698 / -381). The corpus goes from 337 to 343 practice
+**Shipped.** 269 files changed (+3098 / -387). The corpus goes from 337 to 343 practice
 problems across 16 units.
 
 - **Retag pass** — 93 problems gained 332 cross-unit concept tags, closing the audit's headline
@@ -650,7 +704,7 @@ problems across 16 units.
   (+269s on a 1681s baseline, measured not assumed); `verify-register.py` now enforces header
   agreement across all 16 units rather than 3.
 - **Docs** — `docs/unit-standards.md` corrected a stale "coverage-check enforces ≥1" and records
-  how band membership is decided; `syllabus.md` marks C7 `length: double`; `TODO.md` carries five
+  how band membership is decided and records C7's band non-conformance; `TODO.md` carries six
   deferred items with named owners.
 
 **Deviations from the plan as approved, all recorded above rather than applied silently:**
@@ -660,9 +714,13 @@ problems across 16 units.
    already existed and needed only tagging. The eight-consumer tooling work went away with it.
 2. **Task 3 (softmax + cross-entropy) was deferred to plan 015** at the plan gate's direction,
    because it cannot be placed without resolving C5's capacity first.
-3. **A proposed amendment to the problem-count band was reverted at the content gate**, 3-0,
-   after three reviewers independently showed its arithmetic was wrong. C7's overflow is instead
-   resolved by the double-length mechanism the standards already had.
+3. **Two successive attempts to make C7's band overflow legal were both rejected**, and NEITHER
+   shipped. The first, a ceiling scaling at +2 problems per taught concept beyond 7, was rejected
+   3-0 on arithmetic. The second marked C7 `length: double`, and was rejected because the
+   standards define double-length as 4–6 lesson sessions and C7 runs three. **What shipped is
+   neither**: C7 is recorded in `docs/unit-standards.md` as over-band and non-conformant, with
+   the capacity decision deferred to `TODO.md`. `syllabus.md` carries `length: double` on F6
+   only, exactly as before this plan.
 4. **F6-p25 was re-authored during the gate** after it was found to be a near-isomorph of F6-p17.
    The replacement is built on a rank-deficient `W` and teaches a lesson p17 does not.
 
@@ -677,6 +735,6 @@ caught by re-solving the problem, because the answers were right.
 **Verification.** `scripts/ci-local.sh` **ALL GREEN** on the final tree, with
 `pre-merge-guard: OK` (step 7/7). `verify-register.py` 343/343 (repo-wide, and
 corruption-tested against a unit the old check ignored). `prereq-check`, `coverage-check`,
-`hygiene-check`, `tolerance-check`, `blueprint-check` PASS. 119 unit tests pass. All six new
+`hygiene-check`, `tolerance-check`, `blueprint-check` PASS. 127 unit tests pass. All six new
 solutions execute clean in a fresh kernel, verified locally rather than on the authoring
 session's word — codex's sandbox could not create kernel sockets, so its own run was not proof.

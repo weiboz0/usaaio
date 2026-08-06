@@ -247,3 +247,35 @@ def test_solution_without_a_header_is_accepted(tmp_path, monkeypatch):
     problem["solution_path"] = "practice/p01_solution.ipynb"
     monkeypatch.setattr(verify_register, "ROOT", tmp_path)
     assert verify_register._check_solution_header(unit, problem) == []
+
+
+def test_solution_title_mis_attribution_is_caught(tmp_path, monkeypatch):
+    """A solution retitled to another problem's number passed every field check until plan
+    014's round 3: the fields all belonged to the manifest entry, only the title lied.
+    """
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
+    )
+    solution = tmp_path / "units" / unit / "practice" / "p01_solution.ipynb"
+    solution.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "markdown",
+                        "source": "# C7-example — Practice p99 — Solution\n\n"
+                        "**Type:** scenario analysis · **Difficulty:** core "
+                        "· **Concepts:** testing",
+                    }
+                ]
+            }
+        )
+    )
+    problem["solution_path"] = "practice/p01_solution.ipynb"
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    errors = verify_register._check_solution_header(unit, problem)
+    assert any("solution title" in error for error in errors)

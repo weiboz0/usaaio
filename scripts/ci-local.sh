@@ -14,7 +14,10 @@ step "2/7 unit tests (pytest)"
 uv run pytest -q
 
 step "3/7 solution- and lesson-notebook execution"
-notebooks=$(find units mocktests -path '*/solutions/*.ipynb' -o -path '*/practice/*solution*.ipynb' 2>/dev/null || true)
+# Discovery failures must fail CI here too. The lesson discovery below was hardened first;
+# leaving this one swallowing errors was the larger hole, since this is the search that finds
+# every solution notebook in the repo (gate finding, plan 014 round 3).
+notebooks=$(find units mocktests -path '*/solutions/*.ipynb' -o -path '*/practice/*solution*.ipynb')
 if [[ -z "$notebooks" ]]; then
   echo "no notebooks yet — nothing to execute"
 else

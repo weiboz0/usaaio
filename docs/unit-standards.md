@@ -56,10 +56,14 @@ that the ≥3 rule forces a 10-concept unit past 24 problems.
 It does not.
 Measured on C7 as shipped: 27 problems, 65 tag instances, of which **33 are C7's own concepts**
 (1.22 per problem; the other 32 are foreign tags that earn no coverage credit).
-Seven of its ten concepts sit at exactly 3, and **8 of its 27 problems tag no floor-critical
-concept at all** — so C7 could shed those eight and still satisfy ≥3 everywhere.
-The coverage rule was never the binding constraint, which is the whole basis on which the
-amendment was rejected.
+Seven of its ten concepts sit at exactly 3, and 8 of its 27 problems tag no floor-critical
+concept at all.
+Those eight are each *individually* droppable but not *jointly* so — removing all eight would
+take `tensor-shape-tracing` to 0, `convolution` to 1 and `layer-freezing` to 2.
+The largest subset that can go while every concept stays at ≥3 is **three** (for example
+C7-p01, C7-p10 and C7-p23), and that lands C7 at exactly 24.
+So a trim to the band exists without touching coverage, and the coverage rule was never the
+binding constraint — which is the whole basis on which the amendment was rejected.
 
 The second attempt marked C7 `length: double`, which a reviewer rejected as an unenforced label
 that contradicts the session rule above — C7 runs three sessions where double-length means 4–6,
