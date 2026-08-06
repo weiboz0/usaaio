@@ -112,7 +112,8 @@ this step, mark Plan 015 blocked and ask the owner to finish or explicitly aband
 
 - Create `curriculum/sources.yaml`.
 - Create `curriculum/official-topics.yaml`.
-- Add schema fixtures under `tests/fixtures/curriculum/`.
+- Add schema-negative fixtures as inline parametrized cases in
+  `tests/test_audit_curriculum.py` and `tests/test_scope.py`.
 
 `curriculum/sources.yaml` records stable source ids, URL/local-path metadata, retrieval or
 competition date, authority (`official-syllabus`, `official-round-policy`, `past-paper`,
