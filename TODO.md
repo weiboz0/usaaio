@@ -42,4 +42,9 @@
       reading alone, after the plan's own corpus duty had checked the mock and the external
       corpus and skipped the unit's own neighbours. A problem-vs-problem pass over
       `units/*/practice/` and `mocktests/` would have caught it mechanically.
+- [ ] **Strip stale stored outputs from the 15 pre-existing solutions that carry them.** 326 of
+      343 solutions store no outputs — that is the convention. The 15 that do (C3-p13 and
+      C9-p05..p18) will silently go stale the moment their source is edited, which is exactly how
+      plan 014's gate found two of its own solutions printing round-2 values against round-3
+      source. Plan 014 cleared the two it touched; the rest are out of its scope.
 - [ ] r1-002 / r1-003 via the blueprint's arc rotation (indices 1 and 2).
