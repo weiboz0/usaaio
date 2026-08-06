@@ -53,6 +53,16 @@ EXPECTED_UNIT_SHAPES = {
     "F7-kernels-convex-optimization": ([85, 85, 85, 85], 20, (340, 640, 45)),
 }
 
+# Temporary Phase 1 register-first boundary. Remove IDs as later phases create both files;
+# the final content phase deletes this exception and restores full-green coverage here.
+PLAN016_PENDING_PRACTICE_IDS = {
+    "F1-scientific-python": tuple(range(22, 25)),
+    "F5-probability": tuple(range(20, 26)),
+    "C2-linear-models": tuple(range(19, 25)),
+    "C9-dimensionality-reduction": tuple(range(20, 25)),
+    "F7-kernels-convex-optimization": tuple(range(1, 21)),
+}
+
 
 def _manifest(unit_id: str) -> dict[str, object]:
     return yaml.safe_load((ROOT / "units" / unit_id / "manifest.yaml").read_text())
@@ -65,6 +75,17 @@ def _canonical_syllabus_yaml() -> dict[str, object]:
     )
     assert fenced is not None
     return yaml.safe_load(fenced.group(1))
+
+
+def _plan016_expected_missing_path_errors() -> set[str]:
+    errors: set[str] = set()
+    for unit_id, numbers in PLAN016_PENDING_PRACTICE_IDS.items():
+        manifest = ROOT / "units" / unit_id / "manifest.yaml"
+        for number in numbers:
+            stem = f"practice/p{number:02}"
+            errors.add(f"{manifest}: missing practice path {stem}.ipynb")
+            errors.add(f"{manifest}: missing solution path {stem}_solution.ipynb")
+    return errors
 
 
 def seed_repo(root: Path) -> None:
@@ -385,10 +406,21 @@ def test_plan016_syllabus_narrative_order_and_dependency_contract():
     assert "Double-length units (F5, F6) use 4–6 sessions." in standards
 
 
-def test_ci_checks_green_on_current_repo():
+def test_plan016_phase1_coverage_fails_only_for_pending_content_paths():
+    report = check_coverage(ROOT)
+    expected_errors = _plan016_expected_missing_path_errors()
+
+    assert sum(len(numbers) for numbers in PLAN016_PENDING_PRACTICE_IDS.values()) == 40
+    assert len(expected_errors) == 80
+    assert not report.ok
+    assert report.warnings == []
+    assert len(report.errors) == len(expected_errors)
+    assert set(report.errors) == expected_errors
+
+
+def test_ci_checks_other_than_plan016_pending_coverage_are_green():
     reports = [
         check_prereq(ROOT),
-        check_coverage(ROOT),
         check_hygiene(ROOT),
         check_blueprint(ROOT),
         check_overlap(ROOT),
