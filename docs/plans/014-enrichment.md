@@ -343,6 +343,30 @@ warm caches are assumed and stated; the step FAILS ci on any execution error; an
 median delta exceeds +12 minutes the narrower option is taken WITH the same coverage
 guarantee (parallelism or reuse), never by dropping notebooks from scope.**
 
+## Reconciliation (2026-08-05): 6/6 solved, 2 statement defects surfaced and fixed
+
+The blind session (fresh sol, outlines unread) solved all six.
+Anchors: F6-p25 nonzero eigenvalues 210.039/114.387/71.617/19.957, rel_err2 tail 1.07e-32,
+predicted = observed = 5; C3-p19 all five planted bugs identified with verifier agreement
+[T,T,T,T,T]; C7-p27 the three toggle predictions; C9-p19 r* = 4 with r=1 underfitting and
+r=7 overfitting; C1-p24 underfitting + more-flexibility; F5-p19 Cov = 0 with the
+factorization witness P(X=2,Y=4) = 1/4 ≠ 1/8 and the Rademacher near-miss independent.
+
+**Two solver-flagged defects were REAL and are fixed:**
+1. F6-p25 asked for the exact zero-eigenvalue count "from the shape alone" — the shape gives
+   only a LOWER bound of five; exactness requires full column rank. The statement now supplies
+   that fact and asks the student to notice the distinction, which improves the problem.
+2. **C9-p19 called its held-out split "test" while using it to select r — that is model
+   selection, and shipping it would have contradicted the hidden-test register C10 grades.**
+   Relabelled validation throughout; gap vocabulary made consistent.
+
+All six re-executed locally 6/6; prereq/coverage/hygiene/tolerance/blueprint PASS; register
+343/343.
+
+## Content Review
+
+(Pre-PR gate findings land here.)
+
 ## Out of scope
 
 r1-002/r1-003 generation. Training loops/optimizers (watch-list). k-means, big-O, the
