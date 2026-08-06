@@ -175,8 +175,8 @@ The mapping is pinned so concept ownership cannot be confused with roadmap statu
 - Modify `curriculum/coverage-map.yaml` for the controlled seaborn dependency and planned
   F7-owner conversion.
 - Modify `tests/test_scope.py`.
-- Add/modify exact ownership regression tests in `tests/test_integration.py` or the narrowest
-  existing curriculum-contract test module.
+- Modify `tests/test_integration.py` for exact ownership and the named
+  `test_f1_seaborn_array_only_boundary` regression.
 
 ### Steps
 
@@ -215,10 +215,10 @@ The mapping is pinned so concept ownership cannot be confused with roadmap statu
 - Create `units/F1-scientific-python/lessons/04-seaborn-with-arrays.ipynb`.
 - Create statement notebooks `units/F1-scientific-python/practice/p22.ipynb` through
   `p24.ipynb`; create their separately authored `_solution.ipynb` files.
-- Modify `units/F1-scientific-python/overview.ipynb` and `review.ipynb`.
+- Modify `units/F1-scientific-python/lesson.ipynb` and `review.ipynb`.
 - Create `units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb`.
 - Modify C10 statements and blind solutions `practice/p15`, `p17`, and `p18`.
-- Modify `units/C10-competition-craft/overview.ipynb` and `review.ipynb`.
+- Modify `units/C10-competition-craft/lesson.ipynb` and `review.ipynb`.
 
 ### F1 problem contract
 
@@ -229,9 +229,11 @@ The mapping is pinned so concept ownership cannot be confused with roadmap statu
 - `F1-p24` (40 min, integrative): diagnose and repair a reproducible seaborn comparison,
   including a justified matplotlib boundary.
 
-All three F1 statements and solutions prohibit `import pandas`, `from pandas`, `pd.`, and
-`DataFrame` use; a static regression test enforces this boundary.  Seaborn's internal
-dependency on pandas does not make the C4 pandas API student-facing in F1.
+The F1 root `lesson.ipynb`, all four session notebooks, `review.ipynb`, and p22–p24
+statements/solutions prohibit `import pandas`, `from pandas`, `pd.`, and `DataFrame` use.
+`tests/test_integration.py::test_f1_seaborn_array_only_boundary` scans that complete named
+set.  Seaborn's internal dependency on pandas does not make the C4 pandas API
+student-facing in F1.
 
 ### C10 rewrite contract
 
@@ -245,14 +247,15 @@ dependency on pandas does not make the C4 pandas API student-facing in F1.
 Each rewritten problem preserves an honest, separately scored `writeup-quality` deliverable
 and contains one separately scored deliverable for every new C10 concept:
 
-| Practice | `writeup-quality` | Colab authoring | fenced code | Markdown math | coding submission | CPU/GPU boundary |
-|---|---|---|---|---|---|---|
-| `C10-p15` | approach + intuition paragraph | choose/repair text and code cells | repair a fenced function excerpt | derive and render one metric formula | required identifier + restart/run-all + download checks | identify and correct an illegal R1 GPU claim |
-| `C10-p17` | approach + alternatives in the mini-competition writeup | assemble the mixed-cell response | render the `predict_labels` excerpt | render and explain the scored metric | portability, state-loss, output, and `.ipynb` preflight | write the R1 CPU declaration and contrast the R2 L4 allowance |
-| `C10-p18` | corrected approach/alternatives section | repair wrong cell types in the flawed submission | repair its malformed fenced snippet | repair and interpret its malformed formula | audit identifiers, restart/run-all, file and download contract | diagnose the illegal GPU and state the exact round boundary |
+| Practice | `writeup-quality` | existing model-selection evidence | Colab authoring | fenced code | Markdown math | coding submission | CPU/GPU boundary |
+|---|---|---|---|---|---|---|---|
+| `C10-p15` | approach + intuition paragraph | not a primary carrier | choose/repair text and code cells | repair a fenced function excerpt | derive and render one metric formula | required identifier + restart/run-all + download checks | identify and correct an illegal R1 GPU claim |
+| `C10-p17` | approach + alternatives in the mini-competition writeup | preserve the bounded pipeline/validation choice, refit, and packaged prediction deliverables | assemble the mixed-cell response | render the `predict_labels` excerpt | render and explain the scored metric | portability, state-loss, output, and `.ipynb` preflight | write the R1 CPU declaration and contrast the R2 L4 allowance |
+| `C10-p18` | corrected approach/alternatives section | audit and repair the pipeline, validation, bounded-selection, refit, and prediction path | repair wrong cell types in the flawed submission | repair its malformed fenced snippet | repair and interpret its malformed formula | audit identifiers, restart/run-all, file and download contract | diagnose the illegal GPU and state the exact round boundary |
 
-The manifest tags all six concepts on all three ids only after the statement exposes these
-six scored rows.  This preserves the existing three-practice `writeup-quality` and
+The manifest tags the five new concepts plus existing `writeup-quality` on all three ids
+only after the statement exposes these six scored rows.  This preserves the existing
+three-practice `writeup-quality` and
 `markdown-text-communication` evidence while satisfying the five new three-practice floors.
 
 ### Steps and acceptance
@@ -267,7 +270,8 @@ six scored rows.  This preserves the existing three-practice `writeup-quality` a
 3. A fresh GPT-5.6-sol session blind-solves only the finalized statements and writes the
    six solution notebooks.
 4. Run the changed solutions through fresh Jupyter execution, answer/register/tolerance and
-   hygiene checks, then run focused unit coverage.
+   hygiene checks, then run focused unit coverage and
+   `uv run pytest tests/test_integration.py -q -k f1_seaborn_array_only_boundary`.
 
 ## Phase 3 — F5 probability and concentration content
 
@@ -277,7 +281,7 @@ six scored rows.  This preserves the existing three-practice `writeup-quality` a
 - Create `units/F5-probability/lessons/05-hoeffding-inequality.ipynb`.
 - Create statements `units/F5-probability/practice/p20.ipynb` through `p25.ipynb` and their
   separately blind-authored solutions.
-- Modify `units/F5-probability/overview.ipynb` and `review.ipynb`.
+- Modify `units/F5-probability/lesson.ipynb` and `review.ipynb`.
 
 ### Problem contract
 
@@ -304,13 +308,13 @@ coverage, and double-length tests.
 - Rename the existing C2 regularization lesson from `02-*` to `03-*` and update every path,
   inventory, schedule, or coverage reference.
 - Create C2 statements `practice/p19.ipynb` through `p24.ipynb` and blind solutions; modify
-  overview/review.
+  `lesson.ipynb`/`review.ipynb`.
 - Create `units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb`.
 - Rename existing C9 lessons in collision-safe order: move current `03-*` to `04-*`, then
   current `02-*` to `03-*`, then create the new `02-*`; use no forced overwrite and update
   all references.
 - Create C9 statements `practice/p20.ipynb` through `p24.ipynb` and blind solutions; modify
-  overview/review.
+  `lesson.ipynb`/`review.ipynb`.
 
 ### C2 problem contract
 
@@ -346,7 +350,7 @@ prerequisite, and coverage checks.
 
 ### Files
 
-- Create `units/F7-kernels-convex-optimization/overview.ipynb` and `review.ipynb`.
+- Create `units/F7-kernels-convex-optimization/lesson.ipynb` and `review.ipynb`.
 - Create lessons:
   - `lessons/01-psd-matrices-and-kernels.ipynb`;
   - `lessons/02-kernel-proofs-and-counterexamples.ipynb`;
@@ -368,28 +372,28 @@ prerequisite, and coverage checks.
 
 ### Practice register
 
-| ID | Set | Type | Difficulty | Contract |
-|---|---|---|---|---|
-| p01 | A | MC, five options A–E | intro | PSD classification |
-| p02 | A | MC, five options A–E | intro | kernel quantifier |
-| p03 | A | MC, five options A–E | intro | convex-set witness |
-| p04 | B | numeric normal-form MC, five options A–E | core | convex quadratic with reduced-fraction/gcd/sign contract |
-| p05 | A | constrained coding | intro | `psd_report` |
-| p06 | B | constrained coding | core | `poly2_gram` |
-| p07 | B | constrained coding | core | negative-eigen witness |
-| p08 | A | constrained coding | intro | affine-halfspace convex combinations |
-| p09 | B | constrained coding | core | Jensen gaps |
-| p10 | B | constrained coding | advanced | `kkt_residuals` |
-| p11 | B | proof | core | Gram/kernel proof; `Reasoning is required` |
-| p12 | B | proof | advanced | quadratic convexity/supporting-gradient proof; `Reasoning is required` |
-| p13 | C | integrative multi-part | core | compute polynomial Gram matrix, consume it in a feature-map proof, then consume both results to refute a perturbed kernel |
-| p14 | C | integrative multi-part | advanced | constrained quadratic → KKT → dual chain |
-| p15 | C | scenario | core | sampled validity versus proof |
-| p16 | C | scenario | core | local descent versus global convexity |
-| p17 | C | challenge | advanced | kernel closure/feature maps |
-| p18 | C | challenge | advanced | constrained dual/zero gap |
-| p19 | A | drill | intro | segment/Jensen violations |
-| p20 | B | drill | core | weak duality/activity/slackness |
+| ID | Set | Type | Difficulty | Exact new-concept tags | Contract |
+|---|---|---|---|---|---|
+| p01 | A | MC, five options A–E | intro | `positive-semidefinite-matrices` | PSD classification |
+| p02 | A | MC, five options A–E | intro | `kernel-validity` | kernel quantifier |
+| p03 | A | MC, five options A–E | intro | `convex-sets` | convex-set witness |
+| p04 | B | numeric normal-form MC, five options A–E | core | `convex-functions`, `first-order-optimality` | convex quadratic with reduced-fraction/gcd/sign contract |
+| p05 | A | constrained coding | intro | `positive-semidefinite-matrices` | `psd_report` |
+| p06 | B | constrained coding | core | `positive-semidefinite-matrices`, `kernel-validity` | `poly2_gram` |
+| p07 | B | constrained coding | core | `positive-semidefinite-matrices`, `kernel-validity` | negative-eigen witness |
+| p08 | A | constrained coding | intro | `convex-sets` | affine-halfspace convex combinations |
+| p09 | B | constrained coding | core | `convex-functions` | Jensen gaps |
+| p10 | B | constrained coding | advanced | `lagrangians`, `optimization-duality` | `kkt_residuals` |
+| p11 | B | proof | core | `positive-semidefinite-matrices`, `kernel-validity` | Gram/kernel proof; `Reasoning is required` |
+| p12 | B | proof | advanced | `positive-semidefinite-matrices`, `convex-functions`, `first-order-optimality` | quadratic convexity/supporting-gradient proof; `Reasoning is required` |
+| p13 | C | integrative multi-part | core | `positive-semidefinite-matrices`, `kernel-validity` | compute polynomial Gram matrix, consume it in a feature-map proof, then consume both results to refute a perturbed kernel |
+| p14 | C | integrative multi-part | advanced | `convex-sets`, `convex-functions`, `first-order-optimality`, `lagrangians`, `optimization-duality` | constrained quadratic → KKT → dual chain |
+| p15 | C | scenario | core | `positive-semidefinite-matrices`, `kernel-validity` | sampled validity versus proof |
+| p16 | C | scenario | core | `convex-functions`, `first-order-optimality` | local descent versus global convexity |
+| p17 | C | challenge | advanced | `kernel-validity` | kernel closure/feature maps |
+| p18 | C | challenge | advanced | `lagrangians`, `optimization-duality` | constrained dual/zero gap |
+| p19 | A | drill | intro | `convex-sets`, `convex-functions` | segment/Jensen violations |
+| p20 | B | drill | core | `lagrangians`, `optimization-duality` | weak duality/activity/slackness |
 
 The distribution is exactly four MC/normal-form, six coding, two proof, two integrative,
 two scenario, two challenge, and two drills; six intro, nine core, and five advanced.
@@ -449,7 +453,7 @@ git diff --check
 ```
 
 Additionally, run fresh Jupyter execution for every changed/new solution and every changed
-lesson/review/overview before the full CI.  A blocked fresh Jupyter run is a hard shipping
+lesson/review/root lesson index before the full CI.  A blocked fresh Jupyter run is a hard shipping
 stop: fallback cell execution may aid diagnosis but cannot authorize the content gate, PR,
 or merge.
 
@@ -496,6 +500,9 @@ counts reconciled to the manifests.
   C10's six-way evidence preservation, planned-node replacement, and a second final CI.
   The revised plan pins each contract explicitly; inline re-review finds no remaining
   contradiction.
+- `[self] [FIXED]` Final path verification found draft references to nonexistent
+  `overview.ipynb` files.  Every affected existing/new unit index is now correctly named
+  `lesson.ipynb`, matching the shipped unit standard and repository layout.
 
 ### Review 2 — GPT-5.6-sol
 
@@ -510,7 +517,10 @@ counts reconciled to the manifests.
   second clean-commit full CI is mandatory after all fixes/report edits.
 - `[sol] [FIXED]` Cluster assignments, F7's `foundation` track, and the double-length
   model/loader data path are now fully specified.
-- **Re-review status:** pending.
+- `[sol] [FIXED]` The approve-with-nit re-review noted that C10-p17/p18 are primary
+  `end-to-end-model-selection` evidence.  Their bounded pipeline/validation, refit, and
+  prediction deliverables are now explicitly preserved in the matrix.
+- **Final verdict:** APPROVE WITH NITS; the sole nit is fixed above.
 
 ### Review 3 — GPT-5.6-terra
 
@@ -526,7 +536,7 @@ counts reconciled to the manifests.
   remaining blockers.
 - `[terra] [FIXED]` F7 now pins four five-option MCs, every set/type/difficulty, and p13 as
   an integrative chain rather than an extra proof.
-- **Re-review status:** pending.
+- **Final verdict:** APPROVE.
 
 ### Review 4 — GLM-5.2
 
@@ -537,9 +547,13 @@ counts reconciled to the manifests.
   as integrative; F1 bans pandas APIs; F5-p24 uses `SEED = 20260804`; blocked fresh Jupyter
   is a hard stop; Sol/Terra dispatch models are explicit; and double-length logic is
   conditional on the syllabus label.
-- **Re-review status:** pending.
+- `[glm] [FIXED]` The approve-with-nits re-review requested a named full-surface F1 pandas
+  ban test, precise five-new-plus-one-existing C10 wording, and explicit F7 concept tags.
+  All three are now pinned above.
+- **Final verdict:** APPROVE WITH NITS; all nits are fixed above.
 
-**GATE RESULT: PENDING.** No implementation may start before 4/4 approval.
+**GATE RESULT: PASS — 4/4.** Self APPROVE, Sol APPROVE WITH NITS, Terra APPROVE, and
+GLM-5.2 APPROVE WITH NITS; every finding and nit is resolved in the plan.
 
 ## Content Review
 
