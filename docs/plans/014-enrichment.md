@@ -624,7 +624,7 @@ recorded so a round-3 reviewer can check the work rather than repeat it:
   including `mc` absorbing `mc-normal-form`'s label. All six rejected; all four legitimate
   glosses accepted.
 - **The solution-header check** was corruption-tested and reproduces round 1's C9-p19 failure.
-- `verify-register.py` 343/343; 127 unit tests; prereq/coverage/hygiene/tolerance/blueprint PASS;
+- `verify-register.py` 343/343; 130 unit tests; prereq/coverage/hygiene/tolerance/blueprint PASS;
   every touched solution re-executes clean in a fresh kernel. Full `ci-local.sh` **ALL GREEN**
   against this exact tree, `pre-merge-guard: OK` — so the only thing standing between this
   branch and merge is the missing round-3 verdicts.
@@ -653,8 +653,8 @@ round 3 found was documentation truth and tooling residue.
   correction. **[FIXED]**, along with `vecs_desc` never being named in the prose.
 - `[glm]` **MINOR two solutions carried stale stored outputs** contradicting their own source —
   C3-p19 printing the round-2 letter order and pre-round-3 D values, C7-p27 printing the
-  per-case line the round-2 leak fix deleted. **[FIXED]** by clearing them: 326 of 343 solutions
-  store no outputs, so stripping matches the convention and removes the staleness class rather
+  per-case line the round-2 leak fix deleted. **[FIXED]** by clearing them: the great majority of solutions
+  store no outputs (328 of 343 after this clearing), so stripping matches the convention and removes the staleness class rather
   than resetting its clock. The 15 pre-existing solutions that carry outputs are recorded in
   `TODO.md`.
 - `[opus]` **MAJOR the C7 passage's arithmetic was wrong for the third time.** It claimed the 8
@@ -690,7 +690,7 @@ round 3 found was documentation truth and tooling residue.
 
 ## Post-execution report
 
-**Shipped.** 269 files changed (+3098 / -387). The corpus goes from 337 to 343 practice
+**Shipped.** 269 files changed. The corpus goes from 337 to 343 practice
 problems across 16 units.
 
 - **Retag pass** — 93 problems gained 332 cross-unit concept tags, closing the audit's headline
@@ -735,6 +735,6 @@ caught by re-solving the problem, because the answers were right.
 **Verification.** `scripts/ci-local.sh` **ALL GREEN** on the final tree, with
 `pre-merge-guard: OK` (step 7/7). `verify-register.py` 343/343 (repo-wide, and
 corruption-tested against a unit the old check ignored). `prereq-check`, `coverage-check`,
-`hygiene-check`, `tolerance-check`, `blueprint-check` PASS. 127 unit tests pass. All six new
+`hygiene-check`, `tolerance-check`, `blueprint-check` PASS. 130 unit tests pass. All six new
 solutions execute clean in a fresh kernel, verified locally rather than on the authoring
 session's word — codex's sandbox could not create kernel sockets, so its own run was not proof.

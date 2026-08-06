@@ -108,10 +108,18 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
     markdown = [_source(cell) for cell in notebook["cells"] if cell["cell_type"] == "markdown"]
     if not markdown:
         return []
-    # Search EVERY markdown cell, not just the first. Scanning only the first cell let a
-    # solution opt out of the whole check by relocating its header lower down, taking a wrong
-    # title with it (gate finding, plan 014 round 4). Absence remains legal — 338 of 343
-    # solutions carry no header — but a header anywhere is checked.
+    # The TITLE is checked on every solution, not only the 5 that carry a metadata header.
+    # Every solution has one, so gating mis-attribution coverage behind header presence would
+    # have left 338 of 343 unprotected for no structural reason (gate finding, plan 014 r4).
+    body = [line for line in markdown[0].splitlines() if line.strip()]
+    expected_title = f"# {unit} — Practice {problem['id'].split('-')[-1]} — Solution"
+    if not body or body[0] != expected_title:
+        return [f"{problem['id']}: solution title does not match the manifest"]
+
+    # The FIELD checks apply only where a header exists. Search every markdown cell, not just
+    # the first: scanning only the first let a solution opt out by relocating its header lower
+    # down. Absence stays legal — 328 of 343 solutions carry no header — but a header anywhere
+    # is checked.
     header = next(
         (
             line
@@ -123,13 +131,6 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
     )
     if header is None:
         return []
-    # A solution that carries a header must also own the right title. Without this a solution
-    # could be retitled to another problem's number and still pass every field check — the same
-    # mis-attribution the statement title check exists to catch (gate finding, plan 014).
-    body = [line for line in markdown[0].splitlines() if line.strip()]
-    expected_title = f"# {unit} — Practice {problem['id'].split('-')[-1]} — Solution"
-    if not body or body[0] != expected_title:
-        return [f"{problem['id']}: solution title does not match the manifest"]
     fields = dict(HEADER_FIELD_RE.findall(header))
     if set(fields) != {"Type", "Difficulty", "Concepts"}:
         return [f"{problem['id']}: solution header is missing one of Type / Difficulty / Concepts"]

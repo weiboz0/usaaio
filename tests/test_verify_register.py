@@ -231,8 +231,10 @@ def test_solution_header_drift_is_caught(tmp_path, monkeypatch):
     assert any("solution header concepts" in error for error in errors)
 
 
-def test_solution_without_a_header_is_accepted(tmp_path, monkeypatch):
-    """338 of 343 solutions carry no header; that is the convention, not a defect."""
+def test_solution_without_a_header_skips_the_field_checks(tmp_path, monkeypatch):
+    """328 of 343 solutions carry no metadata header; that is the convention, not a defect.
+    The TITLE is still checked on every solution — only the field checks are skipped.
+    """
     unit = "C7-example"
     problem = write_problem(
         tmp_path,
@@ -242,7 +244,16 @@ def test_solution_without_a_header_is_accepted(tmp_path, monkeypatch):
     )
     solution = tmp_path / "units" / unit / "practice" / "p01_solution.ipynb"
     solution.write_text(
-        json.dumps({"cells": [{"cell_type": "markdown", "source": "# Solution\n\nWorking below."}]})
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "markdown",
+                        "source": "# C7-example — Practice p01 — Solution\n\nWorking below.",
+                    }
+                ]
+            }
+        )
     )
     problem["solution_path"] = "practice/p01_solution.ipynb"
     monkeypatch.setattr(verify_register, "ROOT", tmp_path)
