@@ -258,8 +258,8 @@ def load_roadmap(root: str | Path) -> Roadmap:
                     str(value)
                     for value in (item.get("deficits") or {}).get("modalities_missing") or []
                 ],
-                rationale=str(item.get("rationale", "")),
-                consequence=str(item.get("consequence", "")),
+                rationale=str(item["rationale"]),
+                consequence=str(item["consequence"]),
             )
         )
     return Roadmap(

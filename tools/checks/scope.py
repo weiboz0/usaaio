@@ -222,9 +222,7 @@ def _check_topics(
     return categories, targets
 
 
-def _inventory_indexes(
-    raw: dict[str, Any], unit_practice_ids: set[str]
-) -> tuple[set[tuple[str, str, int]], set[str]]:
+def _inventory_indexes(raw: dict[str, Any]) -> tuple[set[tuple[str, str, int]], set[str]]:
     anchors: set[tuple[str, str, int]] = set()
     problem_ids: set[str] = set()
     for notebook in raw.get("notebooks") or []:
@@ -237,7 +235,17 @@ def _inventory_indexes(
                 continue
             heading = " > ".join(_strings(anchor.get("heading_path")))
             anchors.add((path, heading, int(anchor.get("cell_ordinal", -1))))
-    return anchors, problem_ids | unit_practice_ids
+    return anchors, problem_ids
+
+
+def _mock_problem_ids(root: Path) -> set[str]:
+    problem_ids: set[str] = set()
+    for path in sorted(root.glob("mocktests/*/manifest.yaml")):
+        raw = _yaml(path)
+        for problem in raw.get("problems") or []:
+            if isinstance(problem, dict) and problem.get("id"):
+                problem_ids.add(str(problem["id"]))
+    return problem_ids
 
 
 def _number(value: object) -> float | None:
@@ -293,6 +301,17 @@ def _check_planned_units(
             )
         elif action is not None and action not in SCHEDULE_ACTIONS:
             errors.append(f"planned unit {unit_id}: unknown schedule_action {action}")
+    prerequisite_graph = {
+        unit_id: [
+            prerequisite
+            for prerequisite in _strings(row.get("prerequisites"))
+            if prerequisite in planned
+        ]
+        for unit_id, row in planned.items()
+    }
+    cycles = _cycle_nodes(prerequisite_graph)
+    if cycles:
+        errors.append("planned-unit prerequisite cycle: " + ", ".join(sorted(cycles)))
     return planned
 
 
@@ -322,7 +341,7 @@ def _check_point_evidence(
     required_modalities = _strings(target.get("modalities"))
     for modality in sorted(set(raw_evidence) - set(required_modalities)):
         errors.append(f"knowledge point {point_id}: unknown evidence modality {modality}")
-    accepted_modalities: set[str] = set()
+    completed_modalities: set[str] = set()
     modalities_with_lesson: set[str] = set()
     qualifying_practices: set[str] = set()
     for modality in required_modalities:
@@ -348,7 +367,19 @@ def _check_point_evidence(
                 errors.append(f"knowledge point {point_id}/{modality}: unknown lesson anchor {key}")
                 continue
             parts = Path(key[0]).parts
-            unit_id = parts[1] if len(parts) >= 3 and parts[0] == "units" else ""
+            is_lesson_session = (
+                len(parts) == 4
+                and parts[0] == "units"
+                and parts[2] == "lessons"
+                and parts[3].endswith(".ipynb")
+            )
+            if not is_lesson_session:
+                errors.append(
+                    f"knowledge point {point_id}/{modality}: lesson {key[0]} "
+                    "is not a unit lesson-session notebook"
+                )
+                continue
+            unit_id = parts[1]
             if not (unit_teaches.get(unit_id, set()) & shipped):
                 errors.append(
                     f"knowledge point {point_id}/{modality}: lesson {key[0]} "
@@ -394,9 +425,11 @@ def _check_point_evidence(
         if valid_lesson:
             modalities_with_lesson.add(modality)
         if valid_lesson and valid_practice:
-            accepted_modalities.add(modality)
-    missing = [modality for modality in required_modalities if modality not in accepted_modalities]
-    if not missing and len(qualifying_practices) >= 3:
+            completed_modalities.add(modality)
+    missing = [
+        modality for modality in required_modalities if modality not in modalities_with_lesson
+    ]
+    if len(completed_modalities) == len(required_modalities) and len(qualifying_practices) >= 3:
         derived = "covered"
     elif not modalities_with_lesson and not qualifying_practices:
         derived = "missing"
@@ -457,9 +490,9 @@ def _check_roadmap(
         for manifest in manifests
         for practice in manifest.practice
     }
-    unit_practice_ids = set(practice_tags)
     unit_teaches = {unit_id: set(unit.teaches) for unit_id, unit in syllabus.units.items()}
-    inventory_anchors, all_problem_ids = _inventory_indexes(inventory, unit_practice_ids)
+    inventory_anchors, inventory_problem_ids = _inventory_indexes(inventory)
+    all_problem_ids = inventory_problem_ids | _mock_problem_ids(root)
 
     point_rows = [row for row in raw.get("knowledge_points") or [] if isinstance(row, dict)]
     point_ids = [str(row.get("id", "")) for row in point_rows]
@@ -469,6 +502,8 @@ def _check_roadmap(
     for target_id in targets:
         if point_counts[target_id] == 0:
             errors.append(f"missing official atomic target {target_id}")
+    for point_id in sorted(set(point_ids) - set(targets)):
+        errors.append(f"extra non-official knowledge point {point_id}")
     points = {str(row.get("id", "")): row for row in point_rows}
     planned_rows = [row for row in raw.get("planned_units") or [] if isinstance(row, dict)]
     planned = _check_planned_units(
@@ -509,6 +544,16 @@ def _check_roadmap(
             known_sources,
             errors,
         )
+        target = targets.get(point_id)
+        if target is not None and set(_strings(point.get("source_refs"))) != set(
+            _strings(target.get("source_refs"))
+        ):
+            errors.append(
+                f"knowledge point {point_id}: source_refs must exactly match its atomic target"
+            )
+        for field in ("rationale", "consequence"):
+            if not str(point.get(field, "")).strip():
+                errors.append(f"knowledge point {point_id}: requires nonempty {field}")
         for concept in _strings(point.get("shipped_concepts")):
             if concept not in shipped_concepts:
                 errors.append(f"knowledge point {point_id}: unknown shipped concept {concept}")
@@ -521,6 +566,17 @@ def _check_roadmap(
             errors.append(f"knowledge point {point_id}: unknown destination {destination}")
         if coverage in {"partial", "missing"} and not destination:
             errors.append(f"{coverage} {point_id} requires a destination")
+        if disposition in {"keep", "extend-existing-unit"} and destination not in existing_units:
+            errors.append(
+                f"knowledge point {point_id}: {disposition} requires an existing-unit destination"
+            )
+        if disposition in {"new-unit", "defer-optional"} and (
+            destination not in planned or destination not in planned_owners.get(point_id, [])
+        ):
+            errors.append(
+                f"knowledge point {point_id}: {disposition} requires a planned-unit "
+                "destination owner"
+            )
 
         owners = list(planned_owners.get(point_id, []))
         if disposition in {"keep", "extend-existing-unit"} and destination in existing_units:
@@ -531,7 +587,6 @@ def _check_roadmap(
                 f"destination={destination!r}, owners={sorted(owners)}"
             )
 
-        target = targets.get(point_id)
         if target is None:
             continue
         required_for = set(_strings(target.get("required_for")))

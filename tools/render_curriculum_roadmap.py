@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import re
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
@@ -13,6 +15,62 @@ from tools.model import KnowledgePoint, Roadmap, load_roadmap
 
 AUDIT_PATH = Path("docs/audits/015-coverage-audit.md")
 ROADMAP_PATH = Path("docs/curriculum-roadmap.md")
+
+TRANCHE_QUEUE = (
+    (
+        "Round 1 mathematical completion",
+        (
+            "F5 extension: conditional probability, Bayes, and Hoeffding; C2 extension: "
+            "closed-form regression, rank, and pseudoinverse conditions; C9 extension: the "
+            "PCA eigenproblem and NumPy class; then PSD/kernel proofs, convexity, constrained "
+            "optimization, and duality."
+        ),
+    ),
+    (
+        "Round 1 neural-training completion",
+        (
+            "Softmax, cross-entropy, manual backpropagation, a fully connected network from "
+            "scratch, then PyTorch autograd/optimizers, explicit BatchNorm/dropout ownership, "
+            "and C7 CNN training. Forward propagation is already a shipped prerequisite, not "
+            "a new gap."
+        ),
+    ),
+    (
+        "Round 1 classical-model breadth",
+        (
+            "Logistic regression, SVM, decision trees, ensembles, and k-means, with "
+            "comparison and implementation exercises."
+        ),
+    ),
+    (
+        "Round 2 transformers and NLP",
+        (
+            "Self/multi-head attention, positional encoding, transformer architecture and "
+            "complexity, from-scratch attention, NLP applications, pre-training, and "
+            "fine-tuning."
+        ),
+    ),
+    (
+        "Round 2 advanced vision and generative modeling",
+        (
+            "Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after "
+            "multivariate Gaussian, reparameterization, and KL prerequisites."
+        ),
+    ),
+    (
+        "Round 2 open-ended/GPU capstone",
+        (
+            "Inverse problems, image tasks, mixture-parameter estimation, experiment design, "
+            "reproducibility, GPU workflow, and model evaluation."
+        ),
+    ),
+)
+
+
+@dataclass(frozen=True)
+class TimeBaseline:
+    manifested_minutes: int
+    scheduled_minutes: int
 
 
 def _yaml(path: Path) -> dict:
@@ -28,7 +86,97 @@ def _cell(value: object) -> str:
 
 
 def _joined(values: list[str]) -> str:
-    return ", ".join(values) if values else "—"
+    return ", ".join(sorted(values, key=str.encode)) if values else "—"
+
+
+def _number(value: object) -> int:
+    return int(value) if value is not None else 0
+
+
+def current_time_baseline(root: str | Path) -> TimeBaseline:
+    root = Path(root).resolve()
+    manifested = 0
+    for path in sorted(root.glob("units/*/manifest.yaml")):
+        raw = _yaml(path)
+        estimates = raw.get("estimated_minutes") or {}
+        if not isinstance(estimates, dict):
+            raise TypeError(f"{path}: estimated_minutes must be a mapping")
+        manifested += sum(_number(value) for value in estimates.get("lesson_sessions") or [])
+        manifested += _number(estimates.get("practice"))
+        manifested += _number(estimates.get("review"))
+    mock_minutes = sum(
+        _number(_yaml(path).get("duration_minutes"))
+        for path in sorted(root.glob("mocktests/*/manifest.yaml"))
+    )
+    course_path = root / "docs" / "course-structure.md"
+    course_text = course_path.read_text(encoding="utf-8")
+    match = re.search(r"(\d+)-minute debrief", course_text)
+    debrief_minutes = int(match.group(1)) if match else 0
+    return TimeBaseline(
+        manifested_minutes=manifested,
+        scheduled_minutes=manifested + mock_minutes + debrief_minutes,
+    )
+
+
+def _format_number(value: float) -> str:
+    return f"{value:.2f}".rstrip("0").rstrip(".")
+
+
+def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
+    by_layer = {layer: [0.0, 0.0] for layer in LAYERS}
+    for unit in roadmap.planned_units:
+        by_layer[unit.layer][0] += unit.estimated_hours.minimum
+        by_layer[unit.layer][1] += unit.estimated_hours.maximum
+    minimum = sum(values[0] for values in by_layer.values())
+    maximum = sum(values[1] for values in by_layer.values())
+    manifested_hours = baseline.manifested_minutes / 60
+    scheduled_hours = baseline.scheduled_minutes / 60
+    lines = [
+        "## Time baseline and planned deltas",
+        "",
+        (
+            f"Current manifested baseline: **{baseline.manifested_minutes} minutes / "
+            f"{_format_number(manifested_hours)} hours**."
+        ),
+        (
+            f"Current scheduled baseline: **{baseline.scheduled_minutes} minutes / "
+            f"{_format_number(scheduled_hours)} hours**."
+        ),
+        "Planned hours are estimates and are not manifested time.",
+        "",
+        "| Layer | Planned minimum hours | Planned maximum hours |",
+        "|---|---:|---:|",
+    ]
+    for layer in LAYERS:
+        lines.append(
+            f"| {layer} | {_format_number(by_layer[layer][0])} | "
+            f"{_format_number(by_layer[layer][1])} |"
+        )
+    lines.extend(
+        [
+            (
+                f"| **Total planned delta** | **{_format_number(minimum)}** | "
+                f"**{_format_number(maximum)}** |"
+            ),
+            "",
+            (
+                "Baseline plus planned delta: "
+                f"**{_format_number(manifested_hours + minimum)}–"
+                f"{_format_number(manifested_hours + maximum)} manifested-baseline hours** "
+                f"and **{_format_number(scheduled_hours + minimum)}–"
+                f"{_format_number(scheduled_hours + maximum)} scheduled-baseline hours**."
+            ),
+            "",
+        ]
+    )
+    return lines
+
+
+def _append_tranche_queue(lines: list[str]) -> None:
+    lines.extend(["## Dependency-ordered content tranche queue", ""])
+    for number, (title, description) in enumerate(TRANCHE_QUEUE, start=1):
+        lines.extend([f"{number}. **{title}:** {description}", ""])
+    lines.append("Each tranche updates the shipped syllabus and roadmap atomically.")
 
 
 def _evidence_lines(point: KnowledgePoint) -> list[str]:
@@ -54,7 +202,7 @@ def _evidence_lines(point: KnowledgePoint) -> list[str]:
     return lines
 
 
-def _render_audit(roadmap: Roadmap, inventory: dict) -> str:
+def _render_audit(roadmap: Roadmap, inventory: dict, baseline: TimeBaseline) -> str:
     counts = inventory.get("counts") or {}
     points = sorted(roadmap.knowledge_points, key=lambda item: item.id.encode("utf-8"))
     requirement_counts = {name: 0 for name in ("required", "bridge", "optional")}
@@ -84,7 +232,9 @@ def _render_audit(roadmap: Roadmap, inventory: dict) -> str:
     for label, values in (("Requirement", requirement_counts), ("Coverage", coverage_counts)):
         for name in sorted(values, key=str.encode):
             lines.append(f"| {label}: {name} | {values[name]} |")
-    lines.extend(["", "## Atomic-target audit", ""])
+    lines.append("")
+    lines.extend(_time_section(roadmap, baseline))
+    lines.extend(["## Atomic-target audit", ""])
     for point in points:
         lines.extend(
             [
@@ -128,6 +278,7 @@ def _render_audit(roadmap: Roadmap, inventory: dict) -> str:
                 "",
             ]
         )
+    _append_tranche_queue(lines)
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -139,7 +290,7 @@ def _required_rounds(root: Path) -> dict[str, set[str]]:
     }
 
 
-def _render_roadmap(root: Path, roadmap: Roadmap) -> str:
+def _render_roadmap(root: Path, roadmap: Roadmap, baseline: TimeBaseline) -> str:
     rounds = _required_rounds(root)
     lines = [
         "<!-- GENERATED by tools/render_curriculum_roadmap.py; do not edit. -->",
@@ -173,14 +324,15 @@ def _render_roadmap(root: Path, roadmap: Roadmap) -> str:
                 "",
             ]
         )
+    lines.extend(_time_section(roadmap, baseline))
     lines.extend(["## Layered knowledge points", ""])
     for layer in LAYERS:
         lines.extend(
             [
                 f"### {layer}",
                 "",
-                "| Knowledge point | Requirement | Coverage | Destination | Dependencies |",
-                "|---|---|---|---|---|",
+                "| Knowledge point | Requirement | Coverage | Modalities missing | Destination | Dependencies |",
+                "|---|---|---|---|---|---|",
             ]
         )
         points = sorted(
@@ -188,7 +340,7 @@ def _render_roadmap(root: Path, roadmap: Roadmap) -> str:
             key=lambda item: item.id.encode("utf-8"),
         )
         if not points:
-            lines.append("| — | — | — | — | — |")
+            lines.append("| — | — | — | — | — | — |")
         for point in points:
             lines.append(
                 "| "
@@ -198,6 +350,7 @@ def _render_roadmap(root: Path, roadmap: Roadmap) -> str:
                         point.id,
                         point.requirement,
                         point.coverage,
+                        _joined(point.modalities_missing),
                         point.destination,
                         _joined(point.depends_on),
                     )
@@ -209,8 +362,8 @@ def _render_roadmap(root: Path, roadmap: Roadmap) -> str:
         [
             "## Planned units",
             "",
-            "| Unit | Title | Layer | Hours | Schedule action | Prerequisites | Owns |",
-            "|---|---|---|---:|---|---|---|",
+            "| Unit | Title | Layer | Hours | Schedule action | Prerequisites | Owns | Provisional concepts |",
+            "|---|---|---|---:|---|---|---|---|",
         ]
     )
     for unit in sorted(roadmap.planned_units, key=lambda item: item.id.encode("utf-8")):
@@ -227,12 +380,15 @@ def _render_roadmap(root: Path, roadmap: Roadmap) -> str:
                     unit.schedule_action,
                     _joined(unit.prerequisites),
                     _joined(unit.knowledge_points),
+                    _joined(unit.provisional_concepts),
                 )
             )
             + " |"
         )
     if not roadmap.planned_units:
-        lines.append("| — | — | — | — | — | — | — |")
+        lines.append("| — | — | — | — | — | — | — | — |")
+    lines.append("")
+    _append_tranche_queue(lines)
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -240,9 +396,10 @@ def render_documents(root: str | Path) -> dict[Path, str]:
     root = Path(root).resolve()
     roadmap = load_roadmap(root)
     inventory = _yaml(root / "curriculum" / "material-inventory.yaml")
+    baseline = current_time_baseline(root)
     return {
-        AUDIT_PATH: _render_audit(roadmap, inventory),
-        ROADMAP_PATH: _render_roadmap(root, roadmap),
+        AUDIT_PATH: _render_audit(roadmap, inventory, baseline),
+        ROADMAP_PATH: _render_roadmap(root, roadmap, baseline),
     }
 
 
