@@ -11,6 +11,7 @@ import yaml
 
 from tools import model
 from tools import render_curriculum_roadmap as renderer
+from tools.checks import scope as scope_checker
 from tools.checks.scope import check_scope
 
 
@@ -1257,6 +1258,13 @@ def test_renderer_surfaces_checker_derived_practice_shortfall(tmp_path: Path) ->
     assert "- **Practice shortfall:** 3" in audit
     assert "| Knowledge point | Requirement | Coverage | Modalities missing | Practice shortfall |" in roadmap
     assert "| topic-a | required | partial | — | 3 |" in roadmap
+
+
+def test_renderer_and_scope_checker_share_the_practice_threshold() -> None:
+    assert (
+        renderer.MINIMUM_QUALIFYING_PRACTICES
+        == scope_checker.MINIMUM_QUALIFYING_PRACTICES
+    )
 
 
 def test_renderer_recomputes_real_post_plan014_baseline() -> None:

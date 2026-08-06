@@ -23,6 +23,7 @@ LAYERS = [
 ]
 REQUIREMENTS = {"required", "bridge", "optional"}
 COVERAGE_STATES = {"covered", "partial", "missing"}
+MINIMUM_QUALIFYING_PRACTICES = 3
 DISPOSITIONS = {"keep", "extend-existing-unit", "new-unit", "defer-optional"}
 SCHEDULE_ACTIONS = {"split", "replace", "extend"}
 ROUNDS = {"round-1", "round-2"}
@@ -879,7 +880,10 @@ def _check_point_evidence(
     missing = [
         modality for modality in required_modalities if modality not in modalities_with_lesson
     ]
-    if len(completed_modalities) == len(required_modalities) and len(qualifying_practices) >= 3:
+    if (
+        len(completed_modalities) == len(required_modalities)
+        and len(qualifying_practices) >= MINIMUM_QUALIFYING_PRACTICES
+    ):
         derived = "covered"
     elif not modalities_with_lesson and not qualifying_practices:
         derived = "missing"
@@ -904,7 +908,7 @@ def _check_point_evidence(
             f"got {declared_missing}"
         )
     if derived != "covered":
-        shortfall = max(0, 3 - len(qualifying_practices))
+        shortfall = max(0, MINIMUM_QUALIFYING_PRACTICES - len(qualifying_practices))
         warnings.append(
             f"knowledge point {point_id}: {derived}; modalities missing {missing}; "
             f"practice shortfall {shortfall}"

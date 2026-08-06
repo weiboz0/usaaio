@@ -13,7 +13,7 @@ from pathlib import Path
 
 import yaml
 
-from tools.checks.scope import LAYERS, check_scope
+from tools.checks.scope import LAYERS, MINIMUM_QUALIFYING_PRACTICES, check_scope
 from tools.model import KnowledgePoint, Roadmap, load_roadmap
 
 AUDIT_PATH = Path("docs/audits/015-coverage-audit.md")
@@ -108,7 +108,7 @@ def _practice_shortfall(point: KnowledgePoint) -> int:
         for item in evidence.practices
         if item.role == "primary"
     }
-    return max(0, 3 - len(practices))
+    return max(0, MINIMUM_QUALIFYING_PRACTICES - len(practices))
 
 
 def _number(value: object) -> int:
