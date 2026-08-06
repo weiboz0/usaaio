@@ -14,7 +14,7 @@
 - [x] 011 — first full mock test r1-001 through the pipeline (merged — owns answer-key reproduction + PDF build)
 - [x] 012 — course-structure doc (merged — roadmap complete) (units -> semesters/weeks pacing)
 - [x] 013 — audit remediation (merged)
-- [ ] 014 — enrichment tranche (retag pass, 2 error clinics, F6-p25 synthesis problem, targeted items)
+- [x] 014 — enrichment tranche (merged — retag pass, 2 error clinics, F6-p25 synthesis problem, targeted items)
 
 ## Deferred, with a named owner plan still to be written
 
