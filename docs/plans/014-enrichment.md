@@ -517,6 +517,14 @@ one unit — is a *capacity* decision and is deferred, with C5's identical quest
   (`[opus]` flagged the same). Briefing error, corrected for round 2.
 - `[glm-B]` The plan claimed p25 carried "the first cross-unit tag exercised in an integrative
   chain" — false after the retag. **[FIXED]** in place, with the accurate claim substituted.
+- `[glm-B]` The briefing said "0 of 319" where the plan says "0 of 337". Counted at both refs:
+  `main` holds **337** practice problems and HEAD holds **343** (337 + 6 new), so the plan is
+  right and the briefing figure was mine, carried stale from an earlier tranche. No artifact
+  change; recorded so the number is not re-derived from the wrong source later.
+- `[claude-self]` My own round-1 fix to `verify-register.py` matched the header's Type field by
+  bare prefix, so `**Type:** constrained coding ENTIRELY WRONG` passed. Found by attacking my
+  own change rather than by a reviewer. **[FIXED]** — the permitted forms are now exactly the
+  raw id or expanded label, optionally followed by a parenthetical or a slash gloss.
 
 ## Out of scope
 
