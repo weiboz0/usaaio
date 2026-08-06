@@ -127,6 +127,149 @@ class Report:
     skipped: str | None = None
 
 
+@dataclass(frozen=True)
+class EvidenceAnchor:
+    path: str
+    heading: str
+    cell_ordinal: int
+    role: str
+
+
+@dataclass(frozen=True)
+class EvidenceReference:
+    id: str
+    role: str
+
+
+@dataclass(frozen=True)
+class ModalityEvidence:
+    lesson_anchors: list[EvidenceAnchor]
+    practices: list[EvidenceReference]
+    assessments: list[EvidenceReference]
+
+
+@dataclass(frozen=True)
+class HourRange:
+    minimum: float
+    maximum: float
+
+
+@dataclass(frozen=True)
+class PlannedUnit:
+    id: str
+    title: str
+    layer: str
+    prerequisites: list[str]
+    knowledge_points: list[str]
+    provisional_concepts: list[str]
+    estimated_hours: HourRange
+    schedule_action: str | None
+
+
+@dataclass(frozen=True)
+class KnowledgePoint:
+    id: str
+    layer: str
+    requirement: str
+    coverage: str
+    source_refs: list[str]
+    depends_on: list[str]
+    shipped_concepts: list[str]
+    evidence_by_modality: dict[str, ModalityEvidence]
+    disposition: str
+    destination: str | None
+    modalities_missing: list[str]
+    rationale: str
+    consequence: str
+
+
+@dataclass(frozen=True)
+class Roadmap:
+    roadmap_version: int
+    layers: list[str]
+    planned_units: list[PlannedUnit]
+    knowledge_points: list[KnowledgePoint]
+
+
+def _evidence_reference(raw: dict[str, Any]) -> EvidenceReference:
+    return EvidenceReference(id=str(raw["id"]), role=str(raw.get("role", "")))
+
+
+def _modality_evidence(raw: dict[str, Any]) -> ModalityEvidence:
+    return ModalityEvidence(
+        lesson_anchors=[
+            EvidenceAnchor(
+                path=str(item["path"]),
+                heading=str(item["heading"]),
+                cell_ordinal=int(item["cell_ordinal"]),
+                role=str(item.get("role", "")),
+            )
+            for item in raw.get("lesson_anchors") or []
+        ],
+        practices=[_evidence_reference(item) for item in raw.get("practices") or []],
+        assessments=[_evidence_reference(item) for item in raw.get("assessments") or []],
+    )
+
+
+def load_roadmap(root: str | Path) -> Roadmap:
+    raw = _read_manifest(Path(root) / "curriculum" / "coverage-map.yaml")
+    planned_units = []
+    for item in raw.get("planned_units") or []:
+        hours = item.get("estimated_hours") or {}
+        planned_units.append(
+            PlannedUnit(
+                id=str(item["id"]),
+                title=str(item["title"]),
+                layer=str(item["layer"]),
+                prerequisites=[str(value) for value in item.get("prerequisites") or []],
+                knowledge_points=[str(value) for value in item.get("knowledge_points") or []],
+                provisional_concepts=[
+                    str(value) for value in item.get("provisional_concepts") or []
+                ],
+                estimated_hours=HourRange(
+                    minimum=float(hours["min"]), maximum=float(hours["max"])
+                ),
+                schedule_action=(
+                    str(item["schedule_action"])
+                    if item.get("schedule_action") is not None
+                    else None
+                ),
+            )
+        )
+    knowledge_points = []
+    for item in raw.get("knowledge_points") or []:
+        evidence = {
+            str(modality): _modality_evidence(value or {})
+            for modality, value in (item.get("evidence_by_modality") or {}).items()
+        }
+        knowledge_points.append(
+            KnowledgePoint(
+                id=str(item["id"]),
+                layer=str(item["layer"]),
+                requirement=str(item["requirement"]),
+                coverage=str(item["coverage"]),
+                source_refs=[str(value) for value in item.get("source_refs") or []],
+                depends_on=[str(value) for value in item.get("depends_on") or []],
+                shipped_concepts=[str(value) for value in item.get("shipped_concepts") or []],
+                evidence_by_modality=evidence,
+                disposition=str(item["disposition"]),
+                destination=(str(item["destination"]) if item.get("destination") else None),
+                modalities_missing=[
+                    str(value)
+                    for value in (item.get("deficits") or {}).get("modalities_missing") or []
+                ],
+                rationale=str(item.get("rationale", "")),
+                consequence=str(item.get("consequence", "")),
+            )
+        )
+    return Roadmap(
+        roadmap_version=int(raw["roadmap_version"]),
+        layers=[str(value) for value in raw.get("layers") or []],
+        planned_units=planned_units,
+        knowledge_points=knowledge_points,
+    )
+
+
 
 
 
