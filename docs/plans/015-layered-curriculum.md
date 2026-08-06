@@ -51,17 +51,17 @@ The exhaustive audit may refine placement and prerequisites but may not silently
 
 | Question / knowledge family | Decision | Round / layer | Required completion |
 |---|---|---|---|
-| We teach a Gaussian distribution; should we also teach Student's t / a t-test? | **No, not as a required companion.** A Gaussian lesson needs conditional probability, Bayes' rule where used, and estimator/sampling distinctions; Student's t and hypothesis testing form a separate statistical-inference extension. | Optional enrichment | Record as optional; promote only if a later official source, paper, or chosen inference track needs it. |
-| We teach linear regression; do we have the closed-form derivation? | **Current gap; required.** The official syllabus explicitly expects derivation of an estimator. | Round 1 | Derive normal equations from MSE, state rank/identifiability conditions, solve the full-column-rank case, explain pseudoinverse behavior, and compare the closed form with gradient descent. |
+| We teach a Gaussian distribution; should we also teach Student's t / a t-test? | **No, not as a required companion.** Bayes consumes conditional probability as a prerequisite bridge; Student's t and hypothesis testing form a separate statistical-inference extension. | Optional enrichment | Record as optional; promote only if a later official source, paper, or chosen inference track needs it. |
+| We teach linear regression; do we have the closed-form derivation? | **Current gap; required.** The official syllabus explicitly expects derivation of an estimator. | Round 1 | Derive normal equations from MSE, then teach rank/identifiability and pseudoinverse behavior as closure bridges, and compare the closed form with gradient descent. |
 | Is importance sampling necessary? | **No current evidence makes it necessary.** It is neither an official named topic nor needed by the indexed 2026 R1/R2 arcs. | Optional enrichment | Keep out of required scope unless a later Monte Carlo, probabilistic-modeling, or official assessment dependency appears. |
 | Markdown/Colab and the basic library surface | **Partial; audit explicitly.** | Round 1 | Verify markdown math/code communication and every named library. Add an honest seaborn target if it is absent; a matplotlib lesson does not cover seaborn by implication. |
 | Affine transformations | **Potentially partial; audit separately from linear maps.** | Round 1 shared foundation | Cover the translation term, homogeneous-coordinate viewpoint where useful, composition, and the distinction between linear and affine maps. |
-| Probability/statistics around the current F5 | **Partial; required expansion.** | Round 1 shared foundation, plus R2 bridge depth | R1: conditional probability, Bayes' rule, Hoeffding's inequality. R2 bridge: multivariate Gaussian/reparameterization and KL divergence where VAE/diffusion consumes them. Keep likelihood/MLE only where estimator derivations require it. |
+| Probability/statistics around the current F5 | **Partial; required expansion.** | Round 1 shared foundation, plus R2 bridge depth | R1: officially named Bayes' rule and Hoeffding's inequality, with conditional probability as prerequisite closure. R2 bridge: multivariate Gaussian/reparameterization and KL divergence where VAE/diffusion consumes them. Keep likelihood/MLE only where estimator derivations require it. |
 | PCA after SVD | **Partial; required expansion.** | Round 1 | Derive the centered-covariance eigenproblem, connect it to SVD, implement a PCA class with NumPy, and test reconstruction/explained variance without black-box sklearn PCA. |
 | Kernels / positive semidefiniteness | **Current gap; required.** | Round 1 mathematical foundation / SVM bridge | Teach PSD matrices, kernel validity, and at least one proof/counterexample workflow; incidental PSD language in another unit does not count. |
 | Convex optimization | **Partial; required expansion.** | Round 1 | Convex sets/functions, first-order optimality, constrained formulation, Lagrangian intuition, and duality at the depth needed for linear/logistic models and SVM. |
 | Classical ML breadth | **Current gap beyond kNN/linear regression.** | Round 1 | Logistic regression, SVM, decision trees, ensemble learning, and k-means, each with theory/programming and comparison boundaries. |
-| Neural-network losses and training | **Partial; completion required.** Manual forward propagation is covered; training is not. | Round 1 | Reuse the shipped forward-pass teaching, then add softmax, cross-entropy, backpropagation by hand, and a fully connected training loop from scratch. PyTorch autograd/optimizer use follows the manual derivation rather than substituting for it. |
+| Neural-network losses and training | **Partial; completion required.** Manual forward propagation is covered; training is not. | Round 1 | Reuse the shipped forward-pass teaching, add officially expected backpropagation and a fully connected training loop, and use softmax/cross-entropy as objective bridges. PyTorch autograd/optimizer use follows the manual derivation rather than substituting for it. |
 | Batch normalization and dropout | **BatchNorm partial after Plan 014; dropout missing; both require completion.** | Round 1 | Give each honest concept ownership and at least three practices under the repository coverage rule; the existing BatchNorm controls clinic is useful theory evidence but does not cover derivation, implementation, or training. |
 | Transformers and NLP beyond embeddings | **Current gap; required for Round 2.** | Round 2 extension | Attention, multi-head/self-attention, positional encoding, transformer architecture, complexity, from-scratch implementation, NLP transformers, pre-training/fine-tuning, and application bridges to vision transformers and graph neural networks. |
 | Advanced vision and generative AI | **Current gap; required for Round 2.** | Round 2 extension | Object detection, UNet, autoencoders, VAE, GAN, DDPM, and Stable Diffusion, with prerequisite closure and both theory/programming. |
@@ -164,11 +164,11 @@ validating atomic topics.
 Every atomic entry then has:
 
 ```yaml
-- id: ols-normal-equations-rank-and-pseudoinverse
+- id: linear-regression-estimator-derivation
   parent: supervised-learning
   source_refs: [official-syllabus-2026-08-06]
   required_for: [round-1, round-2]
-  modalities: [theory, derivation]
+  modalities: [derivation]
 ```
 
 Required fields are `id`, `parent`, `source_refs`, `required_for`, and `modalities`.
@@ -292,24 +292,14 @@ Layers are fixed to:
 Each knowledge point records:
 
 ```yaml
-- id: ols-normal-equations-rank-and-pseudoinverse
+- id: linear-regression-estimator-derivation
   layer: round-1-core
   requirement: required
-  coverage: partial
+  coverage: missing
   source_refs: [official-syllabus-2026-08-06]
-  depends_on: [matrix-multiplication, gradient]
-  shipped_concepts: [linear-regression, mse-loss]
+  depends_on: [linear-regression, matrix-multiplication, multivariable-derivatives]
+  shipped_concepts: []
   evidence_by_modality:
-    theory:
-      lesson_anchors:
-        - path: units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb
-          heading: Linear regression
-          cell_ordinal: 0
-          role: primary
-      practices:
-        - {id: C2-p01, role: primary}
-        - {id: C2-p02, role: primary}
-        - {id: C2-p03, role: primary}
     derivation:
       lesson_anchors: []
       practices: []
@@ -317,7 +307,7 @@ Each knowledge point records:
   destination: C2-linear-models
   deficits:
     modalities_missing: [derivation]
-  rationale: Current material teaches only the gradient view and explicitly omits normal equations.
+  rationale: Current material teaches only the gradient view and explicitly omits the estimator derivation.
 ```
 
 Allowed `requirement` values are `required`, `bridge`, and `optional`.

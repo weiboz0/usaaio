@@ -37,18 +37,18 @@ targets and GPU execution policy, then the observed integration capabilities.
 
 ## Systematic topic decisions
 
-- Gaussian probability is already taught and practised. Conditional probability, Bayes' rule,
-  and Hoeffding's inequality are separate required gaps; Gaussian proximity does not cover
-  them. Student's t distribution and t-tests are coherent optional enrichment, but neither the
-  official sources nor current consumers make them required.
-- Linear regression is taught through MSE and gradient descent. The closed-form OLS estimator,
-  normal equations, rank/identifiability conditions, and pseudoinverse behavior are a required
-  partial target assigned to the existing linear-model unit.
+- Gaussian probability is already taught and practised. Bayes' rule and Hoeffding's inequality
+  are official gaps; conditional probability is their necessary prerequisite bridge. Gaussian
+  proximity covers none of them. Student's t distribution and t-tests are coherent optional
+  enrichment, but neither the official sources nor current consumers make them required.
+- Linear regression is taught through MSE and gradient descent. The officially required
+  closed-form estimator derivation is missing; rank/identifiability and pseudoinverse behavior
+  are separate closure bridges assigned to the existing linear-model unit.
 - SVD-based PCA is taught. The centered-covariance eigenproblem derivation and a reusable NumPy
   PCA class remain partial targets assigned to the dimensionality-reduction unit.
-- Manual neural forward propagation is already covered. Backpropagation, softmax,
-  cross-entropy, from-scratch training, autograd/optimizers, BatchNorm completion, and dropout
-  form the dependency-ordered neural-training tranche.
+- Manual neural forward propagation is already covered. Official backpropagation/from-scratch
+  training plus softmax/cross-entropy objective bridges, autograd/optimizers, BatchNorm
+  completion, and dropout form the dependency-ordered neural-training tranche.
 - The transformer architecture target includes LayerNorm, residual connections, and the
   position-wise feed-forward block; BatchNorm is not treated as a transformer prerequisite.
 - The observed Round 2 capstone layer includes semi-supervised/pseudo-label learning alongside

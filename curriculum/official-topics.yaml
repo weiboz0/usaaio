@@ -43,6 +43,11 @@ categories:
     kind: official-subcategory
     source_refs: [official-syllabus-2026-08-06]
     required_for: [round-1, round-2]
+  - id: probability-prerequisites
+    parent: probability-statistics
+    kind: pedagogical-bridge
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
   - id: multivariable-calculus
     parent: mathematical-foundations
     kind: official-subcategory
@@ -68,6 +73,11 @@ categories:
     kind: official-subcategory
     source_refs: [official-syllabus-2026-08-06]
     required_for: [round-1, round-2]
+  - id: linear-regression-prerequisites
+    parent: supervised-learning
+    kind: pedagogical-bridge
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
+    required_for: [round-1, round-2]
   - id: unsupervised-learning
     parent: machine-learning
     kind: official-subcategory
@@ -92,6 +102,11 @@ categories:
     parent: deep-learning-foundation
     kind: official-subcategory
     source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+  - id: neural-training-prerequisites
+    parent: neural-network-computation
+    kind: pedagogical-bridge
+    source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     required_for: [round-1, round-2]
   - id: cnn-basics
     parent: null
@@ -214,7 +229,7 @@ atomic_targets:
     required_for: [round-1, round-2]
     modalities: [theory, implementation]
   - id: conditional-probability
-    parent: probability-statistics
+    parent: probability-prerequisites
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     required_for: [round-1, round-2]
     modalities: [theory, derivation, implementation]
@@ -298,13 +313,19 @@ atomic_targets:
     source_refs: [official-syllabus-2026-08-06]
     required_for: [round-1, round-2]
     modalities: [theory, implementation, model-training]
-  - id: ols-normal-equations-rank-and-pseudoinverse
+  - id: linear-regression-estimator-derivation
     parent: supervised-learning
+    source_refs: [official-syllabus-2026-08-06]
+    required_for: [round-1, round-2]
+    modalities: [derivation]
+    acceptance:
+      - derive the OLS estimator from MSE through the normal equations
+  - id: ols-rank-identifiability-and-pseudoinverse
+    parent: linear-regression-prerequisites
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     required_for: [round-1, round-2]
     modalities: [theory, derivation, implementation]
     acceptance:
-      - derive the OLS estimator from MSE through the normal equations
       - state the full-column-rank and identifiability conditions
       - explain pseudoinverse behavior when the full-rank condition fails
   - id: logistic-regression
@@ -437,12 +458,12 @@ atomic_targets:
     required_for: [round-1, round-2]
     modalities: [theory, derivation, implementation]
   - id: softmax
-    parent: neural-network-computation
+    parent: neural-training-prerequisites
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     required_for: [round-1, round-2]
     modalities: [theory, derivation, implementation]
   - id: cross-entropy-loss
-    parent: neural-network-computation
+    parent: neural-training-prerequisites
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     required_for: [round-1, round-2]
     modalities: [theory, derivation, implementation]

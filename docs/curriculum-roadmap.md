@@ -8,11 +8,11 @@ This roadmap records acknowledged shipped and planned curriculum state.
 
 ### Round 1 exit
 
-60 required/bridge atomic targets; 31 acknowledged gaps.
+61 required/bridge atomic targets; 32 acknowledged gaps.
 
 ### Round 2 exit
 
-91 required/bridge atomic targets; 61 acknowledged gaps.
+92 required/bridge atomic targets; 62 acknowledged gaps.
 
 ## Time baseline and planned deltas
 
@@ -65,7 +65,7 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | bayes-rule | required | missing | derivation, implementation, theory | F5-probability | conditional-probability |
 | colab-coding-submission | required | missing | competition-workflow, implementation | C10-competition-craft | colab-markdown-solution-authoring |
 | colab-markdown-solution-authoring | required | missing | competition-workflow | C10-competition-craft | — |
-| conditional-probability | required | missing | derivation, implementation, theory | F5-probability | probability-and-statistics-foundations |
+| conditional-probability | bridge | missing | derivation, implementation, theory | F5-probability | probability-and-statistics-foundations |
 | constrained-api-implementation | required | covered | — | C10-competition-craft | numpy-programming, python-programming |
 | constrained-optimization-lagrangian-duality | required | missing | derivation, theory | P015-R1-MATH-KERNEL-OPT | convex-sets-functions-and-optimality, multivariable-derivatives |
 | convex-sets-functions-and-optimality | required | missing | derivation, theory | P015-R1-MATH-KERNEL-OPT | linear-algebra-foundations, multivariable-derivatives |
@@ -97,7 +97,7 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | bias-variance-tradeoff | required | covered | — | C1-ml-fundamentals | supervised-learning-foundations |
 | convolutional-neural-network-basics | required | partial | model-training | C7-cnn-transfer | pytorch-autograd-and-optimizer-training |
 | cpu-and-gpu-round-boundary | required | partial | — | C10-competition-craft | colab-coding-submission |
-| cross-entropy-loss | required | missing | derivation, implementation, theory | P015-R1-NEURAL-TRAINING | loss-functions, softmax |
+| cross-entropy-loss | bridge | missing | derivation, implementation, theory | P015-R1-NEURAL-TRAINING | loss-functions, softmax |
 | cross-validation | required | covered | — | C4-classical-ml-practice | supervised-learning-foundations, train-test-split |
 | decision-trees | required | missing | implementation, model-training, theory | P015-R1-CLASSICAL-BREADTH | loss-functions, supervised-learning-foundations |
 | dropout | required | missing | implementation, model-training, theory | P015-R1-NEURAL-TRAINING | multilayer-perceptron-model, pytorch-autograd-and-optimizer-training |
@@ -109,19 +109,20 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | k-means-clustering | required | missing | implementation, model-training, theory | P015-R1-CLASSICAL-BREADTH | distance-metrics, expectation, unsupervised-learning-foundations |
 | knn | required | covered | — | C4-classical-ml-practice | distance-metrics, supervised-learning-foundations |
 | linear-regression | required | covered | — | C2-linear-models | linear-algebra-foundations, multivariable-derivatives, supervised-learning-foundations |
+| linear-regression-estimator-derivation | required | missing | derivation | C2-linear-models | linear-regression, matrix-multiplication, multivariable-derivatives |
 | logistic-regression | required | missing | implementation, model-training, theory | P015-R1-CLASSICAL-BREADTH | gradient-descent-optimization, linear-regression, loss-functions |
 | loss-functions | required | covered | — | C2-linear-models | multivariable-derivatives, supervised-learning-foundations |
 | multilayer-perceptron-model | required | partial | model-training | P015-R1-NEURAL-TRAINING | affine-neural-network-layer, loss-functions |
 | noncoding-and-coding-task-switching | required | covered | — | C10-competition-craft | markdown-text-communication, python-programming |
 | numpy-pca-class-from-scratch | required | partial | implementation | C9-dimensionality-reduction | pca-centered-covariance-eigenproblem-derivation, principal-component-analysis, python-programming |
-| ols-normal-equations-rank-and-pseudoinverse | required | partial | derivation, implementation | C2-linear-models | linear-regression, matrix-multiplication, multivariable-derivatives, rank |
+| ols-rank-identifiability-and-pseudoinverse | bridge | partial | derivation, implementation | C2-linear-models | linear-regression-estimator-derivation, rank |
 | pca-black-box-insufficiency | required | partial | derivation | C9-dimensionality-reduction | numpy-pca-class-from-scratch, pca-centered-covariance-eigenproblem-derivation |
 | pca-centered-covariance-eigenproblem-derivation | required | partial | derivation | C9-dimensionality-reduction | covariance, eigenvalues-and-eigenvectors, principal-component-analysis |
 | principal-component-analysis | required | covered | — | C9-dimensionality-reduction | matrix-decompositions, probability-and-statistics-foundations |
 | pytorch-autograd-and-optimizer-training | required | partial | implementation, model-training | P015-R1-NEURAL-TRAINING | backpropagation-by-hand, pytorch-deep-learning-programming |
 | pytorch-deep-learning-programming | required | partial | model-training | C6-pytorch | numpy-programming, python-programming |
 | pytorch-not-tensorflow-workflow | required | covered | — | C6-pytorch | pytorch-deep-learning-programming |
-| softmax | required | missing | derivation, implementation, theory | P015-R1-NEURAL-TRAINING | affine-neural-network-layer, probability-and-statistics-foundations |
+| softmax | bridge | missing | derivation, implementation, theory | P015-R1-NEURAL-TRAINING | affine-neural-network-layer, probability-and-statistics-foundations |
 | supervised-learning-foundations | required | covered | — | C1-ml-fundamentals | probability-and-statistics-foundations, python-programming |
 | support-vector-machine | required | missing | implementation, model-training, theory | P015-R1-CLASSICAL-BREADTH | constrained-optimization-lagrangian-duality, valid-kernel-positive-definite-proof |
 | theory-and-programming-integration | required | covered | — | C10-competition-craft | noncoding-and-coding-task-switching |

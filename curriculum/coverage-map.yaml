@@ -332,7 +332,7 @@ knowledge_points:
     consequence: The base Gaussian and sampling foundation is shipped, but later rows remain independent gaps.
   - id: conditional-probability
     layer: shared-foundation
-    requirement: required
+    requirement: bridge
     coverage: missing
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     depends_on: [probability-and-statistics-foundations]
@@ -624,12 +624,26 @@ knowledge_points:
     deficits: {modalities_missing: []}
     rationale: The model and loss are taught in C2 and genuinely fit end to end in C3.
     consequence: Base linear regression is covered independently of the OLS gap.
-  - id: ols-normal-equations-rank-and-pseudoinverse
+  - id: linear-regression-estimator-derivation
     layer: round-1-core
     requirement: required
+    coverage: missing
+    source_refs: [official-syllabus-2026-08-06]
+    depends_on: [linear-regression, matrix-multiplication, multivariable-derivatives]
+    shipped_concepts: []
+    evidence_by_modality:
+      derivation: {lesson_anchors: [], practices: [], assessments: []}
+    disposition: extend-existing-unit
+    destination: C2-linear-models
+    deficits: {modalities_missing: [derivation]}
+    rationale: C2 teaches the model and MSE but explicitly omits the normal-equation derivation of the closed-form estimator.
+    consequence: Students cannot perform the officially required estimator derivation.
+  - id: ols-rank-identifiability-and-pseudoinverse
+    layer: round-1-core
+    requirement: bridge
     coverage: partial
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
-    depends_on: [linear-regression, matrix-multiplication, rank, multivariable-derivatives]
+    depends_on: [linear-regression-estimator-derivation, rank]
     shipped_concepts: [linear-regression, mse-loss, rank, invertibility-via-rank]
     evidence_by_modality:
       theory:
@@ -641,8 +655,8 @@ knowledge_points:
     disposition: extend-existing-unit
     destination: C2-linear-models
     deficits: {modalities_missing: [derivation, implementation]}
-    rationale: Residual orthogonality and rank are precursors, but C2 explicitly excludes normal equations, inversion, rank conditions, and pseudoinverse behavior.
-    consequence: Students cannot derive or implement the official closed-form estimator.
+    rationale: Residual geometry and rank are taught, but full-column-rank identifiability and pseudoinverse behavior are not.
+    consequence: The official estimator derivation lacks its necessary rank-deficient boundary conditions.
   - id: logistic-regression
     layer: round-1-core
     requirement: required
@@ -1141,7 +1155,7 @@ knowledge_points:
     consequence: Neural-gradient reasoning is absent.
   - id: softmax
     layer: round-1-core
-    requirement: required
+    requirement: bridge
     coverage: missing
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     depends_on: [affine-neural-network-layer, probability-and-statistics-foundations]
@@ -1157,7 +1171,7 @@ knowledge_points:
     consequence: Multiclass neural output reasoning is blocked.
   - id: cross-entropy-loss
     layer: round-1-core
-    requirement: required
+    requirement: bridge
     coverage: missing
     source_refs: [official-syllabus-2026-08-06, plan-015-preliminary-decisions]
     depends_on: [softmax, loss-functions]

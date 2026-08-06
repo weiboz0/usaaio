@@ -12,11 +12,11 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 | Inventoried notebooks | 765 |
 | Unit practices | 343 |
 | Mock notebooks | 10 |
-| Requirement: bridge | 8 |
+| Requirement: bridge | 12 |
 | Requirement: optional | 0 |
-| Requirement: required | 83 |
+| Requirement: required | 80 |
 | Coverage: covered | 30 |
-| Coverage: missing | 48 |
+| Coverage: missing | 49 |
 | Coverage: partial | 13 |
 
 ## Time baseline and planned deltas
@@ -362,7 +362,7 @@ Assessments: —
 ### conditional-probability
 
 - **Layer:** shared-foundation
-- **Requirement:** required
+- **Requirement:** bridge
 - **Coverage:** missing
 - **Destination:** F5-probability
 - **Dependencies:** probability-and-statistics-foundations
@@ -503,7 +503,7 @@ Assessments: —
 ### cross-entropy-loss
 
 - **Layer:** round-1-core
-- **Requirement:** required
+- **Requirement:** bridge
 - **Coverage:** missing
 - **Destination:** P015-R1-NEURAL-TRAINING
 - **Dependencies:** loss-functions, softmax
@@ -1069,6 +1069,26 @@ Practices: C2-p01, C2-p04, C2-p05, C2-p09, C2-p18, C3-p13, C3-p14, C3-p18
 
 Assessments: r1-001-p04-2
 
+### linear-regression-estimator-derivation
+
+- **Layer:** round-1-core
+- **Requirement:** required
+- **Coverage:** missing
+- **Destination:** C2-linear-models
+- **Dependencies:** linear-regression, matrix-multiplication, multivariable-derivatives
+- **Shipped concepts:** —
+- **Modalities missing:** derivation
+- **Rationale:** C2 teaches the model and MSE but explicitly omits the normal-equation derivation of the closed-form estimator.
+- **Consequence:** Students cannot perform the officially required estimator derivation.
+
+- **derivation lessons:** —
+- **derivation practices:** —
+- **derivation assessments:** —
+
+Practices: —
+
+Assessments: —
+
 ### logistic-regression
 
 - **Layer:** round-1-core
@@ -1585,17 +1605,17 @@ Practices: —
 
 Assessments: —
 
-### ols-normal-equations-rank-and-pseudoinverse
+### ols-rank-identifiability-and-pseudoinverse
 
 - **Layer:** round-1-core
-- **Requirement:** required
+- **Requirement:** bridge
 - **Coverage:** partial
 - **Destination:** C2-linear-models
-- **Dependencies:** linear-regression, matrix-multiplication, multivariable-derivatives, rank
+- **Dependencies:** linear-regression-estimator-derivation, rank
 - **Shipped concepts:** invertibility-via-rank, linear-regression, mse-loss, rank
 - **Modalities missing:** derivation, implementation
-- **Rationale:** Residual orthogonality and rank are precursors, but C2 explicitly excludes normal equations, inversion, rank conditions, and pseudoinverse behavior.
-- **Consequence:** Students cannot derive or implement the official closed-form estimator.
+- **Rationale:** Residual geometry and rank are taught, but full-column-rank identifiability and pseudoinverse behavior are not.
+- **Consequence:** The official estimator derivation lacks its necessary rank-deficient boundary conditions.
 
 - **derivation lessons:** —
 - **derivation practices:** —
@@ -2011,7 +2031,7 @@ Assessments: —
 ### softmax
 
 - **Layer:** round-1-core
-- **Requirement:** required
+- **Requirement:** bridge
 - **Coverage:** missing
 - **Destination:** P015-R1-NEURAL-TRAINING
 - **Dependencies:** affine-neural-network-layer, probability-and-statistics-foundations

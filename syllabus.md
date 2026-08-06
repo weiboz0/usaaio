@@ -278,9 +278,10 @@ sub-parts of the 2026 integrative arc.
 `bias-variance-intuition` is deliberately intuitive; its statistical vocabulary
 (`variance`, `expectation`) firms up in F5 and is exercised in C5's
 `weight-init-variance` derivation.
-`C2-linear-models` currently teaches the gradient view. The official closed-form OLS target —
-normal equations, rank/identifiability conditions, and pseudoinverse behavior — is therefore
-recorded as partial and assigned back to C2 in the roadmap rather than treated as unnecessary.
+`C2-linear-models` currently teaches the gradient view. The officially required closed-form
+estimator derivation is missing; rank/identifiability conditions and pseudoinverse behavior are
+separate prerequisite-closure bridges. All are assigned back to C2 in the roadmap rather than
+treated as unnecessary.
 Fitting itself is deferred to `C3-gradient-descent`; C2 practice evaluates and
 differentiates `mse-loss` for given parameters and reasons about `sparsity` —
 so every C2 concept has practice without a training loop.
