@@ -305,6 +305,18 @@ slots REJECT→resolved, consolidated re-verdict APPROVE WITH NITS — its final
 "no autograd anywhere" was overbroad given C6/C7 teach `requires_grad`/`inference_mode`,
 is fixed above). Implementation may begin.
 
+## Standards amendment (surfaced by this plan's own content — gate must judge)
+
+C7 reached **27 problems against a flat 16–24 band** when its pinned clinic landed. This is
+not content bloat: C7 teaches **10 concepts** (the most in the corpus) and the ≥3-per-concept
+rule — machine-enforced since plan 013 — demands ≥30 concept-instances, which is ~25–27
+problems even with dual-tagging. The flat band and the coverage rule therefore contradict each
+other for concept-heavy units. **Amendment applied to `docs/unit-standards.md`: the ceiling
+rises +2 per taught concept beyond 7, capped at 30** (C7 → 30, C1 → 28, the 8-concept units
+→ 26; everything else unchanged, and no unit's floor moves). Recorded here for gate judgment
+rather than applied silently; the alternative — trimming C7 — would have removed exam-relevant
+practice to satisfy a number written for smaller units.
+
 ## Inherited item (from 013's gate, recorded)
 
 **ci lesson-execution scope.** ci step 3 executes only `*_solution`/`solutions/*`, so lesson

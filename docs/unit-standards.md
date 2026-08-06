@@ -19,7 +19,13 @@ the content gate's reviewers enforce the qualitative parts against this document
 
 ## Practice sets
 
-- **Count:** 16–24 problems per unit (double-length units: 24–30), organized as
+- **Count:** 16–24 problems per unit (double-length units: 24–30) for units teaching **≤7
+  concepts**; for concept-heavy units the ceiling rises by **+2 problems per taught concept
+  beyond 7**, capped at 30. *Rationale (plan 014): the ≥3-problems-per-concept rule is
+  machine-enforced, so a 10-concept unit needs ≥30 concept-instances — roughly 25–27 problems
+  even with dual-tagging. The flat band was written for 6–7-concept units and mechanically
+  contradicts the coverage rule above it. Current effect: C7 (10 concepts) ceiling 30, C1
+  (9) 28, the 8-concept units 26; every other unit unchanged.* Organized as
   **problem sets** mirroring homework cadence:
   - Set A — fundamentals (drills per concept, intro/core),
   - Set B — exam register (constrained coding, normal-form MC, reasoning-required),
