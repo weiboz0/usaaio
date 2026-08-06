@@ -624,7 +624,9 @@ recorded so a round-3 reviewer can check the work rather than repeat it:
   glosses accepted.
 - **The solution-header check** was corruption-tested and reproduces round 1's C9-p19 failure.
 - `verify-register.py` 343/343; 127 unit tests; prereq/coverage/hygiene/tolerance/blueprint PASS;
-  every touched solution re-executes clean in a fresh kernel.
+  every touched solution re-executes clean in a fresh kernel. Full `ci-local.sh` **ALL GREEN**
+  against this exact tree, `pre-merge-guard: OK` — so the only thing standing between this
+  branch and merge is the missing round-3 verdicts.
 
 **What a round-3 reviewer still owes this plan:** independent verdicts on the round-2 fixes, and
 in particular an independent judgment on (a) whether transcript B's inconsistent implied learning
@@ -672,7 +674,8 @@ problem eight slots away in its own unit; C9-p19 taught students to select a mod
 called "test". None of these is visible to any check the repo has, and none would have been
 caught by re-solving the problem, because the answers were right.
 
-**Verification.** `scripts/ci-local.sh` ALL GREEN (final run pending the round-3 close). `verify-register.py` 343/343 (repo-wide, and
+**Verification.** `scripts/ci-local.sh` **ALL GREEN** on the final tree, with
+`pre-merge-guard: OK` (step 7/7). `verify-register.py` 343/343 (repo-wide, and
 corruption-tested against a unit the old check ignored). `prereq-check`, `coverage-check`,
 `hygiene-check`, `tolerance-check`, `blueprint-check` PASS. 119 unit tests pass. All six new
 solutions execute clean in a fresh kernel, verified locally rather than on the authoring
