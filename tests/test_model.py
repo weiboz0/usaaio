@@ -84,6 +84,27 @@ practice: []
     assert manifests[0].lesson_sessions == [85, 85, 85, 85, 85]
 
 
+@pytest.mark.parametrize("yaml_value", ["85", "[85]", "null"])
+def test_unit_manifest_rejects_non_mapping_estimated_minutes(tmp_path, yaml_value):
+    unit_dir = tmp_path / "units" / "F1-scientific-python"
+    unit_dir.mkdir(parents=True)
+    manifest_path = unit_dir / "manifest.yaml"
+    manifest_path.write_text(
+        f"""
+unit: F1-scientific-python
+concepts_taught: []
+concepts_used: []
+prereq_units: []
+estimated_minutes: {yaml_value}
+practice: []
+"""
+    )
+
+    message = rf"{re.escape(str(manifest_path))}: estimated_minutes must be a mapping when present"
+    with pytest.raises(ValueError, match=message):
+        load_unit_manifests(tmp_path)
+
+
 @pytest.mark.parametrize(
     ("yaml_value", "detail"),
     [

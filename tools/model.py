@@ -321,8 +321,14 @@ def _read_manifest(path: Path) -> dict[str, Any]:
 
 
 def _lesson_sessions(raw: dict[str, Any], path: Path) -> list[int] | None:
-    estimated_minutes = raw.get("estimated_minutes")
-    if not isinstance(estimated_minutes, dict) or "lesson_sessions" not in estimated_minutes:
+    if "estimated_minutes" not in raw:
+        return None
+    estimated_minutes = raw["estimated_minutes"]
+    if not isinstance(estimated_minutes, dict):
+        raise ValueError(  # noqa: TRY004
+            f"{path}: estimated_minutes must be a mapping when present"
+        )
+    if "lesson_sessions" not in estimated_minutes:
         return None
     lesson_sessions = estimated_minutes["lesson_sessions"]
     field = "estimated_minutes.lesson_sessions"

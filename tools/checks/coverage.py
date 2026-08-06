@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from posixpath import normpath
 
 from tools.model import Report, load_syllabus, load_unit_manifests
 
@@ -31,7 +32,7 @@ def check_coverage(root: str | Path) -> Report:
                     f"{manifest.path}: double-length unit {manifest.unit_id} has "
                     f"{distinct_ids} distinct practice ids; requires 24-30"
                 )
-            distinct_paths = len({problem.path for problem in manifest.practice})
+            distinct_paths = len({normpath(problem.path) for problem in manifest.practice})
             if not 24 <= distinct_paths <= 30:
                 errors.append(
                     f"{manifest.path}: double-length unit {manifest.unit_id} has "

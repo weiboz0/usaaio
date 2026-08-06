@@ -1,7 +1,9 @@
 from pathlib import Path
+from posixpath import normpath
 
 from tools.checks.coverage import check_coverage
 from tools.checks.prereq import check_prereq
+from tools.model import load_syllabus, load_unit_manifests
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -405,6 +407,25 @@ def test_double_length_coverage_counts_distinct_practice_ids_and_paths(tmp_path)
     ) in report.errors
 
 
+def test_double_length_coverage_normalizes_lexical_practice_path_aliases(tmp_path):
+    write_syllabus(tmp_path, second_length="double")
+    unit_dir = write_unit(tmp_path, practice_count=24, lesson_sessions=[85] * 4)
+    manifest_path = unit_dir / "manifest.yaml"
+    manifest_text = manifest_path.read_text().replace(
+        "path: practice/p24.ipynb", "path: ./practice/p23.ipynb"
+    )
+    manifest_path.write_text(manifest_text)
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{manifest_path}: double-length unit U2 has 23 distinct practice paths; "
+        "requires 24-30"
+    ) in report.errors
+    assert not any("distinct practice ids" in error for error in report.errors)
+
+
 def test_double_length_coverage_accepts_compliant_unit(tmp_path):
     write_syllabus(tmp_path, second_length="double")
     write_unit(tmp_path, practice_count=24, lesson_sessions=[85] * 4)
@@ -416,6 +437,24 @@ def test_double_length_coverage_accepts_compliant_unit(tmp_path):
 
 
 def test_double_length_coverage_real_f6_passes():
+    syllabus = load_syllabus(ROOT)
+    assert "F6-svd-spectral" in syllabus.units
+    unit = syllabus.units["F6-svd-spectral"]
+    assert unit.length == "double"
+
+    matching_manifests = [
+        manifest
+        for manifest in load_unit_manifests(ROOT)
+        if manifest.unit_id == "F6-svd-spectral"
+    ]
+    assert len(matching_manifests) == 1
+    manifest = matching_manifests[0]
+    assert manifest.unit_id == unit.id
+    assert manifest.lesson_sessions is not None
+    assert 4 <= len(manifest.lesson_sessions) <= 6
+    assert 24 <= len({problem.id for problem in manifest.practice}) <= 30
+    assert 24 <= len({normpath(problem.path) for problem in manifest.practice}) <= 30
+
     report = check_coverage(ROOT)
 
     assert not any("double-length unit F6-svd-spectral" in error for error in report.errors)
