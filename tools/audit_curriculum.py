@@ -252,6 +252,17 @@ def _posix(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
 
 
+def _validate_input_file(path: Path, base: Path, relative_path: str, kind: str) -> None:
+    if path.is_symlink():
+        raise InventoryError(f"{relative_path}: {kind} symlinks are not allowed")
+    if not path.is_file():
+        raise InventoryError(f"{relative_path}: {kind} is missing")
+    try:
+        path.resolve(strict=True).relative_to(base.resolve(strict=True))
+    except (OSError, ValueError) as exc:
+        raise InventoryError(f"{relative_path}: {kind} escapes the repository") from exc
+
+
 def _declared_notebook(
     base: Path, declared: object, manifest_relative: str, label: str
 ) -> Path:
@@ -490,10 +501,17 @@ def _synthesis_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[st
 
 def build_inventory(root: str | Path) -> dict[str, Any]:
     root = Path(root).resolve()
+    _validate_input_file(root / "syllabus.md", root, "syllabus.md", "syllabus")
     syllabus_record, syllabus = _syllabus_record(root / "syllabus.md")
     unit_manifests = sorted(root.glob("units/*/manifest.yaml"), key=lambda item: _posix(item, root).encode("utf-8"))
     mock_manifests = sorted(root.glob("mocktests/*/manifest.yaml"), key=lambda item: _posix(item, root).encode("utf-8"))
     synthesis_manifests = sorted(root.glob("synthesis/**/manifest.yaml"), key=lambda item: _posix(item, root).encode("utf-8"))
+    for path in unit_manifests:
+        _validate_input_file(path, root / "units", _posix(path, root), "manifest")
+    for path in mock_manifests:
+        _validate_input_file(path, root / "mocktests", _posix(path, root), "manifest")
+    for path in synthesis_manifests:
+        _validate_input_file(path, root / "synthesis", _posix(path, root), "manifest")
     manifest_paths = unit_manifests + mock_manifests + synthesis_manifests
     manifests = [syllabus_record] + [manifest_record(path, _posix(path, root)) for path in manifest_paths]
 
@@ -503,6 +521,9 @@ def build_inventory(root: str | Path) -> dict[str, Any]:
     manifests.sort(key=lambda item: item["path"].encode("utf-8"))
 
     course_path = root / "docs/course-structure.md"
+    _validate_input_file(
+        course_path, root / "docs", "docs/course-structure.md", "course structure"
+    )
     course_text = _read_text(course_path, "docs/course-structure.md")
     documents = [_document_record(course_path, "docs/course-structure.md")]
 

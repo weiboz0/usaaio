@@ -372,6 +372,29 @@ def test_undeclared_notebook_symlinks_are_rejected(
         audit.build_inventory(tmp_path)
 
 
+@pytest.mark.parametrize("material_tree", ["unit", "mock", "synthesis"])
+def test_external_manifest_symlinks_are_rejected(
+    tmp_path: Path, material_tree: str
+) -> None:
+    _make_minimal_repo(tmp_path)
+    external = tmp_path.parent / f"{tmp_path.name}-{material_tree}-external.yaml"
+    external.write_text("unit: external\nconcepts_taught: [secret-concept]\n")
+    if material_tree == "unit":
+        manifest = tmp_path / "units" / "U1-vectors" / "manifest.yaml"
+    elif material_tree == "mock":
+        manifest = tmp_path / "mocktests" / "r1-mini" / "manifest.yaml"
+    else:
+        synthesis = tmp_path / "synthesis" / "bridge"
+        synthesis.mkdir(parents=True)
+        manifest = synthesis / "manifest.yaml"
+    if manifest.exists():
+        manifest.unlink()
+    manifest.symlink_to(external)
+
+    with pytest.raises(audit.InventoryError, match="manifest symlinks are not allowed"):
+        audit.build_inventory(tmp_path)
+
+
 def test_missing_declared_mock_notebook_fails_loudly(tmp_path: Path) -> None:
     _make_minimal_repo(tmp_path)
     missing = tmp_path / "mocktests" / "r1-mini" / "solutions" / "p01_solution.ipynb"
