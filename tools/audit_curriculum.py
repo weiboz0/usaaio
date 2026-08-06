@@ -8,6 +8,7 @@ generated inventory.
 from __future__ import annotations
 
 import argparse
+import ast
 import base64
 import datetime as dt
 import hashlib
@@ -39,7 +40,12 @@ def _normalized_text(value: object) -> str:
 def _jsonable(value: Any) -> Any:
     """Retain YAML scalar types while producing stable JSON-compatible data."""
     if isinstance(value, dict):
-        return {str(key): _jsonable(item) for key, item in sorted(value.items(), key=lambda pair: str(pair[0]).encode("utf-8"))}
+        if any(not isinstance(key, str) for key in value):
+            raise TypeError("YAML mapping keys must be strings")
+        return {
+            key: _jsonable(item)
+            for key, item in sorted(value.items(), key=lambda pair: pair[0].encode("utf-8"))
+        }
     if isinstance(value, list):
         return [_jsonable(item) for item in value]
     if isinstance(value, tuple):
@@ -94,6 +100,27 @@ def manifest_record(path: Path, relative_path: str) -> dict[str, Any]:
 _ATX_HEADING = re.compile(r"^[ \t]{0,3}(#{1,6})[ \t]+(.+?)[ \t]*#*[ \t]*$")
 _SETEXT_HEADING = re.compile(r"^[ \t]*(=+|-+)[ \t]*$")
 _API_CALL = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w+)+(?=\s*\()")
+
+
+def _api_calls(source: str) -> set[str]:
+    tokens = set(_API_CALL.findall(source))
+    try:
+        tree = ast.parse(source)
+    except SyntaxError:
+        return tokens
+    imported: dict[str, str] = {}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module:
+            for alias in node.names:
+                imported[alias.asname or alias.name] = f"{node.module}.{alias.name}"
+    for node in ast.walk(tree):
+        if (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id in imported
+        ):
+            tokens.add(imported[node.func.id])
+    return tokens
 
 
 def _headings(source: str) -> list[tuple[int, str]]:
@@ -165,7 +192,7 @@ def notebook_record(path: Path, relative_path: str) -> dict[str, Any]:
                     heading_path = heading_path[: level - 1]
                     heading_path.append(title)
             elif cell_type == "code":
-                api_tokens.update(_API_CALL.findall(source))
+                api_tokens.update(_api_calls(source))
 
             heading_key = tuple(heading_path)
             ordinals[heading_key] += 1
@@ -240,6 +267,25 @@ def _inject_declarations(
 def _unit_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     manifests_by_dir = {path.parent: _load_yaml(path, _posix(path, root)) for path in manifest_paths}
+    declared_paths: set[Path] = set()
+    for unit_dir, manifest in manifests_by_dir.items():
+        manifest_relative = _posix(unit_dir / "manifest.yaml", root)
+        if not isinstance(manifest, dict):
+            raise InventoryError(f"{manifest_relative}: manifest must be a mapping")
+        for problem in manifest.get("practice") or []:
+            for field in ("path", "solution_path"):
+                declared = problem.get(field)
+                if not isinstance(declared, str) or not declared.endswith(".ipynb"):
+                    raise InventoryError(
+                        f"{manifest_relative}: practice {problem.get('id')} has invalid {field}"
+                    )
+                candidate = unit_dir / declared
+                relative = _posix(candidate, root)
+                if candidate in declared_paths:
+                    raise InventoryError(f"{relative}: notebook is declared more than once")
+                if not candidate.is_file():
+                    raise InventoryError(f"{relative}: declared notebook is missing")
+                declared_paths.add(candidate)
     for path in sorted(root.glob("units/**/*.ipynb"), key=lambda item: _posix(item, root).encode("utf-8")):
         relative = _posix(path, root)
         unit_dir = root / "units" / path.relative_to(root / "units").parts[0]
@@ -269,11 +315,13 @@ def _unit_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
 def _mock_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     manifest_by_dir = {path.parent: _load_yaml(path, _posix(path, root)) for path in manifest_paths}
-    paths = sorted(root.glob("mocktests/r1-*/*.ipynb"), key=lambda item: _posix(item, root).encode("utf-8"))
-    paths += sorted(root.glob("mocktests/r1-*/*/*.ipynb"), key=lambda item: _posix(item, root).encode("utf-8"))
-    for path in sorted(set(paths), key=lambda item: _posix(item, root).encode("utf-8")):
+    paths = {path for mock_dir in manifest_by_dir for path in mock_dir.rglob("*.ipynb")}
+    for path in sorted(paths, key=lambda item: _posix(item, root).encode("utf-8")):
         relative = _posix(path, root)
-        mock_dir = path.parents[1] if path.parent.name in {"problems", "solutions"} else path.parent
+        candidates = [directory for directory in manifest_by_dir if directory in path.parents]
+        if not candidates:
+            raise InventoryError(f"{relative}: no mock manifest found")
+        mock_dir = max(candidates, key=lambda item: len(item.parts))
         manifest = manifest_by_dir.get(mock_dir)
         if not isinstance(manifest, dict):
             raise InventoryError(f"{relative}: no mock manifest found")
@@ -297,6 +345,24 @@ def _mock_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
         record["declared_concept_ids"] = sorted(set(concepts), key=str.encode)
         record["declared_problem_ids"] = sorted(set(problem_ids), key=str.encode)
         records.append(record)
+    for mock_dir, manifest in manifest_by_dir.items():
+        manifest_relative = _posix(mock_dir / "manifest.yaml", root)
+        if not isinstance(manifest, dict):
+            raise InventoryError(f"{manifest_relative}: manifest must be a mapping")
+        declared_paths: set[Path] = set()
+        for problem in manifest.get("problems") or []:
+            for declared in problem.get("files") or []:
+                if not str(declared).endswith(".ipynb"):
+                    continue
+                statement = mock_dir / str(declared)
+                solution = mock_dir / "solutions" / f"{statement.stem}_solution.ipynb"
+                for candidate in (statement, solution):
+                    relative = _posix(candidate, root)
+                    if not candidate.is_file():
+                        raise InventoryError(f"{relative}: declared notebook is missing")
+                    declared_paths.add(candidate)
+        if not declared_paths.issubset(paths):
+            raise InventoryError(f"{manifest_relative}: declared notebooks were not inventoried")
     return records
 
 
@@ -318,6 +384,28 @@ def _synthesis_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[st
         root.glob("synthesis/**/*.ipynb"),
         key=lambda item: _posix(item, root).encode("utf-8"),
     )
+    inventoried_paths = set(paths)
+    for manifest_dir, manifest in manifests.items():
+        manifest_relative = _posix(manifest_dir / "manifest.yaml", root)
+        if not isinstance(manifest, dict):
+            raise InventoryError(f"{manifest_relative}: manifest must be a mapping")
+        for problem in (manifest.get("practice") or []) + (manifest.get("problems") or []):
+            if not isinstance(problem, dict):
+                continue
+            declared_values = (
+                _string_list(problem.get("files"))
+                + _string_list(problem.get("path"))
+                + _string_list(problem.get("solution_path"))
+            )
+            for declared in declared_values:
+                if not declared.endswith(".ipynb"):
+                    continue
+                candidate = manifest_dir / declared
+                relative = _posix(candidate, root)
+                if not candidate.is_file():
+                    raise InventoryError(f"{relative}: declared notebook is missing")
+                if candidate not in inventoried_paths:
+                    raise InventoryError(f"{relative}: declared notebook was not inventoried")
     for path in paths:
         relative = _posix(path, root)
         candidates = [directory for directory in manifests if directory in path.parents]
@@ -360,7 +448,7 @@ def build_inventory(root: str | Path) -> dict[str, Any]:
     root = Path(root).resolve()
     syllabus_record, syllabus = _syllabus_record(root / "syllabus.md")
     unit_manifests = sorted(root.glob("units/*/manifest.yaml"), key=lambda item: _posix(item, root).encode("utf-8"))
-    mock_manifests = sorted(root.glob("mocktests/r1-*/manifest.yaml"), key=lambda item: _posix(item, root).encode("utf-8"))
+    mock_manifests = sorted(root.glob("mocktests/*/manifest.yaml"), key=lambda item: _posix(item, root).encode("utf-8"))
     synthesis_manifests = sorted(root.glob("synthesis/**/manifest.yaml"), key=lambda item: _posix(item, root).encode("utf-8"))
     manifest_paths = unit_manifests + mock_manifests + synthesis_manifests
     manifests = [syllabus_record] + [manifest_record(path, _posix(path, root)) for path in manifest_paths]

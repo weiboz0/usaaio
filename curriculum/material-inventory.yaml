@@ -5285,6 +5285,7 @@ notebooks:
   - writeup-quality
   declared_problem_ids: []
   api_tokens:
+  - pathlib.Path
   - pd.read_csv
   - train_path.exists
 - path: units/C10-competition-craft/lessons/01-the-contract.ipynb
@@ -6238,6 +6239,9 @@ notebooks:
   - pipe.predict
   - probe_out.index.equals
   - probe_out.unique
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p06.ipynb
   kind: notebook
   semantic_sha256: b0f3b74179dddfed2863556524b0adf44f34d207edfed1b43bfacec02334189e
@@ -6309,6 +6313,7 @@ notebooks:
   - np.array_equal
   - np.unique
   - pd.read_csv
+  - sklearn.model_selection.train_test_split
   - val_counts.values
 - path: units/C10-competition-craft/practice/p07.ipynb
   kind: notebook
@@ -6464,6 +6469,11 @@ notebooks:
   - probe_out.index.equals
   - probe_out.unique
   - scores.append
+  - sklearn.metrics.f1_score
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p09.ipynb
   kind: notebook
   semantic_sha256: d8858d438f7f779df5d7b968d38044167eab85c9c5b95b77964085630b4f16ca
@@ -6547,6 +6557,11 @@ notebooks:
   - np.isclose
   - pd.read_csv
   - scores.append
+  - sklearn.metrics.f1_score
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
   - val_f1s.max
 - path: units/C10-competition-craft/practice/p10.ipynb
   kind: notebook
@@ -6617,6 +6632,10 @@ notebooks:
   - pipe.fit
   - pipe.predict
   - rng.permutation
+  - sklearn.metrics.f1_score
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p11.ipynb
   kind: notebook
   semantic_sha256: 5f41cc8d88fddacee3e77c97ba45ebbe3761dd57fe40e53a8230861ac5a40df9
@@ -6884,6 +6903,12 @@ notebooks:
   - probe_out.index.equals
   - probe_out.unique
   - scores.append
+  - sklearn.metrics.confusion_matrix
+  - sklearn.metrics.f1_score
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p14.ipynb
   kind: notebook
   semantic_sha256: aae631524bee4fac73f6d4dddbbda415b58c5e9f65af83a88c2d3d6e7049bc90
@@ -6972,6 +6997,11 @@ notebooks:
   - probe_out.index.equals
   - probe_out.unique
   - scores.append
+  - sklearn.metrics.f1_score
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p15.ipynb
   kind: notebook
   semantic_sha256: dcfcc989097b874327a4143650da0781fbd0894535264fef2eec501a686dcbaa
@@ -7063,6 +7093,9 @@ notebooks:
   - C10-p16
   api_tokens:
   - pd.read_csv
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p16_solution.ipynb
   kind: notebook
   semantic_sha256: 1304a0771e9da9fcd5b504f3c55b136a31c1e7cd6c547e4ecd67aa3064c07eb1
@@ -7112,6 +7145,9 @@ notebooks:
   - pd.Series
   - pd.read_csv
   - pipe.predict
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p17.ipynb
   kind: notebook
   semantic_sha256: 1eea2593cd13b27056777c6608115eaed53f3d2299145493f4865febfaa555e9
@@ -7204,6 +7240,11 @@ notebooks:
   - probe_out.index.equals
   - probe_out.unique
   - self_scores.values
+  - sklearn.metrics.f1_score
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p18.ipynb
   kind: notebook
   semantic_sha256: 10c3b476f1e3010025d531d59389776923d291f0c67a500896cf81cf3a90a6df
@@ -7298,6 +7339,11 @@ notebooks:
   - pd.read_csv
   - preds.astype
   - rubric_scores.values
+  - sklearn.metrics.f1_score
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p19.ipynb
   kind: notebook
   semantic_sha256: ba436c28ae4398ee0861abeecd9398f5f56c4d32e191ca7abaa0bf39ac616106
@@ -10220,6 +10266,7 @@ notebooks:
   declared_problem_ids:
   - C3-p04
   api_tokens:
+  - fractions.Fraction
   - np.isclose
 - path: units/C3-gradient-descent/practice/p05.ipynb
   kind: notebook
@@ -10654,6 +10701,7 @@ notebooks:
   api_tokens:
   - converged.sum
   - first_five.append
+  - fractions.Fraction
   - np.abs
   - np.allclose
   - np.array
@@ -11679,6 +11727,7 @@ notebooks:
   - heavy_mask.sum
   - mini.groupby
   - mini.to_csv
+  - pathlib.Path
   - pd.DataFrame
   - pd.read_csv
   - reloaded.describe
@@ -11957,6 +12006,8 @@ notebooks:
   - scaler.mean_.round
   - scaler.transform
   - sk_model.predict
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.preprocessing.StandardScaler
   - train.mean
   - train.std
   - votes.mean
@@ -12232,6 +12283,8 @@ notebooks:
   - scores.mean
   - scores.round
   - scores.std
+  - sklearn.feature_selection.SelectKBest
+  - sklearn.preprocessing.PolynomialFeatures
 - path: units/C4-classical-ml-practice/practice/p01.ipynb
   kind: notebook
   semantic_sha256: 42c69968328b5fbbfc2d6d0e947cb00b04106afd855901d9f85d94f1fb86205e
@@ -12464,6 +12517,7 @@ notebooks:
   declared_problem_ids:
   - C4-p04
   api_tokens:
+  - fractions.Fraction
   - np.argsort
   - np.array
   - np.array_equal
@@ -12765,7 +12819,8 @@ notebooks:
   - sklearn-pipelines
   declared_problem_ids:
   - C4-p09
-  api_tokens: []
+  api_tokens:
+  - sklearn.datasets.load_wine
 - path: units/C4-classical-ml-practice/practice/p09_solution.ipynb
   kind: notebook
   semantic_sha256: c96464196cae7936d80f0585c7e3f8f654c00990c92e0800ff2bf19e7897f5ac
@@ -12807,6 +12862,11 @@ notebooks:
   - np.isclose
   - pipe.fit
   - pipe.score
+  - sklearn.datasets.load_wine
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C4-classical-ml-practice/practice/p10.ipynb
   kind: notebook
   semantic_sha256: 314bf1f7b33302e155293a315078c8f66015422b882efe5c4db9194431c77778
@@ -12825,7 +12885,8 @@ notebooks:
   - cross-validation
   declared_problem_ids:
   - C4-p10
-  api_tokens: []
+  api_tokens:
+  - sklearn.datasets.load_iris
 - path: units/C4-classical-ml-practice/practice/p10_solution.ipynb
   kind: notebook
   semantic_sha256: 26f574f718ce49cda4a6b765918aa058b65a12bbabc611ff6aec2607154461a6
@@ -12875,6 +12936,8 @@ notebooks:
   - np.isclose
   - np.random.default_rng
   - scores.append
+  - sklearn.datasets.load_iris
+  - sklearn.neighbors.KNeighborsClassifier
 - path: units/C4-classical-ml-practice/practice/p11.ipynb
   kind: notebook
   semantic_sha256: 06cf840309cca74cab66c898a33ee0cda7b99f923bd551724cd441f0cda1ef81
@@ -12946,6 +13009,10 @@ notebooks:
   - np.isclose
   - np.vstack
   - pd.read_csv
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
   - val_results.append
 - path: units/C4-classical-ml-practice/practice/p12.ipynb
   kind: notebook
@@ -13217,6 +13284,7 @@ notebooks:
   - C4-p15
   api_tokens:
   - np.array
+  - sklearn.datasets.load_wine
 - path: units/C4-classical-ml-practice/practice/p15_solution.ipynb
   kind: notebook
   semantic_sha256: 9ed4e3b6c07fb0001717f0d7e8cc574e6d470baf9547ada8494d5da5e4e3cf02
@@ -13266,6 +13334,12 @@ notebooks:
   - np.isclose
   - np.round
   - np.unique
+  - sklearn.datasets.load_wine
+  - sklearn.model_selection.cross_val_score
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C4-classical-ml-practice/practice/p16.ipynb
   kind: notebook
   semantic_sha256: c66f8696abac1a932e32dd1219053568855d5a0de10c3e1b6d6fde834c6bffa3
@@ -13405,6 +13479,10 @@ notebooks:
   api_tokens:
   - np.isclose
   - pd.read_csv
+  - sklearn.model_selection.cross_val_score
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C4-classical-ml-practice/practice/p18.ipynb
   kind: notebook
   semantic_sha256: dcd766bcc6d74b6c2006c747d4a5bc1996116f1a86b92aa037306f5ea261b382
@@ -13562,6 +13640,9 @@ notebooks:
   - np.random.default_rng
   - rng.integers
   - rng.normal
+  - sklearn.model_selection.cross_val_score
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
   - test_accs.max
   - test_results.append
 - path: units/C4-classical-ml-practice/practice/p20.ipynb
@@ -13652,6 +13733,7 @@ notebooks:
   - np.random.default_rng
   - pd.DataFrame
   - rng.normal
+  - sklearn.model_selection.train_test_split
 - path: units/C4-classical-ml-practice/practice/p21_solution.ipynb
   kind: notebook
   semantic_sha256: 27c0509ed5c712efdf142c574db41e508bde84dc14f35be8d66a5acdeda8c46e
@@ -13699,6 +13781,11 @@ notebooks:
   - pipe.fit
   - pipe.score
   - rng.normal
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.FunctionTransformer
+  - sklearn.preprocessing.StandardScaler
 - path: units/C4-classical-ml-practice/practice/p22.ipynb
   kind: notebook
   semantic_sha256: 5ce056e9827e810df81d24e9d5836484407ff7ad7fd38a32bd423692c895fe57
@@ -13717,7 +13804,9 @@ notebooks:
   - tabular-feature-engineering
   declared_problem_ids:
   - C4-p22
-  api_tokens: []
+  api_tokens:
+  - sklearn.datasets.make_classification
+  - sklearn.model_selection.train_test_split
 - path: units/C4-classical-ml-practice/practice/p22_solution.ipynb
   kind: notebook
   semantic_sha256: c9274a1c8b8661c8773778cdedbdabab53100a58339f63b60fd6028de1eff314
@@ -13763,6 +13852,13 @@ notebooks:
   - pipe.fit
   - pipe.score
   - sel.get_support
+  - sklearn.datasets.make_classification
+  - sklearn.feature_selection.SelectKBest
+  - sklearn.feature_selection.f_classif
+  - sklearn.model_selection.train_test_split
+  - sklearn.neighbors.KNeighborsClassifier
+  - sklearn.pipeline.Pipeline
+  - sklearn.preprocessing.StandardScaler
 - path: units/C4-classical-ml-practice/practice/p23.ipynb
   kind: notebook
   semantic_sha256: bec52119de93adbe9797f0ff931062f34cf095df69df006fcbc010670f770933
@@ -19285,6 +19381,7 @@ notebooks:
   - torch.manual_seed
   - torch.randn
   - torch.zeros
+  - torchvision.models.resnet50
   - trunk_l3.parameters
 - path: units/C7-cnn-transfer/practice/p01.ipynb
   kind: notebook
@@ -19734,6 +19831,7 @@ notebooks:
   - model.eval
   - model.parameters
   - pathlib.Path.cwd
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p08_solution.ipynb
   kind: notebook
   semantic_sha256: 94f415f841415a007c5e30e9a8952cc724264dcc700893749e53aa9b84f7371b
@@ -19773,6 +19871,7 @@ notebooks:
   - model.named_children
   - model.parameters
   - pathlib.Path.cwd
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p09.ipynb
   kind: notebook
   semantic_sha256: 55e19f3f4fd1fdebe9ea2a81dc25781f3808c4a819c238802ce7c6127fc95a7c
@@ -19801,6 +19900,7 @@ notebooks:
   - torch.inference_mode
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p09_solution.ipynb
   kind: notebook
   semantic_sha256: 071386786bfdbf5be27d3d32be2ba90a7f616fbaa6e3c3c71fad5eb0bc733cf7
@@ -19846,6 +19946,7 @@ notebooks:
   - torch.inference_mode
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p10.ipynb
   kind: notebook
   semantic_sha256: a2df49d7827f6eed4c11955931c4611d443fcf9b45f1fc4dab4d2b8e2543f2e9
@@ -19871,6 +19972,7 @@ notebooks:
   - model.eval
   - model.parameters
   - pathlib.Path.cwd
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p10_solution.ipynb
   kind: notebook
   semantic_sha256: 91e26c8ba7ef9cc9249d5193c48d43707f8ab82e6b0d2fd93b49f7b76c8b9752
@@ -19916,6 +20018,7 @@ notebooks:
   - name.startswith
   - p.numel
   - pathlib.Path.cwd
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p11.ipynb
   kind: notebook
   semantic_sha256: bbdbfdc3b568a867958d9b569fae9ed749f3ca0d6089a89573f89e89a261239d
@@ -19954,6 +20057,7 @@ notebooks:
   - pathlib.Path.cwd
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p11_solution.ipynb
   kind: notebook
   semantic_sha256: 0af35ec4f3b42e62928a041500a1e1a7e0ccc8f7286eaf1b803736c1faddd5af
@@ -20022,6 +20126,7 @@ notebooks:
   - torch.inference_mode
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p12.ipynb
   kind: notebook
   semantic_sha256: 7ef99a3b8667c1b9b5a7da846cb03812e698ecad58381d97c374ba7713fab7c8
@@ -20084,6 +20189,7 @@ notebooks:
   - model.parameters
   - p.numel
   - pathlib.Path.cwd
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p13.ipynb
   kind: notebook
   semantic_sha256: 9f03239bda165c3d6faf448a58a7ddb1654c127a5535bc8edf87cf5531eec568
@@ -20185,6 +20291,7 @@ notebooks:
   - model.eval
   - model.parameters
   - pathlib.Path.cwd
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p14_solution.ipynb
   kind: notebook
   semantic_sha256: d68ff28ee9c985a2004d920579fed2747e5352ceca201b0f7d18200730ad7def
@@ -20225,6 +20332,7 @@ notebooks:
   - model.parameters
   - p.numel
   - pathlib.Path.cwd
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p15.ipynb
   kind: notebook
   semantic_sha256: 0c3800c3517b3069fe84a4f3ff3495bf445b491cf6178a0f6e95d0c19db4df0a
@@ -20270,6 +20378,7 @@ notebooks:
   - torch.inference_mode
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p15_solution.ipynb
   kind: notebook
   semantic_sha256: b6fda270c0f800b15503d877bf90db0317d8799ecedef7659dcf58572157a437
@@ -20332,6 +20441,7 @@ notebooks:
   - torch.inference_mode
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p16.ipynb
   kind: notebook
   semantic_sha256: 1d0085530b60cb8d75a4255e9359a2c94f54dbc8f0c693270ee5b71ab9acf5b2
@@ -20372,6 +20482,7 @@ notebooks:
   - pathlib.Path.cwd
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p16_solution.ipynb
   kind: notebook
   semantic_sha256: d01abea569926b5529951bed76d37c314c9c2da4db496b31550343da8e523361
@@ -20434,6 +20545,7 @@ notebooks:
   - torch.inference_mode
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
   - trunk.named_parameters
   - trunk.parameters
 - path: units/C7-cnn-transfer/practice/p17.ipynb
@@ -20475,6 +20587,7 @@ notebooks:
   - pathlib.Path.cwd
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p17_solution.ipynb
   kind: notebook
   semantic_sha256: 7272e8ef7d1668d434b29ab6bfef89f5740209e01da88e5f8719f5dd621a2042
@@ -20533,6 +20646,7 @@ notebooks:
   - torch.inference_mode
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p18.ipynb
   kind: notebook
   semantic_sha256: 2e9a0ccdb153c2275be55419a3d3df1a2d1aeee96543beab83fa55f042aa0fc0
@@ -20649,6 +20763,7 @@ notebooks:
   - pathlib.Path.cwd
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p19_solution.ipynb
   kind: notebook
   semantic_sha256: 9b34bb8b64b163e4e59ef9366bc66277f348df1d5332e3472d3725580782f4cf
@@ -20715,6 +20830,7 @@ notebooks:
   - torch.inference_mode
   - torch.manual_seed
   - torch.randn
+  - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p20.ipynb
   kind: notebook
   semantic_sha256: 93a22ed2e493c6c67e927be751e0064b8b70ef2a964c61e5d1cd99df5170cdfd
@@ -21212,6 +21328,7 @@ notebooks:
   api_tokens:
   - bn.running_mean.clone
   - bn.running_var.clone
+  - copy.deepcopy
   - nn.BatchNorm2d
   - nn.Conv2d
   - nn.ReLU
@@ -21279,6 +21396,7 @@ notebooks:
   api_tokens:
   - bn.running_mean.clone
   - bn.running_var.clone
+  - copy.deepcopy
   - nn.BatchNorm2d
   - nn.Conv2d
   - nn.ReLU
@@ -22073,7 +22191,8 @@ notebooks:
   - tokenization
   declared_problem_ids:
   - C8-p01
-  api_tokens: []
+  api_tokens:
+  - gensim.utils.simple_preprocess
 - path: units/C8-embeddings/practice/p02.ipynb
   kind: notebook
   semantic_sha256: a6a92356c671ac77f9dd46a75e53a80d5f26e60eee00d4470892c79b224475ad
@@ -22239,7 +22358,8 @@ notebooks:
   - vectors-and-norms
   declared_problem_ids:
   - C8-p04
-  api_tokens: []
+  api_tokens:
+  - math.gcd
 - path: units/C8-embeddings/practice/p05.ipynb
   kind: notebook
   semantic_sha256: e314fa513721d66128a3b469a26448f74ca90b6a0ac6e8aa414114e35df64130
@@ -22362,6 +22482,7 @@ notebooks:
   - C8-p06
   api_tokens:
   - dict.fromkeys
+  - gensim.utils.simple_preprocess
   - toks.count
   - toks.index
 - path: units/C8-embeddings/practice/p07.ipynb
@@ -23075,6 +23196,7 @@ notebooks:
   - C8-p15
   api_tokens:
   - dict.fromkeys
+  - gensim.utils.simple_preprocess
   - toks.count
   - toks.index
 - path: units/C8-embeddings/practice/p16.ipynb
@@ -24496,7 +24618,8 @@ notebooks:
   - svd
   declared_problem_ids:
   - C9-p04
-  api_tokens: []
+  api_tokens:
+  - fractions.Fraction
 - path: units/C9-dimensionality-reduction/practice/p05.ipynb
   kind: notebook
   semantic_sha256: 3418b6d2fb143fa94dd49cf7868c718720b3d8032b18eee71458e3557af1c0ab
@@ -38303,7 +38426,8 @@ notebooks:
   - variance
   declared_problem_ids:
   - F5-p04
-  api_tokens: []
+  api_tokens:
+  - fractions.Fraction
 - path: units/F5-probability/practice/p05.ipynb
   kind: notebook
   semantic_sha256: 98a46db1ab513f8b2417539832501d86d05d83e51637d43bed44d73883a5f68f

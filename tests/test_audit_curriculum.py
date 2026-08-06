@@ -233,6 +233,14 @@ def test_manifest_digest_is_semantic_not_textual(tmp_path: Path) -> None:
     assert audit.manifest_record(changed, "manifest.yaml")["semantic_sha256"] != first_digest
 
 
+def test_manifest_digest_rejects_non_string_keys_without_collisions(tmp_path: Path) -> None:
+    path = tmp_path / "colliding.yaml"
+    path.write_text("outer:\n  1: numeric\n  '1': textual\n")
+
+    with pytest.raises(audit.InventoryError, match="keys must be strings"):
+        audit.manifest_record(path, "colliding.yaml")
+
+
 def test_inventory_paths_and_rendering_are_deterministic(tmp_path: Path) -> None:
     _make_minimal_repo(tmp_path)
 
@@ -290,6 +298,49 @@ def test_synthesis_notebooks_keep_nearest_manifest_declarations(tmp_path: Path) 
     assert record["declared_unit_ids"] == ["S-bridge"]
     assert record["declared_concept_ids"] == ["vectors"]
     assert record["declared_problem_ids"] == ["S-p01"]
+
+    (synthesis / "practice" / "p01.ipynb").unlink()
+    with pytest.raises(audit.InventoryError, match="declared notebook is missing"):
+        audit.build_inventory(tmp_path)
+
+
+def test_all_mock_rounds_are_discovered(tmp_path: Path) -> None:
+    _make_minimal_repo(tmp_path)
+    source = tmp_path / "mocktests" / "r1-mini"
+    destination = tmp_path / "mocktests" / "r2-mini"
+    source.rename(destination)
+
+    counts = audit.build_inventory(tmp_path)["counts"]
+
+    assert counts["mocktests"] == 1
+    assert counts["mock_notebooks"] == 2
+
+
+def test_missing_declared_unit_notebook_fails_loudly(tmp_path: Path) -> None:
+    _make_minimal_repo(tmp_path)
+    missing = tmp_path / "units" / "U1-vectors" / "practice" / "p01_solution.ipynb"
+    missing.unlink()
+
+    with pytest.raises(audit.InventoryError, match="declared notebook is missing"):
+        audit.build_inventory(tmp_path)
+
+
+def test_missing_declared_mock_notebook_fails_loudly(tmp_path: Path) -> None:
+    _make_minimal_repo(tmp_path)
+    missing = tmp_path / "mocktests" / "r1-mini" / "solutions" / "p01_solution.ipynb"
+    missing.unlink()
+
+    with pytest.raises(audit.InventoryError, match="declared notebook is missing"):
+        audit.build_inventory(tmp_path)
+
+
+def test_imported_bare_api_calls_are_recorded(tmp_path: Path) -> None:
+    path = tmp_path / "api.ipynb"
+    _write_notebook(path, [_code("from torch import softmax\nsoftmax(values)\n")])
+
+    record = audit.notebook_record(path, "api.ipynb")
+
+    assert "torch.softmax" in record["api_tokens"]
 
 
 def test_check_mode_catches_missing_and_stale_inventory_then_passes(tmp_path: Path, capsys) -> None:
