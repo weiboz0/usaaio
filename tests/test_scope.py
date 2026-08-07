@@ -14,6 +14,65 @@ from tools import render_curriculum_roadmap as renderer
 from tools.checks import scope as scope_checker
 from tools.checks.scope import check_scope
 
+ROOT = Path(__file__).parents[1]
+
+PLAN017_CLOSURE = {
+    "softmax": (
+        "C11-neural-training",
+        {"softmax"},
+        {"theory": "C11-p01", "derivation": "C11-p11", "implementation": "C11-p05"},
+    ),
+    "cross-entropy-loss": (
+        "C11-neural-training",
+        {"cross-entropy-loss"},
+        {"theory": "C11-p02", "derivation": "C11-p11", "implementation": "C11-p06"},
+    ),
+    "backpropagation-by-hand": (
+        "C11-neural-training",
+        {"manual-backpropagation"},
+        {"theory": "C11-p03", "derivation": "C11-p12", "implementation": "C11-p07"},
+    ),
+    "pytorch-autograd-and-optimizer-training": (
+        "C11-neural-training",
+        {"autograd-training", "torch-optimizers"},
+        {"implementation": "C11-p08", "model-training": "C11-p16"},
+    ),
+    "multilayer-perceptron-model": (
+        "C11-neural-training",
+        {"trained-mlp"},
+        {"model-training": "C11-p15"},
+    ),
+    "fully-connected-network-from-scratch": (
+        "C11-neural-training",
+        {"manual-backpropagation", "trained-mlp"},
+        {"model-training": "C11-p15"},
+    ),
+    "batch-normalization": (
+        "C11-neural-training",
+        {"batch-normalization"},
+        {
+            "derivation": "C11-p13",
+            "implementation": "C11-p09",
+            "model-training": "C11-p24",
+        },
+    ),
+    "dropout": (
+        "C11-neural-training",
+        {"dropout"},
+        {"theory": "C11-p04", "implementation": "C11-p10", "model-training": "C11-p24"},
+    ),
+    "pytorch-deep-learning-programming": (
+        "C6-pytorch",
+        {"autograd-training", "torch-optimizers"},
+        {"model-training": "C11-p16"},
+    ),
+    "convolutional-neural-network-basics": (
+        "C7-cnn-transfer",
+        {"cnn-training"},
+        {"model-training": "C7-p10"},
+    ),
+}
+
 
 def test_scope_checker_module_exists() -> None:
     assert (Path(__file__).parents[1] / "tools" / "checks" / "scope.py").is_file()
@@ -891,6 +950,42 @@ def _add_r2_point(data: dict[str, Any]) -> None:
     )
 
 
+def _add_unestimated_c8_point(data: dict[str, Any], *, covered: bool) -> None:
+    data["topics"]["atomic_targets"].append(
+        {
+            "id": "nlp-word-embeddings",
+            "parent": "foundation",
+            "source_refs": ["source-1"],
+            "required_for": ["round-2"],
+            "modalities": ["theory", "model-training"],
+        }
+    )
+    theory = dict(
+        data["roadmap"]["knowledge_points"][0]["evidence_by_modality"]["theory"]
+    )
+    model_training = theory if covered else {"lesson_anchors": [], "practices": []}
+    data["roadmap"]["knowledge_points"].append(
+        {
+            "id": "nlp-word-embeddings",
+            "layer": "round-2-extension",
+            "requirement": "required",
+            "coverage": "covered" if covered else "partial",
+            "source_refs": ["source-1"],
+            "depends_on": [],
+            "shipped_concepts": ["c1"],
+            "evidence_by_modality": {
+                "theory": theory,
+                "model-training": model_training,
+            },
+            "disposition": "keep" if covered else "existing-unit-extension",
+            "destination": "C8-embeddings",
+            "deficits": {"modalities_missing": [] if covered else ["model-training"]},
+            "rationale": "Word embeddings still need model-training evidence.",
+            "consequence": "Round 2 NLP training remains incomplete.",
+        }
+    )
+
+
 @pytest.mark.parametrize("broken", ["layer", "owner", "dependency"])
 def test_round_1_boundary_rejects_round_2_placement_ownership_and_dependency(
     tmp_path: Path, broken: str
@@ -1267,11 +1362,53 @@ def test_renderer_and_scope_checker_share_the_practice_threshold() -> None:
     )
 
 
-def test_renderer_recomputes_real_plan016_baseline() -> None:
-    baseline = renderer.current_time_baseline(Path(__file__).parents[1])
+def test_renderer_recomputes_real_plan017_baseline() -> None:
+    baseline = renderer.current_time_baseline(ROOT)
 
-    assert baseline.manifested_minutes == 14767
-    assert baseline.scheduled_minutes == 15007
+    assert baseline.manifested_minutes == 16625
+    assert baseline.scheduled_minutes == 16865
+
+
+def test_plan017_closure_has_exact_destinations_additions_and_primary_practices() -> None:
+    roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
+    points = {point["id"]: point for point in roadmap["knowledge_points"]}
+
+    for point_id, (destination, additions, primary_by_modality) in PLAN017_CLOSURE.items():
+        point = points[point_id]
+        assert point["coverage"] == "covered"
+        assert point["disposition"] == "keep"
+        assert point["destination"] == destination
+        assert additions <= set(point["shipped_concepts"])
+        assert point["deficits"] == {"modalities_missing": []}
+        for modality, primary_id in primary_by_modality.items():
+            evidence = point["evidence_by_modality"][modality]
+            assert evidence["lesson_anchors"]
+            assert [
+                row["id"] for row in evidence["practices"] if row["role"] == "primary"
+            ] == [primary_id]
+
+
+def test_plan017_queue_consumers_and_remaining_round1_gaps_are_exact() -> None:
+    roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
+    planned = {unit["id"]: unit for unit in roadmap["planned_units"]}
+
+    assert "P015-R1-NEURAL-TRAINING" not in planned
+    for consumer in ("P015-R2-TRANSFORMERS-NLP", "P015-R2-VISION-GEN"):
+        assert "P015-R1-NEURAL-TRAINING" not in planned[consumer]["prerequisites"]
+        assert "C11-neural-training" in planned[consumer]["prerequisites"]
+
+    remaining_round1 = {
+        point["id"]
+        for point in roadmap["knowledge_points"]
+        if point["layer"] == "round-1-core" and point["coverage"] != "covered"
+    }
+    assert remaining_round1 == {
+        "logistic-regression",
+        "support-vector-machine",
+        "decision-trees",
+        "ensemble-learning",
+        "k-means-clustering",
+    }
 
 
 def test_every_covered_real_roadmap_row_uses_keep_disposition() -> None:
@@ -1282,12 +1419,49 @@ def test_every_covered_real_roadmap_row_uses_keep_disposition() -> None:
     assert all(point.disposition == "keep" for point in covered)
 
 
-def test_completed_plan016_units_are_not_pending_renderer_extensions() -> None:
-    shipped_owner_units = {"F1", "C10", "F5", "C2", "C9", "F7"}
-    pending_units = {unit_id for unit_id, _, _ in renderer.MAJOR_EXISTING_UNIT_EXTENSIONS}
+def test_completed_plan017_neural_extensions_are_not_rendered_as_pending() -> None:
+    rendered = renderer.render_documents(ROOT)
 
-    assert pending_units == {"C7"}
-    assert shipped_owner_units.isdisjoint(pending_units)
+    for document in rendered.values():
+        assert "C7 CNN training" not in document
+        assert "C6 and C8 are not yet estimated" not in document
+        assert "C8" in document
+
+
+def test_unestimated_c8_clause_remains_but_estimated_extension_section_is_suppressed(
+    tmp_path: Path,
+) -> None:
+    contract = _base_contract(tmp_path)
+    _add_unestimated_c8_point(contract, covered=False)
+    _write_yaml(tmp_path / "curriculum" / "official-topics.yaml", contract["topics"])
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
+
+    rendered = renderer.render_documents(tmp_path)
+
+    for document in rendered.values():
+        assert "C8" in document
+        assert "nlp-word-embeddings" in document
+        assert "C6 and C8 are not yet estimated" not in document
+        assert "so this is not a complete roadmap total" not in document
+        assert "Estimated major existing-unit extensions" not in document
+        assert "Minimum estimated scoped delta" not in document
+        assert "| C8" not in document
+
+
+def test_unestimated_c8_clause_disappears_only_after_its_canonical_row_is_covered(
+    tmp_path: Path,
+) -> None:
+    contract = _base_contract(tmp_path)
+    _add_unestimated_c8_point(contract, covered=True)
+    _write_yaml(tmp_path / "curriculum" / "official-topics.yaml", contract["topics"])
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
+
+    rendered = renderer.render_documents(tmp_path)
+
+    for document in rendered.values():
+        assert "C8" not in document
+        assert "nlp-word-embeddings" not in document
+        assert "Estimated major existing-unit extensions" not in document
 
 
 def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: Path) -> None:
@@ -1319,9 +1493,9 @@ def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: 
             "This range is a renderer-owned editorial estimate, not a field in the canonical coverage map."
             in document
         )
-        assert "Estimated major existing-unit extensions subtotal: **8–12 hours**" in document
-        assert "Minimum estimated scoped delta: **9.5–15.5 hours**" in document
-        assert "C6 and C8 are not yet estimated" in document
+        assert "Estimated major existing-unit extensions subtotal" not in document
+        assert "Minimum estimated scoped delta" not in document
+        assert "C6 and C8 are not yet estimated" not in document
         assert "**8.5–10.5 manifested-baseline hours**" in document
         assert "**8.75–10.75 scheduled-baseline hours**" in document
 
@@ -1330,30 +1504,27 @@ def test_real_renderer_distinguishes_planned_major_extension_and_minimum_scoped_
     rendered = renderer.render_documents(Path(__file__).parents[1])
 
     for document in rendered.values():
-        assert "| **Planned-unit subtotal** | **188** | **284** |" in document
+        assert "| **Planned-unit subtotal** | **158** | **240** |" in document
         assert (
             "This range is a renderer-owned editorial estimate, not a field in the canonical coverage map."
             in document
         )
-        assert "Estimated major existing-unit extensions subtotal: **8–12 hours**" in document
-        assert "Minimum estimated scoped delta: **196–296 hours**" in document
-        assert "C6 and C8 are not yet estimated" in document
-        assert "**442.12–542.12 manifested-baseline hours**" in document
-        assert "**446.12–546.12 scheduled-baseline hours**" in document
+        assert "Estimated major existing-unit extensions subtotal" not in document
+        assert "Minimum estimated scoped delta" not in document
+        assert "C6 and C8 are not yet estimated" not in document
+        assert "C8" in document
+        assert "so this is not a complete roadmap total" not in document
+        assert "**435.08–517.08 manifested-baseline hours**" in document
+        assert "**439.08–521.08 scheduled-baseline hours**" in document
         assert "student-t-test" in document
         assert "importance-sampling" in document
         assert "Total roadmap delta" not in document
 
 
-def test_both_documents_end_with_fixed_five_tranche_queue_led_by_neural_training(
-    tmp_path: Path,
-) -> None:
-    _base_contract(tmp_path)
-
-    rendered = renderer.render_documents(tmp_path)
+def test_both_documents_end_with_exact_post_plan017_tranche_queue() -> None:
+    rendered = renderer.render_documents(ROOT)
 
     titles = [
-        "Round 1 neural-training completion",
         "Round 1 classical-model breadth",
         "Round 2 transformers and NLP",
         "Round 2 advanced vision and generative modeling",
@@ -1371,8 +1542,9 @@ def test_both_documents_end_with_fixed_five_tranche_queue_led_by_neural_training
         assert "graph-neural-network" in document
         assert "C2 extension" not in document
         assert "C9 extension" not in document
-        assert "C7 CNN training" in document
-        assert "Forward propagation is already a shipped prerequisite, not a new gap." in document
+        assert "C7 CNN training" not in document
+        assert "Round 1 neural-training completion" not in document
+        assert "Forward propagation is already a shipped prerequisite, not a new gap." not in document
 
 
 def test_renderer_is_input_order_independent(tmp_path: Path) -> None:

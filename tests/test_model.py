@@ -61,6 +61,57 @@ practice:
     assert manifests[0].unit_id == "F1-scientific-python"
     assert manifests[0].lesson_sessions is None
     assert manifests[0].practice[0].solution_path == "practice/p01_solution.ipynb"
+    assert manifests[0].practice[0].minutes is None
+
+
+def test_unit_manifest_parses_optional_positive_practice_minutes(tmp_path):
+    unit_dir = tmp_path / "units" / "C11-neural-training"
+    unit_dir.mkdir(parents=True)
+    (unit_dir / "manifest.yaml").write_text(
+        """
+unit: C11-neural-training
+concepts_taught: [softmax]
+concepts_used: []
+prereq_units: []
+practice:
+  - id: C11-p01
+    concepts: [softmax]
+    path: practice/p01.ipynb
+    solution_path: practice/p01_solution.ipynb
+    minutes: 15
+"""
+    )
+
+    manifests = load_unit_manifests(tmp_path)
+
+    assert manifests[0].practice[0].minutes == 15
+
+
+@pytest.mark.parametrize("yaml_value", ["0", "-1", "true", "1.5", "'15'", "null"])
+def test_unit_manifest_rejects_non_positive_integer_practice_minutes(
+    tmp_path, yaml_value
+):
+    unit_dir = tmp_path / "units" / "C11-neural-training"
+    unit_dir.mkdir(parents=True)
+    manifest_path = unit_dir / "manifest.yaml"
+    manifest_path.write_text(
+        f"""
+unit: C11-neural-training
+concepts_taught: [softmax]
+concepts_used: []
+prereq_units: []
+practice:
+  - id: C11-p01
+    concepts: [softmax]
+    path: practice/p01.ipynb
+    solution_path: practice/p01_solution.ipynb
+    minutes: {yaml_value}
+"""
+    )
+
+    message = rf"{re.escape(str(manifest_path))}: practice row 0 minutes must be a positive integer"
+    with pytest.raises(ValueError, match=message):
+        load_unit_manifests(tmp_path)
 
 
 def test_unit_manifest_parses_lesson_sessions(tmp_path):

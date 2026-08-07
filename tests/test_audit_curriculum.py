@@ -433,17 +433,66 @@ def test_real_repository_inventory_counts() -> None:
     counts = audit.build_inventory(REPO_ROOT)["counts"]
 
     assert counts == {
-        "units": 17,
-        "concepts": 130,
-        "unit_practices": 383,
-        "lesson_sessions": 57,
-        "unit_nonpractice_notebooks": 91,
-        "unit_notebooks": 857,
+        "units": 18,
+        "concepts": 139,
+        "unit_practices": 407,
+        "lesson_sessions": 63,
+        "unit_nonpractice_notebooks": 99,
+        "unit_notebooks": 913,
         "mocktests": 1,
         "mock_notebooks": 10,
-        "manifested_minutes": 14_767,
-        "scheduled_minutes": 15_007,
+        "manifested_minutes": 16_625,
+        "scheduled_minutes": 16_865,
     }
+
+
+def test_scheduled_minutes_come_from_canonical_schedule_not_prose(tmp_path: Path) -> None:
+    _make_minimal_repo(tmp_path)
+    manifest_path = tmp_path / "units" / "U1-vectors" / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text())
+    manifest["estimated_minutes"] = {
+        "lesson": 100,
+        "lesson_sessions": [100],
+        "practice": 100,
+        "review": 10,
+    }
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
+    mock_manifest_path = tmp_path / "mocktests" / "r1-mini" / "manifest.yaml"
+    mock_manifest = yaml.safe_load(mock_manifest_path.read_text())
+    mock_manifest["duration_minutes"] = 180
+    mock_manifest_path.write_text(yaml.safe_dump(mock_manifest, sort_keys=False))
+    schedule = {
+        "schedule_version": 1,
+        "weeks": [
+            {
+                "week": 1,
+                "semester": 1,
+                "allocations": [
+                    {
+                        "kind": "lesson-session",
+                        "unit": "U1-vectors",
+                        "session": 1,
+                        "minutes": 100,
+                    },
+                    {"kind": "practice", "unit": "U1-vectors", "minutes": 100},
+                    {"kind": "review", "unit": "U1-vectors", "minutes": 10},
+                    {"kind": "mock", "test": "r1-mini", "minutes": 180},
+                    {"kind": "debrief", "test": "r1-mini", "minutes": 60},
+                ],
+            }
+        ],
+    }
+    schedule_path = tmp_path / "curriculum" / "course-schedule.yaml"
+    schedule_path.parent.mkdir(parents=True)
+    schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False))
+    (tmp_path / "docs" / "course-structure.md").write_text(
+        "# Deliberately stale prose\n\nThe course ends with a 9,999-minute debrief.\n"
+    )
+
+    counts = audit.build_inventory(tmp_path)["counts"]
+
+    assert counts["manifested_minutes"] == 210
+    assert counts["scheduled_minutes"] == 450
 
 
 @pytest.mark.parametrize(

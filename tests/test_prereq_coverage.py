@@ -1,6 +1,8 @@
 from pathlib import Path
 from posixpath import normpath
 
+import yaml
+
 from tools.checks.coverage import check_coverage
 from tools.checks.prereq import check_prereq
 from tools.model import load_syllabus, load_unit_manifests
@@ -308,6 +310,60 @@ practice:
         "taught concept b has 1 tagged practice problems; requires at least 3" in error
         for error in report.errors
     )
+
+
+def test_practice_minutes_are_all_or_none_within_a_manifest(tmp_path):
+    write_syllabus(tmp_path)
+    unit_dir = write_unit(tmp_path, practice_count=3)
+    manifest_path = unit_dir / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text())
+    manifest["estimated_minutes"] = {"practice": 45}
+    manifest["practice"][0]["minutes"] = 15
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{manifest_path}: practice minutes must be declared for every practice when any are present"
+        in report.errors
+    )
+
+
+def test_practice_minutes_must_sum_to_estimated_practice_minutes(tmp_path):
+    write_syllabus(tmp_path)
+    unit_dir = write_unit(tmp_path, practice_count=3)
+    manifest_path = unit_dir / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text())
+    manifest["estimated_minutes"] = {"practice": 50}
+    for row in manifest["practice"]:
+        row["minutes"] = 15
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert (
+        f"{manifest_path}: practice minutes sum to 45; expected estimated_minutes.practice 50"
+        in report.errors
+    )
+
+
+def test_complete_practice_minutes_matching_the_estimate_pass(tmp_path):
+    write_syllabus(tmp_path)
+    unit_dir = write_unit(tmp_path, practice_count=3)
+    manifest_path = unit_dir / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text())
+    manifest["estimated_minutes"] = {"practice": 45}
+    for row in manifest["practice"]:
+        row["minutes"] = 15
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
+
+    report = check_coverage(tmp_path)
+
+    assert report.ok, report.errors
+    loaded = load_unit_manifests(tmp_path)
+    assert [problem.minutes for problem in loaded[0].practice] == [15, 15, 15]
 
 
 def test_double_length_coverage_requires_lesson_sessions(tmp_path):

@@ -52,6 +52,8 @@ EXPECTED_UNIT_SHAPES = {
     "C2-linear-models": ([85, 90, 85], 24, (260, 590, 55)),
     "C9-dimensionality-reduction": ([80, 90, 85, 85], 24, (340, 600, 60)),
     "F7-kernels-convex-optimization": ([85, 85, 85, 85], 20, (340, 640, 45)),
+    "C11-neural-training": ([90, 90, 90, 90, 90], 24, (450, 1040, 60)),
+    "C7-cnn-transfer": ([85, 85, 85, 90], 27, (345, 875, 60)),
 }
 
 PLAN016_C10_PROMOTED_CONCEPTS = (
@@ -86,6 +88,175 @@ C9_PLAN016_CHANGED_NOTEBOOKS = (
     Path("review.ipynb"),
     *(Path(f"practice/p{number:02d}.ipynb") for number in range(20, 25)),
 )
+
+PLAN017_NEW_CONCEPTS = {
+    "softmax",
+    "cross-entropy-loss",
+    "manual-backpropagation",
+    "autograd-training",
+    "torch-optimizers",
+    "trained-mlp",
+    "batch-normalization",
+    "dropout",
+    "cnn-training",
+}
+
+PLAN017_C11_CONCEPTS_USED = [
+    "numpy-arrays",
+    "array-indexing-slicing",
+    "elementwise-ops",
+    "broadcasting",
+    "vectorization",
+    "aggregation-axis",
+    "random-seeding",
+    "matplotlib-basics",
+    "partial-derivatives",
+    "gradient",
+    "multivar-chain-rule",
+    "gradient-descent",
+    "learning-rate",
+    "stochastic-gd",
+    "loss-surfaces",
+    "expectation",
+    "variance",
+    "perceptron",
+    "activation-functions",
+    "relu-activation",
+    "mlp-architecture",
+    "weight-init-variance",
+    "overfitting",
+    "l2-regularization",
+    "python-inheritance",
+    "torch-tensors",
+    "nn-module",
+    "requires-grad",
+    "parameter-counting",
+]
+
+PLAN017_C11_PRACTICE_ROWS = [
+    ("C11-p01", "A", "mc", "intro", ["softmax"], 15),
+    ("C11-p02", "A", "mc", "intro", ["cross-entropy-loss"], 15),
+    ("C11-p03", "A", "mc", "intro", ["manual-backpropagation"], 15),
+    ("C11-p04", "B", "mc-normal-form", "intro", ["dropout"], 15),
+    ("C11-p05", "A", "constrained-coding", "intro", ["softmax"], 25),
+    ("C11-p06", "B", "constrained-coding", "intro", ["cross-entropy-loss"], 25),
+    (
+        "C11-p07",
+        "A",
+        "constrained-coding",
+        "core",
+        ["manual-backpropagation", "trained-mlp"],
+        35,
+    ),
+    (
+        "C11-p08",
+        "A",
+        "constrained-coding",
+        "core",
+        ["autograd-training", "torch-optimizers"],
+        35,
+    ),
+    ("C11-p09", "A", "constrained-coding", "core", ["batch-normalization"], 35),
+    ("C11-p10", "A", "constrained-coding", "core", ["dropout"], 35),
+    (
+        "C11-p11",
+        "B",
+        "proof",
+        "core",
+        ["softmax", "cross-entropy-loss"],
+        40,
+    ),
+    ("C11-p12", "B", "proof", "core", ["manual-backpropagation"], 40),
+    ("C11-p13", "B", "proof", "core", ["batch-normalization"], 40),
+    (
+        "C11-p14",
+        "C",
+        "integrative",
+        "core",
+        ["softmax", "cross-entropy-loss"],
+        60,
+    ),
+    (
+        "C11-p15",
+        "C",
+        "integrative",
+        "core",
+        ["manual-backpropagation", "trained-mlp"],
+        60,
+    ),
+    (
+        "C11-p16",
+        "C",
+        "integrative",
+        "core",
+        ["autograd-training", "torch-optimizers"],
+        60,
+    ),
+    ("C11-p17", "C", "scenario", "core", ["trained-mlp"], 50),
+    (
+        "C11-p18",
+        "C",
+        "scenario",
+        "core",
+        ["batch-normalization", "dropout"],
+        50,
+    ),
+    (
+        "C11-p19",
+        "C",
+        "scenario",
+        "advanced",
+        ["autograd-training", "torch-optimizers"],
+        50,
+    ),
+    (
+        "C11-p20",
+        "C",
+        "scenario",
+        "advanced",
+        ["trained-mlp", "batch-normalization", "dropout"],
+        50,
+    ),
+    (
+        "C11-p21",
+        "C",
+        "challenge",
+        "advanced",
+        ["softmax", "cross-entropy-loss"],
+        70,
+    ),
+    (
+        "C11-p22",
+        "C",
+        "challenge",
+        "advanced",
+        ["manual-backpropagation"],
+        70,
+    ),
+    (
+        "C11-p23",
+        "C",
+        "challenge",
+        "advanced",
+        ["autograd-training", "torch-optimizers", "trained-mlp"],
+        75,
+    ),
+    (
+        "C11-p24",
+        "C",
+        "challenge",
+        "advanced",
+        ["torch-optimizers", "trained-mlp", "batch-normalization", "dropout"],
+        75,
+    ),
+]
+
+PLAN017_C7_PRESERVED_CONCEPTS = {
+    "C7-p10": {"layer-freezing", "nn-module", "requires-grad", "parameter-counting"},
+    "C7-p24": {"tensor-shape-tracing"},
+    "C7-p26": {"convolution", "tensor-shape-tracing"},
+    "C7-p27": {"layer-freezing", "requires-grad"},
+}
 
 
 def _manifest(unit_id: str) -> dict[str, object]:
@@ -166,7 +337,7 @@ def test_plan016_new_concepts_have_exact_clusters_and_single_owners():
     }
 
 
-def test_plan016_manifests_have_exact_final_counts_and_minutes():
+def test_plan017_manifests_have_exact_final_counts_and_minutes():
     for unit_id, (sessions, practice_count, minute_totals) in EXPECTED_UNIT_SHAPES.items():
         manifest = _manifest(unit_id)
         minutes = manifest["estimated_minutes"]
@@ -175,16 +346,135 @@ def test_plan016_manifests_have_exact_final_counts_and_minutes():
         assert len(manifest["practice"]) == practice_count
 
     manifests = load_unit_manifests(ROOT)
-    assert sum(len(manifest.practice) for manifest in manifests) == 383
-    assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 57
-    assert sum(
-        sum(_manifest(manifest.unit_id)["estimated_minutes"][field] for field in (
-            "lesson",
-            "practice",
-            "review",
-        ))
-        for manifest in manifests
-    ) == 14767
+    assert len(manifests) == 18
+    assert sum(len(manifest.practice) for manifest in manifests) == 407
+    assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 63
+    minute_totals = {
+        field: sum(
+            _manifest(manifest.unit_id)["estimated_minutes"][field]
+            for manifest in manifests
+        )
+        for field in ("lesson", "practice", "review")
+    }
+    assert minute_totals == {"lesson": 5280, "practice": 10480, "review": 865}
+    assert sum(minute_totals.values()) == 16625
+
+
+def test_plan017_new_concepts_have_single_syllabus_and_manifest_owners():
+    syllabus = load_syllabus(ROOT)
+    syllabus_owner_counts = Counter(
+        concept for unit in syllabus.units.values() for concept in unit.teaches
+    )
+    manifest_owner_counts = Counter(
+        concept
+        for manifest in load_unit_manifests(ROOT)
+        for concept in manifest.concepts_taught
+    )
+
+    assert set(syllabus.concepts) == set(syllabus_owner_counts) == set(manifest_owner_counts)
+    assert len(syllabus.concepts) == 139
+    assert {concept: syllabus_owner_counts[concept] for concept in PLAN017_NEW_CONCEPTS} == {
+        concept: 1 for concept in PLAN017_NEW_CONCEPTS
+    }
+    assert {concept: manifest_owner_counts[concept] for concept in PLAN017_NEW_CONCEPTS} == {
+        concept: 1 for concept in PLAN017_NEW_CONCEPTS
+    }
+
+
+def test_plan017_c11_manifest_is_the_exact_pinned_training_contract():
+    manifest = _manifest("C11-neural-training")
+
+    assert manifest["prereq_units"] == [
+        "F4-multivar-calculus",
+        "C3-gradient-descent",
+        "C5-neural-networks",
+        "C6-pytorch",
+    ]
+    assert manifest["concepts_taught"] == [
+        "softmax",
+        "cross-entropy-loss",
+        "manual-backpropagation",
+        "autograd-training",
+        "torch-optimizers",
+        "trained-mlp",
+        "batch-normalization",
+        "dropout",
+    ]
+    assert manifest["concepts_used"] == PLAN017_C11_CONCEPTS_USED
+    assert manifest["estimated_minutes"] == {
+        "lesson": 450,
+        "lesson_sessions": [90, 90, 90, 90, 90],
+        "practice": 1040,
+        "review": 60,
+    }
+    actual_rows = [
+        (
+            row["id"],
+            row["set"],
+            row["type"],
+            row["difficulty"],
+            row["concepts"],
+            row["path"],
+            row["solution_path"],
+            row["minutes"],
+        )
+        for row in manifest["practice"]
+    ]
+    expected_rows = [
+        (
+            problem_id,
+            set_id,
+            problem_type,
+            difficulty,
+            concepts,
+            f"practice/p{index:02}.ipynb",
+            f"practice/p{index:02}_solution.ipynb",
+            minutes,
+        )
+        for index, (
+            problem_id,
+            set_id,
+            problem_type,
+            difficulty,
+            concepts,
+            minutes,
+        ) in enumerate(PLAN017_C11_PRACTICE_ROWS, start=1)
+    ]
+
+    assert actual_rows == expected_rows
+    assert all(type(row[-1]) is int and row[-1] > 0 for row in actual_rows)
+    assert sum(row[-1] for row in actual_rows) == 1040
+
+
+def test_plan017_c7_manifest_is_double_length_and_preserves_capstone_contracts():
+    syllabus = _canonical_syllabus_yaml()
+    syllabus_units = {unit["id"]: unit for unit in syllabus["units"]}
+    syllabus_c7 = syllabus_units["C7-cnn-transfer"]
+    manifest = _manifest("C7-cnn-transfer")
+
+    assert syllabus_c7["length"] == "double"
+    assert syllabus_c7["prereqs"] == ["C6-pytorch", "C11-neural-training"]
+    assert "cnn-training" in syllabus_c7["teaches"]
+    assert manifest["prereq_units"] == ["C6-pytorch", "C11-neural-training"]
+    assert "cnn-training" in manifest["concepts_taught"]
+    assert manifest["estimated_minutes"] == {
+        "lesson": 345,
+        "lesson_sessions": [85, 85, 85, 90],
+        "practice": 875,
+        "review": 60,
+    }
+    assert len(manifest["practice"]) == 27
+    assert len({row["id"] for row in manifest["practice"]}) == 27
+    assert len({row["path"] for row in manifest["practice"]}) == 27
+
+    practices = {row["id"]: row for row in manifest["practice"]}
+    assert {
+        problem_id
+        for problem_id, problem in practices.items()
+        if "cnn-training" in problem["concepts"]
+    } == set(PLAN017_C7_PRESERVED_CONCEPTS)
+    for problem_id, preserved in PLAN017_C7_PRESERVED_CONCEPTS.items():
+        assert preserved | {"cnn-training"} <= set(practices[problem_id]["concepts"])
 
 
 def test_plan016_existing_unit_register_extensions_are_exact():
@@ -491,11 +781,13 @@ def test_plan016_coverage_map_conversion_is_controlled():
         assert point["deficits"] == {"modalities_missing": []}
 
 
-def test_plan016_syllabus_narrative_order_and_dependency_contract():
+def test_plan017_syllabus_narrative_order_and_dependency_contract():
     syllabus = _canonical_syllabus_yaml()
     units = {unit["id"]: unit for unit in syllabus["units"]}
     assert units["F5-probability"]["length"] == "double"
     assert units["F6-svd-spectral"]["length"] == "double"
+    assert units["C7-cnn-transfer"]["length"] == "double"
+    assert units["C11-neural-training"]["length"] == "double"
     narrative = _syllabus_narrative()
     foundation = _narrative_section(narrative, "Foundation track — rationale")
     core = _narrative_section(narrative, "Core track — rationale")
@@ -513,6 +805,11 @@ def test_plan016_syllabus_narrative_order_and_dependency_contract():
         "Only iterative gradient-based fitting remains deferred to `C3-gradient-descent`."
     ) in normalized_core
     assert "Fitting itself is deferred to `C3-gradient-descent`" not in normalized_core
+    engineering_ladder = (
+        "`C5-neural-networks` → `C6-pytorch` → `C11-neural-training` → "
+        "`C7-cnn-transfer`"
+    )
+    assert normalized_core.count(engineering_ladder) == 1
 
     order_section = _narrative_section(
         narrative, "Suggested order (one feasible topological sort)"
@@ -533,6 +830,7 @@ def test_plan016_syllabus_narrative_order_and_dependency_contract():
         "C3-gradient-descent",
         "C5-neural-networks",
         "C6-pytorch",
+        "C11-neural-training",
         "C7-cnn-transfer",
         "C8-embeddings",
         "F6-svd-spectral",
@@ -542,7 +840,7 @@ def test_plan016_syllabus_narrative_order_and_dependency_contract():
     ]
     assert ordered_unit_ids == expected_order
     assert set(ordered_unit_ids) == set(units)
-    assert len(ordered_unit_ids) == len(set(ordered_unit_ids)) == 17
+    assert len(ordered_unit_ids) == len(set(ordered_unit_ids)) == 18
     positions = {unit_id: index for index, unit_id in enumerate(ordered_unit_ids)}
     for unit_id in ordered_unit_ids:
         assert all(
@@ -553,7 +851,7 @@ def test_plan016_syllabus_narrative_order_and_dependency_contract():
     assert any(dependency.startswith("seaborn>=") for dependency in project["project"]["dependencies"])
     assert re.search(r'^name = "seaborn"$', (ROOT / "uv.lock").read_text(), re.MULTILINE)
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
-    assert "Double-length units (F5, F6) use 4–6 sessions." in standards
+    assert "Double-length units (F5, F6, C7, C11) use 4–6 sessions." in standards
 
 
 def test_plan016_practice_coverage_is_green():
