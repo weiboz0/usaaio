@@ -35,16 +35,16 @@ It owns exactly:
 - `dropout`.
 
 Ship five 90-minute sessions, one overview, one 60-minute review, and 24 paired practices and
-solutions totaling 1,390 practice minutes.
+solutions totaling 1,040 practice minutes.
 
 ### C7 completion
 
-Make `C11-neural-training` the prerequisite boundary for C7, add `cnn-training`, and ship a
-fourth 90-minute training session.
-Rewrite C7-p10, C7-p24, and C7-p27 as 120-minute capstones that preserve their current objectives
-and add honest model-training evidence.
+Make `[C6-pytorch, C11-neural-training]` the explicit prerequisite boundary for C7, add
+`cnn-training`, and ship a fourth 90-minute training session.
+Expand C7-p10, C7-p24, C7-p26, and C7-p27 as 75-minute capstones that preserve separately scored
+current objectives and add honest model-training evidence.
 Update C7 to double-length with four sessions, 27 practices, and final lesson/practice/review
-minutes of 345/960/60.
+minutes of 345/875/60.
 
 ### Curriculum evidence and schedule
 
@@ -63,7 +63,7 @@ Promote these ten knowledge points to `covered` with exact evidence:
 
 Remove `P015-R1-NEURAL-TRAINING` and the C7/C6 neural extension notices only when their consumer
 rows are fully evidenced.
-Regenerate the audit, roadmap, material inventory, and a 35-week prerequisite-valid course
+Regenerate the audit, roadmap, material inventory, and a 34-week prerequisite-valid course
 schedule with C11 after C6 and before C7.
 Introduce `curriculum/course-schedule.yaml` as the canonical allocation and render the schedule
 table/document from that data so CI checks the calendar rather than trusting prose arithmetic.
@@ -75,32 +75,33 @@ Set A is p01–p06, Set B is p07–p16, and Set C is p17–p24.
 
 | Ids | Type | Difficulty | Minutes each | Primary concept contract |
 |---|---|---|---:|---|
-| p01 | MC, five options | intro | 20 | stable softmax and shift invariance |
-| p02 | MC, five options | intro | 20 | cross-entropy / negative log likelihood |
-| p03 | MC, five options | intro | 20 | backpropagation dependency and gradient shape |
-| p04 | MC normal form, five options | intro | 20 | inverted-dropout train/eval behavior |
-| p05 | constrained coding | intro | 30 | stable NumPy softmax |
-| p06 | constrained coding | intro | 30 | categorical cross-entropy from logits via log-sum-exp |
-| p07 | constrained coding | core | 45 | manual local gradients and accumulation |
-| p08 | constrained coding | core | 45 | autograd gradients against hand values |
-| p09 | constrained coding | core | 45 | optimizer lifecycle and parameter movement |
-| p10 | constrained coding | core | 45 | deterministic trained MLP contract |
-| p11 | proof/derivation | core | 50 | softmax Jacobian and fused CE gradient |
-| p12 | proof/derivation | core | 50 | complete two-layer manual backpropagation |
-| p13 | proof/derivation | core | 50 | BatchNorm forward and backward identities |
-| p14 | integrative | core | 80 | stable softmax plus cross-entropy implementation |
-| p15 | integrative | core | 80 | NumPy MLP forward/backward/update training |
-| p16 | integrative | core | 80 | PyTorch autograd and optimizer training loop |
-| p17 | scenario | core | 70 | trained-MLP learning-curve diagnosis |
-| p18 | scenario | core | 70 | BatchNorm/dropout mode audit |
-| p19 | scenario | advanced | 70 | autograd/optimizer debugging |
-| p20 | scenario | advanced | 70 | trained MLP regularization ablation |
-| p21 | challenge | advanced | 100 | stable fused softmax-CE plus finite differences |
-| p22 | challenge | advanced | 100 | multi-layer backpropagation by hand |
-| p23 | challenge | advanced | 100 | complete deterministic PyTorch training |
-| p24 | challenge | advanced | 100 | BatchNorm/dropout trained-network ablation |
+| p01 | MC, five options | intro | 15 | stable softmax and shift invariance |
+| p02 | MC, five options | intro | 15 | cross-entropy / negative log likelihood |
+| p03 | MC, five options | intro | 15 | backpropagation dependency and gradient shape |
+| p04 | MC normal form, five options | intro | 15 | inverted-dropout train/eval behavior |
+| p05 | constrained coding | intro | 25 | stable NumPy softmax |
+| p06 | constrained coding | intro | 25 | categorical cross-entropy from logits via log-sum-exp |
+| p07 | constrained coding | intro | 35 | manual local gradients and accumulation |
+| p08 | constrained coding | core | 35 | autograd gradients against hand values |
+| p09 | constrained coding | core | 35 | optimizer lifecycle and parameter movement |
+| p10 | constrained coding | core | 35 | deterministic trained MLP contract |
+| p11 | proof/derivation | core | 40 | softmax Jacobian and fused CE gradient |
+| p12 | proof/derivation | core | 40 | complete two-layer manual backpropagation |
+| p13 | proof/derivation | core | 40 | BatchNorm forward and backward identities |
+| p14 | integrative | core | 60 | stable softmax plus cross-entropy implementation |
+| p15 | integrative | core | 60 | NumPy MLP forward/backward/update training |
+| p16 | integrative | core | 60 | PyTorch autograd and optimizer training loop |
+| p17 | scenario | core | 50 | trained-MLP learning-curve diagnosis |
+| p18 | scenario | core | 50 | BatchNorm/dropout mode audit |
+| p19 | scenario | advanced | 50 | autograd/optimizer debugging |
+| p20 | scenario | advanced | 50 | trained MLP regularization ablation |
+| p21 | challenge | advanced | 70 | stable fused softmax-CE plus finite differences |
+| p22 | challenge | advanced | 70 | multi-layer backpropagation by hand |
+| p23 | challenge | advanced | 75 | complete deterministic PyTorch training |
+| p24 | challenge | advanced | 75 | BatchNorm/dropout trained-network ablation |
 
-The table totals exactly 1,390 practice minutes.
+The table totals exactly 1,040 practice minutes.
+The deliberate 7/11/6 intro/core/advanced split is 29.2%/45.8%/25.0%, matching the unit standard.
 The minimum honest coverage sets are:
 
 - `softmax`: p01, p05, p11, p14, p21;
@@ -112,10 +113,11 @@ The minimum honest coverage sets are:
 - `batch-normalization`: p13, p18, p20, p24;
 - `dropout`: p04, p18, p20, p24.
 
-C7-p10, C7-p24, and C7-p27 each grade `cnn-training` and retain their existing concept
+C7-p10, C7-p24, C7-p26, and C7-p27 each grade `cnn-training` and retain their existing concept
 deliverables.
 C7-p10 certifies selective optimizer updates, C7-p24 joins hand shape tracing to construction
-and training, and C7-p27 audits mode/trainability/graph controls across real train/eval steps.
+and training, C7-p26 joins a general shape helper to a valid trained stack, and C7-p27 audits
+mode/trainability/graph controls across real train/eval steps.
 
 ## Out of scope
 
@@ -145,18 +147,19 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
 
 1. Pin baseline-to-final counts at 18 units, 139 concepts, 407 practices, 63 lesson sessions,
    99 lesson/review/overview notebooks, and 913 unit notebooks.
-2. Pin final manifested totals at 5,280 lesson + 10,915 practice + 865 review = 17,060 minutes
-   and scheduled totals at 17,300 minutes.
+2. Pin final manifested totals at 5,280 lesson + 10,480 practice + 865 review = 16,625 minutes
+   and scheduled totals at 16,865 minutes.
 3. Require C11 to be double-length with exactly five 90-minute sessions and 24 distinct practice
    ids/paths.
-4. Require C7 to be double-length with four sessions, 27 distinct practices, `cnn-training`, and
-   prerequisite closure through C11.
+4. Require C7's canonical syllabus entry to set `length: double`, four sessions, 27 distinct
+   practices, `cnn-training`, and explicit prerequisites `[C6-pytorch, C11-neural-training]`.
 5. Require the ten target rows to become checker-derived `covered`, with no missing modality,
    `keep`, exact destinations, non-empty anchors, and required practice evidence.
 6. Require the planned-unit queue to exclude `P015-R1-NEURAL-TRAINING` and the remaining Round 1
    gap ids to equal the five Plan 018 topics exactly.
-7. Require a 35-week schedule: Semester 1 remains 16 weeks / 7,915 minutes; Semester 2 is 19
-   weeks / 9,385 minutes; C11 finishes before C7 starts and the mock/debrief remain last.
+7. Require a 34-week schedule: Semester 1 remains 16 weeks / 7,915 minutes; Semester 2 is 18
+   weeks / 8,950 minutes; every week totals 450–500 minutes, C11 finishes before C7 starts, and
+   the mock/debrief remain last.
 8. Pin a fail-closed schedule consumer that accounts for every manifested lesson session exactly
    once, reconciles per-unit practice/review totals, enforces prerequisite completion before a
    dependent starts, and reconciles the mock/debrief with `r1-001`.
@@ -182,13 +185,14 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
 ### Work
 
 1. Add the nine concepts and unique owners exactly as designed.
-2. Add C11's double-length unit contract and repair the pre-existing duplicate C6 `prereqs` key
-   while touching the canonical syllabus block.
-3. Change C7's prerequisite boundary to C11, add the fourth session/minute totals, add
-   `cnn-training`, and retain exactly 27 practice entries.
+2. Add C11's double-length unit contract to the canonical syllabus block; C6 remains unchanged.
+3. Set C7's canonical `length: double`, change its prerequisites to
+   `[C6-pytorch, C11-neural-training]`, add the fourth session/minute totals, add `cnn-training`,
+   extend `concepts_used` with `autograd-training`, `torch-optimizers`, `batch-normalization`, and
+   `dropout`, and retain exactly 27 practice entries.
 4. Convert the C7 standards note from unresolved non-conformance to a recorded resolution based
    on the substantive fourth session; record that C5 remains a standard 22-problem unit because
-   training moved to C11.
+   training moved to C11, and update the double-length roster to F5, F6, C7, and C11.
 5. Register Plan 017 as active without marking it complete.
 
 ### Verification
@@ -289,25 +293,26 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
 - `units/C7-cnn-transfer/review.ipynb`
 - `units/C7-cnn-transfer/practice/p10.ipynb`
 - `units/C7-cnn-transfer/practice/p24.ipynb`
+- `units/C7-cnn-transfer/practice/p26.ipynb`
 - `units/C7-cnn-transfer/practice/p27.ipynb`
-- paired p10/p24/p27 solution notebooks
+- paired p10/p24/p26/p27 solution notebooks
 - `units/C7-cnn-transfer/manifest.yaml`
 - `tools/verify_training_mutations.py`
 - `tests/test_training_mutations.py`
 
 ### Work
 
-1. Dispatch the lesson and three final statements to a fresh GPT-5.6-sol content session.
+1. Dispatch the lesson and four final statements to a fresh GPT-5.6-sol content session.
 2. Preserve each rewritten problem's existing scored objective and add a separable, substantive
    training objective; do not use decorative tags.
-3. Blind-solve the three final statements in another fresh GPT-5.6-sol session before solution
+3. Blind-solve the four final statements in another fresh GPT-5.6-sol session before solution
    access, using the same independence rules as Phase 4.
 4. Use tiny synthetic CPU data, no pretrained-weight download, no network access, and robust
    loss/parameter/buffer invariants.
 
 ### Verification
 
-- Fresh-execute the new C7 lesson, changed overview/review, and all three changed solutions.
+- Fresh-execute the new C7 lesson, changed overview/review, and all four changed solutions.
 - Run the permanent mutation registry against the real solutions.
   It must apply these exactly-once corruptions and observe failure in the registered final answer
   check: C11-p16 moves `zero_grad` after `backward`; C11-p23 replaces `optimizer.step()` with a
@@ -346,6 +351,9 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
 
 1. Add exact primary/secondary lesson anchors and honest practice evidence for all ten targets.
 2. Remove `P015-R1-NEURAL-TRAINING` only after its eight owned rows are covered.
+   In the same atomic edit, replace that id with shipped `C11-neural-training` in the
+   prerequisites of `P015-R2-TRANSFORMERS-NLP` and `P015-R2-VISION-GEN`; scope-check must reject
+   any dangling planned-unit reference.
 3. Make roadmap pending-state prose consumer-driven.
    Existing-unit extension rows are keyed to uncovered knowledge points, and tranche-queue rows
    are keyed to still-present `planned_units`; covering/removing the neural owners must suppress
@@ -362,14 +370,18 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
    The schedule checker must account for each manifested session exactly once by unit/session
    index, reconcile each unit's practice and review allocations exactly, reject unknown/duplicate
    allocations, require all prerequisite units to complete before a dependent unit's first
-   session, and require the manifest-owned mock plus debrief to be the final scheduled events.
-8. Expand the course to 35 weeks without altering Semester 1: S1 is 7,915 minutes over 16 weeks,
-   S2 is 9,385 minutes over 19 weeks, and total scheduled time is 17,300 minutes.
+   session, enforce a 450–500-minute total for every week, and require the manifest-owned mock
+   plus debrief to be the final scheduled events.
+8. Expand the course to 34 weeks without altering Semester 1: S1 is 7,915 minutes over 16 weeks,
+   S2 is 8,950 minutes over 18 weeks, and total scheduled time is 16,865 minutes.
 9. Keep strict completion/start order C5 → C6 → C11 → C7 and keep the mock/debrief at the final
    gate.
 10. Change `tools/audit_curriculum.py` to obtain scheduled totals from the validated canonical
     schedule rather than a prose regex, and add `schedule-check` plus renderer `--check` to
     `scripts/ci-local.sh`.
+11. Add the exact real-notebook command `python3 -m tools.verify_training_mutations .` to
+    `scripts/ci-local.sh`; fixture tests do not substitute for running the five registered
+    mutations against the shipped solution notebooks.
 
 ### Verification
 
@@ -377,6 +389,7 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
 - `python3 tools/render_curriculum_roadmap.py --check`
 - `python3 tools/render_course_structure.py --check`
 - `python3 -m tools.cli schedule-check .`
+- `python3 -m tools.verify_training_mutations .`
 - material-inventory check mode
 - `python3 -m pytest tests/test_schedule.py tests/test_scope.py tests/test_audit_curriculum.py -q`
 - `python3 -m tools.cli scope-check .` with only Round 2 warnings and the five explicit Plan 018
@@ -386,7 +399,7 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
 
 This phase is mandatory because the plan ships and changes teaching units.
 
-1. Fresh-execute all 27 changed/new solution notebooks and all changed/new
+1. Fresh-execute all 28 changed/new solution notebooks and all changed/new
    lesson/review/overview notebooks in isolated Jupyter kernels.
 2. Confirm every solution reproduces its statement contract and final answer check.
 3. Run statement hygiene, warning-strict nbformat validation for all changed notebooks, manifest
@@ -395,17 +408,17 @@ This phase is mandatory because the plan ships and changes teaching units.
    roadmap-freshness, course-structure freshness, and PDF build.
 4. Run focused tests first, then `scripts/ci-local.sh` from a clean commit.
 5. Confirm exact final corpus values: 18 units, 139 concepts, 407 practices, 63 lesson sessions,
-   99 lesson/review/overview notebooks, 913 unit notebooks, 17,060 manifested minutes, and 17,300
+   99 lesson/review/overview notebooks, 913 unit notebooks, 16,625 manifested minutes, and 16,865
    scheduled minutes.
 6. Confirm no ignored runtime dataset, model artifact, raw reference, secret, or stored student
    output is tracked.
 
 ## Phase 8 — Four-way content gate, report, and shipping
 
-1. Self-review blind-solves all 27 changed/new statements before solution access.
+1. Self-review blind-solves all 28 changed/new statements before solution access.
 2. In one parallel dispatch, run fresh read-only reviewers on exact Claude Opus 5,
    GPT-5.6-terra, and exact GLM-5.2.
-3. Require each reviewer to blind-solve all 27 statements, inspect lessons as a Calculus AB +
+3. Require each reviewer to blind-solve all 28 statements, inspect lessons as a Calculus AB +
    basic Python student, review tooling changes, and record findings in `## Content Review`.
 4. Resolve every `[OPEN]` finding and rerun affected solutions/checks; conduct delta review to
    four-way consensus.
@@ -426,7 +439,7 @@ This phase is mandatory because the plan ships and changes teaching units.
   completion/start order; no schedule acceptance rests on handwritten prose.
 - The permanent mutation registry proves the actual training answer checks reject all five named
   corruption classes and fails closed on unresolved or unexpectedly passing mutants.
-- All 27 changed/new solutions and all changed teaching notebooks fresh-execute cleanly.
+- All 28 changed/new solutions and all changed teaching notebooks fresh-execute cleanly.
 - The four-way content gate passes with no `[OPEN]` finding.
 - Final `scripts/ci-local.sh` and PR-aware pre-merge guard pass from the shipping commit.
 - The branch is squash-merged through a PR; no direct main commit occurs.
@@ -443,12 +456,17 @@ This phase is mandatory because the plan ships and changes teaching units.
 - `[self] [FIXED]` C11-p06 originally used ambiguous “clipped/stable” wording.
   The pinned contract now requires cross-entropy from logits through log-sum-exp, consistent with
   the stable derivation in Session 1.
-- `[self]` Recomputed the exact deltas independently: C11 contributes 1,900 minutes; C7 contributes
-  393; 14,767 + 2,293 = 17,060 manifested and 15,007 + 2,293 = 17,300 scheduled.
+- `[self]` Recomputed the final calibrated deltas independently: C11 contributes 1,550 minutes;
+  C7 contributes 308; 14,767 + 1,858 = 16,625 manifested and
+  15,007 + 1,858 = 16,865 scheduled.
   The notebook/count deltas are likewise internally consistent.
 - `[self]` The selected C11-plus-C7 design closes the eight planned-unit rows and the two adjacent
   existing-unit modalities named by the canonical queue without entering Plan 018 or Round 2.
   C7 satisfies the existing double-length standard substantively rather than by label alone.
+- `[self]` Delta self-review independently re-summed the calibrated table to 1,040 minutes,
+  verified 5,280 + 10,480 + 865 = 16,625, verified 8,950 Semester 2 minutes fit the enforced
+  450–500 band over 18 weeks, and traced both Round 2 planned-unit edges to their required C11
+  replacement.
 - No open self-review finding remains.
 
 ### Review 2 — GPT-5.6-terra (2026-08-07)
@@ -469,6 +487,55 @@ This phase is mandatory because the plan ships and changes teaching units.
   Phase 5 now adds a permanent exactly-once source-mutation runner against the real solution
   notebooks, five named corruptions, expected failure-cell checks, fail-closed fixtures, and CI
   execution.
+- **Delta verdict:** APPROVE WITH NITS.
+- `[terra] [FIXED]` The delta review asked that CI name the real five-mutant command explicitly
+  rather than allowing fixture-only tests to stand in for registry execution.
+  Phase 6 and `scripts/ci-local.sh` now require
+  `python3 -m tools.verify_training_mutations .` verbatim.
+
+### Review 3 — GLM-5.2 (2026-08-07)
+
+- **Verdict:** APPROVED.
+- `[glm] [FIXED]` The draft said Phase 1 would repair a duplicate C6 `prereqs` key, but the current
+  merged `syllabus.md` has exactly one such key and the manifest correctly has one distinct
+  `prereq_units` field.
+  The phantom drive-by edit is removed and C6's contract remains unchanged.
+- `[glm]` Independently verified the baseline counts and minutes, all Plan 017 arithmetic, C7
+  prerequisite transitivity, the double-length bands, and the existence of referenced current
+  producers/consumers; no blocker remains.
+
+### Review 4 — Claude Opus 5 (2026-08-07)
+
+- **Initial verdict:** CHANGES REQUESTED.
+- `[opus] [FIXED]` Removing `P015-R1-NEURAL-TRAINING` would leave dangling prerequisites in the
+  two Round 2 planned units and make scope-check fail.
+  Phase 6 now atomically retargets both edges to shipped `C11-neural-training` and requires a
+  negative dangling-edge test.
+- `[opus] [FIXED]` The draft C11 workload was a 1,900-minute corpus outlier and three C7 rewrites
+  were 120-minute replacements presented as ordinary rewrites.
+  The final contract calibrates C11 to 1,550 minutes with a 75-minute problem maximum, expands
+  four C7 problems to 75 minutes with preserved separately scored subparts, records measured
+  peer comparisons and the one-unit rationale, and yields a 1,858-minute / 30.97-hour tranche.
+- `[opus] [FIXED]` C7's enforcement depended on a syllabus `length: double` field the draft did
+  not name.
+  Phase 1 now requires that exact canonical field, four sessions, and the existing 27-practice
+  range.
+- `[opus] [FIXED]` The phantom duplicate-C6 edit is removed, matching GLM's independent finding.
+- `[opus] [FIXED]` C7 rewrites could tag C11 concepts without declaring them in `concepts_used`.
+  Phase 1 now names the exact four foreign concepts used by the expanded training problems.
+- `[opus] [FIXED]` The schedule checker reconciled allocations but did not constrain workload.
+  The canonical checker now rejects every week outside the explicit 450–500-minute band.
+- `[opus] [FIXED]` The draft used explicit redundant prerequisites for C11 but relied on
+  transitivity alone for C7.
+  C7 now declares `[C6-pytorch, C11-neural-training]` explicitly.
+- `[opus] [FIXED]` `cnn-training` sat exactly at the three-practice floor.
+  C7-p26 is now the fourth substantive training problem and retains its existing shape-helper
+  objective.
+- `[opus] [FIXED]` Phase 1 now updates the standards roster to name all four double-length units.
+- `[opus] [FIXED]` The difficulty split is now deliberate 7/11/6 =
+  29.2%/45.8%/25.0% rather than an accidental 25%/50%/25%.
+- `[opus] [FIXED]` The design now records why permanent id C11 sorts after C10 while explicit
+  graph/schedule consumers place it between C6 and C7.
 - **Delta re-review:** pending.
 
 ## Content Review
