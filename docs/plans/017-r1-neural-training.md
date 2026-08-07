@@ -90,17 +90,20 @@ Every C11 statement names its time budget and grades every concept tag.
 Set A fundamentals are p01–p03, p05, and p07–p10.
 Set B exam-register problems are p04, p06, and p11–p13.
 Set C integration/scenario/challenge problems are p14–p24.
-Every owned concept has an answer-affecting Set A encounter: p01/p05 cover softmax, p02/p06
+Every owned concept has an answer-affecting Set A encounter: p01/p05 cover softmax, p02
 cross-entropy, p03/p07 manual backpropagation, p08 separately checks an autograd gradient and an
 optimizer-driven parameter update, p07 checks a manual trained-MLP update, p09 BatchNorm, and p10
 dropout.
 Set assignment and informational difficulty tags are separate dimensions: Set A fundamentals
-span intro/core, Set B's normal-form and proof register spans intro/core, and Set C's integration,
-scenario, and challenge work spans core/advanced.
+span intro/core, Set B's constrained-coding, normal-form, and proof register spans intro/core, and
+Set C's integration, scenario, and challenge work spans core/advanced.
 Five constrained-coding tasks stay in Set A as first executable drills for their concepts.
 C11-p06 deliberately moves stable cross-entropy implementation into Set B after the Set A p02
 conceptual drill, so the exam register retains constrained coding alongside normal-form MC and
-reasoning-required proofs; all statements remain original rather than adapted.
+reasoning-required proofs.
+Cross-entropy is the chosen bridge because its log-sum-exp stability and loss normal form are an
+exam-register extension of p02, while p05's shift-invariant softmax routine is the foundational
+executable object reused by later drills; all statements remain original rather than adapted.
 
 | Ids | Type | Difficulty | Minutes each | Primary concept contract |
 |---|---|---|---:|---|
@@ -135,6 +138,27 @@ rough 30%/45%/25% target.
 The matching five-point intro deficit/core excess keeps implementation/derivation prerequisites
 in the middle band and avoids misclassifying a 35-minute gradient implementation as intro or
 pushing it into challenge.
+The exact manifest concept-tag assignments are:
+
+- p01 `[softmax]`; p02 `[cross-entropy-loss]`; p03 `[manual-backpropagation]`;
+  p04 `[dropout]`;
+- p05 `[softmax]`; p06 `[cross-entropy-loss]`;
+  p07 `[manual-backpropagation, trained-mlp]`;
+  p08 `[autograd-training, torch-optimizers]`; p09 `[batch-normalization]`;
+  p10 `[dropout]`;
+- p11 `[softmax, cross-entropy-loss]`; p12 `[manual-backpropagation]`;
+  p13 `[batch-normalization]`; p14 `[softmax, cross-entropy-loss]`;
+  p15 `[manual-backpropagation, trained-mlp]`;
+  p16 `[autograd-training, torch-optimizers]`;
+- p17 `[trained-mlp]`; p18 `[batch-normalization, dropout]`;
+  p19 `[autograd-training, torch-optimizers]`;
+  p20 `[trained-mlp, batch-normalization, dropout]`;
+- p21 `[softmax, cross-entropy-loss]`; p22 `[manual-backpropagation]`;
+  p23 `[autograd-training, torch-optimizers, trained-mlp]`;
+  p24 `[torch-optimizers, trained-mlp, batch-normalization, dropout]`.
+
+For every pNN row, exact paths are `practice/pNN.ipynb` and
+`practice/pNN_solution.ipynb`.
 The minimum honest coverage sets are:
 
 - `softmax`: p01, p05, p11, p14, p21;
@@ -308,13 +332,16 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    value, and keep the existing metadata header schema exactly `{Type, Difficulty, Concepts}`;
    time is not a fourth header field.
    Add a `--statements-only` mode that performs every statement/register check but deliberately
-   skips solution-header validation; the default full mode must continue to require every
-   solution path.
+   skips solution-key/path-existence and solution-header validation.
+   The default full mode must require a non-empty `solution_path` key, require the declared file
+   to exist, and validate its header.
    Add fail-closed fixtures in `tests/test_verify_register.py` for four-vs-five options, missing or
    wrong reasoning flag, missing/mismatched body budget, an attempted fourth header field, and a
-   declared statement/solution path that does not exist.
+   omitted `solution_path` key, and a declared statement/solution path that does not exist.
    Missing statements must fail first with named per-problem findings rather than an uncaught
    traceback; the already-named missing-solution behavior receives a regression fixture.
+   Positive fixtures must prove statements-only succeeds with absent solutions while still
+   rejecting each malformed statement case, so the flag cannot degenerate into a blanket skip.
 8. Register Plan 017 as active without marking it complete.
    Atomically replace the stale deferred C7/C5 capacity TODO with the resolved decision: C7 is a
    substantive four-session double-length unit, while C5 remains a compliant standard 22-problem
@@ -827,8 +854,9 @@ This phase is mandatory because the plan ships and changes teaching units.
   source of truth.
 - `[opus] [FIXED]` C11-p08 now provides a 35-minute Set A task with separate assertions for the
   autograd gradient and optimizer update; p03 returns to a single manual-backpropagation concept.
-- `[opus] [FIXED]` The first C11 corpus register run now occurs in Phase 4 after both statements
-  and solutions exist; Phase 1 adds named missing-path diagnostics and a fail-closed fixture.
+- `[opus] [FIXED]` The first full C11 corpus register run now occurs in Phase 4 after both
+  statements and solutions exist; Phase 1 adds named missing-path diagnostics and fail-closed
+  fixtures.
 - `[opus] [FIXED]` Set/difficulty prose now enumerates all three sets against the actual table and
   keeps C11-p06 in Set B so the exam register includes constrained coding after its Set A
   cross-entropy concept drill.
@@ -836,7 +864,13 @@ This phase is mandatory because the plan ships and changes teaching units.
   gate; Phase 4 remains the first full statement-plus-solution register run.
 - `[opus] [FIXED]` Phase 0 now pins exact equality for all 24 rows' set/type/difficulty/concepts and
   paths instead of relying on generic structural counts.
-- **Delta re-review verdict:** APPROVE.
+- `[opus] [FIXED]` The p06 Set B assignment is now single-valued throughout the contract; exact
+  per-row concept tags and path conventions replace inference from minimum coverage sets.
+- `[opus] [FIXED]` Statements-only explicitly skips solution existence/header checks but must pass
+  positive fixtures proving it still runs every statement check; full mode requires the
+  `solution_path` key, existence, and header.
+- **Prior delta re-review verdict:** APPROVE.
+- **Current delta re-review:** pending.
 
 ## Content Review
 
