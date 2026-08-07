@@ -5,7 +5,6 @@ import json
 import re
 from pathlib import Path
 
-
 ROOT = Path(__file__).parents[1]
 PRACTICE = ROOT / "units" / "C12-classical-models" / "practice"
 
@@ -106,6 +105,19 @@ def test_p21_pins_nested_schema_and_default_sensitive_parameters() -> None:
         "exactly `{\"max_depth\": selected_max_depth}`",
     ):
         assert literal in compact
+
+
+def test_p21_defines_primary_kmeans_fit_and_supplies_public_scaffold() -> None:
+    source = _source(21)
+    for literal in (
+        "primary fit is exactly `models[0]`",
+        "seed `20260804`",
+        "P21_FAMILY_ORDER",
+        "P21_CANDIDATE_NAMES",
+        "P21_KMEANS_SEEDS",
+        "P21_PRIMARY_KMEANS_INDEX = 0",
+    ):
+        assert literal in source
 
 
 def test_challenge_statements_pin_exact_return_schemas() -> None:
