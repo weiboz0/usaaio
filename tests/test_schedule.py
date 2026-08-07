@@ -462,6 +462,70 @@ def test_schedule_checker_rejects_more_than_two_weeks_between_unit_sessions(
     ), report.errors
 
 
+def test_schedule_checker_rejects_reversed_numbered_sessions(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path, chained_prerequisites=False)
+    week_17 = schedule["weeks"][16]["allocations"]
+    week_17[0]["session"] = 2
+    week_17[1]["minutes"] = 350
+    week_17.pop(2)
+    week_20 = schedule["weeks"][19]["allocations"]
+    week_20[1]["minutes"] = 150
+    week_20.extend(
+        [
+            {
+                "kind": "lesson-session",
+                "unit": "U17",
+                "session": 1,
+                "minutes": 100,
+            },
+            {"kind": "review", "unit": "U17", "chunk": 1, "minutes": 50},
+        ]
+    )
+    _set_unit_minutes(
+        tmp_path,
+        "U17",
+        lesson_sessions=[100, 100],
+        practice=350,
+        review=50,
+    )
+    _set_unit_minutes(
+        tmp_path,
+        "U20",
+        lesson_sessions=[100],
+        practice=150,
+        review=50,
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "U17 lesson session 2 occurs in week 17 before session 1 in week 20"
+        in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_schedule_checker_requires_review_to_be_the_unit_final_allocation(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    allocations = schedule["weeks"][0]["allocations"]
+    allocations[1], allocations[2] = allocations[2], allocations[1]
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "U01 review allocation must be its final scheduled allocation" in error
+        for error in report.errors
+    ), report.errors
+
+
 def test_course_renderer_preserves_all_bytes_outside_generated_regions(
     tmp_path: Path,
 ) -> None:
@@ -512,10 +576,10 @@ def test_schedule_checker_accepts_consecutive_multiweek_practice_chunks(
     schedule = _build_schedule_fixture(tmp_path)
     first = schedule["weeks"][0]["allocations"][1]
     first["minutes"] = 150
-    schedule["weeks"][0]["allocations"].append(
+    schedule["weeks"][0]["allocations"].insert(
+        2,
         {"kind": "practice", "unit": "U01", "chunk": 2, "minutes": 150}
     )
-    schedule["weeks"][0]["allocations"][2]["minutes"] = 50
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
     report = _schedule_checker().check_schedule(tmp_path)
@@ -671,6 +735,39 @@ def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
                 )
 
 
+def test_f7_instruction_precedes_high_volume_practice() -> None:
+    schedule = yaml.safe_load(
+        (ROOT / "curriculum" / "course-schedule.yaml").read_text()
+    )
+    rows = [
+        (week["week"], allocation)
+        for week in schedule["weeks"]
+        for allocation in week["allocations"]
+        if allocation.get("unit") == "F7-kernels-convex-optimization"
+    ]
+    delivered_sessions = 0
+    for week, allocation in rows:
+        if allocation["kind"] == "lesson-session":
+            delivered_sessions += 1
+            assert allocation["session"] == delivered_sessions
+        elif allocation["kind"] == "practice" and allocation["minutes"] > 5:
+            assert delivered_sessions == 4, (
+                f"week {week} schedules {allocation['minutes']} F7 practice minutes "
+                f"after only {delivered_sessions} sessions"
+            )
+
+    assert [
+        week
+        for week, allocation in rows
+        if allocation["kind"] == "lesson-session"
+    ] == [22, 22, 23, 23]
+    assert [
+        (week, allocation["minutes"])
+        for week, allocation in rows
+        if allocation["kind"] == "practice"
+    ] == [(22, 5), (23, 235), (24, 146), (25, 141), (26, 113)]
+
+
 def test_course_structure_states_interleaving_and_prerequisite_order_contract() -> None:
     document = (ROOT / "docs" / "course-structure.md").read_text()
 
@@ -680,6 +777,10 @@ def test_course_structure_states_interleaving_and_prerequisite_order_contract() 
         "first session"
     ) in document
     assert "earlier unit's remaining work and review finish before the later unit begins" not in document
+    assert (
+        "earlier unit's remaining practice and review finish before the later unit's "
+        "first session"
+    ) not in document
     assert "F7 also finishes before C9 begins" not in document
 
 

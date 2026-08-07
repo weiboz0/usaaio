@@ -317,7 +317,13 @@ def _validate(
             if session not in session_weeks or session + 1 not in session_weeks:
                 continue
             gap = session_weeks[session + 1] - session_weeks[session]
-            if gap > 2:
+            if gap < 0:
+                errors.append(
+                    f"{unit} lesson session {session + 1} occurs in week "
+                    f"{session_weeks[session + 1]} before session {session} in week "
+                    f"{session_weeks[session]}"
+                )
+            elif gap > 2:
                 errors.append(
                     f"{unit} lesson sessions {session} and {session + 1} are "
                     f"{gap} weeks apart; maximum gap is 2"
@@ -329,6 +335,16 @@ def _validate(
                 if allocation.kind == kind and allocation.unit == unit
             ]
             _check_chunks(kind, unit, rows, contract[kind], errors)
+        unit_rows = [
+            allocation for _, allocation in indexed if allocation.unit == unit
+        ]
+        if (
+            any(allocation.kind == "review" for allocation in unit_rows)
+            and unit_rows[-1].kind != "review"
+        ):
+            errors.append(
+                f"{unit} review allocation must be its final scheduled allocation"
+            )
 
     # Completion includes the final practice/review chunk; prerequisites must be fully done.
     first_lesson: dict[str, int] = {}

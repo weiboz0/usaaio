@@ -422,10 +422,14 @@ weeks:
     unit: F7-kernels-convex-optimization
     session: 1
     minutes: 85
+  - kind: lesson-session
+    unit: F7-kernels-convex-optimization
+    session: 2
+    minutes: 85
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 1
-    minutes: 90
+    minutes: 5
 - week: 23
   semester: 2
   allocations:
@@ -435,12 +439,16 @@ weeks:
     minutes: 45
   - kind: lesson-session
     unit: F7-kernels-convex-optimization
-    session: 2
+    session: 3
+    minutes: 85
+  - kind: lesson-session
+    unit: F7-kernels-convex-optimization
+    session: 4
     minutes: 85
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 2
-    minutes: 320
+    minutes: 235
 - week: 24
   semester: 2
   allocations:
@@ -452,10 +460,6 @@ weeks:
     unit: C11-neural-training
     session: 2
     minutes: 90
-  - kind: lesson-session
-    unit: F7-kernels-convex-optimization
-    session: 3
-    minutes: 85
   - kind: practice
     unit: C11-neural-training
     chunk: 1
@@ -463,7 +467,7 @@ weeks:
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 3
-    minutes: 61
+    minutes: 146
 - week: 25
   semester: 2
   allocations:
@@ -475,10 +479,6 @@ weeks:
     unit: C11-neural-training
     session: 4
     minutes: 90
-  - kind: lesson-session
-    unit: F7-kernels-convex-optimization
-    session: 4
-    minutes: 85
   - kind: practice
     unit: C11-neural-training
     chunk: 2
@@ -486,7 +486,7 @@ weeks:
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 4
-    minutes: 56
+    minutes: 141
 - week: 26
   semester: 2
   allocations:
@@ -604,14 +604,14 @@ weeks:
     unit: C7-cnn-transfer
     chunk: 4
     minutes: 225
-  - kind: review
-    unit: C7-cnn-transfer
-    chunk: 1
-    minutes: 60
   - kind: practice
     unit: C9-dimensionality-reduction
     chunk: 5
     minutes: 45
+  - kind: practice
+    unit: C10-competition-craft
+    chunk: 1
+    minutes: 60
 - week: 33
   semester: 2
   allocations:
@@ -627,14 +627,18 @@ weeks:
     unit: C9-dimensionality-reduction
     chunk: 6
     minutes: 60
+  - kind: practice
+    unit: C9-dimensionality-reduction
+    chunk: 7
+    minutes: 35
   - kind: review
     unit: C9-dimensionality-reduction
     chunk: 1
     minutes: 60
   - kind: practice
     unit: C10-competition-craft
-    chunk: 1
-    minutes: 210
+    chunk: 2
+    minutes: 175
 - week: 34
   semester: 2
   allocations:
@@ -644,27 +648,27 @@ weeks:
     minutes: 85
   - kind: practice
     unit: C10-competition-craft
-    chunk: 2
-    minutes: 365
+    chunk: 3
+    minutes: 305
   - kind: practice
     unit: C7-cnn-transfer
     chunk: 5
     minutes: 50
+  - kind: review
+    unit: C7-cnn-transfer
+    chunk: 1
+    minutes: 60
 - week: 35
   semester: 2
   allocations:
   - kind: practice
     unit: C10-competition-craft
-    chunk: 3
-    minutes: 155
+    chunk: 4
+    minutes: 190
   - kind: review
     unit: C10-competition-craft
     chunk: 1
     minutes: 55
-  - kind: practice
-    unit: C9-dimensionality-reduction
-    chunk: 7
-    minutes: 35
   - kind: mock
     test: r1-001
     minutes: 180
