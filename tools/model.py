@@ -66,6 +66,7 @@ class PracticeProblem:
     concepts: list[str]
     path: str
     solution_path: str
+    minutes: int | None = None
 
 
 @dataclass
@@ -354,19 +355,27 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
                 concepts_used=list(raw.get("concepts_used", [])),
                 prereq_units=list(raw.get("prereq_units", [])),
                 practice=[
-                    PracticeProblem(
-                        id=item["id"],
-                        concepts=list(item.get("concepts", [])),
-                        path=item["path"],
-                        solution_path=item["solution_path"],
-                    )
-                    for item in raw.get("practice") or []
+                    _practice_problem(item, index, path)
+                    for index, item in enumerate(raw.get("practice") or [])
                 ],
                 path=path,
                 lesson_sessions=_lesson_sessions(raw, path),
             )
         )
     return result
+
+
+def _practice_problem(item: dict[str, Any], index: int, path: Path) -> PracticeProblem:
+    minutes = item.get("minutes")
+    if "minutes" in item and (type(minutes) is not int or minutes <= 0):
+        raise ValueError(f"{path}: practice row {index} minutes must be a positive integer")
+    return PracticeProblem(
+        id=item["id"],
+        concepts=list(item.get("concepts", [])),
+        path=item["path"],
+        solution_path=item["solution_path"],
+        minutes=minutes,
+    )
 
 
 def _problem_from(item: dict[str, Any]) -> ManifestProblem:

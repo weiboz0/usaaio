@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from posixpath import normpath
 
+import yaml
+
 from tools.model import Report, load_syllabus, load_unit_manifests
 
 
@@ -13,6 +15,21 @@ def check_coverage(root: str | Path) -> Report:
     vocabulary = set(syllabus.baseline) | set(syllabus.concepts)
     errors: list[str] = []
     for manifest in manifests:
+        practice_minutes = [problem.minutes for problem in manifest.practice]
+        declared_minutes = [minutes for minutes in practice_minutes if minutes is not None]
+        if declared_minutes and len(declared_minutes) != len(practice_minutes):
+            errors.append(
+                f"{manifest.path}: practice minutes must be declared for every practice "
+                "when any are present"
+            )
+        elif declared_minutes:
+            raw_practice_minutes = _estimated_practice_minutes(manifest.path)
+            actual_practice_minutes = sum(declared_minutes)
+            if actual_practice_minutes != raw_practice_minutes:
+                errors.append(
+                    f"{manifest.path}: practice minutes sum to {actual_practice_minutes}; "
+                    f"expected estimated_minutes.practice {raw_practice_minutes}"
+                )
         unit = syllabus.units.get(manifest.unit_id)
         if unit is not None and unit.length == "double":
             lesson_count = len(manifest.lesson_sessions or [])
@@ -64,3 +81,8 @@ def check_coverage(root: str | Path) -> Report:
                 if concept not in vocabulary:
                     errors.append(f"{manifest.path}: practice {problem.id} unknown concept {concept}")
     return Report(name="coverage-check", ok=not errors, errors=errors)
+
+
+def _estimated_practice_minutes(manifest_path: Path) -> object:
+    raw = yaml.safe_load(manifest_path.read_text())
+    return (raw.get("estimated_minutes") or {}).get("practice")

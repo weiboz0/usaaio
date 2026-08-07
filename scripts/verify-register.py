@@ -2,8 +2,8 @@
 """Verify registered statement metadata and every bolded ban's pricing.
 
 All unit manifests are authoritative for problem paths. Header agreement (title,
-concepts, difficulty, type) and ban pricing are checked across every unit; solution
-notebooks are checked too, but only where they carry a header at all. The stricter
+concepts, difficulty, type) and ban pricing are checked across every unit. Full mode
+requires every declared solution path; solution metadata is checked where present. The stricter
 multiple-choice option-format checks remain scoped to the tranche-1 units that were
 authored against that exact register.
 
@@ -14,8 +14,10 @@ this script prints is a count of unit practice problems.
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
+import sys
 from pathlib import Path
 
 import yaml
@@ -25,6 +27,7 @@ REGISTER_UNITS = (
     "F1-scientific-python",
     "F2-vectors",
     "C1-ml-fundamentals",
+    "C11-neural-training",
 )
 # Tests may override this inventory; normal runs discover every unit manifest.
 UNITS: tuple[str, ...] | None = None
@@ -43,6 +46,7 @@ BOLD_BAN_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 HEADER_FIELD_RE = re.compile(r"\*\*(Type|Difficulty|Concepts):\*\*\s*([^·]*?)\s*(?=·|$)")
+HEADER_NAME_RE = re.compile(r"\*\*([^:*]+):\*\*")
 # Glosses the corpus appends after a type name, keyed BY TYPE. Keying matters: a global list
 # let `scenario analysis (parts consume earlier results)` pass, borrowing a gloss that only
 # describes integrative problems. Any type not listed here admits no gloss at all.
@@ -99,10 +103,10 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
     So: optional, but checked when present.
     """
     relative = problem.get("solution_path")
-    if not relative:
-        return []
+    if not isinstance(relative, str) or not relative.strip():
+        return [f"{problem['id']}: solution_path is missing"]
     path = ROOT / "units" / unit / relative
-    if not path.exists():
+    if not path.is_file():
         return [f"{problem['id']}: solution_path does not exist"]
     notebook = json.loads(path.read_text())
     markdown = [_source(cell) for cell in notebook["cells"] if cell["cell_type"] == "markdown"]
@@ -130,7 +134,13 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
         None,
     )
     if header is None:
+        if unit == "C11-neural-training":
+            return [f"{problem['id']}: solution metadata header is missing"]
         return []
+    if HEADER_NAME_RE.findall(header) != ["Type", "Difficulty", "Concepts"]:
+        return [
+            f"{problem['id']}: solution header fields must be exactly Type / Difficulty / Concepts"
+        ]
     fields = dict(HEADER_FIELD_RE.findall(header))
     if set(fields) != {"Type", "Difficulty", "Concepts"}:
         return [f"{problem['id']}: solution header is missing one of Type / Difficulty / Concepts"]
@@ -146,7 +156,12 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
 
 
 def _check_problem(unit: str, problem: dict) -> list[str]:
-    path = ROOT / "units" / unit / problem["path"]
+    relative = problem.get("path")
+    if not isinstance(relative, str) or not relative.strip():
+        return [f"{problem['id']}: statement path is missing"]
+    path = ROOT / "units" / unit / relative
+    if not path.is_file():
+        return [f"{problem['id']}: statement path does not exist"]
     notebook = json.loads(path.read_text())
     markdown = [_source(cell) for cell in notebook["cells"] if cell["cell_type"] == "markdown"]
     errors: list[str] = []
@@ -171,8 +186,11 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
     elif len(body) < 2:
         errors.append("statement has no metadata header under its title")
     else:
+        header_names = HEADER_NAME_RE.findall(body[1])
         fields = dict(HEADER_FIELD_RE.findall(body[1]))
-        if set(fields) != {"Type", "Difficulty", "Concepts"}:
+        if header_names != ["Type", "Difficulty", "Concepts"]:
+            errors.append("header fields must be exactly Type / Difficulty / Concepts")
+        elif set(fields) != {"Type", "Difficulty", "Concepts"}:
             errors.append("header is missing one of Type / Difficulty / Concepts")
         else:
             # Concepts and difficulty are load-bearing and compared exactly — the retag pass
@@ -190,12 +208,25 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
     # The multiple-choice option-format checks stay scoped to the tranche-1 units that were
     # authored against that exact register; widening them is a separate, evidence-led change.
     if unit in REGISTER_UNITS and problem["type"].startswith("mc"):
-        if not re.search(r"\bReasoning is (?:not )?required\.", all_markdown):
+        if unit == "C11-neural-training":
+            if "Reasoning is required." not in all_markdown or (
+                "Reasoning is not required." in all_markdown
+            ):
+                errors.append("MC reasoning flag must say 'Reasoning is required.'")
+        elif not re.search(r"\bReasoning is (?:not )?required\.", all_markdown):
             errors.append("MC reasoning flag is missing")
         options = re.findall(r"(?m)^([A-E])\. ", all_markdown)
         legacy = re.search(r"(?m)^-\s+\*\*(?:\([A-E]\)|[A-E]\.)\*\*", all_markdown)
         if options != OPTION_LETTERS or legacy:
             errors.append("MC options are not exactly A.-through-E. in order")
+
+    if unit == "C11-neural-training":
+        minutes = problem.get("minutes")
+        budgets = re.findall(r"(?m)^\*\*Time budget:\*\* ([1-9]\d*) minutes$", all_markdown)
+        if budgets != [str(minutes)]:
+            errors.append(
+                f"time budget is missing or does not match manifest minutes {minutes}"
+            )
 
     for match in BOLD_BAN_RE.finditer(all_markdown):
         if not ZERO_POINT_RE.search(match.group(1)):
@@ -204,7 +235,14 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
     return [f"{problem['id']}: {error}" for error in errors]
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--statements-only",
+        action="store_true",
+        help="validate statement/register contracts without requiring solutions",
+    )
+    args = parser.parse_args([] if argv is None else argv)
     checked = 0
     failures: list[str] = []
     units = UNITS or tuple(
@@ -216,7 +254,8 @@ def main() -> int:
         for problem in manifest["practice"]:
             checked += 1
             failures.extend(_check_problem(unit, problem))
-            failures.extend(_check_solution_header(unit, problem))
+            if not args.statements_only:
+                failures.extend(_check_solution_header(unit, problem))
 
     if failures:
         failed_ids = {item.split(":", 1)[0] for item in failures}
@@ -233,4 +272,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main(sys.argv[1:]))

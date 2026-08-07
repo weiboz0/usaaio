@@ -794,7 +794,8 @@ def test_plan017_syllabus_narrative_order_and_dependency_contract():
     normalized_foundation = " ".join(foundation.split())
     normalized_core = " ".join(core.split())
     assert "`F5-probability` is a double-length unit" in normalized_foundation
-    assert "`F6-svd-spectral` is the other double-length unit" in normalized_foundation
+    assert "`F6-svd-spectral` is also a double-length unit" in normalized_foundation
+    assert "the other double-length unit" not in normalized_foundation
     assert "`F7-kernels-convex-optimization`" in normalized_foundation
     assert (
         "`C2-linear-models` session 02 ships closed-form unregularized OLS fitting and the "
