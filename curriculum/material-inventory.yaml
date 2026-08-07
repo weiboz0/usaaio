@@ -10217,15 +10217,19 @@ notebooks:
   - np.max
 - path: units/C2-linear-models/practice/p20.ipynb
   kind: notebook
-  semantic_sha256: b858178aafeb50b16015de0434646b75159f5de589f5ebf66d8f16b414053459
+  semantic_sha256: 10c88d51825db39bc37c3b88b75ba9d0e906eb490f91a057bc355bf5aff8485c
   anchors:
-  - anchor: 'units/C2-linear-models/practice/p20.ipynb :: C2-linear-models — Practice p20 :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p20.ipynb :: C2-linear-models — Practice p20 > Part B — constrained implementation
+      :: cell 1'
     heading_path:
     - C2-linear-models — Practice p20
+    - Part B — constrained implementation
     cell_ordinal: 1
-  - anchor: 'units/C2-linear-models/practice/p20.ipynb :: C2-linear-models — Practice p20 :: cell 2'
+  - anchor: 'units/C2-linear-models/practice/p20.ipynb :: C2-linear-models — Practice p20 > Part B — constrained implementation
+      :: cell 2'
     heading_path:
     - C2-linear-models — Practice p20
+    - Part B — constrained implementation
     cell_ordinal: 2
   - anchor: 'units/C2-linear-models/practice/p20.ipynb :: C2-linear-models — Practice p20 > Immutable contract check — do
       not edit :: cell 1'
@@ -10284,15 +10288,19 @@ notebooks:
   - value.items
 - path: units/C2-linear-models/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 61791b7c8cc9fd6a99893b7c0dab986076a7011d9ae8a26b7839742d262a3bd0
+  semantic_sha256: e413295e2b826bf6586b74a789b78d8b48d6fcdb29c8e0081a119841b4d55629
   anchors:
-  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 > Part B — constrained
+      implementation :: cell 1'
     heading_path:
     - C2-linear-models — Practice p20
+    - Part B — constrained implementation
     cell_ordinal: 1
-  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 :: cell 2'
+  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 > Part B — constrained
+      implementation :: cell 2'
     heading_path:
     - C2-linear-models — Practice p20
+    - Part B — constrained implementation
     cell_ordinal: 2
   - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 > Immutable contract check
       — do not edit :: cell 1'

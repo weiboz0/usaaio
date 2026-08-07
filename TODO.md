@@ -16,7 +16,7 @@
 - [x] 013 — audit remediation (merged)
 - [x] 014 — enrichment tranche (merged — retag pass, 2 error clinics, F6-p25 synthesis problem, targeted items)
 - [x] 015 — layered official-topic audit and R1/R2 roadmap (one curriculum graph, two exit gates)
-- [x] 016 — R1 foundation, workflow, and mathematical completion
+- [ ] 016 — R1 foundation, workflow, and mathematical completion (active — content review and delivery pending)
 - [ ] 017 — R1 neural-training completion (next R1 queue item)
 - [ ] 018 — R1 classical-model breadth (follows Plan 017)
 

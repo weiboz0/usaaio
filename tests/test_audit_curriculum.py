@@ -433,16 +433,16 @@ def test_real_repository_inventory_counts() -> None:
     counts = audit.build_inventory(REPO_ROOT)["counts"]
 
     assert counts == {
-        "units": 16,
-        "concepts": 109,
-        "unit_practices": 343,
-        "lesson_sessions": 47,
-        "unit_nonpractice_notebooks": 79,
-        "unit_notebooks": 765,
+        "units": 17,
+        "concepts": 130,
+        "unit_practices": 383,
+        "lesson_sessions": 57,
+        "unit_nonpractice_notebooks": 91,
+        "unit_notebooks": 857,
         "mocktests": 1,
         "mock_notebooks": 10,
-        "manifested_minutes": 12_347,
-        "scheduled_minutes": 12_587,
+        "manifested_minutes": 14_767,
+        "scheduled_minutes": 15_007,
     }
 
 
