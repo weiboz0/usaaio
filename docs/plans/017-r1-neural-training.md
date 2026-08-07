@@ -405,8 +405,10 @@ mode/trainability/graph controls across real train/eval steps.
 7. Add `curriculum/course-schedule.yaml` with one allocation record per week and add
    sentinel-delimited generated regions to `docs/course-structure.md`.
    `tools/render_course_structure.py` owns only the numeric baseline, semester arithmetic, weekly
-   table, and captured-total regions; tests require all human-authored sections outside the
-   sentinels to remain byte-identical.
+   table, captured-total, and first-instruction/topological-order regions.
+   Tests require the rendered order to contain `C5 → C6 → C11 → C7` and require the genuinely
+   unrelated human-authored optional-mock, grading, and explanatory prerequisite prose outside
+   the sentinels to remain byte-identical.
    The schedule checker must account for each manifested session exactly once by unit/session
    index, reconcile each unit's practice and review allocations exactly, reject unknown/duplicate
    allocations, require all prerequisite units to complete before a dependent unit's first
@@ -546,6 +548,10 @@ This phase is mandatory because the plan ships and changes teaching units.
   left verification at the generic three-problem floor and a stale design summary.
   Phase 0 and Phase 5 now require the exact four-id `cnn-training` set plus each problem's
   preserved original concept contract, and the design consistently names four expansions.
+- `[terra] [FIXED]` The final renderer boundary initially byte-preserved the old prerequisite-
+  order sentence, which would become false after inserting C11.
+  The first-instruction/topological-order statement is now a generated sentinel region tested for
+  `C5 → C6 → C11 → C7`; unrelated explanatory prose remains protected.
 
 ### Review 3 — GLM-5.2 (2026-08-07)
 
@@ -620,7 +626,8 @@ This phase is mandatory because the plan ships and changes teaching units.
 - `[opus] [FIXED]` Phase 1 couples the unit-standards roster to the syllabus narrative and its
   exact integration assertions.
 - `[opus] [FIXED]` The course-structure renderer owns only sentinel-delimited numeric/table
-  regions; optional mock, grading, and prerequisite prose outside them is byte-preserved.
+  regions plus the prerequisite-order statement; optional mock, grading, and unrelated
+  explanatory prose outside them is byte-preserved.
 - **Delta re-review:** pending.
 
 ## Content Review
