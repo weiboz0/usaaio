@@ -40,8 +40,8 @@ Its exact `concepts_used` list is `[numpy-arrays, array-indexing-slicing, elemen
 broadcasting, vectorization, aggregation-axis, random-seeding, matplotlib-basics,
 partial-derivatives, gradient, multivar-chain-rule, gradient-descent, learning-rate,
 stochastic-gd, loss-surfaces, expectation, variance, perceptron, activation-functions,
-relu-activation, mlp-architecture, weight-init-variance, python-inheritance, torch-tensors,
-nn-module, requires-grad, parameter-counting]`.
+relu-activation, mlp-architecture, weight-init-variance, overfitting, l2-regularization,
+python-inheritance, torch-tensors, nn-module, requires-grad, parameter-counting]`.
 
 ### C7 completion
 
@@ -56,6 +56,11 @@ The practice recalibration is explicit: retain the old 672-minute aggregate, rem
 giving 672 − 97 + 300 = 875.
 The 97-minute value is a combined planning allowance from manual scope review, not four claimed
 historical measurements and not per-problem manifest data.
+The 30.97-hour executable tranche is 7.03 hours below Plan 015's combined 38–56-hour editorial
+range for the planned neural unit plus C7 extension.
+That range preceded problem-level calibration; the post-execution report must reconcile the
+difference, and acceptance remains the ten exact modality/evidence contracts and fresh execution,
+not padding content to an estimated hour floor.
 
 ### Curriculum evidence and schedule
 
@@ -82,19 +87,22 @@ table/document from that data so CI checks the calendar rather than trusting pro
 ## Pinned problem contract
 
 Every C11 statement names its time budget and grades every concept tag.
-Set A fundamentals are p01, p02, p03, p05, p06, and p07.
-Set B exam-register problems are p04 and p08–p13.
+Set A fundamentals are p01, p02, p03, p05, p06, p07, p09, and p10.
+Set B exam-register problems are p04, p08, and p11–p13.
 Set C integration/scenario/challenge problems are p14–p24.
+Every owned concept has an answer-affecting Set A encounter: p01/p05 cover softmax, p02/p06
+cross-entropy, p03/p07 manual backpropagation, p03 autograd and optimizer lifecycle, p07 a
+manual trained-MLP update, p09 BatchNorm, and p10 dropout.
 
 | Ids | Type | Difficulty | Minutes each | Primary concept contract |
 |---|---|---|---:|---|
 | p01 | MC, five options | intro | 15 | stable softmax and shift invariance |
 | p02 | MC, five options | intro | 15 | cross-entropy / negative log likelihood |
-| p03 | MC, five options | intro | 15 | backpropagation dependency and gradient shape |
+| p03 | MC, five options | intro | 15 | manual/autograd/optimizer dependency order and gradient shape |
 | p04 | numeric MC normal form, five options | intro | 15 | inverted-dropout expectation ratio as a reduced signed fraction with gcd constraint |
 | p05 | constrained coding | intro | 25 | stable NumPy softmax |
 | p06 | constrained coding | intro | 25 | categorical cross-entropy from logits via log-sum-exp |
-| p07 | constrained coding | core | 35 | manual local gradients and accumulation |
+| p07 | constrained coding | core | 35 | manual local gradients, accumulation, and one certified MLP update |
 | p08 | constrained coding | core | 35 | autograd gradients against hand values |
 | p09 | constrained coding | core | 35 | BatchNorm forward implementation with batch/running statistics and affine parameters |
 | p10 | constrained coding | core | 35 | inverted-dropout implementation with deterministic train/eval behavior |
@@ -115,15 +123,17 @@ Set C integration/scenario/challenge problems are p14–p24.
 
 The table totals exactly 1,040 practice minutes.
 The 6/12/6 intro/core/advanced split is 25%/50%/25%, within the unit standard's deliberately
-rough 30%/45%/25% target without misclassifying a 35-minute gradient implementation as intro.
+rough 30%/45%/25% target.
+The five-point core excess keeps implementation/derivation prerequisites in the middle band and
+avoids misclassifying a 35-minute gradient implementation as intro or pushing it into challenge.
 The minimum honest coverage sets are:
 
 - `softmax`: p01, p05, p11, p14, p21;
 - `cross-entropy-loss`: p02, p06, p11, p14, p21;
 - `manual-backpropagation`: p03, p07, p12, p15, p22;
-- `autograd-training`: p08, p16, p19, p23;
-- `torch-optimizers`: p16, p19, p23, p24;
-- `trained-mlp`: p15, p17, p20, p23, p24;
+- `autograd-training`: p03, p08, p16, p19, p23;
+- `torch-optimizers`: p03, p16, p19, p23, p24;
+- `trained-mlp`: p07, p15, p17, p20, p23, p24;
 - `batch-normalization`: p09, p13, p18, p20, p24;
 - `dropout`: p04, p10, p18, p20, p24.
 
@@ -247,6 +257,7 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 - `docs/unit-standards.md`
 - `TODO.md`
 - `tests/test_integration.py`
+- `scripts/verify-register.py`
 
 ### Work
 
@@ -279,7 +290,13 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    double-length unit” is no longer asserted.
 6. Implement the optional per-problem minute loader/coverage contract and fail-closed fixtures;
    units without any per-problem minutes remain backward-compatible.
-7. Register Plan 017 as active without marking it complete.
+7. Extend `scripts/verify-register.py`'s permanent register to C11.
+   Require p01–p04 to expose exactly five labeled options A–E and the reasoning flag, require every
+   C11 statement to carry a body line `**Time budget:** <minutes> minutes` matching its manifest
+   value, and require the same 75-minute body line in the four changed C7 statements.
+   Keep the existing metadata header schema exactly `{Type, Difficulty, Concepts}`; time is not a
+   fourth header field.
+8. Register Plan 017 as active without marking it complete.
    Atomically replace the stale deferred C7/C5 capacity TODO with the resolved decision: C7 is a
    substantive four-session double-length unit, while C5 remains a compliant standard 22-problem
    unit because neural training moved to C11.
@@ -411,6 +428,8 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
   no-op; C7-p10 enables a forbidden frozen-parameter update; C7-p27 moves committed predictions
   below the marked verifier; and C7-p27 separately substitutes training mode for the registered
   evaluation/buffer audit.
+  C7-p27 intentionally owns two distinct registered mutations, so these four notebooks produce
+  five mutant executions in total.
 - The runner copies notebooks to a temporary directory, applies source-level mutations only at
   registered sentinels, executes each mutant, and fails if a target resolves zero/multiple times,
   if execution succeeds, or if failure occurs before the expected answer-check/verifier cell.
@@ -462,6 +481,9 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    Only uncovered rows with an explicit editorial hour estimate enter the existing-unit table;
    suppress the table, subtotal, and scoped-delta prose completely when that estimated set is
    empty, and do not turn the unestimated C8 clause into a zero-hour table row.
+   When only the unestimated C8 clause remains, render it as a self-contained sentence without
+   the stale tail “so this is not a complete roadmap total,” which referred to the suppressed
+   scoped-delta total.
 5. Update `tests/test_scope.py` so a covered CNN-training row removes C7 from the rendered pending
    table and removal of `P015-R1-NEURAL-TRAINING` removes its queue entry; retain negative fixtures
    proving either item returns when its canonical owner is pending.
@@ -489,6 +511,8 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    plus debrief to be the final scheduled events.
 8. Expand the course to 35 weeks without altering Semester 1: S1 is 7,915 minutes over 16 weeks,
    S2 is 8,950 minutes over 19 weeks, and total scheduled time is 16,865 minutes.
+   Reallocate all Semester 2 weeks from canonical data rather than carrying old rows forward;
+   explicitly rebalance the old 449-minute Week 23 so every regenerated S2 row meets 450–500.
 9. Keep strict completion/start order C5 → C6 → C11 → C7 and keep the mock/debrief at the final
    gate.
 10. Change `tools/audit_curriculum.py` to obtain scheduled totals from the validated canonical
@@ -741,7 +765,14 @@ This phase is mandatory because the plan ships and changes teaching units.
 - `[opus] [FIXED]` The C7 875-minute aggregate now exposes its combined calibration arithmetic;
   the renderer owns every schedule-derived numeric sentence/output block; the stale architecture
   capacity sentence is in scope; and inventory regeneration precedes anchor authoring.
-- **Delta re-review:** pending.
+- `[opus] [FIXED]` The schedule plan now rebuilds all of Semester 2 and explicitly eliminates the
+  old 449-minute row; every owned C11 concept has a named Set A fundamentals encounter.
+- `[opus] [FIXED]` The exact C11 vocabulary now includes `overfitting` and `l2-regularization`, and
+  the permanent register enforces A–E MC options plus body-level time budgets without changing the
+  three-field metadata header.
+- `[opus] [FIXED]` The retained unestimated C8 sentence is self-contained when its estimated table
+  and scoped-delta prose are suppressed.
+- **Delta re-review verdict:** APPROVE.
 
 ## Content Review
 

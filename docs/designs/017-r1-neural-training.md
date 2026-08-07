@@ -147,6 +147,12 @@ Its practice estimate uses one combined editorial recalibration rather than fabr
 per-problem measurements: 672 − 97 + 4 × 75 = 875.
 Its four sessions and 27 practices satisfy the existing double-length contract.
 Plan 017 therefore adds exactly 1,858 manifested minutes = 30.97 hours.
+Plan 015's editorial ranges were 30–44 hours for the eight planned-unit rows plus 8–12 hours for
+the C7 extension, or 38–56 hours combined.
+The calibrated executable delivery is 7.03 hours below that combined floor because the estimates
+preceded problem-level design; completion is governed by the ten modality/evidence contracts and
+fresh execution, not by inflating notebooks to meet an editorial range.
+The post-execution report records this reconciliation explicitly for reviewer judgment.
 
 This is deliberately calibrated against the current corpus rather than treating `length: double`
 as an unlimited exemption.
