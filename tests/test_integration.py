@@ -477,17 +477,18 @@ def test_plan016_coverage_map_conversion_is_controlled():
     }
     for point_id, shipped_concepts in expected_mappings.items():
         point = points[point_id]
-        assert point["coverage"] == "missing"
+        assert point["coverage"] == "covered"
         assert point["evidence_by_modality"]
         assert all(
-            not evidence["lesson_anchors"]
-            and not evidence["practices"]
+            evidence["lesson_anchors"]
+            and evidence["practices"]
             and not evidence["assessments"]
             for evidence in point["evidence_by_modality"].values()
         )
-        assert point["disposition"] == "extend-existing-unit"
+        assert point["disposition"] == "keep"
         assert point["destination"] == "F7-kernels-convex-optimization"
         assert point["shipped_concepts"] == shipped_concepts
+        assert point["deficits"] == {"modalities_missing": []}
 
 
 def test_plan016_syllabus_narrative_order_and_dependency_contract():
