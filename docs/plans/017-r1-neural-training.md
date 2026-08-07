@@ -882,8 +882,170 @@ This phase is mandatory because the plan ships and changes teaching units.
 
 ## Content Review
 
-Content-review findings are recorded here during Phase 8.
+### Review 1 — self (2026-08-07)
+
+- **Scope:** blind review of all 28 changed/new statements at `446efa2`, before opening the
+  corresponding solution, followed by a final exact-delta review at `91dcd93`.
+- **Blind ledger:** C11-p01 through p04 produced B/B/C/B; p05 through p10 matched the fixed
+  NumPy/PyTorch probe values and lifecycle certificates; p11 through p14 matched the softmax,
+  cross-entropy, and backpropagation derivations; p15 through p21 matched the training,
+  state-audit, ablation, and directional-derivative results; p22 matched all exact forward and
+  backward fractions; p23 and p24 matched the optimizer-state and ablation certificates; and
+  C7-p10/p24/p26/p27 matched the parameter counts, shape traces, and mode/freeze tuples.
+  After remediation, p04 was re-solved as B = 16/15.
+- **Result:** 28/28 independent answers agreed with the keys.
+- **Final verdict:** **Approved.**
+- `[self] [FIXED]` Final inspection confirms that each unit review is its final allocation,
+  numbered lesson sessions are chronological with gaps 0–2, F7 instruction precedes its
+  high-volume practice, the shared-week prose describes independent-unit interleaving honestly,
+  and the exact 7,915/8,950/16,865 minute totals remain unchanged.
+
+### Review 2 — Claude Opus 5 (2026-08-07)
+
+- **Initial scope:** exact model `claude-opus-5`, fresh read-only session, all 28 statements solved
+  before solution access at `446efa2`.
+- **Initial blind result:** 28/28 answers agreed with the shipped keys.
+- **Initial verdict:** **Approved with suggestions**, with eleven findings requiring resolution
+  under the repository's full-blocking gate.
+1. `[opus] [FIXED]` C11-p14 and p21 now carry hard-coded independent loss, probability, and
+   gradient references; actual-answer-check mutation tests reject sum, `1/(N*C)`, and `1/C`
+   normalizations.
+   → Response: fixed in `5b6acc4`; the real answer-check cells kill the wrong normalizations.
+2. `[opus] [FIXED]` Semester 2 now has one to three lesson sessions in every regular week, and the
+   generic checker rejects zero-session and overfull regular weeks.
+   → Response: fixed in `39c21b0`; Week 35 remains the documented final-assessment exception.
+3. `[opus] [FIXED]` C11 Session 4 now teaches a local `torch.Generator`, live
+   `optimizer.state[p]`, and deterministic-algorithm semantics before the practices use them.
+   → Response: fixed in `23c3cd3` with executable checkpoints.
+4. `[opus] [FIXED]` C7-p26 pins convolution-stack construction before the classification head, so
+   the seeded draw order and training threshold are unambiguous.
+   → Response: fixed in `23c3cd3` and pinned by regression text.
+5. `[opus] [FIXED]` C11-p04 now asks an inverted-dropout second-moment ratio whose answer depends
+   on the `1/q` scaling; the correct reduced answer is 16/15.
+   → Response: fixed in `23c3cd3` and `5b6acc4`.
+6. `[opus] [FIXED]` C11-p05–p10, p14, p15, and p21 solutions execute the statement's exact probes;
+   p09 retains the constant-feature zero-variance edge case.
+   → Response: fixed in `5b6acc4` with statement/solution probe-equality tests.
+7. `[opus] [FIXED]` The two malformed lambda expressions in C11 Session 3 now render as LaTeX.
+   → Response: fixed in `23c3cd3`.
+8. `[opus] [FIXED]` C11-p10 replaces the dead exact-zero comparison with an absolute `1e-9`
+   guard and executes correctly from the fresh default dtype.
+   → Response: fixed in `23c3cd3` and `5b6acc4`.
+9. `[opus] [FIXED]` C11-p16 predictions now use `model.eval()` and `torch.no_grad()`.
+   → Response: fixed in `5b6acc4`.
+10. `[opus] [FIXED]` The optimizer-state and deterministic-algorithm calls required by advanced
+    practices are now explicitly taught and executed in C11 Session 4.
+    → Response: fixed in `23c3cd3`.
+11. `[opus] [FIXED]` `verify-register.py` no longer compares duplicate budget literals; it parses
+    the C7 statement bodies and fails closed on unregistered budget declarations.
+    → Response: fixed in `e12322b` with positive and negative tests.
+
+### Review 3 — GPT-5.6-terra (2026-08-07)
+
+- **Scope:** separate fresh read-only session at the exact candidate, with all 28 statements
+  solved blind and tooling reviewed conventionally.
+- **Blind result:** 28/28 answers agreed with the keys.
+- **Initial verdict:** **Approved.**
+- `[terra] [FIXED]` A later exact-delta pass found that the new session-gap guard accepted
+  reversed numbered sessions because it rejected only gaps greater than two.
+  → Response: `91dcd93` rejects negative gaps while preserving same-week gap zero and forward
+  gaps one and two; the reversed-session mutation now fails for the intended reason.
+- **Final-final verdict at `91dcd93`: Approved**, with no new findings.
+
+### Review 4 — GLM-5.2 (2026-08-07)
+
+- **Scope:** exact model `volcengine-plan/glm-5.2`, fresh read-only OpenCode session, all 28
+  statements solved before solution access at `446efa2`.
+- **Blind result:** 28/28 answers agreed with the keys.
+- **Initial verdict:** **Approved**, with no open findings.
+- `[glm] [FIXED]` Delta review verified all eleven Opus remediations and later found one remaining
+  stale shared-week sentence outside the generated regions.
+  → Response: `91dcd93` replaces the sentence and permanently rejects both stale phrasings.
+- **Final-final verdict at `91dcd93`: Approved**, with 452 tests passing and no new findings.
+
+### Schedule delta rounds and final consensus
+
+1. At `39c21b0`, all eleven initial Opus findings were closed.
+   Opus then identified a ten-week C10 lesson gap, two stale prose claims, and C11 practice that
+   advanced beyond the concepts unlocked by its delivered sessions.
+2. At `beba191`, C10 moved to Weeks 32–34, C11 practice stayed within manifest-derived unlocked
+   capacities, and the first two prose claims were corrected.
+   Exact re-review found the remaining stale sentence, C7/C9 practice after their review gates,
+   F7 practice ahead of instruction, and the one-sided session-order check.
+3. `[self] [FIXED]` `[opus] [FIXED]` `[terra] [FIXED]` `[glm] [FIXED]` `91dcd93` closes the final
+   set with a generic review-final rule, negative review/session mutations, F7 sessions in Weeks
+   `[22, 22, 23, 23]`, practice minutes `[5, 235, 146, 141, 113]`, and corrected prose.
+4. Final verdicts are self **Approved**, Opus 5 **Approved with suggestions**, Terra **Approved**,
+   and GLM 5.2 **Approved**.
+   There are no `[OPEN]` findings.
+   Opus's three remaining suggestions concern the five-minute F7 balancing token, hypothetical
+   multi-review units, and pre-existing chronological chunk-label enforcement; none exposes a
+   live correctness, prerequisite, or schedule-contract failure.
 
 ## Post-Execution Report
 
-Completed during Phase 8 before shipping.
+### Outcome
+
+Plan 017 is complete.
+It adds the C11 neural-training unit, completes C7 CNN training and fine-tuning, closes all ten
+Round 1 neural knowledge points, and leaves exactly the five classical-model topics assigned to
+Plan 018: logistic regression, support-vector machines, decision trees, ensembles, and k-means.
+
+### Shipped artifacts
+
+- C11: one overview, five 90-minute lesson sessions, 24 student practices, 24 independently
+  authored solutions, and one review notebook; 1,550 manifested minutes in total.
+- C7: a fourth 90-minute teaching session, four upgraded 75-minute training capstones and
+  solutions, updated overview/review, explicit `cnn-training` ownership, and 1,280 honest unit
+  minutes without overloading C5.
+- Curriculum/tooling: canonical coverage and syllabus ownership, schedule source and renderer,
+  schedule validation, audit/roadmap regeneration, statement-body budget validation, a permanent
+  five-mutant training registry, and focused regression suites.
+- Final corpus: 18 units, 139 concepts, 407 practices, 63 lesson sessions, 99
+  lesson/review/overview notebooks, 913 unit notebooks, 16,625 manifested minutes, and 16,865
+  scheduled minutes across 35 weeks.
+- Schedule totals: Semester 1 = 7,915, Semester 2 = 8,950, every week = 450–500 minutes, regular
+  weeks = one to three lesson sessions, and Week 35 = the documented mock/debrief exception.
+
+### Verification evidence
+
+- Pre-review authoritative run: `bash scripts/ci-local.sh` passed at `446efa2` in 2,176.162
+  seconds, versus the measured Plan 016 baseline of 2,049.245 seconds; the 126.917-second increase
+  is within the permitted +900-second envelope.
+- The pre-review run executed all solution notebooks in fresh kernels, verified 407/407 registered
+  practices in full and statements-only modes, killed all five registered mutants, built PDFs,
+  and passed 421 tests plus every content gate.
+- Remediation verification fresh-executed all eleven changed C11 solutions and all affected
+  lessons, killed the wrong-normalization mutations at the real p14/p21 answer checks, and passed
+  the schedule, prerequisite, coverage, scope, tolerance, hygiene, blueprint, overlap, answer-key,
+  renderer, inventory, and lint checks.
+- Final external delta evidence at `91dcd93`: Opus and GLM each report 452 tests passing; Terra
+  and the inline self-review independently report 44/44 schedule tests and all canonical gates
+  green.
+- Tracked-file inspection found no secret, credential, `.env`, raw past-paper artifact, runtime
+  dataset/model artifact, or student data; `reference/` contains only `.gitkeep` and derived
+  `analysis.md`.
+- The final clean-commit authoritative CI and PR-aware pre-merge guard are run after this report
+  commit and recorded in the shipping/PR evidence.
+
+### Deviations and reviewer divergence
+
+- The planned content scope did not expand into Plan 018 or Round 2.
+- The user-selected gate roster was used exactly: self, Claude Opus 5, GPT-5.6-terra, and exact
+  GLM-5.2.
+- GLM initially approved the content with no findings; Opus found eleven answer-check,
+  prerequisite-teaching, and clarity weaknesses that were all fixed.
+  Subsequent schedule-only delta rounds exposed pacing and ordering invariants missed by the first
+  pass; those invariants are now executable rather than prose-only.
+- The blind-solve independence contract was preserved at the session level: statement drafting
+  and solution work were separated, and every gate reviewer independently solved all 28 items
+  before solution access.
+
+### Limitations and next owner
+
+- The five-minute F7 Week 22 practice allocation is a legal balancing token and is pinned by the
+  real-schedule regression; a future broad schedule redesign may absorb it elsewhere.
+- Chunk labels are complete and unique but generic chronological label ordering is not yet a
+  checker invariant; the live schedule is monotonic and review-finality is enforced.
+- Plan 018 owns the remaining Round 1 classical breadth and must preserve the same theory,
+  implementation, training, comparison, prerequisite, practice, and schedule contracts.
