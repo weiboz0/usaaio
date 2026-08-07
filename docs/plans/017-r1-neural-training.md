@@ -183,6 +183,8 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    and scheduled totals at 16,865 minutes.
 3. Require C11 to be double-length with exactly five 90-minute sessions and 24 distinct practice
    ids/paths.
+   Assert exact equality with the pinned `concepts_used` list in Scope; prerequisite closure alone
+   must not permit extra in-closure declarations.
    Extend the optional manifest practice schema with positive integer `minutes`; if any problem
    in a unit declares it, every problem must, ids/paths remain distinct, and the sum must equal
    `estimated_minutes.practice`.
@@ -196,6 +198,8 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 5. Require the ten target rows to become checker-derived `covered`, with no missing modality,
    `keep`, the exact single destinations and `shipped_concepts` additions in the design table,
    non-empty anchors, and required practice evidence.
+   Assert exact equality for every `(knowledge point, newly closed modality) → primary practice
+   id` mapping in the pinned table; a same-concept substitute must fail the fixture.
 6. Require the planned-unit queue to exclude `P015-R1-NEURAL-TRAINING` and the remaining Round 1
    gap ids to equal the five Plan 018 topics exactly.
 7. Require a 35-week schedule: Semester 1 remains 16 weeks / 7,915 minutes; Semester 2 is 19
@@ -204,6 +208,10 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 8. Pin a fail-closed schedule consumer that accounts for every manifested lesson session exactly
    once, reconciles per-unit practice/review totals, enforces prerequisite completion before a
    dependent starts, and reconciles the mock/debrief with `r1-001`.
+   Parse the rendered first-instruction region and require exact ordered equality with every
+   shipped unit's canonical `(unit, first-instruction week)` allocation derived from
+   `curriculum/course-schedule.yaml`; checking only the C5 → C6 → C11 → C7 subsequence is
+   insufficient.
 9. Pin a mutation-runner registry against the real solution notebooks and require zero-match,
    multi-match, non-failing-mutant, and wrong-failure-location fixtures to fail.
 10. Pin the suggested syllabus order and its integration consumer to insert C11 between C6 and
@@ -437,6 +445,9 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 4. Update `tests/test_scope.py` so a covered CNN-training row removes C7 from the rendered pending
    table and removal of `P015-R1-NEURAL-TRAINING` removes its queue entry; retain negative fixtures
    proving either item returns when its canonical owner is pending.
+   Add a positive fixture proving the combined correction sentence retains its C8 clause while
+   the Round 2 `nlp-word-embeddings` model-training row remains partial, plus a negative fixture
+   proving that clause disappears only when that canonical row is covered.
 5. Regenerate the audit and roadmap; assert the Round 1 gap set is exactly the five Plan 018
    classical topics and no completed neural unit remains in a pending extension table.
 6. Regenerate material inventory after every final notebook change.
@@ -445,8 +456,9 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    `tools/render_course_structure.py` owns only the numeric baseline, semester arithmetic, weekly
    table, captured-total, summative-milestone/mock-week, and first-instruction/topological-order
    regions.
-   Tests require the rendered milestone to place `r1-001` in Week 35, require the rendered order
-   to contain `C5 → C6 → C11 → C7`, and require the genuinely
+   Tests require the rendered milestone to place `r1-001` in Week 35 and require exact equality
+   between the full rendered `(unit, first-instruction week)` sequence and the schedule-derived
+   sequence for all shipped units, including `C5 → C6 → C11 → C7`; they also require the genuinely
    unrelated human-authored optional-mock, grading, and explanatory prerequisite prose outside
    the sentinels to remain byte-identical.
    The schedule checker must account for each manifested session exactly once by unit/session
@@ -593,6 +605,14 @@ This phase is mandatory because the plan ships and changes teaching units.
   order sentence, which would become false after inserting C11.
   The first-instruction/topological-order statement is now a generated sentinel region tested for
   `C5 → C6 → C11 → C7`; unrelated explanatory prose remains protected.
+- `[terra] [FIXED]` Final equality fixtures now pin the exact C11 `concepts_used` list and every
+  newly closed modality's primary practice id; prerequisite closure or a same-concept substitute
+  cannot satisfy those contracts.
+- `[terra] [FIXED]` The renderer test now compares the complete week-bearing first-instruction
+  sequence for all shipped units with schedule-derived canonical data, not only a four-unit
+  substring.
+- `[terra] [FIXED]` Scope tests now prove the Round 2 C8 correction clause remains while its
+  canonical row is partial and disappears only when that row becomes covered.
 
 ### Slot 4 — GLM-5.2 (2026-08-07)
 
