@@ -20,7 +20,7 @@ The remaining planned extensions in `docs/curriculum-roadmap.md` are editorial e
 <!-- BEGIN GENERATED: semester-model -->
 Semester 1 is Weeks 1–16 and follows F1-scientific-python → F2-vectors → F4-multivar-calculus → F3-matrices → F5-probability → C1-ml-fundamentals → C2-linear-models → C3-gradient-descent → C4-classical-ml-practice → C8-embeddings.
 Its manifested allocation is 7,915 minutes = 131.92 hours, or 8.24 hours per week.
-Semester 2 is Weeks 17–35 and follows C5-neural-networks → F6-svd-spectral → C6-pytorch → F7-kernels-convex-optimization → C10-competition-craft → C11-neural-training → C9-dimensionality-reduction → C7-cnn-transfer → `r1-001`.
+Semester 2 is Weeks 17–35 and follows C5-neural-networks → F6-svd-spectral → C6-pytorch → F7-kernels-convex-optimization → C11-neural-training → C9-dimensionality-reduction → C7-cnn-transfer → C10-competition-craft → `r1-001`.
 Its manifested allocation is 8,710 minutes = 145.17 hours.
 Adding the 180-minute mock and 60-minute debrief gives 8,710 + 240 = 8,950 minutes = 149.17 hours, or 7.85 hours per week.
 <!-- END GENERATED: semester-model -->
@@ -33,7 +33,7 @@ The Plan 016 extensions appear at their manifested lengths: F1 has 4 sessions, F
 In-class minutes are manifested lesson sessions plus the final mock and debrief.
 Independent minutes are manifested practice and review minutes.
 A unit stays active through its review gate even when its final row contains no lesson session.
-In a mixed row, “then” gives strict within-week instructional order, so the earlier unit's remaining work and review finish before the later unit begins.
+In a mixed row, “then” records allocation order; independent units may interleave rather than implying that every earlier unit must finish before a later unit begins.
 
 <!-- BEGIN GENERATED: weekly-table -->
 | Week | Semester | Units and sessions covered | In-class minutes | Independent minutes | Checkpoint gate |
@@ -59,27 +59,27 @@ In a mixed row, “then” gives strict within-week instructional order, so the 
 | 19 | S2 | C5-neural-networks (prereqs: C3-gradient-descent, F5-probability): session 3, 273 practice minutes, 45 review minutes; then C6-pytorch (prereqs: C5-neural-networks): session 1. | 165 | 318 | C5-neural-networks review gate. |
 | 20 | S2 | C6-pytorch (prereqs: C5-neural-networks): session 2, 113 practice minutes; then F6-svd-spectral (prereqs: F3-matrices): session 3, 200 practice minutes. | 170 | 313 | No unit-review gate. |
 | 21 | S2 | C6-pytorch (prereqs: C5-neural-networks): session 3, 262 practice minutes; then F6-svd-spectral (prereqs: F3-matrices): session 4, 51 practice minutes. | 170 | 313 | No unit-review gate. |
-| 22 | S2 | F6-svd-spectral (prereqs: F3-matrices): session 5, 45 review minutes; then C6-pytorch (prereqs: C5-neural-networks): 145 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): session 1, 43 practice minutes; then C10-competition-craft (prereqs: C4-classical-ml-practice): session 1. | 250 | 233 | F6-svd-spectral review gate. |
-| 23 | S2 | C6-pytorch (prereqs: C5-neural-networks): 45 review minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): session 2, 268 practice minutes; then C10-competition-craft (prereqs: C4-classical-ml-practice): session 2. | 170 | 313 | C6-pytorch review gate. |
-| 24 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): session 1, 200 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): session 3, 108 practice minutes. | 175 | 308 | No unit-review gate. |
-| 25 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): session 2, 200 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): session 4, 108 practice minutes. | 175 | 308 | No unit-review gate. |
-| 26 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): session 3, 235 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): 113 practice minutes, 45 review minutes. | 90 | 393 | F7-kernels-convex-optimization review gate. |
-| 27 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): session 4, 310 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): session 1. | 170 | 310 | No unit-review gate. |
-| 28 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): session 5, 95 practice minutes, 60 review minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): session 2, 120 practice minutes. | 180 | 275 | C11-neural-training review gate. |
+| 22 | S2 | F6-svd-spectral (prereqs: F3-matrices): session 5, 45 review minutes; then C6-pytorch (prereqs: C5-neural-networks): 145 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): session 1, 90 practice minutes. | 170 | 280 | F6-svd-spectral review gate. |
+| 23 | S2 | C6-pytorch (prereqs: C5-neural-networks): 45 review minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): session 2, 320 practice minutes. | 85 | 365 | C6-pytorch review gate. |
+| 24 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): sessions 1, 2, 126 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): session 3, 61 practice minutes. | 265 | 187 | No unit-review gate. |
+| 25 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): sessions 3, 4, 129 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): session 4, 56 practice minutes. | 265 | 185 | No unit-review gate. |
+| 26 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): session 5, 235 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): 113 practice minutes, 45 review minutes. | 90 | 393 | F7-kernels-convex-optimization review gate. |
+| 27 | S2 | C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): session 1; then C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): 370 practice minutes. | 80 | 370 | No unit-review gate. |
+| 28 | S2 | C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): session 2, 120 practice minutes; then C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): 180 practice minutes, 60 review minutes. | 90 | 360 | C11-neural-training review gate. |
 | 29 | S2 | C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): session 1, 200 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): session 3, 85 practice minutes. | 170 | 285 | No unit-review gate. |
 | 30 | S2 | C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): session 2, 200 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): session 4, 85 practice minutes. | 170 | 285 | No unit-review gate. |
 | 31 | S2 | C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): session 3, 200 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): 170 practice minutes. | 85 | 370 | No unit-review gate. |
-| 32 | S2 | C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): session 4, 275 practice minutes, 60 review minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): 45 practice minutes. | 90 | 380 | C7-cnn-transfer review gate. |
-| 33 | S2 | C10-competition-craft (prereqs: C4-classical-ml-practice): session 3, 210 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): 95 practice minutes, 60 review minutes. | 85 | 365 | C9-dimensionality-reduction review gate. |
-| 34 | S2 | C10-competition-craft (prereqs: C4-classical-ml-practice): session 4, 365 practice minutes. | 85 | 365 | No unit-review gate. |
-| 35 | S2 | C10-competition-craft (prereqs: C4-classical-ml-practice): 155 practice minutes, 55 review minutes; then `r1-001` mock (180 minutes); then `r1-001` debrief (60 minutes). | 240 | 210 | C10-competition-craft review gate, `r1-001` summative gate, debrief. |
+| 32 | S2 | C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): session 4, 225 practice minutes, 60 review minutes; then C10-competition-craft (prereqs: C4-classical-ml-practice): session 1; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): 45 practice minutes. | 170 | 330 | C7-cnn-transfer review gate. |
+| 33 | S2 | C10-competition-craft (prereqs: C4-classical-ml-practice): sessions 2, 3, 210 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): 60 practice minutes, 60 review minutes. | 170 | 330 | C9-dimensionality-reduction review gate. |
+| 34 | S2 | C10-competition-craft (prereqs: C4-classical-ml-practice): session 4, 365 practice minutes; then C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): 50 practice minutes. | 85 | 415 | No unit-review gate. |
+| 35 | S2 | C10-competition-craft (prereqs: C4-classical-ml-practice): 155 practice minutes, 55 review minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): 35 practice minutes; then `r1-001` mock (180 minutes); then `r1-001` debrief (60 minutes). | 240 | 245 | C10-competition-craft review gate, `r1-001` summative gate, debrief. |
 <!-- END GENERATED: weekly-table -->
 
 <!-- BEGIN GENERATED: semester-summary -->
 The verified Semester 1 columns sum to 2,545 in-class minutes + 5,370 independent minutes = 7,915 minutes.
 The Semester 1 average is 494.69 minutes, and its rows range from 485 to 500 minutes.
 The verified Semester 2 columns sum to 2,975 in-class minutes + 5,975 independent minutes = 8,950 minutes.
-The Semester 2 average is 471.05 minutes, and its rows range from 450 to 483 minutes.
+The Semester 2 average is 471.05 minutes, and its rows range from 450 to 500 minutes.
 <!-- END GENERATED: semester-summary -->
 
 ## 4. Milestones and assessment
@@ -150,10 +150,10 @@ Within a shared week, “then” means the earlier unit's remaining practice and
 | F6-svd-spectral | Week 17 |
 | C6-pytorch | Week 19 |
 | F7-kernels-convex-optimization | Week 22 |
-| C10-competition-craft | Week 22 |
 | C11-neural-training | Week 24 |
 | C9-dimensionality-reduction | Week 27 |
 | C7-cnn-transfer | Week 29 |
+| C10-competition-craft | Week 32 |
 <!-- END GENERATED: first-instruction -->
-F7 also finishes before C9 begins, even though F7 is not a formal C9 prerequisite, to preserve the intended mathematical systematics.
+For each actual prerequisite edge, the prerequisite's complete allocation must finish before the dependent unit's first session.
 The table repeats every unit's complete prerequisite list beside every active week so the check remains local.

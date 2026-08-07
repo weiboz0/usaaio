@@ -305,6 +305,23 @@ def _validate(
                 )
         for session in sorted(set(session_counts) - set(range(1, len(expected_sessions) + 1))):
             errors.append(f"unknown lesson session {unit}#{session}")
+        session_weeks = {
+            allocation.session: week.week
+            for week in schedule.weeks
+            for allocation in week.allocations
+            if allocation.kind == "lesson-session"
+            and allocation.unit == unit
+            and allocation.session is not None
+        }
+        for session in range(1, len(expected_sessions)):
+            if session not in session_weeks or session + 1 not in session_weeks:
+                continue
+            gap = session_weeks[session + 1] - session_weeks[session]
+            if gap > 2:
+                errors.append(
+                    f"{unit} lesson sessions {session} and {session + 1} are "
+                    f"{gap} weeks apart; maximum gap is 2"
+                )
         for kind in ("practice", "review"):
             rows = [
                 (index, allocation)

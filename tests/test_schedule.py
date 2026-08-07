@@ -26,12 +26,18 @@ def _write_yaml(path: Path, value: object) -> None:
     path.write_text(yaml.safe_dump(value, sort_keys=False))
 
 
-def _build_schedule_fixture(root: Path) -> dict[str, Any]:
+def _build_schedule_fixture(
+    root: Path, *, chained_prerequisites: bool = True
+) -> dict[str, Any]:
     units = []
     weeks = []
     for week in range(1, 36):
         unit_id = f"U{week:02}"
-        previous = [] if week == 1 else [f"U{week - 1:02}"]
+        previous = (
+            []
+            if week == 1 or not chained_prerequisites
+            else [f"U{week - 1:02}"]
+        )
         units.append(
             {
                 "id": unit_id,
@@ -416,6 +422,46 @@ def test_schedule_checker_rejects_more_than_three_lesson_sessions_in_a_week(
     ), report.errors
 
 
+def test_schedule_checker_rejects_more_than_two_weeks_between_unit_sessions(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path, chained_prerequisites=False)
+    schedule["weeks"][19]["allocations"].insert(
+        0,
+        {
+            "kind": "lesson-session",
+            "unit": "U17",
+            "session": 2,
+            "minutes": 100,
+        },
+    )
+    schedule["weeks"][19]["allocations"][2]["minutes"] = 200
+    _set_unit_minutes(
+        tmp_path,
+        "U17",
+        lesson_sessions=[100, 100],
+        practice=300,
+        review=50,
+    )
+    _set_unit_minutes(
+        tmp_path,
+        "U20",
+        lesson_sessions=[100],
+        practice=200,
+        review=50,
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "U17 lesson sessions 1 and 2 are 3 weeks apart; maximum gap is 2"
+        in error
+        for error in report.errors
+    ), report.errors
+
+
 def test_course_renderer_preserves_all_bytes_outside_generated_regions(
     tmp_path: Path,
 ) -> None:
@@ -565,7 +611,7 @@ def test_real_schedule_has_exact_plan017_calendar_and_complete_allocation() -> N
         for allocation in week["allocations"]
         if allocation["kind"] == "lesson-session"
         and allocation.get("unit") == "C11-neural-training"
-    ] == [24, 25, 26, 27, 28]
+    ] == [24, 24, 25, 25, 26]
     assert [
         week["week"]
         for week in weeks
@@ -577,6 +623,64 @@ def test_real_schedule_has_exact_plan017_calendar_and_complete_allocation() -> N
     assert weeks[-1]["allocations"][-2]["test"] == "r1-001"
     assert weeks[-1]["allocations"][-2]["minutes"] == 180
     assert weeks[-1]["allocations"][-1]["minutes"] == 60
+
+
+def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
+    manifest = yaml.safe_load(
+        (ROOT / "units" / "C11-neural-training" / "manifest.yaml").read_text()
+    )
+    concepts_added_by_session = [
+        {"softmax", "cross-entropy-loss"},
+        {"manual-backpropagation"},
+        {"trained-mlp"},
+        {"autograd-training", "torch-optimizers"},
+        {"batch-normalization", "dropout"},
+    ]
+    unlocked: set[str] = set()
+    capacities: list[int] = []
+    for concepts in concepts_added_by_session:
+        unlocked.update(concepts)
+        capacities.append(
+            sum(
+                problem["minutes"]
+                for problem in manifest["practice"]
+                if set(problem["concepts"]) <= unlocked
+            )
+        )
+    assert capacities == [250, 375, 520, 740, 1040]
+
+    schedule = yaml.safe_load(
+        (ROOT / "curriculum" / "course-schedule.yaml").read_text()
+    )
+    delivered_sessions = 0
+    scheduled_practice = 0
+    for week in schedule["weeks"]:
+        for allocation in week["allocations"]:
+            if allocation.get("unit") != "C11-neural-training":
+                continue
+            if allocation["kind"] == "lesson-session":
+                delivered_sessions += 1
+                assert allocation["session"] == delivered_sessions
+            elif allocation["kind"] == "practice":
+                scheduled_practice += allocation["minutes"]
+                capacity = capacities[delivered_sessions - 1]
+                assert scheduled_practice <= capacity, (
+                    f"week {week['week']} schedules {scheduled_practice} cumulative "
+                    f"C11 practice minutes after {delivered_sessions} sessions; "
+                    f"only {capacity} problem minutes are unlocked"
+                )
+
+
+def test_course_structure_states_interleaving_and_prerequisite_order_contract() -> None:
+    document = (ROOT / "docs" / "course-structure.md").read_text()
+
+    assert "independent units may interleave" in document
+    assert (
+        "prerequisite's complete allocation must finish before the dependent unit's "
+        "first session"
+    ) in document
+    assert "earlier unit's remaining work and review finish before the later unit begins" not in document
+    assert "F7 also finishes before C9 begins" not in document
 
 
 def test_rendered_first_instruction_region_exactly_matches_the_schedule_source() -> None:

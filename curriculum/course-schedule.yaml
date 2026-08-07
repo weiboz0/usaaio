@@ -422,14 +422,10 @@ weeks:
     unit: F7-kernels-convex-optimization
     session: 1
     minutes: 85
-  - kind: lesson-session
-    unit: C10-competition-craft
-    session: 1
-    minutes: 80
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 1
-    minutes: 43
+    minutes: 90
 - week: 23
   semester: 2
   allocations:
@@ -441,14 +437,10 @@ weeks:
     unit: F7-kernels-convex-optimization
     session: 2
     minutes: 85
-  - kind: lesson-session
-    unit: C10-competition-craft
-    session: 2
-    minutes: 85
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 2
-    minutes: 268
+    minutes: 320
 - week: 24
   semester: 2
   allocations:
@@ -457,23 +449,31 @@ weeks:
     session: 1
     minutes: 90
   - kind: lesson-session
+    unit: C11-neural-training
+    session: 2
+    minutes: 90
+  - kind: lesson-session
     unit: F7-kernels-convex-optimization
     session: 3
     minutes: 85
   - kind: practice
     unit: C11-neural-training
     chunk: 1
-    minutes: 200
+    minutes: 126
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 3
-    minutes: 108
+    minutes: 61
 - week: 25
   semester: 2
   allocations:
   - kind: lesson-session
     unit: C11-neural-training
-    session: 2
+    session: 3
+    minutes: 90
+  - kind: lesson-session
+    unit: C11-neural-training
+    session: 4
     minutes: 90
   - kind: lesson-session
     unit: F7-kernels-convex-optimization
@@ -482,17 +482,17 @@ weeks:
   - kind: practice
     unit: C11-neural-training
     chunk: 2
-    minutes: 200
+    minutes: 129
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 4
-    minutes: 108
+    minutes: 56
 - week: 26
   semester: 2
   allocations:
   - kind: lesson-session
     unit: C11-neural-training
-    session: 3
+    session: 5
     minutes: 90
   - kind: practice
     unit: C11-neural-training
@@ -510,24 +510,16 @@ weeks:
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C11-neural-training
-    session: 4
-    minutes: 90
-  - kind: lesson-session
     unit: C9-dimensionality-reduction
     session: 1
     minutes: 80
   - kind: practice
     unit: C11-neural-training
     chunk: 4
-    minutes: 310
+    minutes: 370
 - week: 28
   semester: 2
   allocations:
-  - kind: lesson-session
-    unit: C11-neural-training
-    session: 5
-    minutes: 90
   - kind: lesson-session
     unit: C9-dimensionality-reduction
     session: 2
@@ -535,7 +527,7 @@ weeks:
   - kind: practice
     unit: C11-neural-training
     chunk: 5
-    minutes: 95
+    minutes: 180
   - kind: review
     unit: C11-neural-training
     chunk: 1
@@ -604,10 +596,14 @@ weeks:
     unit: C7-cnn-transfer
     session: 4
     minutes: 90
+  - kind: lesson-session
+    unit: C10-competition-craft
+    session: 1
+    minutes: 80
   - kind: practice
     unit: C7-cnn-transfer
     chunk: 4
-    minutes: 275
+    minutes: 225
   - kind: review
     unit: C7-cnn-transfer
     chunk: 1
@@ -621,12 +617,16 @@ weeks:
   allocations:
   - kind: lesson-session
     unit: C10-competition-craft
+    session: 2
+    minutes: 85
+  - kind: lesson-session
+    unit: C10-competition-craft
     session: 3
     minutes: 85
   - kind: practice
     unit: C9-dimensionality-reduction
     chunk: 6
-    minutes: 95
+    minutes: 60
   - kind: review
     unit: C9-dimensionality-reduction
     chunk: 1
@@ -646,6 +646,10 @@ weeks:
     unit: C10-competition-craft
     chunk: 2
     minutes: 365
+  - kind: practice
+    unit: C7-cnn-transfer
+    chunk: 5
+    minutes: 50
 - week: 35
   semester: 2
   allocations:
@@ -657,6 +661,10 @@ weeks:
     unit: C10-competition-craft
     chunk: 1
     minutes: 55
+  - kind: practice
+    unit: C9-dimensionality-reduction
+    chunk: 7
+    minutes: 35
   - kind: mock
     test: r1-001
     minutes: 180
