@@ -76,6 +76,7 @@ class UnitManifest:
     prereq_units: list[str]
     practice: list[PracticeProblem]
     path: Path
+    lesson_sessions: list[int] | None = None
 
 
 @dataclass
@@ -319,6 +320,28 @@ def _read_manifest(path: Path) -> dict[str, Any]:
     return _parse_yaml(path.read_text())
 
 
+def _lesson_sessions(raw: dict[str, Any], path: Path) -> list[int] | None:
+    if "estimated_minutes" not in raw:
+        return None
+    estimated_minutes = raw["estimated_minutes"]
+    if not isinstance(estimated_minutes, dict):
+        raise ValueError(  # noqa: TRY004
+            f"{path}: estimated_minutes must be a mapping when present"
+        )
+    if "lesson_sessions" not in estimated_minutes:
+        return None
+    lesson_sessions = estimated_minutes["lesson_sessions"]
+    field = "estimated_minutes.lesson_sessions"
+    if not isinstance(lesson_sessions, list):
+        raise ValueError(f"{path}: {field} must be a list")  # noqa: TRY004
+    for index, value in enumerate(lesson_sessions):
+        if type(value) is not int:
+            raise ValueError(f"{path}: {field} item {index} must be an integer")
+        if value <= 0:
+            raise ValueError(f"{path}: {field} item {index} must be positive")
+    return lesson_sessions
+
+
 def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
     manifests = sorted(Path(root).glob("units/*/manifest.yaml"))
     result: list[UnitManifest] = []
@@ -340,6 +363,7 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
                     for item in raw.get("practice") or []
                 ],
                 path=path,
+                lesson_sessions=_lesson_sessions(raw, path),
             )
         )
     return result

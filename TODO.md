@@ -16,12 +16,15 @@
 - [x] 013 — audit remediation (merged)
 - [x] 014 — enrichment tranche (merged — retag pass, 2 error clinics, F6-p25 synthesis problem, targeted items)
 - [x] 015 — layered official-topic audit and R1/R2 roadmap (one curriculum graph, two exit gates)
+- [x] 016 — R1 foundation, workflow, and mathematical completion (delivery branch ready)
+- [ ] 017 — R1 neural-training completion (next R1 queue item)
+- [ ] 018 — R1 classical-model breadth (follows Plan 017)
 
 ## Deferred, with a named owner plan still to be written
 
-- [ ] **Execute the Plan 015 content tranches.** The canonical owner/order now lives in
-      `curriculum/coverage-map.yaml` and `docs/curriculum-roadmap.md`: R1 mathematics,
-      R1 neural training, R1 classical breadth, R2 transformers/NLP, R2 vision/generative,
+- [ ] **Execute the remaining Plan 015 content tranches.** The canonical owner/order now lives in
+      `curriculum/coverage-map.yaml` and `docs/curriculum-roadmap.md`: R1 neural training,
+      R1 classical breadth, R2 transformers/NLP, R2 vision/generative,
       then the R2 GPU capstone. Softmax/cross-entropy are owned by
       `P015-R1-NEURAL-TRAINING`; future work must update the shipped syllabus and roadmap
       atomically rather than maintaining a second gap list here.

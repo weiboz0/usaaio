@@ -1,14 +1,14 @@
 unit: F5-probability
 concepts_taught: [random-variables, expectation, variance, independence, variance-of-sums, gaussian-distribution,
-  sampling-simulation, covariance]
+  sampling-simulation, covariance, conditional-probability, bayes-rule, hoeffding-inequality]
 concepts_used: [numpy-arrays, elementwise-ops, broadcasting, vectorization, aggregation-axis, random-seeding,
   matplotlib-basics]
 prereq_units: [F1-scientific-python]
 estimated_minutes:
-  lesson: 250
-  lesson_sessions: [80, 85, 85]
-  practice: 430
-  review: 40
+  lesson: 415
+  lesson_sessions: [80, 85, 85, 85, 80]
+  practice: 650
+  review: 55
 practice:
 - id: F5-p01
   set: A
@@ -143,3 +143,45 @@ practice:
   concepts: [covariance, independence, expectation, random-variables]
   path: practice/p19.ipynb
   solution_path: practice/p19_solution.ipynb
+- id: F5-p20
+  set: A
+  type: drill
+  difficulty: intro
+  concepts: [conditional-probability]
+  path: practice/p20.ipynb
+  solution_path: practice/p20_solution.ipynb
+- id: F5-p21
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [conditional-probability, bayes-rule]
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+- id: F5-p22
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [conditional-probability, bayes-rule]
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb
+- id: F5-p23
+  set: B
+  type: mc-normal-form
+  difficulty: core
+  concepts: [hoeffding-inequality]
+  path: practice/p23.ipynb
+  solution_path: practice/p23_solution.ipynb
+- id: F5-p24
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [hoeffding-inequality]
+  path: practice/p24.ipynb
+  solution_path: practice/p24_solution.ipynb
+- id: F5-p25
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [conditional-probability, bayes-rule, hoeffding-inequality, sampling-simulation]
+  path: practice/p25.ipynb
+  solution_path: practice/p25_solution.ipynb

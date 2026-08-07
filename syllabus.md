@@ -38,6 +38,7 @@ concepts:
   - {id: aggregation-axis,          cluster: python-scientific}
   - {id: random-seeding,            cluster: python-scientific}
   - {id: matplotlib-basics,         cluster: python-scientific}
+  - {id: seaborn-programming,       cluster: python-scientific}
   # --- F2 ---
   - {id: vectors-and-norms,         cluster: linear-algebra}
   - {id: distance-metrics,          cluster: linear-algebra}
@@ -71,6 +72,9 @@ concepts:
   - {id: gaussian-distribution,     cluster: probability-statistics}
   - {id: sampling-simulation,       cluster: probability-statistics}
   - {id: covariance,                cluster: probability-statistics}
+  - {id: conditional-probability,   cluster: probability-statistics}
+  - {id: bayes-rule,                cluster: probability-statistics}
+  - {id: hoeffding-inequality,      cluster: probability-statistics}
   # --- F6 ---
   - {id: eigenvalues-eigenvectors,  cluster: linear-algebra}
   - {id: spectral-decomposition,    cluster: linear-algebra}
@@ -78,6 +82,14 @@ concepts:
   - {id: singular-values,           cluster: linear-algebra}
   - {id: low-rank-approximation,    cluster: linear-algebra}
   - {id: frobenius-norm,            cluster: linear-algebra}
+  # --- F7 ---
+  - {id: positive-semidefinite-matrices, cluster: linear-algebra}
+  - {id: kernel-validity,           cluster: linear-algebra}
+  - {id: convex-sets,               cluster: linear-algebra}
+  - {id: convex-functions,          cluster: calculus-multivar}
+  - {id: first-order-optimality,    cluster: calculus-multivar}
+  - {id: lagrangians,               cluster: calculus-multivar}
+  - {id: optimization-duality,      cluster: calculus-multivar}
   # --- C1 ---
   - {id: supervised-vs-unsupervised, cluster: ml-concepts}
   - {id: clustering-concept,        cluster: ml-concepts}
@@ -94,6 +106,8 @@ concepts:
   - {id: l1-regularization,         cluster: ml-concepts}
   - {id: l2-regularization,         cluster: ml-concepts}
   - {id: sparsity,                  cluster: ml-concepts}
+  - {id: linear-regression-estimator-derivation, cluster: ml-concepts}
+  - {id: ols-rank-identifiability-and-pseudoinverse, cluster: ml-concepts}
   # --- C3 ---
   - {id: loss-surfaces,             cluster: ml-concepts}
   - {id: gradient-descent,          cluster: ml-concepts}
@@ -146,6 +160,9 @@ concepts:
   - {id: truncated-svd-practice,    cluster: linear-algebra}
   - {id: umap-concept,              cluster: ml-concepts}
   - {id: local-vs-global-structure, cluster: ml-concepts}
+  - {id: pca-centered-covariance-eigenproblem-derivation, cluster: ml-concepts}
+  - {id: numpy-pca-class-from-scratch, cluster: ml-concepts}
+  - {id: pca-black-box-insufficiency, cluster: ml-concepts}
   # --- C10 ---
   - {id: normal-form-answers,       cluster: competition-craft}
   - {id: api-constraint-compliance, cluster: competition-craft}
@@ -154,13 +171,19 @@ concepts:
   - {id: prediction-function-contract, cluster: competition-craft}
   - {id: metric-driven-iteration,   cluster: competition-craft}
   - {id: writeup-quality,           cluster: competition-craft}
+  - {id: colab-markdown-solution-authoring, cluster: competition-craft}
+  - {id: markdown-code-snippets,    cluster: competition-craft}
+  - {id: markdown-math-formulae,    cluster: competition-craft}
+  - {id: colab-coding-submission,   cluster: competition-craft}
+  - {id: cpu-and-gpu-round-boundary, cluster: competition-craft}
 units:
   - id: F1-scientific-python
     track: foundation
     title: Scientific Python and NumPy
     prereqs: []
     teaches: [numpy-arrays, array-indexing-slicing, broadcasting, vectorization,
-              elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics]
+              elementwise-ops, aggregation-axis, random-seeding, matplotlib-basics,
+              seaborn-programming]
   - id: F2-vectors
     track: foundation
     title: Vectors, Norms, and Projections
@@ -182,9 +205,11 @@ units:
   - id: F5-probability
     track: foundation
     title: Probability and Statistics Essentials
+    length: double
     prereqs: [F1-scientific-python]
     teaches: [random-variables, expectation, variance, independence, variance-of-sums,
-              gaussian-distribution, sampling-simulation, covariance]
+              gaussian-distribution, sampling-simulation, covariance, conditional-probability,
+              bayes-rule, hoeffding-inequality]
   - id: F6-svd-spectral
     track: foundation
     title: Eigenvalues, SVD, and Low-Rank Structure
@@ -192,6 +217,12 @@ units:
     prereqs: [F3-matrices]
     teaches: [eigenvalues-eigenvectors, spectral-decomposition, svd, singular-values,
               low-rank-approximation, frobenius-norm]
+  - id: F7-kernels-convex-optimization
+    track: foundation
+    title: Kernel Validity and Convex Optimization
+    prereqs: [F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent]
+    teaches: [positive-semidefinite-matrices, kernel-validity, convex-sets, convex-functions,
+              first-order-optimality, lagrangians, optimization-duality]
   - id: C1-ml-fundamentals
     track: core
     title: Machine Learning Fundamentals
@@ -203,7 +234,9 @@ units:
     track: core
     title: Linear Models and Regularization
     prereqs: [F3-matrices, F4-multivar-calculus, C1-ml-fundamentals]
-    teaches: [linear-regression, mse-loss, l1-regularization, l2-regularization, sparsity]
+    teaches: [linear-regression, mse-loss, l1-regularization, l2-regularization, sparsity,
+              linear-regression-estimator-derivation,
+              ols-rank-identifiability-and-pseudoinverse]
   - id: C3-gradient-descent
     track: core
     title: Optimization by Gradient Descent
@@ -244,14 +277,18 @@ units:
     track: core
     title: Dimensionality Reduction
     prereqs: [F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals]
-    teaches: [pca, truncated-svd-practice, umap-concept, local-vs-global-structure]
+    teaches: [pca, truncated-svd-practice, umap-concept, local-vs-global-structure,
+              pca-centered-covariance-eigenproblem-derivation, numpy-pca-class-from-scratch,
+              pca-black-box-insufficiency]
   - id: C10-competition-craft
     track: core
     title: Competition and Notebook Craft
     prereqs: [C4-classical-ml-practice]
     teaches: [notebook-discipline, hidden-test-protocol, prediction-function-contract,
               metric-driven-iteration, writeup-quality, normal-form-answers,
-              api-constraint-compliance]
+              api-constraint-compliance, colab-markdown-solution-authoring,
+              markdown-code-snippets, markdown-math-formulae, colab-coding-submission,
+              cpu-and-gpu-round-boundary]
 ```
 
 ## Foundation track — rationale
@@ -265,11 +302,15 @@ appeared directly as exam sub-parts.
 `F4-multivar-calculus` extends Calc AB to `gradient` and `multivar-chain-rule`,
 stated component-wise (`sum-of-squares-gradients`) so no matrix calculus is needed;
 `tanh-derivative` is the exam's canonical 1-D exercise.
-`F5-probability` exists chiefly for `variance-of-sums` — the exam's
-weight-initialization derivation — and `sampling-simulation` for dataset generation.
-`F6-svd-spectral` is the flagged double-length capstone:
+`F5-probability` is a double-length unit: it connects `variance-of-sums` and
+`sampling-simulation` to `conditional-probability`, `bayes-rule`, and
+`hoeffding-inequality`.
+`F6-svd-spectral` is the other double-length unit:
 `svd`, `spectral-decomposition`, and `low-rank-approximation` anchored the heaviest
 sub-parts of the 2026 integrative arc.
+`F7-kernels-convex-optimization` completes the shared mathematical foundation by turning
+PSD structure into `kernel-validity` proofs and extending gradient intuition to
+`convex-functions`, `lagrangians`, and `optimization-duality`.
 
 ## Core track — rationale
 
@@ -278,13 +319,10 @@ sub-parts of the 2026 integrative arc.
 `bias-variance-intuition` is deliberately intuitive; its statistical vocabulary
 (`variance`, `expectation`) firms up in F5 and is exercised in C5's
 `weight-init-variance` derivation.
-`C2-linear-models` currently teaches the gradient view. The officially required closed-form
-estimator derivation is missing; rank/identifiability conditions and pseudoinverse behavior are
-separate prerequisite-closure bridges. All are assigned back to C2 in the roadmap rather than
-treated as unnecessary.
-Fitting itself is deferred to `C3-gradient-descent`; C2 practice evaluates and
-differentiates `mse-loss` for given parameters and reasons about `sparsity` —
-so every C2 concept has practice without a training loop.
+`C2-linear-models` session 02 ships closed-form unregularized OLS fitting and the
+`linear-regression-estimator-derivation`, including rank, identifiability, and
+pseudoinverse behavior.
+Only iterative gradient-based fitting remains deferred to `C3-gradient-descent`.
 `C4-classical-ml-practice` teaches the `knn` + `pandas-basics` + `sklearn-pipelines`
 craft that the 50-point applied problem demands;
 `C10-competition-craft` turns that into exam technique
@@ -296,11 +334,12 @@ craft that the 50-point applied problem demands;
 
 ## Suggested order (one feasible topological sort)
 
-F1 → F2 → C1 → F4 → F3 → F5 → C4 → C2 → C3 → C5 → C6 → C7 → C8 → F6 → C9 → C10
+F1 → F2 → C1 → F4 → F3 → F5 → C4 → C2 → C3 → C5 → C6 → C7 → C8 → F6 → F7 → C9 → C10
 
 Foundation units interleave with core units so the student reaches applied work
 (C4) early — F5 precedes C4 because `feature-scaling` standardization needs `variance`;
-F6 is deferred until C8 motivates it (the similarity matrix begs for SVD).
+F6 is deferred until C8 motivates it (the similarity matrix begs for SVD); F7 follows all
+four of its declared prerequisites before C9 and the final competition-craft unit.
 
 This order is the shipped path. The full architecture reuses it as shared foundation and
 Round 1 core, then attaches Round 2 extensions without duplicating probability, linear

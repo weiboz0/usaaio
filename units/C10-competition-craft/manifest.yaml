@@ -1,7 +1,8 @@
 unit: C10-competition-craft
 concepts_taught: [notebook-discipline, hidden-test-protocol, prediction-function-contract,
   metric-driven-iteration, writeup-quality, normal-form-answers,
-  api-constraint-compliance]
+  api-constraint-compliance, colab-markdown-solution-authoring, markdown-code-snippets,
+  markdown-math-formulae, colab-coding-submission, cpu-and-gpu-round-boundary]
 concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting, vectorization,
   aggregation-axis, random-seeding, matplotlib-basics, pandas-basics, csv-data-loading, knn,
   feature-scaling, sklearn-pipelines, cross-validation, train-test-split, overfitting,
@@ -9,10 +10,10 @@ concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcast
   vectors-and-norms, random-variables, expectation, sampling-simulation, class-imbalance]
 prereq_units: [C4-classical-ml-practice]
 estimated_minutes:
-  lesson: 250
-  lesson_sessions: [80, 85, 85]
-  practice: 535
-  review: 45
+  lesson: 335
+  lesson_sessions: [80, 85, 85, 85]
+  practice: 730
+  review: 55
 practice:
 - id: C10-p01
   set: A
@@ -116,7 +117,8 @@ practice:
   set: C
   type: scenario
   difficulty: core
-  concepts: [writeup-quality]
+  concepts: [writeup-quality, colab-markdown-solution-authoring, markdown-code-snippets,
+    markdown-math-formulae, colab-coding-submission, cpu-and-gpu-round-boundary]
   path: practice/p15.ipynb
   solution_path: practice/p15_solution.ipynb
 - id: C10-p16
@@ -130,14 +132,19 @@ practice:
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [writeup-quality, train-test-split, f1-macro, knn, feature-scaling, sklearn-pipelines]
+  concepts: [writeup-quality, colab-markdown-solution-authoring, markdown-code-snippets,
+    markdown-math-formulae, colab-coding-submission, cpu-and-gpu-round-boundary,
+    train-test-split, f1-macro, knn, feature-scaling, sklearn-pipelines]
   path: practice/p17.ipynb
   solution_path: practice/p17_solution.ipynb
 - id: C10-p18
   set: C
   type: challenge
   difficulty: advanced
-  concepts: [writeup-quality, train-test-split, class-imbalance, accuracy-precision-recall, f1-macro, knn, feature-scaling, sklearn-pipelines]
+  concepts: [writeup-quality, colab-markdown-solution-authoring, markdown-code-snippets,
+    markdown-math-formulae, colab-coding-submission, cpu-and-gpu-round-boundary,
+    train-test-split, class-imbalance, accuracy-precision-recall, f1-macro, knn,
+    feature-scaling, sklearn-pipelines]
   path: practice/p18.ipynb
   solution_path: practice/p18_solution.ipynb
 - id: C10-p19

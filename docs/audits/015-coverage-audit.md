@@ -9,48 +9,45 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 765 |
+| Unit notebooks | 857 |
 | Mock notebooks | 10 |
-| Unit practices | 343 |
-| Total inventoried notebooks | 775 |
+| Unit practices | 383 |
+| Total inventoried notebooks | 867 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
-| Coverage: covered | 30 |
-| Coverage: missing | 49 |
-| Coverage: partial | 13 |
+| Coverage: covered | 47 |
+| Coverage: missing | 38 |
+| Coverage: partial | 7 |
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **12347 minutes / 205.78 hours**.
-Current scheduled baseline: **12587 minutes / 209.78 hours**.
+Current manifested baseline: **14767 minutes / 246.12 hours**.
+Current scheduled baseline: **15007 minutes / 250.12 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
 |---|---:|---:|
-| shared-foundation | 14 | 20 |
+| shared-foundation | 0 | 0 |
 | round-1-core | 62 | 92 |
 | round-2-extension | 126 | 192 |
 | optional-enrichment | 0 | 0 |
-| **Planned-unit subtotal** | **202** | **304** |
+| **Planned-unit subtotal** | **188** | **284** |
 
 ### Estimated major existing-unit extensions
 
-These four ranges are renderer-owned editorial estimates, not fields in the canonical coverage map.
+This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
 | Existing unit | Minimum hours | Maximum hours |
 |---|---:|---:|
-| F5 | 8 | 12 |
-| C2 | 6 | 9 |
-| C9 | 8 | 12 |
 | C7 | 8 | 12 |
 
-Estimated major existing-unit extensions subtotal: **30–45 hours**.
-Minimum estimated scoped delta: **232–349 hours**.
-Additional existing-unit corrections in C10, F1, C6, and C8 are not yet estimated, so this is not a complete roadmap total.
+Estimated major existing-unit extensions subtotal: **8–12 hours**.
+Minimum estimated scoped delta: **196–296 hours**.
+Additional existing-unit corrections in C6 and C8 are not yet estimated, so this is not a complete roadmap total.
 
-Baseline plus planned-unit subtotal: **407.78–509.78 manifested-baseline hours** and **411.78–513.78 scheduled-baseline hours**.
-Baseline plus minimum estimated scoped delta: **437.78–554.78 manifested-baseline hours** and **441.78–558.78 scheduled-baseline hours**.
+Baseline plus planned-unit subtotal: **434.12–530.12 manifested-baseline hours** and **438.12–534.12 scheduled-baseline hours**.
+Baseline plus minimum estimated scoped delta: **442.12–542.12 manifested-baseline hours** and **446.12–546.12 scheduled-baseline hours**.
 
 ## Non-required candidates
 
@@ -280,26 +277,26 @@ Assessments: —
 
 - **Layer:** shared-foundation
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** F5-probability
 - **Dependencies:** conditional-probability
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No prior-likelihood-posterior calculation or coded update appears.
-- **Consequence:** Students cannot solve the officially named Bayes tasks.
+- **Shipped concepts:** bayes-rule
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** F5 derives the prior-likelihood-posterior reversal from multiplication and total probability, computes it in code, and exercises it in three direct practices.
+- **Consequence:** Students can derive and implement Bayes updates without reversing conditionals or dropping evidence routes.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 5. Bayes reverses the direction > Checkpoint 5 :: cell 1
+- **derivation practices:** F5-p21, F5-p22, F5-p25
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 5. Bayes reverses the direction > Checkpoint 5 :: cell 2
+- **implementation practices:** F5-p21, F5-p25
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 5. Bayes reverses the direction > Checkpoint 5 :: cell 1
+- **theory practices:** F5-p21, F5-p22, F5-p25
 - **theory assessments:** —
 
-Practices: —
+Practices: F5-p21, F5-p22, F5-p25
 
 Assessments: —
 
@@ -331,23 +328,23 @@ Assessments: r1-001-p01-2
 
 - **Layer:** shared-foundation
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** C10-competition-craft
 - **Dependencies:** colab-markdown-solution-authoring
-- **Shipped concepts:** —
-- **Modalities missing:** competition-workflow, implementation
-- **Practice shortfall:** 3
-- **Rationale:** C10 teaches generic notebook submission, but the corpus contains no Colab-specific coding or submission evidence.
-- **Consequence:** Platform-specific submission failures remain unaddressed.
+- **Shipped concepts:** colab-coding-submission
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C10 binds executable cells, the exact function and file contracts, Restart and Run All, reopening, and download checks into three graded Colab submissions.
+- **Consequence:** Students can deliver a fresh-runnable Colab coding submission with the required artifacts.
 
-- **competition-workflow lessons:** —
-- **competition-workflow practices:** —
+- **competition-workflow lessons:** units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 2. A repeatable Colab authoring workflow > Checkpoint 2 :: cell 1
+- **competition-workflow practices:** C10-p15, C10-p17, C10-p18
 - **competition-workflow assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 5. The mixed-cell submission contract > Checkpoint 5 :: cell 1
+- **implementation practices:** C10-p15, C10-p17, C10-p18
 - **implementation assessments:** —
 
-Practices: —
+Practices: C10-p15, C10-p17, C10-p18
 
 Assessments: —
 
@@ -355,20 +352,20 @@ Assessments: —
 
 - **Layer:** shared-foundation
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** C10-competition-craft
 - **Dependencies:** —
-- **Shipped concepts:** —
-- **Modalities missing:** competition-workflow
-- **Practice shortfall:** 3
-- **Rationale:** No shipped cell mentions or demonstrates Google Colab solution authoring; generic notebooks are not platform-workflow evidence.
-- **Consequence:** Students are not prepared for the official Colab solution-authoring surface.
+- **Shipped concepts:** colab-markdown-solution-authoring
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C10 Session 04 teaches a repeatable mixed-cell Colab authoring workflow, and three practices grade its planning, repair, fresh-run, and download disciplines.
+- **Consequence:** Students can author and audit a Colab solution artifact under the official workflow.
 
-- **competition-workflow lessons:** —
-- **competition-workflow practices:** —
+- **competition-workflow lessons:** units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 2. A repeatable Colab authoring workflow > Checkpoint 2 :: cell 1
+- **competition-workflow practices:** C10-p15, C10-p17, C10-p18
 - **competition-workflow assessments:** —
 
-Practices: —
+Practices: C10-p15, C10-p17, C10-p18
 
 Assessments: —
 
@@ -376,26 +373,26 @@ Assessments: —
 
 - **Layer:** shared-foundation
 - **Requirement:** bridge
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** F5-probability
 - **Dependencies:** probability-and-statistics-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** Independence is taught, but conditioning, conditional distributions, and conditional simulation never appear.
-- **Consequence:** Bayes and later probabilistic models lack prerequisite closure.
+- **Shipped concepts:** conditional-probability
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** F5 defines conditioning with its positivity condition, derives multiplication and chain rules, and implements empirical conditionals with Boolean masks across four practices.
+- **Consequence:** Conditional probability now closes the prerequisite path to Bayes and later probabilistic models.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 3. Multiplication and chain rules > Checkpoint 3 :: cell 1
+- **derivation practices:** F5-p20, F5-p22, F5-p25
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 6. Empirical conditionals with Boolean masks :: cell 2
+- **implementation practices:** F5-p21, F5-p25
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 2. Conditioning changes the denominator > Checkpoint 2 :: cell 1
+- **theory practices:** F5-p20, F5-p22, F5-p25
 - **theory assessments:** —
 
-Practices: —
+Practices: F5-p20, F5-p21, F5-p22, F5-p25
 
 Assessments: —
 
@@ -427,23 +424,23 @@ Assessments: r1-001-p05-5, r1-001-p06-1
 
 - **Layer:** shared-foundation
 - **Requirement:** required
-- **Coverage:** missing
-- **Destination:** P015-R1-MATH-KERNEL-OPT
+- **Coverage:** covered
+- **Destination:** F7-kernels-convex-optimization
 - **Dependencies:** convex-sets-functions-and-optimality, multivariable-derivatives
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No Lagrangian, constrained optimality, primal-dual formulation, or duality argument occurs.
-- **Consequence:** SVM and constrained-model derivations cannot be taught with prerequisite closure.
+- **Shipped concepts:** lagrangians, optimization-duality
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** F7 fixes one minimization convention, derives the dual lower-bound chain, and verifies KKT, complementary slackness, and strong-duality assumptions in six practices.
+- **Consequence:** Students can derive and audit constrained primal-dual certificates needed by later SVM work.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 2. The dual function and weak-duality direction > Checkpoint 2 :: cell 1, units/F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 5. Worked exam-style example 2: a boundary certificate > Checkpoint 5 :: cell 1
+- **derivation practices:** F7-p14, F7-p18, F7-p20
 - **derivation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 1. Fix the minimization sign convention first > Checkpoint 1 :: cell 1, units/F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 4. The four KKT conditions and their assumptions > Checkpoint 4 :: cell 1
+- **theory practices:** F7-p10, F7-p18, F7-p20
 - **theory assessments:** —
 
-Practices: —
+Practices: F7-p10, F7-p14, F7-p18, F7-p20
 
 Assessments: —
 
@@ -451,23 +448,23 @@ Assessments: —
 
 - **Layer:** shared-foundation
 - **Requirement:** required
-- **Coverage:** missing
-- **Destination:** P015-R1-MATH-KERNEL-OPT
+- **Coverage:** covered
+- **Destination:** F7-kernels-convex-optimization
 - **Dependencies:** linear-algebra-foundations, multivariable-derivatives
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, theory
-- **Practice shortfall:** 3
-- **Rationale:** Convex appears only for polygons and one parabola description; no convex-function or first-order-optimality theory is taught.
-- **Consequence:** Later optimization and SVM arguments lack formal foundations.
+- **Shipped concepts:** convex-functions, convex-sets, first-order-optimality
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** F7 develops segment and Jensen definitions, supporting-plane inequalities, and global first-order certificates without assuming Hessians, with six direct reasoning practices.
+- **Consequence:** Convexity and optimality arguments now form a rigorous prerequisite for constrained optimization and SVMs.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 5. Supporting planes: the first-order certificate > Checkpoint 5 :: cell 1, units/F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 6. From local information to global optimality > Checkpoint 6 :: cell 1
+- **derivation practices:** F7-p12, F7-p14, F7-p16
 - **derivation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 1. Convex sets contain every segment > Checkpoint 1 :: cell 1, units/F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 3. Convex functions and Jensen's inequality > Checkpoint 3 :: cell 1
+- **theory practices:** F7-p03, F7-p16, F7-p19
 - **theory assessments:** —
 
-Practices: —
+Practices: F7-p03, F7-p12, F7-p14, F7-p16, F7-p19
 
 Assessments: —
 
@@ -502,20 +499,20 @@ Assessments: r1-001-p07-3, r1-001-p07-4
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** partial
+- **Coverage:** covered
 - **Destination:** C10-competition-craft
 - **Dependencies:** colab-coding-submission
-- **Shipped concepts:** torch-tensors
+- **Shipped concepts:** cpu-and-gpu-round-boundary
 - **Modalities missing:** —
-- **Practice shortfall:** 3
-- **Rationale:** C6 states that course work is CPU-only and briefly names CUDA, but no practice distinguishes R1 CPU policy from R2 GPU availability.
-- **Consequence:** The lesson-only fact is not an operational round-boundary skill.
+- **Practice shortfall:** 0
+- **Rationale:** C10 states the exact Round 1 CPU-only versus Round 2 Colab L4/GPU boundary, and three practices grade diagnosis and correction of policy claims.
+- **Consequence:** Students can choose and declare the permitted compute environment for each round.
 
-- **competition-workflow lessons:** units/C6-pytorch/lessons/01-tensors-and-inheritance.ipynb :: C6-pytorch — Session 1: Torch Tensors and Python Inheritance > 1. Tensors: NumPy Arrays with a Passport :: cell 1
-- **competition-workflow practices:** —
+- **competition-workflow lessons:** units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 6. The exact round boundary > Checkpoint 6 :: cell 1
+- **competition-workflow practices:** C10-p15, C10-p17, C10-p18
 - **competition-workflow assessments:** —
 
-Practices: —
+Practices: C10-p15, C10-p17, C10-p18
 
 Assessments: —
 
@@ -955,26 +952,26 @@ Assessments: r1-001-p09
 
 - **Layer:** shared-foundation
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** F5-probability
 - **Dependencies:** probability-and-statistics-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** Sampling experiments lack any concentration bound or use of Hoeffding's inequality.
-- **Consequence:** Students cannot quantify finite-sample deviations.
+- **Shipped concepts:** hoeffding-inequality
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** F5 states Hoeffding with its assumptions and heterogeneous widths, derives the two-sided factor by a union bound, and compares seeded simulation with the theoretical envelope.
+- **Consequence:** Students can derive and compute finite-sample deviation guarantees while separating evidence from theorem.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/F5-probability/lessons/05-hoeffding-inequality.ipynb :: F5-probability — Session 05: Hoeffding's Inequality > 6. The two-sided factor 2 > Checkpoint 6 :: cell 1
+- **derivation practices:** F5-p23, F5-p25
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/F5-probability/lessons/05-hoeffding-inequality.ipynb :: F5-probability — Session 05: Hoeffding's Inequality > 8. Simulation versus the theoretical envelope :: cell 2
+- **implementation practices:** F5-p24, F5-p25
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/F5-probability/lessons/05-hoeffding-inequality.ipynb :: F5-probability — Session 05: Hoeffding's Inequality > 3. One-sided Hoeffding > Checkpoint 3 :: cell 1
+- **theory practices:** F5-p23, F5-p24, F5-p25
 - **theory assessments:** —
 
-Practices: —
+Practices: F5-p23, F5-p24, F5-p25
 
 Assessments: —
 
@@ -1114,20 +1111,20 @@ Assessments: r1-001-p04-2
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** C2-linear-models
 - **Dependencies:** linear-regression, matrix-multiplication, multivariable-derivatives
-- **Shipped concepts:** —
-- **Modalities missing:** derivation
-- **Practice shortfall:** 3
-- **Rationale:** C2 teaches the model and MSE but explicitly omits the normal-equation derivation of the closed-form estimator.
-- **Consequence:** Students cannot perform the officially required estimator derivation.
+- **Shipped concepts:** linear-regression-estimator-derivation
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C2 derives the normal equations from the MSE gradient, proves their global-minimizer condition, and obtains the unique full-rank solve across proof, coding, and exact-arithmetic practices.
+- **Consequence:** Students can derive and compute the officially required closed-form linear-regression estimator.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 1. One Design-Matrix Convention > Checkpoint 1 :: cell 1, units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 2. Full Column Rank and a Unique Worked Fit > Checkpoint 2 :: cell 1
+- **derivation practices:** C2-p19, C2-p20, C2-p21
 - **derivation assessments:** —
 
-Practices: —
+Practices: C2-p19, C2-p20, C2-p21
 
 Assessments: —
 
@@ -1189,23 +1186,23 @@ Assessments: r1-001-p04-2
 
 - **Layer:** shared-foundation
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** C10-competition-craft
 - **Dependencies:** markdown-text-communication
-- **Shipped concepts:** —
-- **Modalities missing:** competition-workflow, implementation
-- **Practice shortfall:** 3
-- **Rationale:** Code cells are common, but no lesson or practice teaches code snippets embedded in Markdown.
-- **Consequence:** Students lack the official mixed prose-and-code authoring skill.
+- **Shipped concepts:** markdown-code-snippets
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C10 explicitly teaches matched language fences and their non-executable role, then three practices require repaired snippets alongside the executable function.
+- **Consequence:** Students can embed accurate code excerpts without confusing them with runnable cells.
 
-- **competition-workflow lessons:** —
-- **competition-workflow practices:** —
+- **competition-workflow lessons:** units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 5. The mixed-cell submission contract > Checkpoint 5 :: cell 1
+- **competition-workflow practices:** C10-p15, C10-p17, C10-p18
 - **competition-workflow assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 3. Fenced code snippets > Checkpoint 3 :: cell 1
+- **implementation practices:** C10-p15, C10-p17, C10-p18
 - **implementation assessments:** —
 
-Practices: —
+Practices: C10-p15, C10-p17, C10-p18
 
 Assessments: —
 
@@ -1213,25 +1210,25 @@ Assessments: —
 
 - **Layer:** shared-foundation
 - **Requirement:** required
-- **Coverage:** partial
+- **Coverage:** covered
 - **Destination:** C10-competition-craft
 - **Dependencies:** markdown-text-communication
-- **Shipped concepts:** l1-regularization, learning-rate, multivar-chain-rule
-- **Modalities missing:** competition-workflow, derivation
+- **Shipped concepts:** markdown-math-formulae
+- **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** Students enter mathematical work in Markdown practices, but no primary lesson teaches formula syntax or formula-bearing submission workflow.
-- **Consequence:** Practice without teaching cannot establish reliable Markdown-math authoring.
+- **Rationale:** C10 teaches inline and display mathematics with symbol definitions and interpretation; three Colab practices require a rendered macro-F1 derivation.
+- **Consequence:** Students can present mathematical derivations as readable, correctly rendered Markdown.
 
-- **competition-workflow lessons:** —
-- **competition-workflow practices:** C2-p11, C3-p10, F4-p17
-- **competition-workflow assessments:** r1-001-p04-2
-- **derivation lessons:** —
-- **derivation practices:** C2-p11, C3-p10, F4-p17
-- **derivation assessments:** r1-001-p04-2
+- **competition-workflow lessons:** units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 4. Inline and display mathematics > Checkpoint 4 :: cell 1
+- **competition-workflow practices:** C10-p15, C10-p17, C10-p18
+- **competition-workflow assessments:** —
+- **derivation lessons:** units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 4. Inline and display mathematics > Checkpoint 4 :: cell 1
+- **derivation practices:** C10-p15, C10-p17, C10-p18
+- **derivation assessments:** —
 
-Practices: C2-p11, C3-p10, F4-p17
+Practices: C10-p15, C10-p17, C10-p18
 
-Assessments: r1-001-p04-2
+Assessments: —
 
 ### markdown-text-communication
 
@@ -1600,23 +1597,23 @@ Assessments: r1-001-p01-1, r1-001-p09
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** partial
+- **Coverage:** covered
 - **Destination:** C9-dimensionality-reduction
 - **Dependencies:** pca-centered-covariance-eigenproblem-derivation, principal-component-analysis, python-programming
-- **Shipped concepts:** numpy-arrays, pca, svd
-- **Modalities missing:** implementation
-- **Practice shortfall:** 3
-- **Rationale:** Students perform individual PCA computations but never implement a reusable NumPy fit-transform-inverse class.
-- **Consequence:** The official from-scratch class expectation is unmet.
+- **Shipped concepts:** numpy-pca-class-from-scratch
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C9 specifies and implements reusable fit state, transform, inverse transform, variance ratios, and projector behavior, then grades the complete class in three practices.
+- **Consequence:** Students can build and validate PCA from scratch with NumPy under full-rank and degenerate regimes.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 5. The reusable `NumpyPCA` fit-state contract :: cell 2, units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 6. Transform, inverse transform, and the projector :: cell 2
+- **implementation practices:** C9-p22, C9-p23, C9-p24
 - **implementation assessments:** —
-- **theory lessons:** units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 1. Centering: the Mean Vector and $X_c$ :: cell 1, units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data :: cell 1
-- **theory practices:** —
+- **theory lessons:** units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 5. The reusable `NumpyPCA` fit-state contract :: cell 1, units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 6. Transform, inverse transform, and the projector :: cell 1
+- **theory practices:** C9-p22, C9-p23, C9-p24
 - **theory assessments:** —
 
-Practices: —
+Practices: C9-p22, C9-p23, C9-p24
 
 Assessments: —
 
@@ -1672,26 +1669,26 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** bridge
-- **Coverage:** partial
+- **Coverage:** covered
 - **Destination:** C2-linear-models
 - **Dependencies:** linear-regression-estimator-derivation, rank
-- **Shipped concepts:** invertibility-via-rank, linear-regression, mse-loss, rank
-- **Modalities missing:** derivation, implementation
-- **Practice shortfall:** 3
-- **Rationale:** Residual geometry and rank are taught, but full-column-rank identifiability and pseudoinverse behavior are not.
-- **Consequence:** The official estimator derivation lacks its necessary rank-deficient boundary conditions.
+- **Shipped concepts:** ols-rank-identifiability-and-pseudoinverse
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C2 proves the full-rank uniqueness equivalence, separates exact consistency from least squares, derives the nullspace family, and implements the minimum-norm pseudoinverse fit.
+- **Consequence:** Students can reason correctly about identifiable predictions and non-identifiable coefficients at deficient rank.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 4. Pseudoinverse and the Minimum-Norm Worked Fit :: cell 1, units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 5. Projectors Reveal What Is Unique > Checkpoint 5 :: cell 1
+- **derivation practices:** C2-p22, C2-p24
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 4. Pseudoinverse and the Minimum-Norm Worked Fit > Checkpoint 4 :: cell 2
+- **implementation practices:** C2-p23
 - **implementation assessments:** —
-- **theory lessons:** units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 3. Misses, Residuals, and the MSE :: cell 1, units/F3-matrices/lessons/03-rank-independence-and-outer-products.ipynb :: F3-matrices — Session 3: Rank, Independence, and Outer Products > 3. Rank: Counting Independent Directions :: cell 1
-- **theory practices:** —
+- **theory lessons:** units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 2. Full Column Rank and a Unique Worked Fit :: cell 1, units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 3. Consistency, Rank Deficiency, and Identifiability :: cell 1
+- **theory practices:** C2-p22, C2-p23, C2-p24
 - **theory assessments:** —
 
-Practices: —
+Practices: C2-p22, C2-p23, C2-p24
 
 Assessments: —
 
@@ -1768,26 +1765,26 @@ Assessments: r1-001-p09
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** partial
+- **Coverage:** covered
 - **Destination:** C9-dimensionality-reduction
 - **Dependencies:** numpy-pca-class-from-scratch, pca-centered-covariance-eigenproblem-derivation
-- **Shipped concepts:** pca, svd, variance
-- **Modalities missing:** derivation
+- **Shipped concepts:** pca-black-box-insufficiency
+- **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** The unit bans sklearn and computes PCA mechanics directly, but the covariance-eigenproblem derivation is absent.
-- **Consequence:** Students know black-box use is insufficient but cannot complete the official derivation.
+- **Rationale:** C9 joins the covariance derivation to a certified NumPy class and explicitly grades fit state, reconstruction, rank deficiency, and repeated-eigenspace behavior without sklearn PCA.
+- **Consequence:** Students can explain and implement PCA mechanics rather than relying on a black-box estimator call.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 2. Directional variance becomes an eigenproblem :: cell 1
+- **derivation practices:** C9-p23, C9-p24
 - **derivation assessments:** —
-- **implementation lessons:** units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data :: cell 1
-- **implementation practices:** C9-p05, C9-p11, C9-p13
+- **implementation lessons:** units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 7. Worked exam-style example: certify a PCA implementation :: cell 2
+- **implementation practices:** C9-p22, C9-p23, C9-p24
 - **implementation assessments:** —
-- **theory lessons:** units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 2. Variance Along a Direction :: cell 1, units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data :: cell 1
-- **theory practices:** C9-p01, C9-p04
+- **theory lessons:** units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 7. Worked exam-style example: certify a PCA implementation :: cell 1
+- **theory practices:** C9-p22, C9-p23, C9-p24
 - **theory assessments:** —
 
-Practices: C9-p01, C9-p04, C9-p05, C9-p11, C9-p13
+Practices: C9-p22, C9-p23, C9-p24
 
 Assessments: —
 
@@ -1795,23 +1792,23 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** partial
+- **Coverage:** covered
 - **Destination:** C9-dimensionality-reduction
 - **Dependencies:** covariance, eigenvalues-and-eigenvectors, principal-component-analysis
-- **Shipped concepts:** covariance, eigenvalues-eigenvectors, pca, variance
-- **Modalities missing:** derivation
-- **Practice shortfall:** 3
-- **Rationale:** C9 derives directional variance and states the SVD route but never constructs covariance or derives its eigenproblem.
-- **Consequence:** Students cannot supply the official PCA derivation.
+- **Shipped concepts:** pca-centered-covariance-eigenproblem-derivation
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C9 constructs centered sample covariance, derives the Rayleigh-quotient eigenproblem, and proves its SVD equivalence with three direct derivation practices.
+- **Consequence:** Students can supply the official PCA covariance-eigenproblem derivation and reconcile both computational routes.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 2. Directional variance becomes an eigenproblem :: cell 1, units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 3. Why the covariance and SVD routes agree :: cell 1
+- **derivation practices:** C9-p20, C9-p21, C9-p23
 - **derivation assessments:** —
-- **theory lessons:** units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 2. Variance Along a Direction :: cell 1, units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data :: cell 1
-- **theory practices:** —
+- **theory lessons:** units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 1. One denominator, three views of variance :: cell 1, units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 3. Why the covariance and SVD routes agree :: cell 1
+- **theory practices:** C9-p20, C9-p21, C9-p23
 - **theory assessments:** —
 
-Practices: —
+Practices: C9-p20, C9-p21, C9-p23
 
 Assessments: —
 
@@ -2035,20 +2032,20 @@ Assessments: r1-001-p09
 
 - **Layer:** shared-foundation
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** F1-scientific-python
-- **Dependencies:** matplotlib-pyplot-programming, pandas-programming
-- **Shipped concepts:** —
-- **Modalities missing:** implementation
-- **Practice shortfall:** 3
-- **Rationale:** The corpus contains no seaborn import, API use, lesson, or practice.
-- **Consequence:** Matplotlib coverage cannot satisfy the separately named official library.
+- **Dependencies:** matplotlib-pyplot-programming, numpy-programming
+- **Shipped concepts:** seaborn-programming
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** F1 teaches seaborn's array-to-Axes contract, deterministic histogram and scatter semantics, and the justified matplotlib boundary through three constrained practices without requiring pandas.
+- **Consequence:** Students can implement and verify the separately named seaborn plotting surface.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/F1-scientific-python/lessons/04-seaborn-with-arrays.ipynb :: F1-scientific-python — Session 04: Seaborn with Arrays > 1. The array-to-axes contract > Checkpoint 1 :: cell 1, units/F1-scientific-python/lessons/04-seaborn-with-arrays.ipynb :: F1-scientific-python — Session 04: Seaborn with Arrays > 2. Histograms with fixed bins :: cell 2, units/F1-scientific-python/lessons/04-seaborn-with-arrays.ipynb :: F1-scientific-python — Session 04: Seaborn with Arrays > 3. Scatter plots, labels, and visual semantics :: cell 2
+- **implementation practices:** F1-p22, F1-p23, F1-p24
 - **implementation assessments:** —
 
-Practices: —
+Practices: F1-p22, F1-p23, F1-p24
 
 Assessments: —
 
@@ -2350,23 +2347,23 @@ Assessments: r1-001-p01-5
 
 - **Layer:** shared-foundation
 - **Requirement:** required
-- **Coverage:** missing
-- **Destination:** P015-R1-MATH-KERNEL-OPT
+- **Coverage:** covered
+- **Destination:** F7-kernels-convex-optimization
 - **Dependencies:** eigenvalues-and-eigenvectors, gram-matrices
-- **Shipped concepts:** —
-- **Modalities missing:** proof, theory
-- **Practice shortfall:** 3
-- **Rationale:** Incidental PSD energy language never becomes a kernel definition, validity criterion, proof, or counterexample.
-- **Consequence:** Students cannot answer the official kernel-validity proof task.
+- **Shipped concepts:** kernel-validity, positive-semidefinite-matrices
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** F7 teaches the universal finite-Gram criterion, feature-map and closure proofs, and constructive negative-energy counterexamples with six direct practices.
+- **Consequence:** Students can prove or refute kernel validity with the required quantifiers and PSD certificates.
 
-- **proof lessons:** —
-- **proof practices:** —
+- **proof lessons:** units/F7-kernels-convex-optimization/lessons/02-kernel-proofs-and-counterexamples.ipynb :: F7-kernels-convex-optimization — Session 2: Kernel Proofs and Counterexamples > 2. Direct feature-map proofs > Checkpoint 2 :: cell 1, units/F7-kernels-convex-optimization/lessons/02-kernel-proofs-and-counterexamples.ipynb :: F7-kernels-convex-optimization — Session 2: Kernel Proofs and Counterexamples > 6. Constructive negative-eigenvalue counterexamples > Checkpoint 6 :: cell 1
+- **proof practices:** F7-p11, F7-p13, F7-p17
 - **proof assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/F7-kernels-convex-optimization/lessons/01-psd-matrices-and-kernels.ipynb :: F7-kernels-convex-optimization — Session 1: PSD Matrices and Kernels > 5. The finite-Gram definition of a valid kernel > Checkpoint 5 :: cell 1
+- **theory practices:** F7-p02, F7-p06, F7-p15
 - **theory assessments:** —
 
-Practices: —
+Practices: F7-p02, F7-p06, F7-p11, F7-p13, F7-p15, F7-p17
 
 Assessments: —
 
@@ -2429,16 +2426,14 @@ Assessments: —
 
 ## Dependency-ordered content tranche queue
 
-1. **Round 1 foundation, workflow, and mathematical completion:** First close F1 seaborn and C10 Colab/Markdown/round-policy workflow gaps; then F5 extension: conditional probability, Bayes, and Hoeffding; C2 extension: closed-form regression, rank, and pseudoinverse conditions; C9 extension: the PCA eigenproblem and NumPy class; finish with PSD/kernel proofs, convexity, constrained optimization, and duality.
+1. **Round 1 neural-training completion:** Softmax, cross-entropy, manual backpropagation, a fully connected network from scratch, then complete C6 model training through PyTorch autograd/optimizers, explicit BatchNorm/dropout ownership, and C7 CNN training. Forward propagation is already a shipped prerequisite, not a new gap.
 
-2. **Round 1 neural-training completion:** Softmax, cross-entropy, manual backpropagation, a fully connected network from scratch, then complete C6 model training through PyTorch autograd/optimizers, explicit BatchNorm/dropout ownership, and C7 CNN training. Forward propagation is already a shipped prerequisite, not a new gap.
+2. **Round 1 classical-model breadth:** Logistic regression, SVM, decision trees, ensembles, and k-means, with comparison and implementation exercises.
 
-3. **Round 1 classical-model breadth:** Logistic regression, SVM, decision trees, ensembles, and k-means, with comparison and implementation exercises.
+3. **Round 2 transformers and NLP:** Self/multi-head attention, positional encoding, transformer architecture and complexity, from-scratch attention, LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP applications, pre-training, and fine-tuning, followed by vision-transformer and graph-neural-network applications.
 
-4. **Round 2 transformers and NLP:** Self/multi-head attention, positional encoding, transformer architecture and complexity, from-scratch attention, LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP applications, pre-training, and fine-tuning, followed by vision-transformer and graph-neural-network applications.
+4. **Round 2 advanced vision and generative modeling:** Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after multivariate Gaussian, reparameterization, and KL prerequisites.
 
-5. **Round 2 advanced vision and generative modeling:** Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after multivariate Gaussian, reparameterization, and KL prerequisites.
-
-6. **Round 2 open-ended/GPU capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
+5. **Round 2 open-ended/GPU capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
 
 Each tranche updates the shipped syllabus and roadmap atomically.

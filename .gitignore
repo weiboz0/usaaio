@@ -3,6 +3,7 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+.codex-buddy/
 
 # Build outputs (rendered PDFs etc.)
 build/
@@ -23,6 +24,14 @@ reference/*
 # by `make_dataset.py --with-test` and must never be committed (public repo;
 # committing it would break the hidden-test teaching device).
 units/C10-competition-craft/data/heldout.csv
+
+# C10 solution notebooks materialize these deterministic grading artifacts when
+# executed from the repository root. They are student outputs, not source files.
+units/C10-competition-craft/practice/p15_contract.csv
+units/C10-competition-craft/practice/p17_log.csv
+units/C10-competition-craft/practice/p17_predictions.csv
+units/C10-competition-craft/practice/p18_audit.csv
+units/C10-competition-craft/practice/p18_predictions.csv
 
 # Mock test r1-001 P9 grading data is regenerated from its seeded script.
 mocktests/r1-001/data/p09_heldout.csv

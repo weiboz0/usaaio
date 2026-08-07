@@ -80,31 +80,24 @@ while the named plan is unshipped.
 
 | # | Reviewer | Dispatch | Model |
 |---|----------|----------|-------|
-| 1 | Claude self-review | inline; record in `## Plan Review` | session model |
-| 2 | Codex | `codex:codex-rescue` subagent (request `--model gpt-5.6-sol`) | Codex GPT-5.6-sol |
-| 3 | Independent reviewer | `codex:codex-rescue`, SEPARATE fresh session, read-only ‡ | GPT-5.6-sol ‡ |
+| 1 | Self-review | active session inline; record in `## Plan Review` | active session model |
+| 2 | Opus reviewer | `claudecode:claudecode-review` subagent, fresh and read-only (request `--model claude-opus-5`) | Claude Opus 5 |
+| 3 | Terra reviewer | separate fresh read-only subagent (request `--model gpt-5.6-terra`) | GPT-5.6-terra |
 | 4 | GLM | `opencode:opencode-review` subagent, read-only | opencode-go/glm-5.2 |
-
-‡ **TEMPORARY DELEGATION (user directive 2026-08-05, expires 2026-08-09 16:00 Sunday):**
-all Fable 5 jobs route to gpt-5.6-sol. Slot 3 therefore runs as a SECOND, independent
-gpt-5.6-sol session (fresh context, never shares the slot-2 session id) instead of an
-independent Fable agent. **Trade-off recorded:** the plan gate temporarily loses one model
-family, so cross-family diversity rests on GLM + the content gate's Opus slot; slot-3
-prompts must state "you are the independent reviewer — do not assume the other codex
-reviewer's findings". On expiry, revert slot 3 to `model: fable`.
 
 Dispatch 2–4 in parallel with the inline self-review (one message).
 Consensus is full blocking: all four APPROVE / APPROVE WITH NITS, no open blockers.
-Verdicts recorded in the plan file's `## Plan Review`, tagged `[claude-self]` / `[codex]` / `[fable]` / `[glm]`.
+Verdicts recorded in the plan file's `## Plan Review`, tagged `[self]` / `[opus]` /
+`[terra]` / `[glm]`.
 Reviewers MUST REJECT a plan shipping units/mock tests without a named verification phase
 (design §2 "verification phase" rule; docs-only and tooling-only plans state the exemption
 in `## Out of scope`).
 
 ## Content-review gate (mandatory — 4-way, pre-PR)
 
-Same roster shape (Claude self on Opus, Codex on GPT-5.6-terra, independent Opus `Agent`, GLM).
+Same roster: active-session self-review, Claude Opus 5, GPT-5.6-terra, and GLM-5.2.
 Duties and format: `docs/content-review-gate.md`.
-Findings tagged `[claude-self]` / `[codex]` / `[opus]` / `[glm]` with
+Findings tagged `[self]` / `[opus]` / `[terra]` / `[glm]` with
 `[OPEN]` / `[FIXED]` / `[WONTFIX]` in the plan file's `## Content Review`;
 all `[OPEN]` resolve before merge.
 
@@ -112,7 +105,7 @@ all `[OPEN]` resolve before merge.
 
 | Work | Dispatch |
 |------|----------|
-| Planning, review orchestration, test assembly | Orchestrator Claude inline |
+| Planning, review orchestration, test assembly | Active Codex session inline |
 | Lesson content + problem/mock-question STATEMENTS | `codex:codex-rescue` (GPT-5.6-sol) — user directive 2026-08-06 |
 | ANY job previously routed to Fable 5 (drafting, independent review, audits) | `codex:codex-rescue` (GPT-5.6-sol) — TEMPORARY, expires 2026-08-09 16:00 |
 | SOLUTIONS to practice + mock questions | `codex:codex-rescue` (GPT-5.6-sol) — SEPARATE fresh session, never reads statements' outlines; blind-solve independence is now session-level (same model family), cross-model verification lives in the gates |
