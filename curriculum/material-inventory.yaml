@@ -7208,7 +7208,7 @@ notebooks:
   - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p15.ipynb
   kind: notebook
-  semantic_sha256: 4af2e914b5101dc1a2ee69ebc82080c2b0761e30c9f596a4f02926a3445cec91
+  semantic_sha256: a95ad93420aba3ac4f80f2947ee87e00219b4f700996e400062d40f88f119679
   anchors:
   - anchor: 'units/C10-competition-craft/practice/p15.ipynb :: C10-competition-craft — Practice p15 :: cell 1'
     heading_path:
@@ -7262,40 +7262,44 @@ notebooks:
   - stage_trace.append
 - path: units/C10-competition-craft/practice/p15_solution.ipynb
   kind: notebook
-  semantic_sha256: 1f88b0f486cff490b9fe129833e878885e02b45ba0167e3909b2857b208459d4
+  semantic_sha256: b863a2ee7cee276edf167a19793dcd1ed4f0ea7a4602974dec3344144b11c8b7
   anchors:
-  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 :: cell 1'
+  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 — Solution ::
+      cell 1'
     heading_path:
-    - C10-competition-craft — Practice p15
+    - C10-competition-craft — Practice p15 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 :: cell 2'
+  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 — Solution ::
+      cell 2'
     heading_path:
-    - C10-competition-craft — Practice p15
+    - C10-competition-craft — Practice p15 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 :: cell 3'
+  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 — Solution ::
+      cell 3'
     heading_path:
-    - C10-competition-craft — Practice p15
+    - C10-competition-craft — Practice p15 — Solution
     cell_ordinal: 3
-  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 :: cell 4'
+  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 — Solution ::
+      cell 4'
     heading_path:
-    - C10-competition-craft — Practice p15
+    - C10-competition-craft — Practice p15 — Solution
     cell_ordinal: 4
-  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 > Row 6 — Round-policy
-      correction :: cell 1'
+  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 — Solution >
+      Row 6 — Round-policy correction :: cell 1'
     heading_path:
-    - C10-competition-craft — Practice p15
+    - C10-competition-craft — Practice p15 — Solution
     - Row 6 — Round-policy correction
     cell_ordinal: 1
-  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 > Row 6 — Round-policy
-      correction :: cell 2'
+  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 — Solution >
+      Row 6 — Round-policy correction :: cell 2'
     heading_path:
-    - C10-competition-craft — Practice p15
+    - C10-competition-craft — Practice p15 — Solution
     - Row 6 — Round-policy correction
     cell_ordinal: 2
-  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 > Row 6 — Round-policy
-      correction > Answer check :: cell 1'
+  - anchor: 'units/C10-competition-craft/practice/p15_solution.ipynb :: C10-competition-craft — Practice p15 — Solution >
+      Row 6 — Round-policy correction > Answer check :: cell 1'
     heading_path:
-    - C10-competition-craft — Practice p15
+    - C10-competition-craft — Practice p15 — Solution
     - Row 6 — Round-policy correction
     - Answer check
     cell_ordinal: 1
@@ -7411,7 +7415,7 @@ notebooks:
   - sklearn.preprocessing.StandardScaler
 - path: units/C10-competition-craft/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: 8192fb7ab6e37239e7211d7515ae0abbd55e2b3f1cb22f5179a362a9cfc2e732
+  semantic_sha256: d000d65fced306195765aa8959b24c5cfe04ee5d78536fccd18791079b4b47a1
   anchors:
   - anchor: 'units/C10-competition-craft/practice/p17.ipynb :: C10-competition-craft — Practice p17 :: cell 1'
     heading_path:
@@ -7504,70 +7508,71 @@ notebooks:
   - stage_trace.append
 - path: units/C10-competition-craft/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: bb7c8f205bfe42e5675cf353fead10231718716e9eb8299cba27db9bbb1e4baa
+  semantic_sha256: a55744b6d628d0fd6ce743f7175d022d69612aecd0c3f8df0d68de7a24b0243d
   anchors:
-  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 :: cell 1'
+  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 — Solution ::
+      cell 1'
     heading_path:
-    - C10-competition-craft — Practice p17
+    - C10-competition-craft — Practice p17 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 > Exact log semantics
-      > Exact submitted artifacts :: cell 1'
+  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 — Solution >
+      Exact log semantics > Exact submitted artifacts :: cell 1'
     heading_path:
-    - C10-competition-craft — Practice p17
+    - C10-competition-craft — Practice p17 — Solution
     - Exact log semantics
     - Exact submitted artifacts
     cell_ordinal: 1
-  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 > Exact log semantics
-      > Exact submitted artifacts :: cell 2'
+  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 — Solution >
+      Exact log semantics > Exact submitted artifacts :: cell 2'
     heading_path:
-    - C10-competition-craft — Practice p17
+    - C10-competition-craft — Practice p17 — Solution
     - Exact log semantics
     - Exact submitted artifacts
     cell_ordinal: 2
-  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 > Exact log semantics
-      > Exact submitted artifacts :: cell 3'
+  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 — Solution >
+      Exact log semantics > Exact submitted artifacts :: cell 3'
     heading_path:
-    - C10-competition-craft — Practice p17
+    - C10-competition-craft — Practice p17 — Solution
     - Exact log semantics
     - Exact submitted artifacts
     cell_ordinal: 3
-  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 > Exact log semantics
-      > Exact submitted artifacts :: cell 4'
+  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 — Solution >
+      Exact log semantics > Exact submitted artifacts :: cell 4'
     heading_path:
-    - C10-competition-craft — Practice p17
+    - C10-competition-craft — Practice p17 — Solution
     - Exact log semantics
     - Exact submitted artifacts
     cell_ordinal: 4
-  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 > Exact log semantics
-      > Exact submitted artifacts :: cell 5'
+  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 — Solution >
+      Exact log semantics > Exact submitted artifacts :: cell 5'
     heading_path:
-    - C10-competition-craft — Practice p17
+    - C10-competition-craft — Practice p17 — Solution
     - Exact log semantics
     - Exact submitted artifacts
     cell_ordinal: 5
-  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 > Exact log semantics
-      > Exact submitted artifacts :: cell 6'
+  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 — Solution >
+      Exact log semantics > Exact submitted artifacts :: cell 6'
     heading_path:
-    - C10-competition-craft — Practice p17
+    - C10-competition-craft — Practice p17 — Solution
     - Exact log semantics
     - Exact submitted artifacts
     cell_ordinal: 6
-  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 > Row 6 — Round
-      declaration :: cell 1'
+  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 — Solution >
+      Row 6 — Round declaration :: cell 1'
     heading_path:
-    - C10-competition-craft — Practice p17
+    - C10-competition-craft — Practice p17 — Solution
     - Row 6 — Round declaration
     cell_ordinal: 1
-  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 > Row 6 — Round
-      declaration :: cell 2'
+  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 — Solution >
+      Row 6 — Round declaration :: cell 2'
     heading_path:
-    - C10-competition-craft — Practice p17
+    - C10-competition-craft — Practice p17 — Solution
     - Row 6 — Round declaration
     cell_ordinal: 2
-  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 > Row 6 — Round
-      declaration > Answer check :: cell 1'
+  - anchor: 'units/C10-competition-craft/practice/p17_solution.ipynb :: C10-competition-craft — Practice p17 — Solution >
+      Row 6 — Round declaration > Answer check :: cell 1'
     heading_path:
-    - C10-competition-craft — Practice p17
+    - C10-competition-craft — Practice p17 — Solution
     - Row 6 — Round declaration
     - Answer check
     cell_ordinal: 1
@@ -7619,7 +7624,7 @@ notebooks:
   - stage_trace.append
 - path: units/C10-competition-craft/practice/p18.ipynb
   kind: notebook
-  semantic_sha256: 32eebd5df9279f1131075e94cbc727ddf73a16cb990853485c11c25295190388
+  semantic_sha256: 6b45182246b192e599f2950afb10eeda57c9f298365e8105610318403844240a
   anchors:
   - anchor: 'units/C10-competition-craft/practice/p18.ipynb :: Macro F1 = sum F1_k / K > Cell 2 — text > Cell 6 — text ::
       cell 1'
@@ -7719,7 +7724,7 @@ notebooks:
   - str.strip
 - path: units/C10-competition-craft/practice/p18_solution.ipynb
   kind: notebook
-  semantic_sha256: 3b3e771755c4c328c5aaf78e248c2a488f957ace0548afd8eb590aeaf9139809
+  semantic_sha256: 623515744200a9461a702172e84dde86c12c1315899554a9a43320a52ec2f4a8
   anchors:
   - anchor: 'units/C10-competition-craft/practice/p18_solution.ipynb :: Macro F1 = sum F1_k / K > Cell 2 — text > Cell 6 —
       text :: cell 1'
@@ -10175,32 +10180,32 @@ notebooks:
   - np.array
 - path: units/C2-linear-models/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: 5ebcdb0f68858e70f4b6c2cf35d2fb6cfcd0457696ba55410e2f693ae71ffdb3
+  semantic_sha256: 0d2c8d9250a5ef37f42ab31399a3d8d8396c486d6fb63f8bbd0913dc1fd6e954
   anchors:
-  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 — Solution :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p19
+    - C2-linear-models — Practice p19 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 :: cell 2'
+  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 — Solution :: cell 2'
     heading_path:
-    - C2-linear-models — Practice p19
+    - C2-linear-models — Practice p19 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 :: cell 3'
+  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 — Solution :: cell 3'
     heading_path:
-    - C2-linear-models — Practice p19
+    - C2-linear-models — Practice p19 — Solution
     cell_ordinal: 3
-  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 :: cell 4'
+  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 — Solution :: cell 4'
     heading_path:
-    - C2-linear-models — Practice p19
+    - C2-linear-models — Practice p19 — Solution
     cell_ordinal: 4
-  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 :: cell 5'
+  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 — Solution :: cell 5'
     heading_path:
-    - C2-linear-models — Practice p19
+    - C2-linear-models — Practice p19 — Solution
     cell_ordinal: 5
-  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 > Answer check :: cell
-      1'
+  - anchor: 'units/C2-linear-models/practice/p19_solution.ipynb :: C2-linear-models — Practice p19 — Solution > Answer check
+      :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p19
+    - C2-linear-models — Practice p19 — Solution
     - Answer check
     cell_ordinal: 1
   declared_unit_ids:
@@ -10288,36 +10293,36 @@ notebooks:
   - value.items
 - path: units/C2-linear-models/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: e413295e2b826bf6586b74a789b78d8b48d6fcdb29c8e0081a119841b4d55629
+  semantic_sha256: 91419f9f0b3ff8ebcd35a590be926365e91c9f4fe98b2002343e5e1341ef4dd1
   anchors:
-  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 > Part B — constrained
+  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 — Solution > Part B — constrained
       implementation :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p20
+    - C2-linear-models — Practice p20 — Solution
     - Part B — constrained implementation
     cell_ordinal: 1
-  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 > Part B — constrained
+  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 — Solution > Part B — constrained
       implementation :: cell 2'
     heading_path:
-    - C2-linear-models — Practice p20
+    - C2-linear-models — Practice p20 — Solution
     - Part B — constrained implementation
     cell_ordinal: 2
-  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 > Immutable contract check
-      — do not edit :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 — Solution > Immutable
+      contract check — do not edit :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p20
+    - C2-linear-models — Practice p20 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
-  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 > Immutable contract check
-      — do not edit :: cell 2'
+  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 — Solution > Immutable
+      contract check — do not edit :: cell 2'
     heading_path:
-    - C2-linear-models — Practice p20
+    - C2-linear-models — Practice p20 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
-  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 > Immutable contract check
-      — do not edit > Answer check :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p20_solution.ipynb :: C2-linear-models — Practice p20 — Solution > Immutable
+      contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p20
+    - C2-linear-models — Practice p20 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -10395,32 +10400,32 @@ notebooks:
   - np.array
 - path: units/C2-linear-models/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: c3fc9f71331374c062e4ad30fbd314d6b0aab9886486d60b4798431b0c73175b
+  semantic_sha256: a5a4399584f077ac1db4af3f163645a56dda4276326bd564f9e623939c3943d6
   anchors:
-  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 — Solution :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p21
+    - C2-linear-models — Practice p21 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 :: cell 2'
+  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 — Solution :: cell 2'
     heading_path:
-    - C2-linear-models — Practice p21
+    - C2-linear-models — Practice p21 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 :: cell 3'
+  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 — Solution :: cell 3'
     heading_path:
-    - C2-linear-models — Practice p21
+    - C2-linear-models — Practice p21 — Solution
     cell_ordinal: 3
-  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 :: cell 4'
+  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 — Solution :: cell 4'
     heading_path:
-    - C2-linear-models — Practice p21
+    - C2-linear-models — Practice p21 — Solution
     cell_ordinal: 4
-  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 :: cell 5'
+  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 — Solution :: cell 5'
     heading_path:
-    - C2-linear-models — Practice p21
+    - C2-linear-models — Practice p21 — Solution
     cell_ordinal: 5
-  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 > Answer check :: cell
-      1'
+  - anchor: 'units/C2-linear-models/practice/p21_solution.ipynb :: C2-linear-models — Practice p21 — Solution > Answer check
+      :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p21
+    - C2-linear-models — Practice p21 — Solution
     - Answer check
     cell_ordinal: 1
   declared_unit_ids:
@@ -10464,32 +10469,32 @@ notebooks:
   - np.allclose
 - path: units/C2-linear-models/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: 23347908d0cf69ea1d9dbc05f6c7b65787db031b7621c23a1ec705baaaadd3dd
+  semantic_sha256: 3ab9559d4f703ba1ffb16f80b1b618d80112f97a53240ad053d47803cd5f5c6b
   anchors:
-  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 — Solution :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p22
+    - C2-linear-models — Practice p22 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 :: cell 2'
+  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 — Solution :: cell 2'
     heading_path:
-    - C2-linear-models — Practice p22
+    - C2-linear-models — Practice p22 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 :: cell 3'
+  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 — Solution :: cell 3'
     heading_path:
-    - C2-linear-models — Practice p22
+    - C2-linear-models — Practice p22 — Solution
     cell_ordinal: 3
-  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 :: cell 4'
+  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 — Solution :: cell 4'
     heading_path:
-    - C2-linear-models — Practice p22
+    - C2-linear-models — Practice p22 — Solution
     cell_ordinal: 4
-  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 :: cell 5'
+  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 — Solution :: cell 5'
     heading_path:
-    - C2-linear-models — Practice p22
+    - C2-linear-models — Practice p22 — Solution
     cell_ordinal: 5
-  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 > Answer check :: cell
-      1'
+  - anchor: 'units/C2-linear-models/practice/p22_solution.ipynb :: C2-linear-models — Practice p22 — Solution > Answer check
+      :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p22
+    - C2-linear-models — Practice p22 — Solution
     - Answer check
     cell_ordinal: 1
   declared_unit_ids:
@@ -10575,32 +10580,32 @@ notebooks:
   - value.items
 - path: units/C2-linear-models/practice/p23_solution.ipynb
   kind: notebook
-  semantic_sha256: 8f961a3d7d6cc0a96e47f404e4f1850bef7991e1321d99c27669b42a7f3f136a
+  semantic_sha256: 84942b42fe4c207c477dade00ecf2f115052abd05b0638179d3defac23c4746c
   anchors:
-  - anchor: 'units/C2-linear-models/practice/p23_solution.ipynb :: C2-linear-models — Practice p23 :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p23_solution.ipynb :: C2-linear-models — Practice p23 — Solution :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p23
+    - C2-linear-models — Practice p23 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C2-linear-models/practice/p23_solution.ipynb :: C2-linear-models — Practice p23 :: cell 2'
+  - anchor: 'units/C2-linear-models/practice/p23_solution.ipynb :: C2-linear-models — Practice p23 — Solution :: cell 2'
     heading_path:
-    - C2-linear-models — Practice p23
+    - C2-linear-models — Practice p23 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C2-linear-models/practice/p23_solution.ipynb :: C2-linear-models — Practice p23 > Immutable contract check
-      — do not edit :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p23_solution.ipynb :: C2-linear-models — Practice p23 — Solution > Immutable
+      contract check — do not edit :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p23
+    - C2-linear-models — Practice p23 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
-  - anchor: 'units/C2-linear-models/practice/p23_solution.ipynb :: C2-linear-models — Practice p23 > Immutable contract check
-      — do not edit :: cell 2'
+  - anchor: 'units/C2-linear-models/practice/p23_solution.ipynb :: C2-linear-models — Practice p23 — Solution > Immutable
+      contract check — do not edit :: cell 2'
     heading_path:
-    - C2-linear-models — Practice p23
+    - C2-linear-models — Practice p23 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
-  - anchor: 'units/C2-linear-models/practice/p23_solution.ipynb :: C2-linear-models — Practice p23 > Immutable contract check
-      — do not edit > Answer check :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p23_solution.ipynb :: C2-linear-models — Practice p23 — Solution > Immutable
+      contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p23
+    - C2-linear-models — Practice p23 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -10679,32 +10684,32 @@ notebooks:
   - np.linalg.pinv
 - path: units/C2-linear-models/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: 136740244d7c489d11a9f5b366125d8fdf6e516f64800ea6c4075158548307f3
+  semantic_sha256: c6b3bdcaf979fb49f5cd71c1f59386d6e6c47a2318cd29734e8ebf8e404164c6
   anchors:
-  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 :: cell 1'
+  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 — Solution :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p24
+    - C2-linear-models — Practice p24 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 :: cell 2'
+  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 — Solution :: cell 2'
     heading_path:
-    - C2-linear-models — Practice p24
+    - C2-linear-models — Practice p24 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 :: cell 3'
+  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 — Solution :: cell 3'
     heading_path:
-    - C2-linear-models — Practice p24
+    - C2-linear-models — Practice p24 — Solution
     cell_ordinal: 3
-  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 :: cell 4'
+  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 — Solution :: cell 4'
     heading_path:
-    - C2-linear-models — Practice p24
+    - C2-linear-models — Practice p24 — Solution
     cell_ordinal: 4
-  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 :: cell 5'
+  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 — Solution :: cell 5'
     heading_path:
-    - C2-linear-models — Practice p24
+    - C2-linear-models — Practice p24 — Solution
     cell_ordinal: 5
-  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 > Answer check :: cell
-      1'
+  - anchor: 'units/C2-linear-models/practice/p24_solution.ipynb :: C2-linear-models — Practice p24 — Solution > Answer check
+      :: cell 1'
     heading_path:
-    - C2-linear-models — Practice p24
+    - C2-linear-models — Practice p24 — Solution
     - Answer check
     cell_ordinal: 1
   declared_unit_ids:
@@ -27374,44 +27379,44 @@ notebooks:
   - np.outer
 - path: units/C9-dimensionality-reduction/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 4f6f5737d23a670a08c5a6e7dcaed22fc5d8a53d6dbab0532ca3a63c11a538e6
+  semantic_sha256: be5a89460a68f9397583b6fe3a6f438c1eb810c47d2c6a68366c9388295300de
   anchors:
-  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 ::
-      cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 —
+      Solution :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p20
+    - C9-dimensionality-reduction — Practice p20 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 >
-      Your derivation :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 —
+      Solution > Your derivation :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p20
+    - C9-dimensionality-reduction — Practice p20 — Solution
     - Your derivation
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 >
-      Your derivation > Solution derivation :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 —
+      Solution > Your derivation > Solution derivation :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p20
+    - C9-dimensionality-reduction — Practice p20 — Solution
     - Your derivation
     - Solution derivation
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 >
-      Your derivation > Solution derivation :: cell 2'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 —
+      Solution > Your derivation > Solution derivation :: cell 2'
     heading_path:
-    - C9-dimensionality-reduction — Practice p20
+    - C9-dimensionality-reduction — Practice p20 — Solution
     - Your derivation
     - Solution derivation
     cell_ordinal: 2
-  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 >
-      Your derivation > Solution derivation :: cell 3'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 —
+      Solution > Your derivation > Solution derivation :: cell 3'
     heading_path:
-    - C9-dimensionality-reduction — Practice p20
+    - C9-dimensionality-reduction — Practice p20 — Solution
     - Your derivation
     - Solution derivation
     cell_ordinal: 3
-  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 >
-      Your derivation > Answer check :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p20_solution.ipynb :: C9-dimensionality-reduction — Practice p20 —
+      Solution > Your derivation > Answer check :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p20
+    - C9-dimensionality-reduction — Practice p20 — Solution
     - Your derivation
     - Answer check
     cell_ordinal: 1
@@ -27473,44 +27478,44 @@ notebooks:
   - np.trace
 - path: units/C9-dimensionality-reduction/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: 903411f26e872c5732cbe593e5f18e1ada5dc2f6770460dc91aac63538e476b6
+  semantic_sha256: f4aff55310e713690e71e3b678d3600b2f07423bd6f394e048a8702c9245e16b
   anchors:
-  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 ::
-      cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 —
+      Solution :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p21
+    - C9-dimensionality-reduction — Practice p21 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 >
-      Your proof :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 —
+      Solution > Your proof :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p21
+    - C9-dimensionality-reduction — Practice p21 — Solution
     - Your proof
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 >
-      Your proof > Solution proof :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 —
+      Solution > Your proof > Solution proof :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p21
+    - C9-dimensionality-reduction — Practice p21 — Solution
     - Your proof
     - Solution proof
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 >
-      Your proof > Solution proof :: cell 2'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 —
+      Solution > Your proof > Solution proof :: cell 2'
     heading_path:
-    - C9-dimensionality-reduction — Practice p21
+    - C9-dimensionality-reduction — Practice p21 — Solution
     - Your proof
     - Solution proof
     cell_ordinal: 2
-  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 >
-      Your proof > Solution proof :: cell 3'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 —
+      Solution > Your proof > Solution proof :: cell 3'
     heading_path:
-    - C9-dimensionality-reduction — Practice p21
+    - C9-dimensionality-reduction — Practice p21 — Solution
     - Your proof
     - Solution proof
     cell_ordinal: 3
-  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 >
-      Your proof > Answer check :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p21_solution.ipynb :: C9-dimensionality-reduction — Practice p21 —
+      Solution > Your proof > Answer check :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p21
+    - C9-dimensionality-reduction — Practice p21 — Solution
     - Your proof
     - Answer check
     cell_ordinal: 1
@@ -27532,7 +27537,7 @@ notebooks:
   - np.trace
 - path: units/C9-dimensionality-reduction/practice/p22.ipynb
   kind: notebook
-  semantic_sha256: fe7356e36a8614498101728faffc825e5d1d0f5712df009c2bcd82f2ed3afba4
+  semantic_sha256: b1939afa493d2d5fda5fc8d5b52122ddd945caa411231a11e9afc3b1b57ab5b1
   anchors:
   - anchor: 'units/C9-dimensionality-reduction/practice/p22.ipynb :: C9-dimensionality-reduction — Practice p22 :: cell 1'
     heading_path:
@@ -27617,34 +27622,34 @@ notebooks:
   - seen.add
 - path: units/C9-dimensionality-reduction/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: b0aff1966935f08b61043dd8a51f5881c8e9524d4a8c63d25845d3036a6a0acc
+  semantic_sha256: e5b99e542f5282fd5b24983310a4d2bf154babf606ad011180aa89441edd2b87
   anchors:
-  - anchor: 'units/C9-dimensionality-reduction/practice/p22_solution.ipynb :: C9-dimensionality-reduction — Practice p22 ::
-      cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p22_solution.ipynb :: C9-dimensionality-reduction — Practice p22 —
+      Solution :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p22
+    - C9-dimensionality-reduction — Practice p22 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p22_solution.ipynb :: C9-dimensionality-reduction — Practice p22 ::
-      cell 2'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p22_solution.ipynb :: C9-dimensionality-reduction — Practice p22 —
+      Solution :: cell 2'
     heading_path:
-    - C9-dimensionality-reduction — Practice p22
+    - C9-dimensionality-reduction — Practice p22 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C9-dimensionality-reduction/practice/p22_solution.ipynb :: C9-dimensionality-reduction — Practice p22 >
-      Immutable contract check — do not edit :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p22_solution.ipynb :: C9-dimensionality-reduction — Practice p22 —
+      Solution > Immutable contract check — do not edit :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p22
+    - C9-dimensionality-reduction — Practice p22 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p22_solution.ipynb :: C9-dimensionality-reduction — Practice p22 >
-      Immutable contract check — do not edit :: cell 2'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p22_solution.ipynb :: C9-dimensionality-reduction — Practice p22 —
+      Solution > Immutable contract check — do not edit :: cell 2'
     heading_path:
-    - C9-dimensionality-reduction — Practice p22
+    - C9-dimensionality-reduction — Practice p22 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
-  - anchor: 'units/C9-dimensionality-reduction/practice/p22_solution.ipynb :: C9-dimensionality-reduction — Practice p22 >
-      Immutable contract check — do not edit > Answer check :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p22_solution.ipynb :: C9-dimensionality-reduction — Practice p22 —
+      Solution > Immutable contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p22
+    - C9-dimensionality-reduction — Practice p22 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -27717,7 +27722,7 @@ notebooks:
   - self._numeric_matrix
 - path: units/C9-dimensionality-reduction/practice/p23.ipynb
   kind: notebook
-  semantic_sha256: bead38d8830040cee3f0f874fd10fbaf9bfc522bfb06087bbbec9c40a9d3712f
+  semantic_sha256: 6102e5cc95f6ddfe47089ede9a4298732ed697e2c02410d3a8e36be2368484cd
   anchors:
   - anchor: 'units/C9-dimensionality-reduction/practice/p23.ipynb :: C9-dimensionality-reduction — Practice p23 :: cell 1'
     heading_path:
@@ -27726,6 +27731,18 @@ notebooks:
   - anchor: 'units/C9-dimensionality-reduction/practice/p23.ipynb :: C9-dimensionality-reduction — Practice p23 :: cell 2'
     heading_path:
     - C9-dimensionality-reduction — Practice p23
+    cell_ordinal: 2
+  - anchor: 'units/C9-dimensionality-reduction/practice/p23.ipynb :: C9-dimensionality-reduction — Practice p23 > Part B —
+      derivation and certification (separately graded) :: cell 1'
+    heading_path:
+    - C9-dimensionality-reduction — Practice p23
+    - Part B — derivation and certification (separately graded)
+    cell_ordinal: 1
+  - anchor: 'units/C9-dimensionality-reduction/practice/p23.ipynb :: C9-dimensionality-reduction — Practice p23 > Part B —
+      derivation and certification (separately graded) :: cell 2'
+    heading_path:
+    - C9-dimensionality-reduction — Practice p23
+    - Part B — derivation and certification (separately graded)
     cell_ordinal: 2
   - anchor: 'units/C9-dimensionality-reduction/practice/p23.ipynb :: C9-dimensionality-reduction — Practice p23 > Immutable
       contract check — do not edit :: cell 1'
@@ -27805,34 +27822,46 @@ notebooks:
   - seen.add
 - path: units/C9-dimensionality-reduction/practice/p23_solution.ipynb
   kind: notebook
-  semantic_sha256: 8076d9dd0fd2b0dda43f394c7ccfbb87525279136820de95dccf67df7060b0a5
+  semantic_sha256: 0b697210f8e03088ca227c9cbcc1708908c36b04305aa361e1d7e0c66c21daf3
   anchors:
-  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 ::
-      cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 —
+      Solution :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p23
+    - C9-dimensionality-reduction — Practice p23 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 ::
-      cell 2'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 —
+      Solution :: cell 2'
     heading_path:
-    - C9-dimensionality-reduction — Practice p23
+    - C9-dimensionality-reduction — Practice p23 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 >
-      Immutable contract check — do not edit :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 —
+      Solution > Part B — derivation and certification (separately graded) :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p23
+    - C9-dimensionality-reduction — Practice p23 — Solution
+    - Part B — derivation and certification (separately graded)
+    cell_ordinal: 1
+  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 —
+      Solution > Part B — derivation and certification (separately graded) :: cell 2'
+    heading_path:
+    - C9-dimensionality-reduction — Practice p23 — Solution
+    - Part B — derivation and certification (separately graded)
+    cell_ordinal: 2
+  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 —
+      Solution > Immutable contract check — do not edit :: cell 1'
+    heading_path:
+    - C9-dimensionality-reduction — Practice p23 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 >
-      Immutable contract check — do not edit :: cell 2'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 —
+      Solution > Immutable contract check — do not edit :: cell 2'
     heading_path:
-    - C9-dimensionality-reduction — Practice p23
+    - C9-dimensionality-reduction — Practice p23 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
-  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 >
-      Immutable contract check — do not edit > Answer check :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p23_solution.ipynb :: C9-dimensionality-reduction — Practice p23 —
+      Solution > Immutable contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p23
+    - C9-dimensionality-reduction — Practice p23 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -27911,7 +27940,7 @@ notebooks:
   - self.transform
 - path: units/C9-dimensionality-reduction/practice/p24.ipynb
   kind: notebook
-  semantic_sha256: 7750b4e857d3fc0d5e506df39dc65567fd5f7ccd1676a47bc33b870097bf93f7
+  semantic_sha256: 1f5228cce608850a609ae3b978712d97c719d64646ecde0258a5be876513224c
   anchors:
   - anchor: 'units/C9-dimensionality-reduction/practice/p24.ipynb :: C9-dimensionality-reduction — Practice p24 :: cell 1'
     heading_path:
@@ -28007,34 +28036,34 @@ notebooks:
   - seen.add
 - path: units/C9-dimensionality-reduction/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: 7c1d91cccbc1246f3349b24c2e948c5dd8bf136a4618adaa6d97d299e0420576
+  semantic_sha256: 43675a9d409d7c3711c9da69450150f651397c4789acd66844748bb622661b69
   anchors:
-  - anchor: 'units/C9-dimensionality-reduction/practice/p24_solution.ipynb :: C9-dimensionality-reduction — Practice p24 ::
-      cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p24_solution.ipynb :: C9-dimensionality-reduction — Practice p24 —
+      Solution :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p24
+    - C9-dimensionality-reduction — Practice p24 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p24_solution.ipynb :: C9-dimensionality-reduction — Practice p24 ::
-      cell 2'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p24_solution.ipynb :: C9-dimensionality-reduction — Practice p24 —
+      Solution :: cell 2'
     heading_path:
-    - C9-dimensionality-reduction — Practice p24
+    - C9-dimensionality-reduction — Practice p24 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C9-dimensionality-reduction/practice/p24_solution.ipynb :: C9-dimensionality-reduction — Practice p24 >
-      Immutable contract check — do not edit :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p24_solution.ipynb :: C9-dimensionality-reduction — Practice p24 —
+      Solution > Immutable contract check — do not edit :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p24
+    - C9-dimensionality-reduction — Practice p24 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
-  - anchor: 'units/C9-dimensionality-reduction/practice/p24_solution.ipynb :: C9-dimensionality-reduction — Practice p24 >
-      Immutable contract check — do not edit :: cell 2'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p24_solution.ipynb :: C9-dimensionality-reduction — Practice p24 —
+      Solution > Immutable contract check — do not edit :: cell 2'
     heading_path:
-    - C9-dimensionality-reduction — Practice p24
+    - C9-dimensionality-reduction — Practice p24 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
-  - anchor: 'units/C9-dimensionality-reduction/practice/p24_solution.ipynb :: C9-dimensionality-reduction — Practice p24 >
-      Immutable contract check — do not edit > Answer check :: cell 1'
+  - anchor: 'units/C9-dimensionality-reduction/practice/p24_solution.ipynb :: C9-dimensionality-reduction — Practice p24 —
+      Solution > Immutable contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - C9-dimensionality-reduction — Practice p24
+    - C9-dimensionality-reduction — Practice p24 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -32673,32 +32702,37 @@ notebooks:
   - plt.show
 - path: units/F1-scientific-python/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: 0a4e4c9c209a4b02662265d9bde1bea6909763439e0bd1f9a524a850c62c3cfa
+  semantic_sha256: 02fea1cb30c73e0fae0e16191f3b6655f2323b27689699d181cc89eb3cc73123
   anchors:
-  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 :: cell 1'
+  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 — Solution :: cell
+      1'
     heading_path:
-    - F1-scientific-python — Practice p22
+    - F1-scientific-python — Practice p22 — Solution
     cell_ordinal: 1
-  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 :: cell 2'
+  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 — Solution :: cell
+      2'
     heading_path:
-    - F1-scientific-python — Practice p22
+    - F1-scientific-python — Practice p22 — Solution
     cell_ordinal: 2
-  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 :: cell 3'
+  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 — Solution :: cell
+      3'
     heading_path:
-    - F1-scientific-python — Practice p22
+    - F1-scientific-python — Practice p22 — Solution
     cell_ordinal: 3
-  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 :: cell 4'
+  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 — Solution :: cell
+      4'
     heading_path:
-    - F1-scientific-python — Practice p22
+    - F1-scientific-python — Practice p22 — Solution
     cell_ordinal: 4
-  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 :: cell 5'
+  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 — Solution :: cell
+      5'
     heading_path:
-    - F1-scientific-python — Practice p22
+    - F1-scientific-python — Practice p22 — Solution
     cell_ordinal: 5
-  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 > Answer check
-      :: cell 1'
+  - anchor: 'units/F1-scientific-python/practice/p22_solution.ipynb :: F1-scientific-python — Practice p22 — Solution > Answer
+      check :: cell 1'
     heading_path:
-    - F1-scientific-python — Practice p22
+    - F1-scientific-python — Practice p22 — Solution
     - Answer check
     cell_ordinal: 1
   declared_unit_ids:
@@ -32806,44 +32840,49 @@ notebooks:
   - scatterplot_calls.append
 - path: units/F1-scientific-python/practice/p23_solution.ipynb
   kind: notebook
-  semantic_sha256: 8a2095187b07d5835da3975c0600acd0425d6c8f5e3b47b4271a7c12a9aa68b4
+  semantic_sha256: 2061e08bf2585749dbff6939a10906d137d4bc6d26121bc01cc4a5cc05041019
   anchors:
-  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 :: cell 1'
+  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 — Solution :: cell
+      1'
     heading_path:
-    - F1-scientific-python — Practice p23
+    - F1-scientific-python — Practice p23 — Solution
     cell_ordinal: 1
-  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 :: cell 2'
+  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 — Solution :: cell
+      2'
     heading_path:
-    - F1-scientific-python — Practice p23
+    - F1-scientific-python — Practice p23 — Solution
     cell_ordinal: 2
-  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 :: cell 3'
+  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 — Solution :: cell
+      3'
     heading_path:
-    - F1-scientific-python — Practice p23
+    - F1-scientific-python — Practice p23 — Solution
     cell_ordinal: 3
-  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 :: cell 4'
+  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 — Solution :: cell
+      4'
     heading_path:
-    - F1-scientific-python — Practice p23
+    - F1-scientific-python — Practice p23 — Solution
     cell_ordinal: 4
-  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 :: cell 5'
+  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 — Solution :: cell
+      5'
     heading_path:
-    - F1-scientific-python — Practice p23
+    - F1-scientific-python — Practice p23 — Solution
     cell_ordinal: 5
-  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 > Semantic explanation
-      :: cell 1'
+  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 — Solution > Semantic
+      explanation :: cell 1'
     heading_path:
-    - F1-scientific-python — Practice p23
+    - F1-scientific-python — Practice p23 — Solution
     - Semantic explanation
     cell_ordinal: 1
-  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 > Semantic explanation
-      :: cell 2'
+  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 — Solution > Semantic
+      explanation :: cell 2'
     heading_path:
-    - F1-scientific-python — Practice p23
+    - F1-scientific-python — Practice p23 — Solution
     - Semantic explanation
     cell_ordinal: 2
-  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 > Semantic explanation
-      > Answer check :: cell 1'
+  - anchor: 'units/F1-scientific-python/practice/p23_solution.ipynb :: F1-scientific-python — Practice p23 — Solution > Semantic
+      explanation > Answer check :: cell 1'
     heading_path:
-    - F1-scientific-python — Practice p23
+    - F1-scientific-python — Practice p23 — Solution
     - Semantic explanation
     - Answer check
     cell_ordinal: 1
@@ -32993,68 +33032,70 @@ notebooks:
   - revised.min
 - path: units/F1-scientific-python/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: a7b1dc1984eeb97c9c2a023f53b67bc0ad5aae7dcf3978777322a33e86b202ba
+  semantic_sha256: da133169d2607d329474d6b3ce7b40b13f4911bfc0facbb155e3c2feeb497448
   anchors:
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 :: cell 1'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution :: cell
+      1'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     cell_ordinal: 1
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 :: cell 2'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution :: cell
+      2'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     cell_ordinal: 2
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 > Part A — diagnosis
-      :: cell 1'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution > Part
+      A — diagnosis :: cell 1'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     - Part A — diagnosis
     cell_ordinal: 1
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 > Part A — diagnosis
-      :: cell 2'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution > Part
+      A — diagnosis :: cell 2'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     - Part A — diagnosis
     cell_ordinal: 2
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 > Part B — reproducible
-      repair :: cell 1'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution > Part
+      B — reproducible repair :: cell 1'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     - Part B — reproducible repair
     cell_ordinal: 1
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 > Part B — reproducible
-      repair :: cell 2'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution > Part
+      B — reproducible repair :: cell 2'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     - Part B — reproducible repair
     cell_ordinal: 2
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 > Part B — reproducible
-      repair :: cell 3'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution > Part
+      B — reproducible repair :: cell 3'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     - Part B — reproducible repair
     cell_ordinal: 3
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 > Part B — reproducible
-      repair :: cell 4'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution > Part
+      B — reproducible repair :: cell 4'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     - Part B — reproducible repair
     cell_ordinal: 4
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 > Part C — justify
-      the library boundary :: cell 1'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution > Part
+      C — justify the library boundary :: cell 1'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     - Part C — justify the library boundary
     cell_ordinal: 1
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 > Part C — justify
-      the library boundary :: cell 2'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution > Part
+      C — justify the library boundary :: cell 2'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     - Part C — justify the library boundary
     cell_ordinal: 2
-  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 > Part C — justify
-      the library boundary > Answer check :: cell 1'
+  - anchor: 'units/F1-scientific-python/practice/p24_solution.ipynb :: F1-scientific-python — Practice p24 — Solution > Part
+      C — justify the library boundary > Answer check :: cell 1'
     heading_path:
-    - F1-scientific-python — Practice p24
+    - F1-scientific-python — Practice p24 — Solution
     - Part C — justify the library boundary
     - Answer check
     cell_ordinal: 1
@@ -42663,7 +42704,7 @@ notebooks:
   api_tokens: []
 - path: units/F5-probability/practice/p20.ipynb
   kind: notebook
-  semantic_sha256: c067e09efcfed041bc7e3f022fe65be769e863fec40cfba92165a45f0061fab1
+  semantic_sha256: 8aa937d224c9705367fa23651e51cf742705bf3d7464c6ca9b6030520eca9448
   anchors:
   - anchor: 'units/F5-probability/practice/p20.ipynb :: F5-probability — Practice p20 :: cell 1'
     heading_path:
@@ -42687,27 +42728,28 @@ notebooks:
   - math.gcd
 - path: units/F5-probability/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 140eccdc429ec6acab294cb388950da215feadcb441d651d960551cf52825cdc
+  semantic_sha256: 36104f65b0e316b47fc64c52d682e45da6852a9b7a0db2456044e67def4d6b72
   anchors:
-  - anchor: 'units/F5-probability/practice/p20_solution.ipynb :: F5-probability — Practice p20 :: cell 1'
+  - anchor: 'units/F5-probability/practice/p20_solution.ipynb :: F5-probability — Practice p20 — Solution :: cell 1'
     heading_path:
-    - F5-probability — Practice p20
+    - F5-probability — Practice p20 — Solution
     cell_ordinal: 1
-  - anchor: 'units/F5-probability/practice/p20_solution.ipynb :: F5-probability — Practice p20 :: cell 2'
+  - anchor: 'units/F5-probability/practice/p20_solution.ipynb :: F5-probability — Practice p20 — Solution :: cell 2'
     heading_path:
-    - F5-probability — Practice p20
+    - F5-probability — Practice p20 — Solution
     cell_ordinal: 2
-  - anchor: 'units/F5-probability/practice/p20_solution.ipynb :: F5-probability — Practice p20 :: cell 3'
+  - anchor: 'units/F5-probability/practice/p20_solution.ipynb :: F5-probability — Practice p20 — Solution :: cell 3'
     heading_path:
-    - F5-probability — Practice p20
+    - F5-probability — Practice p20 — Solution
     cell_ordinal: 3
-  - anchor: 'units/F5-probability/practice/p20_solution.ipynb :: F5-probability — Practice p20 :: cell 4'
+  - anchor: 'units/F5-probability/practice/p20_solution.ipynb :: F5-probability — Practice p20 — Solution :: cell 4'
     heading_path:
-    - F5-probability — Practice p20
+    - F5-probability — Practice p20 — Solution
     cell_ordinal: 4
-  - anchor: 'units/F5-probability/practice/p20_solution.ipynb :: F5-probability — Practice p20 > Answer check :: cell 1'
+  - anchor: 'units/F5-probability/practice/p20_solution.ipynb :: F5-probability — Practice p20 — Solution > Answer check ::
+      cell 1'
     heading_path:
-    - F5-probability — Practice p20
+    - F5-probability — Practice p20 — Solution
     - Answer check
     cell_ordinal: 1
   declared_unit_ids:
@@ -42753,27 +42795,28 @@ notebooks:
   - rain.sum
 - path: units/F5-probability/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: 93dc2f61da200469b47cdf19aafc979b40120e405d6c53090e2ff58d99169736
+  semantic_sha256: 963f2080c0a83be8eafbc25d53bf7a3e8de040ca02ea118704e5acd2efe62146
   anchors:
-  - anchor: 'units/F5-probability/practice/p21_solution.ipynb :: F5-probability — Practice p21 :: cell 1'
+  - anchor: 'units/F5-probability/practice/p21_solution.ipynb :: F5-probability — Practice p21 — Solution :: cell 1'
     heading_path:
-    - F5-probability — Practice p21
+    - F5-probability — Practice p21 — Solution
     cell_ordinal: 1
-  - anchor: 'units/F5-probability/practice/p21_solution.ipynb :: F5-probability — Practice p21 :: cell 2'
+  - anchor: 'units/F5-probability/practice/p21_solution.ipynb :: F5-probability — Practice p21 — Solution :: cell 2'
     heading_path:
-    - F5-probability — Practice p21
+    - F5-probability — Practice p21 — Solution
     cell_ordinal: 2
-  - anchor: 'units/F5-probability/practice/p21_solution.ipynb :: F5-probability — Practice p21 :: cell 3'
+  - anchor: 'units/F5-probability/practice/p21_solution.ipynb :: F5-probability — Practice p21 — Solution :: cell 3'
     heading_path:
-    - F5-probability — Practice p21
+    - F5-probability — Practice p21 — Solution
     cell_ordinal: 3
-  - anchor: 'units/F5-probability/practice/p21_solution.ipynb :: F5-probability — Practice p21 :: cell 4'
+  - anchor: 'units/F5-probability/practice/p21_solution.ipynb :: F5-probability — Practice p21 — Solution :: cell 4'
     heading_path:
-    - F5-probability — Practice p21
+    - F5-probability — Practice p21 — Solution
     cell_ordinal: 4
-  - anchor: 'units/F5-probability/practice/p21_solution.ipynb :: F5-probability — Practice p21 > Answer check :: cell 1'
+  - anchor: 'units/F5-probability/practice/p21_solution.ipynb :: F5-probability — Practice p21 — Solution > Answer check ::
+      cell 1'
     heading_path:
-    - F5-probability — Practice p21
+    - F5-probability — Practice p21 — Solution
     - Answer check
     cell_ordinal: 1
   declared_unit_ids:
@@ -42795,7 +42838,7 @@ notebooks:
   - rain.sum
 - path: units/F5-probability/practice/p22.ipynb
   kind: notebook
-  semantic_sha256: c4ef98495376a1da19e43db52fceb2a7cc2c5018ee7f68a1e64dfe42a39a2f22
+  semantic_sha256: a21ebea50cf3779c87f44c73af6757bf958fb11c649cdf9d11d3e5f8bcf1f0ac
   anchors:
   - anchor: 'units/F5-probability/practice/p22.ipynb :: F5-probability — Practice p22 :: cell 1'
     heading_path:
@@ -42821,27 +42864,28 @@ notebooks:
   - math.gcd
 - path: units/F5-probability/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: 3f6a73b15eff14d83072cad2963b8347dccb7414744e2f0d861f628e3cf9fc15
+  semantic_sha256: 896679a048b737649df104a9789926f9de2bdb0e2091c71776ec79cefd347603
   anchors:
-  - anchor: 'units/F5-probability/practice/p22_solution.ipynb :: F5-probability — Practice p22 :: cell 1'
+  - anchor: 'units/F5-probability/practice/p22_solution.ipynb :: F5-probability — Practice p22 — Solution :: cell 1'
     heading_path:
-    - F5-probability — Practice p22
+    - F5-probability — Practice p22 — Solution
     cell_ordinal: 1
-  - anchor: 'units/F5-probability/practice/p22_solution.ipynb :: F5-probability — Practice p22 :: cell 2'
+  - anchor: 'units/F5-probability/practice/p22_solution.ipynb :: F5-probability — Practice p22 — Solution :: cell 2'
     heading_path:
-    - F5-probability — Practice p22
+    - F5-probability — Practice p22 — Solution
     cell_ordinal: 2
-  - anchor: 'units/F5-probability/practice/p22_solution.ipynb :: F5-probability — Practice p22 :: cell 3'
+  - anchor: 'units/F5-probability/practice/p22_solution.ipynb :: F5-probability — Practice p22 — Solution :: cell 3'
     heading_path:
-    - F5-probability — Practice p22
+    - F5-probability — Practice p22 — Solution
     cell_ordinal: 3
-  - anchor: 'units/F5-probability/practice/p22_solution.ipynb :: F5-probability — Practice p22 :: cell 4'
+  - anchor: 'units/F5-probability/practice/p22_solution.ipynb :: F5-probability — Practice p22 — Solution :: cell 4'
     heading_path:
-    - F5-probability — Practice p22
+    - F5-probability — Practice p22 — Solution
     cell_ordinal: 4
-  - anchor: 'units/F5-probability/practice/p22_solution.ipynb :: F5-probability — Practice p22 > Answer check :: cell 1'
+  - anchor: 'units/F5-probability/practice/p22_solution.ipynb :: F5-probability — Practice p22 — Solution > Answer check ::
+      cell 1'
     heading_path:
-    - F5-probability — Practice p22
+    - F5-probability — Practice p22 — Solution
     - Answer check
     cell_ordinal: 1
   declared_unit_ids:
@@ -42856,7 +42900,7 @@ notebooks:
   - math.gcd
 - path: units/F5-probability/practice/p23.ipynb
   kind: notebook
-  semantic_sha256: 36fd1da8f5e15f23abd461824570a7a7a8a4ed0b7204bb8db87a9a84312ab6ac
+  semantic_sha256: 02eb5a045d89a687aa77ea63107ba47eca77fda25b9c49761cdcff3bb3302709
   anchors:
   - anchor: 'units/F5-probability/practice/p23.ipynb :: F5-probability — Practice p23 :: cell 1'
     heading_path:
@@ -42884,27 +42928,28 @@ notebooks:
   - np.isclose
 - path: units/F5-probability/practice/p23_solution.ipynb
   kind: notebook
-  semantic_sha256: 80c784cc21e44a2dcc6956e1716c9cdb70a786651201f95111efb436c98044bc
+  semantic_sha256: 9b25c50354827b85b3efee4d2774076a0be45b7042e8b7817f30b85c893d2809
   anchors:
-  - anchor: 'units/F5-probability/practice/p23_solution.ipynb :: F5-probability — Practice p23 :: cell 1'
+  - anchor: 'units/F5-probability/practice/p23_solution.ipynb :: F5-probability — Practice p23 — Solution :: cell 1'
     heading_path:
-    - F5-probability — Practice p23
+    - F5-probability — Practice p23 — Solution
     cell_ordinal: 1
-  - anchor: 'units/F5-probability/practice/p23_solution.ipynb :: F5-probability — Practice p23 :: cell 2'
+  - anchor: 'units/F5-probability/practice/p23_solution.ipynb :: F5-probability — Practice p23 — Solution :: cell 2'
     heading_path:
-    - F5-probability — Practice p23
+    - F5-probability — Practice p23 — Solution
     cell_ordinal: 2
-  - anchor: 'units/F5-probability/practice/p23_solution.ipynb :: F5-probability — Practice p23 :: cell 3'
+  - anchor: 'units/F5-probability/practice/p23_solution.ipynb :: F5-probability — Practice p23 — Solution :: cell 3'
     heading_path:
-    - F5-probability — Practice p23
+    - F5-probability — Practice p23 — Solution
     cell_ordinal: 3
-  - anchor: 'units/F5-probability/practice/p23_solution.ipynb :: F5-probability — Practice p23 :: cell 4'
+  - anchor: 'units/F5-probability/practice/p23_solution.ipynb :: F5-probability — Practice p23 — Solution :: cell 4'
     heading_path:
-    - F5-probability — Practice p23
+    - F5-probability — Practice p23 — Solution
     cell_ordinal: 4
-  - anchor: 'units/F5-probability/practice/p23_solution.ipynb :: F5-probability — Practice p23 > Answer check :: cell 1'
+  - anchor: 'units/F5-probability/practice/p23_solution.ipynb :: F5-probability — Practice p23 — Solution > Answer check ::
+      cell 1'
     heading_path:
-    - F5-probability — Practice p23
+    - F5-probability — Practice p23 — Solution
     - Answer check
     cell_ordinal: 1
   declared_unit_ids:
@@ -42921,7 +42966,7 @@ notebooks:
   - np.isclose
 - path: units/F5-probability/practice/p24.ipynb
   kind: notebook
-  semantic_sha256: 6bcfa5d554d65c30fff4dd1cbd73eca97f720502ed0c1d81ec8bda8e4c85d2b8
+  semantic_sha256: 6494d8d12b496e447baa24c05f70f74e88dd7debfba926ae928568bf1ed3492c
   anchors:
   - anchor: 'units/F5-probability/practice/p24.ipynb :: F5-probability — Practice p24 :: cell 1'
     heading_path:
@@ -42961,31 +43006,32 @@ notebooks:
   - success_counts.sum
 - path: units/F5-probability/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: bf6ef4816ca62bf4d3893e23e682ffbec3b4ad84a7d902c0bacf5f50afe9467d
+  semantic_sha256: 8c57f5f87b45aaff25de42d6e7a8896b278155459a4390b8209804fae686431c
   anchors:
-  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 :: cell 1'
+  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 — Solution :: cell 1'
     heading_path:
-    - F5-probability — Practice p24
+    - F5-probability — Practice p24 — Solution
     cell_ordinal: 1
-  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 :: cell 2'
+  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 — Solution :: cell 2'
     heading_path:
-    - F5-probability — Practice p24
+    - F5-probability — Practice p24 — Solution
     cell_ordinal: 2
-  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 :: cell 3'
+  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 — Solution :: cell 3'
     heading_path:
-    - F5-probability — Practice p24
+    - F5-probability — Practice p24 — Solution
     cell_ordinal: 3
-  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 :: cell 4'
+  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 — Solution :: cell 4'
     heading_path:
-    - F5-probability — Practice p24
+    - F5-probability — Practice p24 — Solution
     cell_ordinal: 4
-  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 :: cell 5'
+  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 — Solution :: cell 5'
     heading_path:
-    - F5-probability — Practice p24
+    - F5-probability — Practice p24 — Solution
     cell_ordinal: 5
-  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 > Answer check :: cell 1'
+  - anchor: 'units/F5-probability/practice/p24_solution.ipynb :: F5-probability — Practice p24 — Solution > Answer check ::
+      cell 1'
     heading_path:
-    - F5-probability — Practice p24
+    - F5-probability — Practice p24 — Solution
     - Answer check
     cell_ordinal: 1
   declared_unit_ids:
@@ -43052,38 +43098,38 @@ notebooks:
   - success_counts.sum
 - path: units/F5-probability/practice/p25_solution.ipynb
   kind: notebook
-  semantic_sha256: 0b7d2ca99aa24a52a5de9ed39a7980e7777d96dcf11b64cfd5687125af218c5b
+  semantic_sha256: d78144c406801883f9c2b3f30c45a10613c86d706e6a57c09e13681da62cd43b
   anchors:
-  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 :: cell 1'
+  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 — Solution :: cell 1'
     heading_path:
-    - F5-probability — Practice p25
+    - F5-probability — Practice p25 — Solution
     cell_ordinal: 1
-  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 :: cell 2'
+  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 — Solution :: cell 2'
     heading_path:
-    - F5-probability — Practice p25
+    - F5-probability — Practice p25 — Solution
     cell_ordinal: 2
-  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 :: cell 3'
+  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 — Solution :: cell 3'
     heading_path:
-    - F5-probability — Practice p25
+    - F5-probability — Practice p25 — Solution
     cell_ordinal: 3
-  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 > (a) Direct conditional and
-      Bayes route > (d) Simulation :: cell 1'
+  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 — Solution > (a) Direct conditional
+      and Bayes route > (d) Simulation :: cell 1'
     heading_path:
-    - F5-probability — Practice p25
+    - F5-probability — Practice p25 — Solution
     - (a) Direct conditional and Bayes route
     - (d) Simulation
     cell_ordinal: 1
-  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 > (a) Direct conditional and
-      Bayes route > (d) Simulation :: cell 2'
+  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 — Solution > (a) Direct conditional
+      and Bayes route > (d) Simulation :: cell 2'
     heading_path:
-    - F5-probability — Practice p25
+    - F5-probability — Practice p25 — Solution
     - (a) Direct conditional and Bayes route
     - (d) Simulation
     cell_ordinal: 2
-  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 > (a) Direct conditional and
-      Bayes route > Answer check :: cell 1'
+  - anchor: 'units/F5-probability/practice/p25_solution.ipynb :: F5-probability — Practice p25 — Solution > (a) Direct conditional
+      and Bayes route > Answer check :: cell 1'
     heading_path:
-    - F5-probability — Practice p25
+    - F5-probability — Practice p25 — Solution
     - (a) Direct conditional and Bayes route
     - Answer check
     cell_ordinal: 1
@@ -46500,48 +46546,48 @@ notebooks:
   api_tokens: []
 - path: units/F7-kernels-convex-optimization/practice/p01_solution.ipynb
   kind: notebook
-  semantic_sha256: e117d2734bdd04dec0b8fac8ac61550921747a24a5f2030ff23b9b55b2ebf131
+  semantic_sha256: e263bc57c0c886d8afb5d3085a27dc06a3ac387a1241d4c5fe3e5897259d6aad
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p01_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p01 :: cell 1'
+      p01 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p01
+    - F7-kernels-convex-optimization — Practice p01 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p01_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p01 :: cell 2'
+      p01 — Solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p01
+    - F7-kernels-convex-optimization — Practice p01 — Solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p01_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p01 > Answer-form check — do not edit :: cell 1'
+      p01 — Solution > Answer-form check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p01
+    - F7-kernels-convex-optimization — Practice p01 — Solution
     - Answer-form check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p01_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p01 > Answer-form check — do not edit :: cell 2'
+      p01 — Solution > Answer-form check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p01
+    - F7-kernels-convex-optimization — Practice p01 — Solution
     - Answer-form check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p01_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p01 > Answer-form check — do not edit > Solution reasoning :: cell 1'
+      p01 — Solution > Answer-form check — do not edit > Solution reasoning :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p01
+    - F7-kernels-convex-optimization — Practice p01 — Solution
     - Answer-form check — do not edit
     - Solution reasoning
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p01_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p01 > Answer-form check — do not edit > Answer check :: cell 1'
+      p01 — Solution > Answer-form check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p01
+    - F7-kernels-convex-optimization — Practice p01 — Solution
     - Answer-form check — do not edit
     - Answer check
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p01_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p01 > Answer-form check — do not edit > Answer check :: cell 2'
+      p01 — Solution > Answer-form check — do not edit > Answer check :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p01
+    - F7-kernels-convex-optimization — Practice p01 — Solution
     - Answer-form check — do not edit
     - Answer check
     cell_ordinal: 2
@@ -46587,48 +46633,48 @@ notebooks:
   api_tokens: []
 - path: units/F7-kernels-convex-optimization/practice/p02_solution.ipynb
   kind: notebook
-  semantic_sha256: 82265459944cc38eae9fcf1dd773c60666d6d92d2280ffa5091fd7ed433a4444
+  semantic_sha256: ebf0d44859f365f3835f635fb25336536778a5bf624c3536d420baf5effe8fee
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p02_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p02 :: cell 1'
+      p02 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p02
+    - F7-kernels-convex-optimization — Practice p02 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p02_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p02 :: cell 2'
+      p02 — Solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p02
+    - F7-kernels-convex-optimization — Practice p02 — Solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p02_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p02 > Answer-form check — do not edit :: cell 1'
+      p02 — Solution > Answer-form check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p02
+    - F7-kernels-convex-optimization — Practice p02 — Solution
     - Answer-form check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p02_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p02 > Answer-form check — do not edit :: cell 2'
+      p02 — Solution > Answer-form check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p02
+    - F7-kernels-convex-optimization — Practice p02 — Solution
     - Answer-form check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p02_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p02 > Answer-form check — do not edit > Solution reasoning :: cell 1'
+      p02 — Solution > Answer-form check — do not edit > Solution reasoning :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p02
+    - F7-kernels-convex-optimization — Practice p02 — Solution
     - Answer-form check — do not edit
     - Solution reasoning
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p02_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p02 > Answer-form check — do not edit > Answer check :: cell 1'
+      p02 — Solution > Answer-form check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p02
+    - F7-kernels-convex-optimization — Practice p02 — Solution
     - Answer-form check — do not edit
     - Answer check
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p02_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p02 > Answer-form check — do not edit > Answer check :: cell 2'
+      p02 — Solution > Answer-form check — do not edit > Answer check :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p02
+    - F7-kernels-convex-optimization — Practice p02 — Solution
     - Answer-form check — do not edit
     - Answer check
     cell_ordinal: 2
@@ -46674,48 +46720,48 @@ notebooks:
   api_tokens: []
 - path: units/F7-kernels-convex-optimization/practice/p03_solution.ipynb
   kind: notebook
-  semantic_sha256: 0402304aca5eb4280f7f47f8048db1e3d3b9d3b58fbe8d2c818b980095333f19
+  semantic_sha256: 16c88f13dc1599055f49fb4138323f12edd5d328c03a273ff964b7d0046498d7
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p03_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p03 :: cell 1'
+      p03 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p03
+    - F7-kernels-convex-optimization — Practice p03 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p03_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p03 :: cell 2'
+      p03 — Solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p03
+    - F7-kernels-convex-optimization — Practice p03 — Solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p03_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p03 > Answer-form check — do not edit :: cell 1'
+      p03 — Solution > Answer-form check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p03
+    - F7-kernels-convex-optimization — Practice p03 — Solution
     - Answer-form check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p03_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p03 > Answer-form check — do not edit :: cell 2'
+      p03 — Solution > Answer-form check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p03
+    - F7-kernels-convex-optimization — Practice p03 — Solution
     - Answer-form check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p03_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p03 > Answer-form check — do not edit > Solution reasoning :: cell 1'
+      p03 — Solution > Answer-form check — do not edit > Solution reasoning :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p03
+    - F7-kernels-convex-optimization — Practice p03 — Solution
     - Answer-form check — do not edit
     - Solution reasoning
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p03_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p03 > Answer-form check — do not edit > Answer check :: cell 1'
+      p03 — Solution > Answer-form check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p03
+    - F7-kernels-convex-optimization — Practice p03 — Solution
     - Answer-form check — do not edit
     - Answer check
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p03_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p03 > Answer-form check — do not edit > Answer check :: cell 2'
+      p03 — Solution > Answer-form check — do not edit > Answer check :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p03
+    - F7-kernels-convex-optimization — Practice p03 — Solution
     - Answer-form check — do not edit
     - Answer check
     cell_ordinal: 2
@@ -46728,7 +46774,7 @@ notebooks:
   api_tokens: []
 - path: units/F7-kernels-convex-optimization/practice/p04.ipynb
   kind: notebook
-  semantic_sha256: a4838da21d8131d85685bf03af1f119b92b9af56cfacf88955979f7c7a234829
+  semantic_sha256: ce33246f829a8ba100ce7ea2f96f450989d6b48fa3efa30669e4f0e9c32b76ec
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p04.ipynb :: F7-kernels-convex-optimization — Practice p04 :: cell
       1'
@@ -46763,48 +46809,48 @@ notebooks:
   - math.gcd
 - path: units/F7-kernels-convex-optimization/practice/p04_solution.ipynb
   kind: notebook
-  semantic_sha256: 52882855e834bbbed258cbe0cb0f309d57517d0bc9b3f5d5d528770ec8bad2fd
+  semantic_sha256: 66acbf3d2b9d7ca7d3e134ce7e66181bbffa44dd689bd2c5f27b3a5e2fc43403
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p04_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p04 :: cell 1'
+      p04 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p04
+    - F7-kernels-convex-optimization — Practice p04 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p04_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p04 :: cell 2'
+      p04 — Solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p04
+    - F7-kernels-convex-optimization — Practice p04 — Solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p04_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p04 > Normal-form check — do not edit :: cell 1'
+      p04 — Solution > Normal-form check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p04
+    - F7-kernels-convex-optimization — Practice p04 — Solution
     - Normal-form check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p04_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p04 > Normal-form check — do not edit :: cell 2'
+      p04 — Solution > Normal-form check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p04
+    - F7-kernels-convex-optimization — Practice p04 — Solution
     - Normal-form check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p04_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p04 > Normal-form check — do not edit > Solution reasoning :: cell 1'
+      p04 — Solution > Normal-form check — do not edit > Solution reasoning :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p04
+    - F7-kernels-convex-optimization — Practice p04 — Solution
     - Normal-form check — do not edit
     - Solution reasoning
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p04_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p04 > Normal-form check — do not edit > Answer check :: cell 1'
+      p04 — Solution > Normal-form check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p04
+    - F7-kernels-convex-optimization — Practice p04 — Solution
     - Normal-form check — do not edit
     - Answer check
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p04_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p04 > Normal-form check — do not edit > Answer check :: cell 2'
+      p04 — Solution > Normal-form check — do not edit > Answer check :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p04
+    - F7-kernels-convex-optimization — Practice p04 — Solution
     - Normal-form check — do not edit
     - Answer check
     cell_ordinal: 2
@@ -46861,48 +46907,48 @@ notebooks:
   - np.ones
 - path: units/F7-kernels-convex-optimization/practice/p05_solution.ipynb
   kind: notebook
-  semantic_sha256: 02ce16f3a5914210747c9c6cc871bc7d26ce9263526ebc1b8461f9081c62637b
+  semantic_sha256: f98cec1b6d3c028e0daa176be674d9f43cb336f87260af93912275d59ae8a1e0
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p05_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p05 :: cell 1'
+      p05 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p05
+    - F7-kernels-convex-optimization — Practice p05 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p05_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p05 :: cell 2'
+      p05 — Solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p05
+    - F7-kernels-convex-optimization — Practice p05 — Solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p05_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p05 > Immutable contract check — do not edit :: cell 1'
+      p05 — Solution > Immutable contract check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p05
+    - F7-kernels-convex-optimization — Practice p05 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p05_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p05 > Immutable contract check — do not edit :: cell 2'
+      p05 — Solution > Immutable contract check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p05
+    - F7-kernels-convex-optimization — Practice p05 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p05_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p05 > Immutable contract check — do not edit > Solution reasoning :: cell 1'
+      p05 — Solution > Immutable contract check — do not edit > Solution reasoning :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p05
+    - F7-kernels-convex-optimization — Practice p05 — Solution
     - Immutable contract check — do not edit
     - Solution reasoning
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p05_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p05 > Immutable contract check — do not edit > Answer check :: cell 1'
+      p05 — Solution > Immutable contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p05
+    - F7-kernels-convex-optimization — Practice p05 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p05_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p05 > Immutable contract check — do not edit > Answer check :: cell 2'
+      p05 — Solution > Immutable contract check — do not edit > Answer check :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p05
+    - F7-kernels-convex-optimization — Practice p05 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 2
@@ -46969,48 +47015,48 @@ notebooks:
   - np.linalg.eigvalsh
 - path: units/F7-kernels-convex-optimization/practice/p06_solution.ipynb
   kind: notebook
-  semantic_sha256: 17954208bc2ab861c25392f227336db6460abe00420e84217aaa043ecd7e5942
+  semantic_sha256: 8354e0aff92df402f9c930bf668ba569ebd3251736ec1ece96f48aa5400485af
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p06_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p06 :: cell 1'
+      p06 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p06
+    - F7-kernels-convex-optimization — Practice p06 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p06_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p06 :: cell 2'
+      p06 — Solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p06
+    - F7-kernels-convex-optimization — Practice p06 — Solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p06_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p06 > Immutable contract check — do not edit :: cell 1'
+      p06 — Solution > Immutable contract check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p06
+    - F7-kernels-convex-optimization — Practice p06 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p06_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p06 > Immutable contract check — do not edit :: cell 2'
+      p06 — Solution > Immutable contract check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p06
+    - F7-kernels-convex-optimization — Practice p06 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p06_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p06 > Immutable contract check — do not edit > Solution reasoning :: cell 1'
+      p06 — Solution > Immutable contract check — do not edit > Solution reasoning :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p06
+    - F7-kernels-convex-optimization — Practice p06 — Solution
     - Immutable contract check — do not edit
     - Solution reasoning
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p06_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p06 > Immutable contract check — do not edit > Answer check :: cell 1'
+      p06 — Solution > Immutable contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p06
+    - F7-kernels-convex-optimization — Practice p06 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p06_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p06 > Immutable contract check — do not edit > Answer check :: cell 2'
+      p06 — Solution > Immutable contract check — do not edit > Answer check :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p06
+    - F7-kernels-convex-optimization — Practice p06 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 2
@@ -47079,48 +47125,48 @@ notebooks:
   - np.linalg.norm
 - path: units/F7-kernels-convex-optimization/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: b7af6b647cadfa2974962c10315515392914a534dfddc0fec56a6034dbc2021f
+  semantic_sha256: fa3f415cdb76d03c9dfd78fb8e02fc901d593a32de5355d1eda3475480b011c5
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p07_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p07 :: cell 1'
+      p07 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p07
+    - F7-kernels-convex-optimization — Practice p07 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p07_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p07 :: cell 2'
+      p07 — Solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p07
+    - F7-kernels-convex-optimization — Practice p07 — Solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p07_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p07 > Immutable contract check — do not edit :: cell 1'
+      p07 — Solution > Immutable contract check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p07
+    - F7-kernels-convex-optimization — Practice p07 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p07_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p07 > Immutable contract check — do not edit :: cell 2'
+      p07 — Solution > Immutable contract check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p07
+    - F7-kernels-convex-optimization — Practice p07 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p07_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p07 > Immutable contract check — do not edit > Solution reasoning :: cell 1'
+      p07 — Solution > Immutable contract check — do not edit > Solution reasoning :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p07
+    - F7-kernels-convex-optimization — Practice p07 — Solution
     - Immutable contract check — do not edit
     - Solution reasoning
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p07_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p07 > Immutable contract check — do not edit > Answer check :: cell 1'
+      p07 — Solution > Immutable contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p07
+    - F7-kernels-convex-optimization — Practice p07 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p07_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p07 > Immutable contract check — do not edit > Answer check :: cell 2'
+      p07 — Solution > Immutable contract check — do not edit > Answer check :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p07
+    - F7-kernels-convex-optimization — Practice p07 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 2
@@ -47194,48 +47240,48 @@ notebooks:
   - np.ones
 - path: units/F7-kernels-convex-optimization/practice/p08_solution.ipynb
   kind: notebook
-  semantic_sha256: cf7aa93e763cc4f9689128e2ac111991c1bcfafdf93ecd7fbbf115019781ce87
+  semantic_sha256: 3c30d8539a403bd2254b03609b34d1575e072d24703b891446bf0ce892a275c2
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p08_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p08 :: cell 1'
+      p08 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p08
+    - F7-kernels-convex-optimization — Practice p08 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p08_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p08 :: cell 2'
+      p08 — Solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p08
+    - F7-kernels-convex-optimization — Practice p08 — Solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p08_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p08 > Immutable contract check — do not edit :: cell 1'
+      p08 — Solution > Immutable contract check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p08
+    - F7-kernels-convex-optimization — Practice p08 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p08_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p08 > Immutable contract check — do not edit :: cell 2'
+      p08 — Solution > Immutable contract check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p08
+    - F7-kernels-convex-optimization — Practice p08 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p08_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p08 > Immutable contract check — do not edit > Solution reasoning :: cell 1'
+      p08 — Solution > Immutable contract check — do not edit > Solution reasoning :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p08
+    - F7-kernels-convex-optimization — Practice p08 — Solution
     - Immutable contract check — do not edit
     - Solution reasoning
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p08_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p08 > Immutable contract check — do not edit > Answer check :: cell 1'
+      p08 — Solution > Immutable contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p08
+    - F7-kernels-convex-optimization — Practice p08 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p08_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p08 > Immutable contract check — do not edit > Answer check :: cell 2'
+      p08 — Solution > Immutable contract check — do not edit > Answer check :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p08
+    - F7-kernels-convex-optimization — Practice p08 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 2
@@ -47314,48 +47360,48 @@ notebooks:
   - t.copy
 - path: units/F7-kernels-convex-optimization/practice/p09_solution.ipynb
   kind: notebook
-  semantic_sha256: 1a1c071f7474e406ed8b645723eb04df8270f9444cf87d2e8a8401014d73100a
+  semantic_sha256: 24a0eabc485f0d6bb6e6f8f12c5cdf43050e94d0a48b5aabb2e16df1c6347315
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p09_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p09 :: cell 1'
+      p09 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p09
+    - F7-kernels-convex-optimization — Practice p09 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p09_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p09 :: cell 2'
+      p09 — Solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p09
+    - F7-kernels-convex-optimization — Practice p09 — Solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p09_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p09 > Immutable contract check — do not edit :: cell 1'
+      p09 — Solution > Immutable contract check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p09
+    - F7-kernels-convex-optimization — Practice p09 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p09_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p09 > Immutable contract check — do not edit :: cell 2'
+      p09 — Solution > Immutable contract check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p09
+    - F7-kernels-convex-optimization — Practice p09 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p09_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p09 > Immutable contract check — do not edit > Solution reasoning :: cell 1'
+      p09 — Solution > Immutable contract check — do not edit > Solution reasoning :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p09
+    - F7-kernels-convex-optimization — Practice p09 — Solution
     - Immutable contract check — do not edit
     - Solution reasoning
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p09_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p09 > Immutable contract check — do not edit > Answer check :: cell 1'
+      p09 — Solution > Immutable contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p09
+    - F7-kernels-convex-optimization — Practice p09 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p09_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p09 > Immutable contract check — do not edit > Answer check :: cell 2'
+      p09 — Solution > Immutable contract check — do not edit > Answer check :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p09
+    - F7-kernels-convex-optimization — Practice p09 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 2
@@ -47435,48 +47481,48 @@ notebooks:
   - np.ones
 - path: units/F7-kernels-convex-optimization/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: a0e82f0448d1d7bafd8748737d047dbcfae505be33de7a31fd7bb4ae3409b190
+  semantic_sha256: 8a1ee897fb29c48ed45b20e84ea0d8b858cdc3d3d343b797a3b75a33231dab77
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p10_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p10 :: cell 1'
+      p10 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p10
+    - F7-kernels-convex-optimization — Practice p10 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p10_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p10 :: cell 2'
+      p10 — Solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p10
+    - F7-kernels-convex-optimization — Practice p10 — Solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p10_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p10 > Immutable contract check — do not edit :: cell 1'
+      p10 — Solution > Immutable contract check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p10
+    - F7-kernels-convex-optimization — Practice p10 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p10_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p10 > Immutable contract check — do not edit :: cell 2'
+      p10 — Solution > Immutable contract check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p10
+    - F7-kernels-convex-optimization — Practice p10 — Solution
     - Immutable contract check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p10_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p10 > Immutable contract check — do not edit > Solution reasoning :: cell 1'
+      p10 — Solution > Immutable contract check — do not edit > Solution reasoning :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p10
+    - F7-kernels-convex-optimization — Practice p10 — Solution
     - Immutable contract check — do not edit
     - Solution reasoning
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p10_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p10 > Immutable contract check — do not edit > Answer check :: cell 1'
+      p10 — Solution > Immutable contract check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p10
+    - F7-kernels-convex-optimization — Practice p10 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p10_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p10 > Immutable contract check — do not edit > Answer check :: cell 2'
+      p10 — Solution > Immutable contract check — do not edit > Answer check :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p10
+    - F7-kernels-convex-optimization — Practice p10 — Solution
     - Immutable contract check — do not edit
     - Answer check
     cell_ordinal: 2
@@ -47559,50 +47605,50 @@ notebooks:
   - np.linalg.norm
 - path: units/F7-kernels-convex-optimization/practice/p11_solution.ipynb
   kind: notebook
-  semantic_sha256: a02feb2279b379a409093004c28188ed5958fe5cba8fba8e7552222f3ed3fae1
+  semantic_sha256: 7a05a83e6c029b8cfb38173ea73198ba3ebb47565824effa7d0ad3bd7d5202f1
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p11_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p11 :: cell 1'
+      p11 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p11
+    - F7-kernels-convex-optimization — Practice p11 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p11_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p11 > Your proof > Review rubric :: cell 1'
+      p11 — Solution > Your proof > Review rubric :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p11
+    - F7-kernels-convex-optimization — Practice p11 — Solution
     - Your proof
     - Review rubric
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p11_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p11 > Your proof > Worked solution :: cell 1'
+      p11 — Solution > Your proof > Worked solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p11
+    - F7-kernels-convex-optimization — Practice p11 — Solution
     - Your proof
     - Worked solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p11_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p11 > Your proof > Worked solution :: cell 2'
+      p11 — Solution > Your proof > Worked solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p11
+    - F7-kernels-convex-optimization — Practice p11 — Solution
     - Your proof
     - Worked solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p11_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p11 > Numerical-anchor check — do not edit :: cell 1'
+      p11 — Solution > Numerical-anchor check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p11
+    - F7-kernels-convex-optimization — Practice p11 — Solution
     - Numerical-anchor check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p11_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p11 > Numerical-anchor check — do not edit :: cell 2'
+      p11 — Solution > Numerical-anchor check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p11
+    - F7-kernels-convex-optimization — Practice p11 — Solution
     - Numerical-anchor check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p11_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p11 > Numerical-anchor check — do not edit > Answer check :: cell 1'
+      p11 — Solution > Numerical-anchor check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p11
+    - F7-kernels-convex-optimization — Practice p11 — Solution
     - Numerical-anchor check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -47672,50 +47718,50 @@ notebooks:
   - np.linalg.norm
 - path: units/F7-kernels-convex-optimization/practice/p12_solution.ipynb
   kind: notebook
-  semantic_sha256: 0da78e08370ad6c9c67e5accd266f1940323acfb4d1f5e94380dba0c5866d94d
+  semantic_sha256: de7c5f4314fb3edcdb161920172429cdb57fad4bb4d6350e23c3a20d68c56087
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p12_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p12 :: cell 1'
+      p12 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p12
+    - F7-kernels-convex-optimization — Practice p12 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p12_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p12 > Your proof > Review rubric :: cell 1'
+      p12 — Solution > Your proof > Review rubric :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p12
+    - F7-kernels-convex-optimization — Practice p12 — Solution
     - Your proof
     - Review rubric
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p12_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p12 > Your proof > Worked solution :: cell 1'
+      p12 — Solution > Your proof > Worked solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p12
+    - F7-kernels-convex-optimization — Practice p12 — Solution
     - Your proof
     - Worked solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p12_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p12 > Your proof > Worked solution :: cell 2'
+      p12 — Solution > Your proof > Worked solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p12
+    - F7-kernels-convex-optimization — Practice p12 — Solution
     - Your proof
     - Worked solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p12_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p12 > Numerical-anchor check — do not edit :: cell 1'
+      p12 — Solution > Numerical-anchor check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p12
+    - F7-kernels-convex-optimization — Practice p12 — Solution
     - Numerical-anchor check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p12_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p12 > Numerical-anchor check — do not edit :: cell 2'
+      p12 — Solution > Numerical-anchor check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p12
+    - F7-kernels-convex-optimization — Practice p12 — Solution
     - Numerical-anchor check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p12_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p12 > Numerical-anchor check — do not edit > Answer check :: cell 1'
+      p12 — Solution > Numerical-anchor check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p12
+    - F7-kernels-convex-optimization — Practice p12 — Solution
     - Numerical-anchor check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -47789,50 +47835,50 @@ notebooks:
   - np.sqrt
 - path: units/F7-kernels-convex-optimization/practice/p13_solution.ipynb
   kind: notebook
-  semantic_sha256: f4d84a408f72fe5973b5c26f3d70d9581a80e44255d5becb69b7b3863aa3dfc6
+  semantic_sha256: 3c7198accc82a85d65e98429387a91c5ec25f61103b49d722e14d77ff25c15eb
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p13_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p13 :: cell 1'
+      p13 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p13
+    - F7-kernels-convex-optimization — Practice p13 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p13_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p13 > Your reasoning > Review rubric :: cell 1'
+      p13 — Solution > Your reasoning > Review rubric :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p13
+    - F7-kernels-convex-optimization — Practice p13 — Solution
     - Your reasoning
     - Review rubric
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p13_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p13 > Your reasoning > Worked solution :: cell 1'
+      p13 — Solution > Your reasoning > Worked solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p13
+    - F7-kernels-convex-optimization — Practice p13 — Solution
     - Your reasoning
     - Worked solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p13_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p13 > Your reasoning > Worked solution :: cell 2'
+      p13 — Solution > Your reasoning > Worked solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p13
+    - F7-kernels-convex-optimization — Practice p13 — Solution
     - Your reasoning
     - Worked solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p13_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p13 > Dependency-anchor check — do not edit :: cell 1'
+      p13 — Solution > Dependency-anchor check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p13
+    - F7-kernels-convex-optimization — Practice p13 — Solution
     - Dependency-anchor check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p13_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p13 > Dependency-anchor check — do not edit :: cell 2'
+      p13 — Solution > Dependency-anchor check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p13
+    - F7-kernels-convex-optimization — Practice p13 — Solution
     - Dependency-anchor check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p13_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p13 > Dependency-anchor check — do not edit > Answer check :: cell 1'
+      p13 — Solution > Dependency-anchor check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p13
+    - F7-kernels-convex-optimization — Practice p13 — Solution
     - Dependency-anchor check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -47908,50 +47954,50 @@ notebooks:
   - np.issubdtype
 - path: units/F7-kernels-convex-optimization/practice/p14_solution.ipynb
   kind: notebook
-  semantic_sha256: f1c9bf116e4efc31689081e669659d5bdfd10f8880d5bb1981bdfcf20749d10c
+  semantic_sha256: 4f6bd3f3f6d4db29a8551bf0e0e60025e65f32bbaa6651c3f750ecfc7bc78a09
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p14_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p14 :: cell 1'
+      p14 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p14
+    - F7-kernels-convex-optimization — Practice p14 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p14_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p14 > Your reasoning > Review rubric :: cell 1'
+      p14 — Solution > Your reasoning > Review rubric :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p14
+    - F7-kernels-convex-optimization — Practice p14 — Solution
     - Your reasoning
     - Review rubric
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p14_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p14 > Your reasoning > Worked solution :: cell 1'
+      p14 — Solution > Your reasoning > Worked solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p14
+    - F7-kernels-convex-optimization — Practice p14 — Solution
     - Your reasoning
     - Worked solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p14_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p14 > Your reasoning > Worked solution :: cell 2'
+      p14 — Solution > Your reasoning > Worked solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p14
+    - F7-kernels-convex-optimization — Practice p14 — Solution
     - Your reasoning
     - Worked solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p14_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p14 > Numerical-chain check — do not edit :: cell 1'
+      p14 — Solution > Numerical-chain check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p14
+    - F7-kernels-convex-optimization — Practice p14 — Solution
     - Numerical-chain check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p14_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p14 > Numerical-chain check — do not edit :: cell 2'
+      p14 — Solution > Numerical-chain check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p14
+    - F7-kernels-convex-optimization — Practice p14 — Solution
     - Numerical-chain check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p14_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p14 > Numerical-chain check — do not edit > Answer check :: cell 1'
+      p14 — Solution > Numerical-chain check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p14
+    - F7-kernels-convex-optimization — Practice p14 — Solution
     - Numerical-chain check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -48022,50 +48068,50 @@ notebooks:
   - np.max
 - path: units/F7-kernels-convex-optimization/practice/p15_solution.ipynb
   kind: notebook
-  semantic_sha256: 7a25d8e13ef0c7bca8a152474f263a3283ccc0c2515963f57ba3cd6d5dd04bb6
+  semantic_sha256: c21c76245c4a606ffdff7c8529a0d0966032ed9f2f97a82b2bb7824d0304096a
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p15_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p15 :: cell 1'
+      p15 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p15
+    - F7-kernels-convex-optimization — Practice p15 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p15_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p15 > Your decision memo > Review rubric :: cell 1'
+      p15 — Solution > Your decision memo > Review rubric :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p15
+    - F7-kernels-convex-optimization — Practice p15 — Solution
     - Your decision memo
     - Review rubric
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p15_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p15 > Your decision memo > Worked solution :: cell 1'
+      p15 — Solution > Your decision memo > Worked solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p15
+    - F7-kernels-convex-optimization — Practice p15 — Solution
     - Your decision memo
     - Worked solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p15_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p15 > Your decision memo > Worked solution :: cell 2'
+      p15 — Solution > Your decision memo > Worked solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p15
+    - F7-kernels-convex-optimization — Practice p15 — Solution
     - Your decision memo
     - Worked solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p15_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p15 > Scenario-anchor check — do not edit :: cell 1'
+      p15 — Solution > Scenario-anchor check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p15
+    - F7-kernels-convex-optimization — Practice p15 — Solution
     - Scenario-anchor check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p15_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p15 > Scenario-anchor check — do not edit :: cell 2'
+      p15 — Solution > Scenario-anchor check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p15
+    - F7-kernels-convex-optimization — Practice p15 — Solution
     - Scenario-anchor check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p15_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p15 > Scenario-anchor check — do not edit > Answer check :: cell 1'
+      p15 — Solution > Scenario-anchor check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p15
+    - F7-kernels-convex-optimization — Practice p15 — Solution
     - Scenario-anchor check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -48128,50 +48174,50 @@ notebooks:
   - np.isclose
 - path: units/F7-kernels-convex-optimization/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: d09b1305b93835ee9909867908fb3b637f8c28cdd941405a86bee283ddd75581
+  semantic_sha256: 60d22f1c7de1bce15913f41c261549a498c87338769e7950c694dc8f139738d3
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p16_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p16 :: cell 1'
+      p16 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p16
+    - F7-kernels-convex-optimization — Practice p16 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p16_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p16 > Your audit memo > Review rubric :: cell 1'
+      p16 — Solution > Your audit memo > Review rubric :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p16
+    - F7-kernels-convex-optimization — Practice p16 — Solution
     - Your audit memo
     - Review rubric
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p16_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p16 > Your audit memo > Worked solution :: cell 1'
+      p16 — Solution > Your audit memo > Worked solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p16
+    - F7-kernels-convex-optimization — Practice p16 — Solution
     - Your audit memo
     - Worked solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p16_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p16 > Your audit memo > Worked solution :: cell 2'
+      p16 — Solution > Your audit memo > Worked solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p16
+    - F7-kernels-convex-optimization — Practice p16 — Solution
     - Your audit memo
     - Worked solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p16_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p16 > Scenario-anchor check — do not edit :: cell 1'
+      p16 — Solution > Scenario-anchor check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p16
+    - F7-kernels-convex-optimization — Practice p16 — Solution
     - Scenario-anchor check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p16_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p16 > Scenario-anchor check — do not edit :: cell 2'
+      p16 — Solution > Scenario-anchor check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p16
+    - F7-kernels-convex-optimization — Practice p16 — Solution
     - Scenario-anchor check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p16_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p16 > Scenario-anchor check — do not edit > Answer check :: cell 1'
+      p16 — Solution > Scenario-anchor check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p16
+    - F7-kernels-convex-optimization — Practice p16 — Solution
     - Scenario-anchor check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -48235,50 +48281,50 @@ notebooks:
   - np.max
 - path: units/F7-kernels-convex-optimization/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: 89f710df95162150ef172423d79a397f2c5dc8ca381e9be0b0a9130245e5233d
+  semantic_sha256: 45677b840bbe58d03e54284659b69f5d897456ab440d3c7e559eabb480a1c158
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p17_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p17 :: cell 1'
+      p17 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p17
+    - F7-kernels-convex-optimization — Practice p17 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p17_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p17 > Your kernel proof > Review rubric :: cell 1'
+      p17 — Solution > Your kernel proof > Review rubric :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p17
+    - F7-kernels-convex-optimization — Practice p17 — Solution
     - Your kernel proof
     - Review rubric
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p17_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p17 > Your kernel proof > Worked solution :: cell 1'
+      p17 — Solution > Your kernel proof > Worked solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p17
+    - F7-kernels-convex-optimization — Practice p17 — Solution
     - Your kernel proof
     - Worked solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p17_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p17 > Your kernel proof > Worked solution :: cell 2'
+      p17 — Solution > Your kernel proof > Worked solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p17
+    - F7-kernels-convex-optimization — Practice p17 — Solution
     - Your kernel proof
     - Worked solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p17_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p17 > Feature-map check — do not edit :: cell 1'
+      p17 — Solution > Feature-map check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p17
+    - F7-kernels-convex-optimization — Practice p17 — Solution
     - Feature-map check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p17_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p17 > Feature-map check — do not edit :: cell 2'
+      p17 — Solution > Feature-map check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p17
+    - F7-kernels-convex-optimization — Practice p17 — Solution
     - Feature-map check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p17_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p17 > Feature-map check — do not edit > Answer check :: cell 1'
+      p17 — Solution > Feature-map check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p17
+    - F7-kernels-convex-optimization — Practice p17 — Solution
     - Feature-map check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -48353,50 +48399,50 @@ notebooks:
   - np.sum
 - path: units/F7-kernels-convex-optimization/practice/p18_solution.ipynb
   kind: notebook
-  semantic_sha256: 580c3fea359a39243f29b2d552d6e951ad8bcf496769a3d2e48fe57ecea9b864
+  semantic_sha256: b9589022e36f5a268d9caad082c10cbb378f8c2ed6c9520a40902eba576a45bd
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p18_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p18 :: cell 1'
+      p18 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p18
+    - F7-kernels-convex-optimization — Practice p18 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p18_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p18 > Your primal-dual analysis > Review rubric :: cell 1'
+      p18 — Solution > Your primal-dual analysis > Review rubric :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p18
+    - F7-kernels-convex-optimization — Practice p18 — Solution
     - Your primal-dual analysis
     - Review rubric
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p18_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p18 > Your primal-dual analysis > Worked solution :: cell 1'
+      p18 — Solution > Your primal-dual analysis > Worked solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p18
+    - F7-kernels-convex-optimization — Practice p18 — Solution
     - Your primal-dual analysis
     - Worked solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p18_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p18 > Your primal-dual analysis > Worked solution :: cell 2'
+      p18 — Solution > Your primal-dual analysis > Worked solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p18
+    - F7-kernels-convex-optimization — Practice p18 — Solution
     - Your primal-dual analysis
     - Worked solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p18_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p18 > Primal-dual check — do not edit :: cell 1'
+      p18 — Solution > Primal-dual check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p18
+    - F7-kernels-convex-optimization — Practice p18 — Solution
     - Primal-dual check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p18_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p18 > Primal-dual check — do not edit :: cell 2'
+      p18 — Solution > Primal-dual check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p18
+    - F7-kernels-convex-optimization — Practice p18 — Solution
     - Primal-dual check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p18_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p18 > Primal-dual check — do not edit > Answer check :: cell 1'
+      p18 — Solution > Primal-dual check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p18
+    - F7-kernels-convex-optimization — Practice p18 — Solution
     - Primal-dual check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -48467,50 +48513,50 @@ notebooks:
   - np.prod
 - path: units/F7-kernels-convex-optimization/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: 65cedc3c9c126bda98eea3cdc2eec537c1f30da2b174502ae135e9ce139e99a7
+  semantic_sha256: 57a3e6d546adef056a7f8e08ef4a6957ca0401d62fc8ddfcc0707100582b42ca
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p19_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p19 :: cell 1'
+      p19 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p19
+    - F7-kernels-convex-optimization — Practice p19 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p19_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p19 > Your witness argument > Review rubric :: cell 1'
+      p19 — Solution > Your witness argument > Review rubric :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p19
+    - F7-kernels-convex-optimization — Practice p19 — Solution
     - Your witness argument
     - Review rubric
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p19_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p19 > Your witness argument > Worked solution :: cell 1'
+      p19 — Solution > Your witness argument > Worked solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p19
+    - F7-kernels-convex-optimization — Practice p19 — Solution
     - Your witness argument
     - Worked solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p19_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p19 > Your witness argument > Worked solution :: cell 2'
+      p19 — Solution > Your witness argument > Worked solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p19
+    - F7-kernels-convex-optimization — Practice p19 — Solution
     - Your witness argument
     - Worked solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p19_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p19 > Witness check — do not edit :: cell 1'
+      p19 — Solution > Witness check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p19
+    - F7-kernels-convex-optimization — Practice p19 — Solution
     - Witness check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p19_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p19 > Witness check — do not edit :: cell 2'
+      p19 — Solution > Witness check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p19
+    - F7-kernels-convex-optimization — Practice p19 — Solution
     - Witness check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p19_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p19 > Witness check — do not edit > Answer check :: cell 1'
+      p19 — Solution > Witness check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p19
+    - F7-kernels-convex-optimization — Practice p19 — Solution
     - Witness check — do not edit
     - Answer check
     cell_ordinal: 1
@@ -48578,50 +48624,50 @@ notebooks:
   - np.isclose
 - path: units/F7-kernels-convex-optimization/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: df1a58d53aff060436f3ca1ad66f82a16843d2b2d5d8ca169f628e780d2cbc2b
+  semantic_sha256: 85bd4799c22117dfb9649ca289174c57befd32c6f55c036959fad32ca491e75f
   anchors:
   - anchor: 'units/F7-kernels-convex-optimization/practice/p20_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p20 :: cell 1'
+      p20 — Solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p20
+    - F7-kernels-convex-optimization — Practice p20 — Solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p20_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p20 > Your duality drill > Review rubric :: cell 1'
+      p20 — Solution > Your duality drill > Review rubric :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p20
+    - F7-kernels-convex-optimization — Practice p20 — Solution
     - Your duality drill
     - Review rubric
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p20_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p20 > Your duality drill > Worked solution :: cell 1'
+      p20 — Solution > Your duality drill > Worked solution :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p20
+    - F7-kernels-convex-optimization — Practice p20 — Solution
     - Your duality drill
     - Worked solution
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p20_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p20 > Your duality drill > Worked solution :: cell 2'
+      p20 — Solution > Your duality drill > Worked solution :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p20
+    - F7-kernels-convex-optimization — Practice p20 — Solution
     - Your duality drill
     - Worked solution
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p20_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p20 > KKT drill check — do not edit :: cell 1'
+      p20 — Solution > KKT drill check — do not edit :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p20
+    - F7-kernels-convex-optimization — Practice p20 — Solution
     - KKT drill check — do not edit
     cell_ordinal: 1
   - anchor: 'units/F7-kernels-convex-optimization/practice/p20_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p20 > KKT drill check — do not edit :: cell 2'
+      p20 — Solution > KKT drill check — do not edit :: cell 2'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p20
+    - F7-kernels-convex-optimization — Practice p20 — Solution
     - KKT drill check — do not edit
     cell_ordinal: 2
   - anchor: 'units/F7-kernels-convex-optimization/practice/p20_solution.ipynb :: F7-kernels-convex-optimization — Practice
-      p20 > KKT drill check — do not edit > Answer check :: cell 1'
+      p20 — Solution > KKT drill check — do not edit > Answer check :: cell 1'
     heading_path:
-    - F7-kernels-convex-optimization — Practice p20
+    - F7-kernels-convex-optimization — Practice p20 — Solution
     - KKT drill check — do not edit
     - Answer check
     cell_ordinal: 1

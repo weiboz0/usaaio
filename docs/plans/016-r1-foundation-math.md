@@ -796,6 +796,11 @@ the 180-minute mock and 60-minute debrief.
 - The first full Phase 7 CI attempt stopped at register verification with 340/383 passing.
   Root-cause tracing showed copied statement titles and seven legacy header forms in the new
   producer notebooks; after fixing producers, `verify-register.py` passes 383/383.
+- The first post-report clean-commit CI attempt then executed all 388 solutions and all 91
+  teaching/review notebooks, passed answer-key and register checks, and correctly stopped on a
+  stale semantic inventory after the gate-led title/wording changes.
+  Regenerating `curriculum/material-inventory.yaml` updated only hashes and heading anchors for
+  those changed notebooks; inventory, audit, and roadmap check modes are current again.
 - Terra's missing-id finding was repaired separately in `741fe2b` and corruption-tested by
   stripping ids from both commit sides.
   There are zero semantic differences and warning-strict validation passes all 20 F7 solutions.
