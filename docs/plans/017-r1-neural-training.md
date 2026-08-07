@@ -111,7 +111,7 @@ Set C integration/scenario/challenge problems are p14–p24.
 | p21 | challenge | advanced | 70 | stable fused softmax-CE plus finite differences |
 | p22 | challenge | advanced | 70 | multi-layer backpropagation by hand |
 | p23 | challenge | advanced | 75 | complete deterministic PyTorch training |
-| p24 | challenge | advanced | 75 | BatchNorm/dropout trained-network ablation |
+| p24 | challenge | advanced | 75 | optimizer-controlled BatchNorm/dropout trained-network ablation |
 
 The table totals exactly 1,040 practice minutes.
 The 6/12/6 intro/core/advanced split is 25%/50%/25%, within the unit standard's deliberately
@@ -122,7 +122,7 @@ The minimum honest coverage sets are:
 - `cross-entropy-loss`: p02, p06, p11, p14, p21;
 - `manual-backpropagation`: p03, p07, p12, p15, p22;
 - `autograd-training`: p08, p16, p19, p23;
-- `torch-optimizers`: p16, p19, p23;
+- `torch-optimizers`: p16, p19, p23, p24;
 - `trained-mlp`: p15, p17, p20, p23, p24;
 - `batch-normalization`: p09, p13, p18, p20, p24;
 - `dropout`: p04, p10, p18, p20, p24.
@@ -653,6 +653,9 @@ This phase is mandatory because the plan ships and changes teaching units.
   C10's pre-plan 730, as the post-plan practice maximum.
 - `[glm] [FIXED]` The roadmap contract removes only the obsolete C6 clause from the combined C6/C8
   sentence and explicitly preserves the still-uncovered Round 2 C8 clause.
+- `[glm] [FIXED]` C11-p24 now grades optimizer control as part of its trained-network ablation,
+  giving `torch-optimizers` a fourth honest practice rather than leaving it at the three-practice
+  floor.
 
 ### Slot 2 — Claude Opus 5 (2026-08-07)
 
