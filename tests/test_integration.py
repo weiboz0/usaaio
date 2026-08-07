@@ -54,11 +54,9 @@ EXPECTED_UNIT_SHAPES = {
     "F7-kernels-convex-optimization": ([85, 85, 85, 85], 20, (340, 640, 45)),
 }
 
-# Temporary Phase 3 register-first boundary. Remove IDs as later phases create both files;
-# the final content phase deletes this exception and restores full-green coverage here.
+# Temporary Phase 4 boundary. The final content phase deletes this exception and restores
+# full-green coverage after F7 creates every registered statement/solution pair.
 PLAN016_PENDING_PRACTICE_IDS = {
-    "C2-linear-models": tuple(range(19, 25)),
-    "C9-dimensionality-reduction": tuple(range(20, 25)),
     "F7-kernels-convex-optimization": tuple(range(1, 21)),
 }
 
@@ -574,12 +572,12 @@ def test_plan016_syllabus_narrative_order_and_dependency_contract():
     assert "Double-length units (F5, F6) use 4–6 sessions." in standards
 
 
-def test_plan016_phase3_coverage_fails_only_for_pending_content_paths():
+def test_plan016_phase4_coverage_fails_only_for_pending_f7_paths():
     report = check_coverage(ROOT)
     expected_errors = _plan016_expected_coverage_errors()
 
-    assert sum(len(numbers) for numbers in PLAN016_PENDING_PRACTICE_IDS.values()) == 31
-    assert len(expected_errors) == 62
+    assert sum(len(numbers) for numbers in PLAN016_PENDING_PRACTICE_IDS.values()) == 20
+    assert len(expected_errors) == 40
     assert not report.ok
     assert report.warnings == []
     assert len(report.errors) == len(expected_errors)
