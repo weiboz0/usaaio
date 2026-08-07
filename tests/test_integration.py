@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 import re
 import subprocess
@@ -84,6 +85,16 @@ F1_SEABORN_ARRAY_ONLY_FILES = {
     Path("practice/p24_solution.ipynb"),
 }
 
+C9_PLAN016_CHANGED_NOTEBOOKS = (
+    Path("lesson.ipynb"),
+    Path("lessons/01-pca.ipynb"),
+    Path("lessons/02-pca-covariance-and-numpy-class.ipynb"),
+    Path("lessons/03-truncated-svd-practice.ipynb"),
+    Path("lessons/04-maps-and-structure.ipynb"),
+    Path("review.ipynb"),
+    *(Path(f"practice/p{number:02d}.ipynb") for number in range(20, 25)),
+)
+
 
 def _manifest(unit_id: str) -> dict[str, object]:
     return yaml.safe_load((ROOT / "units" / unit_id / "manifest.yaml").read_text())
@@ -132,6 +143,22 @@ def seed_repo(root: Path) -> None:
     (root / "mocktests").mkdir(parents=True)
     (root / "mocktests" / "blueprint.yaml").write_text((ROOT / "mocktests" / "blueprint.yaml").read_text())
     (root / "syllabus.md").write_text((ROOT / "syllabus.md").read_text())
+
+
+def test_plan016_c9_changed_markdown_has_no_decoded_tex_control_characters():
+    unit = ROOT / "units" / "C9-dimensionality-reduction"
+    forbidden = {"\t", "\f", "\r"}
+    failures = []
+    for relative in C9_PLAN016_CHANGED_NOTEBOOKS:
+        notebook = json.loads((unit / relative).read_text())
+        for cell_index, cell in enumerate(notebook["cells"]):
+            if cell["cell_type"] != "markdown":
+                continue
+            source = "".join(cell.get("source", []))
+            controls = sorted({repr(character) for character in source if character in forbidden})
+            if controls:
+                failures.append(f"{relative}: cell {cell_index}: {', '.join(controls)}")
+    assert not failures, "decoded TeX control characters:\n" + "\n".join(failures)
 
 
 def test_plan016_new_concepts_have_exact_clusters_and_single_owners():
