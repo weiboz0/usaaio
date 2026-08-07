@@ -2,6 +2,7 @@ import importlib.util
 import json
 from pathlib import Path
 
+import pytest
 import yaml
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "verify-register.py"
@@ -477,6 +478,71 @@ def test_statements_only_accepts_absent_solutions_but_checks_statements(
     c11_problem(tmp_path, c11_statement(options=4))
     assert verify_register.main(["--statements-only"]) == 1
     assert "MC options" in capsys.readouterr().out
+
+
+@pytest.mark.parametrize(
+    ("markdown", "missing_statement", "finding"),
+    [
+        (
+            c11_statement(options=4),
+            False,
+            "MC options are not exactly A.-through-E. in order",
+        ),
+        (
+            c11_statement(reasoning="Explain your choice."),
+            False,
+            "MC reasoning flag must say 'Reasoning is required.'",
+        ),
+        (
+            c11_statement(reasoning="Reasoning is not required."),
+            False,
+            "MC reasoning flag must say 'Reasoning is required.'",
+        ),
+        (
+            c11_statement().replace("**Time budget:** 15 minutes\n\n", ""),
+            False,
+            "time budget is missing or does not match manifest minutes 15",
+        ),
+        (
+            c11_statement(budget=20),
+            False,
+            "time budget is missing or does not match manifest minutes 15",
+        ),
+        (
+            c11_statement(extra=" · **Time:** 15 minutes"),
+            False,
+            "header fields must be exactly Type / Difficulty / Concepts",
+        ),
+        (
+            c11_statement(),
+            True,
+            "statement path does not exist",
+        ),
+    ],
+    ids=[
+        "four-options",
+        "missing-reasoning",
+        "wrong-reasoning",
+        "missing-budget",
+        "mismatched-budget",
+        "fourth-header-field",
+        "missing-statement-path",
+    ],
+)
+def test_statements_only_main_rejects_each_malformed_statement(
+    tmp_path, monkeypatch, capsys, markdown, missing_statement, finding
+):
+    unit = "C11-neural-training"
+    problem = c11_problem(tmp_path, markdown)
+    if missing_statement:
+        problem["path"] = "practice/missing.ipynb"
+    manifest_path = tmp_path / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump({"practice": [problem]}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", (unit,))
+
+    assert verify_register.main(["--statements-only"]) == 1
+    assert f"FAIL C11-p01: {finding}" in capsys.readouterr().out
 
 
 def test_full_mode_reports_missing_statement_and_solution_without_traceback(
