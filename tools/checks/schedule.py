@@ -14,10 +14,10 @@ from tools.model import (
     ScheduleAllocation,
     ScheduleWeek,
     load_syllabus,
+    load_unit_manifests,
 )
 
 KINDS = {"lesson-session", "practice", "review", "mock", "debrief"}
-FINAL_MOCK_WEEK = 35
 
 
 def _positive_integer(value: object, label: str, errors: list[str]) -> int | None:
@@ -115,7 +115,10 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
                 "mock": {"kind", "test", "minutes"},
                 "debrief": {"kind", "test", "minutes"},
             }[str(kind)]
-            if set(allocation) != expected_keys:
+            allowed_keys = [expected_keys]
+            if kind == "practice":
+                allowed_keys.append(expected_keys | {"problem_ids"})
+            if set(allocation) not in allowed_keys:
                 errors.append(f"{label} keys must exactly equal {sorted(expected_keys)}")
             minutes = _positive_integer(allocation.get("minutes"), f"{label} minutes", errors)
             session = None
@@ -126,6 +129,16 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
                 chunk = _positive_integer(allocation.get("chunk"), f"{label} chunk", errors)
             unit = allocation.get("unit")
             test = allocation.get("test")
+            problem_ids = None
+            if "problem_ids" in allocation:
+                raw_problem_ids = allocation["problem_ids"]
+                if not isinstance(raw_problem_ids, list) or not all(
+                    isinstance(problem_id, str) and problem_id
+                    for problem_id in raw_problem_ids
+                ):
+                    errors.append(f"{label} problem_ids must be a list of nonempty strings")
+                else:
+                    problem_ids = list(raw_problem_ids)
             if kind in {"lesson-session", "practice", "review"} and not isinstance(unit, str):
                 errors.append(f"{label} unit must be a string")
                 unit = None
@@ -141,6 +154,7 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
                         session=session,
                         chunk=chunk,
                         test=test if isinstance(test, str) else None,
+                        problem_ids=problem_ids,
                     )
                 )
         if week is not None and semester is not None:
@@ -150,14 +164,30 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
 
 def _unit_contracts(root: Path) -> dict[str, dict[str, Any]]:
     result: dict[str, dict[str, Any]] = {}
+    manifests = {manifest.unit_id: manifest for manifest in load_unit_manifests(root)}
     for path in sorted(root.glob("units/*/manifest.yaml")):
         raw = yaml.safe_load(path.read_text(encoding="utf-8"))
         estimates = raw.get("estimated_minutes") or {}
-        result[str(raw["unit"])] = {
+        unit = str(raw["unit"])
+        manifest = manifests[unit]
+        problem_contract = None
+        if manifest.concept_sessions is not None and all(
+            problem.minutes is not None and problem.after_session is not None
+            for problem in manifest.practice
+        ):
+            problem_contract = {
+                problem.id: {
+                    "minutes": problem.minutes,
+                    "after_session": problem.after_session,
+                }
+                for problem in manifest.practice
+            }
+        result[unit] = {
             "sessions": list(estimates.get("lesson_sessions") or []),
             "practice": estimates.get("practice"),
             "review": estimates.get("review"),
             "prereqs": list(raw.get("prereq_units") or []),
+            "problems": problem_contract,
         }
     return result
 
@@ -203,17 +233,33 @@ def _validate(
     enforce_calendar: bool = True,
 ) -> None:
     week_ids = [week.week for week in schedule.weeks]
+    last_week = max(week_ids, default=0)
     for week, count in sorted(Counter(week_ids).items()):
         if count > 1:
             errors.append(f"duplicate week {week}")
     if enforce_calendar:
-        for expected in range(1, 36):
+        for expected in range(1, last_week + 1):
             if expected not in week_ids:
                 errors.append(f"missing week {expected}")
-        for unexpected in sorted(set(week_ids) - set(range(1, 36))):
-            errors.append(f"unexpected week {unexpected}")
-        if week_ids != sorted(week_ids):
-            errors.append("week rows must be ordered consecutively 1..35")
+        if week_ids != list(range(1, last_week + 1)):
+            errors.append(f"week rows must be ordered consecutively 1..{last_week}")
+
+    assessment_weeks = {
+        week.week
+        for week in schedule.weeks
+        for allocation in week.allocations
+        if allocation.kind in {"mock", "debrief"}
+    }
+    final_assessment_week = (
+        next(iter(assessment_weeks)) if len(assessment_weeks) == 1 else None
+    )
+    if enforce_calendar:
+        if len(assessment_weeks) != 1:
+            errors.append("schedule must have exactly one final-assessment week")
+        elif final_assessment_week != last_week:
+            errors.append(
+                f"final-assessment week {final_assessment_week} must be final week {last_week}"
+            )
     for week in schedule.weeks:
         expected_semester = 1 if week.week <= 16 else 2
         if enforce_calendar and week.semester != expected_semester:
@@ -223,10 +269,10 @@ def _validate(
         total = sum(allocation.minutes for allocation in week.allocations)
         if enforce_calendar and not 450 <= total <= 500:
             errors.append(f"week {week.week} totals {total} minutes; requires 450-500")
-        # Week 35 is the sole exception: its required final mock and debrief replace
+        # The derived final-assessment week is the sole exception: its required mock/debrief replace
         # regular instruction. Positive allocation minutes make a nonzero session
         # count equivalent to positive lesson time.
-        if enforce_calendar and week.week < FINAL_MOCK_WEEK:
+        if enforce_calendar and week.week != final_assessment_week:
             lesson_count = sum(
                 allocation.kind == "lesson-session"
                 for allocation in week.allocations
@@ -238,7 +284,7 @@ def _validate(
                 )
     if enforce_calendar:
         if schedule.semester_minutes is None or schedule.declared_total_minutes is None:
-            errors.append("canonical 35-week schedule requires declared totals")
+            errors.append(f"canonical {last_week}-week schedule requires declared totals")
         else:
             actual_first = sum(
                 allocation.minutes
@@ -335,6 +381,66 @@ def _validate(
                 if allocation.kind == kind and allocation.unit == unit
             ]
             _check_chunks(kind, unit, rows, contract[kind], errors)
+        problem_contract = contract["problems"]
+        if problem_contract is not None:
+            practice_rows = [
+                (index, allocation)
+                for index, allocation in indexed
+                if allocation.kind == "practice" and allocation.unit == unit
+            ]
+            listed: list[str] = []
+            for _, allocation in practice_rows:
+                if allocation.problem_ids is None:
+                    errors.append(
+                        f"{unit} practice chunk {allocation.chunk} requires exact problem_ids"
+                    )
+                    continue
+                listed.extend(allocation.problem_ids)
+                known_minutes = [
+                    problem_contract[problem_id]["minutes"]
+                    for problem_id in allocation.problem_ids
+                    if problem_id in problem_contract
+                ]
+                unknown = [
+                    problem_id
+                    for problem_id in allocation.problem_ids
+                    if problem_id not in problem_contract
+                ]
+                for problem_id in unknown:
+                    errors.append(f"{unit} practice chunk {allocation.chunk} has unknown {problem_id}")
+                if not unknown and sum(known_minutes) != allocation.minutes:
+                    errors.append(
+                        f"{unit} practice chunk {allocation.chunk} problem minutes "
+                        f"{sum(known_minutes)}; allocation minutes {allocation.minutes}"
+                    )
+            counts = Counter(listed)
+            for problem_id in problem_contract:
+                if counts[problem_id] != 1:
+                    errors.append(
+                        f"{problem_id} must appear exactly once in scheduled problem_ids; "
+                        f"found {counts[problem_id]}"
+                    )
+            for problem_id in sorted(set(listed) - set(problem_contract)):
+                if counts[problem_id] > 1:
+                    errors.append(
+                        f"{problem_id} must appear exactly once in scheduled problem_ids; "
+                        f"found {counts[problem_id]}"
+                    )
+            session_indexes = {
+                allocation.session: index
+                for index, allocation in indexed
+                if allocation.kind == "lesson-session" and allocation.unit == unit
+            }
+            for index, allocation in practice_rows:
+                for problem_id in allocation.problem_ids or []:
+                    if problem_id not in problem_contract:
+                        continue
+                    required = problem_contract[problem_id]["after_session"]
+                    if required not in session_indexes or session_indexes[required] >= index:
+                        errors.append(
+                            f"{problem_id} requires session {required} before its scheduled "
+                            "practice allocation"
+                        )
         unit_rows = [
             allocation for _, allocation in indexed if allocation.unit == unit
         ]

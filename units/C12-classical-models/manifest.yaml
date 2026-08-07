@@ -1,0 +1,303 @@
+unit: C12-classical-models
+concepts_taught: [logistic-regression, svm, margin-and-hinge-loss, decision-trees,
+  tree-split-criteria, ensemble-learning, bagging-and-boosting, k-means,
+  lloyd-algorithm, classical-model-comparison]
+concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting,
+  vectorization, aggregation-axis, random-seeding, matplotlib-basics, distance-metrics,
+  partial-derivatives, gradient, multivar-chain-rule, expectation, variance,
+  supervised-vs-unsupervised, clustering-concept, train-test-split, overfitting,
+  bias-variance-intuition, accuracy-precision-recall, class-imbalance, linear-regression,
+  mse-loss, l2-regularization, loss-surfaces, gradient-descent, learning-rate,
+  feature-scaling, sklearn-pipelines, cross-validation, tabular-feature-engineering,
+  kernel-validity, convex-functions, first-order-optimality, lagrangians,
+  optimization-duality]
+prereq_units: [C1-ml-fundamentals, C2-linear-models, C3-gradient-descent,
+  C4-classical-ml-practice, F7-kernels-convex-optimization]
+estimated_minutes:
+  lesson: 540
+  lesson_sessions: [90, 90, 90, 90, 90, 90]
+  practice: 1410
+  review: 60
+concept_sessions:
+  logistic-regression: 1
+  svm: 2
+  margin-and-hinge-loss: 2
+  decision-trees: 4
+  tree-split-criteria: 4
+  ensemble-learning: 5
+  bagging-and-boosting: 5
+  k-means: 6
+  lloyd-algorithm: 6
+  classical-model-comparison: 2
+practice:
+- id: C12-p01
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [logistic-regression]
+  path: practice/p01.ipynb
+  solution_path: practice/p01_solution.ipynb
+  minutes: 20
+  after_session: 1
+- id: C12-p02
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [svm, margin-and-hinge-loss]
+  path: practice/p02.ipynb
+  solution_path: practice/p02_solution.ipynb
+  minutes: 20
+  after_session: 2
+- id: C12-p03
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [decision-trees, tree-split-criteria]
+  path: practice/p03.ipynb
+  solution_path: practice/p03_solution.ipynb
+  minutes: 20
+  after_session: 4
+- id: C12-p04
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [ensemble-learning, bagging-and-boosting]
+  path: practice/p04.ipynb
+  solution_path: practice/p04_solution.ipynb
+  minutes: 20
+  after_session: 5
+- id: C12-p05
+  set: A
+  type: mc-normal-form
+  difficulty: intro
+  concepts: [k-means, lloyd-algorithm]
+  path: practice/p05.ipynb
+  solution_path: practice/p05_solution.ipynb
+  minutes: 20
+  after_session: 6
+- id: C12-p06
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [logistic-regression]
+  path: practice/p06.ipynb
+  solution_path: practice/p06_solution.ipynb
+  minutes: 55
+  after_session: 1
+- id: C12-p07
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [logistic-regression]
+  path: practice/p07.ipynb
+  solution_path: practice/p07_solution.ipynb
+  minutes: 55
+  after_session: 1
+- id: C12-p08
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [svm, margin-and-hinge-loss]
+  path: practice/p08.ipynb
+  solution_path: practice/p08_solution.ipynb
+  minutes: 55
+  after_session: 2
+- id: C12-p09
+  set: B
+  type: constrained-coding
+  difficulty: advanced
+  concepts: [svm]
+  path: practice/p09.ipynb
+  solution_path: practice/p09_solution.ipynb
+  minutes: 55
+  after_session: 3
+- id: C12-p10
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [decision-trees, tree-split-criteria]
+  path: practice/p10.ipynb
+  solution_path: practice/p10_solution.ipynb
+  minutes: 55
+  after_session: 4
+- id: C12-p11
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [decision-trees]
+  path: practice/p11.ipynb
+  solution_path: practice/p11_solution.ipynb
+  minutes: 55
+  after_session: 4
+- id: C12-p12
+  set: B
+  type: constrained-coding
+  difficulty: core
+  concepts: [ensemble-learning, bagging-and-boosting]
+  path: practice/p12.ipynb
+  solution_path: practice/p12_solution.ipynb
+  minutes: 55
+  after_session: 5
+- id: C12-p13
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [k-means, lloyd-algorithm]
+  path: practice/p13.ipynb
+  solution_path: practice/p13_solution.ipynb
+  minutes: 55
+  after_session: 6
+- id: C12-p14
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [logistic-regression]
+  path: practice/p14.ipynb
+  solution_path: practice/p14_solution.ipynb
+  minutes: 45
+  after_session: 1
+- id: C12-p15
+  set: C
+  type: proof
+  difficulty: advanced
+  concepts: [svm, margin-and-hinge-loss]
+  path: practice/p15.ipynb
+  solution_path: practice/p15_solution.ipynb
+  minutes: 45
+  after_session: 3
+- id: C12-p16
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [decision-trees, tree-split-criteria]
+  path: practice/p16.ipynb
+  solution_path: practice/p16_solution.ipynb
+  minutes: 45
+  after_session: 4
+- id: C12-p17
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [k-means, lloyd-algorithm]
+  path: practice/p17.ipynb
+  solution_path: practice/p17_solution.ipynb
+  minutes: 45
+  after_session: 6
+- id: C12-p18
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [logistic-regression, svm, margin-and-hinge-loss, classical-model-comparison]
+  path: practice/p18.ipynb
+  solution_path: practice/p18_solution.ipynb
+  minutes: 65
+  after_session: 2
+- id: C12-p19
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [decision-trees, ensemble-learning, bagging-and-boosting]
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb
+  minutes: 65
+  after_session: 5
+- id: C12-p20
+  set: C
+  type: integrative
+  difficulty: core
+  concepts: [k-means, lloyd-algorithm]
+  path: practice/p20.ipynb
+  solution_path: practice/p20_solution.ipynb
+  minutes: 65
+  after_session: 6
+- id: C12-p21
+  set: C
+  type: integrative
+  difficulty: advanced
+  concepts: [logistic-regression, svm, decision-trees, ensemble-learning, k-means,
+    classical-model-comparison]
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+  minutes: 65
+  after_session: 6
+- id: C12-p22
+  set: C
+  type: scenario
+  difficulty: intro
+  concepts: [logistic-regression, svm, classical-model-comparison]
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb
+  minutes: 45
+  after_session: 2
+- id: C12-p23
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [decision-trees, tree-split-criteria]
+  path: practice/p23.ipynb
+  solution_path: practice/p23_solution.ipynb
+  minutes: 45
+  after_session: 4
+- id: C12-p24
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [ensemble-learning, bagging-and-boosting, classical-model-comparison]
+  path: practice/p24.ipynb
+  solution_path: practice/p24_solution.ipynb
+  minutes: 45
+  after_session: 5
+- id: C12-p25
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [k-means, classical-model-comparison]
+  path: practice/p25.ipynb
+  solution_path: practice/p25_solution.ipynb
+  minutes: 45
+  after_session: 6
+- id: C12-p26
+  set: C
+  type: challenge
+  difficulty: core
+  concepts: [logistic-regression]
+  path: practice/p26.ipynb
+  solution_path: practice/p26_solution.ipynb
+  minutes: 50
+  after_session: 1
+- id: C12-p27
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [svm, margin-and-hinge-loss]
+  path: practice/p27.ipynb
+  solution_path: practice/p27_solution.ipynb
+  minutes: 50
+  after_session: 3
+- id: C12-p28
+  set: C
+  type: challenge
+  difficulty: core
+  concepts: [decision-trees, tree-split-criteria]
+  path: practice/p28.ipynb
+  solution_path: practice/p28_solution.ipynb
+  minutes: 50
+  after_session: 4
+- id: C12-p29
+  set: C
+  type: challenge
+  difficulty: core
+  concepts: [ensemble-learning, bagging-and-boosting]
+  path: practice/p29.ipynb
+  solution_path: practice/p29_solution.ipynb
+  minutes: 50
+  after_session: 5
+- id: C12-p30
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [k-means, lloyd-algorithm]
+  path: practice/p30.ipynb
+  solution_path: practice/p30_solution.ipynb
+  minutes: 50
+  after_session: 6

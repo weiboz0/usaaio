@@ -425,6 +425,24 @@ def test_schedule_checker_accepts_a_fully_allocated_prerequisite_valid_fixture(
     assert report.ok, report.errors
 
 
+def test_schedule_checker_rejects_a_nonterminal_final_assessment_week(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path, week_count=40)
+    final_allocations = schedule["weeks"][-1]["allocations"]
+    schedule["weeks"][-2]["allocations"].extend(final_allocations[-2:])
+    del final_allocations[-2:]
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "final-assessment week 39 must be final week 40" in error
+        for error in report.errors
+    ), report.errors
+
+
 def test_schedule_checker_rejects_a_regular_week_without_instruction(
     tmp_path: Path,
 ) -> None:
@@ -973,11 +991,11 @@ def test_f7_instruction_precedes_high_volume_practice() -> None:
         (week, allocation["minutes"])
         for week, allocation in rows
         if allocation["kind"] == "practice"
-    ] == [(22, 5), (23, 235), (24, 146), (25, 141), (26, 113)]
+    ] == [(22, 5), (23, 169), (24, 212), (25, 141), (26, 113)]
 
 
 def test_course_structure_states_interleaving_and_prerequisite_order_contract() -> None:
-    document = (ROOT / "docs" / "course-structure.md").read_text()
+    document = course_renderer.render_document(ROOT)
 
     assert "independent units may interleave" in document
     assert (
@@ -1001,7 +1019,7 @@ def test_rendered_first_instruction_region_exactly_matches_the_schedule_source()
                 first_week.setdefault(allocation["unit"], week["week"])
     expected = list(first_week.items())
 
-    document = (ROOT / "docs" / "course-structure.md").read_text()
+    document = course_renderer.render_document(ROOT)
     actual = _rendered_first_instruction_pairs(document)
 
     assert actual == expected

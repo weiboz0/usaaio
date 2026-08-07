@@ -16,18 +16,8 @@ planned_units:
     - C3-gradient-descent
     - C4-classical-ml-practice
     - F7-kernels-convex-optimization
-    knowledge_points:
-    - logistic-regression
-    - support-vector-machine
-    - decision-trees
-    - ensemble-learning
-    - k-means-clustering
-    provisional_concepts:
-    - logistic-regression
-    - svm
-    - decision-trees
-    - ensemble-learning
-    - k-means
+    knowledge_points: []
+    provisional_concepts: []
     estimated_hours:
       min: 32
       max: 48
@@ -819,8 +809,8 @@ knowledge_points:
       theory: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-CLASSICAL-BREADTH
+    disposition: keep
+    destination: C12-classical-models
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: A single answer-key mention is not teaching; no sigmoid, logit objective, classifier, or training exists.
     consequence: A named official classical model is absent.
@@ -835,8 +825,8 @@ knowledge_points:
       theory: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-CLASSICAL-BREADTH
+    disposition: keep
+    destination: C12-classical-models
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: No margin, hinge loss, support vector, primal-dual SVM, kernel classifier, or training task exists.
     consequence: The official SVM family and its kernel consumer remain missing.
@@ -851,8 +841,8 @@ knowledge_points:
       theory: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-CLASSICAL-BREADTH
+    disposition: keep
+    destination: C12-classical-models
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: No split criterion, recursive construction, pruning, implementation, or fitted tree exists.
     consequence: Tree-based modeling is absent.
@@ -892,8 +882,8 @@ knowledge_points:
       theory: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-CLASSICAL-BREADTH
+    disposition: keep
+    destination: C12-classical-models
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: No bagging, boosting, random forest, voting, or ensemble training appears.
     consequence: Official ensemble breadth is absent.
@@ -1046,8 +1036,8 @@ knowledge_points:
       theory: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-CLASSICAL-BREADTH
+    disposition: keep
+    destination: C12-classical-models
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: C1 toy split rules are not Lloyd's algorithm; no centroid update, objective descent, initialization, or fitted k-means exists.
     consequence: The named official clustering algorithm is missing.

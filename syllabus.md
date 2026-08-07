@@ -186,6 +186,17 @@ concepts:
   - {id: markdown-math-formulae,    cluster: competition-craft}
   - {id: colab-coding-submission,   cluster: competition-craft}
   - {id: cpu-and-gpu-round-boundary, cluster: competition-craft}
+  # --- C12 ---
+  - {id: logistic-regression,        cluster: ml-concepts}
+  - {id: svm,                        cluster: ml-concepts}
+  - {id: margin-and-hinge-loss,      cluster: ml-concepts}
+  - {id: decision-trees,             cluster: ml-concepts}
+  - {id: tree-split-criteria,        cluster: ml-concepts}
+  - {id: ensemble-learning,          cluster: ml-concepts}
+  - {id: bagging-and-boosting,       cluster: ml-concepts}
+  - {id: k-means,                    cluster: ml-concepts}
+  - {id: lloyd-algorithm,            cluster: ml-concepts}
+  - {id: classical-model-comparison, cluster: ml-concepts}
 units:
   - id: F1-scientific-python
     track: foundation
@@ -307,6 +318,15 @@ units:
               api-constraint-compliance, colab-markdown-solution-authoring,
               markdown-code-snippets, markdown-math-formulae, colab-coding-submission,
               cpu-and-gpu-round-boundary]
+  - id: C12-classical-models
+    track: core
+    title: Classical Supervised and Unsupervised Models
+    length: double
+    prereqs: [C1-ml-fundamentals, C2-linear-models, C3-gradient-descent,
+              C4-classical-ml-practice, F7-kernels-convex-optimization]
+    teaches: [logistic-regression, svm, margin-and-hinge-loss, decision-trees,
+              tree-split-criteria, ensemble-learning, bagging-and-boosting, k-means,
+              lloyd-algorithm, classical-model-comparison]
 ```
 
 ## Foundation track — rationale
@@ -354,15 +374,18 @@ NumPy training, PyTorch autograd and optimizers, BatchNorm, and dropout to 24 pr
 `cnn-training` a substantive bridge from trained MLPs to convolutional transfer learning.
 `C8-embeddings` + `C9-dimensionality-reduction` cover the integrative-arc territory
 (`similarity-matrices`, `truncated-svd-practice`).
+`C12-classical-models` is double-length because six sessions connect logistic classification,
+linear and kernel margins, trees, ensembles, clustering, and explicit model comparison to 30
+ordered practices.
 
 ## Suggested order (one feasible topological sort)
 
-F1 → F2 → C1 → F4 → F3 → F5 → C4 → C2 → C3 → C5 → C6 → C11 → C7 → C8 → F6 → F7 → C9 → C10
+F1 → F2 → C1 → F4 → F3 → F5 → C4 → C2 → C3 → C5 → C6 → C11 → C7 → C8 → F6 → F7 → C9 → C10 → C12
 
 Foundation units interleave with core units so the student reaches applied work
 (C4) early — F5 precedes C4 because `feature-scaling` standardization needs `variance`;
 F6 is deferred until C8 motivates it (the similarity matrix begs for SVD); F7 follows all
-four of its declared prerequisites before C9 and the final competition-craft unit.
+four of its declared prerequisites before C9, C10, and the final classical-model unit.
 
 This order is the shipped path. The full architecture reuses it as shared foundation and
 Round 1 core, then attaches Round 2 extensions without duplicating probability, linear

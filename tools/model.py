@@ -67,6 +67,7 @@ class PracticeProblem:
     path: str
     solution_path: str
     minutes: int | None = None
+    after_session: int | None = None
 
 
 @dataclass
@@ -78,6 +79,7 @@ class UnitManifest:
     practice: list[PracticeProblem]
     path: Path
     lesson_sessions: list[int] | None = None
+    concept_sessions: dict[str, int] | None = None
 
 
 @dataclass(frozen=True)
@@ -88,6 +90,7 @@ class ScheduleAllocation:
     session: int | None = None
     chunk: int | None = None
     test: str | None = None
+    problem_ids: list[str] | None = None
 
 
 @dataclass(frozen=True)
@@ -381,18 +384,29 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
     result: list[UnitManifest] = []
     for path in manifests:
         raw = _read_manifest(path)
+        lesson_sessions = _lesson_sessions(raw, path)
+        practice = [
+            _practice_problem(item, index, path)
+            for index, item in enumerate(raw.get("practice") or [])
+        ]
+        concepts_taught = list(raw.get("concepts_taught", []))
+        concept_sessions = _concept_sessions(
+            raw,
+            path,
+            concepts_taught=concepts_taught,
+            lesson_sessions=lesson_sessions,
+            practice=practice,
+        )
         result.append(
             UnitManifest(
                 unit_id=raw["unit"],
-                concepts_taught=list(raw.get("concepts_taught", [])),
+                concepts_taught=concepts_taught,
                 concepts_used=list(raw.get("concepts_used", [])),
                 prereq_units=list(raw.get("prereq_units", [])),
-                practice=[
-                    _practice_problem(item, index, path)
-                    for index, item in enumerate(raw.get("practice") or [])
-                ],
+                practice=practice,
                 path=path,
-                lesson_sessions=_lesson_sessions(raw, path),
+                lesson_sessions=lesson_sessions,
+                concept_sessions=concept_sessions,
             )
         )
     return result
@@ -402,13 +416,72 @@ def _practice_problem(item: dict[str, Any], index: int, path: Path) -> PracticeP
     minutes = item.get("minutes")
     if "minutes" in item and (type(minutes) is not int or minutes <= 0):
         raise ValueError(f"{path}: practice row {index} minutes must be a positive integer")
+    after_session = item.get("after_session")
+    if "after_session" in item and (
+        type(after_session) is not int or after_session <= 0
+    ):
+        raise ValueError(
+            f"{path}: practice row {index} after_session must be a positive integer"
+        )
     return PracticeProblem(
         id=item["id"],
         concepts=list(item.get("concepts", [])),
         path=item["path"],
         solution_path=item["solution_path"],
         minutes=minutes,
+        after_session=after_session,
     )
+
+
+def _concept_sessions(
+    raw: dict[str, Any],
+    path: Path,
+    *,
+    concepts_taught: list[str],
+    lesson_sessions: list[int] | None,
+    practice: list[PracticeProblem],
+) -> dict[str, int] | None:
+    if "concept_sessions" not in raw:
+        return None
+    value = raw["concept_sessions"]
+    if not isinstance(value, dict):
+        raise ValueError(f"{path}: concept_sessions must be a mapping")  # noqa: TRY004
+    if set(value) != set(concepts_taught):
+        raise ValueError(f"{path}: concept_sessions keys must equal concepts_taught")
+    session_count = len(lesson_sessions or [])
+    concept_sessions: dict[str, int] = {}
+    for concept in concepts_taught:
+        session = value[concept]
+        if type(session) is not int or session <= 0 or session > session_count:
+            raise ValueError(
+                f"{path}: concept_sessions[{concept!r}] must be a positive integer "
+                f"within 1..{session_count}"
+            )
+        concept_sessions[concept] = session
+
+    owned = set(concepts_taught)
+    for index, problem in enumerate(practice):
+        owned_tags = owned.intersection(problem.concepts)
+        if not owned_tags:
+            raise ValueError(
+                f"{path}: practice row {index} must tag at least one concept taught by the unit"
+            )
+        if problem.after_session is None:
+            raise ValueError(
+                f"{path}: practice row {index} after_session is required when "
+                "concept_sessions is present"
+            )
+        if problem.after_session > session_count:
+            raise ValueError(
+                f"{path}: practice row {index} after_session must be within 1..{session_count}"
+            )
+        floor = max(concept_sessions[concept] for concept in owned_tags)
+        if problem.after_session < floor:
+            raise ValueError(
+                f"{path}: practice row {index} after_session {problem.after_session} "
+                f"precedes concept-derived floor {floor}"
+            )
+    return concept_sessions
 
 
 def _problem_from(item: dict[str, Any]) -> ManifestProblem:
