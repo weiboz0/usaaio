@@ -87,15 +87,15 @@ table/document from that data so CI checks the calendar rather than trusting pro
 ## Pinned problem contract
 
 Every C11 statement names its time budget and grades every concept tag.
-Set A fundamentals are p01, p02, p03, p05, and p07–p10.
-Set B exam-register problems are p04, p06, and p11–p13.
+Set A fundamentals are p01–p03 and p05–p10.
+Set B exam-register problems are p04 and p11–p13.
 Set C integration/scenario/challenge problems are p14–p24.
-Every owned concept has an answer-affecting Set A encounter: p01/p05 cover softmax, p02
+Every owned concept has an answer-affecting Set A encounter: p01/p05 cover softmax, p02/p06
 cross-entropy, p03/p07 manual backpropagation, p08 separately checks an autograd gradient and an
 optimizer-driven parameter update, p07 checks a manual trained-MLP update, p09 BatchNorm, and p10
 dropout.
-Set membership is the concept-encounter progression and is orthogonal to the informational
-intro/core/advanced difficulty tag.
+Set membership is the concept-encounter progression and is tracked independently of difficulty
+within the standard's allowed Set A intro/core and Set C integration/advanced bands.
 
 | Ids | Type | Difficulty | Minutes each | Primary concept contract |
 |---|---|---|---:|---|
@@ -313,6 +313,10 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
   `tests/test_model.py`, `tests/test_prereq_coverage.py`, and `tests/test_integration.py`; those
   assertions pass while the final artifact/count assertions remain intentionally red until
   Phases 2–5.
+- `uv run pytest tests/test_verify_register.py -q`
+- Do not run the repository-wide register yet: the Phase 1 C11 manifest intentionally precedes
+  its Phase 3 statement files, so only temporary-fixture tests are green in this bounded window;
+  the first corpus register run is required after all 24 statement paths exist.
 - `uv run usaaio-tools prereq-check`
 - `uv run usaaio-tools coverage-check` must remain red only for intentionally missing C11/C7
   artifacts until later phases.
@@ -375,6 +379,7 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 - `uv run usaaio-tools coverage-check` may remain red only for missing paired solutions.
 - Structural scripts assert exact titles, types, sets, difficulty tags, ids, paths, time budgets,
   concept coverage, seeds, bans, and absence of stored outputs.
+- `uv run python scripts/verify-register.py`
 
 ## Phase 4 — Blind-solve C11 in a separate fresh session
 
@@ -437,6 +442,8 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 ### Verification
 
 - Fresh-execute the new C7 lesson, changed overview/review, and all four changed solutions.
+- `uv run pytest tests/test_verify_register.py -q`
+- `uv run python scripts/verify-register.py`
 - Run the permanent mutation registry against the real solutions.
   It must apply these exactly-once corruptions and observe failure in the registered final answer
   check: C11-p16 moves `zero_grad` after `backward`; C11-p23 replaces `optimizer.step()` with a
@@ -625,8 +632,9 @@ This phase is mandatory because the plan ships and changes teaching units.
   C7 contributes 308; 14,767 + 1,858 = 16,625 manifested and
   15,007 + 1,858 = 16,865 scheduled.
   The notebook/count deltas are likewise internally consistent.
-- `[self]` The selected C11-plus-C7 design closes the eight planned-unit rows and the two adjacent
-  existing-unit modalities named by the canonical queue without entering Plan 018 or Round 2.
+- `[self]` The selected C11-plus-C7 design closes the eight knowledge-point rows owned by the
+  planned neural unit and the two adjacent existing-unit modalities named by the canonical queue
+  without entering Plan 018 or Round 2.
   C7 satisfies the existing double-length standard substantively rather than by label alone.
 - `[self]` Delta self-review independently re-summed the calibrated table to 1,040 minutes,
   verified 5,280 + 10,480 + 865 = 16,625, verified 8,950 Semester 2 minutes fit the enforced
@@ -637,8 +645,9 @@ This phase is mandatory because the plan ships and changes teaching units.
   timing contracts explicit without fabricating C7 per-problem data, manifest-enforces C11's
   calibrated problem-minute sum, and uses only repository-valid `uv run` commands.
 - `[self]` Final delta review confirms the Set partition is a disjoint cover of p01–p24, p08's
-  two tags have separate executable assertions, the C11/C7 register checks land only when their
-  target statements exist, and all exact-count/minute contracts remain unchanged.
+  two tags have separate executable assertions, verifier fixtures land in Phase 1 while corpus
+  register runs wait until their target statements exist in Phases 3/5, and all exact-count/
+  minute contracts remain unchanged.
 - **Final delta verdict: APPROVE.**
 - No open self-review finding remains.
 
