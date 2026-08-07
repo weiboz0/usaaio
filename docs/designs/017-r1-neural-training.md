@@ -170,7 +170,10 @@ A schedule checker reconciles every allocated session, practice minute, review m
 debrief against the manifests and prerequisite graph and rejects a weekly total outside 450–500
 minutes.
 A renderer owns only sentinel-delimited numeric baseline, semester arithmetic, weekly table,
-captured-total, and first-instruction/topological-order regions in `docs/course-structure.md`.
+captured-total, summative-milestone/mock-week, and first-instruction/topological-order regions in
+`docs/course-structure.md`.
+The rendered milestone pins `r1-001` to Week 35, and the rendered first-instruction region pins
+the full week-bearing topological sequence including C5 → C6 → C11 → C7.
 The optional-mock policy, grading guidance, and explanatory prerequisite prose outside those
 markers remain human-authored and byte-preserved.
 

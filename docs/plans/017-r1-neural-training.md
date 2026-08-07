@@ -36,6 +36,11 @@ It owns exactly:
 
 Ship five 90-minute sessions, one overview, one 60-minute review, and 24 paired practices and
 solutions totaling 1,040 practice minutes.
+Its exact `concepts_used` list is `[numpy-arrays, array-indexing-slicing, elementwise-ops,
+broadcasting, vectorization, aggregation-axis, random-seeding, partial-derivatives, gradient,
+multivar-chain-rule, gradient-descent, learning-rate, stochastic-gd, loss-surfaces, expectation,
+variance, perceptron, activation-functions, relu-activation, mlp-architecture,
+weight-init-variance, torch-tensors, nn-module, requires-grad, parameter-counting]`.
 
 ### C7 completion
 
@@ -71,7 +76,9 @@ table/document from that data so CI checks the calendar rather than trusting pro
 ## Pinned problem contract
 
 Every C11 statement names its time budget and grades every concept tag.
-Set A is p01–p06, Set B is p07–p16, and Set C is p17–p24.
+Set A fundamentals are p01, p02, p03, p05, p06, and p07.
+Set B exam-register problems are p04 and p08–p13.
+Set C integration/scenario/challenge problems are p14–p24.
 
 | Ids | Type | Difficulty | Minutes each | Primary concept contract |
 |---|---|---|---:|---|
@@ -81,10 +88,10 @@ Set A is p01–p06, Set B is p07–p16, and Set C is p17–p24.
 | p04 | numeric MC normal form, five options | intro | 15 | inverted-dropout expectation ratio as a reduced signed fraction with gcd constraint |
 | p05 | constrained coding | intro | 25 | stable NumPy softmax |
 | p06 | constrained coding | intro | 25 | categorical cross-entropy from logits via log-sum-exp |
-| p07 | constrained coding | intro | 35 | manual local gradients and accumulation |
+| p07 | constrained coding | core | 35 | manual local gradients and accumulation |
 | p08 | constrained coding | core | 35 | autograd gradients against hand values |
-| p09 | constrained coding | core | 35 | optimizer lifecycle and parameter movement |
-| p10 | constrained coding | core | 35 | deterministic trained MLP contract |
+| p09 | constrained coding | core | 35 | BatchNorm forward implementation with batch/running statistics and affine parameters |
+| p10 | constrained coding | core | 35 | inverted-dropout implementation with deterministic train/eval behavior |
 | p11 | proof/derivation | core | 40 | softmax Jacobian and fused CE gradient |
 | p12 | proof/derivation | core | 40 | complete two-layer manual backpropagation |
 | p13 | proof/derivation | core | 40 | BatchNorm forward and backward identities |
@@ -101,17 +108,34 @@ Set A is p01–p06, Set B is p07–p16, and Set C is p17–p24.
 | p24 | challenge | advanced | 75 | BatchNorm/dropout trained-network ablation |
 
 The table totals exactly 1,040 practice minutes.
-The deliberate 7/11/6 intro/core/advanced split is 29.2%/45.8%/25.0%, matching the unit standard.
+The 6/12/6 intro/core/advanced split is 25%/50%/25%, within the unit standard's deliberately
+rough 30%/45%/25% target without misclassifying a 35-minute gradient implementation as intro.
 The minimum honest coverage sets are:
 
 - `softmax`: p01, p05, p11, p14, p21;
 - `cross-entropy-loss`: p02, p06, p11, p14, p21;
 - `manual-backpropagation`: p03, p07, p12, p15, p22;
 - `autograd-training`: p08, p16, p19, p23;
-- `torch-optimizers`: p09, p16, p19, p23;
-- `trained-mlp`: p10, p15, p17, p20, p23, p24;
-- `batch-normalization`: p13, p18, p20, p24;
-- `dropout`: p04, p18, p20, p24.
+- `torch-optimizers`: p16, p19, p23;
+- `trained-mlp`: p15, p17, p20, p23, p24;
+- `batch-normalization`: p09, p13, p18, p20, p24;
+- `dropout`: p04, p10, p18, p20, p24.
+
+The coverage-map promotion uses these exact primary practices for every newly closed modality;
+pre-existing modalities retain their already registered C5/C6/C7 evidence:
+
+| Knowledge point | Newly closed modality → primary practice |
+|---|---|
+| softmax | theory → C11-p01; derivation → C11-p11; implementation → C11-p05 |
+| cross-entropy-loss | theory → C11-p02; derivation → C11-p11; implementation → C11-p06 |
+| backpropagation-by-hand | theory → C11-p03; derivation → C11-p12; implementation → C11-p07 |
+| pytorch-autograd-and-optimizer-training | implementation → C11-p08; model-training → C11-p16 |
+| multilayer-perceptron-model | model-training → C11-p15 |
+| fully-connected-network-from-scratch | model-training → C11-p15 |
+| batch-normalization | derivation → C11-p13; implementation → C11-p09; model-training → C11-p24 |
+| dropout | theory → C11-p04; implementation → C11-p10; model-training → C11-p24 |
+| pytorch-deep-learning-programming | model-training → C11-p16 |
+| convolutional-neural-network-basics | model-training → C7-p10 |
 
 C7-p10, C7-p24, C7-p26, and C7-p27 each grade `cnn-training` and retain their existing concept
 deliverables.
@@ -131,6 +155,13 @@ mode/trainability/graph controls across real train/eval steps.
 - Governance files `AGENTS.md`, `docs/development-workflow.md`,
   `docs/content-review-gate.md`, and `docs/architecture/decisions.md` are not modified.
 - Student's t-test and importance sampling remain optional and non-required.
+
+## Execution ownership
+
+Before Phase 0, dispatch the `tools/`, `scripts/`, and tooling-test work in Phases 0, 1, 5, and
+6 to a fresh GPT-5.6-sol tooling session as required by `AGENTS.md`.
+The active orchestrator assembles the fail-first test contract, integrates the returned changes,
+and runs verification; lesson/statement and blind-solution sessions remain separate.
 
 ## Phase 0 — Pin the failing contract
 
@@ -205,14 +236,17 @@ mode/trainability/graph controls across real train/eval steps.
 ### Work
 
 1. Add the nine concepts and unique owners exactly as designed.
-2. Add C11's double-length unit contract to the canonical syllabus block; C6 remains unchanged.
+2. Add C11's double-length unit contract and the exact `concepts_used` list pinned in Scope to
+   the canonical syllabus/manifest block; C6 remains unchanged.
 3. Set C7's canonical `length: double`, change its prerequisites to
    `[C6-pytorch, C11-neural-training]`, add the fourth session/minute totals, add `cnn-training`,
    extend `concepts_used` with `softmax`, `cross-entropy-loss`, `autograd-training`,
    `torch-optimizers`, `batch-normalization`, and `dropout`, and retain exactly 27 practice
    entries.
-   Add `minutes: 25` to each of the 23 unchanged entries and `minutes: 75` to p10/p24/p26/p27,
-   summing exactly to 875.
+   Keep C7's 875-minute practice total canonical at unit level.
+   The four rewritten statements each name a 75-minute authoring/assessment budget, but C7 does
+   not opt into the new per-problem manifest field because the unchanged 23 problems have no
+   measured individual-minute evidence.
 4. Convert the C7 standards note from unresolved non-conformance to a recorded resolution based
    on the substantive fourth session; record that C5 remains a standard 22-problem unit because
    training moved to C11, update the double-length roster to F5, F6, C7, and C11, and correct the
@@ -224,6 +258,9 @@ mode/trainability/graph controls across real train/eval steps.
 6. Implement the optional per-problem minute loader/coverage contract and fail-closed fixtures;
    units without any per-problem minutes remain backward-compatible.
 7. Register Plan 017 as active without marking it complete.
+   Atomically replace the stale deferred C7/C5 capacity TODO with the resolved decision: C7 is a
+   substantive four-session double-length unit, while C5 remains a compliant standard 22-problem
+   unit because neural training moved to C11.
 
 ### Verification
 
@@ -405,8 +442,10 @@ mode/trainability/graph controls across real train/eval steps.
 7. Add `curriculum/course-schedule.yaml` with one allocation record per week and add
    sentinel-delimited generated regions to `docs/course-structure.md`.
    `tools/render_course_structure.py` owns only the numeric baseline, semester arithmetic, weekly
-   table, captured-total, and first-instruction/topological-order regions.
-   Tests require the rendered order to contain `C5 → C6 → C11 → C7` and require the genuinely
+   table, captured-total, summative-milestone/mock-week, and first-instruction/topological-order
+   regions.
+   Tests require the rendered milestone to place `r1-001` in Week 35, require the rendered order
+   to contain `C5 → C6 → C11 → C7`, and require the genuinely
    unrelated human-authored optional-mock, grading, and explanatory prerequisite prose outside
    the sentinels to remain byte-identical.
    The schedule checker must account for each manifested session exactly once by unit/session
@@ -484,8 +523,8 @@ This phase is mandatory because the plan ships and changes teaching units.
 - C5 remains a standard 22-problem unit and is not overloaded.
 - The canonical schedule checker and renderer account for every minute and enforce prerequisite
   completion/start order; no schedule acceptance rests on handwritten prose.
-- Optional per-problem manifest minutes are complete and sum-checked for C11 and C7; the pinned
-  practice tables are executable data contracts rather than authoring-only prose.
+- Optional per-problem manifest minutes are complete and sum-checked for C11; C7 retains its
+  honest unit-level 875-minute total while each changed capstone states its 75-minute budget.
 - The permanent mutation registry proves the actual training answer checks reject all five named
   corruption classes and fails closed on unresolved or unexpectedly passing mutants.
 - All 28 changed/new solutions and all changed teaching notebooks fresh-execute cleanly.
@@ -495,7 +534,7 @@ This phase is mandatory because the plan ships and changes teaching units.
 
 ## Plan Review
 
-### Review 1 — self (2026-08-07)
+### Slot 1 — self (2026-08-07)
 
 - **Verdict:** APPROVED.
 - `[self] [FIXED]` Phase 1 originally named the whole integration files as if every final artifact
@@ -518,10 +557,11 @@ This phase is mandatory because the plan ships and changes teaching units.
   replacement.
 - `[self]` The final contract also traces all ten single destinations and
   `shipped_concepts` additions through scope-check's anchor ownership rule, makes both C11/C7
-  problem-minute sums manifest-enforced, and uses only repository-valid `uv run` commands.
+  timing contracts explicit without fabricating C7 per-problem data, manifest-enforces C11's
+  calibrated problem-minute sum, and uses only repository-valid `uv run` commands.
 - No open self-review finding remains.
 
-### Review 2 — GPT-5.6-terra (2026-08-07)
+### Slot 3 — GPT-5.6-terra (2026-08-07)
 
 - **Initial verdict:** REJECT.
 - `[terra] [FIXED]` The draft promised to retire C7/C6/neural pending prose but omitted the
@@ -553,7 +593,7 @@ This phase is mandatory because the plan ships and changes teaching units.
   The first-instruction/topological-order statement is now a generated sentinel region tested for
   `C5 → C6 → C11 → C7`; unrelated explanatory prose remains protected.
 
-### Review 3 — GLM-5.2 (2026-08-07)
+### Slot 4 — GLM-5.2 (2026-08-07)
 
 - **Verdict:** APPROVED.
 - `[glm] [FIXED]` The draft said Phase 1 would repair a duplicate C6 `prereqs` key, but the current
@@ -564,7 +604,7 @@ This phase is mandatory because the plan ships and changes teaching units.
   prerequisite transitivity, the double-length bands, and the existence of referenced current
   producers/consumers; no blocker remains.
 
-### Review 4 — Claude Opus 5 (2026-08-07)
+### Slot 2 — Claude Opus 5 (2026-08-07)
 
 - **Initial verdict:** CHANGES REQUESTED.
 - `[opus] [FIXED]` Removing `P015-R1-NEURAL-TRAINING` would leave dangling prerequisites in the
@@ -593,8 +633,8 @@ This phase is mandatory because the plan ships and changes teaching units.
   C7-p26 is now the fourth substantive training problem and retains its existing shape-helper
   objective.
 - `[opus] [FIXED]` Phase 1 now updates the standards roster to name all four double-length units.
-- `[opus] [FIXED]` The difficulty split is now deliberate 7/11/6 =
-  29.2%/45.8%/25.0% rather than an accidental 25%/50%/25%.
+- `[opus] [FIXED]` The final 6/12/6 difficulty split is honestly described as within the
+  standard's rough target; C11-p07 is no longer labeled intro merely to tune percentages.
 - `[opus] [FIXED]` The design now records why permanent id C11 sorts after C10 while explicit
   graph/schedule consumers place it between C6 and C7.
 - `[opus] [FIXED]` The second review found system-`python3` and malformed positional-root commands
@@ -610,9 +650,10 @@ This phase is mandatory because the plan ships and changes teaching units.
   its trained classifier and loss-curve lesson.
 - `[opus] [FIXED]` Semester 2 now uses 19 weeks rather than packing 8,950 minutes into 18 weeks;
   the 450–500-minute hard band retains durable headroom.
-- `[opus] [FIXED]` Optional positive per-problem `minutes` are added to the manifest model.
-  C11 and C7 require complete declarations whose sums equal the unit practice total; legacy units
-  with no declarations remain valid.
+- `[opus] [FIXED]` Optional positive per-problem `minutes` are added to the manifest model for C11,
+  whose 24 calibrated rows sum to its practice total.
+  C7 retains an honest aggregate total instead of assigning invented equal durations to 23
+  unchanged problems; its four changed statements still name 75-minute budgets.
 - `[opus] [FIXED]` The ten rows now pin exactly one destination plus the precise
   `shipped_concepts` additions needed for every cross-unit lesson anchor.
 - `[opus] [FIXED]` Phase 0 measures the clean `708a851` full-CI baseline and Phase 7 enforces a
@@ -625,9 +666,19 @@ This phase is mandatory because the plan ships and changes teaching units.
   sign constraints.
 - `[opus] [FIXED]` Phase 1 couples the unit-standards roster to the syllabus narrative and its
   exact integration assertions.
-- `[opus] [FIXED]` The course-structure renderer owns only sentinel-delimited numeric/table
-  regions plus the prerequisite-order statement; optional mock, grading, and unrelated
-  explanatory prose outside them is byte-preserved.
+- `[opus] [FIXED]` The course-structure renderer owns sentinel-delimited numeric/table,
+  summative-milestone/mock-week, and full week-bearing prerequisite-order regions; tests pin
+  Week 35 and `C5 → C6 → C11 → C7`, while optional-mock, grading, and unrelated explanatory
+  prose outside them is byte-preserved.
+- `[opus] [FIXED]` C11-p09 and C11-p10 now provide explicit BatchNorm and dropout implementation
+  practices, and the plan pins a primary practice for every newly closed modality across all ten
+  promoted knowledge points.
+- `[opus] [FIXED]` Set assignment now follows the unit standard by moving numeric-normal-form p04
+  to Set B and integration/scenario/challenge p14–p24 to Set C.
+- `[opus] [FIXED]` The exact C11 `concepts_used` list is pinned, tooling work is assigned to a
+  fresh GPT-5.6-sol session, and Phase 1 atomically resolves the stale C7/C5 capacity TODO.
+- `[opus] [FIXED]` Roster headings now use the mandatory slot identities rather than incorrectly
+  numbering Terra, GLM, and Opus by chronological response order.
 - **Delta re-review:** pending.
 
 ## Content Review
