@@ -19,23 +19,10 @@ from tools.model import KnowledgePoint, Roadmap, load_roadmap
 AUDIT_PATH = Path("docs/audits/015-coverage-audit.md")
 ROADMAP_PATH = Path("docs/curriculum-roadmap.md")
 MAJOR_EXISTING_UNIT_EXTENSIONS = (
-    ("F5", 8.0, 12.0),
-    ("C2", 6.0, 9.0),
-    ("C9", 8.0, 12.0),
     ("C7", 8.0, 12.0),
 )
 
 TRANCHE_QUEUE = (
-    (
-        "Round 1 foundation, workflow, and mathematical completion",
-        (
-            "First close F1 seaborn and C10 Colab/Markdown/round-policy workflow gaps; then "
-            "F5 extension: conditional probability, Bayes, and Hoeffding; C2 extension: "
-            "closed-form regression, rank, and pseudoinverse conditions; C9 extension: the "
-            "PCA eigenproblem and NumPy class; finish with PSD/kernel proofs, convexity, "
-            "constrained optimization, and duality."
-        ),
-    ),
     (
         "Round 1 neural-training completion",
         (
@@ -195,8 +182,8 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
             "### Estimated major existing-unit extensions",
             "",
             (
-                "These four ranges are renderer-owned editorial estimates, not fields in "
-                "the canonical coverage map."
+                "This range is a renderer-owned editorial estimate, not a field in the "
+                "canonical coverage map."
             ),
             "",
             "| Existing unit | Minimum hours | Maximum hours |",
@@ -218,7 +205,7 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
                 f"{_format_number(scoped_maximum)} hours**."
             ),
             (
-                "Additional existing-unit corrections in C10, F1, C6, and C8 are not yet "
+                "Additional existing-unit corrections in C6 and C8 are not yet "
                 "estimated, so this is not a complete roadmap total."
             ),
             "",

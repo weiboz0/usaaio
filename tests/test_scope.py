@@ -1267,11 +1267,27 @@ def test_renderer_and_scope_checker_share_the_practice_threshold() -> None:
     )
 
 
-def test_renderer_recomputes_real_plan016_phase1_baseline() -> None:
+def test_renderer_recomputes_real_plan016_baseline() -> None:
     baseline = renderer.current_time_baseline(Path(__file__).parents[1])
 
     assert baseline.manifested_minutes == 14767
     assert baseline.scheduled_minutes == 15007
+
+
+def test_every_covered_real_roadmap_row_uses_keep_disposition() -> None:
+    roadmap = model.load_roadmap(Path(__file__).parents[1])
+
+    covered = [point for point in roadmap.knowledge_points if point.coverage == "covered"]
+    assert covered
+    assert all(point.disposition == "keep" for point in covered)
+
+
+def test_completed_plan016_units_are_not_pending_renderer_extensions() -> None:
+    shipped_owner_units = {"F1", "C10", "F5", "C2", "C9", "F7"}
+    pending_units = {unit_id for unit_id, _, _ in renderer.MAJOR_EXISTING_UNIT_EXTENSIONS}
+
+    assert pending_units == {"C7"}
+    assert shipped_owner_units.isdisjoint(pending_units)
 
 
 def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: Path) -> None:
@@ -1299,9 +1315,13 @@ def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: 
         assert "| round-2-extension | 1 | 2 |" in document
         assert "| optional-enrichment | 0.5 | 1.5 |" in document
         assert "| **Planned-unit subtotal** | **1.5** | **3.5** |" in document
-        assert "Estimated major existing-unit extensions subtotal: **30–45 hours**" in document
-        assert "Minimum estimated scoped delta: **31.5–48.5 hours**" in document
-        assert "C10, F1, C6, and C8 are not yet estimated" in document
+        assert (
+            "This range is a renderer-owned editorial estimate, not a field in the canonical coverage map."
+            in document
+        )
+        assert "Estimated major existing-unit extensions subtotal: **8–12 hours**" in document
+        assert "Minimum estimated scoped delta: **9.5–15.5 hours**" in document
+        assert "C6 and C8 are not yet estimated" in document
         assert "**8.5–10.5 manifested-baseline hours**" in document
         assert "**8.75–10.75 scheduled-baseline hours**" in document
 
@@ -1311,24 +1331,28 @@ def test_real_renderer_distinguishes_planned_major_extension_and_minimum_scoped_
 
     for document in rendered.values():
         assert "| **Planned-unit subtotal** | **188** | **284** |" in document
-        assert "renderer-owned editorial estimates" in document
-        assert "Estimated major existing-unit extensions subtotal: **30–45 hours**" in document
-        assert "Minimum estimated scoped delta: **218–329 hours**" in document
-        assert "C10, F1, C6, and C8 are not yet estimated" in document
-        assert "**464.12–575.12 manifested-baseline hours**" in document
-        assert "**468.12–579.12 scheduled-baseline hours**" in document
+        assert (
+            "This range is a renderer-owned editorial estimate, not a field in the canonical coverage map."
+            in document
+        )
+        assert "Estimated major existing-unit extensions subtotal: **8–12 hours**" in document
+        assert "Minimum estimated scoped delta: **196–296 hours**" in document
+        assert "C6 and C8 are not yet estimated" in document
+        assert "**442.12–542.12 manifested-baseline hours**" in document
+        assert "**446.12–546.12 scheduled-baseline hours**" in document
         assert "student-t-test" in document
         assert "importance-sampling" in document
         assert "Total roadmap delta" not in document
 
 
-def test_both_documents_end_with_fixed_six_tranche_queue(tmp_path: Path) -> None:
+def test_both_documents_end_with_fixed_five_tranche_queue_led_by_neural_training(
+    tmp_path: Path,
+) -> None:
     _base_contract(tmp_path)
 
     rendered = renderer.render_documents(tmp_path)
 
     titles = [
-        "Round 1 foundation, workflow, and mathematical completion",
         "Round 1 neural-training completion",
         "Round 1 classical-model breadth",
         "Round 2 transformers and NLP",
@@ -1341,11 +1365,12 @@ def test_both_documents_end_with_fixed_six_tranche_queue(tmp_path: Path) -> None
         assert document.rstrip().endswith(
             "Each tranche updates the shipped syllabus and roadmap atomically."
         )
-        assert "F5 extension" in document
+        assert "Round 1 foundation, workflow, and mathematical completion" not in document
+        assert "F5 extension" not in document
         assert "vision-transformer" in document
         assert "graph-neural-network" in document
-        assert "C2 extension" in document
-        assert "C9 extension" in document
+        assert "C2 extension" not in document
+        assert "C9 extension" not in document
         assert "C7 CNN training" in document
         assert "Forward propagation is already a shipped prerequisite, not a new gap." in document
 
