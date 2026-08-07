@@ -22,6 +22,8 @@ from typing import Any
 
 import yaml
 
+from tools.checks.schedule import load_validated_schedule
+
 INVENTORY_PATH = Path("curriculum/material-inventory.yaml")
 
 
@@ -524,7 +526,6 @@ def build_inventory(root: str | Path) -> dict[str, Any]:
     _validate_input_file(
         course_path, root / "docs", "docs/course-structure.md", "course structure"
     )
-    course_text = _read_text(course_path, "docs/course-structure.md")
     documents = [_document_record(course_path, "docs/course-structure.md")]
 
     parsed_unit_manifests = [_load_yaml(path, _posix(path, root)) for path in unit_manifests]
@@ -532,9 +533,10 @@ def build_inventory(root: str | Path) -> dict[str, Any]:
     practice_minutes = sum(int(item["estimated_minutes"].get("practice", 0)) for item in parsed_unit_manifests)
     review_minutes = sum(int(item["estimated_minutes"].get("review", 0)) for item in parsed_unit_manifests)
     manifested_minutes = lesson_minutes + practice_minutes + review_minutes
-    mock_minutes = sum(int(_load_yaml(path, _posix(path, root)).get("duration_minutes", 0)) for path in mock_manifests)
-    debrief_match = re.search(r"(\d+)-minute debrief", course_text)
-    debrief_minutes = int(debrief_match.group(1)) if debrief_match else 0
+    try:
+        schedule = load_validated_schedule(root, enforce_calendar=False)
+    except ValueError as exc:
+        raise InventoryError(str(exc)) from exc
 
     unit_notebook_paths = [item for item in notebooks if item["path"].startswith("units/")]
     mock_notebook_paths = [item for item in notebooks if item["path"].startswith("mocktests/")]
@@ -548,7 +550,7 @@ def build_inventory(root: str | Path) -> dict[str, Any]:
         "mocktests": len(mock_manifests),
         "mock_notebooks": len(mock_notebook_paths),
         "manifested_minutes": manifested_minutes,
-        "scheduled_minutes": manifested_minutes + mock_minutes + debrief_minutes,
+        "scheduled_minutes": schedule.total_minutes,
     }
     all_input_paths = sorted(
         [item["path"] for item in manifests + notebooks + documents], key=str.encode

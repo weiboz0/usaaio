@@ -80,6 +80,39 @@ class UnitManifest:
     lesson_sessions: list[int] | None = None
 
 
+@dataclass(frozen=True)
+class ScheduleAllocation:
+    kind: str
+    minutes: int
+    unit: str | None = None
+    session: int | None = None
+    chunk: int | None = None
+    test: str | None = None
+
+
+@dataclass(frozen=True)
+class ScheduleWeek:
+    week: int
+    semester: int
+    allocations: list[ScheduleAllocation]
+
+
+@dataclass(frozen=True)
+class CourseSchedule:
+    schedule_version: int
+    weeks: list[ScheduleWeek]
+    semester_minutes: tuple[int, int] | None = None
+    declared_total_minutes: int | None = None
+
+    @property
+    def total_minutes(self) -> int:
+        return sum(
+            allocation.minutes
+            for week in self.weeks
+            for allocation in week.allocations
+        )
+
+
 @dataclass
 class ManifestProblem:
     id: str

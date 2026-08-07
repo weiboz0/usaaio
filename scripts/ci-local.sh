@@ -64,8 +64,11 @@ python3 scripts/verify-register.py || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 step "5/8 generated curriculum evidence"
 uv run python -m tools.audit_curriculum --check
 uv run python -m tools.render_curriculum_roadmap --check
+uv run python -m tools.render_course_structure --check
+uv run usaaio-tools schedule-check
 
 step "6/8 manifest + content checks"
+uv run python -m tools.verify_training_mutations --root .
 for c in prereq-check coverage-check scope-check tolerance-check hygiene-check blueprint-check overlap-scan; do
   echo "running: $c"
   uv run usaaio-tools "$c" || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }

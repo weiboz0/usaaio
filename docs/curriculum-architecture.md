@@ -63,9 +63,11 @@ targets and GPU execution policy, then the observed integration capabilities.
 
 ## Capacity and promotion rule
 
-The current 26-week schedule has no extension capacity: its only 240-minute difference between
-manifested and scheduled totals is the final mock plus debrief, not slack. A Round 1 addition
-must explicitly split or replace material or extend the calendar. A planned topic becomes
+The validated 35-week schedule has no silent extension capacity: its only 240-minute difference
+between manifested and scheduled totals is the final mock plus debrief, not slack.
+The margin below 500 minutes in an individual week is recovery buffer, not unallocated
+curriculum capacity.
+A Round 1 addition must explicitly replace scheduled work or extend the calendar. A planned topic becomes
 shipped only when its concept enters the syllabus, its lesson and required modalities ship,
 and at least three honest unit practices exercise it; the coverage map and shipped contract
 must change atomically.

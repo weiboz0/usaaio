@@ -1,15 +1,15 @@
 inventory_version: 1
 counts:
-  units: 17
-  concepts: 130
-  unit_practices: 383
-  lesson_sessions: 57
-  unit_nonpractice_notebooks: 91
-  unit_notebooks: 857
+  units: 18
+  concepts: 139
+  unit_practices: 407
+  lesson_sessions: 63
+  unit_nonpractice_notebooks: 99
+  unit_notebooks: 913
   mocktests: 1
   mock_notebooks: 10
-  manifested_minutes: 14767
-  scheduled_minutes: 15007
+  manifested_minutes: 16625
+  scheduled_minutes: 16865
 input_paths:
 - docs/course-structure.md
 - mocktests/r1-001/manifest.yaml
@@ -133,6 +133,62 @@ input_paths:
 - units/C10-competition-craft/practice/p24.ipynb
 - units/C10-competition-craft/practice/p24_solution.ipynb
 - units/C10-competition-craft/review.ipynb
+- units/C11-neural-training/lesson.ipynb
+- units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb
+- units/C11-neural-training/lessons/02-manual-backpropagation.ipynb
+- units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb
+- units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb
+- units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb
+- units/C11-neural-training/manifest.yaml
+- units/C11-neural-training/practice/p01.ipynb
+- units/C11-neural-training/practice/p01_solution.ipynb
+- units/C11-neural-training/practice/p02.ipynb
+- units/C11-neural-training/practice/p02_solution.ipynb
+- units/C11-neural-training/practice/p03.ipynb
+- units/C11-neural-training/practice/p03_solution.ipynb
+- units/C11-neural-training/practice/p04.ipynb
+- units/C11-neural-training/practice/p04_solution.ipynb
+- units/C11-neural-training/practice/p05.ipynb
+- units/C11-neural-training/practice/p05_solution.ipynb
+- units/C11-neural-training/practice/p06.ipynb
+- units/C11-neural-training/practice/p06_solution.ipynb
+- units/C11-neural-training/practice/p07.ipynb
+- units/C11-neural-training/practice/p07_solution.ipynb
+- units/C11-neural-training/practice/p08.ipynb
+- units/C11-neural-training/practice/p08_solution.ipynb
+- units/C11-neural-training/practice/p09.ipynb
+- units/C11-neural-training/practice/p09_solution.ipynb
+- units/C11-neural-training/practice/p10.ipynb
+- units/C11-neural-training/practice/p10_solution.ipynb
+- units/C11-neural-training/practice/p11.ipynb
+- units/C11-neural-training/practice/p11_solution.ipynb
+- units/C11-neural-training/practice/p12.ipynb
+- units/C11-neural-training/practice/p12_solution.ipynb
+- units/C11-neural-training/practice/p13.ipynb
+- units/C11-neural-training/practice/p13_solution.ipynb
+- units/C11-neural-training/practice/p14.ipynb
+- units/C11-neural-training/practice/p14_solution.ipynb
+- units/C11-neural-training/practice/p15.ipynb
+- units/C11-neural-training/practice/p15_solution.ipynb
+- units/C11-neural-training/practice/p16.ipynb
+- units/C11-neural-training/practice/p16_solution.ipynb
+- units/C11-neural-training/practice/p17.ipynb
+- units/C11-neural-training/practice/p17_solution.ipynb
+- units/C11-neural-training/practice/p18.ipynb
+- units/C11-neural-training/practice/p18_solution.ipynb
+- units/C11-neural-training/practice/p19.ipynb
+- units/C11-neural-training/practice/p19_solution.ipynb
+- units/C11-neural-training/practice/p20.ipynb
+- units/C11-neural-training/practice/p20_solution.ipynb
+- units/C11-neural-training/practice/p21.ipynb
+- units/C11-neural-training/practice/p21_solution.ipynb
+- units/C11-neural-training/practice/p22.ipynb
+- units/C11-neural-training/practice/p22_solution.ipynb
+- units/C11-neural-training/practice/p23.ipynb
+- units/C11-neural-training/practice/p23_solution.ipynb
+- units/C11-neural-training/practice/p24.ipynb
+- units/C11-neural-training/practice/p24_solution.ipynb
+- units/C11-neural-training/review.ipynb
 - units/C2-linear-models/lesson.ipynb
 - units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb
 - units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb
@@ -386,6 +442,7 @@ input_paths:
 - units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb
 - units/C7-cnn-transfer/lessons/02-resnet-reading.ipynb
 - units/C7-cnn-transfer/lessons/03-truncation-and-transfer.ipynb
+- units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb
 - units/C7-cnn-transfer/manifest.yaml
 - units/C7-cnn-transfer/practice/p01.ipynb
 - units/C7-cnn-transfer/practice/p01_solution.ipynb
@@ -901,20 +958,23 @@ input_paths:
 documents:
 - path: docs/course-structure.md
   kind: document
-  semantic_sha256: 9da6edb8be1ec20100ad809f484d674357abcb734b5992f6dea973b79f716f84
+  semantic_sha256: f8a52022c34b6a1ed5585fa7b91e4b469e26922a8461e2fb657cc2ba641fe93e
 manifests:
 - path: mocktests/r1-001/manifest.yaml
   kind: yaml
   semantic_sha256: 529275be25edee7e74999da5791d92d1b6de8f12f1a16a684dfbb9512a360952
 - path: syllabus.md
   kind: canonical-yaml
-  semantic_sha256: c9829a7546ddee02c045eeadd894baa45f7940b21875962276f5ecd7934db673
+  semantic_sha256: adf9e621cb7ca2ce63cd01ee09eabd87e3f98613f9c6ecf28bbddc7105a9c064
 - path: units/C1-ml-fundamentals/manifest.yaml
   kind: yaml
   semantic_sha256: 127dda704e1713a7d11492b18bbd2097d3a444d922b6dbbbcac4b00dd9161ac5
 - path: units/C10-competition-craft/manifest.yaml
   kind: yaml
   semantic_sha256: b52c070ff823dfbb62d72a416c12d765bcd5ad0ea98e4193990e2023b8edde5e
+- path: units/C11-neural-training/manifest.yaml
+  kind: yaml
+  semantic_sha256: dd2fd9a90dca8e05e9317ff408b6c066dad72f89d7dc95665758304f62680c80
 - path: units/C2-linear-models/manifest.yaml
   kind: yaml
   semantic_sha256: 73104be56b89e70cdaadd9974bb5b1412d458a38f2a1d40bdd0e0f5d098f0023
@@ -932,7 +992,7 @@ manifests:
   semantic_sha256: 7c280848683efe2e32b7524b20f97e62174c8bf65c6c2eb6f0a062ac3fc7860b
 - path: units/C7-cnn-transfer/manifest.yaml
   kind: yaml
-  semantic_sha256: 0a977505c1f7a33d83dd42f22861d9113d479016e590613025e89e7c69272627
+  semantic_sha256: 8f74f90268caae5e7f0201275be90b9e213a927aa22fd2421d780bb27323e0a4
 - path: units/C8-embeddings/manifest.yaml
   kind: yaml
   semantic_sha256: 9ca4726798f7a06ae5730dbf5d9e6ef53be4d5a21c24ed46be6db61dc127fb5a
@@ -8239,6 +8299,2713 @@ notebooks:
   - writeup-quality
   declared_problem_ids: []
   api_tokens: []
+- path: units/C11-neural-training/lesson.ipynb
+  kind: notebook
+  semantic_sha256: a0fb048a624964f12e3165b1798638ab60c0750844b8369c890ff61f46ee5377
+  anchors:
+  - anchor: 'units/C11-neural-training/lesson.ipynb :: C11-neural-training — Losses, Gradients, and Training (Unit Overview)
+      > Forward link :: cell 1'
+    heading_path:
+    - C11-neural-training — Losses, Gradients, and Training (Unit Overview)
+    - Forward link
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lesson.ipynb :: C11-neural-training — Losses, Gradients, and Training (Unit Overview)
+      > Forward link :: cell 2'
+    heading_path:
+    - C11-neural-training — Losses, Gradients, and Training (Unit Overview)
+    - Forward link
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - batch-normalization
+  - cross-entropy-loss
+  - dropout
+  - manual-backpropagation
+  - softmax
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids: []
+  api_tokens:
+  - np.random.default_rng
+  - torch.get_default_dtype
+  - torch.manual_seed
+  - torch.set_default_dtype
+- path: units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb
+  kind: notebook
+  semantic_sha256: 004a5bff59fe9ee689f8c91dc8f4e0ce9bef1ee68c1e423ab8abfbba9906135c
+  anchors:
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 1. Logits, probabilities, and the class axis :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 1. Logits, probabilities, and the class axis
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 1. Logits, probabilities, and the class axis :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 1. Logits, probabilities, and the class axis
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 2. Shift invariance gives a stable algorithm :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 2. Shift invariance gives a stable algorithm
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 2. Shift invariance gives a stable algorithm :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 2. Shift invariance gives a stable algorithm
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 3. Cross-entropy is negative log likelihood :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 3. Cross-entropy is negative log likelihood
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 3. Cross-entropy is negative log likelihood :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 3. Cross-entropy is negative log likelihood
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 4. Worked exam-register example 1: stable normal form :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - '4. Worked exam-register example 1: stable normal form'
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 4. Worked exam-register example 1: stable normal form :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - '4. Worked exam-register example 1: stable normal form'
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 5. The softmax Jacobian :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 5. The softmax Jacobian
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 5. The softmax Jacobian :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 5. The softmax Jacobian
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 6. Fusing softmax and cross-entropy :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 6. Fusing softmax and cross-entropy
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 6. Fusing softmax and cross-entropy :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 6. Fusing softmax and cross-entropy
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 7. Common pitfalls and exam connections :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 7. Common pitfalls and exam connections
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > 7. Common pitfalls and exam connections :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - 7. Common pitfalls and exam connections
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable
+      Softmax and Cross-Entropy > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 1: Stable Softmax and Cross-Entropy'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - batch-normalization
+  - cross-entropy-loss
+  - dropout
+  - manual-backpropagation
+  - softmax
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids: []
+  api_tokens:
+  - G.sum
+  - J.sum
+  - P_huge.sum
+  - P_small.sum
+  - exp_shifted.sum
+  - logits.max
+  - losses.mean
+  - naive.sum
+  - np.all
+  - np.allclose
+  - np.arange
+  - np.array
+  - np.asarray
+  - np.diag
+  - np.errstate
+  - np.exp
+  - np.isclose
+  - np.isfinite
+  - np.log
+  - np.outer
+  - np.random.default_rng
+  - raw.sum
+- path: units/C11-neural-training/lessons/02-manual-backpropagation.ipynb
+  kind: notebook
+  semantic_sha256: 92b94417689a9a718501561e02ccb8de16e2745651fd2fa6226268149dc59853
+  anchors:
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 1. Computation graphs and local derivatives :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - 1. Computation graphs and local derivatives
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 1. Computation graphs and local derivatives :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - 1. Computation graphs and local derivatives
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 2. Branches require gradient accumulation :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - 2. Branches require gradient accumulation
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 2. Branches require gradient accumulation :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - 2. Branches require gradient accumulation
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 3. Two-layer MLP: forward graph and shape ledger :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - '3. Two-layer MLP: forward graph and shape ledger'
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 3. Two-layer MLP: forward graph and shape ledger :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - '3. Two-layer MLP: forward graph and shape ledger'
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 4. Complete backward derivation :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - 4. Complete backward derivation
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 4. Complete backward derivation :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - 4. Complete backward derivation
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 5. Worked example: one complete backward pass :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - '5. Worked example: one complete backward pass'
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 5. Worked example: one complete backward pass :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - '5. Worked example: one complete backward pass'
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 6. Gradient checking as an audit :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - 6. Gradient checking as an audit
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 6. Gradient checking as an audit :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - 6. Gradient checking as an audit
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > 7. Common pitfalls, exam connections, and forward links :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - 7. Common pitfalls, exam connections, and forward links
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual
+      Backpropagation > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 2: Manual Backpropagation'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - batch-normalization
+  - cross-entropy-loss
+  - dropout
+  - manual-backpropagation
+  - softmax
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids: []
+  api_tokens:
+  - G1.sum
+  - G2.sum
+  - P.copy
+  - W1.copy
+  - exp_shifted.sum
+  - expected.items
+  - grads.items
+  - logits.max
+  - np.allclose
+  - np.arange
+  - np.array
+  - np.exp
+  - np.isclose
+  - np.log
+  - np.maximum
+  - np.random.default_rng
+  - np.zeros
+- path: units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb
+  kind: notebook
+  semantic_sha256: 9605feab9aaa9028c0522837f685bd6fb0dcade3ecac3cd4d6391546ea19d760
+  anchors:
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 1. Deterministic data and parameter state :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 1. Deterministic data and parameter state
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 1. Deterministic data and parameter state :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 1. Deterministic data and parameter state
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 2. Forward pass and cache :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 2. Forward pass and cache
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 2. Forward pass and cache :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 2. Forward pass and cache
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 3. Backward pass with a shape-preserving return value :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 3. Backward pass with a shape-preserving return value
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 3. Backward pass with a shape-preserving return value :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 3. Backward pass with a shape-preserving return value
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 4. Update ordering and a complete training loop :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 4. Update ordering and a complete training loop
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 4. Update ordering and a complete training loop :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 4. Update ordering and a complete training loop
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 5. Training certification: decisions changed for a reason :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - '5. Training certification: decisions changed for a reason'
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 5. Training certification: decisions changed for a reason :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - '5. Training certification: decisions changed for a reason'
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 6. Gradient check and worked debugging audit :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 6. Gradient check and worked debugging audit
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 6. Gradient check and worked debugging audit :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 6. Gradient check and worked debugging audit
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > 7. Pitfalls, regularization links, and exam connections :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - 7. Pitfalls, regularization links, and exam connections
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
+      That Learns > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 3: A NumPy MLP That Learns'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - batch-normalization
+  - cross-entropy-loss
+  - dropout
+  - manual-backpropagation
+  - softmax
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids: []
+  api_tokens:
+  - G1.sum
+  - G2.sum
+  - P.argmax
+  - P.copy
+  - ax.grid
+  - ax.plot
+  - ax.set
+  - check_params.items
+  - exp_shifted.sum
+  - initial_grads.items
+  - initial_params.items
+  - logits.max
+  - losses.append
+  - movement.values
+  - np.arange
+  - np.array
+  - np.array_equal
+  - np.exp
+  - np.isclose
+  - np.isfinite
+  - np.linalg.norm
+  - np.log
+  - np.maximum
+  - np.random.default_rng
+  - np.repeat
+  - np.sqrt
+  - np.sum
+  - np.zeros
+  - params.items
+  - plt.show
+  - plt.subplots
+  - rng.normal
+  - untrained.items
+  - value.copy
+- path: units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb
+  kind: notebook
+  semantic_sha256: 18da8cc0bee47388e9e9d42cc03cc4056f78f16a07175ed7a2363735c7a9cdab
+  anchors:
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 1. Dynamic graphs, leaves, and `requires_grad` :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 1. Dynamic graphs, leaves, and `requires_grad`
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 1. Dynamic graphs, leaves, and `requires_grad` :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 1. Dynamic graphs, leaves, and `requires_grad`
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 2. Hand gradient versus autograd :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 2. Hand gradient versus autograd
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 2. Hand gradient versus autograd :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 2. Hand gradient versus autograd
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 3. Gradient accumulation is visible state :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 3. Gradient accumulation is visible state
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 3. Gradient accumulation is visible state :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 3. Gradient accumulation is visible state
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 4. Optimizer ordering is a state machine :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 4. Optimizer ordering is a state machine
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 4. Optimizer ordering is a state machine :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 4. Optimizer ordering is a state machine
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 5. Optimizer state is not model parameter state :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 5. Optimizer state is not model parameter state
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 5. Optimizer state is not model parameter state :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 5. Optimizer state is not model parameter state
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 6. Deterministic CPU-small training and evaluation :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 6. Deterministic CPU-small training and evaluation
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 6. Deterministic CPU-small training and evaluation :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 6. Deterministic CPU-small training and evaluation
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > 7. Worked lifecycle audit, pitfalls, and exam connections :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - 7. Worked lifecycle audit, pitfalls, and exam connections
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
+      PyTorch Autograd and Optimizers > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - batch-normalization
+  - cross-entropy-loss
+  - dropout
+  - manual-backpropagation
+  - softmax
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids: []
+  api_tokens:
+  - batch_loss.backward
+  - batch_loss.detach
+  - loss.backward
+  - loss_check.backward
+  - losses.append
+  - model.named_parameters
+  - model.parameters
+  - movement.values
+  - net.eval
+  - net.named_parameters
+  - net.parameters
+  - net.train
+  - nn.CrossEntropyLoss
+  - nn.Linear
+  - opt.step
+  - opt.zero_grad
+  - optimizer.state_dict
+  - optimizer.step
+  - optimizer.zero_grad
+  - p.detach
+  - predictions.tolist
+  - residual.detach
+  - residual.square
+  - self.hidden
+  - self.output
+  - torch.allclose
+  - torch.equal
+  - torch.isfinite
+  - torch.linalg.vector_norm
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.optim.SGD
+  - torch.relu
+  - torch.set_default_dtype
+  - torch.tensor
+  - torch.use_deterministic_algorithms
+  - u.grad.clone
+  - u.square
+  - w.square
+  - z.backward
+- path: units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb
+  kind: notebook
+  semantic_sha256: 0c58b951d160ef6ea170201b9cc82199649a80de5c894040b25b12656d394e5a
+  anchors:
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 1. Batch normalization forward pass :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 1. Batch normalization forward pass
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 1. Batch normalization forward pass :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 1. Batch normalization forward pass
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 2. BatchNorm backward identity :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 2. BatchNorm backward identity
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 2. BatchNorm backward identity :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 2. BatchNorm backward identity
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 3. Parameters, buffers, and running statistics :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 3. Parameters, buffers, and running statistics
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 3. Parameters, buffers, and running statistics :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 3. Parameters, buffers, and running statistics
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 4. Inverted dropout preserves expectation :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 4. Inverted dropout preserves expectation
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 4. Inverted dropout preserves expectation :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 4. Inverted dropout preserves expectation
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 5. Train mode and eval mode are different functions :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 5. Train mode and eval mode are different functions
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 5. Train mode and eval mode are different functions :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 5. Train mode and eval mode are different functions
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 6. Worked combined training audit :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 6. Worked combined training audit
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 6. Worked combined training audit :: cell 2'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 6. Worked combined training audit
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > 7. Common pitfalls, exam connections, and C7 forward link :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - 7. Common pitfalls, exam connections, and C7 forward link
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm,
+      Dropout, and Mode Audits > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - batch-normalization
+  - cross-entropy-loss
+  - dropout
+  - manual-backpropagation
+  - softmax
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids: []
+  api_tokens:
+  - G.sum
+  - X_auto.mean
+  - X_auto.var
+  - X_demo.clone
+  - X_demo.mean
+  - X_demo.var
+  - beta.clone
+  - bn.named_buffers
+  - bn.named_parameters
+  - bn.state_dict
+  - dX_formula.sum
+  - drop.eval
+  - drop.train
+  - gamma.clone
+  - mode_model.bn.running_mean.clone
+  - mode_model.bn.running_var.clone
+  - mode_model.eval
+  - mode_model.train
+  - nn.BatchNorm1d
+  - nn.Dropout
+  - nn.Linear
+  - sample.mean
+  - sample_mean.item
+  - self.bn
+  - self.drop
+  - self.hidden
+  - self.output
+  - torch.allclose
+  - torch.equal
+  - torch.full
+  - torch.isclose
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.relu
+  - torch.rsqrt
+  - torch.set_default_dtype
+  - torch.sqrt
+  - torch.tensor
+  - torch.use_deterministic_algorithms
+  - torch.zeros
+  - x_hat.mean
+- path: units/C11-neural-training/practice/p01.ipynb
+  kind: notebook
+  semantic_sha256: eba5838b854be159da82bdc4a179ac228fd5a25d578e5d294161c77230af6842
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p01.ipynb :: C11-neural-training — Practice p01 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p01
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p01.ipynb :: C11-neural-training — Practice p01 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p01
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - softmax
+  declared_problem_ids:
+  - C11-p01
+  api_tokens: []
+- path: units/C11-neural-training/practice/p01_solution.ipynb
+  kind: notebook
+  semantic_sha256: 7e9c7bbfc234b7da9474b68646df9ade4eaeb50a768fd127b539282b70caa18d
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p01_solution.ipynb :: C11-neural-training — Practice p01 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p01 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p01_solution.ipynb :: C11-neural-training — Practice p01 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p01 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p01_solution.ipynb :: C11-neural-training — Practice p01 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p01 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p01_solution.ipynb :: C11-neural-training — Practice p01 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p01 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p01_solution.ipynb :: C11-neural-training — Practice p01 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p01 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p01_solution.ipynb :: C11-neural-training — Practice p01 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p01 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - softmax
+  declared_problem_ids:
+  - C11-p01
+  api_tokens:
+  - np.all
+  - np.allclose
+  - np.array
+  - np.exp
+  - z.max
+- path: units/C11-neural-training/practice/p02.ipynb
+  kind: notebook
+  semantic_sha256: d90acf1c1914d135695114c0e0f8a5a678e2c466f02161b4051ca713bfeb1c6e
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p02.ipynb :: C11-neural-training — Practice p02 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p02
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p02.ipynb :: C11-neural-training — Practice p02 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p02
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - cross-entropy-loss
+  declared_problem_ids:
+  - C11-p02
+  api_tokens: []
+- path: units/C11-neural-training/practice/p02_solution.ipynb
+  kind: notebook
+  semantic_sha256: 5765e913b5fb89b82333b37218439bfcfe4e239b21ae0872b762d97e08e8c27c
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p02_solution.ipynb :: C11-neural-training — Practice p02 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p02 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p02_solution.ipynb :: C11-neural-training — Practice p02 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p02 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p02_solution.ipynb :: C11-neural-training — Practice p02 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p02 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p02_solution.ipynb :: C11-neural-training — Practice p02 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p02 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p02_solution.ipynb :: C11-neural-training — Practice p02 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p02 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p02_solution.ipynb :: C11-neural-training — Practice p02 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p02 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - cross-entropy-loss
+  declared_problem_ids:
+  - C11-p02
+  api_tokens:
+  - np.arange
+  - np.array
+  - np.eye
+  - np.isclose
+  - np.log
+  - np.mean
+  - np.sum
+- path: units/C11-neural-training/practice/p03.ipynb
+  kind: notebook
+  semantic_sha256: 2cbdff38663d37640de831c85d0c1cc6ef66c3aa288fab7e58c6a1e4694d9307
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p03.ipynb :: C11-neural-training — Practice p03 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p03
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p03.ipynb :: C11-neural-training — Practice p03 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p03
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - manual-backpropagation
+  declared_problem_ids:
+  - C11-p03
+  api_tokens: []
+- path: units/C11-neural-training/practice/p03_solution.ipynb
+  kind: notebook
+  semantic_sha256: 1220217eb954f6d8a5a9e9fafdbe2322998c619a2593192ec73b30697c66bbf2
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p03_solution.ipynb :: C11-neural-training — Practice p03 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p03 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p03_solution.ipynb :: C11-neural-training — Practice p03 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p03 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p03_solution.ipynb :: C11-neural-training — Practice p03 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p03 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p03_solution.ipynb :: C11-neural-training — Practice p03 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p03 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p03_solution.ipynb :: C11-neural-training — Practice p03 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p03 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p03_solution.ipynb :: C11-neural-training — Practice p03 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p03 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - manual-backpropagation
+  declared_problem_ids:
+  - C11-p03
+  api_tokens:
+  - np.array
+  - np.full_like
+- path: units/C11-neural-training/practice/p04.ipynb
+  kind: notebook
+  semantic_sha256: bfb73e8862b81077671f96394997d1d85023725a69aefc93d61bae70fd6d7f21
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p04.ipynb :: C11-neural-training — Practice p04 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p04
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p04.ipynb :: C11-neural-training — Practice p04 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p04
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - dropout
+  declared_problem_ids:
+  - C11-p04
+  api_tokens: []
+- path: units/C11-neural-training/practice/p04_solution.ipynb
+  kind: notebook
+  semantic_sha256: 81ae6df00146ee97ee131fa43eb95edd41b86fb42204a5722e669f0e7b5babed
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p04_solution.ipynb :: C11-neural-training — Practice p04 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p04 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p04_solution.ipynb :: C11-neural-training — Practice p04 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p04 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p04_solution.ipynb :: C11-neural-training — Practice p04 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p04 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p04_solution.ipynb :: C11-neural-training — Practice p04 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p04 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p04_solution.ipynb :: C11-neural-training — Practice p04 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p04 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p04_solution.ipynb :: C11-neural-training — Practice p04 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p04 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - dropout
+  declared_problem_ids:
+  - C11-p04
+  api_tokens:
+  - fractions.Fraction
+- path: units/C11-neural-training/practice/p05.ipynb
+  kind: notebook
+  semantic_sha256: 2d06051e58e3ed558c4ab421cfcdbd82c6666328fc6d9b13852e9e55f9642060
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p05.ipynb :: C11-neural-training — Practice p05 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p05
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p05.ipynb :: C11-neural-training — Practice p05 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p05
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - softmax
+  declared_problem_ids:
+  - C11-p05
+  api_tokens:
+  - np.array
+- path: units/C11-neural-training/practice/p05_solution.ipynb
+  kind: notebook
+  semantic_sha256: ab0adf8b235a5f809982a52d4460e24a0e75ff4ba91689a6b4be67be46ecb8e2
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p05_solution.ipynb :: C11-neural-training — Practice p05 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p05 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p05_solution.ipynb :: C11-neural-training — Practice p05 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p05 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p05_solution.ipynb :: C11-neural-training — Practice p05 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p05 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p05_solution.ipynb :: C11-neural-training — Practice p05 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p05 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p05_solution.ipynb :: C11-neural-training — Practice p05 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p05 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p05_solution.ipynb :: C11-neural-training — Practice p05 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p05 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - softmax
+  declared_problem_ids:
+  - C11-p05
+  api_tokens:
+  - np.all
+  - np.allclose
+  - np.array
+  - np.asarray
+  - np.exp
+  - np.isfinite
+  - numerators.sum
+  - prob_p05.sum
+  - values.max
+- path: units/C11-neural-training/practice/p06.ipynb
+  kind: notebook
+  semantic_sha256: d46342ebe71ae2a497b56a32612d723cfb568d3aa62f9932568c0ad0cc1215ba
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p06.ipynb :: C11-neural-training — Practice p06 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p06
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p06.ipynb :: C11-neural-training — Practice p06 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p06
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - cross-entropy-loss
+  declared_problem_ids:
+  - C11-p06
+  api_tokens:
+  - np.array
+- path: units/C11-neural-training/practice/p06_solution.ipynb
+  kind: notebook
+  semantic_sha256: 3790143dc16bad3d762869d2c4fadd146f5b65fbb48bb0945411b5df036821b8
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p06_solution.ipynb :: C11-neural-training — Practice p06 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p06 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p06_solution.ipynb :: C11-neural-training — Practice p06 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p06 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p06_solution.ipynb :: C11-neural-training — Practice p06 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p06 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p06_solution.ipynb :: C11-neural-training — Practice p06 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p06 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p06_solution.ipynb :: C11-neural-training — Practice p06 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p06 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p06_solution.ipynb :: C11-neural-training — Practice p06 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p06 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - cross-entropy-loss
+  declared_problem_ids:
+  - C11-p06
+  api_tokens:
+  - np.any
+  - np.arange
+  - np.array
+  - np.asarray
+  - np.exp
+  - np.isclose
+  - np.isfinite
+  - np.issubdtype
+  - np.log
+  - np.log1p
+  - np.mean
+  - np.ones
+  - values.max
+- path: units/C11-neural-training/practice/p07.ipynb
+  kind: notebook
+  semantic_sha256: 9f51b9c95c308e6b8865109007ea164b61e37bb7b3422cde82190630f30df38a
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p07.ipynb :: C11-neural-training — Practice p07 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p07
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p07.ipynb :: C11-neural-training — Practice p07 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p07
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - manual-backpropagation
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p07
+  api_tokens:
+  - np.array
+- path: units/C11-neural-training/practice/p07_solution.ipynb
+  kind: notebook
+  semantic_sha256: f2fbe7fae2307c988cf783e5d176765d5f1dbe08bce12bff1a6e48292526107a
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p07_solution.ipynb :: C11-neural-training — Practice p07 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p07 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p07_solution.ipynb :: C11-neural-training — Practice p07 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p07 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p07_solution.ipynb :: C11-neural-training — Practice p07 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p07 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p07_solution.ipynb :: C11-neural-training — Practice p07 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p07 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p07_solution.ipynb :: C11-neural-training — Practice p07 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p07 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p07_solution.ipynb :: C11-neural-training — Practice p07 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p07 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - manual-backpropagation
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p07
+  api_tokens:
+  - ds_ref_p07.sum
+  - dscores.sum
+  - dz1.sum
+  - dz1_ref_p07.sum
+  - expected_p07.update
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.isfinite
+  - np.linalg.norm
+  - np.maximum
+  - np.mean
+  - params_p07.items
+  - v.copy
+- path: units/C11-neural-training/practice/p08.ipynb
+  kind: notebook
+  semantic_sha256: 581899364bbbbd11b2b6fdab6dde66926e2bfc3fa75e7596342331bd849d61a3
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p08.ipynb :: C11-neural-training — Practice p08 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p08
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p08.ipynb :: C11-neural-training — Practice p08 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p08
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - torch-optimizers
+  declared_problem_ids:
+  - C11-p08
+  api_tokens:
+  - torch.manual_seed
+  - torch.set_default_dtype
+  - torch.tensor
+- path: units/C11-neural-training/practice/p08_solution.ipynb
+  kind: notebook
+  semantic_sha256: 8ba8d8f30f158a2a88d6077d5faabeb5898ff3d2accd1a1224db3210dde05a15
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p08_solution.ipynb :: C11-neural-training — Practice p08 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p08 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p08_solution.ipynb :: C11-neural-training — Practice p08 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p08 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p08_solution.ipynb :: C11-neural-training — Practice p08 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p08 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p08_solution.ipynb :: C11-neural-training — Practice p08 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p08 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p08_solution.ipynb :: C11-neural-training — Practice p08 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p08 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p08_solution.ipynb :: C11-neural-training — Practice p08 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p08 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - torch-optimizers
+  declared_problem_ids:
+  - C11-p08
+  api_tokens:
+  - X.detach
+  - hand_grad.detach
+  - initial.clone
+  - loss.backward
+  - loss.detach
+  - nn.Parameter
+  - optimizer.step
+  - optimizer.zero_grad
+  - torch.allclose
+  - torch.equal
+  - torch.optim.SGD
+  - torch.tensor
+  - w.detach
+  - w.grad.detach
+  - w0.detach
+  - y.detach
+- path: units/C11-neural-training/practice/p09.ipynb
+  kind: notebook
+  semantic_sha256: 9c28ea8d00b5bec2a081587cd73506974dda65ff1ee2376631da40c24ac2c87b
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p09.ipynb :: C11-neural-training — Practice p09 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p09
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p09.ipynb :: C11-neural-training — Practice p09 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p09
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - batch-normalization
+  declared_problem_ids:
+  - C11-p09
+  api_tokens:
+  - np.array
+- path: units/C11-neural-training/practice/p09_solution.ipynb
+  kind: notebook
+  semantic_sha256: 4d25fb23ee1f8d8450304b678b91ecdd45678d088ad49b82a7e36bcfdd45bfe5
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p09_solution.ipynb :: C11-neural-training — Practice p09 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p09 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p09_solution.ipynb :: C11-neural-training — Practice p09 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p09 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p09_solution.ipynb :: C11-neural-training — Practice p09 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p09 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p09_solution.ipynb :: C11-neural-training — Practice p09 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p09 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p09_solution.ipynb :: C11-neural-training — Practice p09 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p09 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p09_solution.ipynb :: C11-neural-training — Practice p09 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p09 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - batch-normalization
+  declared_problem_ids:
+  - C11-p09
+  api_tokens:
+  - X_p09.copy
+  - Xv.mean
+  - a.copy
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.mean
+  - np.ones
+  - np.sqrt
+  - np.sum
+  - np.zeros
+- path: units/C11-neural-training/practice/p10.ipynb
+  kind: notebook
+  semantic_sha256: d1a15a1a554fd240270e40c3afdfa422b7a8868eb07785b9746bc5510a5df8d8
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p10.ipynb :: C11-neural-training — Practice p10 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p10
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p10.ipynb :: C11-neural-training — Practice p10 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p10
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - dropout
+  declared_problem_ids:
+  - C11-p10
+  api_tokens:
+  - torch.linspace
+  - torch.set_default_dtype
+- path: units/C11-neural-training/practice/p10_solution.ipynb
+  kind: notebook
+  semantic_sha256: 41aaa02d57e3e2836eaa7d70ac4ddbd1a73ef7488d307de4f59e11031efae00f
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p10_solution.ipynb :: C11-neural-training — Practice p10 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p10 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p10_solution.ipynb :: C11-neural-training — Practice p10 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p10 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p10_solution.ipynb :: C11-neural-training — Practice p10 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p10 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p10_solution.ipynb :: C11-neural-training — Practice p10 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p10 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p10_solution.ipynb :: C11-neural-training — Practice p10 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p10 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p10_solution.ipynb :: C11-neural-training — Practice p10 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p10 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - dropout
+  declared_problem_ids:
+  - C11-p10
+  api_tokens:
+  - drop.eval
+  - drop.train
+  - nn.Dropout
+  - torch.all
+  - torch.allclose
+  - torch.arange
+  - torch.equal
+  - torch.isclose
+  - torch.manual_seed
+  - torch.tensor
+  - v.detach
+  - x.detach
+- path: units/C11-neural-training/practice/p11.ipynb
+  kind: notebook
+  semantic_sha256: 5f8268e6ec06a9fba33642c48eb494833e7f15ffa8b7f8f66de0dd3a7f07f249
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p11.ipynb :: C11-neural-training — Practice p11 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p11
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p11.ipynb :: C11-neural-training — Practice p11 > Your derivation :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p11
+    - Your derivation
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - cross-entropy-loss
+  - softmax
+  declared_problem_ids:
+  - C11-p11
+  api_tokens: []
+- path: units/C11-neural-training/practice/p11_solution.ipynb
+  kind: notebook
+  semantic_sha256: 4462d155d801f9e7a7ce27368e4674a5ba2477a6d56ab6787515c734b10612e2
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p11_solution.ipynb :: C11-neural-training — Practice p11 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p11 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p11_solution.ipynb :: C11-neural-training — Practice p11 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p11 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p11_solution.ipynb :: C11-neural-training — Practice p11 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p11 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p11_solution.ipynb :: C11-neural-training — Practice p11 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p11 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p11_solution.ipynb :: C11-neural-training — Practice p11 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p11 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p11_solution.ipynb :: C11-neural-training — Practice p11 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p11 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - cross-entropy-loss
+  - softmax
+  declared_problem_ids:
+  - C11-p11
+  api_tokens:
+  - J_p11.sum
+  - np.allclose
+  - np.array
+  - np.diag
+  - np.outer
+  - np.vstack
+- path: units/C11-neural-training/practice/p12.ipynb
+  kind: notebook
+  semantic_sha256: cc8467330a698a49ea835b6fb47c906323ab1f6f8ff709f3aaedf1f7f051488c
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p12.ipynb :: C11-neural-training — Practice p12 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p12
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p12.ipynb :: C11-neural-training — Practice p12 > Your derivation :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p12
+    - Your derivation
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - manual-backpropagation
+  declared_problem_ids:
+  - C11-p12
+  api_tokens: []
+- path: units/C11-neural-training/practice/p12_solution.ipynb
+  kind: notebook
+  semantic_sha256: 4b116ed3f8ff25d83c9371db9a3685ab8b289ee49f0da5c762ce123424127159
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p12_solution.ipynb :: C11-neural-training — Practice p12 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p12 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p12_solution.ipynb :: C11-neural-training — Practice p12 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p12 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p12_solution.ipynb :: C11-neural-training — Practice p12 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p12 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p12_solution.ipynb :: C11-neural-training — Practice p12 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p12 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p12_solution.ipynb :: C11-neural-training — Practice p12 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p12 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p12_solution.ipynb :: C11-neural-training — Practice p12 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p12 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - manual-backpropagation
+  declared_problem_ids:
+  - C11-p12
+  api_tokens:
+  - dZ1_p12.sum
+  - dZ2_p12.sum
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.eye
+  - np.maximum
+  - np.zeros
+- path: units/C11-neural-training/practice/p13.ipynb
+  kind: notebook
+  semantic_sha256: 5dbea5aa1ef77fe6e4821a32119be9961a4cffca9cd038d34bdd3d0d6c4755ec
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p13.ipynb :: C11-neural-training — Practice p13 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p13
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p13.ipynb :: C11-neural-training — Practice p13 > Your derivation :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p13
+    - Your derivation
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - batch-normalization
+  declared_problem_ids:
+  - C11-p13
+  api_tokens: []
+- path: units/C11-neural-training/practice/p13_solution.ipynb
+  kind: notebook
+  semantic_sha256: 743d96098add7308fbf826aecfbe0fe90f23e07f6b82b2a8af8d28a7b4c4a2f4
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p13_solution.ipynb :: C11-neural-training — Practice p13 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p13 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p13_solution.ipynb :: C11-neural-training — Practice p13 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p13 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p13_solution.ipynb :: C11-neural-training — Practice p13 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p13 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p13_solution.ipynb :: C11-neural-training — Practice p13 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p13 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p13_solution.ipynb :: C11-neural-training — Practice p13 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p13 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p13_solution.ipynb :: C11-neural-training — Practice p13 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p13 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - batch-normalization
+  declared_problem_ids:
+  - C11-p13
+  api_tokens:
+  - G_p13.sum
+  - X_p13.mean
+  - dX_p13.sum
+  - np.allclose
+  - np.array
+  - np.mean
+  - np.random.default_rng
+  - rng_p13.normal
+- path: units/C11-neural-training/practice/p14.ipynb
+  kind: notebook
+  semantic_sha256: 376c05a2057dbdcfd88308aaa8a82680b3f68c9366e8ddbe0ab1af49c003d418
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p14.ipynb :: C11-neural-training — Practice p14 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p14
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p14.ipynb :: C11-neural-training — Practice p14 :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p14
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - cross-entropy-loss
+  - softmax
+  declared_problem_ids:
+  - C11-p14
+  api_tokens:
+  - np.array
+- path: units/C11-neural-training/practice/p14_solution.ipynb
+  kind: notebook
+  semantic_sha256: 056e75e74c00507c62c45c6ab999f6ea36dfaf4a1cf8742382661d1949a0a824
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p14_solution.ipynb :: C11-neural-training — Practice p14 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p14 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p14_solution.ipynb :: C11-neural-training — Practice p14 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p14 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p14_solution.ipynb :: C11-neural-training — Practice p14 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p14 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p14_solution.ipynb :: C11-neural-training — Practice p14 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p14 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p14_solution.ipynb :: C11-neural-training — Practice p14 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p14 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p14_solution.ipynb :: C11-neural-training — Practice p14 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p14 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - cross-entropy-loss
+  - softmax
+  declared_problem_ids:
+  - C11-p14
+  api_tokens:
+  - exp_shifted.sum
+  - np.all
+  - np.allclose
+  - np.any
+  - np.arange
+  - np.array
+  - np.asarray
+  - np.exp
+  - np.isclose
+  - np.isfinite
+  - np.issubdtype
+  - np.log
+  - np.mean
+  - np.zeros_like
+  - probabilities.copy
+  - z.max
+- path: units/C11-neural-training/practice/p15.ipynb
+  kind: notebook
+  semantic_sha256: 93fe6c04548863ec2700f200c65b5f44552153d4b64efe9d4516addbc8922573
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p15.ipynb :: C11-neural-training — Practice p15 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p15
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p15.ipynb :: C11-neural-training — Practice p15 > Return contract :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p15
+    - Return contract
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p15.ipynb :: C11-neural-training — Practice p15 > Return contract :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p15
+    - Return contract
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - manual-backpropagation
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p15
+  api_tokens: []
+- path: units/C11-neural-training/practice/p15_solution.ipynb
+  kind: notebook
+  semantic_sha256: 3ddb467dd92e9b73fa95e391c34bf5f18d7b515e4996b96130888caf2b51bbb2
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p15_solution.ipynb :: C11-neural-training — Practice p15 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p15 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p15_solution.ipynb :: C11-neural-training — Practice p15 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p15 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p15_solution.ipynb :: C11-neural-training — Practice p15 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p15 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p15_solution.ipynb :: C11-neural-training — Practice p15 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p15 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p15_solution.ipynb :: C11-neural-training — Practice p15 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p15 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p15_solution.ipynb :: C11-neural-training — Practice p15 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p15 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - manual-backpropagation
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p15
+  api_tokens:
+  - ds.sum
+  - ds_check_p15.sum
+  - dz1.sum
+  - dz1_check_p15.sum
+  - e_check_p15.sum
+  - exp_s.sum
+  - expected_grads_p15.update
+  - grads.update
+  - movements_p15.values
+  - np.all
+  - np.allclose
+  - np.arange
+  - np.argmax
+  - np.array
+  - np.empty
+  - np.exp
+  - np.isclose
+  - np.isfinite
+  - np.linalg.norm
+  - np.log
+  - np.maximum
+  - np.mean
+  - np.random.default_rng
+  - np.repeat
+  - np.sqrt
+  - np.zeros
+  - p.copy
+  - p_check_p15.copy
+  - params.items
+  - rng.standard_normal
+  - rng_check_p15.standard_normal
+  - s_check_p15.max
+  - scores.max
+  - v.copy
+- path: units/C11-neural-training/practice/p16.ipynb
+  kind: notebook
+  semantic_sha256: 8de90a5fc1a85cd8b4ccc0ec278d9c0ebcaa52ed720be9d1a5b613bd55469cd0
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p16.ipynb :: C11-neural-training — Practice p16 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p16
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p16.ipynb :: C11-neural-training — Practice p16 > Return contract :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p16
+    - Return contract
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p16.ipynb :: C11-neural-training — Practice p16 > Return contract :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p16
+    - Return contract
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - torch-optimizers
+  declared_problem_ids:
+  - C11-p16
+  api_tokens:
+  - torch.set_default_dtype
+- path: units/C11-neural-training/practice/p16_solution.ipynb
+  kind: notebook
+  semantic_sha256: 54012398b4dd8e3670419dab7672d65c5c3413c09a886f43cbb4f32ce8818323
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p16_solution.ipynb :: C11-neural-training — Practice p16 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p16 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p16_solution.ipynb :: C11-neural-training — Practice p16 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p16 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p16_solution.ipynb :: C11-neural-training — Practice p16 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p16 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p16_solution.ipynb :: C11-neural-training — Practice p16 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p16 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p16_solution.ipynb :: C11-neural-training — Practice p16 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p16 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p16_solution.ipynb :: C11-neural-training — Practice p16 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p16 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - torch-optimizers
+  declared_problem_ids:
+  - C11-p16
+  api_tokens:
+  - initial_model_p16.parameters
+  - loss.backward
+  - loss.detach
+  - losses.detach
+  - model.parameters
+  - nn.CrossEntropyLoss
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - p.detach
+  - p.grad.detach
+  - q.detach
+  - torch.allclose
+  - torch.empty
+  - torch.equal
+  - torch.full_like
+  - torch.isfinite
+  - torch.linalg.vector_norm
+  - torch.manual_seed
+  - torch.optim.Adam
+  - torch.set_default_dtype
+  - torch.tensor
+  - torch.use_deterministic_algorithms
+- path: units/C11-neural-training/practice/p17.ipynb
+  kind: notebook
+  semantic_sha256: 2e02c7416cd77e675a69fea9565262a918a3a020f7768d8461ce54558f134d58
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p17.ipynb :: C11-neural-training — Practice p17 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p17
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p17.ipynb :: C11-neural-training — Practice p17 > Your audit :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p17
+    - Your audit
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p17
+  api_tokens: []
+- path: units/C11-neural-training/practice/p17_solution.ipynb
+  kind: notebook
+  semantic_sha256: 433b0c48f29d12b22ac2a4c1e34d9538e8d7b16b0209d79f3f44a8ed5efa0d73
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p17_solution.ipynb :: C11-neural-training — Practice p17 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p17 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p17_solution.ipynb :: C11-neural-training — Practice p17 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p17 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p17_solution.ipynb :: C11-neural-training — Practice p17 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p17 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p17_solution.ipynb :: C11-neural-training — Practice p17 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p17 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p17_solution.ipynb :: C11-neural-training — Practice p17 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p17 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p17_solution.ipynb :: C11-neural-training — Practice p17 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p17 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p17
+  api_tokens:
+  - val_loss_p17.index
+- path: units/C11-neural-training/practice/p18.ipynb
+  kind: notebook
+  semantic_sha256: 98f234c6a9aff96032ecaf558250ca34d9f43b044c15e0e63894dbfad28be73e
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p18.ipynb :: C11-neural-training — Practice p18 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p18
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p18.ipynb :: C11-neural-training — Practice p18 > Your mode and state audit
+      :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p18
+    - Your mode and state audit
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - batch-normalization
+  - dropout
+  declared_problem_ids:
+  - C11-p18
+  api_tokens: []
+- path: units/C11-neural-training/practice/p18_solution.ipynb
+  kind: notebook
+  semantic_sha256: 06afad131874543184f671911659d525170c1f45edcae6047b4ebe0371f5abd5
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p18_solution.ipynb :: C11-neural-training — Practice p18 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p18 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p18_solution.ipynb :: C11-neural-training — Practice p18 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p18 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p18_solution.ipynb :: C11-neural-training — Practice p18 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p18 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p18_solution.ipynb :: C11-neural-training — Practice p18 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p18 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p18_solution.ipynb :: C11-neural-training — Practice p18 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p18 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p18_solution.ipynb :: C11-neural-training — Practice p18 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p18 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - batch-normalization
+  - dropout
+  declared_problem_ids:
+  - C11-p18
+  api_tokens:
+  - bn_p18.eval
+  - bn_p18.named_buffers
+  - bn_p18.named_parameters
+  - bn_p18.running_mean.clone
+  - bn_p18.running_var.clone
+  - bn_p18.train
+  - drop_p18.eval
+  - drop_p18.train
+  - nn.BatchNorm1d
+  - nn.Dropout
+  - torch.allclose
+  - torch.equal
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.randn
+  - torch.set_default_dtype
+- path: units/C11-neural-training/practice/p19.ipynb
+  kind: notebook
+  semantic_sha256: d02e2f20632751fdb3ac6377d1986688505accba3978d2fe957a0bf750e37b29
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p19.ipynb :: C11-neural-training — Practice p19 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p19
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p19.ipynb :: C11-neural-training — Practice p19 > Your debugging report ::
+      cell 1'
+    heading_path:
+    - C11-neural-training — Practice p19
+    - Your debugging report
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - torch-optimizers
+  declared_problem_ids:
+  - C11-p19
+  api_tokens: []
+- path: units/C11-neural-training/practice/p19_solution.ipynb
+  kind: notebook
+  semantic_sha256: 49cba4456c0e9bb3ad18a4af00796059cd485525c87d6d49feb8a8a13fb31375
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p19_solution.ipynb :: C11-neural-training — Practice p19 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p19 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p19_solution.ipynb :: C11-neural-training — Practice p19 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p19 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p19_solution.ipynb :: C11-neural-training — Practice p19 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p19 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p19_solution.ipynb :: C11-neural-training — Practice p19 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p19 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p19_solution.ipynb :: C11-neural-training — Practice p19 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p19 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p19_solution.ipynb :: C11-neural-training — Practice p19 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p19 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - torch-optimizers
+  declared_problem_ids:
+  - C11-p19
+  api_tokens:
+  - loss_p19.backward
+  - model_p19.parameters
+  - nn.Linear
+  - optimizer_p19.state.values
+  - optimizer_p19.step
+  - optimizer_p19.zero_grad
+  - p.detach
+  - torch.isfinite
+  - torch.linalg.vector_norm
+  - torch.manual_seed
+  - torch.optim.SGD
+  - torch.set_default_dtype
+  - torch.tensor
+- path: units/C11-neural-training/practice/p20.ipynb
+  kind: notebook
+  semantic_sha256: 0c29c758f9076cbf4af10a27c7f793c1c7e60ac63f94febf77d3d4ac0bef60a0
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p20.ipynb :: C11-neural-training — Practice p20 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p20
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p20.ipynb :: C11-neural-training — Practice p20 > Your ablation audit :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p20
+    - Your ablation audit
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - batch-normalization
+  - dropout
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p20
+  api_tokens: []
+- path: units/C11-neural-training/practice/p20_solution.ipynb
+  kind: notebook
+  semantic_sha256: 8fd975aef82ae80abb7c43c600317ba8243712f9a42e6533192b73ddf5ca3305
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p20_solution.ipynb :: C11-neural-training — Practice p20 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p20 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p20_solution.ipynb :: C11-neural-training — Practice p20 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p20 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p20_solution.ipynb :: C11-neural-training — Practice p20 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p20 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p20_solution.ipynb :: C11-neural-training — Practice p20 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p20 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p20_solution.ipynb :: C11-neural-training — Practice p20 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p20 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p20_solution.ipynb :: C11-neural-training — Practice p20 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p20 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - batch-normalization
+  - dropout
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p20
+  api_tokens:
+  - runs_p20.items
+- path: units/C11-neural-training/practice/p21.ipynb
+  kind: notebook
+  semantic_sha256: 6720eb7e56d0e2c15331a9e69db51b0ee9c8cf4a9d2fb6f0ed864374ca9d50af
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p21.ipynb :: C11-neural-training — Practice p21 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p21
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p21.ipynb :: C11-neural-training — Practice p21 > Return contract :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p21
+    - Return contract
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p21.ipynb :: C11-neural-training — Practice p21 > Return contract :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p21
+    - Return contract
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - cross-entropy-loss
+  - softmax
+  declared_problem_ids:
+  - C11-p21
+  api_tokens:
+  - np.array
+  - np.random.default_rng
+  - rng_p21.integers
+  - rng_p21.normal
+- path: units/C11-neural-training/practice/p21_solution.ipynb
+  kind: notebook
+  semantic_sha256: 042ca76ed62ba4e9fc56e4581b11f6655e9896f1d00b0426b8aa2e5b8423eab1
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p21_solution.ipynb :: C11-neural-training — Practice p21 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p21 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p21_solution.ipynb :: C11-neural-training — Practice p21 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p21 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p21_solution.ipynb :: C11-neural-training — Practice p21 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p21 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p21_solution.ipynb :: C11-neural-training — Practice p21 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p21 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p21_solution.ipynb :: C11-neural-training — Practice p21 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p21 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p21_solution.ipynb :: C11-neural-training — Practice p21 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p21 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - cross-entropy-loss
+  - softmax
+  declared_problem_ids:
+  - C11-p21
+  api_tokens:
+  - e.sum
+  - np.all
+  - np.allclose
+  - np.arange
+  - np.array
+  - np.asarray
+  - np.empty
+  - np.exp
+  - np.isfinite
+  - np.log
+  - np.mean
+  - np.random.default_rng
+  - np.sum
+  - p.copy
+  - rng_p21.integers
+  - rng_p21.normal
+  - z.max
+- path: units/C11-neural-training/practice/p22.ipynb
+  kind: notebook
+  semantic_sha256: c8a992b9cdbdbf4908c388c32bb49082b15d1d9bf34ed67426846a10a0e6ee79
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p22.ipynb :: C11-neural-training — Practice p22 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p22
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p22.ipynb :: C11-neural-training — Practice p22 > Your exact forward and backward
+      ledger :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p22
+    - Your exact forward and backward ledger
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - manual-backpropagation
+  declared_problem_ids:
+  - C11-p22
+  api_tokens: []
+- path: units/C11-neural-training/practice/p22_solution.ipynb
+  kind: notebook
+  semantic_sha256: 6eb185a6d7e6d6fef9762323a81ee82b7119bda3ab891ea0ff98051057ee740e
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p22_solution.ipynb :: C11-neural-training — Practice p22 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p22 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p22_solution.ipynb :: C11-neural-training — Practice p22 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p22 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p22_solution.ipynb :: C11-neural-training — Practice p22 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p22 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p22_solution.ipynb :: C11-neural-training — Practice p22 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p22 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p22_solution.ipynb :: C11-neural-training — Practice p22 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p22 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p22_solution.ipynb :: C11-neural-training — Practice p22 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p22 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - manual-backpropagation
+  declared_problem_ids:
+  - C11-p22
+  api_tokens:
+  - fractions.Fraction
+- path: units/C11-neural-training/practice/p23.ipynb
+  kind: notebook
+  semantic_sha256: 3b6476eebe18c0986d852d027f8b253b5d50d44cf7c3b8b0a123f776a626036d
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p23.ipynb :: C11-neural-training — Practice p23 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p23
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p23.ipynb :: C11-neural-training — Practice p23 > Return contract :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p23
+    - Return contract
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p23.ipynb :: C11-neural-training — Practice p23 > Return contract :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p23
+    - Return contract
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p23
+  api_tokens:
+  - torch.set_default_dtype
+- path: units/C11-neural-training/practice/p23_solution.ipynb
+  kind: notebook
+  semantic_sha256: eb0fe45bd8a89865eba81d63a905645ad90230cd7137e1764a4bf5b3ccb5e805
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p23_solution.ipynb :: C11-neural-training — Practice p23 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p23 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p23_solution.ipynb :: C11-neural-training — Practice p23 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p23 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p23_solution.ipynb :: C11-neural-training — Practice p23 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p23 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p23_solution.ipynb :: C11-neural-training — Practice p23 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p23 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p23_solution.ipynb :: C11-neural-training — Practice p23 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p23 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p23_solution.ipynb :: C11-neural-training — Practice p23 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p23 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p23
+  api_tokens:
+  - counts.cpu
+  - initial_model_p23.parameters
+  - loss.backward
+  - loss.detach
+  - losses.cpu
+  - model.eval
+  - model.parameters
+  - nn.CrossEntropyLoss
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - p.detach
+  - p.grad.detach
+  - q.detach
+  - torch.Generator
+  - torch.allclose
+  - torch.arange
+  - torch.cat
+  - torch.empty
+  - torch.equal
+  - torch.full_like
+  - torch.isfinite
+  - torch.linalg.vector_norm
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_default_dtype
+  - torch.tensor
+  - torch.use_deterministic_algorithms
+- path: units/C11-neural-training/practice/p24.ipynb
+  kind: notebook
+  semantic_sha256: e2331afe7c48e51091c3dd525bcb422d1b19e36c2c85c9aacd312c1b21062105
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p24.ipynb :: C11-neural-training — Practice p24 :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p24
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p24.ipynb :: C11-neural-training — Practice p24 > Metric contract :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p24
+    - Metric contract
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p24.ipynb :: C11-neural-training — Practice p24 > Metric contract :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p24
+    - Metric contract
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - batch-normalization
+  - dropout
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p24
+  api_tokens:
+  - torch.set_default_dtype
+- path: units/C11-neural-training/practice/p24_solution.ipynb
+  kind: notebook
+  semantic_sha256: 2e9eedb60c7819eee4836cc0b248b3e81a7e99334055e1d8874b3315875b4d07
+  anchors:
+  - anchor: 'units/C11-neural-training/practice/p24_solution.ipynb :: C11-neural-training — Practice p24 — Solution :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Practice p24 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p24_solution.ipynb :: C11-neural-training — Practice p24 — Solution :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Practice p24 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/practice/p24_solution.ipynb :: C11-neural-training — Practice p24 — Solution :: cell
+      3'
+    heading_path:
+    - C11-neural-training — Practice p24 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C11-neural-training/practice/p24_solution.ipynb :: C11-neural-training — Practice p24 — Solution :: cell
+      4'
+    heading_path:
+    - C11-neural-training — Practice p24 — Solution
+    cell_ordinal: 4
+  - anchor: 'units/C11-neural-training/practice/p24_solution.ipynb :: C11-neural-training — Practice p24 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C11-neural-training — Practice p24 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/practice/p24_solution.ipynb :: C11-neural-training — Practice p24 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C11-neural-training — Practice p24 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - batch-normalization
+  - dropout
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids:
+  - C11-p24
+  api_tokens:
+  - bn.bias.requires_grad_
+  - bn.running_mean.clone
+  - bn.running_var.clone
+  - bn.weight.requires_grad_
+  - configs.items
+  - layers.append
+  - layers.extend
+  - loss.backward
+  - loss.detach
+  - model.eval
+  - model.named_parameters
+  - model.train
+  - nn.BatchNorm1d
+  - nn.CrossEntropyLoss
+  - nn.Dropout
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - owned.items
+  - p.detach
+  - p.grad.detach
+  - parameter_name.startswith
+  - result_p24.items
+  - torch.Generator
+  - torch.allclose
+  - torch.arange
+  - torch.cat
+  - torch.empty
+  - torch.equal
+  - torch.full_like
+  - torch.isfinite
+  - torch.linalg.vector_norm
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_default_dtype
+  - torch.tensor
+  - torch.use_deterministic_algorithms
+- path: units/C11-neural-training/review.ipynb
+  kind: notebook
+  semantic_sha256: 7cdc224235a46ddba53ddc7580ba9045a1bef664b134e2d991abb85ef5895f2f
+  anchors:
+  - anchor: 'units/C11-neural-training/review.ipynb :: C11-neural-training — Review :: cell 1'
+    heading_path:
+    - C11-neural-training — Review
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/review.ipynb :: C11-neural-training — Review :: cell 2'
+    heading_path:
+    - C11-neural-training — Review
+    cell_ordinal: 2
+  - anchor: 'units/C11-neural-training/review.ipynb :: C11-neural-training — Review > Formula and API sheet :: cell 1'
+    heading_path:
+    - C11-neural-training — Review
+    - Formula and API sheet
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/review.ipynb :: C11-neural-training — Review > Forward links :: cell 1'
+    heading_path:
+    - C11-neural-training — Review
+    - Forward links
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/review.ipynb :: C11-neural-training — Review > Self-quiz (14 items) :: cell 1'
+    heading_path:
+    - C11-neural-training — Review
+    - Self-quiz (14 items)
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/review.ipynb :: C11-neural-training — Review > What to redo for each weak spot :: cell
+      1'
+    heading_path:
+    - C11-neural-training — Review
+    - What to redo for each weak spot
+    cell_ordinal: 1
+  - anchor: 'units/C11-neural-training/review.ipynb :: C11-neural-training — Review > What to redo for each weak spot :: cell
+      2'
+    heading_path:
+    - C11-neural-training — Review
+    - What to redo for each weak spot
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C11-neural-training
+  declared_concept_ids:
+  - autograd-training
+  - batch-normalization
+  - cross-entropy-loss
+  - dropout
+  - manual-backpropagation
+  - softmax
+  - torch-optimizers
+  - trained-mlp
+  declared_problem_ids: []
+  api_tokens:
+  - np.random.default_rng
+  - torch.manual_seed
+  - torch.set_default_dtype
 - path: units/C2-linear-models/lesson.ipynb
   kind: notebook
   semantic_sha256: 1fced23116654ada8c80af9150e7d978d642174e3197f979bdcff49a78f5b740
@@ -19713,24 +22480,25 @@ notebooks:
   - torch.set_default_dtype
 - path: units/C7-cnn-transfer/lesson.ipynb
   kind: notebook
-  semantic_sha256: 7a5f43df4425cf5e92df6bcf69bd145b478458c2f7906540a8c9c1c7b0466efd
+  semantic_sha256: 670476fcb060fb8490be3d7b62a0df707752b7739df5c5ecfe1cdd6c9632f235
   anchors:
-  - anchor: 'units/C7-cnn-transfer/lesson.ipynb :: C7-cnn-transfer — CNNs and Transfer Learning (Unit Overview) > How to study
-      this unit :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/lesson.ipynb :: C7-cnn-transfer — CNNs, Transfer Learning, and CNN Training > How to study
+      :: cell 1'
     heading_path:
-    - C7-cnn-transfer — CNNs and Transfer Learning (Unit Overview)
-    - How to study this unit
+    - C7-cnn-transfer — CNNs, Transfer Learning, and CNN Training
+    - How to study
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/lesson.ipynb :: C7-cnn-transfer — CNNs and Transfer Learning (Unit Overview) > How to study
-      this unit :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/lesson.ipynb :: C7-cnn-transfer — CNNs, Transfer Learning, and CNN Training > How to study
+      :: cell 2'
     heading_path:
-    - C7-cnn-transfer — CNNs and Transfer Learning (Unit Overview)
-    - How to study this unit
+    - C7-cnn-transfer — CNNs, Transfer Learning, and CNN Training
+    - How to study
     cell_ordinal: 2
   declared_unit_ids:
   - C7-cnn-transfer
   declared_concept_ids:
   - bottleneck-blocks
+  - cnn-training
   - convolution
   - feature-hierarchy
   - feature-maps
@@ -19741,7 +22509,8 @@ notebooks:
   - tensor-shape-tracing
   - transfer-learning
   declared_problem_ids: []
-  api_tokens: []
+  api_tokens:
+  - torch.device
 - path: units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb
   kind: notebook
   semantic_sha256: 66f1998f3bb7f8e313b137f0c2835f34dc0939646384327fc13c1167066fd4c7
@@ -19997,6 +22766,7 @@ notebooks:
   - C7-cnn-transfer
   declared_concept_ids:
   - bottleneck-blocks
+  - cnn-training
   - convolution
   - feature-hierarchy
   - feature-maps
@@ -20314,6 +23084,7 @@ notebooks:
   - C7-cnn-transfer
   declared_concept_ids:
   - bottleneck-blocks
+  - cnn-training
   - convolution
   - feature-hierarchy
   - feature-maps
@@ -20577,6 +23348,7 @@ notebooks:
   - C7-cnn-transfer
   declared_concept_ids:
   - bottleneck-blocks
+  - cnn-training
   - convolution
   - feature-hierarchy
   - feature-maps
@@ -20618,6 +23390,181 @@ notebooks:
   - torch.zeros
   - torchvision.models.resnet50
   - trunk_l3.parameters
+- path: units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb
+  kind: notebook
+  semantic_sha256: d2deda260ea9521a190c91c361404b89b9106c236d0a8f8a736f1ece4b375ad1
+  anchors:
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning :: cell 1'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning :: cell 2'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 1. From a dense trainer to a convolutional classifier :: cell 1'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 1. From a dense trainer to a convolutional classifier
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 1. From a dense trainer to a convolutional classifier :: cell 2'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 1. From a dense trainer to a convolutional classifier
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 1. From a dense trainer to a convolutional classifier > Checkpoint 1 :: cell 1'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 1. From a dense trainer to a convolutional classifier
+    - Checkpoint 1
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 2. Deterministic synthetic images and a complete training step :: cell 1'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 2. Deterministic synthetic images and a complete training step
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 2. Deterministic synthetic images and a complete training step :: cell 2'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 2. Deterministic synthetic images and a complete training step
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 2. Deterministic synthetic images and a complete training step :: cell 3'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 2. Deterministic synthetic images and a complete training step
+    cell_ordinal: 3
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 2. Deterministic synthetic images and a complete training step > Checkpoint 2 :: cell 1'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 2. Deterministic synthetic images and a complete training step
+    - Checkpoint 2
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 3. Optimizer ownership and freeze-before-optimizer :: cell 1'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 3. Optimizer ownership and freeze-before-optimizer
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 3. Optimizer ownership and freeze-before-optimizer :: cell 2'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 3. Optimizer ownership and freeze-before-optimizer
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 4. Selective fine-tuning certificate :: cell 1'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 4. Selective fine-tuning certificate
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 4. Selective fine-tuning certificate :: cell 2'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 4. Selective fine-tuning certificate
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 5. Evaluation and selective unfreezing :: cell 1'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 5. Evaluation and selective unfreezing
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > 5. Evaluation and selective unfreezing :: cell 2'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - 5. Evaluation and selective unfreezing
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training
+      and Selective Fine-Tuning > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C7-cnn-transfer
+  declared_concept_ids:
+  - bottleneck-blocks
+  - cnn-training
+  - convolution
+  - feature-hierarchy
+  - feature-maps
+  - layer-freezing
+  - model-truncation
+  - receptive-field
+  - resnet-architecture
+  - tensor-shape-tracing
+  - transfer-learning
+  declared_problem_ids: []
+  api_tokens:
+  - b.detach
+  - buffer.detach
+  - fine_losses.append
+  - fine_optimizer.step
+  - fine_optimizer.zero_grad
+  - fine_tune.eval
+  - fine_tune.named_buffers
+  - fine_tune.named_parameters
+  - fine_tune.parameters
+  - fine_tune.train
+  - hook.remove
+  - hooks.append
+  - images.append
+  - labels.append
+  - loss.backward
+  - loss.detach
+  - losses.append
+  - model.eval
+  - model.named_buffers
+  - model.named_parameters
+  - model.parameters
+  - model.train
+  - module.register_forward_hook
+  - name.startswith
+  - nn.AdaptiveAvgPool2d
+  - nn.BatchNorm2d
+  - nn.Conv2d
+  - nn.CrossEntropyLoss
+  - nn.Dropout
+  - nn.Linear
+  - nn.MaxPool2d
+  - optimizer.step
+  - optimizer.zero_grad
+  - p.detach
+  - parameter.detach
+  - rows.append
+  - self.adapt
+  - self.bn1
+  - self.bn2
+  - self.conv1
+  - self.conv2
+  - self.dropout
+  - self.head
+  - self.pool
+  - torch.Generator
+  - torch.allclose
+  - torch.arange
+  - torch.equal
+  - torch.flatten
+  - torch.isfinite
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.SGD
+  - torch.randn
+  - torch.relu
+  - torch.set_default_dtype
+  - torch.stack
+  - torch.tensor
+  - torch.zeros
 - path: units/C7-cnn-transfer/practice/p01.ipynb
   kind: notebook
   semantic_sha256: f9749de9e399f6b732c565ac6efae472577e2f2d5e845037a1488f870c4bf6d3
@@ -21184,19 +24131,30 @@ notebooks:
   - torchvision.models.resnet50
 - path: units/C7-cnn-transfer/practice/p10.ipynb
   kind: notebook
-  semantic_sha256: a2df49d7827f6eed4c11955931c4611d443fcf9b45f1fc4dab4d2b8e2543f2e9
+  semantic_sha256: 9a7d0a5656f92b34871ee7a1997bf6775d409acd9893d753a342058662c26b86
   anchors:
-  - anchor: 'units/C7-cnn-transfer/practice/p10.ipynb :: C7-cnn-transfer — Practice p10 :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/practice/p10.ipynb :: C7-cnn-transfer — Practice p10 > Part II — train only what the audit
+      permits (12 points) :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p10
+    - Part II — train only what the audit permits (12 points)
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p10.ipynb :: C7-cnn-transfer — Practice p10 :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p10.ipynb :: C7-cnn-transfer — Practice p10 > Part II — train only what the audit
+      permits (12 points) :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p10
+    - Part II — train only what the audit permits (12 points)
     cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p10.ipynb :: C7-cnn-transfer — Practice p10 > Part II — train only what the audit
+      permits (12 points) :: cell 3'
+    heading_path:
+    - C7-cnn-transfer — Practice p10
+    - Part II — train only what the audit permits (12 points)
+    cell_ordinal: 3
   declared_unit_ids:
   - C7-cnn-transfer
   declared_concept_ids:
+  - cnn-training
   - layer-freezing
   - nn-module
   - parameter-counting
@@ -21204,13 +24162,30 @@ notebooks:
   declared_problem_ids:
   - C7-p10
   api_tokens:
-  - model.eval
-  - model.parameters
-  - pathlib.Path.cwd
-  - torchvision.models.resnet50
+  - nn.AdaptiveAvgPool2d
+  - nn.BatchNorm2d
+  - nn.Conv2d
+  - nn.CrossEntropyLoss
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - self.bn1
+  - self.conv1
+  - self.fc
+  - self.layer1
+  - self.layer2
+  - self.layer3
+  - self.pool
+  - torch.Generator
+  - torch.arange
+  - torch.flatten
+  - torch.manual_seed
+  - torch.randn
+  - torch.relu
+  - torch.set_default_dtype
 - path: units/C7-cnn-transfer/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: 91e26c8ba7ef9cc9249d5193c48d43707f8ab82e6b0d2fd93b49f7b76c8b9752
+  semantic_sha256: 31ac27285f27fd1be1709a3df0270c6eb6adfe1ab984fd9deb54e54a40fbcb80
   anchors:
   - anchor: 'units/C7-cnn-transfer/practice/p10_solution.ipynb :: C7-cnn-transfer — Practice p10 — Solution :: cell 1'
     heading_path:
@@ -21224,21 +24199,48 @@ notebooks:
     heading_path:
     - C7-cnn-transfer — Practice p10 — Solution
     cell_ordinal: 3
-  - anchor: 'units/C7-cnn-transfer/practice/p10_solution.ipynb :: C7-cnn-transfer — Practice p10 — Solution > Answer check
-      :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/practice/p10_solution.ipynb :: C7-cnn-transfer — Practice p10 — Solution > Part I — selective
+      freezing and two-currency audit :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p10 — Solution
+    - Part I — selective freezing and two-currency audit
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/practice/p10_solution.ipynb :: C7-cnn-transfer — Practice p10 — Solution > Part I — selective
+      freezing and two-currency audit :: cell 2'
+    heading_path:
+    - C7-cnn-transfer — Practice p10 — Solution
+    - Part I — selective freezing and two-currency audit
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p10_solution.ipynb :: C7-cnn-transfer — Practice p10 — Solution > Part II — train
+      only what the audit permits :: cell 1'
+    heading_path:
+    - C7-cnn-transfer — Practice p10 — Solution
+    - Part II — train only what the audit permits
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/practice/p10_solution.ipynb :: C7-cnn-transfer — Practice p10 — Solution > Part II — train
+      only what the audit permits :: cell 2'
+    heading_path:
+    - C7-cnn-transfer — Practice p10 — Solution
+    - Part II — train only what the audit permits
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p10_solution.ipynb :: C7-cnn-transfer — Practice p10 — Solution > Part II — train
+      only what the audit permits > Answer check :: cell 1'
+    heading_path:
+    - C7-cnn-transfer — Practice p10 — Solution
+    - Part II — train only what the audit permits
     - Answer check
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p10_solution.ipynb :: C7-cnn-transfer — Practice p10 — Solution > Answer check
-      :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p10_solution.ipynb :: C7-cnn-transfer — Practice p10 — Solution > Part II — train
+      only what the audit permits > Answer check :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p10 — Solution
+    - Part II — train only what the audit permits
     - Answer check
     cell_ordinal: 2
   declared_unit_ids:
   - C7-cnn-transfer
   declared_concept_ids:
+  - cnn-training
   - layer-freezing
   - nn-module
   - parameter-counting
@@ -21246,14 +24248,43 @@ notebooks:
   declared_problem_ids:
   - C7-p10
   api_tokens:
-  - model.eval
+  - loss.backward
+  - loss.detach
+  - loss_history.append
   - model.named_parameters
   - model.parameters
   - name.split
   - name.startswith
-  - p.numel
-  - pathlib.Path.cwd
-  - torchvision.models.resnet50
+  - nn.AdaptiveAvgPool2d
+  - nn.BatchNorm2d
+  - nn.Conv2d
+  - nn.CrossEntropyLoss
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - parameter.detach
+  - parameter.numel
+  - parameter.requires_grad_
+  - self.bn1
+  - self.conv1
+  - self.fc
+  - self.layer1
+  - self.layer2
+  - self.layer3
+  - self.pool
+  - torch.Generator
+  - torch.arange
+  - torch.equal
+  - torch.flatten
+  - torch.isfinite
+  - torch.manual_seed
+  - torch.optim.Adam
+  - torch.randn
+  - torch.relu
+  - torch.set_default_dtype
+  - torch.tensor
 - path: units/C7-cnn-transfer/practice/p11.ipynb
   kind: notebook
   semantic_sha256: bbdbfdc3b568a867958d9b569fae9ed749f3ca0d6089a89573f89e89a261239d
@@ -22319,31 +25350,52 @@ notebooks:
   api_tokens: []
 - path: units/C7-cnn-transfer/practice/p24.ipynb
   kind: notebook
-  semantic_sha256: 47b94f366ec12dd9f2343526cd519b22e3c0c915765bfd7f6b8e42410730a64a
+  semantic_sha256: 383ce9a919e715877f8261bcb17d5c0140f935aeb0d631d5d91dd1abbf117a3b
   anchors:
-  - anchor: 'units/C7-cnn-transfer/practice/p24.ipynb :: C7-cnn-transfer — Practice p24 :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/practice/p24.ipynb :: C7-cnn-transfer — Practice p24 > Part II — construct and train the
+      same stack (12 points) :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p24
+    - Part II — construct and train the same stack (12 points)
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p24.ipynb :: C7-cnn-transfer — Practice p24 :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p24.ipynb :: C7-cnn-transfer — Practice p24 > Part II — construct and train the
+      same stack (12 points) :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p24
+    - Part II — construct and train the same stack (12 points)
     cell_ordinal: 2
-  - anchor: 'units/C7-cnn-transfer/practice/p24.ipynb :: C7-cnn-transfer — Practice p24 > MARKED VERIFICATION CELL :: cell
-      1'
+  - anchor: 'units/C7-cnn-transfer/practice/p24.ipynb :: C7-cnn-transfer — Practice p24 > Part II — construct and train the
+      same stack (12 points) > MARKED VERIFICATION CELL :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p24
+    - Part II — construct and train the same stack (12 points)
     - MARKED VERIFICATION CELL
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p24.ipynb :: C7-cnn-transfer — Practice p24 > MARKED VERIFICATION CELL :: cell
-      2'
+  - anchor: 'units/C7-cnn-transfer/practice/p24.ipynb :: C7-cnn-transfer — Practice p24 > Part II — construct and train the
+      same stack (12 points) > MARKED VERIFICATION CELL :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p24
+    - Part II — construct and train the same stack (12 points)
     - MARKED VERIFICATION CELL
     cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p24.ipynb :: C7-cnn-transfer — Practice p24 > Part II — construct and train the
+      same stack (12 points) > MARKED VERIFICATION CELL :: cell 3'
+    heading_path:
+    - C7-cnn-transfer — Practice p24
+    - Part II — construct and train the same stack (12 points)
+    - MARKED VERIFICATION CELL
+    cell_ordinal: 3
+  - anchor: 'units/C7-cnn-transfer/practice/p24.ipynb :: C7-cnn-transfer — Practice p24 > Part II — construct and train the
+      same stack (12 points) > MARKED VERIFICATION CELL :: cell 4'
+    heading_path:
+    - C7-cnn-transfer — Practice p24
+    - Part II — construct and train the same stack (12 points)
+    - MARKED VERIFICATION CELL
+    cell_ordinal: 4
   declared_unit_ids:
   - C7-cnn-transfer
   declared_concept_ids:
+  - cnn-training
   - tensor-shape-tracing
   declared_problem_ids:
   - C7-p24
@@ -22352,10 +25404,15 @@ notebooks:
   - nn.MaxPool2d
   - nn.Sequential
   - observed.append
+  - torch.Generator
+  - torch.arange
+  - torch.manual_seed
+  - torch.randn
+  - torch.set_default_dtype
   - torch.zeros
 - path: units/C7-cnn-transfer/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: f0b3801bfeeec84ac3824459cdfddc051ea6067a2025badd280236b86667c744
+  semantic_sha256: 7d4653a1346c9328eeb7da500406e770305b97b1b9efacefe48dcb99e6e9f128
   anchors:
   - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution :: cell 1'
     heading_path:
@@ -22365,50 +25422,99 @@ notebooks:
     heading_path:
     - C7-cnn-transfer — Practice p24 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution :: cell 3'
+  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > Part I — committed
+      hand trace :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p24 — Solution
-    cell_ordinal: 3
-  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > MARKED VERIFICATION
-      CELL :: cell 1'
+    - Part I — committed hand trace
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > Part I — committed
+      hand trace :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p24 — Solution
+    - Part I — committed hand trace
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > Part I — committed
+      hand trace > MARKED VERIFICATION CELL :: cell 1'
+    heading_path:
+    - C7-cnn-transfer — Practice p24 — Solution
+    - Part I — committed hand trace
     - MARKED VERIFICATION CELL
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > MARKED VERIFICATION
-      CELL :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > Part I — committed
+      hand trace > MARKED VERIFICATION CELL :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p24 — Solution
+    - Part I — committed hand trace
     - MARKED VERIFICATION CELL
     cell_ordinal: 2
-  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > MARKED VERIFICATION
-      CELL > Answer check :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > Part II — construct
+      and train the same stack :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p24 — Solution
-    - MARKED VERIFICATION CELL
+    - Part II — construct and train the same stack
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > Part II — construct
+      and train the same stack :: cell 2'
+    heading_path:
+    - C7-cnn-transfer — Practice p24 — Solution
+    - Part II — construct and train the same stack
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > Part II — construct
+      and train the same stack :: cell 3'
+    heading_path:
+    - C7-cnn-transfer — Practice p24 — Solution
+    - Part II — construct and train the same stack
+    cell_ordinal: 3
+  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > Part II — construct
+      and train the same stack > Answer check :: cell 1'
+    heading_path:
+    - C7-cnn-transfer — Practice p24 — Solution
+    - Part II — construct and train the same stack
     - Answer check
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > MARKED VERIFICATION
-      CELL > Answer check :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p24_solution.ipynb :: C7-cnn-transfer — Practice p24 — Solution > Part II — construct
+      and train the same stack > Answer check :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p24 — Solution
-    - MARKED VERIFICATION CELL
+    - Part II — construct and train the same stack
     - Answer check
     cell_ordinal: 2
   declared_unit_ids:
   - C7-cnn-transfer
   declared_concept_ids:
+  - cnn-training
   - tensor-shape-tracing
   declared_problem_ids:
   - C7-p24
   api_tokens:
+  - constructed_shapes.append
+  - loss.backward
+  - loss.detach
+  - loss_history.append
+  - model.named_parameters
+  - model.parameters
+  - nn.AdaptiveAvgPool2d
   - nn.Conv2d
+  - nn.CrossEntropyLoss
+  - nn.Flatten
+  - nn.Linear
   - nn.MaxPool2d
   - nn.Sequential
   - observed.append
-  - torch.inference_mode
+  - optimizer.step
+  - optimizer.zero_grad
+  - parameter.detach
+  - torch.Generator
+  - torch.arange
+  - torch.equal
+  - torch.isfinite
   - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randn
   - torch.set_default_dtype
+  - torch.tensor
   - torch.zeros
 - path: units/C7-cnn-transfer/practice/p25.ipynb
   kind: notebook
@@ -22470,27 +25576,49 @@ notebooks:
   api_tokens: []
 - path: units/C7-cnn-transfer/practice/p26.ipynb
   kind: notebook
-  semantic_sha256: 590b65bec6b676e6ef9f6382e64a7dad05b0bc4a8a0b22632bf77237fe301ded
+  semantic_sha256: a50196a61c2a92dd9fbd3f1a1db8ad55ab7392440a572a9fb2ae6a04f2a5b03e
   anchors:
-  - anchor: 'units/C7-cnn-transfer/practice/p26.ipynb :: C7-cnn-transfer — Practice p26 :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/practice/p26.ipynb :: C7-cnn-transfer — Practice p26 > Part II — helper-led construction
+      and training (11 points) :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p26
+    - Part II — helper-led construction and training (11 points)
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p26.ipynb :: C7-cnn-transfer — Practice p26 :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p26.ipynb :: C7-cnn-transfer — Practice p26 > Part II — helper-led construction
+      and training (11 points) :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p26
+    - Part II — helper-led construction and training (11 points)
     cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p26.ipynb :: C7-cnn-transfer — Practice p26 > Part II — helper-led construction
+      and training (11 points) :: cell 3'
+    heading_path:
+    - C7-cnn-transfer — Practice p26
+    - Part II — helper-led construction and training (11 points)
+    cell_ordinal: 3
+  - anchor: 'units/C7-cnn-transfer/practice/p26.ipynb :: C7-cnn-transfer — Practice p26 > Part II — helper-led construction
+      and training (11 points) :: cell 4'
+    heading_path:
+    - C7-cnn-transfer — Practice p26
+    - Part II — helper-led construction and training (11 points)
+    cell_ordinal: 4
   declared_unit_ids:
   - C7-cnn-transfer
   declared_concept_ids:
+  - cnn-training
   - convolution
   - tensor-shape-tracing
   declared_problem_ids:
   - C7-p26
-  api_tokens: []
+  api_tokens:
+  - torch.Generator
+  - torch.arange
+  - torch.manual_seed
+  - torch.randn
+  - torch.set_default_dtype
 - path: units/C7-cnn-transfer/practice/p26_solution.ipynb
   kind: notebook
-  semantic_sha256: cd57580bf75cec7939ee0272ac877176f3e16832091b57bf64cb154c91f0281b
+  semantic_sha256: 8e222317cad1bc970fc047f664f51e8a61b1e54759b5f1c7250e5db57ab550e3
   anchors:
   - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution :: cell 1'
     heading_path:
@@ -22500,62 +25628,140 @@ notebooks:
     heading_path:
     - C7-cnn-transfer — Practice p26 — Solution
     cell_ordinal: 2
-  - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution :: cell 3'
+  - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution > Part I — pure-Python
+      floor-formula tracer :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p26 — Solution
+    - Part I — pure-Python floor-formula tracer
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution > Part I — pure-Python
+      floor-formula tracer :: cell 2'
+    heading_path:
+    - C7-cnn-transfer — Practice p26 — Solution
+    - Part I — pure-Python floor-formula tracer
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution > Part II — helper-led
+      construction and training :: cell 1'
+    heading_path:
+    - C7-cnn-transfer — Practice p26 — Solution
+    - Part II — helper-led construction and training
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution > Part II — helper-led
+      construction and training :: cell 2'
+    heading_path:
+    - C7-cnn-transfer — Practice p26 — Solution
+    - Part II — helper-led construction and training
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution > Part II — helper-led
+      construction and training :: cell 3'
+    heading_path:
+    - C7-cnn-transfer — Practice p26 — Solution
+    - Part II — helper-led construction and training
     cell_ordinal: 3
-  - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution > Answer check
-      :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution > Part II — helper-led
+      construction and training > Answer check :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p26 — Solution
+    - Part II — helper-led construction and training
     - Answer check
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution > Answer check
-      :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p26_solution.ipynb :: C7-cnn-transfer — Practice p26 — Solution > Part II — helper-led
+      construction and training > Answer check :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p26 — Solution
+    - Part II — helper-led construction and training
     - Answer check
     cell_ordinal: 2
   declared_unit_ids:
   - C7-cnn-transfer
   declared_concept_ids:
+  - cnn-training
   - convolution
   - tensor-shape-tracing
   declared_problem_ids:
   - C7-p26
   api_tokens:
-  - trace.append
+  - constructed_shapes.append
+  - loss.backward
+  - loss.detach
+  - loss_history.append
+  - model.named_parameters
+  - model.parameters
+  - nn.AdaptiveAvgPool2d
+  - nn.Conv2d
+  - nn.CrossEntropyLoss
+  - nn.Flatten
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - parameter.detach
+  - torch.Generator
+  - torch.arange
+  - torch.equal
+  - torch.isfinite
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.SGD
+  - torch.randn
+  - torch.set_default_dtype
+  - torch.tensor
+  - traced_shapes.append
 - path: units/C7-cnn-transfer/practice/p27.ipynb
   kind: notebook
-  semantic_sha256: c8336cb0e271a81311ee5743cd24c52c0b08e4c800c1eb61472390b07ae14643
+  semantic_sha256: d9386cf01cf769dec11a7e74ce4e72b939d2e354f6e281f23f0d2d5e42b3ef39
   anchors:
-  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 > Part II — selective training and
+      evaluation audit (12 points) :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p27
+    - Part II — selective training and evaluation audit (12 points)
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 > Part II — selective training and
+      evaluation audit (12 points) :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p27
+    - Part II — selective training and evaluation audit (12 points)
     cell_ordinal: 2
-  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 :: cell 3'
+  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 > Part II — selective training and
+      evaluation audit (12 points) :: cell 3'
     heading_path:
     - C7-cnn-transfer — Practice p27
+    - Part II — selective training and evaluation audit (12 points)
     cell_ordinal: 3
-  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 > MARKED VERIFICATION CELL :: cell
-      1'
+  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 > Part II — selective training and
+      evaluation audit (12 points) > MARKED VERIFICATION CELL :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p27
+    - Part II — selective training and evaluation audit (12 points)
     - MARKED VERIFICATION CELL
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 > MARKED VERIFICATION CELL :: cell
-      2'
+  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 > Part II — selective training and
+      evaluation audit (12 points) > MARKED VERIFICATION CELL :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p27
+    - Part II — selective training and evaluation audit (12 points)
     - MARKED VERIFICATION CELL
     cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 > Part II — selective training and
+      evaluation audit (12 points) > MARKED VERIFICATION CELL :: cell 3'
+    heading_path:
+    - C7-cnn-transfer — Practice p27
+    - Part II — selective training and evaluation audit (12 points)
+    - MARKED VERIFICATION CELL
+    cell_ordinal: 3
+  - anchor: 'units/C7-cnn-transfer/practice/p27.ipynb :: C7-cnn-transfer — Practice p27 > Part II — selective training and
+      evaluation audit (12 points) > MARKED VERIFICATION CELL :: cell 4'
+    heading_path:
+    - C7-cnn-transfer — Practice p27
+    - Part II — selective training and evaluation audit (12 points)
+    - MARKED VERIFICATION CELL
+    cell_ordinal: 4
   declared_unit_ids:
   - C7-cnn-transfer
   declared_concept_ids:
+  - cnn-training
   - layer-freezing
   - requires-grad
   declared_problem_ids:
@@ -22564,66 +25770,111 @@ notebooks:
   - bn.running_mean.clone
   - bn.running_var.clone
   - copy.deepcopy
+  - nn.AdaptiveAvgPool2d
   - nn.BatchNorm2d
   - nn.Conv2d
+  - nn.CrossEntropyLoss
+  - nn.Dropout
+  - nn.Linear
   - nn.ReLU
   - nn.Sequential
   - observed.append
   - output.detach
   - parameter.requires_grad_
+  - self.bn
+  - self.conv
+  - self.dropout
+  - self.head
+  - self.pool
+  - torch.Generator
   - torch.allclose
+  - torch.arange
   - torch.enable_grad
+  - torch.flatten
   - torch.inference_mode
   - torch.is_inference
   - torch.manual_seed
   - torch.randn
+  - torch.relu
+  - torch.set_default_dtype
   - trunk.parameters
   - trunk.train
 - path: units/C7-cnn-transfer/practice/p27_solution.ipynb
   kind: notebook
-  semantic_sha256: 1eae82acfa6dd7b0117292f1e5f5bbb85a864a3a5dd66dadb5e9be152e9f1220
+  semantic_sha256: 5cd2d7636595c6ae68034d343d10733e03ca727634c0180ef961afac9616fd80
   anchors:
   - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p27 — Solution
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > Part I — committed
+      independent-control predictions :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p27 — Solution
+    - Part I — committed independent-control predictions
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > Part I — committed
+      independent-control predictions :: cell 2'
+    heading_path:
+    - C7-cnn-transfer — Practice p27 — Solution
+    - Part I — committed independent-control predictions
     cell_ordinal: 2
-  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution :: cell 3'
+  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > Part I — committed
+      independent-control predictions :: cell 3'
     heading_path:
     - C7-cnn-transfer — Practice p27 — Solution
+    - Part I — committed independent-control predictions
     cell_ordinal: 3
-  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > MARKED VERIFICATION
-      CELL :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > Part I — committed
+      independent-control predictions > MARKED VERIFICATION CELL :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p27 — Solution
+    - Part I — committed independent-control predictions
     - MARKED VERIFICATION CELL
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > MARKED VERIFICATION
-      CELL :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > Part I — committed
+      independent-control predictions > MARKED VERIFICATION CELL :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p27 — Solution
+    - Part I — committed independent-control predictions
     - MARKED VERIFICATION CELL
     cell_ordinal: 2
-  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > MARKED VERIFICATION
-      CELL > Answer check :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > Part II — selective
+      training and evaluation audit :: cell 1'
     heading_path:
     - C7-cnn-transfer — Practice p27 — Solution
-    - MARKED VERIFICATION CELL
+    - Part II — selective training and evaluation audit
+    cell_ordinal: 1
+  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > Part II — selective
+      training and evaluation audit :: cell 2'
+    heading_path:
+    - C7-cnn-transfer — Practice p27 — Solution
+    - Part II — selective training and evaluation audit
+    cell_ordinal: 2
+  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > Part II — selective
+      training and evaluation audit :: cell 3'
+    heading_path:
+    - C7-cnn-transfer — Practice p27 — Solution
+    - Part II — selective training and evaluation audit
+    cell_ordinal: 3
+  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > Part II — selective
+      training and evaluation audit > Answer check :: cell 1'
+    heading_path:
+    - C7-cnn-transfer — Practice p27 — Solution
+    - Part II — selective training and evaluation audit
     - Answer check
     cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > MARKED VERIFICATION
-      CELL > Answer check :: cell 2'
+  - anchor: 'units/C7-cnn-transfer/practice/p27_solution.ipynb :: C7-cnn-transfer — Practice p27 — Solution > Part II — selective
+      training and evaluation audit > Answer check :: cell 2'
     heading_path:
     - C7-cnn-transfer — Practice p27 — Solution
-    - MARKED VERIFICATION CELL
+    - Part II — selective training and evaluation audit
     - Answer check
     cell_ordinal: 2
   declared_unit_ids:
   - C7-cnn-transfer
   declared_concept_ids:
+  - cnn-training
   - layer-freezing
   - requires-grad
   declared_problem_ids:
@@ -22631,62 +25882,69 @@ notebooks:
   api_tokens:
   - bn.running_mean.clone
   - bn.running_var.clone
+  - buffer.detach
   - copy.deepcopy
+  - loss.backward
+  - loss.detach
+  - loss_history.append
+  - name.startswith
+  - nn.AdaptiveAvgPool2d
   - nn.BatchNorm2d
   - nn.Conv2d
+  - nn.CrossEntropyLoss
+  - nn.Dropout
+  - nn.Linear
   - nn.ReLU
   - nn.Sequential
   - observed.append
+  - optimizer.step
+  - optimizer.zero_grad
   - output.detach
+  - parameter.detach
   - parameter.requires_grad_
+  - self.bn
+  - self.conv
+  - self.dropout
+  - self.head
+  - self.pool
+  - torch.Generator
   - torch.allclose
+  - torch.arange
   - torch.enable_grad
+  - torch.equal
+  - torch.flatten
   - torch.inference_mode
   - torch.is_inference
+  - torch.isfinite
   - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.SGD
   - torch.randn
+  - torch.relu
+  - torch.set_default_dtype
+  - torch.tensor
+  - train_model.eval
+  - train_model.modules
+  - train_model.named_buffers
+  - train_model.named_parameters
+  - train_model.parameters
+  - train_model.train
   - trunk.parameters
   - trunk.train
 - path: units/C7-cnn-transfer/review.ipynb
   kind: notebook
-  semantic_sha256: bb7a1ae0ae3e9d57a73a8acf38b25ebdf63a6ccd0a88ef0fa53f0db2001aa490
+  semantic_sha256: f66784ba0d1978808a799360d60192fb44fc0d64d23f9a8906df7b39a0cd3459
   anchors:
-  - anchor: 'units/C7-cnn-transfer/review.ipynb :: C7-cnn-transfer — Review :: cell 1'
+  - anchor: 'units/C7-cnn-transfer/review.ipynb :: C7-cnn-transfer — Review > Answers :: cell 1'
     heading_path:
     - C7-cnn-transfer — Review
-    cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/review.ipynb :: C7-cnn-transfer — Review :: cell 2'
-    heading_path:
-    - C7-cnn-transfer — Review
-    cell_ordinal: 2
-  - anchor: 'units/C7-cnn-transfer/review.ipynb :: C7-cnn-transfer — Review > Concept summary :: cell 1'
-    heading_path:
-    - C7-cnn-transfer — Review
-    - Concept summary
-    cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/review.ipynb :: audits: :: cell 1'
-    heading_path:
-    - 'audits:'
-    cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/review.ipynb :: audits: > Self-quiz (14 items) :: cell 1'
-    heading_path:
-    - 'audits:'
-    - Self-quiz (14 items)
-    cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/review.ipynb :: audits: > What to redo, per weak spot :: cell 1'
-    heading_path:
-    - 'audits:'
-    - What to redo, per weak spot
-    cell_ordinal: 1
-  - anchor: 'units/C7-cnn-transfer/review.ipynb :: audits: > Answers (open only when done) :: cell 1'
-    heading_path:
-    - 'audits:'
-    - Answers (open only when done)
+    - Answers
     cell_ordinal: 1
   declared_unit_ids:
   - C7-cnn-transfer
   declared_concept_ids:
   - bottleneck-blocks
+  - cnn-training
   - convolution
   - feature-hierarchy
   - feature-maps

@@ -119,6 +119,40 @@ units:
     )
     _write_notebook(mock / "problems" / "p01.ipynb", [_markdown("# Problem 1\n")])
     _write_notebook(mock / "solutions" / "p01_solution.ipynb", [_code("answer = 5\n")])
+    schedule = {
+        "schedule_version": 1,
+        "weeks": [
+            {
+                "week": 1,
+                "semester": 1,
+                "allocations": [
+                    {
+                        "kind": "lesson-session",
+                        "unit": "U1-vectors",
+                        "session": 1,
+                        "minutes": 10,
+                    },
+                    {
+                        "kind": "practice",
+                        "unit": "U1-vectors",
+                        "chunk": 1,
+                        "minutes": 20,
+                    },
+                    {
+                        "kind": "review",
+                        "unit": "U1-vectors",
+                        "chunk": 1,
+                        "minutes": 5,
+                    },
+                    {"kind": "mock", "test": "r1-mini", "minutes": 30},
+                    {"kind": "debrief", "test": "r1-mini", "minutes": 60},
+                ],
+            }
+        ],
+    }
+    schedule_path = root / "curriculum" / "course-schedule.yaml"
+    schedule_path.parent.mkdir(parents=True)
+    schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False))
 
 
 def test_notebook_digest_ignores_transient_notebook_fields(tmp_path: Path) -> None:
@@ -309,6 +343,16 @@ def test_all_mock_rounds_are_discovered(tmp_path: Path) -> None:
     source = tmp_path / "mocktests" / "r1-mini"
     destination = tmp_path / "mocktests" / "r2-mini"
     source.rename(destination)
+    manifest_path = destination / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text())
+    manifest["test"] = "r2-mini"
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
+    schedule_path = tmp_path / "curriculum" / "course-schedule.yaml"
+    schedule = yaml.safe_load(schedule_path.read_text())
+    for allocation in schedule["weeks"][0]["allocations"]:
+        if allocation.get("test") == "r1-mini":
+            allocation["test"] = "r2-mini"
+    schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False))
 
     counts = audit.build_inventory(tmp_path)["counts"]
 
@@ -476,8 +520,18 @@ def _install_canonical_schedule_fixture(
                         "session": 1,
                         "minutes": 100,
                     },
-                    {"kind": "practice", "unit": "U1-vectors", "minutes": 100},
-                    {"kind": "review", "unit": "U1-vectors", "minutes": 10},
+                    {
+                        "kind": "practice",
+                        "unit": "U1-vectors",
+                        "chunk": 1,
+                        "minutes": 100,
+                    },
+                    {
+                        "kind": "review",
+                        "unit": "U1-vectors",
+                        "chunk": 1,
+                        "minutes": 10,
+                    },
                     {"kind": "mock", "test": "r1-mini", "minutes": 180},
                     {"kind": "debrief", "test": "r1-mini", "minutes": 60},
                 ],
@@ -485,7 +539,7 @@ def _install_canonical_schedule_fixture(
         ],
     }
     schedule_path = root / "curriculum" / "course-schedule.yaml"
-    schedule_path.parent.mkdir(parents=True)
+    schedule_path.parent.mkdir(parents=True, exist_ok=True)
     schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False))
 
 

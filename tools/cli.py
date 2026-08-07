@@ -13,6 +13,7 @@ from tools.checks.hygiene import check_hygiene
 from tools.checks.new_mocktest import scaffold_mocktest
 from tools.checks.overlap import check_overlap
 from tools.checks.prereq import check_prereq
+from tools.checks.schedule import check_schedule
 from tools.checks.scope import check_scope
 from tools.checks.tolerance import check_tolerance
 from tools.model import Report
@@ -26,6 +27,7 @@ SUBCOMMANDS: dict[str, tuple[str, CheckFn | None]] = {
     "prereq-check": ("verify the unit DAG and concept closure", check_prereq),
     "coverage-check": ("verify every taught concept has at least three practice problems", check_coverage),
     "scope-check": ("verify the layered curriculum roadmap contract", check_scope),
+    "schedule-check": ("verify the canonical 35-week allocation", check_schedule),
     "hygiene-check": ("verify student notebooks contain no solutions or outputs", check_hygiene),
     "tolerance-check": ("verify calls state absolute and relative tolerances", check_tolerance),
     "new-mocktest": ("scaffold a mock test from the blueprint", None),

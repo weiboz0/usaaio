@@ -64,8 +64,18 @@ def _build_schedule_fixture(root: Path) -> dict[str, Any]:
                 "session": 1,
                 "minutes": lesson,
             },
-            {"kind": "practice", "unit": unit_id, "minutes": practice},
-            {"kind": "review", "unit": unit_id, "minutes": review},
+            {
+                "kind": "practice",
+                "unit": unit_id,
+                "chunk": 1,
+                "minutes": practice,
+            },
+            {
+                "kind": "review",
+                "unit": unit_id,
+                "chunk": 1,
+                "minutes": review,
+            },
         ]
         if final_week:
             allocations.extend(
@@ -100,7 +110,11 @@ def _build_schedule_fixture(root: Path) -> dict[str, Any]:
         root / "mocktests" / "r1-001" / "manifest.yaml",
         {"test": "r1-001", "duration_minutes": 180, "problems": []},
     )
-    schedule = {"schedule_version": 1, "weeks": weeks}
+    schedule = {
+        "schedule_version": 1,
+        "totals": {"semester_1": 7200, "semester_2": 8550, "scheduled": 15750},
+        "weeks": weeks,
+    }
     _write_yaml(root / "curriculum" / "course-schedule.yaml", schedule)
     return schedule
 
@@ -169,19 +183,19 @@ def _swap_first_two_weeks(schedule: dict[str, Any]) -> None:
         ),
         (
             lambda schedule: _duplicate_allocation(schedule, index=1),
-            "practice allocation for U01 must appear exactly once",
+            "duplicate practice chunk U01#1",
         ),
         (
             lambda schedule: _split_allocation(schedule, index=1),
-            "practice allocation for U01 must appear exactly once",
+            "duplicate practice chunk U01#1",
         ),
         (
             lambda schedule: _duplicate_allocation(schedule, index=2),
-            "review allocation for U01 must appear exactly once",
+            "duplicate review chunk U01#1",
         ),
         (
             lambda schedule: _split_allocation(schedule, index=2),
-            "review allocation for U01 must appear exactly once",
+            "duplicate review chunk U01#1",
         ),
         (
             lambda schedule: schedule["weeks"][0]["allocations"][1].update(minutes=299),
@@ -282,6 +296,46 @@ def test_schedule_checker_accepts_a_fully_allocated_prerequisite_valid_fixture(
     report = _schedule_checker().check_schedule(tmp_path)
 
     assert report.ok, report.errors
+
+
+def test_schedule_checker_accepts_consecutive_multiweek_practice_chunks(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    first = schedule["weeks"][0]["allocations"][1]
+    first["minutes"] = 150
+    schedule["weeks"][0]["allocations"].append(
+        {"kind": "practice", "unit": "U01", "chunk": 2, "minutes": 150}
+    )
+    schedule["weeks"][0]["allocations"][2]["minutes"] = 50
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert report.ok, report.errors
+
+
+@pytest.mark.parametrize(
+    ("chunk", "message"),
+    [
+        (1, "duplicate practice chunk U01#1"),
+        (3, "practice chunks for U01 must be consecutive 1..2"),
+    ],
+)
+def test_schedule_checker_rejects_duplicate_or_gapped_practice_chunks(
+    tmp_path: Path, chunk: int, message: str
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    schedule["weeks"][0]["allocations"][1]["minutes"] = 150
+    schedule["weeks"][0]["allocations"].append(
+        {"kind": "practice", "unit": "U01", "chunk": chunk, "minutes": 150}
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(message in error for error in report.errors), report.errors
 
 
 def _rendered_first_instruction_pairs(document: str) -> list[tuple[str, int]]:

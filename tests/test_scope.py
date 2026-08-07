@@ -1549,7 +1549,10 @@ def test_unestimated_c8_clause_remains_but_estimated_extension_section_is_suppre
         assert "so this is not a complete roadmap total" not in document
         assert "Estimated major existing-unit extensions" not in document
         assert "Minimum estimated scoped delta" not in document
-        assert "| C8" not in document
+        assert (
+            "The unestimated C8 `nlp-word-embeddings` model-training correction remains pending."
+            in document
+        )
 
 
 def test_unestimated_c8_clause_disappears_only_after_its_canonical_row_is_covered(
@@ -1563,8 +1566,10 @@ def test_unestimated_c8_clause_disappears_only_after_its_canonical_row_is_covere
     rendered = renderer.render_documents(tmp_path)
 
     for document in rendered.values():
-        assert "C8" not in document
-        assert "nlp-word-embeddings" not in document
+        assert (
+            "The unestimated C8 `nlp-word-embeddings` model-training correction remains pending."
+            not in document
+        )
         assert "Estimated major existing-unit extensions" not in document
 
 

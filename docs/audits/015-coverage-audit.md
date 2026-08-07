@@ -9,45 +9,36 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 857 |
+| Unit notebooks | 913 |
 | Mock notebooks | 10 |
-| Unit practices | 383 |
-| Total inventoried notebooks | 867 |
+| Unit practices | 407 |
+| Total inventoried notebooks | 923 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
-| Coverage: covered | 47 |
-| Coverage: missing | 38 |
-| Coverage: partial | 7 |
+| Coverage: covered | 57 |
+| Coverage: missing | 34 |
+| Coverage: partial | 1 |
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **14767 minutes / 246.12 hours**.
-Current scheduled baseline: **15007 minutes / 250.12 hours**.
+Current manifested baseline: **16625 minutes / 277.08 hours**.
+Current scheduled baseline: **16865 minutes / 281.08 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
 |---|---:|---:|
 | shared-foundation | 0 | 0 |
-| round-1-core | 62 | 92 |
+| round-1-core | 32 | 48 |
 | round-2-extension | 126 | 192 |
 | optional-enrichment | 0 | 0 |
-| **Planned-unit subtotal** | **188** | **284** |
-
-### Estimated major existing-unit extensions
+| **Planned-unit subtotal** | **158** | **240** |
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-| Existing unit | Minimum hours | Maximum hours |
-|---|---:|---:|
-| C7 | 8 | 12 |
+Baseline plus planned-unit subtotal: **435.08–517.08 manifested-baseline hours** and **439.08–521.08 scheduled-baseline hours**.
 
-Estimated major existing-unit extensions subtotal: **8–12 hours**.
-Minimum estimated scoped delta: **196–296 hours**.
-Additional existing-unit corrections in C6 and C8 are not yet estimated, so this is not a complete roadmap total.
-
-Baseline plus planned-unit subtotal: **434.12–530.12 manifested-baseline hours** and **438.12–534.12 scheduled-baseline hours**.
-Baseline plus minimum estimated scoped delta: **442.12–542.12 manifested-baseline hours** and **446.12–546.12 scheduled-baseline hours**.
+The unestimated C8 `nlp-word-embeddings` model-training correction remains pending.
 
 ## Non-required candidates
 
@@ -220,26 +211,26 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** missing
-- **Destination:** P015-R1-NEURAL-TRAINING
+- **Coverage:** covered
+- **Destination:** C11-neural-training
 - **Dependencies:** forward-propagation-by-hand, multivariable-derivatives
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** C5 explicitly puts backpropagation beyond scope; generic chain-rule exercises do not propagate gradients through a network.
-- **Consequence:** Neural-gradient reasoning is absent.
+- **Shipped concepts:** manual-backpropagation
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped C11 lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Consequence:** Students can reason about and implement this neural-training component in the complete training system.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual Backpropagation > 4. Complete backward derivation :: cell 1
+- **derivation practices:** C11-p12
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP That Learns > 3. Backward pass with a shape-preserving return value :: cell 1
+- **implementation practices:** C11-p07
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual Backpropagation > 1. Computation graphs and local derivatives :: cell 1
+- **theory practices:** C11-p03
 - **theory assessments:** —
 
-Practices: —
+Practices: C11-p03, C11-p07, C11-p12
 
 Assessments: —
 
@@ -247,29 +238,29 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** partial
-- **Destination:** P015-R1-NEURAL-TRAINING
+- **Coverage:** covered
+- **Destination:** C11-neural-training
 - **Dependencies:** probability-and-statistics-foundations, pytorch-autograd-and-optimizer-training
-- **Shipped concepts:** layer-freezing, requires-grad, resnet-architecture
-- **Modalities missing:** derivation, implementation, model-training
-- **Practice shortfall:** 2
-- **Rationale:** The clinic teaches train/eval statistics, buffers, and graph controls but does not derive, implement, or train with normalization.
-- **Consequence:** BatchNorm is not yet a genuinely taught and practiced essential layer.
+- **Shipped concepts:** batch-normalization, layer-freezing, requires-grad, resnet-architecture
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 2. BatchNorm backward identity :: cell 1
+- **derivation practices:** C11-p13
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 1. Batch normalization forward pass :: cell 1
+- **implementation practices:** C11-p09
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 6. Worked combined training audit :: cell 1
+- **model-training practices:** C11-p24
 - **model-training assessments:** —
 - **theory lessons:** units/C7-cnn-transfer/lessons/02-resnet-reading.ipynb :: C7-cnn-transfer — Session 2: Reading ResNet-50 > 1. Loading a Pretrained Model, Reproducibly > BatchNorm's three independent controls :: cell 1
 - **theory practices:** C7-p27
 - **theory assessments:** —
 
-Practices: C7-p27
+Practices: C11-p09, C11-p13, C11-p24, C7-p27
 
 Assessments: —
 
@@ -472,26 +463,26 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** partial
+- **Coverage:** covered
 - **Destination:** C7-cnn-transfer
 - **Dependencies:** pytorch-autograd-and-optimizer-training
-- **Shipped concepts:** convolution, feature-hierarchy, feature-maps, receptive-field
-- **Modalities missing:** model-training
+- **Shipped concepts:** cnn-training, convolution, feature-hierarchy, feature-maps, receptive-field
+- **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** Convolution mechanics and architecture are covered, but the unit only loads and inspects pretrained networks.
-- **Consequence:** Students cannot train and diagnose a CNN end to end.
+- **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
 - **implementation lessons:** units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb :: C7-cnn-transfer — Session 1: Convolution and Feature Maps > 3. Convolution in 2-D :: cell 1
 - **implementation practices:** C7-p06, C7-p07, C7-p26
 - **implementation assessments:** r1-001-p07-4
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning > 2. Deterministic synthetic images and a complete training step :: cell 1
+- **model-training practices:** C7-p10
 - **model-training assessments:** —
 - **theory lessons:** units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb :: C7-cnn-transfer — Session 1: Convolution and Feature Maps > 3. Convolution in 2-D :: cell 1, units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb :: C7-cnn-transfer — Session 1: Convolution and Feature Maps > 6. Feature Maps: a Bank of Detectors, Stacked :: cell 1
 - **theory practices:** C7-p01, C7-p03, C7-p05
 - **theory assessments:** r1-001-p07-3
 
-Practices: C7-p01, C7-p03, C7-p05, C7-p06, C7-p07, C7-p26
+Practices: C7-p01, C7-p03, C7-p05, C7-p06, C7-p07, C7-p10, C7-p26
 
 Assessments: r1-001-p07-3, r1-001-p07-4
 
@@ -520,26 +511,26 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** bridge
-- **Coverage:** missing
-- **Destination:** P015-R1-NEURAL-TRAINING
+- **Coverage:** covered
+- **Destination:** C11-neural-training
 - **Dependencies:** loss-functions, softmax
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No binary or multiclass cross-entropy, likelihood connection, gradient, or implementation exists.
-- **Consequence:** Neural classification training lacks its core objective.
+- **Shipped concepts:** cross-entropy-loss
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped C11 lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Consequence:** Students can reason about and implement this neural-training component in the complete training system.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 6. Fusing softmax and cross-entropy :: cell 1
+- **derivation practices:** C11-p11
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 4. Worked exam-register example 1: stable normal form :: cell 1
+- **implementation practices:** C11-p06
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 3. Cross-entropy is negative log likelihood :: cell 1
+- **theory practices:** C11-p02
 - **theory assessments:** —
 
-Practices: —
+Practices: C11-p02, C11-p06, C11-p11
 
 Assessments: —
 
@@ -631,26 +622,26 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** missing
-- **Destination:** P015-R1-NEURAL-TRAINING
+- **Coverage:** covered
+- **Destination:** C11-neural-training
 - **Dependencies:** multilayer-perceptron-model, pytorch-autograd-and-optimizer-training
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** Dropout does not occur in any lesson, practice, solution, or mock.
-- **Consequence:** A named essential layer is wholly absent.
+- **Shipped concepts:** dropout
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped C11 lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Consequence:** Students can reason about and implement this neural-training component in the complete training system.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 5. Train mode and eval mode are different functions :: cell 1
+- **implementation practices:** C11-p10
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 6. Worked combined training audit :: cell 1
+- **model-training practices:** C11-p24
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 4. Inverted dropout preserves expectation :: cell 1
+- **theory practices:** C11-p04
 - **theory assessments:** —
 
-Practices: —
+Practices: C11-p04, C11-p10, C11-p24
 
 Assessments: —
 
@@ -763,26 +754,26 @@ Assessments: r1-001-p08-3
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** partial
-- **Destination:** P015-R1-NEURAL-TRAINING
+- **Coverage:** covered
+- **Destination:** C11-neural-training
 - **Dependencies:** backpropagation-by-hand, cross-entropy-loss, softmax
-- **Shipped concepts:** activation-functions, decision-boundaries-geometric, manual-weights, mlp-architecture
-- **Modalities missing:** model-training
+- **Shipped concepts:** activation-functions, decision-boundaries-geometric, manual-backpropagation, manual-weights, mlp-architecture, trained-mlp
+- **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** Students build inference networks from scratch, but the official expectation includes learning the weights.
-- **Consequence:** A complete from-scratch training implementation is missing.
+- **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
 - **implementation lessons:** units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
 - **implementation practices:** C5-p08, C5-p13, C5-p18
 - **implementation assessments:** r1-001-p08-3
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP That Learns > 4. Update ordering and a complete training loop :: cell 1
+- **model-training practices:** C11-p15
 - **model-training assessments:** —
 - **theory lessons:** units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1
 - **theory practices:** C5-p08, C5-p13, C5-p18
 - **theory assessments:** r1-001-p08-3
 
-Practices: C5-p08, C5-p13, C5-p18
+Practices: C11-p15, C5-p08, C5-p13, C5-p18
 
 Assessments: r1-001-p08-3
 
@@ -1357,26 +1348,26 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** partial
-- **Destination:** P015-R1-NEURAL-TRAINING
+- **Coverage:** covered
+- **Destination:** C11-neural-training
 - **Dependencies:** affine-neural-network-layer, loss-functions
-- **Shipped concepts:** activation-functions, decision-boundaries-geometric, manual-weights, mlp-architecture
-- **Modalities missing:** model-training
+- **Shipped concepts:** activation-functions, decision-boundaries-geometric, manual-weights, mlp-architecture, trained-mlp
+- **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** MLP architecture and inference are well taught, but all weights are supplied or manually designed.
-- **Consequence:** The model family lacks learned-weight training.
+- **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
 - **implementation lessons:** units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
 - **implementation practices:** C5-p08, C5-p13, C5-p18
 - **implementation assessments:** r1-001-p08-3
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP That Learns > 5. Training certification: decisions changed for a reason :: cell 1
+- **model-training practices:** C11-p15
 - **model-training assessments:** —
 - **theory lessons:** units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1, units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
 - **theory practices:** C5-p04, C5-p08, C5-p18
 - **theory assessments:** r1-001-p08-3
 
-Practices: C5-p04, C5-p08, C5-p13, C5-p18
+Practices: C11-p15, C5-p04, C5-p08, C5-p13, C5-p18
 
 Assessments: r1-001-p08-3
 
@@ -1909,26 +1900,26 @@ Assessments: r1-001-p07-1
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** partial
-- **Destination:** P015-R1-NEURAL-TRAINING
+- **Coverage:** covered
+- **Destination:** C11-neural-training
 - **Dependencies:** backpropagation-by-hand, pytorch-deep-learning-programming
-- **Shipped concepts:** layer-freezing, requires-grad
-- **Modalities missing:** implementation, model-training
-- **Practice shortfall:** 2
-- **Rationale:** The clinic distinguishes module mode, parameter trainability, and graph recording, but backward and optimizers are banned.
-- **Consequence:** Neural autograd and optimizer training remain unshipped.
+- **Shipped concepts:** autograd-training, layer-freezing, requires-grad, torch-optimizers
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4: PyTorch Autograd and Optimizers > 2. Hand gradient versus autograd :: cell 1
+- **implementation practices:** C11-p08
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4: PyTorch Autograd and Optimizers > 6. Deterministic CPU-small training and evaluation :: cell 1
+- **model-training practices:** C11-p16
 - **model-training assessments:** —
 - **theory lessons:** units/C6-pytorch/lessons/02-nn-module-and-custom-layers.ipynb :: C6-pytorch — Session 2: `nn.Module` and Custom Layers > 4. The `requires_grad` Flag, Up Close :: cell 1, units/C7-cnn-transfer/lessons/02-resnet-reading.ipynb :: C7-cnn-transfer — Session 2: Reading ResNet-50 > 1. Loading a Pretrained Model, Reproducibly > BatchNorm's three independent controls :: cell 1
 - **theory practices:** C7-p27
 - **theory assessments:** —
 
-Practices: C7-p27
+Practices: C11-p08, C11-p16, C7-p27
 
 Assessments: —
 
@@ -1936,23 +1927,23 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** partial
+- **Coverage:** covered
 - **Destination:** C6-pytorch
 - **Dependencies:** numpy-programming, python-programming
-- **Shipped concepts:** custom-layers, nn-module, torch-tensors
-- **Modalities missing:** model-training
+- **Shipped concepts:** autograd-training, custom-layers, nn-module, torch-optimizers, torch-tensors
+- **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** PyTorch tensors and modules are strongly implemented, but C6 explicitly remains inference-only.
-- **Consequence:** Students cannot yet train and evaluate a deep-learning model in PyTorch.
+- **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
 - **implementation lessons:** units/C6-pytorch/lessons/01-tensors-and-inheritance.ipynb :: C6-pytorch — Session 1: Torch Tensors and Python Inheritance > 1. Tensors: NumPy Arrays with a Passport :: cell 1, units/C6-pytorch/lessons/02-nn-module-and-custom-layers.ipynb :: C6-pytorch — Session 2: `nn.Module` and Custom Layers > 3. Registering Numbers: `nn.Parameter` and `DenseLayer` :: cell 1
 - **implementation practices:** C6-p08, C6-p13, C6-p20
 - **implementation assessments:** r1-001-p07-1, r1-001-p08-3
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4: PyTorch Autograd and Optimizers > 6. Deterministic CPU-small training and evaluation :: cell 1
+- **model-training practices:** C11-p16
 - **model-training assessments:** —
 
-Practices: C6-p08, C6-p13, C6-p20
+Practices: C11-p16, C6-p08, C6-p13, C6-p20
 
 Assessments: r1-001-p07-1, r1-001-p08-3
 
@@ -2110,26 +2101,26 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** bridge
-- **Coverage:** missing
-- **Destination:** P015-R1-NEURAL-TRAINING
+- **Coverage:** covered
+- **Destination:** C11-neural-training
 - **Dependencies:** affine-neural-network-layer, probability-and-statistics-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No softmax definition, stabilization argument, Jacobian, or implementation exists.
-- **Consequence:** Multiclass neural output reasoning is blocked.
+- **Shipped concepts:** softmax
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped C11 lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Consequence:** Students can reason about and implement this neural-training component in the complete training system.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 5. The softmax Jacobian :: cell 1
+- **derivation practices:** C11-p11
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 2. Shift invariance gives a stable algorithm :: cell 1
+- **implementation practices:** C11-p05
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 1. Logits, probabilities, and the class axis :: cell 1
+- **theory practices:** C11-p01
 - **theory assessments:** —
 
-Practices: —
+Practices: C11-p01, C11-p05, C11-p11
 
 Assessments: —
 
@@ -2426,14 +2417,12 @@ Assessments: —
 
 ## Dependency-ordered content tranche queue
 
-1. **Round 1 neural-training completion:** Softmax, cross-entropy, manual backpropagation, a fully connected network from scratch, then complete C6 model training through PyTorch autograd/optimizers, explicit BatchNorm/dropout ownership, and C7 CNN training. Forward propagation is already a shipped prerequisite, not a new gap.
+1. **Round 1 classical-model breadth:** Logistic regression, SVM, decision trees, ensembles, and k-means, with comparison and implementation exercises.
 
-2. **Round 1 classical-model breadth:** Logistic regression, SVM, decision trees, ensembles, and k-means, with comparison and implementation exercises.
+2. **Round 2 transformers and NLP:** Self/multi-head attention, positional encoding, transformer architecture and complexity, from-scratch attention, LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP applications, pre-training, and fine-tuning, followed by vision-transformer and graph-neural-network applications.
 
-3. **Round 2 transformers and NLP:** Self/multi-head attention, positional encoding, transformer architecture and complexity, from-scratch attention, LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP applications, pre-training, and fine-tuning, followed by vision-transformer and graph-neural-network applications.
+3. **Round 2 advanced vision and generative modeling:** Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after multivariate Gaussian, reparameterization, and KL prerequisites.
 
-4. **Round 2 advanced vision and generative modeling:** Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after multivariate Gaussian, reparameterization, and KL prerequisites.
-
-5. **Round 2 open-ended/GPU capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
+4. **Round 2 open-ended/GPU capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
 
 Each tranche updates the shipped syllabus and roadmap atomically.
