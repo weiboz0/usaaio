@@ -134,6 +134,11 @@ units:
     _write_notebook(mock / "solutions" / "p01_solution.ipynb", [_code("answer = 5\n")])
     schedule = {
         "schedule_version": 1,
+        "calendar": {
+            "semester_1_weeks": 16,
+            "semester_2_weeks": 19,
+            "total_weeks": 35,
+        },
         "weeks": [
             {
                 "week": 1,
@@ -522,6 +527,11 @@ def _install_canonical_schedule_fixture(
     mock_manifest_path.write_text(yaml.safe_dump(mock_manifest, sort_keys=False))
     schedule = {
         "schedule_version": 1,
+        "calendar": {
+            "semester_1_weeks": 16,
+            "semester_2_weeks": 19,
+            "total_weeks": 35,
+        },
         "weeks": [
             {
                 "week": 1,

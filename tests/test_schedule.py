@@ -27,7 +27,11 @@ def _write_yaml(path: Path, value: object) -> None:
 
 
 def _build_schedule_fixture(
-    root: Path, *, chained_prerequisites: bool = True, week_count: int = 35
+    root: Path,
+    *,
+    chained_prerequisites: bool = True,
+    week_count: int = 35,
+    semester_1_weeks: int = 16,
 ) -> dict[str, Any]:
     units = []
     weeks = []
@@ -95,7 +99,7 @@ def _build_schedule_fixture(
         weeks.append(
             {
                 "week": week,
-                "semester": 1 if week <= 16 else 2,
+                "semester": 1 if week <= semester_1_weeks else 2,
                 "allocations": allocations,
             }
         )
@@ -123,15 +127,20 @@ def _build_schedule_fixture(
     )
     schedule = {
         "schedule_version": 1,
+        "calendar": {
+            "semester_1_weeks": semester_1_weeks,
+            "semester_2_weeks": week_count - semester_1_weeks,
+            "total_weeks": week_count,
+        },
         "totals": {
             "semester_1": sum(
                 allocation["minutes"]
-                for row in weeks[:16]
+                for row in weeks[:semester_1_weeks]
                 for allocation in row["allocations"]
             ),
             "semester_2": sum(
                 allocation["minutes"]
-                for row in weeks[16:]
+                for row in weeks[semester_1_weeks:]
                 for allocation in row["allocations"]
             ),
             "scheduled": sum(
@@ -423,6 +432,60 @@ def test_schedule_checker_accepts_a_fully_allocated_prerequisite_valid_fixture(
     report = _schedule_checker().check_schedule(tmp_path)
 
     assert report.ok, report.errors
+
+
+def test_schedule_checker_derives_semester_boundary_from_declared_calendar(
+    tmp_path: Path,
+) -> None:
+    _build_schedule_fixture(tmp_path, semester_1_weeks=15)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert report.ok, report.errors
+
+
+def test_schedule_checker_rejects_calendar_total_that_disagrees_with_semesters(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    schedule["calendar"]["total_weeks"] = 36
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "calendar semester week counts must sum to total_weeks" in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_schedule_checker_rejects_week_beyond_declared_calendar(tmp_path: Path) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    schedule["weeks"].append({"week": 36, "semester": 2, "allocations": []})
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any("unexpected week 36" in error for error in report.errors), report.errors
+
+
+def test_schedule_checker_rejects_reordered_week_rows(tmp_path: Path) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    schedule["weeks"][0], schedule["weeks"][1] = (
+        schedule["weeks"][1],
+        schedule["weeks"][0],
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "week rows must be ordered consecutively 1..35" in error
+        for error in report.errors
+    ), report.errors
 
 
 def test_schedule_checker_rejects_a_nonterminal_final_assessment_week(
@@ -804,6 +867,14 @@ def test_real_schedule_has_exact_plan018_calendar_and_complete_allocation() -> N
 
     schedule = yaml.safe_load((ROOT / "curriculum" / "course-schedule.yaml").read_text())
     weeks = schedule["weeks"]
+    assert schedule["calendar"] == {
+        "semester_1_weeks": 16,
+        "semester_2_weeks": 24,
+        "total_weeks": 40,
+    }
+    validated = _schedule_checker().load_validated_schedule(ROOT)
+    assert validated.semester_week_counts == (16, 24)
+    assert validated.declared_week_count == 40
     assert len(weeks) == 40
     assert [week["week"] for week in weeks] == list(range(1, 41))
     assert [week["semester"] for week in weeks] == [1] * 16 + [2] * 24

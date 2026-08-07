@@ -1,4 +1,8 @@
 schedule_version: 1
+calendar:
+  semester_1_weeks: 16
+  semester_2_weeks: 24
+  total_weeks: 40
 totals:
   semester_1: 7915
   semester_2: 10960

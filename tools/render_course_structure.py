@@ -70,11 +70,13 @@ def _model_region(schedule: CourseSchedule, manifests: dict[str, dict]) -> str:
     scheduled = schedule.total_minutes
     in_class = lesson + 240
     independent = practice + review
-    semester_lengths = [
-        sum(week.semester == semester for week in schedule.weeks)
-        for semester in (1, 2)
-    ]
-    week_count = len(schedule.weeks)
+    if (
+        schedule.semester_week_counts is None
+        or schedule.declared_week_count is None
+    ):
+        raise ValueError("validated schedule is missing its declared calendar")
+    semester_lengths = schedule.semester_week_counts
+    week_count = schedule.declared_week_count
     return "\n".join(
         [
             (

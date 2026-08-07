@@ -49,14 +49,50 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
     raw = _mapping(_read_yaml(path), "course-schedule.yaml", errors)
     if raw is None:
         return None
-    allowed_keys = {"schedule_version", "weeks", "totals"}
-    if not {"schedule_version", "weeks"} <= set(raw) or not set(raw) <= allowed_keys:
+    allowed_keys = {"schedule_version", "calendar", "weeks", "totals"}
+    if not {"schedule_version", "calendar", "weeks"} <= set(raw) or not set(
+        raw
+    ) <= allowed_keys:
         errors.append(
-            "course-schedule.yaml keys must be schedule_version, weeks, and optional totals"
+            "course-schedule.yaml keys must be schedule_version, calendar, weeks, "
+            "and optional totals"
         )
     version = raw.get("schedule_version")
     if type(version) is not int or version != 1:
         errors.append("schedule_version must be integer 1")
+    semester_week_counts: tuple[int, int] | None = None
+    declared_week_count: int | None = None
+    calendar = _mapping(raw.get("calendar"), "course-schedule.yaml calendar", errors)
+    if calendar is not None:
+        expected_calendar_keys = {
+            "semester_1_weeks",
+            "semester_2_weeks",
+            "total_weeks",
+        }
+        if set(calendar) != expected_calendar_keys:
+            errors.append(
+                "course-schedule.yaml calendar keys must be semester_1_weeks, "
+                "semester_2_weeks, and total_weeks"
+            )
+        elif all(key in calendar for key in expected_calendar_keys):
+            first_weeks = _positive_integer(
+                calendar["semester_1_weeks"], "calendar semester_1_weeks", errors
+            )
+            second_weeks = _positive_integer(
+                calendar["semester_2_weeks"], "calendar semester_2_weeks", errors
+            )
+            declared_week_count = _positive_integer(
+                calendar["total_weeks"], "calendar total_weeks", errors
+            )
+            if first_weeks is not None and second_weeks is not None:
+                semester_week_counts = (first_weeks, second_weeks)
+                if (
+                    declared_week_count is not None
+                    and first_weeks + second_weeks != declared_week_count
+                ):
+                    errors.append(
+                        "calendar semester week counts must sum to total_weeks"
+                    )
     raw_weeks = raw.get("weeks")
     if not isinstance(raw_weeks, list):
         errors.append("course-schedule.yaml weeks must be a list")
@@ -159,7 +195,14 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
                 )
         if week is not None and semester is not None:
             weeks.append(ScheduleWeek(week, semester, allocations))
-    return CourseSchedule(1, weeks, semester_minutes, declared_total)
+    return CourseSchedule(
+        schedule_version=1,
+        weeks=weeks,
+        semester_week_counts=semester_week_counts,
+        declared_week_count=declared_week_count,
+        semester_minutes=semester_minutes,
+        declared_total_minutes=declared_total,
+    )
 
 
 def _unit_contracts(root: Path) -> dict[str, dict[str, Any]]:
@@ -233,16 +276,29 @@ def _validate(
     enforce_calendar: bool = True,
 ) -> None:
     week_ids = [week.week for week in schedule.weeks]
-    last_week = max(week_ids, default=0)
+    observed_last_week = max(week_ids, default=0)
     for week, count in sorted(Counter(week_ids).items()):
         if count > 1:
             errors.append(f"duplicate week {week}")
     if enforce_calendar:
-        for expected in range(1, last_week + 1):
-            if expected not in week_ids:
-                errors.append(f"missing week {expected}")
-        if week_ids != list(range(1, last_week + 1)):
-            errors.append(f"week rows must be ordered consecutively 1..{last_week}")
+        if (
+            schedule.semester_week_counts is None
+            or schedule.declared_week_count is None
+        ):
+            errors.append("canonical schedule requires a declared calendar")
+            expected_week_ids: list[int] = []
+        else:
+            expected_week_ids = list(range(1, schedule.declared_week_count + 1))
+            for expected in expected_week_ids:
+                if expected not in week_ids:
+                    errors.append(f"missing week {expected}")
+            for unexpected in sorted(set(week_ids) - set(expected_week_ids)):
+                errors.append(f"unexpected week {unexpected}")
+            if week_ids != expected_week_ids:
+                errors.append(
+                    "week rows must be ordered consecutively "
+                    f"1..{schedule.declared_week_count}"
+                )
 
     assessment_weeks = {
         week.week
@@ -256,13 +312,19 @@ def _validate(
     if enforce_calendar:
         if len(assessment_weeks) != 1:
             errors.append("schedule must have exactly one final-assessment week")
-        elif final_assessment_week != last_week:
+        elif final_assessment_week != schedule.declared_week_count:
             errors.append(
-                f"final-assessment week {final_assessment_week} must be final week {last_week}"
+                f"final-assessment week {final_assessment_week} must be final week "
+                f"{schedule.declared_week_count}"
             )
     for week in schedule.weeks:
-        expected_semester = 1 if week.week <= 16 else 2
-        if enforce_calendar and week.semester != expected_semester:
+        semester_1_weeks = (
+            schedule.semester_week_counts[0]
+            if schedule.semester_week_counts is not None
+            else observed_last_week
+        )
+        expected_semester = 1 if week.week <= semester_1_weeks else 2
+        if enforce_calendar and schedule.semester_week_counts is not None and week.semester != expected_semester:
             errors.append(
                 f"week {week.week} semester {week.semester}; expected {expected_semester}"
             )
@@ -284,7 +346,9 @@ def _validate(
                 )
     if enforce_calendar:
         if schedule.semester_minutes is None or schedule.declared_total_minutes is None:
-            errors.append(f"canonical {last_week}-week schedule requires declared totals")
+            errors.append(
+                f"canonical {schedule.declared_week_count}-week schedule requires declared totals"
+            )
         else:
             actual_first = sum(
                 allocation.minutes
