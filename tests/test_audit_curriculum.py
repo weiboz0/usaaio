@@ -486,20 +486,20 @@ def test_check_mode_catches_missing_and_stale_inventory_then_passes(tmp_path: Pa
     assert "stale" in capsys.readouterr().err
 
 
-def test_real_repository_inventory_counts() -> None:
+def test_plan018_real_repository_inventory_has_exact_final_counts() -> None:
     counts = audit.build_inventory(REPO_ROOT)["counts"]
 
     assert counts == {
-        "units": 18,
-        "concepts": 139,
-        "unit_practices": 407,
-        "lesson_sessions": 63,
-        "unit_nonpractice_notebooks": 99,
-        "unit_notebooks": 913,
+        "units": 19,
+        "concepts": 149,
+        "unit_practices": 437,
+        "lesson_sessions": 69,
+        "unit_nonpractice_notebooks": 107,
+        "unit_notebooks": 981,
         "mocktests": 1,
         "mock_notebooks": 10,
-        "manifested_minutes": 16_625,
-        "scheduled_minutes": 16_865,
+        "manifested_minutes": 18_635,
+        "scheduled_minutes": 18_875,
     }
 
 

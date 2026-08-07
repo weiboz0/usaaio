@@ -2,6 +2,7 @@ import re
 from pathlib import Path
 
 import pytest
+import yaml
 
 from tools.model import (
     load_blueprint,
@@ -187,4 +188,119 @@ practice: []
 
     message = rf"{re.escape(str(manifest_path))}: estimated_minutes\.lesson_sessions {detail}"
     with pytest.raises(ValueError, match=message):
+        load_unit_manifests(tmp_path)
+
+
+def _write_session_manifest(tmp_path, *, concept_sessions, practice):
+    unit_dir = tmp_path / "units" / "C12-classical-models"
+    unit_dir.mkdir(parents=True)
+    manifest = {
+        "unit": "C12-classical-models",
+        "concepts_taught": ["logistic-regression", "svm"],
+        "concepts_used": [],
+        "prereq_units": [],
+        "estimated_minutes": {
+            "lesson": 180,
+            "lesson_sessions": [90, 90],
+            "practice": sum(row.get("minutes", 0) for row in practice),
+            "review": 60,
+        },
+        "concept_sessions": concept_sessions,
+        "practice": practice,
+    }
+    (unit_dir / "manifest.yaml").write_text(yaml.safe_dump(manifest, sort_keys=False))
+
+
+def _session_problem(*, concepts=None, after_session=1):
+    row = {
+        "id": "C12-p01",
+        "concepts": concepts or ["logistic-regression"],
+        "path": "practice/p01.ipynb",
+        "solution_path": "practice/p01_solution.ipynb",
+        "minutes": 20,
+    }
+    if after_session is not None:
+        row["after_session"] = after_session
+    return row
+
+
+def test_unit_manifest_parses_optional_concept_sessions_and_after_session(tmp_path):
+    _write_session_manifest(
+        tmp_path,
+        concept_sessions={"logistic-regression": 1, "svm": 2},
+        practice=[_session_problem()],
+    )
+
+    manifest = load_unit_manifests(tmp_path)[0]
+
+    assert manifest.concept_sessions == {"logistic-regression": 1, "svm": 2}
+    assert manifest.practice[0].after_session == 1
+
+
+@pytest.mark.parametrize(
+    ("concept_sessions", "practice"),
+    [
+        pytest.param([], [_session_problem()], id="not-a-mapping"),
+        pytest.param(
+            {"logistic-regression": 1},
+            [_session_problem()],
+            id="keys-do-not-equal-owned-concepts",
+        ),
+        pytest.param(
+            {"logistic-regression": True, "svm": 2},
+            [_session_problem()],
+            id="boolean-session",
+        ),
+        pytest.param(
+            {"logistic-regression": 0, "svm": 2},
+            [_session_problem()],
+            id="zero-session",
+        ),
+        pytest.param(
+            {"logistic-regression": 1, "svm": 3},
+            [_session_problem()],
+            id="session-past-lesson-count",
+        ),
+        pytest.param(
+            {"logistic-regression": 1, "svm": 2},
+            [_session_problem(concepts=["foreign-concept"])],
+            id="practice-without-owned-concept",
+        ),
+        pytest.param(
+            {"logistic-regression": 1, "svm": 2},
+            [_session_problem(after_session=None)],
+            id="missing-after-session",
+        ),
+        pytest.param(
+            {"logistic-regression": 1, "svm": 2},
+            [_session_problem(after_session=True)],
+            id="boolean-after-session",
+        ),
+        pytest.param(
+            {"logistic-regression": 1, "svm": 2},
+            [_session_problem(after_session=0)],
+            id="zero-after-session",
+        ),
+        pytest.param(
+            {"logistic-regression": 1, "svm": 2},
+            [_session_problem(after_session=3)],
+            id="after-session-past-lesson-count",
+        ),
+        pytest.param(
+            {"logistic-regression": 1, "svm": 2},
+            [_session_problem(concepts=["svm"], after_session=1)],
+            id="after-session-before-concept-floor",
+        ),
+    ],
+)
+def test_unit_manifest_rejects_malformed_or_closure_invalid_session_contracts(
+    tmp_path, concept_sessions, practice
+):
+    _write_session_manifest(
+        tmp_path,
+        concept_sessions=concept_sessions,
+        practice=practice,
+    )
+
+    with pytest.raises(ValueError):
         load_unit_manifests(tmp_path)
