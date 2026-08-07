@@ -263,6 +263,13 @@ def _manifest(unit_id: str) -> dict[str, object]:
     return yaml.safe_load((ROOT / "units" / unit_id / "manifest.yaml").read_text())
 
 
+def _notebook_cell_source(relative_path: str, cell_id: str) -> str:
+    notebook = json.loads((ROOT / relative_path).read_text())
+    cell = next(cell for cell in notebook["cells"] if cell.get("id") == cell_id)
+    source = cell.get("source", "")
+    return "".join(source) if isinstance(source, list) else source
+
+
 def _canonical_syllabus_yaml() -> dict[str, object]:
     text = (ROOT / "syllabus.md").read_text()
     fenced = re.search(
@@ -475,6 +482,76 @@ def test_plan017_c7_manifest_is_double_length_and_preserves_capstone_contracts()
     } == set(PLAN017_C7_PRESERVED_CONCEPTS)
     for problem_id, preserved in PLAN017_C7_PRESERVED_CONCEPTS.items():
         assert preserved | {"cnn-training"} <= set(practices[problem_id]["concepts"])
+
+
+def test_plan017_c11_p04_inverted_dropout_scaling_changes_the_answer():
+    statement = _notebook_cell_source(
+        "units/C11-neural-training/practice/p04.ipynb", "p04-m1"
+    )
+
+    assert "E[h_tilde_1^2] / E[h_tilde_2 + h_tilde_3]" in statement
+    assert "16/15" in statement
+    assert "4/5" in statement
+    assert "derive both expectations from the Bernoulli keep mask and the 1/q scale" in statement
+    assert "gcd(|a|,b) = 1" in statement
+    assert "E[h_tilde_1] / E[h_tilde_2 + h_tilde_3]" not in statement
+
+
+def test_plan017_c7_p26_pins_construction_to_reference_draw_order():
+    statement = _notebook_cell_source(
+        "units/C7-cnn-transfer/practice/p26.ipynb", "p26-00"
+    )
+
+    assert (
+        "construct the convolution/ReLU stack in the listed spec order, then "
+        "construct adaptive pool `(1,1)`, flatten, and the 3-class linear head last"
+        in statement
+    )
+    assert "exactly 20 SGD steps (`lr=0.12`)" in statement
+
+
+def test_plan017_c11_p10_replaces_effectively_zero_linspace_coordinate():
+    setup = _notebook_cell_source(
+        "units/C11-neural-training/practice/p10.ipynb", "p10-c2"
+    )
+
+    assert "x_p10[torch.abs(x_p10) < 1e-9] = 0.125" in setup
+    assert "x_p10[x_p10 == 0]" not in setup
+
+
+def test_plan017_c11_lessons_cover_lambda_rng_and_optimizer_state_contracts():
+    lesson_03 = _notebook_cell_source(
+        "units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb",
+        "c11s3015",
+    )
+    assert "$\\lambda/2$" in lesson_03
+    assert "$\\lambda W$" in lesson_03
+    assert "$lambda/2$" not in lesson_03
+    assert "$lambda W$" not in lesson_03
+
+    lesson_04_path = ROOT / "units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb"
+    lesson_04 = json.loads(lesson_04_path.read_text())
+    cell_sources = {
+        cell.get("id"): (
+            "".join(cell.get("source", []))
+            if isinstance(cell.get("source", []), list)
+            else cell.get("source", "")
+        )
+        for cell in lesson_04["cells"]
+    }
+    all_source = "\n".join(cell_sources.values())
+
+    assert "torch.Generator(device=\"cpu\")" in all_source
+    assert "generator=data_generator" in all_source
+    assert "local generator does not advance or reset the global generator" in all_source
+    assert "torch.manual_seed(SEED)" in cell_sources["c11s4010"]
+    assert "torch.use_deterministic_algorithms(True)" in all_source
+    assert "raises instead of silently using only a nondeterministic implementation" in all_source
+    assert "optimizer.state[first_parameter]" in all_source
+    assert "adam_optimizer.state[adam_parameter]" in all_source
+    assert '["step"]' in all_source
+    assert "**Checkpoint 5C.**" in all_source
+    assert "**5C.**" in cell_sources["c11s4016"]
 
 
 def test_plan016_existing_unit_register_extensions_are_exact():
