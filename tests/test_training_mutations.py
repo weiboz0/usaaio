@@ -143,6 +143,39 @@ def test_mutation_runner_rejects_a_multiple_match_target(tmp_path: Path) -> None
         module.run_mutation(tmp_path, spec)
 
 
+def test_mutation_runner_rejects_a_missing_target_marker_even_when_search_matches(
+    tmp_path: Path,
+) -> None:
+    module = _mutation_module()
+    notebook = tmp_path / "fixture" / "solution.ipynb"
+    _write_notebook(notebook, "value = 1\n")
+    spec = _spec(module, search="value = 1", replacement="value = 2")
+
+    with pytest.raises(
+        module.MutationVerificationError,
+        match="target marker matched 0 source locations",
+    ):
+        module.run_mutation(tmp_path, spec)
+
+
+def test_mutation_runner_rejects_duplicate_target_markers_even_when_search_matches_once(
+    tmp_path: Path,
+) -> None:
+    module = _mutation_module()
+    notebook = tmp_path / "fixture" / "solution.ipynb"
+    _write_notebook(
+        notebook,
+        "# MUTATION_TARGET\nvalue = 1\n# MUTATION_TARGET\n",
+    )
+    spec = _spec(module, search="value = 1", replacement="value = 2")
+
+    with pytest.raises(
+        module.MutationVerificationError,
+        match="target marker matched 2 source locations",
+    ):
+        module.run_mutation(tmp_path, spec)
+
+
 def test_mutation_runner_rejects_a_non_failing_mutant(tmp_path: Path) -> None:
     module = _mutation_module()
     notebook = tmp_path / "fixture" / "solution.ipynb"

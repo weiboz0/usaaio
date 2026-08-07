@@ -112,18 +112,24 @@ def _check_after(root: Path, mutate: Callable[[dict[str, Any]], None]):
     return _schedule_checker().check_schedule(root)
 
 
-def _split_allocation(schedule: dict[str, Any], *, index: int) -> None:
-    allocation = schedule["weeks"][0]["allocations"][index]
+def _split_allocation(
+    schedule: dict[str, Any], *, index: int, week_index: int = 0
+) -> None:
+    allocation = schedule["weeks"][week_index]["allocations"][index]
     original_minutes = allocation["minutes"]
     allocation["minutes"] = original_minutes // 2
-    schedule["weeks"][0]["allocations"].append(
+    schedule["weeks"][week_index]["allocations"].insert(
+        index + 1,
         {**allocation, "minutes": original_minutes - allocation["minutes"]}
     )
 
 
-def _duplicate_allocation(schedule: dict[str, Any], *, index: int) -> None:
-    schedule["weeks"][0]["allocations"].append(
-        dict(schedule["weeks"][0]["allocations"][index])
+def _duplicate_allocation(
+    schedule: dict[str, Any], *, index: int, week_index: int = 0
+) -> None:
+    schedule["weeks"][week_index]["allocations"].insert(
+        index + 1,
+        dict(schedule["weeks"][week_index]["allocations"][index])
     )
 
 
@@ -146,6 +152,10 @@ def _swap_first_two_weeks(schedule: dict[str, Any]) -> None:
                 dict(schedule["weeks"][0]["allocations"][0])
             ),
             "duplicate lesson session U01#1",
+        ),
+        (
+            lambda schedule: _split_allocation(schedule, index=0),
+            "lesson session U01#1 must appear exactly once",
         ),
         (
             lambda schedule: schedule["weeks"][0]["allocations"][0].update(unit="unknown-unit"),
@@ -206,6 +216,50 @@ def _swap_first_two_weeks(schedule: dict[str, Any]) -> None:
                 0, schedule["weeks"][34]["allocations"].pop(-2)
             ),
             "mock and debrief must be the final scheduled events",
+        ),
+        (
+            lambda schedule: schedule["weeks"][34]["allocations"][3].update(
+                test="r1-999"
+            ),
+            "mock allocation references unknown test r1-999",
+        ),
+        (
+            lambda schedule: schedule["weeks"][34]["allocations"][4].update(
+                test="r1-999"
+            ),
+            "debrief allocation references unknown test r1-999",
+        ),
+        (
+            lambda schedule: schedule["weeks"][34]["allocations"][3].update(
+                minutes=179
+            ),
+            "mock allocation for r1-001 must match duration 180 minutes",
+        ),
+        (
+            lambda schedule: schedule["weeks"][34]["allocations"][4].update(
+                minutes=59
+            ),
+            "debrief allocation for r1-001 must be 60 minutes",
+        ),
+        (
+            lambda schedule: _duplicate_allocation(
+                schedule, index=3, week_index=34
+            ),
+            "mock allocation for r1-001 must appear exactly once",
+        ),
+        (
+            lambda schedule: _split_allocation(schedule, index=3, week_index=34),
+            "mock allocation for r1-001 must appear exactly once",
+        ),
+        (
+            lambda schedule: _duplicate_allocation(
+                schedule, index=4, week_index=34
+            ),
+            "debrief allocation for r1-001 must appear exactly once",
+        ),
+        (
+            lambda schedule: _split_allocation(schedule, index=4, week_index=34),
+            "debrief allocation for r1-001 must appear exactly once",
         ),
     ],
 )
