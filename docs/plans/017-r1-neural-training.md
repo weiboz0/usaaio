@@ -87,8 +87,8 @@ table/document from that data so CI checks the calendar rather than trusting pro
 ## Pinned problem contract
 
 Every C11 statement names its time budget and grades every concept tag.
-Set A fundamentals are p01–p03 and p05–p10.
-Set B exam-register problems are p04 and p11–p13.
+Set A fundamentals are p01–p03, p05, and p07–p10.
+Set B exam-register problems are p04, p06, and p11–p13.
 Set C integration/scenario/challenge problems are p14–p24.
 Every owned concept has an answer-affecting Set A encounter: p01/p05 cover softmax, p02/p06
 cross-entropy, p03/p07 manual backpropagation, p08 separately checks an autograd gradient and an
@@ -97,8 +97,10 @@ dropout.
 Set assignment and informational difficulty tags are separate dimensions: Set A fundamentals
 span intro/core, Set B's normal-form and proof register spans intro/core, and Set C's integration,
 scenario, and challenge work spans core/advanced.
-All six constrained-coding tasks stay in Set A because each is the first executable drill for an
-owned concept; Set B still carries the exam-register normal form and reasoning-required proofs.
+Five constrained-coding tasks stay in Set A as first executable drills for their concepts.
+C11-p06 deliberately moves stable cross-entropy implementation into Set B after the Set A p02
+conceptual drill, so the exam register retains constrained coding alongside normal-form MC and
+reasoning-required proofs; all statements remain original rather than adapted.
 
 | Ids | Type | Difficulty | Minutes each | Primary concept contract |
 |---|---|---|---:|---|
@@ -212,6 +214,8 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    in a unit declares it, every problem must, ids/paths remain distinct, and the sum must equal
    `estimated_minutes.practice`.
    C11's exact 24-row minutes are the pinned table above.
+   Assert exact equality for every row's id, set, type, difficulty, concepts, path, solution path,
+   and minutes against the pinned problem contract; generic band/count checks are insufficient.
 4. Require C7's canonical syllabus entry to set `length: double`, four sessions, 27 distinct
    practices, `cnn-training`, and explicit prerequisites `[C6-pytorch, C11-neural-training]`.
    Require the exact `cnn-training` practice-id set
@@ -303,10 +307,14 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    C11 statement to carry a body line `**Time budget:** <minutes> minutes` matching its manifest
    value, and keep the existing metadata header schema exactly `{Type, Difficulty, Concepts}`;
    time is not a fourth header field.
+   Add a `--statements-only` mode that performs every statement/register check but deliberately
+   skips solution-header validation; the default full mode must continue to require every
+   solution path.
    Add fail-closed fixtures in `tests/test_verify_register.py` for four-vs-five options, missing or
    wrong reasoning flag, missing/mismatched body budget, an attempted fourth header field, and a
    declared statement/solution path that does not exist.
-   Missing paths must return named per-problem findings rather than an uncaught traceback.
+   Missing statements must fail first with named per-problem findings rather than an uncaught
+   traceback; the already-named missing-solution behavior receives a regression fixture.
 8. Register Plan 017 as active without marking it complete.
    Atomically replace the stale deferred C7/C5 capacity TODO with the resolved decision: C7 is a
    substantive four-session double-length unit, while C5 remains a compliant standard 22-problem
@@ -321,8 +329,8 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 - `uv run pytest tests/test_verify_register.py -q`
 - Do not run the repository-wide register yet: the Phase 1 C11 manifest intentionally precedes
   its Phase 3 statements and Phase 4 solutions, so only temporary-fixture tests are green in this
-  bounded window; the first corpus register run is required after all 24 statement and solution
-  paths exist.
+  bounded window; the first statements-only corpus run occurs in Phase 3 and the first full corpus
+  run occurs after all 24 statement and solution paths exist in Phase 4.
 - `uv run usaaio-tools prereq-check`
 - `uv run usaaio-tools coverage-check` must remain red only for intentionally missing C11/C7
   artifacts until later phases.
@@ -385,6 +393,7 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 - `uv run usaaio-tools coverage-check` may remain red only for missing paired solutions.
 - Structural scripts assert exact titles, types, sets, difficulty tags, ids, paths, time budgets,
   concept coverage, seeds, bans, and absence of stored outputs.
+- `uv run python scripts/verify-register.py --statements-only`
 
 ## Phase 4 — Blind-solve C11 in a separate fresh session
 
@@ -651,9 +660,10 @@ This phase is mandatory because the plan ships and changes teaching units.
   timing contracts explicit without fabricating C7 per-problem data, manifest-enforces C11's
   calibrated problem-minute sum, and uses only repository-valid `uv run` commands.
 - `[self]` Final delta review confirms the Set partition is a disjoint cover of p01–p24, p08's
-  two tags have separate executable assertions, verifier fixtures land in Phase 1 while corpus
-  register runs wait until statements and solutions coexist in Phases 4/5, and all final corpus
-  count/minute contracts remain unchanged while structural scripts pin the revised set mapping.
+  two tags have separate executable assertions, verifier fixtures land in Phases 1/5, the
+  statements-only corpus gate runs in Phase 3, full register runs wait for solutions in Phases
+  4/5, and all final corpus count/minute contracts remain unchanged while tests pin the revised
+  set mapping.
 - **Final delta verdict: APPROVE.**
 - No open self-review finding remains.
 
@@ -820,7 +830,12 @@ This phase is mandatory because the plan ships and changes teaching units.
 - `[opus] [FIXED]` The first C11 corpus register run now occurs in Phase 4 after both statements
   and solutions exist; Phase 1 adds named missing-path diagnostics and a fail-closed fixture.
 - `[opus] [FIXED]` Set/difficulty prose now enumerates all three sets against the actual table and
-  explains why all six first executable concept drills remain in Set A.
+  keeps C11-p06 in Set B so the exam register includes constrained coding after its Set A
+  cross-entropy concept drill.
+- `[opus] [FIXED]` Phase 1 adds a tested statements-only verifier mode for the Phase 3 mechanical
+  gate; Phase 4 remains the first full statement-plus-solution register run.
+- `[opus] [FIXED]` Phase 0 now pins exact equality for all 24 rows' set/type/difficulty/concepts and
+  paths instead of relying on generic structural counts.
 - **Delta re-review verdict:** APPROVE.
 
 ## Content Review
