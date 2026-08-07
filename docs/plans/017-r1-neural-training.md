@@ -94,8 +94,11 @@ Every owned concept has an answer-affecting Set A encounter: p01/p05 cover softm
 cross-entropy, p03/p07 manual backpropagation, p08 separately checks an autograd gradient and an
 optimizer-driven parameter update, p07 checks a manual trained-MLP update, p09 BatchNorm, and p10
 dropout.
-Set membership is the concept-encounter progression and is tracked independently of difficulty
-within the standard's allowed Set A intro/core and Set C integration/advanced bands.
+Set assignment and informational difficulty tags are separate dimensions: Set A fundamentals
+span intro/core, Set B's normal-form and proof register spans intro/core, and Set C's integration,
+scenario, and challenge work spans core/advanced.
+All six constrained-coding tasks stay in Set A because each is the first executable drill for an
+owned concept; Set B still carries the exam-register normal form and reasoning-required proofs.
 
 | Ids | Type | Difficulty | Minutes each | Primary concept contract |
 |---|---|---|---:|---|
@@ -301,7 +304,9 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    value, and keep the existing metadata header schema exactly `{Type, Difficulty, Concepts}`;
    time is not a fourth header field.
    Add fail-closed fixtures in `tests/test_verify_register.py` for four-vs-five options, missing or
-   wrong reasoning flag, missing/mismatched body budget, and an attempted fourth header field.
+   wrong reasoning flag, missing/mismatched body budget, an attempted fourth header field, and a
+   declared statement/solution path that does not exist.
+   Missing paths must return named per-problem findings rather than an uncaught traceback.
 8. Register Plan 017 as active without marking it complete.
    Atomically replace the stale deferred C7/C5 capacity TODO with the resolved decision: C7 is a
    substantive four-session double-length unit, while C5 remains a compliant standard 22-problem
@@ -315,8 +320,9 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
   Phases 2–5.
 - `uv run pytest tests/test_verify_register.py -q`
 - Do not run the repository-wide register yet: the Phase 1 C11 manifest intentionally precedes
-  its Phase 3 statement files, so only temporary-fixture tests are green in this bounded window;
-  the first corpus register run is required after all 24 statement paths exist.
+  its Phase 3 statements and Phase 4 solutions, so only temporary-fixture tests are green in this
+  bounded window; the first corpus register run is required after all 24 statement and solution
+  paths exist.
 - `uv run usaaio-tools prereq-check`
 - `uv run usaaio-tools coverage-check` must remain red only for intentionally missing C11/C7
   artifacts until later phases.
@@ -379,7 +385,6 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 - `uv run usaaio-tools coverage-check` may remain red only for missing paired solutions.
 - Structural scripts assert exact titles, types, sets, difficulty tags, ids, paths, time budgets,
   concept coverage, seeds, bans, and absence of stored outputs.
-- `uv run python scripts/verify-register.py`
 
 ## Phase 4 — Blind-solve C11 in a separate fresh session
 
@@ -401,6 +406,7 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 ### Verification
 
 - Fresh-execute all 24 solutions in isolated kernels.
+- `uv run python scripts/verify-register.py`
 - Run answer-check permanence, tolerance, hygiene, register, prerequisite, and coverage checks.
 - Confirm statements remain output-free and solution files alone contain answer material.
 
@@ -646,8 +652,8 @@ This phase is mandatory because the plan ships and changes teaching units.
   calibrated problem-minute sum, and uses only repository-valid `uv run` commands.
 - `[self]` Final delta review confirms the Set partition is a disjoint cover of p01–p24, p08's
   two tags have separate executable assertions, verifier fixtures land in Phase 1 while corpus
-  register runs wait until their target statements exist in Phases 3/5, and all exact-count/
-  minute contracts remain unchanged.
+  register runs wait until statements and solutions coexist in Phases 4/5, and all final corpus
+  count/minute contracts remain unchanged while structural scripts pin the revised set mapping.
 - **Final delta verdict: APPROVE.**
 - No open self-review finding remains.
 
@@ -811,6 +817,10 @@ This phase is mandatory because the plan ships and changes teaching units.
   source of truth.
 - `[opus] [FIXED]` C11-p08 now provides a 35-minute Set A task with separate assertions for the
   autograd gradient and optimizer update; p03 returns to a single manual-backpropagation concept.
+- `[opus] [FIXED]` The first C11 corpus register run now occurs in Phase 4 after both statements
+  and solutions exist; Phase 1 adds named missing-path diagnostics and a fail-closed fixture.
+- `[opus] [FIXED]` Set/difficulty prose now enumerates all three sets against the actual table and
+  explains why all six first executable concept drills remain in Set A.
 - **Delta re-review verdict:** APPROVE.
 
 ## Content Review
