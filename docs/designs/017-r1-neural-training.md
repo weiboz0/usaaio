@@ -143,6 +143,8 @@ Each of the eight taught concepts appears in at least three distinct graded stat
 C11 manifests 450 lesson minutes, 1,040 practice minutes, and 60 review minutes, for 1,550
 minutes total.
 C7 changes from 255/672/45 to 345/875/60 lesson/practice/review minutes, a 308-minute increase.
+Its practice estimate uses one combined editorial recalibration rather than fabricated historical
+per-problem measurements: 672 − 97 + 4 × 75 = 875.
 Its four sessions and 27 practices satisfy the existing double-length contract.
 Plan 017 therefore adds exactly 1,858 manifested minutes = 30.97 hours.
 
@@ -169,9 +171,9 @@ Semester 2 grows to 19 weeks / 8,950 minutes, inserts C11 after C6 and before C7
 A schedule checker reconciles every allocated session, practice minute, review minute, mock, and
 debrief against the manifests and prerequisite graph and rejects a weekly total outside 450–500
 minutes.
-A renderer owns only sentinel-delimited numeric baseline, semester arithmetic, weekly table,
-captured-total, summative-milestone/mock-week, and first-instruction/topological-order regions in
-`docs/course-structure.md`.
+A renderer owns sentinel-delimited numeric course-model, semester arithmetic and range, weekly
+table, both captured-output, summative-milestone/mock-week, and first-instruction/topological-
+order regions in `docs/course-structure.md`.
 The rendered milestone pins `r1-001` to Week 35, and the rendered first-instruction region pins
 the full week-bearing topological sequence including C5 → C6 → C11 → C7.
 The optional-mock policy, grading guidance, and explanatory prerequisite prose outside those

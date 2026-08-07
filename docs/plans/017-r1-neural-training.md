@@ -37,10 +37,11 @@ It owns exactly:
 Ship five 90-minute sessions, one overview, one 60-minute review, and 24 paired practices and
 solutions totaling 1,040 practice minutes.
 Its exact `concepts_used` list is `[numpy-arrays, array-indexing-slicing, elementwise-ops,
-broadcasting, vectorization, aggregation-axis, random-seeding, partial-derivatives, gradient,
-multivar-chain-rule, gradient-descent, learning-rate, stochastic-gd, loss-surfaces, expectation,
-variance, perceptron, activation-functions, relu-activation, mlp-architecture,
-weight-init-variance, torch-tensors, nn-module, requires-grad, parameter-counting]`.
+broadcasting, vectorization, aggregation-axis, random-seeding, matplotlib-basics,
+partial-derivatives, gradient, multivar-chain-rule, gradient-descent, learning-rate,
+stochastic-gd, loss-surfaces, expectation, variance, perceptron, activation-functions,
+relu-activation, mlp-architecture, weight-init-variance, python-inheritance, torch-tensors,
+nn-module, requires-grad, parameter-counting]`.
 
 ### C7 completion
 
@@ -50,6 +51,11 @@ Expand C7-p10, C7-p24, C7-p26, and C7-p27 as 75-minute capstones that preserve s
 current objectives and add honest model-training evidence.
 Update C7 to double-length with four sessions, 27 practices, and final lesson/practice/review
 minutes of 345/875/60.
+The practice recalibration is explicit: retain the old 672-minute aggregate, remove one combined
+97-minute editorial allowance for the four replaced statements, and add 4 × 75 = 300 minutes,
+giving 672 − 97 + 300 = 875.
+The 97-minute value is a combined planning allowance from manual scope review, not four claimed
+historical measurements and not per-problem manifest data.
 
 ### Curriculum evidence and schedule
 
@@ -240,6 +246,7 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 - `units/C7-cnn-transfer/manifest.yaml`
 - `docs/unit-standards.md`
 - `TODO.md`
+- `tests/test_integration.py`
 
 ### Work
 
@@ -255,11 +262,18 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    The four rewritten statements each name a 75-minute authoring/assessment budget, but C7 does
    not opt into the new per-problem manifest field because the unchanged 23 problems have no
    measured individual-minute evidence.
-4. Convert the C7 standards note from unresolved non-conformance to a recorded resolution based
-   on the substantive fourth session; record that C5 remains a standard 22-problem unit because
-   training moved to C11, update the double-length roster to F5, F6, C7, and C11, and correct the
-   stale claim that C7's ten concepts/672 minutes are corpus maxima by naming C10's 12 taught
-   concepts as the concept maximum and C11's 1,040 practice minutes as the practice maximum.
+4. Preserve the full Plan 014 rejection history in the C7 standards note and append a recorded
+   Plan 017 resolution rather than replacing that history.
+   Explain why the new outcome differs from the rejected label-only attempt: C7 now has a real
+   fourth 90-minute session and 27 practices, satisfying both double-length bands; its final
+   1,280 minutes exceed the pre-plan 1,120-minute corpus maximum.
+   Record that its 345 lesson minutes across four sessions are lighter than F5's 415/5, F6's
+   425/5, and C11's 450/5, while F7 demonstrates that four sessions alone do not imply
+   double-length because its 20 practices remain in the standard band.
+   Also record that C5 remains a standard 22-problem unit because training moved to C11, update
+   the double-length roster to F5, F6, C7, and C11, and correct the stale maxima claim by naming
+   C10's 12 taught concepts as the concept maximum and C11's 1,040 practice minutes as the
+   practice maximum.
 5. Update the syllabus core rationale, double-length narrative, and suggested topological order,
    plus their exact integration assertions, so C11 appears between C6 and C7 and “the other
    double-length unit” is no longer asserted.
@@ -414,6 +428,7 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 - `docs/audits/015-coverage-audit.md`
 - `docs/curriculum-roadmap.md`
 - `docs/course-structure.md`
+- `docs/curriculum-architecture.md`
 - `syllabus.md`
 - `curriculum/course-schedule.yaml`
 - `tools/model.py`
@@ -429,33 +444,39 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 
 ### Work
 
-1. Add exact primary/secondary lesson anchors and honest practice evidence for all ten targets.
+1. Regenerate material inventory after every final notebook change, before writing coverage-map
+   anchors, so every `(path, heading, cell_ordinal)` triple is validated against fresh data.
+2. Add exact primary/secondary lesson anchors and honest practice evidence for all ten targets.
    Apply the exact single destinations and `shipped_concepts` additions from the design table;
    composite prose owners are forbidden.
-2. Remove `P015-R1-NEURAL-TRAINING` only after its eight owned rows are covered.
+3. Remove `P015-R1-NEURAL-TRAINING` only after its eight owned rows are covered.
    In the same atomic edit, replace that id with shipped `C11-neural-training` in the
    prerequisites of `P015-R2-TRANSFORMERS-NLP` and `P015-R2-VISION-GEN`; scope-check must reject
    any dangling planned-unit reference.
-3. Make roadmap pending-state prose consumer-driven.
+4. Make roadmap pending-state prose consumer-driven.
    Existing-unit extension rows are keyed to uncovered knowledge points, and tranche-queue rows
    are keyed to still-present `planned_units`; covering/removing the neural owners must suppress
    C7, only the obsolete C6 clause from the combined C6/C8 completion sentence, and the neural-
    tranche queue entry without a second manual status flag; the still-uncovered Round 2 C8 clause
    must remain.
-4. Update `tests/test_scope.py` so a covered CNN-training row removes C7 from the rendered pending
+   Only uncovered rows with an explicit editorial hour estimate enter the existing-unit table;
+   suppress the table, subtotal, and scoped-delta prose completely when that estimated set is
+   empty, and do not turn the unestimated C8 clause into a zero-hour table row.
+5. Update `tests/test_scope.py` so a covered CNN-training row removes C7 from the rendered pending
    table and removal of `P015-R1-NEURAL-TRAINING` removes its queue entry; retain negative fixtures
    proving either item returns when its canonical owner is pending.
    Add a positive fixture proving the combined correction sentence retains its C8 clause while
    the Round 2 `nlp-word-embeddings` model-training row remains partial, plus a negative fixture
-   proving that clause disappears only when that canonical row is covered.
-5. Regenerate the audit and roadmap; assert the Round 1 gap set is exactly the five Plan 018
+   proving that clause disappears only when that canonical row is covered; also assert the empty
+   estimated-extension section is suppressed and C8 does not leak into it.
+6. Regenerate the audit and roadmap; assert the Round 1 gap set is exactly the five Plan 018
    classical topics and no completed neural unit remains in a pending extension table.
-6. Regenerate material inventory after every final notebook change.
 7. Add `curriculum/course-schedule.yaml` with one allocation record per week and add
    sentinel-delimited generated regions to `docs/course-structure.md`.
-   `tools/render_course_structure.py` owns only the numeric baseline, semester arithmetic, weekly
-   table, captured-total, summative-milestone/mock-week, and first-instruction/topological-order
-   regions.
+   `tools/render_course_structure.py` owns the numeric course-model paragraph including per-week
+   hours, semester arithmetic including averages/ranges, weekly table, both captured-output
+   blocks in Section 5, summative-milestone/mock-week, and first-instruction/topological-order
+   regions, each sentinel-delimited.
    Tests require the rendered milestone to place `r1-001` in Week 35 and require exact equality
    between the full rendered `(unit, first-instruction week)` sequence and the schedule-derived
    sequence for all shipped units, including `C5 → C6 → C11 → C7`; they also require the genuinely
@@ -479,6 +500,10 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
     five registered mutations against the shipped solution notebooks.
     Add schedule and freshness checks inside their existing owning stages so the authoritative
     gate deliberately remains eight top-level stages and its `1/8`…`8/8` labels stay accurate.
+12. Refresh `docs/curriculum-architecture.md`'s stale "current 26-week schedule" capacity claim
+    to the validated 35-week calendar and state that its under-500 weekly margin is recovery
+    buffer, not silently allocatable extension capacity; future content must replace work or
+    extend the calendar explicitly.
 
 ### Verification
 
@@ -704,6 +729,15 @@ This phase is mandatory because the plan ships and changes teaching units.
   fresh GPT-5.6-sol session, and Phase 1 atomically resolves the stale C7/C5 capacity TODO.
 - `[opus] [FIXED]` Roster headings now use the mandatory slot identities rather than incorrectly
   numbering Terra, GLM, and Opus by chronological response order.
+- `[opus] [FIXED]` Phase 1 now explicitly scopes its integration-test edits, and the roadmap
+  renderer suppresses an empty estimated-extension section without inventing a C8 estimate.
+- `[opus] [FIXED]` The exact C11 dependency list now includes `python-inheritance` for
+  `nn.Module` subclasses and `matplotlib-basics` for loss-curve diagnosis.
+- `[opus] [FIXED]` The C7 standards edit preserves Plan 014's rejected label-only history and
+  records why a substantive fourth session plus the 27-practice band now changes the result.
+- `[opus] [FIXED]` The C7 875-minute aggregate now exposes its combined calibration arithmetic;
+  the renderer owns every schedule-derived numeric sentence/output block; the stale architecture
+  capacity sentence is in scope; and inventory regeneration precedes anchor authoring.
 - **Delta re-review:** pending.
 
 ## Content Review
