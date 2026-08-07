@@ -8,40 +8,31 @@ This roadmap records acknowledged shipped and planned curriculum state.
 
 ### Round 1 exit
 
-61 required/bridge atomic targets; 15 acknowledged gaps.
+61 required/bridge atomic targets; 5 acknowledged gaps.
 
 ### Round 2 exit
 
-92 required/bridge atomic targets; 45 acknowledged gaps.
+92 required/bridge atomic targets; 35 acknowledged gaps.
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **14767 minutes / 246.12 hours**.
-Current scheduled baseline: **15007 minutes / 250.12 hours**.
+Current manifested baseline: **16625 minutes / 277.08 hours**.
+Current scheduled baseline: **16865 minutes / 281.08 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
 |---|---:|---:|
 | shared-foundation | 0 | 0 |
-| round-1-core | 62 | 92 |
+| round-1-core | 32 | 48 |
 | round-2-extension | 126 | 192 |
 | optional-enrichment | 0 | 0 |
-| **Planned-unit subtotal** | **188** | **284** |
-
-### Estimated major existing-unit extensions
+| **Planned-unit subtotal** | **158** | **240** |
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-| Existing unit | Minimum hours | Maximum hours |
-|---|---:|---:|
-| C7 | 8 | 12 |
+Baseline plus planned-unit subtotal: **435.08–517.08 manifested-baseline hours** and **439.08–521.08 scheduled-baseline hours**.
 
-Estimated major existing-unit extensions subtotal: **8–12 hours**.
-Minimum estimated scoped delta: **196–296 hours**.
-Additional existing-unit corrections in C6 and C8 are not yet estimated, so this is not a complete roadmap total.
-
-Baseline plus planned-unit subtotal: **434.12–530.12 manifested-baseline hours** and **438.12–534.12 scheduled-baseline hours**.
-Baseline plus minimum estimated scoped delta: **442.12–542.12 manifested-baseline hours** and **446.12–546.12 scheduled-baseline hours**.
+The unestimated C8 `nlp-word-embeddings` model-training correction remains pending.
 
 ## Non-required candidates
 
@@ -89,19 +80,19 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | Knowledge point | Requirement | Coverage | Modalities missing | Practice shortfall | Destination | Dependencies |
 |---|---|---|---|---:|---|---|
 | affine-neural-network-layer | required | covered | — | 0 | C5-neural-networks | affine-transformations |
-| backpropagation-by-hand | required | missing | derivation, implementation, theory | 3 | P015-R1-NEURAL-TRAINING | forward-propagation-by-hand, multivariable-derivatives |
-| batch-normalization | required | partial | derivation, implementation, model-training | 2 | P015-R1-NEURAL-TRAINING | probability-and-statistics-foundations, pytorch-autograd-and-optimizer-training |
+| backpropagation-by-hand | required | covered | — | 0 | C11-neural-training | forward-propagation-by-hand, multivariable-derivatives |
+| batch-normalization | required | covered | — | 0 | C11-neural-training | probability-and-statistics-foundations, pytorch-autograd-and-optimizer-training |
 | bias-variance-tradeoff | required | covered | — | 0 | C1-ml-fundamentals | supervised-learning-foundations |
-| convolutional-neural-network-basics | required | partial | model-training | 0 | C7-cnn-transfer | pytorch-autograd-and-optimizer-training |
+| convolutional-neural-network-basics | required | covered | — | 0 | C7-cnn-transfer | pytorch-autograd-and-optimizer-training |
 | cpu-and-gpu-round-boundary | required | covered | — | 0 | C10-competition-craft | colab-coding-submission |
-| cross-entropy-loss | bridge | missing | derivation, implementation, theory | 3 | P015-R1-NEURAL-TRAINING | loss-functions, softmax |
+| cross-entropy-loss | bridge | covered | — | 0 | C11-neural-training | loss-functions, softmax |
 | cross-validation | required | covered | — | 0 | C4-classical-ml-practice | supervised-learning-foundations, train-test-split |
 | decision-trees | required | missing | implementation, model-training, theory | 3 | P015-R1-CLASSICAL-BREADTH | loss-functions, supervised-learning-foundations |
-| dropout | required | missing | implementation, model-training, theory | 3 | P015-R1-NEURAL-TRAINING | multilayer-perceptron-model, pytorch-autograd-and-optimizer-training |
+| dropout | required | covered | — | 0 | C11-neural-training | multilayer-perceptron-model, pytorch-autograd-and-optimizer-training |
 | end-to-end-model-selection | required | covered | — | 0 | C10-competition-craft | cross-validation, loss-functions |
 | ensemble-learning | required | missing | implementation, model-training, theory | 3 | P015-R1-CLASSICAL-BREADTH | bias-variance-tradeoff, decision-trees |
 | forward-propagation-by-hand | required | covered | — | 0 | C5-neural-networks | affine-neural-network-layer |
-| fully-connected-network-from-scratch | required | partial | model-training | 0 | P015-R1-NEURAL-TRAINING | backpropagation-by-hand, cross-entropy-loss, softmax |
+| fully-connected-network-from-scratch | required | covered | — | 0 | C11-neural-training | backpropagation-by-hand, cross-entropy-loss, softmax |
 | hidden-test-model-evaluation | required | covered | — | 0 | C10-competition-craft | end-to-end-model-selection |
 | k-means-clustering | required | missing | implementation, model-training, theory | 3 | P015-R1-CLASSICAL-BREADTH | distance-metrics, expectation, unsupervised-learning-foundations |
 | knn | required | covered | — | 0 | C4-classical-ml-practice | distance-metrics, supervised-learning-foundations |
@@ -109,17 +100,17 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | linear-regression-estimator-derivation | required | covered | — | 0 | C2-linear-models | linear-regression, matrix-multiplication, multivariable-derivatives |
 | logistic-regression | required | missing | implementation, model-training, theory | 3 | P015-R1-CLASSICAL-BREADTH | gradient-descent-optimization, linear-regression, loss-functions |
 | loss-functions | required | covered | — | 0 | C2-linear-models | multivariable-derivatives, supervised-learning-foundations |
-| multilayer-perceptron-model | required | partial | model-training | 0 | P015-R1-NEURAL-TRAINING | affine-neural-network-layer, loss-functions |
+| multilayer-perceptron-model | required | covered | — | 0 | C11-neural-training | affine-neural-network-layer, loss-functions |
 | noncoding-and-coding-task-switching | required | covered | — | 0 | C10-competition-craft | markdown-text-communication, python-programming |
 | numpy-pca-class-from-scratch | required | covered | — | 0 | C9-dimensionality-reduction | pca-centered-covariance-eigenproblem-derivation, principal-component-analysis, python-programming |
 | ols-rank-identifiability-and-pseudoinverse | bridge | covered | — | 0 | C2-linear-models | linear-regression-estimator-derivation, rank |
 | pca-black-box-insufficiency | required | covered | — | 0 | C9-dimensionality-reduction | numpy-pca-class-from-scratch, pca-centered-covariance-eigenproblem-derivation |
 | pca-centered-covariance-eigenproblem-derivation | required | covered | — | 0 | C9-dimensionality-reduction | covariance, eigenvalues-and-eigenvectors, principal-component-analysis |
 | principal-component-analysis | required | covered | — | 0 | C9-dimensionality-reduction | matrix-decompositions, probability-and-statistics-foundations |
-| pytorch-autograd-and-optimizer-training | required | partial | implementation, model-training | 2 | P015-R1-NEURAL-TRAINING | backpropagation-by-hand, pytorch-deep-learning-programming |
-| pytorch-deep-learning-programming | required | partial | model-training | 0 | C6-pytorch | numpy-programming, python-programming |
+| pytorch-autograd-and-optimizer-training | required | covered | — | 0 | C11-neural-training | backpropagation-by-hand, pytorch-deep-learning-programming |
+| pytorch-deep-learning-programming | required | covered | — | 0 | C6-pytorch | numpy-programming, python-programming |
 | pytorch-not-tensorflow-workflow | required | covered | — | 0 | C6-pytorch | pytorch-deep-learning-programming |
-| softmax | bridge | missing | derivation, implementation, theory | 3 | P015-R1-NEURAL-TRAINING | affine-neural-network-layer, probability-and-statistics-foundations |
+| softmax | bridge | covered | — | 0 | C11-neural-training | affine-neural-network-layer, probability-and-statistics-foundations |
 | supervised-learning-foundations | required | covered | — | 0 | C1-ml-fundamentals | probability-and-statistics-foundations, python-programming |
 | support-vector-machine | required | missing | implementation, model-training, theory | 3 | P015-R1-CLASSICAL-BREADTH | constrained-optimization-lagrangian-duality, valid-kernel-positive-definite-proof |
 | theory-and-programming-integration | required | covered | — | 0 | C10-competition-craft | noncoding-and-coding-task-switching |
@@ -172,21 +163,18 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | Unit | Title | Layer | Hours | Schedule action | Prerequisites | Owns | Provisional concepts |
 |---|---|---|---:|---|---|---|---|
 | P015-R1-CLASSICAL-BREADTH | Classical Supervised and Unsupervised Models | round-1-core | 32–48 | extend | C1-ml-fundamentals, C2-linear-models, C3-gradient-descent, C4-classical-ml-practice, F7-kernels-convex-optimization | decision-trees, ensemble-learning, k-means-clustering, logistic-regression, support-vector-machine | decision-trees, ensemble-learning, k-means, logistic-regression, svm |
-| P015-R1-NEURAL-TRAINING | Neural Losses, Backpropagation, and Training | round-1-core | 30–44 | extend | C3-gradient-descent, C5-neural-networks, C6-pytorch, F4-multivar-calculus | backpropagation-by-hand, batch-normalization, cross-entropy-loss, dropout, fully-connected-network-from-scratch, multilayer-perceptron-model, pytorch-autograd-and-optimizer-training, softmax | autograd-training, batch-normalization, cross-entropy-loss, dropout, manual-backpropagation, softmax, torch-optimizers, trained-mlp |
 | P015-R2-CAPSTONE | GPU Scientific Modeling Capstone | round-2-extension | 30–46 | extend | C10-competition-craft, P015-R1-CLASSICAL-BREADTH, P015-R2-TRANSFORMERS-NLP, P015-R2-VISION-GEN | gpu-colab-l4-workflow, mixture-parameter-regression, open-ended-experiment-design, open-ended-model-evaluation, scientific-ml-inverse-problems, semi-supervised-pseudo-labeling | ablation-analysis, colab-gpu-workflow, experiment-design, inverse-problems, mixture-parameter-estimation, pseudo-labeling, scientific-ml, semi-supervised-learning |
-| P015-R2-TRANSFORMERS-NLP | Attention, Transformers, and NLP | round-2-extension | 42–64 | extend | C6-pytorch, C7-cnn-transfer, C8-embeddings, P015-R1-NEURAL-TRAINING | attention-complexity-analysis, attention-from-scratch, attention-mechanism-foundations, graph-neural-network-transformer-applications, multi-head-attention, nlp-fine-tuning, nlp-pretraining, nlp-transformers, positional-encoding, self-attention, transformer-architecture-foundations, transformer-nlp-applications, vision-transformers | attention, attention-complexity, fine-tuning, graph-attention, layer-normalization, multi-head-attention, nlp-transformers, position-wise-feed-forward-network, positional-encoding, pretraining, residual-connections, self-attention, transformer-blocks, vision-transformers |
-| P015-R2-VISION-GEN | Advanced Vision and Generative Modeling | round-2-extension | 54–82 | extend | C7-cnn-transfer, P015-R1-NEURAL-TRAINING, P015-R2-TRANSFORMERS-NLP | autoencoder, denoising-diffusion-probabilistic-models, gaussian-reparameterization, generative-adversarial-network, kl-divergence, multivariate-gaussian, object-detection, stable-diffusion, unet, variational-autoencoder | autoencoders, ddpm, gans, kl-divergence, multivariate-gaussian, object-detection, reparameterization, stable-diffusion, unet, vae |
+| P015-R2-TRANSFORMERS-NLP | Attention, Transformers, and NLP | round-2-extension | 42–64 | extend | C11-neural-training, C6-pytorch, C7-cnn-transfer, C8-embeddings | attention-complexity-analysis, attention-from-scratch, attention-mechanism-foundations, graph-neural-network-transformer-applications, multi-head-attention, nlp-fine-tuning, nlp-pretraining, nlp-transformers, positional-encoding, self-attention, transformer-architecture-foundations, transformer-nlp-applications, vision-transformers | attention, attention-complexity, fine-tuning, graph-attention, layer-normalization, multi-head-attention, nlp-transformers, position-wise-feed-forward-network, positional-encoding, pretraining, residual-connections, self-attention, transformer-blocks, vision-transformers |
+| P015-R2-VISION-GEN | Advanced Vision and Generative Modeling | round-2-extension | 54–82 | extend | C11-neural-training, C7-cnn-transfer, P015-R2-TRANSFORMERS-NLP | autoencoder, denoising-diffusion-probabilistic-models, gaussian-reparameterization, generative-adversarial-network, kl-divergence, multivariate-gaussian, object-detection, stable-diffusion, unet, variational-autoencoder | autoencoders, ddpm, gans, kl-divergence, multivariate-gaussian, object-detection, reparameterization, stable-diffusion, unet, vae |
 
 ## Dependency-ordered content tranche queue
 
-1. **Round 1 neural-training completion:** Softmax, cross-entropy, manual backpropagation, a fully connected network from scratch, then complete C6 model training through PyTorch autograd/optimizers, explicit BatchNorm/dropout ownership, and C7 CNN training. Forward propagation is already a shipped prerequisite, not a new gap.
+1. **Round 1 classical-model breadth:** Logistic regression, SVM, decision trees, ensembles, and k-means, with comparison and implementation exercises.
 
-2. **Round 1 classical-model breadth:** Logistic regression, SVM, decision trees, ensembles, and k-means, with comparison and implementation exercises.
+2. **Round 2 transformers and NLP:** Self/multi-head attention, positional encoding, transformer architecture and complexity, from-scratch attention, LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP applications, pre-training, and fine-tuning, followed by vision-transformer and graph-neural-network applications.
 
-3. **Round 2 transformers and NLP:** Self/multi-head attention, positional encoding, transformer architecture and complexity, from-scratch attention, LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP applications, pre-training, and fine-tuning, followed by vision-transformer and graph-neural-network applications.
+3. **Round 2 advanced vision and generative modeling:** Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after multivariate Gaussian, reparameterization, and KL prerequisites.
 
-4. **Round 2 advanced vision and generative modeling:** Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after multivariate Gaussian, reparameterization, and KL prerequisites.
-
-5. **Round 2 open-ended/GPU capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
+4. **Round 2 open-ended/GPU capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
 
 Each tranche updates the shipped syllabus and roadmap atomically.

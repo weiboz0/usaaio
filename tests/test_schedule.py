@@ -1,0 +1,803 @@
+from __future__ import annotations
+
+import importlib
+import re
+from collections.abc import Callable
+from pathlib import Path
+from typing import Any
+
+import pytest
+import yaml
+
+from tools import render_course_structure as course_renderer
+
+ROOT = Path(__file__).parents[1]
+
+
+def _schedule_checker():
+    try:
+        return importlib.import_module("tools.checks.schedule")
+    except ModuleNotFoundError:
+        pytest.fail("tools.checks.schedule must provide the canonical schedule checker")
+
+
+def _write_yaml(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(yaml.safe_dump(value, sort_keys=False))
+
+
+def _build_schedule_fixture(
+    root: Path, *, chained_prerequisites: bool = True
+) -> dict[str, Any]:
+    units = []
+    weeks = []
+    for week in range(1, 36):
+        unit_id = f"U{week:02}"
+        previous = (
+            []
+            if week == 1 or not chained_prerequisites
+            else [f"U{week - 1:02}"]
+        )
+        units.append(
+            {
+                "id": unit_id,
+                "track": "core",
+                "title": unit_id,
+                "prereqs": previous,
+                "teaches": [f"concept-{week:02}"],
+            }
+        )
+        final_week = week == 35
+        lesson, practice, review = (100, 100, 10) if final_week else (100, 300, 50)
+        _write_yaml(
+            root / "units" / unit_id / "manifest.yaml",
+            {
+                "unit": unit_id,
+                "concepts_taught": [f"concept-{week:02}"],
+                "concepts_used": [],
+                "prereq_units": previous,
+                "estimated_minutes": {
+                    "lesson": lesson,
+                    "lesson_sessions": [lesson],
+                    "practice": practice,
+                    "review": review,
+                },
+                "practice": [],
+            },
+        )
+        allocations = [
+            {
+                "kind": "lesson-session",
+                "unit": unit_id,
+                "session": 1,
+                "minutes": lesson,
+            },
+            {
+                "kind": "practice",
+                "unit": unit_id,
+                "chunk": 1,
+                "minutes": practice,
+            },
+            {
+                "kind": "review",
+                "unit": unit_id,
+                "chunk": 1,
+                "minutes": review,
+            },
+        ]
+        if final_week:
+            allocations.extend(
+                [
+                    {"kind": "mock", "test": "r1-001", "minutes": 180},
+                    {"kind": "debrief", "test": "r1-001", "minutes": 60},
+                ]
+            )
+        weeks.append(
+            {
+                "week": week,
+                "semester": 1 if week <= 16 else 2,
+                "allocations": allocations,
+            }
+        )
+
+    concepts = [{"id": f"concept-{week:02}", "cluster": "fixture"} for week in range(1, 36)]
+    root.joinpath("syllabus.md").write_text(
+        "# Fixture syllabus\n\n<!-- syllabus-canonical -->\n```yaml\n"
+        + yaml.safe_dump(
+            {
+                "baseline": {"mathematics": ["arithmetic"]},
+                "clusters": ["fixture"],
+                "concepts": concepts,
+                "units": units,
+            },
+            sort_keys=False,
+        )
+        + "```\n"
+    )
+    _write_yaml(
+        root / "mocktests" / "r1-001" / "manifest.yaml",
+        {"test": "r1-001", "duration_minutes": 180, "problems": []},
+    )
+    schedule = {
+        "schedule_version": 1,
+        "totals": {"semester_1": 7200, "semester_2": 8550, "scheduled": 15750},
+        "weeks": weeks,
+    }
+    _write_yaml(root / "curriculum" / "course-schedule.yaml", schedule)
+    return schedule
+
+
+def _check_after(root: Path, mutate: Callable[[dict[str, Any]], None]):
+    schedule = _build_schedule_fixture(root)
+    mutate(schedule)
+    _write_yaml(root / "curriculum" / "course-schedule.yaml", schedule)
+    return _schedule_checker().check_schedule(root)
+
+
+def _set_unit_minutes(
+    root: Path,
+    unit: str,
+    *,
+    lesson_sessions: list[int],
+    practice: int,
+    review: int,
+) -> None:
+    path = root / "units" / unit / "manifest.yaml"
+    manifest = yaml.safe_load(path.read_text())
+    manifest["estimated_minutes"] = {
+        "lesson": sum(lesson_sessions),
+        "lesson_sessions": lesson_sessions,
+        "practice": practice,
+        "review": review,
+    }
+    _write_yaml(path, manifest)
+
+
+def _write_region_document(root: Path) -> str:
+    human_sections = [
+        "# Fixture course\n\nHuman optional-mock policy.\n\n",
+        "\n\nHuman grading policy.\n\n",
+        "\n\nHuman explanatory prerequisite prose.\n",
+    ]
+    regions = [
+        course_renderer._region(name, f"old generated {name}")
+        for name in course_renderer.OWNED_REGIONS
+    ]
+    document = (
+        human_sections[0]
+        + "\n\n".join(regions[:4])
+        + human_sections[1]
+        + "\n\n".join(regions[4:])
+        + human_sections[2]
+    )
+    path = root / "docs" / "course-structure.md"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(document)
+    return document
+
+
+def _outside_generated(document: str) -> str:
+    for name in course_renderer.OWNED_REGIONS:
+        document = re.sub(
+            rf"<!-- BEGIN GENERATED: {re.escape(name)} -->\n.*?"
+            rf"<!-- END GENERATED: {re.escape(name)} -->",
+            "",
+            document,
+            flags=re.DOTALL,
+        )
+    return document
+
+
+def _split_allocation(
+    schedule: dict[str, Any], *, index: int, week_index: int = 0
+) -> None:
+    allocation = schedule["weeks"][week_index]["allocations"][index]
+    original_minutes = allocation["minutes"]
+    allocation["minutes"] = original_minutes // 2
+    schedule["weeks"][week_index]["allocations"].insert(
+        index + 1,
+        {**allocation, "minutes": original_minutes - allocation["minutes"]}
+    )
+
+
+def _duplicate_allocation(
+    schedule: dict[str, Any], *, index: int, week_index: int = 0
+) -> None:
+    schedule["weeks"][week_index]["allocations"].insert(
+        index + 1,
+        dict(schedule["weeks"][week_index]["allocations"][index])
+    )
+
+
+def _swap_first_two_weeks(schedule: dict[str, Any]) -> None:
+    first = schedule["weeks"][0]["allocations"]
+    second = schedule["weeks"][1]["allocations"]
+    schedule["weeks"][0]["allocations"] = second
+    schedule["weeks"][1]["allocations"] = first
+
+
+@pytest.mark.parametrize(
+    ("mutate", "message"),
+    [
+        (
+            lambda schedule: schedule["weeks"][0]["allocations"].pop(0),
+            "unallocated lesson session U01#1",
+        ),
+        (
+            lambda schedule: schedule["weeks"][0]["allocations"].append(
+                dict(schedule["weeks"][0]["allocations"][0])
+            ),
+            "duplicate lesson session U01#1",
+        ),
+        (
+            lambda schedule: _split_allocation(schedule, index=0),
+            "lesson session U01#1 must appear exactly once",
+        ),
+        (
+            lambda schedule: schedule["weeks"][0]["allocations"][0].update(unit="unknown-unit"),
+            "unknown unit unknown-unit",
+        ),
+        (
+            lambda schedule: schedule["weeks"][0]["allocations"][0].update(
+                kind="self-study"
+            ),
+            "week 1 allocation 0 has unknown kind self-study",
+        ),
+        (
+            lambda schedule: _duplicate_allocation(schedule, index=1),
+            "duplicate practice chunk U01#1",
+        ),
+        (
+            lambda schedule: _split_allocation(schedule, index=1),
+            "duplicate practice chunk U01#1",
+        ),
+        (
+            lambda schedule: _duplicate_allocation(schedule, index=2),
+            "duplicate review chunk U01#1",
+        ),
+        (
+            lambda schedule: _split_allocation(schedule, index=2),
+            "duplicate review chunk U01#1",
+        ),
+        (
+            lambda schedule: schedule["weeks"][0]["allocations"][1].update(minutes=299),
+            "U01 practice minutes",
+        ),
+        (
+            lambda schedule: schedule["weeks"][0]["allocations"][2].update(minutes=49),
+            "U01 review minutes",
+        ),
+        (
+            lambda schedule: schedule["weeks"][1].update(week=1),
+            "duplicate week 1",
+        ),
+        (
+            _swap_first_two_weeks,
+            "prerequisite U01 must complete before U02 starts",
+        ),
+        (
+            lambda schedule: schedule["weeks"][0].update(week="one"),
+            "week row 0 week must be an integer",
+        ),
+        (
+            lambda schedule: schedule["weeks"].pop(9),
+            "missing week 10",
+        ),
+        (
+            lambda schedule: schedule["weeks"][0]["allocations"][1].update(minutes=299),
+            "week 1 totals 449 minutes; requires 450-500",
+        ),
+        (
+            lambda schedule: schedule["weeks"][34]["allocations"].insert(
+                0, schedule["weeks"][34]["allocations"].pop(-2)
+            ),
+            "mock and debrief must be the final scheduled events",
+        ),
+        (
+            lambda schedule: schedule["weeks"][34]["allocations"][3].update(
+                test="r1-999"
+            ),
+            "mock allocation references unknown test r1-999",
+        ),
+        (
+            lambda schedule: schedule["weeks"][34]["allocations"][4].update(
+                test="r1-999"
+            ),
+            "debrief allocation references unknown test r1-999",
+        ),
+        (
+            lambda schedule: schedule["weeks"][34]["allocations"][3].update(
+                minutes=179
+            ),
+            "mock allocation for r1-001 must match duration 180 minutes",
+        ),
+        (
+            lambda schedule: schedule["weeks"][34]["allocations"][4].update(
+                minutes=59
+            ),
+            "debrief allocation for r1-001 must be 60 minutes",
+        ),
+        (
+            lambda schedule: _duplicate_allocation(
+                schedule, index=3, week_index=34
+            ),
+            "mock allocation for r1-001 must appear exactly once",
+        ),
+        (
+            lambda schedule: _split_allocation(schedule, index=3, week_index=34),
+            "mock allocation for r1-001 must appear exactly once",
+        ),
+        (
+            lambda schedule: _duplicate_allocation(
+                schedule, index=4, week_index=34
+            ),
+            "debrief allocation for r1-001 must appear exactly once",
+        ),
+        (
+            lambda schedule: _split_allocation(schedule, index=4, week_index=34),
+            "debrief allocation for r1-001 must appear exactly once",
+        ),
+    ],
+)
+def test_schedule_checker_fails_closed_on_allocation_contracts(
+    tmp_path: Path,
+    mutate: Callable[[dict[str, Any]], None],
+    message: str,
+) -> None:
+    report = _check_after(tmp_path, mutate)
+
+    assert not report.ok
+    assert any(message in error for error in report.errors), report.errors
+
+
+def test_schedule_checker_accepts_a_fully_allocated_prerequisite_valid_fixture(
+    tmp_path: Path,
+) -> None:
+    _build_schedule_fixture(tmp_path)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert report.ok, report.errors
+
+
+def test_schedule_checker_rejects_a_regular_week_without_instruction(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    week = schedule["weeks"][16]
+    week["allocations"].pop(0)
+    week["allocations"][0]["minutes"] = 400
+    _set_unit_minutes(
+        tmp_path,
+        "U17",
+        lesson_sessions=[],
+        practice=400,
+        review=50,
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "week 17 has 0 lesson sessions; regular teaching weeks require 1-3"
+        in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_schedule_checker_rejects_more_than_three_lesson_sessions_in_a_week(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    week = schedule["weeks"][16]
+    week["allocations"][1]["minutes"] = 40
+    week["allocations"][2]["minutes"] = 10
+    for session in range(2, 5):
+        week["allocations"].insert(
+            session - 1,
+            {
+                "kind": "lesson-session",
+                "unit": "U17",
+                "session": session,
+                "minutes": 100,
+            },
+        )
+    _set_unit_minutes(
+        tmp_path,
+        "U17",
+        lesson_sessions=[100, 100, 100, 100],
+        practice=40,
+        review=10,
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "week 17 has 4 lesson sessions; regular teaching weeks require 1-3"
+        in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_schedule_checker_rejects_more_than_two_weeks_between_unit_sessions(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path, chained_prerequisites=False)
+    schedule["weeks"][19]["allocations"].insert(
+        0,
+        {
+            "kind": "lesson-session",
+            "unit": "U17",
+            "session": 2,
+            "minutes": 100,
+        },
+    )
+    schedule["weeks"][19]["allocations"][2]["minutes"] = 200
+    _set_unit_minutes(
+        tmp_path,
+        "U17",
+        lesson_sessions=[100, 100],
+        practice=300,
+        review=50,
+    )
+    _set_unit_minutes(
+        tmp_path,
+        "U20",
+        lesson_sessions=[100],
+        practice=200,
+        review=50,
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "U17 lesson sessions 1 and 2 are 3 weeks apart; maximum gap is 2"
+        in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_schedule_checker_rejects_reversed_numbered_sessions(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path, chained_prerequisites=False)
+    week_17 = schedule["weeks"][16]["allocations"]
+    week_17[0]["session"] = 2
+    week_17[1]["minutes"] = 350
+    week_17.pop(2)
+    week_20 = schedule["weeks"][19]["allocations"]
+    week_20[1]["minutes"] = 150
+    week_20.extend(
+        [
+            {
+                "kind": "lesson-session",
+                "unit": "U17",
+                "session": 1,
+                "minutes": 100,
+            },
+            {"kind": "review", "unit": "U17", "chunk": 1, "minutes": 50},
+        ]
+    )
+    _set_unit_minutes(
+        tmp_path,
+        "U17",
+        lesson_sessions=[100, 100],
+        practice=350,
+        review=50,
+    )
+    _set_unit_minutes(
+        tmp_path,
+        "U20",
+        lesson_sessions=[100],
+        practice=150,
+        review=50,
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "U17 lesson session 2 occurs in week 17 before session 1 in week 20"
+        in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_schedule_checker_requires_review_to_be_the_unit_final_allocation(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    allocations = schedule["weeks"][0]["allocations"]
+    allocations[1], allocations[2] = allocations[2], allocations[1]
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "U01 review allocation must be its final scheduled allocation" in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_course_renderer_preserves_all_bytes_outside_generated_regions(
+    tmp_path: Path,
+) -> None:
+    _build_schedule_fixture(tmp_path)
+    before = _write_region_document(tmp_path)
+    outside_before = _outside_generated(before)
+
+    assert course_renderer.main(["--root", str(tmp_path)]) == 0
+
+    after = (tmp_path / "docs" / "course-structure.md").read_text()
+    assert _outside_generated(after) == outside_before
+
+
+@pytest.mark.parametrize("check", [False, True])
+def test_course_renderer_rejects_a_duplicate_complete_sentinel_pair(
+    tmp_path: Path, check: bool
+) -> None:
+    _build_schedule_fixture(tmp_path)
+    document = _write_region_document(tmp_path)
+    duplicate = course_renderer._region("course-model", "duplicate")
+    (tmp_path / "docs" / "course-structure.md").write_text(
+        document + "\n" + duplicate + "\n"
+    )
+    args = ["--root", str(tmp_path), *(["--check"] if check else [])]
+
+    assert course_renderer.main(args) == 1
+
+
+@pytest.mark.parametrize("damage", ["missing", "malformed"])
+def test_course_renderer_rejects_missing_or_malformed_sentinels(
+    tmp_path: Path, damage: str
+) -> None:
+    _build_schedule_fixture(tmp_path)
+    document = _write_region_document(tmp_path)
+    region = course_renderer._region("weekly-table", "old generated weekly-table")
+    if damage == "missing":
+        document = document.replace(region, "")
+    else:
+        document = document.replace("<!-- END GENERATED: weekly-table -->", "")
+    (tmp_path / "docs" / "course-structure.md").write_text(document)
+
+    assert course_renderer.main(["--root", str(tmp_path), "--check"]) == 1
+
+
+def test_schedule_checker_accepts_consecutive_multiweek_practice_chunks(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    first = schedule["weeks"][0]["allocations"][1]
+    first["minutes"] = 150
+    schedule["weeks"][0]["allocations"].insert(
+        2,
+        {"kind": "practice", "unit": "U01", "chunk": 2, "minutes": 150}
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert report.ok, report.errors
+
+
+@pytest.mark.parametrize(
+    ("chunk", "message"),
+    [
+        (1, "duplicate practice chunk U01#1"),
+        (3, "practice chunks for U01 must be consecutive 1..2"),
+    ],
+)
+def test_schedule_checker_rejects_duplicate_or_gapped_practice_chunks(
+    tmp_path: Path, chunk: int, message: str
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    schedule["weeks"][0]["allocations"][1]["minutes"] = 150
+    schedule["weeks"][0]["allocations"].append(
+        {"kind": "practice", "unit": "U01", "chunk": chunk, "minutes": 150}
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(message in error for error in report.errors), report.errors
+
+
+def _rendered_first_instruction_pairs(document: str) -> list[tuple[str, int]]:
+    match = re.search(
+        r"<!-- BEGIN GENERATED: first-instruction -->\n(.*?)"
+        r"<!-- END GENERATED: first-instruction -->",
+        document,
+        re.DOTALL,
+    )
+    assert match is not None, "missing generated first-instruction region"
+    return [
+        (unit, int(week))
+        for unit, week in re.findall(
+            r"^\| ([A-Z]\d+[^ |]*) \| Week (\d+) \|$", match.group(1), re.MULTILINE
+        )
+    ]
+
+
+def test_real_schedule_has_exact_plan017_calendar_and_complete_allocation() -> None:
+    report = _schedule_checker().check_schedule(ROOT)
+    assert report.ok, report.errors
+
+    schedule = yaml.safe_load((ROOT / "curriculum" / "course-schedule.yaml").read_text())
+    weeks = schedule["weeks"]
+    assert len(weeks) == 35
+    assert [week["week"] for week in weeks] == list(range(1, 36))
+    assert [week["semester"] for week in weeks] == [1] * 16 + [2] * 19
+    totals = [sum(allocation["minutes"] for allocation in week["allocations"]) for week in weeks]
+    assert all(450 <= total <= 500 for total in totals)
+    assert sum(totals[:16]) == 7915
+    assert sum(totals[16:]) == 8950
+    assert sum(totals) == 16865
+    lesson_counts = [
+        sum(allocation["kind"] == "lesson-session" for allocation in week["allocations"])
+        for week in weeks
+    ]
+    assert all(1 <= count <= 3 for count in lesson_counts[:-1])
+    assert lesson_counts[-1] == 0
+
+    manifested = sum(
+        allocation["minutes"]
+        for week in weeks
+        for allocation in week["allocations"]
+        if allocation["kind"] in {"lesson-session", "practice", "review"}
+    )
+    assert manifested == 16625
+
+    c11_weeks = [
+        week["week"]
+        for week in weeks
+        for allocation in week["allocations"]
+        if allocation.get("unit") == "C11-neural-training"
+    ]
+    c7_weeks = [
+        week["week"]
+        for week in weeks
+        for allocation in week["allocations"]
+        if allocation.get("unit") == "C7-cnn-transfer"
+    ]
+    assert c11_weeks and c7_weeks
+    assert max(c11_weeks) < min(c7_weeks)
+    assert [
+        week["week"]
+        for week in weeks
+        for allocation in week["allocations"]
+        if allocation["kind"] == "lesson-session"
+        and allocation.get("unit") == "C11-neural-training"
+    ] == [24, 24, 25, 25, 26]
+    assert [
+        week["week"]
+        for week in weeks
+        for allocation in week["allocations"]
+        if allocation["kind"] == "lesson-session"
+        and allocation.get("unit") == "C7-cnn-transfer"
+    ] == [29, 30, 31, 32]
+    assert [row["kind"] for row in weeks[-1]["allocations"][-2:]] == ["mock", "debrief"]
+    assert weeks[-1]["allocations"][-2]["test"] == "r1-001"
+    assert weeks[-1]["allocations"][-2]["minutes"] == 180
+    assert weeks[-1]["allocations"][-1]["minutes"] == 60
+
+
+def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
+    manifest = yaml.safe_load(
+        (ROOT / "units" / "C11-neural-training" / "manifest.yaml").read_text()
+    )
+    concepts_added_by_session = [
+        {"softmax", "cross-entropy-loss"},
+        {"manual-backpropagation"},
+        {"trained-mlp"},
+        {"autograd-training", "torch-optimizers"},
+        {"batch-normalization", "dropout"},
+    ]
+    unlocked: set[str] = set()
+    capacities: list[int] = []
+    for concepts in concepts_added_by_session:
+        unlocked.update(concepts)
+        capacities.append(
+            sum(
+                problem["minutes"]
+                for problem in manifest["practice"]
+                if set(problem["concepts"]) <= unlocked
+            )
+        )
+    assert capacities == [250, 375, 520, 740, 1040]
+
+    schedule = yaml.safe_load(
+        (ROOT / "curriculum" / "course-schedule.yaml").read_text()
+    )
+    delivered_sessions = 0
+    scheduled_practice = 0
+    for week in schedule["weeks"]:
+        for allocation in week["allocations"]:
+            if allocation.get("unit") != "C11-neural-training":
+                continue
+            if allocation["kind"] == "lesson-session":
+                delivered_sessions += 1
+                assert allocation["session"] == delivered_sessions
+            elif allocation["kind"] == "practice":
+                scheduled_practice += allocation["minutes"]
+                capacity = capacities[delivered_sessions - 1]
+                assert scheduled_practice <= capacity, (
+                    f"week {week['week']} schedules {scheduled_practice} cumulative "
+                    f"C11 practice minutes after {delivered_sessions} sessions; "
+                    f"only {capacity} problem minutes are unlocked"
+                )
+
+
+def test_f7_instruction_precedes_high_volume_practice() -> None:
+    schedule = yaml.safe_load(
+        (ROOT / "curriculum" / "course-schedule.yaml").read_text()
+    )
+    rows = [
+        (week["week"], allocation)
+        for week in schedule["weeks"]
+        for allocation in week["allocations"]
+        if allocation.get("unit") == "F7-kernels-convex-optimization"
+    ]
+    delivered_sessions = 0
+    for week, allocation in rows:
+        if allocation["kind"] == "lesson-session":
+            delivered_sessions += 1
+            assert allocation["session"] == delivered_sessions
+        elif allocation["kind"] == "practice" and allocation["minutes"] > 5:
+            assert delivered_sessions == 4, (
+                f"week {week} schedules {allocation['minutes']} F7 practice minutes "
+                f"after only {delivered_sessions} sessions"
+            )
+
+    assert [
+        week
+        for week, allocation in rows
+        if allocation["kind"] == "lesson-session"
+    ] == [22, 22, 23, 23]
+    assert [
+        (week, allocation["minutes"])
+        for week, allocation in rows
+        if allocation["kind"] == "practice"
+    ] == [(22, 5), (23, 235), (24, 146), (25, 141), (26, 113)]
+
+
+def test_course_structure_states_interleaving_and_prerequisite_order_contract() -> None:
+    document = (ROOT / "docs" / "course-structure.md").read_text()
+
+    assert "independent units may interleave" in document
+    assert (
+        "prerequisite's complete allocation must finish before the dependent unit's "
+        "first session"
+    ) in document
+    assert "earlier unit's remaining work and review finish before the later unit begins" not in document
+    assert (
+        "earlier unit's remaining practice and review finish before the later unit's "
+        "first session"
+    ) not in document
+    assert "F7 also finishes before C9 begins" not in document
+
+
+def test_rendered_first_instruction_region_exactly_matches_the_schedule_source() -> None:
+    schedule = yaml.safe_load((ROOT / "curriculum" / "course-schedule.yaml").read_text())
+    first_week: dict[str, int] = {}
+    for week in schedule["weeks"]:
+        for allocation in week["allocations"]:
+            if allocation["kind"] == "lesson-session":
+                first_week.setdefault(allocation["unit"], week["week"])
+    expected = list(first_week.items())
+
+    document = (ROOT / "docs" / "course-structure.md").read_text()
+    actual = _rendered_first_instruction_pairs(document)
+
+    assert actual == expected
+    positions = {unit: index for index, (unit, _) in enumerate(actual)}
+    assert positions["C5-neural-networks"] < positions["C6-pytorch"]
+    assert positions["C6-pytorch"] < positions["C11-neural-training"]
+    assert positions["C11-neural-training"] < positions["C7-cnn-transfer"]

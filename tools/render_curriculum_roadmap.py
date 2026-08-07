@@ -5,25 +5,28 @@ from __future__ import annotations
 import argparse
 import math
 import os
-import re
 import sys
 import tempfile
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
 
+from tools.checks.schedule import load_validated_schedule
 from tools.checks.scope import LAYERS, MINIMUM_QUALIFYING_PRACTICES, check_scope
-from tools.model import KnowledgePoint, Roadmap, load_roadmap
+from tools.model import CourseSchedule, KnowledgePoint, Roadmap, load_roadmap
 
 AUDIT_PATH = Path("docs/audits/015-coverage-audit.md")
 ROADMAP_PATH = Path("docs/curriculum-roadmap.md")
-MAJOR_EXISTING_UNIT_EXTENSIONS = (
-    ("C7", 8.0, 12.0),
-)
+EDITORIAL_EXISTING_UNIT_ESTIMATES = {
+    "convolutional-neural-network-basics": ("C7", 8.0, 12.0, "C7 CNN training"),
+}
+ScheduleLoader = Callable[[str | Path], CourseSchedule]
 
 TRANCHE_QUEUE = (
     (
+        "P015-R1-NEURAL-TRAINING",
         "Round 1 neural-training completion",
         (
             "Softmax, cross-entropy, manual backpropagation, a fully connected network from "
@@ -33,6 +36,7 @@ TRANCHE_QUEUE = (
         ),
     ),
     (
+        "P015-R1-CLASSICAL-BREADTH",
         "Round 1 classical-model breadth",
         (
             "Logistic regression, SVM, decision trees, ensembles, and k-means, with "
@@ -40,6 +44,7 @@ TRANCHE_QUEUE = (
         ),
     ),
     (
+        "P015-R2-TRANSFORMERS-NLP",
         "Round 2 transformers and NLP",
         (
             "Self/multi-head attention, positional encoding, transformer architecture and "
@@ -50,6 +55,7 @@ TRANCHE_QUEUE = (
         ),
     ),
     (
+        "P015-R2-VISION-GEN",
         "Round 2 advanced vision and generative modeling",
         (
             "Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after "
@@ -57,6 +63,7 @@ TRANCHE_QUEUE = (
         ),
     ),
     (
+        "P015-R2-CAPSTONE",
         "Round 2 open-ended/GPU capstone",
         (
             "Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter "
@@ -102,7 +109,11 @@ def _number(value: object) -> int:
     return int(value) if value is not None else 0
 
 
-def current_time_baseline(root: str | Path) -> TimeBaseline:
+def current_time_baseline(
+    root: str | Path,
+    *,
+    _schedule_loader: ScheduleLoader = load_validated_schedule,
+) -> TimeBaseline:
     root = Path(root).resolve()
     manifested = 0
     for path in sorted(root.glob("units/*/manifest.yaml")):
@@ -113,17 +124,10 @@ def current_time_baseline(root: str | Path) -> TimeBaseline:
         manifested += sum(_number(value) for value in estimates.get("lesson_sessions") or [])
         manifested += _number(estimates.get("practice"))
         manifested += _number(estimates.get("review"))
-    mock_minutes = sum(
-        _number(_yaml(path).get("duration_minutes"))
-        for path in sorted(root.glob("mocktests/*/manifest.yaml"))
-    )
-    course_path = root / "docs" / "course-structure.md"
-    course_text = course_path.read_text(encoding="utf-8")
-    match = re.search(r"(\d+)-minute debrief", course_text)
-    debrief_minutes = int(match.group(1)) if match else 0
+    scheduled = _schedule_loader(root).total_minutes
     return TimeBaseline(
         manifested_minutes=manifested,
-        scheduled_minutes=manifested + mock_minutes + debrief_minutes,
+        scheduled_minutes=scheduled,
     )
 
 
@@ -145,8 +149,14 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
     }
     minimum = math.fsum(sorted(values[0] for values in by_layer.values()))
     maximum = math.fsum(sorted(values[1] for values in by_layer.values()))
-    extension_minimum = math.fsum(item[1] for item in MAJOR_EXISTING_UNIT_EXTENSIONS)
-    extension_maximum = math.fsum(item[2] for item in MAJOR_EXISTING_UNIT_EXTENSIONS)
+    points = {point.id: point for point in roadmap.knowledge_points}
+    extensions = [
+        estimate
+        for point_id, estimate in EDITORIAL_EXISTING_UNIT_ESTIMATES.items()
+        if point_id in points and points[point_id].coverage != "covered"
+    ]
+    extension_minimum = math.fsum(item[1] for item in extensions)
+    extension_maximum = math.fsum(item[2] for item in extensions)
     scoped_minimum = math.fsum((minimum, extension_minimum))
     scoped_maximum = math.fsum((maximum, extension_maximum))
     manifested_hours = baseline.manifested_minutes / 60
@@ -179,34 +189,9 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
                 f"**{_format_number(maximum)}** |"
             ),
             "",
-            "### Estimated major existing-unit extensions",
-            "",
             (
                 "This range is a renderer-owned editorial estimate, not a field in the "
                 "canonical coverage map."
-            ),
-            "",
-            "| Existing unit | Minimum hours | Maximum hours |",
-            "|---|---:|---:|",
-            *(
-                f"| {unit_id} | {_format_number(unit_minimum)} | "
-                f"{_format_number(unit_maximum)} |"
-                for unit_id, unit_minimum, unit_maximum in MAJOR_EXISTING_UNIT_EXTENSIONS
-            ),
-            "",
-            (
-                "Estimated major existing-unit extensions subtotal: "
-                f"**{_format_number(extension_minimum)}–"
-                f"{_format_number(extension_maximum)} hours**."
-            ),
-            (
-                "Minimum estimated scoped delta: "
-                f"**{_format_number(scoped_minimum)}–"
-                f"{_format_number(scoped_maximum)} hours**."
-            ),
-            (
-                "Additional existing-unit corrections in C6 and C8 are not yet "
-                "estimated, so this is not a complete roadmap total."
             ),
             "",
             (
@@ -216,24 +201,62 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
                 f"and **{_format_number(scheduled_hours + minimum)}–"
                 f"{_format_number(scheduled_hours + maximum)} scheduled-baseline hours**."
             ),
-            (
-                "Baseline plus minimum estimated scoped delta: "
-                f"**{_format_number(manifested_hours + scoped_minimum)}–"
-                f"{_format_number(manifested_hours + scoped_maximum)} "
-                "manifested-baseline hours** and "
-                f"**{_format_number(scheduled_hours + scoped_minimum)}–"
-                f"{_format_number(scheduled_hours + scoped_maximum)} "
-                "scheduled-baseline hours**."
-            ),
             "",
         ]
     )
+    if extensions:
+        lines.extend(
+            [
+                "### Estimated major existing-unit extensions",
+                "",
+                "| Existing unit | Minimum hours | Maximum hours |",
+                "|---|---:|---:|",
+                *(
+                    f"| {unit_id} | {_format_number(unit_minimum)} | "
+                    f"{_format_number(unit_maximum)} |"
+                    for unit_id, unit_minimum, unit_maximum, _ in extensions
+                ),
+                "",
+                *(f"Pending estimate: {label}." for _, _, _, label in extensions),
+                "",
+                (
+                    "Estimated major existing-unit extensions subtotal: "
+                    f"**{_format_number(extension_minimum)}–"
+                    f"{_format_number(extension_maximum)} hours**."
+                ),
+                (
+                    "Minimum estimated scoped delta: "
+                    f"**{_format_number(scoped_minimum)}–"
+                    f"{_format_number(scoped_maximum)} hours**."
+                ),
+                (
+                    "Baseline plus minimum estimated scoped delta: "
+                    f"**{_format_number(manifested_hours + scoped_minimum)}–"
+                    f"{_format_number(manifested_hours + scoped_maximum)} "
+                    "manifested-baseline hours** and "
+                    f"**{_format_number(scheduled_hours + scoped_minimum)}–"
+                    f"{_format_number(scheduled_hours + scoped_maximum)} "
+                    "scheduled-baseline hours**."
+                ),
+                "",
+            ]
+        )
+    c8 = points.get("nlp-word-embeddings")
+    if c8 is not None and c8.coverage != "covered":
+        lines.extend(
+            [
+                "The unestimated C8 `nlp-word-embeddings` model-training correction remains pending.",
+                "",
+            ]
+        )
     return lines
 
 
-def _append_tranche_queue(lines: list[str]) -> None:
+def _append_tranche_queue(lines: list[str], roadmap: Roadmap) -> None:
     lines.extend(["## Dependency-ordered content tranche queue", ""])
-    for number, (title, description) in enumerate(TRANCHE_QUEUE, start=1):
+    planned = {unit.id for unit in roadmap.planned_units}
+    visible = [row for row in TRANCHE_QUEUE if row[0] in planned]
+    for number, (_, title, description) in enumerate(visible, start=1):
         lines.extend([f"{number}. **{title}:** {description}", ""])
     lines.append("Each tranche updates the shipped syllabus and roadmap atomically.")
 
@@ -386,7 +409,7 @@ def _render_audit(
                 "",
             ]
         )
-    _append_tranche_queue(lines)
+    _append_tranche_queue(lines, roadmap)
     return "\n".join(lines).rstrip() + "\n"
 
 
@@ -499,16 +522,20 @@ def _render_roadmap(
     if not roadmap.planned_units:
         lines.append("| — | — | — | — | — | — | — | — |")
     lines.append("")
-    _append_tranche_queue(lines)
+    _append_tranche_queue(lines, roadmap)
     return "\n".join(lines).rstrip() + "\n"
 
 
-def render_documents(root: str | Path) -> dict[Path, str]:
+def render_documents(
+    root: str | Path,
+    *,
+    _schedule_loader: ScheduleLoader = load_validated_schedule,
+) -> dict[Path, str]:
     root = Path(root).resolve()
     roadmap = load_roadmap(root)
     inventory = _yaml(root / "curriculum" / "material-inventory.yaml")
     topics = _yaml(root / "curriculum" / "official-topics.yaml")
-    baseline = current_time_baseline(root)
+    baseline = current_time_baseline(root, _schedule_loader=_schedule_loader)
     return {
         AUDIT_PATH: _render_audit(roadmap, inventory, baseline, topics),
         ROADMAP_PATH: _render_roadmap(roadmap, baseline, topics),
@@ -548,7 +575,11 @@ def _atomic_write(path: Path, content: str) -> None:
         temporary.unlink(missing_ok=True)
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(
+    argv: list[str] | None = None,
+    *,
+    _schedule_loader: ScheduleLoader = load_validated_schedule,
+) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", default=".")
     parser.add_argument("--check", action="store_true")
@@ -559,7 +590,7 @@ def main(argv: list[str] | None = None) -> int:
         for error in report.errors:
             print(f"ERROR scope-check: {error}", file=sys.stderr)
         return 1
-    rendered = render_documents(root)
+    rendered = render_documents(root, _schedule_loader=_schedule_loader)
     stale: list[str] = []
     outputs: list[tuple[Path, Path, str]] = []
     try:

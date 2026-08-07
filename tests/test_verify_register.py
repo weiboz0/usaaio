@@ -2,6 +2,7 @@ import importlib.util
 import json
 from pathlib import Path
 
+import pytest
 import yaml
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "verify-register.py"
@@ -13,7 +14,7 @@ SPEC.loader.exec_module(verify_register)
 
 def write_problem(root: Path, unit: str, markdown: str, problem_type="scenario"):
     path = root / "units" / unit / "practice" / "p01.ipynb"
-    path.parent.mkdir(parents=True)
+    path.parent.mkdir(parents=True, exist_ok=True)
     problem = {
         "id": f"{unit.split('-', 1)[0]}-p01",
         "path": "practice/p01.ipynb",
@@ -108,13 +109,14 @@ def test_main_accepts_any_registered_problem_count(tmp_path, monkeypatch, capsys
     monkeypatch.setattr(verify_register, "ROOT", tmp_path)
     monkeypatch.setattr(verify_register, "UNITS", (unit,))
 
-    assert verify_register.main() == 0
+    assert verify_register.main(["--statements-only"]) == 0
     assert "register verification: 1/1 passed (1 problems checked)" in capsys.readouterr().out
 
 
 # --- Header agreement is enforced repo-wide (plan 014 gate). The type field admits only an
 # --- enumerated set of house glosses; two earlier, more permissive forms of this check each
 # --- let drift through and were caught at the gate.
+
 
 def test_type_gloss_allowlist_accepts_house_forms():
     assert verify_register._type_matches("scenario analysis", "scenario analysis", "scenario")
@@ -340,3 +342,381 @@ def test_relocated_solution_header_cannot_opt_out(tmp_path, monkeypatch):
     monkeypatch.setattr(verify_register, "ROOT", tmp_path)
     errors = verify_register._check_solution_header(unit, problem)
     assert any("solution title" in error for error in errors)
+
+
+def c11_statement(*, options=5, reasoning="Reasoning is required.", budget=15, extra=""):
+    option_lines = "\n".join(f"{letter}. option {letter}" for letter in "ABCDE"[:options])
+    return (
+        "# C11-neural-training — Practice p01\n\n"
+        "**Type:** multiple choice · **Difficulty:** intro · **Concepts:** softmax"
+        f"{extra}\n\n"
+        f"**Time budget:** {budget} minutes\n\n"
+        f"{reasoning}\n\n"
+        f"{option_lines}"
+    )
+
+
+def c11_problem(root: Path, markdown: str) -> dict:
+    problem = write_problem(
+        root,
+        "C11-neural-training",
+        markdown,
+        problem_type="mc",
+    )
+    problem["concepts"] = ["softmax"]
+    problem["difficulty"] = "intro"
+    problem["minutes"] = 15
+    return problem
+
+
+def test_c11_mc_requires_exactly_five_options(tmp_path, monkeypatch):
+    problem = c11_problem(tmp_path, c11_statement(options=4))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+
+    assert verify_register._check_problem("C11-neural-training", problem) == [
+        "C11-p01: MC options are not exactly A.-through-E. in order"
+    ]
+
+
+def test_c11_mc_requires_positive_reasoning_flag(tmp_path, monkeypatch):
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    missing = c11_problem(tmp_path, c11_statement(reasoning="Explain your choice."))
+    assert verify_register._check_problem("C11-neural-training", missing) == [
+        "C11-p01: MC reasoning flag must say 'Reasoning is required.'"
+    ]
+
+    wrong = c11_problem(tmp_path, c11_statement(reasoning="Reasoning is not required."))
+    assert verify_register._check_problem("C11-neural-training", wrong) == [
+        "C11-p01: MC reasoning flag must say 'Reasoning is required.'"
+    ]
+
+
+def test_c11_statement_requires_matching_body_time_budget(tmp_path, monkeypatch):
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    missing = c11_problem(tmp_path, c11_statement().replace("**Time budget:** 15 minutes\n\n", ""))
+    assert verify_register._check_problem("C11-neural-training", missing) == [
+        "C11-p01: time budget is missing or does not match manifest minutes 15"
+    ]
+
+    mismatched = c11_problem(tmp_path, c11_statement(budget=20))
+    assert verify_register._check_problem("C11-neural-training", mismatched) == [
+        "C11-p01: time budget is missing or does not match manifest minutes 15"
+    ]
+
+
+def test_statement_header_rejects_a_fourth_field(tmp_path, monkeypatch):
+    problem = c11_problem(
+        tmp_path,
+        c11_statement(extra=" · **Time:** 15 minutes"),
+    )
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+
+    assert verify_register._check_problem("C11-neural-training", problem) == [
+        "C11-p01: header fields must be exactly Type / Difficulty / Concepts"
+    ]
+
+
+def test_missing_statement_path_is_a_named_finding(tmp_path, monkeypatch):
+    problem = c11_problem(tmp_path, c11_statement())
+    (tmp_path / "units/C11-neural-training/practice/p01.ipynb").unlink()
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+
+    assert verify_register._check_problem("C11-neural-training", problem) == [
+        "C11-p01: statement path does not exist"
+    ]
+
+
+def test_full_mode_requires_solution_key_and_existing_path(tmp_path, monkeypatch):
+    problem = c11_problem(tmp_path, c11_statement())
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+
+    assert verify_register._check_solution_header("C11-neural-training", problem) == [
+        "C11-p01: solution_path is missing"
+    ]
+
+    problem["solution_path"] = "practice/p01_solution.ipynb"
+    assert verify_register._check_solution_header("C11-neural-training", problem) == [
+        "C11-p01: solution_path does not exist"
+    ]
+
+
+def test_c11_full_mode_requires_solution_metadata_header(tmp_path, monkeypatch):
+    problem = c11_problem(tmp_path, c11_statement())
+    solution = tmp_path / "units/C11-neural-training/practice/p01_solution.ipynb"
+    solution.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "markdown",
+                        "source": "# C11-neural-training — Practice p01 — Solution\n\nWork.",
+                    }
+                ]
+            }
+        )
+    )
+    problem["solution_path"] = "practice/p01_solution.ipynb"
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+
+    assert verify_register._check_solution_header("C11-neural-training", problem) == [
+        "C11-p01: solution metadata header is missing"
+    ]
+
+
+def test_statements_only_accepts_absent_solutions_but_checks_statements(
+    tmp_path, monkeypatch, capsys
+):
+    unit = "C11-neural-training"
+    problem = c11_problem(tmp_path, c11_statement())
+    manifest_path = tmp_path / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump({"practice": [problem]}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", (unit,))
+
+    assert verify_register.main(["--statements-only"]) == 0
+    assert "1/1 passed" in capsys.readouterr().out
+
+    c11_problem(tmp_path, c11_statement(options=4))
+    assert verify_register.main(["--statements-only"]) == 1
+    assert "MC options" in capsys.readouterr().out
+
+
+@pytest.mark.parametrize(
+    ("markdown", "missing_statement", "finding"),
+    [
+        (
+            c11_statement(options=4),
+            False,
+            "MC options are not exactly A.-through-E. in order",
+        ),
+        (
+            c11_statement(reasoning="Explain your choice."),
+            False,
+            "MC reasoning flag must say 'Reasoning is required.'",
+        ),
+        (
+            c11_statement(reasoning="Reasoning is not required."),
+            False,
+            "MC reasoning flag must say 'Reasoning is required.'",
+        ),
+        (
+            c11_statement().replace("**Time budget:** 15 minutes\n\n", ""),
+            False,
+            "time budget is missing or does not match manifest minutes 15",
+        ),
+        (
+            c11_statement(budget=20),
+            False,
+            "time budget is missing or does not match manifest minutes 15",
+        ),
+        (
+            c11_statement(extra=" · **Time:** 15 minutes"),
+            False,
+            "header fields must be exactly Type / Difficulty / Concepts",
+        ),
+        (
+            c11_statement(),
+            True,
+            "statement path does not exist",
+        ),
+    ],
+    ids=[
+        "four-options",
+        "missing-reasoning",
+        "wrong-reasoning",
+        "missing-budget",
+        "mismatched-budget",
+        "fourth-header-field",
+        "missing-statement-path",
+    ],
+)
+def test_statements_only_main_rejects_each_malformed_statement(
+    tmp_path, monkeypatch, capsys, markdown, missing_statement, finding
+):
+    unit = "C11-neural-training"
+    problem = c11_problem(tmp_path, markdown)
+    if missing_statement:
+        problem["path"] = "practice/missing.ipynb"
+    manifest_path = tmp_path / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump({"practice": [problem]}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", (unit,))
+
+    assert verify_register.main(["--statements-only"]) == 1
+    assert f"FAIL C11-p01: {finding}" in capsys.readouterr().out
+
+
+def test_full_mode_reports_missing_statement_and_solution_without_traceback(
+    tmp_path, monkeypatch, capsys
+):
+    unit = "C11-neural-training"
+    problem = c11_problem(tmp_path, c11_statement())
+    problem["path"] = "practice/missing.ipynb"
+    problem["solution_path"] = "practice/missing_solution.ipynb"
+    manifest_path = tmp_path / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump({"practice": [problem]}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", (unit,))
+
+    assert verify_register.main([]) == 1
+    output = capsys.readouterr().out
+    assert "C11-p01: statement path does not exist" in output
+    assert "C11-p01: solution_path does not exist" in output
+
+
+C7_BUDGET_IDS = ("C7-p10", "C7-p24", "C7-p26", "C7-p27")
+
+
+def c7_budget_problem(root: Path, problem_id: str, *, budget_line: str) -> dict:
+    practice_number = problem_id.removeprefix("C7-")
+    unit = "C7-cnn-transfer"
+    relative = f"practice/{practice_number}.ipynb"
+    path = root / "units" / unit / relative
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "markdown",
+                        "source": (
+                            f"# {unit} — Practice {practice_number}\n\n"
+                            "**Type:** scenario analysis · **Difficulty:** core "
+                            "· **Concepts:** cnn-training\n\n"
+                            f"{budget_line}\n\nPrompt."
+                        ),
+                    }
+                ],
+                "metadata": {},
+                "nbformat": 4,
+                "nbformat_minor": 5,
+            }
+        )
+    )
+    return {
+        "id": problem_id,
+        "path": relative,
+        "type": "scenario",
+        "difficulty": "core",
+        "concepts": ["cnn-training"],
+    }
+
+
+def test_c7_budget_register_is_the_exact_literal_exception_map():
+    assert verify_register.C7_BUDGET_REGISTER == {
+        "C7-p10": 75,
+        "C7-p24": 75,
+        "C7-p26": 75,
+        "C7-p27": 75,
+    }
+
+
+@pytest.mark.parametrize("problem_id", C7_BUDGET_IDS)
+def test_c7_registered_capstone_requires_exact_body_budget(tmp_path, monkeypatch, problem_id):
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    problem = c7_budget_problem(
+        tmp_path,
+        problem_id,
+        budget_line="**Time budget:** 75 minutes",
+    )
+    assert verify_register._check_problem("C7-cnn-transfer", problem) == []
+
+    c7_budget_problem(tmp_path, problem_id, budget_line="**Time budget:** 70 minutes")
+    assert verify_register._check_problem("C7-cnn-transfer", problem) == [
+        f"{problem_id}: time budget is missing or does not match literal register minutes 75"
+    ]
+
+    c7_budget_problem(tmp_path, problem_id, budget_line="Prompt without a budget.")
+    assert verify_register._check_problem("C7-cnn-transfer", problem) == [
+        f"{problem_id}: time budget is missing or does not match literal register minutes 75"
+    ]
+
+
+def test_c7_main_fails_closed_when_required_budget_id_is_missing(tmp_path, monkeypatch, capsys):
+    unit = "C7-cnn-transfer"
+    problems = [
+        c7_budget_problem(
+            tmp_path,
+            problem_id,
+            budget_line="**Time budget:** 75 minutes",
+        )
+        for problem_id in C7_BUDGET_IDS[:-1]
+    ]
+    manifest_path = tmp_path / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump({"practice": problems}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", (unit,))
+
+    assert verify_register.main(["--statements-only"]) == 1
+    assert (
+        "C7 budget register required id C7-p27 is missing from manifest" in capsys.readouterr().out
+    )
+
+
+def test_c7_main_fails_closed_when_unregistered_id_declares_a_budget(
+    tmp_path, monkeypatch, capsys
+):
+    unit = "C7-cnn-transfer"
+    problems = [
+        c7_budget_problem(
+            tmp_path,
+            problem_id,
+            budget_line="**Time budget:** 75 minutes",
+        )
+        for problem_id in (*C7_BUDGET_IDS, "C7-p28")
+    ]
+    manifest_path = tmp_path / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump({"practice": problems}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", (unit,))
+
+    assert verify_register.main(["--statements-only"]) == 1
+    assert (
+        "C7-p28: time budget is declared for an id absent from the literal register"
+        in capsys.readouterr().out
+    )
+
+
+@pytest.mark.parametrize(
+    ("bad_register", "finding"),
+    [
+        (
+            {"C7-p10": 75, "C7-p24": 75, "C7-p26": 75},
+            "C7-p27: time budget is declared for an id absent from the literal register",
+        ),
+        (
+            {"C7-p10": 75, "C7-p24": 75, "C7-p26": 75, "C7-p27": 70},
+            "C7-p27: time budget is missing or does not match literal register minutes 70",
+        ),
+        (
+            {
+                "C7-p10": 75,
+                "C7-p24": 75,
+                "C7-p26": 75,
+                "C7-p27": 75,
+                "C7-p28": 75,
+            },
+            "C7 budget register required id C7-p28 is missing from manifest",
+        ),
+    ],
+)
+def test_c7_main_fails_closed_when_literal_register_shape_drifts(
+    tmp_path, monkeypatch, capsys, bad_register, finding
+):
+    unit = "C7-cnn-transfer"
+    problems = [
+        c7_budget_problem(
+            tmp_path,
+            problem_id,
+            budget_line="**Time budget:** 75 minutes",
+        )
+        for problem_id in C7_BUDGET_IDS
+    ]
+    manifest_path = tmp_path / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump({"practice": problems}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", (unit,))
+    monkeypatch.setattr(verify_register, "C7_BUDGET_REGISTER", bad_register)
+
+    assert verify_register.main(["--statements-only"]) == 1
+    assert finding in capsys.readouterr().out

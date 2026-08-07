@@ -1,0 +1,208 @@
+unit: C11-neural-training
+concepts_taught: [softmax, cross-entropy-loss, manual-backpropagation, autograd-training,
+  torch-optimizers, trained-mlp, batch-normalization, dropout]
+concepts_used: [numpy-arrays, array-indexing-slicing, elementwise-ops, broadcasting,
+  vectorization, aggregation-axis, random-seeding, matplotlib-basics, partial-derivatives,
+  gradient, multivar-chain-rule, gradient-descent, learning-rate, stochastic-gd,
+  loss-surfaces, expectation, variance, perceptron, activation-functions, relu-activation,
+  mlp-architecture, weight-init-variance, overfitting, l2-regularization,
+  python-inheritance, torch-tensors, nn-module, requires-grad, parameter-counting]
+prereq_units: [F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch]
+estimated_minutes:
+  lesson: 450
+  lesson_sessions: [90, 90, 90, 90, 90]
+  practice: 1040
+  review: 60
+practice:
+- id: C11-p01
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [softmax]
+  path: practice/p01.ipynb
+  solution_path: practice/p01_solution.ipynb
+  minutes: 15
+- id: C11-p02
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [cross-entropy-loss]
+  path: practice/p02.ipynb
+  solution_path: practice/p02_solution.ipynb
+  minutes: 15
+- id: C11-p03
+  set: A
+  type: mc
+  difficulty: intro
+  concepts: [manual-backpropagation]
+  path: practice/p03.ipynb
+  solution_path: practice/p03_solution.ipynb
+  minutes: 15
+- id: C11-p04
+  set: B
+  type: mc-normal-form
+  difficulty: intro
+  concepts: [dropout]
+  path: practice/p04.ipynb
+  solution_path: practice/p04_solution.ipynb
+  minutes: 15
+- id: C11-p05
+  set: A
+  type: constrained-coding
+  difficulty: intro
+  concepts: [softmax]
+  path: practice/p05.ipynb
+  solution_path: practice/p05_solution.ipynb
+  minutes: 25
+- id: C11-p06
+  set: B
+  type: constrained-coding
+  difficulty: intro
+  concepts: [cross-entropy-loss]
+  path: practice/p06.ipynb
+  solution_path: practice/p06_solution.ipynb
+  minutes: 25
+- id: C11-p07
+  set: A
+  type: constrained-coding
+  difficulty: core
+  concepts: [manual-backpropagation, trained-mlp]
+  path: practice/p07.ipynb
+  solution_path: practice/p07_solution.ipynb
+  minutes: 35
+- id: C11-p08
+  set: A
+  type: constrained-coding
+  difficulty: core
+  concepts: [autograd-training, torch-optimizers]
+  path: practice/p08.ipynb
+  solution_path: practice/p08_solution.ipynb
+  minutes: 35
+- id: C11-p09
+  set: A
+  type: constrained-coding
+  difficulty: core
+  concepts: [batch-normalization]
+  path: practice/p09.ipynb
+  solution_path: practice/p09_solution.ipynb
+  minutes: 35
+- id: C11-p10
+  set: A
+  type: constrained-coding
+  difficulty: core
+  concepts: [dropout]
+  path: practice/p10.ipynb
+  solution_path: practice/p10_solution.ipynb
+  minutes: 35
+- id: C11-p11
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [softmax, cross-entropy-loss]
+  path: practice/p11.ipynb
+  solution_path: practice/p11_solution.ipynb
+  minutes: 40
+- id: C11-p12
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [manual-backpropagation]
+  path: practice/p12.ipynb
+  solution_path: practice/p12_solution.ipynb
+  minutes: 40
+- id: C11-p13
+  set: B
+  type: proof
+  difficulty: core
+  concepts: [batch-normalization]
+  path: practice/p13.ipynb
+  solution_path: practice/p13_solution.ipynb
+  minutes: 40
+- id: C11-p14
+  set: C
+  type: integrative
+  difficulty: core
+  concepts: [softmax, cross-entropy-loss]
+  path: practice/p14.ipynb
+  solution_path: practice/p14_solution.ipynb
+  minutes: 60
+- id: C11-p15
+  set: C
+  type: integrative
+  difficulty: core
+  concepts: [manual-backpropagation, trained-mlp]
+  path: practice/p15.ipynb
+  solution_path: practice/p15_solution.ipynb
+  minutes: 60
+- id: C11-p16
+  set: C
+  type: integrative
+  difficulty: core
+  concepts: [autograd-training, torch-optimizers]
+  path: practice/p16.ipynb
+  solution_path: practice/p16_solution.ipynb
+  minutes: 60
+- id: C11-p17
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [trained-mlp]
+  path: practice/p17.ipynb
+  solution_path: practice/p17_solution.ipynb
+  minutes: 50
+- id: C11-p18
+  set: C
+  type: scenario
+  difficulty: core
+  concepts: [batch-normalization, dropout]
+  path: practice/p18.ipynb
+  solution_path: practice/p18_solution.ipynb
+  minutes: 50
+- id: C11-p19
+  set: C
+  type: scenario
+  difficulty: advanced
+  concepts: [autograd-training, torch-optimizers]
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb
+  minutes: 50
+- id: C11-p20
+  set: C
+  type: scenario
+  difficulty: advanced
+  concepts: [trained-mlp, batch-normalization, dropout]
+  path: practice/p20.ipynb
+  solution_path: practice/p20_solution.ipynb
+  minutes: 50
+- id: C11-p21
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [softmax, cross-entropy-loss]
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+  minutes: 70
+- id: C11-p22
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [manual-backpropagation]
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb
+  minutes: 70
+- id: C11-p23
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [autograd-training, torch-optimizers, trained-mlp]
+  path: practice/p23.ipynb
+  solution_path: practice/p23_solution.ipynb
+  minutes: 75
+- id: C11-p24
+  set: C
+  type: challenge
+  difficulty: advanced
+  concepts: [torch-optimizers, trained-mlp, batch-normalization, dropout]
+  path: practice/p24.ipynb
+  solution_path: practice/p24_solution.ipynb
+  minutes: 75

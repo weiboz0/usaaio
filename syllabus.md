@@ -137,6 +137,15 @@ concepts:
   - {id: manual-weights,            cluster: pytorch}
   - {id: requires-grad,             cluster: pytorch}
   - {id: parameter-counting,        cluster: pytorch}
+  # --- C11 ---
+  - {id: softmax,                   cluster: pytorch}
+  - {id: cross-entropy-loss,        cluster: pytorch}
+  - {id: manual-backpropagation,    cluster: pytorch}
+  - {id: autograd-training,         cluster: pytorch}
+  - {id: torch-optimizers,          cluster: pytorch}
+  - {id: trained-mlp,               cluster: pytorch}
+  - {id: batch-normalization,       cluster: pytorch}
+  - {id: dropout,                   cluster: pytorch}
   # --- C7 ---
   - {id: convolution,               cluster: cnn-vision}
   - {id: feature-maps,              cluster: cnn-vision}
@@ -148,6 +157,7 @@ concepts:
   - {id: layer-freezing,            cluster: cnn-vision}
   - {id: transfer-learning,         cluster: cnn-vision}
   - {id: tensor-shape-tracing,      cluster: cnn-vision}
+  - {id: cnn-training,              cluster: cnn-vision}
   # --- C8 ---
   - {id: tokenization,              cluster: nlp-embeddings}
   - {id: word-embeddings,           cluster: nlp-embeddings}
@@ -260,13 +270,21 @@ units:
     prereqs: [C5-neural-networks]
     teaches: [python-inheritance, torch-tensors, nn-module, custom-layers, manual-weights,
               requires-grad, parameter-counting]
+  - id: C11-neural-training
+    track: core
+    title: Neural Network Training from Scratch to PyTorch
+    length: double
+    prereqs: [F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch]
+    teaches: [softmax, cross-entropy-loss, manual-backpropagation, autograd-training,
+              torch-optimizers, trained-mlp, batch-normalization, dropout]
   - id: C7-cnn-transfer
     track: core
     title: CNNs, ResNet, and Transfer Learning
-    prereqs: [C6-pytorch]
+    length: double
+    prereqs: [C6-pytorch, C11-neural-training]
     teaches: [convolution, feature-maps, receptive-field, feature-hierarchy,
               resnet-architecture, bottleneck-blocks, model-truncation, layer-freezing,
-              transfer-learning, tensor-shape-tracing]
+              transfer-learning, tensor-shape-tracing, cnn-training]
   - id: C8-embeddings
     track: core
     title: Word Embeddings and Similarity
@@ -305,7 +323,7 @@ stated component-wise (`sum-of-squares-gradients`) so no matrix calculus is need
 `F5-probability` is a double-length unit: it connects `variance-of-sums` and
 `sampling-simulation` to `conditional-probability`, `bayes-rule`, and
 `hoeffding-inequality`.
-`F6-svd-spectral` is the other double-length unit:
+`F6-svd-spectral` is also a double-length unit:
 `svd`, `spectral-decomposition`, and `low-rank-approximation` anchored the heaviest
 sub-parts of the 2026 integrative arc.
 `F7-kernels-convex-optimization` completes the shared mathematical foundation by turning
@@ -327,14 +345,19 @@ Only iterative gradient-based fitting remains deferred to `C3-gradient-descent`.
 craft that the 50-point applied problem demands;
 `C10-competition-craft` turns that into exam technique
 (`prediction-function-contract`, `hidden-test-protocol`).
-`C5-neural-networks` → `C6-pytorch` → `C7-cnn-transfer` is the engineering ladder from
-`perceptron` to `resnet-architecture` surgery.
+`C5-neural-networks` → `C6-pytorch` → `C11-neural-training` → `C7-cnn-transfer` is the
+engineering ladder from `perceptron`, through explicit and autograd-based training, to
+`resnet-architecture` surgery.
+`C11-neural-training` is double-length because five sessions connect manual gradients,
+NumPy training, PyTorch autograd and optimizers, BatchNorm, and dropout to 24 practices.
+`C7-cnn-transfer` is also double-length: its fourth session and 27-practice register make
+`cnn-training` a substantive bridge from trained MLPs to convolutional transfer learning.
 `C8-embeddings` + `C9-dimensionality-reduction` cover the integrative-arc territory
 (`similarity-matrices`, `truncated-svd-practice`).
 
 ## Suggested order (one feasible topological sort)
 
-F1 → F2 → C1 → F4 → F3 → F5 → C4 → C2 → C3 → C5 → C6 → C7 → C8 → F6 → F7 → C9 → C10
+F1 → F2 → C1 → F4 → F3 → F5 → C4 → C2 → C3 → C5 → C6 → C11 → C7 → C8 → F6 → F7 → C9 → C10
 
 Foundation units interleave with core units so the student reaches applied work
 (C4) early — F5 precedes C4 because `feature-scaling` standardization needs `variance`;

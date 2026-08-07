@@ -17,7 +17,7 @@
 - [x] 014 — enrichment tranche (merged — retag pass, 2 error clinics, F6-p25 synthesis problem, targeted items)
 - [x] 015 — layered official-topic audit and R1/R2 roadmap (one curriculum graph, two exit gates)
 - [x] 016 — R1 foundation, workflow, and mathematical completion (delivery branch ready)
-- [ ] 017 — R1 neural-training completion (next R1 queue item)
+- [x] 017 — R1 neural-training completion (delivery branch ready)
 - [ ] 018 — R1 classical-model breadth (follows Plan 017)
 
 ## Deferred, with a named owner plan still to be written
@@ -28,14 +28,11 @@
       then the R2 GPU capstone. Softmax/cross-entropy are owned by
       `P015-R1-NEURAL-TRAINING`; future work must update the shipped syllabus and roadmap
       atomically rather than maintaining a second gap list here.
-- [ ] **Unit capacity: C7 and C5.** C7 ships 27 problems against the 16–24 band — over it, and
-      recorded as non-conformant in `docs/unit-standards.md` rather than excused. C5 carries the
-      same unresolved question. Plan 014's gate rejected two attempts to make the overflow legal
-      (a concept-scaled ceiling, then a `length: double` marking) and required the capacity
-      question be asked directly: split the unit, rehome concepts (`feature-hierarchy`,
-      `receptive-field`, `tensor-shape-tracing` are the C7 candidates), or trim. Note 8 of C7's
-      27 problems tag no floor-critical concept, so a trim to the band is arithmetically
-      available without breaking coverage.
+- [x] **Unit capacity: C7 and C5.** Plan 017 resolves the decision substantively: C7 gains a
+      fourth 90-minute lesson session and remains at 27 practices, satisfying both double-length
+      bands. C5 remains a compliant standard-length unit with 22 practices because neural-network
+      training moves to C11. `docs/unit-standards.md` preserves the Plan 014 rejection history and
+      records why this implemented capacity increase differs from the rejected label-only change.
 - [ ] **Real tag-honesty enforcement.** `prereq-check`'s `concepts_used` leg is manifest
       consistency only, so it cannot see a decorative tag. Plan 014's gate found 7 decorative
       tags by hand that the check passed. Needs per-problem evidence for each foreign tag.

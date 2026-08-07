@@ -17,7 +17,7 @@ the content gate's reviewers enforce the qualitative parts against this document
   ~6–10 sections with worked examples and checkpoints).
   A root `lesson.ipynb` remains as the unit overview/index (goals, session map,
   prerequisites recap, how-to-study guidance).
-- Double-length units (F5, F6) use 4–6 sessions.
+- Double-length units (F5, F6, C7, C11) use 4–6 sessions.
 - `estimated_minutes` in the manifest lists per-session lesson minutes plus practice.
 
 ## Practice sets
@@ -43,15 +43,15 @@ the content gate's reviewers enforce the qualitative parts against this document
 
 ### Recorded non-conformance
 
-**`C7-cnn-transfer` ships 27 problems against a 24 ceiling. It is over the band, and that is
-recorded here rather than legalized.**
-C7 is not double-length: it runs three lesson sessions where the rule above requires 4–6.
-Its 10 taught concepts and 672 practice minutes are both corpus maxima, which explains the
-overflow without excusing it.
-The resolution is a unit *capacity* decision — split C7, rehome concepts such as
-`feature-hierarchy`, `receptive-field`, or `tensor-shape-tracing`, or trim — and it is deferred
+**At the Plan 014 gate, `C7-cnn-transfer` shipped 27 problems against a 24 ceiling.
+It was over the band, and that was recorded here rather than legalized.**
+C7 was not double-length: it ran three lesson sessions where the rule above required 4–6.
+At that gate, its 10 taught concepts and 672 practice minutes were both corpus maxima, which
+explained the overflow without excusing it.
+The required resolution was a unit *capacity* decision — split C7, rehome concepts such as
+`feature-hierarchy`, `receptive-field`, or `tensor-shape-tracing`, or trim — and it was deferred
 to a dedicated plan; see `TODO.md`.
-`C5-neural-networks` carries the same open question.
+`C5-neural-networks` carried the same open question.
 
 This entry exists because plan 014 tried twice to make the overflow legal and its content gate
 rejected both attempts.
@@ -78,6 +78,20 @@ The generalizable lesson, and the reason this is written down: **when a unit ove
 standard, record the non-conformance and fix the unit — do not reshape the standard, and do not
 reach for an existing exemption the unit does not actually qualify for.**
 A standard that moves to accommodate its own artifacts has stopped being one.
+
+**Plan 017 resolution.**
+The capacity issue is now resolved by changing the unit rather than relabeling the old artifact.
+C7 now has a substantive fourth 90-minute lesson session and keeps 27 practices, so it satisfies
+both double-length bands.
+Its final 1,280 minutes exceed the pre-Plan-017 corpus maximum of 1,120 minutes.
+Its lesson load of 345 minutes over four sessions is lighter than F5's 415/5, F6's 425/5, and
+C11's 450/5; F7 shows why four sessions alone are not sufficient, because its 20 practices remain
+inside the standard-length band.
+C5 remains a compliant standard-length unit with 22 practices because neural-network training
+moved to C11 instead of being crowded into C5.
+The current double-length roster is therefore F5, F6, C7, and C11.
+Across the shipped roster, C10 has the concept maximum at 12 taught concepts, while C11 has the
+practice-time maximum at 1,040 minutes.
 
 ## Per-unit review material
 

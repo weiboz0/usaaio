@@ -6,8 +6,21 @@ import pytest
 import yaml
 
 from tools import audit_curriculum as audit
+from tools.checks.schedule import load_validated_schedule
 
 REPO_ROOT = Path(__file__).parents[1]
+
+
+def _fixture_schedule_loader(root: str | Path):
+    return load_validated_schedule(root, enforce_calendar=False)
+
+
+def _build_fixture_inventory(root: Path) -> dict:
+    return audit.build_inventory(root, _schedule_loader=_fixture_schedule_loader)
+
+
+def _fixture_audit_main(argv: list[str]) -> int:
+    return audit.main(argv, _schedule_loader=_fixture_schedule_loader)
 
 
 def _write_notebook(path: Path, cells: list[dict], *, metadata: dict | None = None) -> None:
@@ -119,6 +132,40 @@ units:
     )
     _write_notebook(mock / "problems" / "p01.ipynb", [_markdown("# Problem 1\n")])
     _write_notebook(mock / "solutions" / "p01_solution.ipynb", [_code("answer = 5\n")])
+    schedule = {
+        "schedule_version": 1,
+        "weeks": [
+            {
+                "week": 1,
+                "semester": 1,
+                "allocations": [
+                    {
+                        "kind": "lesson-session",
+                        "unit": "U1-vectors",
+                        "session": 1,
+                        "minutes": 10,
+                    },
+                    {
+                        "kind": "practice",
+                        "unit": "U1-vectors",
+                        "chunk": 1,
+                        "minutes": 20,
+                    },
+                    {
+                        "kind": "review",
+                        "unit": "U1-vectors",
+                        "chunk": 1,
+                        "minutes": 5,
+                    },
+                    {"kind": "mock", "test": "r1-mini", "minutes": 30},
+                    {"kind": "debrief", "test": "r1-mini", "minutes": 60},
+                ],
+            }
+        ],
+    }
+    schedule_path = root / "curriculum" / "course-schedule.yaml"
+    schedule_path.parent.mkdir(parents=True)
+    schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False))
 
 
 def test_notebook_digest_ignores_transient_notebook_fields(tmp_path: Path) -> None:
@@ -244,8 +291,8 @@ def test_manifest_digest_rejects_non_string_keys_without_collisions(tmp_path: Pa
 def test_inventory_paths_and_rendering_are_deterministic(tmp_path: Path) -> None:
     _make_minimal_repo(tmp_path)
 
-    first = audit.build_inventory(tmp_path)
-    second = audit.build_inventory(tmp_path)
+    first = _build_fixture_inventory(tmp_path)
+    second = _build_fixture_inventory(tmp_path)
     inventoried_paths = first["input_paths"]
 
     assert inventoried_paths == sorted(inventoried_paths, key=str.encode)
@@ -256,7 +303,7 @@ def test_inventory_paths_and_rendering_are_deterministic(tmp_path: Path) -> None
 def test_declared_ids_are_recorded_without_coverage_inference(tmp_path: Path) -> None:
     _make_minimal_repo(tmp_path)
 
-    inventory = audit.build_inventory(tmp_path)
+    inventory = _build_fixture_inventory(tmp_path)
     statement = next(
         entry for entry in inventory["notebooks"] if entry["path"].endswith("practice/p01.ipynb")
     )
@@ -288,7 +335,7 @@ def test_synthesis_notebooks_keep_nearest_manifest_declarations(tmp_path: Path) 
     )
     _write_notebook(synthesis / "practice" / "p01.ipynb", [_markdown("# Bridge\n")])
 
-    inventory = audit.build_inventory(tmp_path)
+    inventory = _build_fixture_inventory(tmp_path)
     record = next(
         item
         for item in inventory["notebooks"]
@@ -301,7 +348,7 @@ def test_synthesis_notebooks_keep_nearest_manifest_declarations(tmp_path: Path) 
 
     (synthesis / "practice" / "p01.ipynb").unlink()
     with pytest.raises(audit.InventoryError, match="declared notebook is missing"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 def test_all_mock_rounds_are_discovered(tmp_path: Path) -> None:
@@ -309,8 +356,18 @@ def test_all_mock_rounds_are_discovered(tmp_path: Path) -> None:
     source = tmp_path / "mocktests" / "r1-mini"
     destination = tmp_path / "mocktests" / "r2-mini"
     source.rename(destination)
+    manifest_path = destination / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text())
+    manifest["test"] = "r2-mini"
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
+    schedule_path = tmp_path / "curriculum" / "course-schedule.yaml"
+    schedule = yaml.safe_load(schedule_path.read_text())
+    for allocation in schedule["weeks"][0]["allocations"]:
+        if allocation.get("test") == "r1-mini":
+            allocation["test"] = "r2-mini"
+    schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False))
 
-    counts = audit.build_inventory(tmp_path)["counts"]
+    counts = _build_fixture_inventory(tmp_path)["counts"]
 
     assert counts["mocktests"] == 1
     assert counts["mock_notebooks"] == 2
@@ -322,7 +379,7 @@ def test_missing_declared_unit_notebook_fails_loudly(tmp_path: Path) -> None:
     missing.unlink()
 
     with pytest.raises(audit.InventoryError, match="declared notebook is missing"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 @pytest.mark.parametrize("escape_kind", ["parent", "symlink"])
@@ -345,7 +402,7 @@ def test_declared_unit_notebooks_cannot_escape_the_unit(
     manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
 
     with pytest.raises(audit.InventoryError, match="escapes its material directory"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 @pytest.mark.parametrize("material_tree", ["unit", "mock", "synthesis"])
@@ -369,7 +426,7 @@ def test_undeclared_notebook_symlinks_are_rejected(
     link.symlink_to(outside)
 
     with pytest.raises(audit.InventoryError, match="notebook symlinks are not allowed"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 @pytest.mark.parametrize("material_tree", ["unit", "mock", "synthesis"])
@@ -392,7 +449,7 @@ def test_external_manifest_symlinks_are_rejected(
     manifest.symlink_to(external)
 
     with pytest.raises(audit.InventoryError, match="manifest symlinks are not allowed"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 def test_missing_declared_mock_notebook_fails_loudly(tmp_path: Path) -> None:
@@ -401,7 +458,7 @@ def test_missing_declared_mock_notebook_fails_loudly(tmp_path: Path) -> None:
     missing.unlink()
 
     with pytest.raises(audit.InventoryError, match="declared notebook is missing"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 def test_imported_bare_api_calls_are_recorded(tmp_path: Path) -> None:
@@ -416,16 +473,16 @@ def test_imported_bare_api_calls_are_recorded(tmp_path: Path) -> None:
 def test_check_mode_catches_missing_and_stale_inventory_then_passes(tmp_path: Path, capsys) -> None:
     _make_minimal_repo(tmp_path)
 
-    assert audit.main(["--root", str(tmp_path), "--check"]) == 1
+    assert _fixture_audit_main(["--root", str(tmp_path), "--check"]) == 1
     assert "missing" in capsys.readouterr().err
 
-    assert audit.main(["--root", str(tmp_path)]) == 0
+    assert _fixture_audit_main(["--root", str(tmp_path)]) == 0
     output = tmp_path / "curriculum" / "material-inventory.yaml"
     assert output.is_file()
-    assert audit.main(["--root", str(tmp_path), "--check"]) == 0
+    assert _fixture_audit_main(["--root", str(tmp_path), "--check"]) == 0
 
     output.write_text(output.read_text() + "# stale\n")
-    assert audit.main(["--root", str(tmp_path), "--check"]) == 1
+    assert _fixture_audit_main(["--root", str(tmp_path), "--check"]) == 1
     assert "stale" in capsys.readouterr().err
 
 
@@ -433,17 +490,103 @@ def test_real_repository_inventory_counts() -> None:
     counts = audit.build_inventory(REPO_ROOT)["counts"]
 
     assert counts == {
-        "units": 17,
-        "concepts": 130,
-        "unit_practices": 383,
-        "lesson_sessions": 57,
-        "unit_nonpractice_notebooks": 91,
-        "unit_notebooks": 857,
+        "units": 18,
+        "concepts": 139,
+        "unit_practices": 407,
+        "lesson_sessions": 63,
+        "unit_nonpractice_notebooks": 99,
+        "unit_notebooks": 913,
         "mocktests": 1,
         "mock_notebooks": 10,
-        "manifested_minutes": 14_767,
-        "scheduled_minutes": 15_007,
+        "manifested_minutes": 16_625,
+        "scheduled_minutes": 16_865,
     }
+
+
+def _install_canonical_schedule_fixture(
+    root: Path, *, lesson_kind: str = "lesson-session"
+) -> None:
+    _make_minimal_repo(root)
+    manifest_path = root / "units" / "U1-vectors" / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text())
+    manifest["estimated_minutes"] = {
+        "lesson": 100,
+        "lesson_sessions": [100],
+        "practice": 100,
+        "review": 10,
+    }
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
+    mock_manifest_path = root / "mocktests" / "r1-mini" / "manifest.yaml"
+    mock_manifest = yaml.safe_load(mock_manifest_path.read_text())
+    mock_manifest["duration_minutes"] = 180
+    mock_manifest_path.write_text(yaml.safe_dump(mock_manifest, sort_keys=False))
+    schedule = {
+        "schedule_version": 1,
+        "weeks": [
+            {
+                "week": 1,
+                "semester": 1,
+                "allocations": [
+                    {
+                        "kind": lesson_kind,
+                        "unit": "U1-vectors",
+                        "session": 1,
+                        "minutes": 100,
+                    },
+                    {
+                        "kind": "practice",
+                        "unit": "U1-vectors",
+                        "chunk": 1,
+                        "minutes": 100,
+                    },
+                    {
+                        "kind": "review",
+                        "unit": "U1-vectors",
+                        "chunk": 1,
+                        "minutes": 10,
+                    },
+                    {"kind": "mock", "test": "r1-mini", "minutes": 180},
+                    {"kind": "debrief", "test": "r1-mini", "minutes": 60},
+                ],
+            }
+        ],
+    }
+    schedule_path = root / "curriculum" / "course-schedule.yaml"
+    schedule_path.parent.mkdir(parents=True, exist_ok=True)
+    schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False))
+
+
+def test_scheduled_minutes_come_from_canonical_schedule_not_prose(tmp_path: Path) -> None:
+    _install_canonical_schedule_fixture(tmp_path)
+    (tmp_path / "docs" / "course-structure.md").write_text(
+        "# Deliberately stale prose\n\nThe course ends with a 9,999-minute debrief.\n"
+    )
+
+    counts = _build_fixture_inventory(tmp_path)["counts"]
+
+    assert counts["manifested_minutes"] == 210
+    assert counts["scheduled_minutes"] == 450
+
+
+def test_inventory_production_consumer_requires_the_full_canonical_schedule(
+    tmp_path: Path,
+) -> None:
+    _install_canonical_schedule_fixture(tmp_path)
+
+    with pytest.raises(audit.InventoryError, match="missing week 2"):
+        audit.build_inventory(tmp_path)
+
+
+def test_inventory_rejects_invalid_canonical_schedule_instead_of_summing_yaml(
+    tmp_path: Path,
+) -> None:
+    _install_canonical_schedule_fixture(tmp_path, lesson_kind="invented-kind")
+
+    with pytest.raises(
+        audit.InventoryError,
+        match="course-schedule.yaml.*unknown kind invented-kind",
+    ):
+        _build_fixture_inventory(tmp_path)
 
 
 @pytest.mark.parametrize(

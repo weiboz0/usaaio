@@ -2,24 +2,29 @@
 
 ## 1. Course model
 
-The shipped Round 1 schedule runs for 31 weeks in two semesters: 16 weeks followed by 15 weeks.
-The 17 unit manifests provide 4,740 lesson minutes, 9,237 practice minutes, and 790 review minutes.
-Manifested content is therefore 4,740 + 9,237 + 790 = 14,767 minutes = 246.1 hours.
-Those manifests contain 57 lesson sessions and 383 practices across 17 units.
+<!-- BEGIN GENERATED: course-model -->
+The shipped Round 1 schedule runs for 35 weeks in two semesters: 16 weeks followed by 19 weeks.
+The 18 unit manifests provide 5,280 lesson minutes, 10,480 practice minutes, and 865 review minutes.
+Manifested content is therefore 5,280 + 10,480 + 865 = 16,625 minutes = 277.08 hours.
+Those manifests contain 63 lesson sessions and 407 practices across 18 units.
 Every lesson session is between 60 and 90 minutes.
-The scheduled course adds the 180-minute `r1-001` mock and its 60-minute debrief, for 14,767 + 240 = 15,007 minutes = 250.1 hours.
-The manifested division is 79.0 lesson hours and 167.1 independent practice/review hours.
-The scheduled division is 83.0 in-class hours, including the mock and debrief, and 167.1 independent hours.
-Across 31 weeks, that is about 2.7 in-class hours and 5.4 independent hours per week.
+The scheduled course adds the 180-minute `r1-001` mock and its 60-minute debrief, for 16,625 + 240 = 16,865 minutes = 281.08 hours.
+The manifested division is 88 lesson hours and 189.08 independent practice/review hours.
+The scheduled division is 92 in-class hours, including the mock and debrief, and 189.08 independent hours.
+Across 35 weeks, that is about 2.63 in-class hours and 5.4 independent hours per week.
 The remaining planned extensions in `docs/curriculum-roadmap.md` are editorial estimates, not manifested time, and do not fit silently into this calendar.
+<!-- END GENERATED: course-model -->
 
 ## 2. Semester split
 
-Semester 1 is Weeks 1–16 and follows F1 → F2 → F4 → F3 → F5 → C1 → C2 → C3 → C4 → C8.
-Its unit arithmetic is 875 + 665 + 610 + 745 + 1,120 + 705 + 905 + 640 + 855 + 795 = 7,915 minutes = 131.9 hours, or 8.2 hours per week.
-Semester 2 is Weeks 17–31 and follows F6 → F7 → C5 → C6 → C7 → C9 → C10 → `r1-001`.
-Its manifested arithmetic is 1,075 + 1,025 + 845 + 815 + 972 + 1,000 + 1,120 = 6,852 minutes = 114.2 hours.
-Adding the 180-minute mock and 60-minute debrief gives 6,852 + 240 = 7,092 minutes = 118.2 hours, or 7.9 hours per week.
+<!-- BEGIN GENERATED: semester-model -->
+Semester 1 is Weeks 1–16 and follows F1-scientific-python → F2-vectors → F4-multivar-calculus → F3-matrices → F5-probability → C1-ml-fundamentals → C2-linear-models → C3-gradient-descent → C4-classical-ml-practice → C8-embeddings.
+Its manifested allocation is 7,915 minutes = 131.92 hours, or 8.24 hours per week.
+Semester 2 is Weeks 17–35 and follows C5-neural-networks → F6-svd-spectral → C6-pytorch → F7-kernels-convex-optimization → C11-neural-training → C9-dimensionality-reduction → C7-cnn-transfer → C10-competition-craft → `r1-001`.
+Its manifested allocation is 8,710 minutes = 145.17 hours.
+Adding the 180-minute mock and 60-minute debrief gives 8,710 + 240 = 8,950 minutes = 149.17 hours, or 7.85 hours per week.
+<!-- END GENERATED: semester-model -->
+
 F7 is deliberately completed before C9 so kernel, convexity, and optimization language forms one coherent mathematical sequence before the final dimensionality-reduction unit.
 The Plan 016 extensions appear at their manifested lengths: F1 has 4 sessions, F5 has 5, C2 has 3, C9 has 4, C10 has 4, and the new F7 has 4.
 
@@ -28,51 +33,61 @@ The Plan 016 extensions appear at their manifested lengths: F1 has 4 sessions, F
 In-class minutes are manifested lesson sessions plus the final mock and debrief.
 Independent minutes are manifested practice and review minutes.
 A unit stays active through its review gate even when its final row contains no lesson session.
-In a mixed row, “then” gives strict within-week instructional order, so the earlier unit's remaining work and review finish before the later unit begins.
+In a mixed row, “then” records allocation order; independent units may interleave rather than implying that every earlier unit must finish before a later unit begins.
 
+<!-- BEGIN GENERATED: weekly-table -->
 | Week | Semester | Units and sessions covered | In-class minutes | Independent minutes | Checkpoint gate |
 |---:|:---:|---|---:|---:|---|
-| 1 | S1 | F1 (prereqs: none): sessions 1–2 and 330 practice minutes. | 165 | 330 | No unit-review gate. |
-| 2 | S1 | F1 (prereqs: none): sessions 3–4, 185 practice minutes, and 50 review minutes; then F2 (prereqs: F1): session 1 and 40 practice minutes. | 220 | 275 | F1 review gate. |
-| 3 | S1 | F2 (prereqs: F1): sessions 2–3 and 340 practice minutes. | 155 | 340 | No unit-review gate. |
-| 4 | S1 | F2 (prereqs: F1): 10 practice minutes and 45 review minutes; then F4 (prereqs: F2): sessions 1–2 and 270 practice minutes. | 170 | 325 | F2 review gate. |
-| 5 | S1 | F4 (prereqs: F2): 130 practice minutes and 40 review minutes; then F3 (prereqs: F2): sessions 1–2 and 160 practice minutes. | 165 | 330 | F4 review gate. |
-| 6 | S1 | F3 (prereqs: F2): session 3, 290 practice minutes, and 45 review minutes; then F5 (prereqs: F1): session 1. | 165 | 335 | F3 review gate. |
-| 7 | S1 | F5 (prereqs: F1): sessions 2–3 and 330 practice minutes. | 170 | 330 | No unit-review gate. |
-| 8 | S1 | F5 (prereqs: F1): sessions 4–5 and 320 practice minutes. | 165 | 320 | No unit-review gate. |
-| 9 | S1 | F5 (prereqs: F1): 55 review minutes; then C1 (prereqs: F1): sessions 1–2 and 280 practice minutes. | 160 | 335 | F5 review gate. |
-| 10 | S1 | C1 (prereqs: F1): session 3, 155 practice minutes, and 30 review minutes; then C2 (prereqs: F3, F4, C1): sessions 1–2 and 55 practice minutes. | 255 | 240 | C1 review gate. |
-| 11 | S1 | C2 (prereqs: F3, F4, C1): session 3 and 410 practice minutes. | 85 | 410 | No unit-review gate. |
-| 12 | S1 | C2 (prereqs: F3, F4, C1): 125 practice minutes and 55 review minutes; then C3 (prereqs: F4, C2): sessions 1–2 and 145 practice minutes. | 170 | 325 | C2 review gate. |
-| 13 | S1 | C3 (prereqs: F4, C2): 285 practice minutes and 40 review minutes; then C4 (prereqs: C1, F1, F2, F5): sessions 1–2 and 5 practice minutes. | 165 | 330 | C3 review gate. |
-| 14 | S1 | C4 (prereqs: C1, F1, F2, F5): session 3 and 410 practice minutes. | 85 | 410 | No unit-review gate. |
-| 15 | S1 | C4 (prereqs: C1, F1, F2, F5): 145 practice minutes and 45 review minutes; then C8 (prereqs: F2, F3, F1): sessions 1–2 and 140 practice minutes. | 165 | 330 | C4 review gate. |
-| 16 | S1 | C8 (prereqs: F2, F3, F1): session 3, 360 C-set/challenge practice minutes, and 45 review minutes. | 85 | 405 | C8 review gate and Semester 1 close. |
-| 17 | S2 | F6 (prereqs: F3): sessions 1–2 and 303 practice minutes. | 170 | 303 | No unit-review gate. |
-| 18 | S2 | F6 (prereqs: F3): sessions 3–4 and 302 practice minutes. | 170 | 302 | No unit-review gate. |
-| 19 | S2 | F6 (prereqs: F3): session 5 and 45 review minutes; then F7 (prereqs: F3, F4, F6, C3): sessions 1–3 and 88 practice minutes. | 340 | 133 | F6 review gate. |
-| 20 | S2 | F7 (prereqs: F3, F4, F6, C3): session 4 and 388 practice minutes. | 85 | 388 | No unit-review gate. |
-| 21 | S2 | F7 (prereqs: F3, F4, F6, C3): 164 practice minutes and 45 review minutes; then C5 (prereqs: C3, F5): sessions 1–2 and 99 practice minutes. | 165 | 308 | F7 review gate. |
-| 22 | S2 | C5 (prereqs: C3, F5): session 3 and 388 practice minutes. | 85 | 388 | No unit-review gate. |
-| 23 | S2 | C5 (prereqs: C3, F5): 63 practice minutes and 45 review minutes; then C6 (prereqs: C5): sessions 1–2 and 176 practice minutes. | 165 | 284 | C5 review gate. |
-| 24 | S2 | C6 (prereqs: C5): session 3, 344 practice minutes, and 45 review minutes. | 85 | 389 | C6 review gate. |
-| 25 | S2 | C7 (prereqs: C6): sessions 1–2 and 303 practice minutes. | 170 | 303 | No unit-review gate. |
-| 26 | S2 | C7 (prereqs: C6): session 3, 369 practice minutes, and 45 review minutes. | 85 | 414 | C7 review gate. |
-| 27 | S2 | C9 (prereqs: F6, C8, F5, C1): sessions 1–2 and 303 practice minutes. | 170 | 303 | No unit-review gate. |
-| 28 | S2 | C9 (prereqs: F6, C8, F5, C1): sessions 3–4 and 297 practice minutes. | 170 | 297 | No unit-review gate. |
-| 29 | S2 | C9 (prereqs: F6, C8, F5, C1): 60 review minutes; then C10 (prereqs: C4): sessions 1–2 and 248 practice minutes. | 165 | 308 | C9 review gate. |
-| 30 | S2 | C10 (prereqs: C4): sessions 3–4 and 307 practice minutes. | 170 | 307 | No unit-review gate. |
-| 31 | S2 | C10 (prereqs: C4): 175 practice minutes and 55 review minutes; then `r1-001` for 180 minutes; then its debrief for 60 minutes. | 240 | 230 | C10 review gate, `r1-001` summative gate, and debrief. |
+| 1 | S1 | F1-scientific-python (prereqs: none): sessions 1, 2, 330 practice minutes. | 165 | 330 | No unit-review gate. |
+| 2 | S1 | F1-scientific-python (prereqs: none): sessions 3, 4, 185 practice minutes, 50 review minutes; then F2-vectors (prereqs: F1-scientific-python): session 1, 40 practice minutes. | 220 | 275 | F1-scientific-python review gate. |
+| 3 | S1 | F2-vectors (prereqs: F1-scientific-python): sessions 2, 3, 340 practice minutes. | 155 | 340 | No unit-review gate. |
+| 4 | S1 | F2-vectors (prereqs: F1-scientific-python): 10 practice minutes, 45 review minutes; then F4-multivar-calculus (prereqs: F2-vectors): sessions 1, 2, 270 practice minutes. | 170 | 325 | F2-vectors review gate. |
+| 5 | S1 | F4-multivar-calculus (prereqs: F2-vectors): 130 practice minutes, 40 review minutes; then F3-matrices (prereqs: F2-vectors): sessions 1, 2, 160 practice minutes. | 165 | 330 | F4-multivar-calculus review gate. |
+| 6 | S1 | F3-matrices (prereqs: F2-vectors): session 3, 290 practice minutes, 45 review minutes; then F5-probability (prereqs: F1-scientific-python): session 1. | 165 | 335 | F3-matrices review gate. |
+| 7 | S1 | F5-probability (prereqs: F1-scientific-python): sessions 2, 3, 330 practice minutes. | 170 | 330 | No unit-review gate. |
+| 8 | S1 | F5-probability (prereqs: F1-scientific-python): sessions 4, 5, 320 practice minutes. | 165 | 320 | No unit-review gate. |
+| 9 | S1 | F5-probability (prereqs: F1-scientific-python): 55 review minutes; then C1-ml-fundamentals (prereqs: F1-scientific-python): sessions 1, 2, 280 practice minutes. | 160 | 335 | F5-probability review gate. |
+| 10 | S1 | C1-ml-fundamentals (prereqs: F1-scientific-python): session 3, 155 practice minutes, 30 review minutes; then C2-linear-models (prereqs: F3-matrices, F4-multivar-calculus, C1-ml-fundamentals): sessions 1, 2, 55 practice minutes. | 255 | 240 | C1-ml-fundamentals review gate. |
+| 11 | S1 | C2-linear-models (prereqs: F3-matrices, F4-multivar-calculus, C1-ml-fundamentals): session 3, 410 practice minutes. | 85 | 410 | No unit-review gate. |
+| 12 | S1 | C2-linear-models (prereqs: F3-matrices, F4-multivar-calculus, C1-ml-fundamentals): 125 practice minutes, 55 review minutes; then C3-gradient-descent (prereqs: F4-multivar-calculus, C2-linear-models): sessions 1, 2, 145 practice minutes. | 170 | 325 | C2-linear-models review gate. |
+| 13 | S1 | C3-gradient-descent (prereqs: F4-multivar-calculus, C2-linear-models): 285 practice minutes, 40 review minutes; then C4-classical-ml-practice (prereqs: C1-ml-fundamentals, F1-scientific-python, F2-vectors, F5-probability): sessions 1, 2, 5 practice minutes. | 165 | 330 | C3-gradient-descent review gate. |
+| 14 | S1 | C4-classical-ml-practice (prereqs: C1-ml-fundamentals, F1-scientific-python, F2-vectors, F5-probability): session 3, 410 practice minutes. | 85 | 410 | No unit-review gate. |
+| 15 | S1 | C4-classical-ml-practice (prereqs: C1-ml-fundamentals, F1-scientific-python, F2-vectors, F5-probability): 145 practice minutes, 45 review minutes; then C8-embeddings (prereqs: F2-vectors, F3-matrices, F1-scientific-python): sessions 1, 2, 140 practice minutes. | 165 | 330 | C4-classical-ml-practice review gate. |
+| 16 | S1 | C8-embeddings (prereqs: F2-vectors, F3-matrices, F1-scientific-python): session 3, 360 practice minutes, 45 review minutes. | 85 | 405 | C8-embeddings review gate, Semester 1 close. |
+| 17 | S2 | C5-neural-networks (prereqs: C3-gradient-descent, F5-probability): session 1, 200 practice minutes; then F6-svd-spectral (prereqs: F3-matrices): session 1, 118 practice minutes. | 165 | 318 | No unit-review gate. |
+| 18 | S2 | C5-neural-networks (prereqs: C3-gradient-descent, F5-probability): session 2, 77 practice minutes; then F6-svd-spectral (prereqs: F3-matrices): session 2, 236 practice minutes. | 170 | 313 | No unit-review gate. |
+| 19 | S2 | C5-neural-networks (prereqs: C3-gradient-descent, F5-probability): session 3, 273 practice minutes, 45 review minutes; then C6-pytorch (prereqs: C5-neural-networks): session 1. | 165 | 318 | C5-neural-networks review gate. |
+| 20 | S2 | C6-pytorch (prereqs: C5-neural-networks): session 2, 113 practice minutes; then F6-svd-spectral (prereqs: F3-matrices): session 3, 200 practice minutes. | 170 | 313 | No unit-review gate. |
+| 21 | S2 | C6-pytorch (prereqs: C5-neural-networks): session 3, 262 practice minutes; then F6-svd-spectral (prereqs: F3-matrices): session 4, 51 practice minutes. | 170 | 313 | No unit-review gate. |
+| 22 | S2 | F6-svd-spectral (prereqs: F3-matrices): session 5, 45 review minutes; then C6-pytorch (prereqs: C5-neural-networks): 145 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): sessions 1, 2, 5 practice minutes. | 255 | 195 | F6-svd-spectral review gate. |
+| 23 | S2 | C6-pytorch (prereqs: C5-neural-networks): 45 review minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): sessions 3, 4, 235 practice minutes. | 170 | 280 | C6-pytorch review gate. |
+| 24 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): sessions 1, 2, 126 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): 146 practice minutes. | 180 | 272 | No unit-review gate. |
+| 25 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): sessions 3, 4, 129 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): 141 practice minutes. | 180 | 270 | No unit-review gate. |
+| 26 | S2 | C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): session 5, 235 practice minutes; then F7-kernels-convex-optimization (prereqs: F3-matrices, F4-multivar-calculus, F6-svd-spectral, C3-gradient-descent): 113 practice minutes, 45 review minutes. | 90 | 393 | F7-kernels-convex-optimization review gate. |
+| 27 | S2 | C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): session 1; then C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): 370 practice minutes. | 80 | 370 | No unit-review gate. |
+| 28 | S2 | C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): session 2, 120 practice minutes; then C11-neural-training (prereqs: F4-multivar-calculus, C3-gradient-descent, C5-neural-networks, C6-pytorch): 180 practice minutes, 60 review minutes. | 90 | 360 | C11-neural-training review gate. |
+| 29 | S2 | C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): session 1, 200 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): session 3, 85 practice minutes. | 170 | 285 | No unit-review gate. |
+| 30 | S2 | C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): session 2, 200 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): session 4, 85 practice minutes. | 170 | 285 | No unit-review gate. |
+| 31 | S2 | C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): session 3, 200 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): 170 practice minutes. | 85 | 370 | No unit-review gate. |
+| 32 | S2 | C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): session 4, 225 practice minutes; then C10-competition-craft (prereqs: C4-classical-ml-practice): session 1, 60 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): 45 practice minutes. | 170 | 330 | No unit-review gate. |
+| 33 | S2 | C10-competition-craft (prereqs: C4-classical-ml-practice): sessions 2, 3, 175 practice minutes; then C9-dimensionality-reduction (prereqs: F6-svd-spectral, C8-embeddings, F5-probability, C1-ml-fundamentals): 95 practice minutes, 60 review minutes. | 170 | 330 | C9-dimensionality-reduction review gate. |
+| 34 | S2 | C10-competition-craft (prereqs: C4-classical-ml-practice): session 4, 305 practice minutes; then C7-cnn-transfer (prereqs: C6-pytorch, C11-neural-training): 50 practice minutes, 60 review minutes. | 85 | 415 | C7-cnn-transfer review gate. |
+| 35 | S2 | C10-competition-craft (prereqs: C4-classical-ml-practice): 190 practice minutes, 55 review minutes; then `r1-001` mock (180 minutes); then `r1-001` debrief (60 minutes). | 240 | 245 | C10-competition-craft review gate, `r1-001` summative gate, debrief. |
+<!-- END GENERATED: weekly-table -->
 
+<!-- BEGIN GENERATED: semester-summary -->
 The verified Semester 1 columns sum to 2,545 in-class minutes + 5,370 independent minutes = 7,915 minutes.
-The verified Semester 2 columns sum to 2,435 in-class minutes + 4,657 independent minutes = 7,092 minutes, where the in-class total includes the 180-minute mock and 60-minute debrief.
 The Semester 1 average is 494.69 minutes, and its rows range from 485 to 500 minutes.
-The Semester 2 average is 472.80 minutes, and its rows range from 449 to 499 minutes.
+The verified Semester 2 columns sum to 2,975 in-class minutes + 5,975 independent minutes = 8,950 minutes.
+The Semester 2 average is 471.05 minutes, and its rows range from 450 to 500 minutes.
+<!-- END GENERATED: semester-summary -->
 
 ## 4. Milestones and assessment
 
 Every manifested unit review is a formative checkpoint at the gate shown in the table.
-The summative milestone is `r1-001` in Week 31, scored against its 300-point blueprint during its 180-minute duration and followed by the 60-minute debrief.
+<!-- BEGIN GENERATED: summative-milestone -->
+The summative milestone is `r1-001` in Week 35, scored against its 300-point blueprint during its 180-minute duration and followed by the 60-minute debrief.
+<!-- END GENERATED: summative-milestone -->
 An `r1-002` slot remains optional and is not included in the baseline table.
 If used, `r1-002` displaces 180 of Week 16's 360 C8 C-set/challenge practice minutes.
 That substitution leaves 85 lesson minutes + 180 C8 practice minutes + 45 C8 review minutes + the 180-minute optional mock = the same 490-minute week.
@@ -85,24 +100,25 @@ Prerequisite edges come from `syllabus.md` and are cross-checked against each un
 The mock duration and points come from `mocktests/r1-001/manifest.yaml`.
 The count command deliberately sums every `lesson_sessions` list and every manifested review field.
 
-<!-- Maintainer regeneration command: python3 -c 'import glob,yaml;
-ds=[yaml.safe_load(open(p)) for p in glob.glob("units/*/manifest.yaml")];
-ms=[d["estimated_minutes"] for d in ds];
-print(sum(sum(m["lesson_sessions"]) for m in ms),sum(m["practice"] for m in ms),sum(m.get("review",0) for m in ms),sum(len(d["practice"]) for d in ds),sum(len(m["lesson_sessions"]) for m in ms),len(ds))' -->
+<!-- BEGIN GENERATED: counts-output -->
+<!-- Maintainer regeneration command: uv run python -m tools.render_course_structure -->
 
 The command's captured stdout is:
 
 ```text
-4740 9237 790 383 57 17
+5280 10480 865 407 63 18
 ```
+<!-- END GENERATED: counts-output -->
 
+<!-- BEGIN GENERATED: arithmetic-output -->
 The semester and table arithmetic was captured independently as:
 
 ```text
-S1: 2545 + 5370 = 7915
-S2: 2435 + 4657 = 7092
-full: 7915 + 7092 = 15007
+S1: 7915
+S2: 8950
+full: 7915 + 8950 = 16865
 ```
+<!-- END GENERATED: arithmetic-output -->
 
 ## 6. Grading and calendar buffer
 
@@ -116,8 +132,28 @@ The optional `r1-002` follows the same buffer policy by displacing Week 16 chall
 ## 7. Prerequisite integrity
 
 Prerequisite integrity holds at session granularity.
-Within a shared week, “then” means the earlier unit's remaining practice and review finish before the later unit's first session.
-The first-instruction order is F1 (Week 1) → F2 (Week 2) → F4 (Week 4) → F3 (Week 5) → F5 (Week 6) → C1 (Week 9) → C2 (Week 10) → C3 (Week 12) → C4 (Week 13) → C8 (Week 15) → F6 (Week 17) → F7 (Week 19) → C5 (Week 21) → C6 (Week 23) → C7 (Week 25) → C9 (Week 27) → C10 (Week 29).
-This is a topological order of the shipped syllabus DAG because every listed prerequisite appears earlier in that sequence.
-F7 also finishes before C9 begins, even though F7 is not a formal C9 prerequisite, to preserve the intended mathematical systematics.
+Within a shared week, “then” records allocation order; independent units can interleave once their actual prerequisites are complete.
+<!-- BEGIN GENERATED: first-instruction -->
+| Unit | First instruction |
+|---|---:|
+| F1-scientific-python | Week 1 |
+| F2-vectors | Week 2 |
+| F4-multivar-calculus | Week 4 |
+| F3-matrices | Week 5 |
+| F5-probability | Week 6 |
+| C1-ml-fundamentals | Week 9 |
+| C2-linear-models | Week 10 |
+| C3-gradient-descent | Week 12 |
+| C4-classical-ml-practice | Week 13 |
+| C8-embeddings | Week 15 |
+| C5-neural-networks | Week 17 |
+| F6-svd-spectral | Week 17 |
+| C6-pytorch | Week 19 |
+| F7-kernels-convex-optimization | Week 22 |
+| C11-neural-training | Week 24 |
+| C9-dimensionality-reduction | Week 27 |
+| C7-cnn-transfer | Week 29 |
+| C10-competition-craft | Week 32 |
+<!-- END GENERATED: first-instruction -->
+For each actual prerequisite edge, the prerequisite's complete allocation must finish before the dependent unit's first session.
 The table repeats every unit's complete prerequisite list beside every active week so the check remains local.
