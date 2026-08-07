@@ -17,6 +17,7 @@ from tools.model import (
 )
 
 KINDS = {"lesson-session", "practice", "review", "mock", "debrief"}
+FINAL_MOCK_WEEK = 35
 
 
 def _positive_integer(value: object, label: str, errors: list[str]) -> int | None:
@@ -222,6 +223,19 @@ def _validate(
         total = sum(allocation.minutes for allocation in week.allocations)
         if enforce_calendar and not 450 <= total <= 500:
             errors.append(f"week {week.week} totals {total} minutes; requires 450-500")
+        # Week 35 is the sole exception: its required final mock and debrief replace
+        # regular instruction. Positive allocation minutes make a nonzero session
+        # count equivalent to positive lesson time.
+        if enforce_calendar and week.week < FINAL_MOCK_WEEK:
+            lesson_count = sum(
+                allocation.kind == "lesson-session"
+                for allocation in week.allocations
+            )
+            if not 1 <= lesson_count <= 3:
+                errors.append(
+                    f"week {week.week} has {lesson_count} lesson sessions; "
+                    "regular teaching weeks require 1-3"
+                )
     if enforce_calendar:
         if schedule.semester_minutes is None or schedule.declared_total_minutes is None:
             errors.append("canonical 35-week schedule requires declared totals")

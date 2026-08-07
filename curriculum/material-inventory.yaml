@@ -958,7 +958,7 @@ input_paths:
 documents:
 - path: docs/course-structure.md
   kind: document
-  semantic_sha256: f8a52022c34b6a1ed5585fa7b91e4b469e26922a8461e2fb657cc2ba641fe93e
+  semantic_sha256: 838be75b9febf48d6b49701f6bb0250b9e1ca88de06e6dc85603688a7e1306e3
 manifests:
 - path: mocktests/r1-001/manifest.yaml
   kind: yaml
@@ -8601,7 +8601,7 @@ notebooks:
   - np.zeros
 - path: units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb
   kind: notebook
-  semantic_sha256: 9605feab9aaa9028c0522837f685bd6fb0dcade3ecac3cd4d6391546ea19d760
+  semantic_sha256: dcc5956e5228402cb00933ce6f8cdedb94b1041c9790e084a03b1b19f31bc431
   anchors:
   - anchor: 'units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP
       That Learns :: cell 1'
@@ -8746,7 +8746,7 @@ notebooks:
   - value.copy
 - path: units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb
   kind: notebook
-  semantic_sha256: 18da8cc0bee47388e9e9d42cc03cc4056f78f16a07175ed7a2363735c7a9cdab
+  semantic_sha256: aea7c540275ca60862991cb3d42590e1d945b436da464868852aa4a5a188a5f8
   anchors:
   - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
       PyTorch Autograd and Optimizers :: cell 1'
@@ -8795,16 +8795,18 @@ notebooks:
     - 3. Gradient accumulation is visible state
     cell_ordinal: 2
   - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
-      PyTorch Autograd and Optimizers > 4. Optimizer ordering is a state machine :: cell 1'
+      PyTorch Autograd and Optimizers > 4. Optimizer ordering is a state machine > Worked reproducibility split :: cell 1'
     heading_path:
     - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
     - 4. Optimizer ordering is a state machine
+    - Worked reproducibility split
     cell_ordinal: 1
   - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
-      PyTorch Autograd and Optimizers > 4. Optimizer ordering is a state machine :: cell 2'
+      PyTorch Autograd and Optimizers > 4. Optimizer ordering is a state machine > Worked reproducibility split :: cell 2'
     heading_path:
     - 'C11-neural-training — Session 4: PyTorch Autograd and Optimizers'
     - 4. Optimizer ordering is a state machine
+    - Worked reproducibility split
     cell_ordinal: 2
   - anchor: 'units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4:
       PyTorch Autograd and Optimizers > 5. Optimizer state is not model parameter state :: cell 1'
@@ -8855,6 +8857,10 @@ notebooks:
   - trained-mlp
   declared_problem_ids: []
   api_tokens:
+  - adam_loss.backward
+  - adam_model.parameters
+  - adam_optimizer.step
+  - adam_optimizer.zero_grad
   - batch_loss.backward
   - batch_loss.detach
   - loss.backward
@@ -8875,11 +8881,14 @@ notebooks:
   - optimizer.step
   - optimizer.zero_grad
   - p.detach
+  - parameter.detach
   - predictions.tolist
+  - reference_model.named_parameters
   - residual.detach
   - residual.square
   - self.hidden
   - self.output
+  - torch.Generator
   - torch.allclose
   - torch.equal
   - torch.isfinite
@@ -8888,6 +8897,7 @@ notebooks:
   - torch.no_grad
   - torch.optim.Adam
   - torch.optim.SGD
+  - torch.randn
   - torch.relu
   - torch.set_default_dtype
   - torch.tensor
@@ -9250,7 +9260,7 @@ notebooks:
   - np.full_like
 - path: units/C11-neural-training/practice/p04.ipynb
   kind: notebook
-  semantic_sha256: bfb73e8862b81077671f96394997d1d85023725a69aefc93d61bae70fd6d7f21
+  semantic_sha256: 7a34ac77c2c0726a88225fa1836ce610c3f34542cf45062c8fc39b43d5f3b065
   anchors:
   - anchor: 'units/C11-neural-training/practice/p04.ipynb :: C11-neural-training — Practice p04 :: cell 1'
     heading_path:
@@ -9269,7 +9279,7 @@ notebooks:
   api_tokens: []
 - path: units/C11-neural-training/practice/p04_solution.ipynb
   kind: notebook
-  semantic_sha256: 81ae6df00146ee97ee131fa43eb95edd41b86fb42204a5722e669f0e7b5babed
+  semantic_sha256: dbc756cfc11d408d61b5a327ef4df234e96394a50110bc7798d2e6f61b67ca5e
   anchors:
   - anchor: 'units/C11-neural-training/practice/p04_solution.ipynb :: C11-neural-training — Practice p04 — Solution :: cell
       1'
@@ -9333,7 +9343,7 @@ notebooks:
   - np.array
 - path: units/C11-neural-training/practice/p05_solution.ipynb
   kind: notebook
-  semantic_sha256: ab0adf8b235a5f809982a52d4460e24a0e75ff4ba91689a6b4be67be46ecb8e2
+  semantic_sha256: 0eda5d278bc801a709c6fabffd4f3b5f610a3f532974f0ea91f248ab5248126b
   anchors:
   - anchor: 'units/C11-neural-training/practice/p05_solution.ipynb :: C11-neural-training — Practice p05 — Solution :: cell
       1'
@@ -9381,7 +9391,7 @@ notebooks:
   - np.exp
   - np.isfinite
   - numerators.sum
-  - prob_p05.sum
+  - probs_p05.sum
   - values.max
 - path: units/C11-neural-training/practice/p06.ipynb
   kind: notebook
@@ -9405,7 +9415,7 @@ notebooks:
   - np.array
 - path: units/C11-neural-training/practice/p06_solution.ipynb
   kind: notebook
-  semantic_sha256: 3790143dc16bad3d762869d2c4fadd146f5b65fbb48bb0945411b5df036821b8
+  semantic_sha256: af698a8e5aff64778622adaf4da3c9d7d27f11d678ff4ad682235bf37d3d90c5
   anchors:
   - anchor: 'units/C11-neural-training/practice/p06_solution.ipynb :: C11-neural-training — Practice p06 — Solution :: cell
       1'
@@ -9482,7 +9492,7 @@ notebooks:
   - np.array
 - path: units/C11-neural-training/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: f2fbe7fae2307c988cf783e5d176765d5f1dbe08bce12bff1a6e48292526107a
+  semantic_sha256: 7039358ced3ae6a687e8b9d86f5a3c836543e6870d3b45de66eea3877775ed19
   anchors:
   - anchor: 'units/C11-neural-training/practice/p07_solution.ipynb :: C11-neural-training — Practice p07 — Solution :: cell
       1'
@@ -9537,8 +9547,6 @@ notebooks:
   - np.linalg.norm
   - np.maximum
   - np.mean
-  - params_p07.items
-  - v.copy
 - path: units/C11-neural-training/practice/p08.ipynb
   kind: notebook
   semantic_sha256: 581899364bbbbd11b2b6fdab6dde66926e2bfc3fa75e7596342331bd849d61a3
@@ -9564,7 +9572,7 @@ notebooks:
   - torch.tensor
 - path: units/C11-neural-training/practice/p08_solution.ipynb
   kind: notebook
-  semantic_sha256: 8ba8d8f30f158a2a88d6077d5faabeb5898ff3d2accd1a1224db3210dde05a15
+  semantic_sha256: 349a227cc138d0177f49904ffcb0375b53e33b193c36312b831c71ef8e4e4058
   anchors:
   - anchor: 'units/C11-neural-training/practice/p08_solution.ipynb :: C11-neural-training — Practice p08 — Solution :: cell
       1'
@@ -9644,7 +9652,7 @@ notebooks:
   - np.array
 - path: units/C11-neural-training/practice/p09_solution.ipynb
   kind: notebook
-  semantic_sha256: 4d25fb23ee1f8d8450304b678b91ecdd45678d088ad49b82a7e36bcfdd45bfe5
+  semantic_sha256: 94d02ffd505d0044314e07335357296122c6f0512e9cb0bba438f5f2b139b598
   anchors:
   - anchor: 'units/C11-neural-training/practice/p09_solution.ipynb :: C11-neural-training — Practice p09 — Solution :: cell
       1'
@@ -9685,21 +9693,17 @@ notebooks:
   declared_problem_ids:
   - C11-p09
   api_tokens:
-  - X_p09.copy
   - Xv.mean
-  - a.copy
   - np.allclose
   - np.array
   - np.array_equal
   - np.asarray
   - np.mean
-  - np.ones
   - np.sqrt
   - np.sum
-  - np.zeros
 - path: units/C11-neural-training/practice/p10.ipynb
   kind: notebook
-  semantic_sha256: d1a15a1a554fd240270e40c3afdfa422b7a8868eb07785b9746bc5510a5df8d8
+  semantic_sha256: 71d50442ffd7225e8dac2a40ccd08a1769c0890c03147fd5078326317ef437a9
   anchors:
   - anchor: 'units/C11-neural-training/practice/p10.ipynb :: C11-neural-training — Practice p10 :: cell 1'
     heading_path:
@@ -9716,11 +9720,12 @@ notebooks:
   declared_problem_ids:
   - C11-p10
   api_tokens:
+  - torch.abs
   - torch.linspace
   - torch.set_default_dtype
 - path: units/C11-neural-training/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: 41aaa02d57e3e2836eaa7d70ac4ddbd1a73ef7488d307de4f59e11031efae00f
+  semantic_sha256: 0025383dd8d45c0596d29e59fa97e9ca177097ccf1db1035df1058762fe5c014
   anchors:
   - anchor: 'units/C11-neural-training/practice/p10_solution.ipynb :: C11-neural-training — Practice p10 — Solution :: cell
       1'
@@ -9764,13 +9769,14 @@ notebooks:
   - drop.eval
   - drop.train
   - nn.Dropout
+  - torch.abs
   - torch.all
   - torch.allclose
-  - torch.arange
   - torch.equal
   - torch.isclose
+  - torch.linspace
   - torch.manual_seed
-  - torch.tensor
+  - torch.set_default_dtype
   - v.detach
   - x.detach
 - path: units/C11-neural-training/practice/p11.ipynb
@@ -10012,7 +10018,7 @@ notebooks:
   - np.array
 - path: units/C11-neural-training/practice/p14_solution.ipynb
   kind: notebook
-  semantic_sha256: 056e75e74c00507c62c45c6ab999f6ea36dfaf4a1cf8742382661d1949a0a824
+  semantic_sha256: 0a778381bdbef70dc6128e07c31451fa3845174623c4b984310edee0413b74a8
   anchors:
   - anchor: 'units/C11-neural-training/practice/p14_solution.ipynb :: C11-neural-training — Practice p14 — Solution :: cell
       1'
@@ -10100,7 +10106,7 @@ notebooks:
   api_tokens: []
 - path: units/C11-neural-training/practice/p15_solution.ipynb
   kind: notebook
-  semantic_sha256: 3ddb467dd92e9b73fa95e391c34bf5f18d7b515e4996b96130888caf2b51bbb2
+  semantic_sha256: fb27db6d574c93a1ec99d8ae907137fca602afec030ac90151ddaa846f6dc9c1
   anchors:
   - anchor: 'units/C11-neural-training/practice/p15_solution.ipynb :: C11-neural-training — Practice p15 — Solution :: cell
       1'
@@ -10207,7 +10213,7 @@ notebooks:
   - torch.set_default_dtype
 - path: units/C11-neural-training/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 54012398b4dd8e3670419dab7672d65c5c3413c09a886f43cbb4f32ce8818323
+  semantic_sha256: 4cf32607285cc58380e7958d49abe8224a4cd041e9fd6d79baade65eb789f595
   anchors:
   - anchor: 'units/C11-neural-training/practice/p16_solution.ipynb :: C11-neural-training — Practice p16 — Solution :: cell
       1'
@@ -10253,6 +10259,7 @@ notebooks:
   - loss.backward
   - loss.detach
   - losses.detach
+  - model.eval
   - model.parameters
   - nn.CrossEntropyLoss
   - nn.Linear
@@ -10270,6 +10277,7 @@ notebooks:
   - torch.isfinite
   - torch.linalg.vector_norm
   - torch.manual_seed
+  - torch.no_grad
   - torch.optim.Adam
   - torch.set_default_dtype
   - torch.tensor
@@ -10602,7 +10610,7 @@ notebooks:
   - rng_p21.normal
 - path: units/C11-neural-training/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: 042ca76ed62ba4e9fc56e4581b11f6655e9896f1d00b0426b8aa2e5b8423eab1
+  semantic_sha256: 79f54ccb4c45c59d0f3f7acf08ce6d645eee6c1d12496bf97a675314a715e8f0
   anchors:
   - anchor: 'units/C11-neural-training/practice/p21_solution.ipynb :: C11-neural-training — Practice p21 — Solution :: cell
       1'
@@ -10652,6 +10660,7 @@ notebooks:
   - np.asarray
   - np.empty
   - np.exp
+  - np.isclose
   - np.isfinite
   - np.log
   - np.mean
@@ -25576,7 +25585,7 @@ notebooks:
   api_tokens: []
 - path: units/C7-cnn-transfer/practice/p26.ipynb
   kind: notebook
-  semantic_sha256: a50196a61c2a92dd9fbd3f1a1db8ad55ab7392440a572a9fb2ae6a04f2a5b03e
+  semantic_sha256: 821e297162a7e4dd705bfeb8ddeb00486fdd0c82f119f2a64dad7de382119b7a
   anchors:
   - anchor: 'units/C7-cnn-transfer/practice/p26.ipynb :: C7-cnn-transfer — Practice p26 > Part II — helper-led construction
       and training (11 points) :: cell 1'

@@ -128,6 +128,25 @@ def _check_after(root: Path, mutate: Callable[[dict[str, Any]], None]):
     return _schedule_checker().check_schedule(root)
 
 
+def _set_unit_minutes(
+    root: Path,
+    unit: str,
+    *,
+    lesson_sessions: list[int],
+    practice: int,
+    review: int,
+) -> None:
+    path = root / "units" / unit / "manifest.yaml"
+    manifest = yaml.safe_load(path.read_text())
+    manifest["estimated_minutes"] = {
+        "lesson": sum(lesson_sessions),
+        "lesson_sessions": lesson_sessions,
+        "practice": practice,
+        "review": review,
+    }
+    _write_yaml(path, manifest)
+
+
 def _write_region_document(root: Path) -> str:
     human_sections = [
         "# Fixture course\n\nHuman optional-mock policy.\n\n",
@@ -335,6 +354,68 @@ def test_schedule_checker_accepts_a_fully_allocated_prerequisite_valid_fixture(
     assert report.ok, report.errors
 
 
+def test_schedule_checker_rejects_a_regular_week_without_instruction(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    week = schedule["weeks"][16]
+    week["allocations"].pop(0)
+    week["allocations"][0]["minutes"] = 400
+    _set_unit_minutes(
+        tmp_path,
+        "U17",
+        lesson_sessions=[],
+        practice=400,
+        review=50,
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "week 17 has 0 lesson sessions; regular teaching weeks require 1-3"
+        in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_schedule_checker_rejects_more_than_three_lesson_sessions_in_a_week(
+    tmp_path: Path,
+) -> None:
+    schedule = _build_schedule_fixture(tmp_path)
+    week = schedule["weeks"][16]
+    week["allocations"][1]["minutes"] = 40
+    week["allocations"][2]["minutes"] = 10
+    for session in range(2, 5):
+        week["allocations"].insert(
+            session - 1,
+            {
+                "kind": "lesson-session",
+                "unit": "U17",
+                "session": session,
+                "minutes": 100,
+            },
+        )
+    _set_unit_minutes(
+        tmp_path,
+        "U17",
+        lesson_sessions=[100, 100, 100, 100],
+        practice=40,
+        review=10,
+    )
+    _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
+
+    report = _schedule_checker().check_schedule(tmp_path)
+
+    assert not report.ok
+    assert any(
+        "week 17 has 4 lesson sessions; regular teaching weeks require 1-3"
+        in error
+        for error in report.errors
+    ), report.errors
+
+
 def test_course_renderer_preserves_all_bytes_outside_generated_regions(
     tmp_path: Path,
 ) -> None:
@@ -449,6 +530,12 @@ def test_real_schedule_has_exact_plan017_calendar_and_complete_allocation() -> N
     assert sum(totals[:16]) == 7915
     assert sum(totals[16:]) == 8950
     assert sum(totals) == 16865
+    lesson_counts = [
+        sum(allocation["kind"] == "lesson-session" for allocation in week["allocations"])
+        for week in weeks
+    ]
+    assert all(1 <= count <= 3 for count in lesson_counts[:-1])
+    assert lesson_counts[-1] == 0
 
     manifested = sum(
         allocation["minutes"]
@@ -472,6 +559,20 @@ def test_real_schedule_has_exact_plan017_calendar_and_complete_allocation() -> N
     ]
     assert c11_weeks and c7_weeks
     assert max(c11_weeks) < min(c7_weeks)
+    assert [
+        week["week"]
+        for week in weeks
+        for allocation in week["allocations"]
+        if allocation["kind"] == "lesson-session"
+        and allocation.get("unit") == "C11-neural-training"
+    ] == [24, 25, 26, 27, 28]
+    assert [
+        week["week"]
+        for week in weeks
+        for allocation in week["allocations"]
+        if allocation["kind"] == "lesson-session"
+        and allocation.get("unit") == "C7-cnn-transfer"
+    ] == [29, 30, 31, 32]
     assert [row["kind"] for row in weeks[-1]["allocations"][-2:]] == ["mock", "debrief"]
     assert weeks[-1]["allocations"][-2]["test"] == "r1-001"
     assert weeks[-1]["allocations"][-2]["minutes"] == 180
