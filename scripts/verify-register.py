@@ -31,6 +31,15 @@ REGISTER_UNITS = (
 )
 # Tests may override this inventory; normal runs discover every unit manifest.
 UNITS: tuple[str, ...] | None = None
+# C7 has no honest historical per-problem minute data. A future capstone budget change must
+# update both the student-facing statement and this explicit exception map. Unlike C11's
+# manifest-driven budgets, these four values intentionally remain literal and closed-world.
+C7_BUDGET_REGISTER = {
+    "C7-p10": 75,
+    "C7-p24": 75,
+    "C7-p26": 75,
+    "C7-p27": 75,
+}
 TYPE_LABELS = {
     "mc": "multiple choice",
     "mc-multipart": "multiple choice (multipart)",
@@ -91,7 +100,7 @@ def _type_matches(actual: str, type_label: str, raw_type: str) -> bool:
     """
     allowed = TYPE_GLOSSES.get(raw_type, NO_GLOSS)
     for prefix in (type_label, raw_type):
-        if actual.startswith(prefix) and actual[len(prefix):] in allowed:
+        if actual.startswith(prefix) and actual[len(prefix) :] in allowed:
             return True
     return False
 
@@ -125,12 +134,7 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
     # down. Absence stays legal — 328 of 343 solutions carry no header — but a header anywhere
     # is checked.
     header = next(
-        (
-            line
-            for cell in markdown
-            for line in cell.splitlines()
-            if line.startswith("**Type:**")
-        ),
+        (line for cell in markdown for line in cell.splitlines() if line.startswith("**Type:**")),
         None,
     )
     if header is None:
@@ -224,8 +228,13 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
         minutes = problem.get("minutes")
         budgets = re.findall(r"(?m)^\*\*Time budget:\*\* ([1-9]\d*) minutes$", all_markdown)
         if budgets != [str(minutes)]:
+            errors.append(f"time budget is missing or does not match manifest minutes {minutes}")
+    elif unit == "C7-cnn-transfer" and problem["id"] in C7_BUDGET_REGISTER:
+        minutes = C7_BUDGET_REGISTER[problem["id"]]
+        budgets = re.findall(r"(?m)^\*\*Time budget:\*\* ([1-9]\d*) minutes$", all_markdown)
+        if budgets != [str(minutes)]:
             errors.append(
-                f"time budget is missing or does not match manifest minutes {minutes}"
+                f"time budget is missing or does not match literal register minutes {minutes}"
             )
 
     for match in BOLD_BAN_RE.finditer(all_markdown):
@@ -251,6 +260,31 @@ def main(argv: list[str] | None = None) -> int:
     for unit in units:
         manifest_path = ROOT / "units" / unit / "manifest.yaml"
         manifest = yaml.safe_load(manifest_path.read_text())
+        if unit == "C7-cnn-transfer":
+            expected_c7_budgets = {
+                "C7-p10": 75,
+                "C7-p24": 75,
+                "C7-p26": 75,
+                "C7-p27": 75,
+            }
+            if C7_BUDGET_REGISTER != expected_c7_budgets:
+                failures.append(
+                    "C7-budget-register: C7 budget register must be exactly "
+                    "{C7-p10: 75, C7-p24: 75, C7-p26: 75, C7-p27: 75}"
+                )
+            manifest_ids = [problem.get("id") for problem in manifest.get("practice", [])]
+            for required_id in expected_c7_budgets:
+                count = manifest_ids.count(required_id)
+                if count == 0:
+                    failures.append(
+                        "C7-budget-register: C7 budget register required id "
+                        f"{required_id} is missing from manifest"
+                    )
+                elif count > 1:
+                    failures.append(
+                        "C7-budget-register: C7 budget register required id "
+                        f"{required_id} occurs {count} times in manifest"
+                    )
         for problem in manifest["practice"]:
             checked += 1
             failures.extend(_check_problem(unit, problem))

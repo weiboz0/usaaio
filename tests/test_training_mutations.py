@@ -60,6 +60,7 @@ def _write_notebook(path: Path, target_source: str) -> None:
                 "cells": [
                     {
                         "cell_type": "code",
+                        "id": "mutation-target",
                         "execution_count": None,
                         "metadata": {},
                         "outputs": [],
@@ -67,6 +68,7 @@ def _write_notebook(path: Path, target_source: str) -> None:
                     },
                     {
                         "cell_type": "code",
+                        "id": "answer-check",
                         "execution_count": None,
                         "metadata": {},
                         "outputs": [],
@@ -114,6 +116,22 @@ def test_permanent_registry_has_the_exact_five_real_notebook_mutations() -> None
     ]
 
     assert actual == EXPECTED_MUTATIONS
+
+
+def test_each_real_mutation_source_contract_resolves_exactly_once() -> None:
+    module = _mutation_module()
+    root = Path(__file__).resolve().parents[1]
+
+    for mutation in module.MUTATIONS:
+        notebook = json.loads((root / mutation.notebook).read_text())
+        code_sources = [
+            "".join(cell.get("source", ""))
+            for cell in notebook["cells"]
+            if cell["cell_type"] == "code"
+        ]
+        assert sum(source.count(mutation.target_marker) for source in code_sources) == 1
+        assert sum(source.count(mutation.search) for source in code_sources) == 1
+        assert sum(source.count(mutation.expected_failure_marker) for source in code_sources) == 1
 
 
 def test_mutation_runner_rejects_a_zero_match_target(tmp_path: Path) -> None:
@@ -172,6 +190,46 @@ def test_mutation_runner_rejects_duplicate_target_markers_even_when_search_match
     with pytest.raises(
         module.MutationVerificationError,
         match="target marker matched 2 source locations",
+    ):
+        module.run_mutation(tmp_path, spec)
+
+
+def test_mutation_runner_rejects_a_missing_expected_failure_marker(tmp_path: Path) -> None:
+    module = _mutation_module()
+    notebook = tmp_path / "fixture" / "solution.ipynb"
+    _write_notebook(notebook, "value = 1  # MUTATION_TARGET\n")
+    payload = json.loads(notebook.read_text())
+    payload["cells"][1]["source"] = "assert value == 1\n"
+    notebook.write_text(json.dumps(payload))
+    spec = _spec(
+        module,
+        search="value = 1  # MUTATION_TARGET",
+        replacement="value = 2  # MUTATION_TARGET",
+    )
+
+    with pytest.raises(
+        module.MutationVerificationError,
+        match="expected failure marker matched 0 source locations",
+    ):
+        module.run_mutation(tmp_path, spec)
+
+
+def test_mutation_runner_rejects_duplicate_expected_failure_markers(tmp_path: Path) -> None:
+    module = _mutation_module()
+    notebook = tmp_path / "fixture" / "solution.ipynb"
+    _write_notebook(notebook, "value = 1  # MUTATION_TARGET\n")
+    payload = json.loads(notebook.read_text())
+    payload["cells"][1]["source"] += "# ANSWER_CHECK\n"
+    notebook.write_text(json.dumps(payload))
+    spec = _spec(
+        module,
+        search="value = 1  # MUTATION_TARGET",
+        replacement="value = 2  # MUTATION_TARGET",
+    )
+
+    with pytest.raises(
+        module.MutationVerificationError,
+        match="expected failure marker matched 2 source locations",
     ):
         module.run_mutation(tmp_path, spec)
 

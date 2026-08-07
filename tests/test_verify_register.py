@@ -117,6 +117,7 @@ def test_main_accepts_any_registered_problem_count(tmp_path, monkeypatch, capsys
 # --- enumerated set of house glosses; two earlier, more permissive forms of this check each
 # --- let drift through and were caught at the gate.
 
+
 def test_type_gloss_allowlist_accepts_house_forms():
     assert verify_register._type_matches("scenario analysis", "scenario analysis", "scenario")
     assert verify_register._type_matches("scenario", "scenario analysis", "scenario")
@@ -561,3 +562,128 @@ def test_full_mode_reports_missing_statement_and_solution_without_traceback(
     output = capsys.readouterr().out
     assert "C11-p01: statement path does not exist" in output
     assert "C11-p01: solution_path does not exist" in output
+
+
+C7_BUDGET_IDS = ("C7-p10", "C7-p24", "C7-p26", "C7-p27")
+
+
+def c7_budget_problem(root: Path, problem_id: str, *, budget_line: str) -> dict:
+    practice_number = problem_id.removeprefix("C7-")
+    unit = "C7-cnn-transfer"
+    relative = f"practice/{practice_number}.ipynb"
+    path = root / "units" / unit / relative
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "markdown",
+                        "source": (
+                            f"# {unit} — Practice {practice_number}\n\n"
+                            "**Type:** scenario analysis · **Difficulty:** core "
+                            "· **Concepts:** cnn-training\n\n"
+                            f"{budget_line}\n\nPrompt."
+                        ),
+                    }
+                ],
+                "metadata": {},
+                "nbformat": 4,
+                "nbformat_minor": 5,
+            }
+        )
+    )
+    return {
+        "id": problem_id,
+        "path": relative,
+        "type": "scenario",
+        "difficulty": "core",
+        "concepts": ["cnn-training"],
+    }
+
+
+def test_c7_budget_register_is_the_exact_literal_exception_map():
+    assert verify_register.C7_BUDGET_REGISTER == {
+        "C7-p10": 75,
+        "C7-p24": 75,
+        "C7-p26": 75,
+        "C7-p27": 75,
+    }
+
+
+@pytest.mark.parametrize("problem_id", C7_BUDGET_IDS)
+def test_c7_registered_capstone_requires_exact_body_budget(tmp_path, monkeypatch, problem_id):
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    problem = c7_budget_problem(
+        tmp_path,
+        problem_id,
+        budget_line="**Time budget:** 75 minutes",
+    )
+    assert verify_register._check_problem("C7-cnn-transfer", problem) == []
+
+    c7_budget_problem(tmp_path, problem_id, budget_line="**Time budget:** 70 minutes")
+    assert verify_register._check_problem("C7-cnn-transfer", problem) == [
+        f"{problem_id}: time budget is missing or does not match literal register minutes 75"
+    ]
+
+    c7_budget_problem(tmp_path, problem_id, budget_line="Prompt without a budget.")
+    assert verify_register._check_problem("C7-cnn-transfer", problem) == [
+        f"{problem_id}: time budget is missing or does not match literal register minutes 75"
+    ]
+
+
+def test_c7_main_fails_closed_when_required_budget_id_is_missing(tmp_path, monkeypatch, capsys):
+    unit = "C7-cnn-transfer"
+    problems = [
+        c7_budget_problem(
+            tmp_path,
+            problem_id,
+            budget_line="**Time budget:** 75 minutes",
+        )
+        for problem_id in C7_BUDGET_IDS[:-1]
+    ]
+    manifest_path = tmp_path / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump({"practice": problems}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", (unit,))
+
+    assert verify_register.main(["--statements-only"]) == 1
+    assert (
+        "C7 budget register required id C7-p27 is missing from manifest" in capsys.readouterr().out
+    )
+
+
+@pytest.mark.parametrize(
+    "bad_register",
+    [
+        {"C7-p10": 75, "C7-p24": 75, "C7-p26": 75},
+        {"C7-p10": 75, "C7-p24": 75, "C7-p26": 75, "C7-p27": 70},
+        {
+            "C7-p10": 75,
+            "C7-p24": 75,
+            "C7-p26": 75,
+            "C7-p27": 75,
+            "C7-p28": 75,
+        },
+    ],
+)
+def test_c7_main_fails_closed_when_literal_register_shape_drifts(
+    tmp_path, monkeypatch, capsys, bad_register
+):
+    unit = "C7-cnn-transfer"
+    problems = [
+        c7_budget_problem(
+            tmp_path,
+            problem_id,
+            budget_line="**Time budget:** 75 minutes",
+        )
+        for problem_id in C7_BUDGET_IDS
+    ]
+    manifest_path = tmp_path / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump({"practice": problems}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", (unit,))
+    monkeypatch.setattr(verify_register, "C7_BUDGET_REGISTER", bad_register)
+
+    assert verify_register.main(["--statements-only"]) == 1
+    assert "C7 budget register must be exactly" in capsys.readouterr().out
