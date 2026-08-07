@@ -123,6 +123,7 @@ def test_each_real_mutation_source_contract_resolves_exactly_once() -> None:
     root = Path(__file__).resolve().parents[1]
 
     for mutation in module.MUTATIONS:
+        assert mutation.target_marker in mutation.search
         notebook = json.loads((root / mutation.notebook).read_text())
         code_sources = [
             "".join(cell.get("source", ""))
@@ -138,7 +139,11 @@ def test_mutation_runner_rejects_a_zero_match_target(tmp_path: Path) -> None:
     module = _mutation_module()
     notebook = tmp_path / "fixture" / "solution.ipynb"
     _write_notebook(notebook, "value = 1  # MUTATION_TARGET\n")
-    spec = _spec(module, search="missing target", replacement="value = 2")
+    spec = _spec(
+        module,
+        search="missing value  # MUTATION_TARGET",
+        replacement="value = 2  # MUTATION_TARGET",
+    )
 
     with pytest.raises(module.MutationVerificationError, match="matched 0 source locations"):
         module.run_mutation(tmp_path, spec)
@@ -161,7 +166,7 @@ def test_mutation_runner_rejects_a_multiple_match_target(tmp_path: Path) -> None
         module.run_mutation(tmp_path, spec)
 
 
-def test_mutation_runner_rejects_a_missing_target_marker_even_when_search_matches(
+def test_mutation_runner_rejects_search_that_does_not_contain_target_marker(
     tmp_path: Path,
 ) -> None:
     module = _mutation_module()
@@ -169,10 +174,7 @@ def test_mutation_runner_rejects_a_missing_target_marker_even_when_search_matche
     _write_notebook(notebook, "value = 1\n")
     spec = _spec(module, search="value = 1", replacement="value = 2")
 
-    with pytest.raises(
-        module.MutationVerificationError,
-        match="target marker matched 0 source locations",
-    ):
+    with pytest.raises(module.MutationVerificationError, match="must be contained in search"):
         module.run_mutation(tmp_path, spec)
 
 
@@ -183,13 +185,45 @@ def test_mutation_runner_rejects_duplicate_target_markers_even_when_search_match
     notebook = tmp_path / "fixture" / "solution.ipynb"
     _write_notebook(
         notebook,
-        "# MUTATION_TARGET\nvalue = 1\n# MUTATION_TARGET\n",
+        "value = 1  # MUTATION_TARGET\n# MUTATION_TARGET\n",
     )
-    spec = _spec(module, search="value = 1", replacement="value = 2")
+    spec = _spec(
+        module,
+        search="value = 1  # MUTATION_TARGET",
+        replacement="value = 2  # MUTATION_TARGET",
+    )
 
     with pytest.raises(
         module.MutationVerificationError,
         match="target marker matched 2 source locations",
+    ):
+        module.run_mutation(tmp_path, spec)
+
+
+def test_mutation_runner_rejects_unique_marker_and_search_in_separate_code_cells(
+    tmp_path: Path,
+) -> None:
+    module = _mutation_module()
+    notebook = tmp_path / "fixture" / "solution.ipynb"
+    _write_notebook(notebook, "# MUTATION_TARGET\n")
+    payload = json.loads(notebook.read_text())
+    payload["cells"].insert(
+        1,
+        {
+            "cell_type": "code",
+            "id": "separate-search",
+            "execution_count": None,
+            "metadata": {},
+            "outputs": [],
+            "source": "value = 1\n",
+        },
+    )
+    notebook.write_text(json.dumps(payload))
+    spec = _spec(module, search="value = 1", replacement="value = 2")
+
+    with pytest.raises(
+        module.MutationVerificationError,
+        match="target marker must be contained in search",
     ):
         module.run_mutation(tmp_path, spec)
 

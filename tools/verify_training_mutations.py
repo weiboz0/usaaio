@@ -197,11 +197,24 @@ def run_mutation(root: Path, spec: MutationSpec) -> MutationResult:
     notebook_path = root / spec.notebook
     if not notebook_path.is_file():
         raise MutationVerificationError(f"{spec.id}: notebook does not exist: {spec.notebook}")
+    if spec.target_marker not in spec.search:
+        raise MutationVerificationError(f"{spec.id}: target marker must be contained in search")
 
     notebook = nbformat.read(notebook_path, as_version=4)
     sources = _code_sources(notebook)
-    _require_one_source_match(sources, spec.target_marker, "target marker", spec.id)
     search_cell = _require_one_source_match(sources, spec.search, "search", spec.id)
+    target_cell = _require_one_source_match(sources, spec.target_marker, "target marker", spec.id)
+    if target_cell != search_cell:
+        raise MutationVerificationError(
+            f"{spec.id}: target marker and search resolved to different code cells"
+        )
+    bound_source = str(notebook.cells[search_cell].source)
+    search_start = bound_source.index(spec.search)
+    marker_start = bound_source.index(spec.target_marker)
+    if not search_start <= marker_start < search_start + len(spec.search):
+        raise MutationVerificationError(
+            f"{spec.id}: target marker is not bound to the registered search occurrence"
+        )
     expected_cell = _require_one_source_match(
         sources,
         spec.expected_failure_marker,
