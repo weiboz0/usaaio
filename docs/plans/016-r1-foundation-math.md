@@ -820,9 +820,12 @@ the 180-minute mock and 60-minute debrief.
 - The one focused `MissingIDFieldWarning` is location-deduplicated from pre-existing out-of-scope
   notebooks; warning-strict validation of the 20 changed F7 solutions is clean.
 - No fallback cell execution is counted as shipping evidence.
-- The final uninterrupted clean-commit `scripts/ci-local.sh` run is the remaining delivery step;
-  its exact result will replace this sentence before push, followed by the required repeat on the
-  final report commit.
+- From clean commit `729625c`, the uninterrupted `scripts/ci-local.sh` run passed Ruff, 324 tests,
+  fresh execution of all 388 solution notebooks and all 91 lesson/review/overview notebooks,
+  answer-check permanence for all 383 unit solutions, register verification 383/383, current
+  inventory evidence, prerequisite/coverage/scope/overlap checks, the mock-test PDF build, and
+  `pre-merge-guard`, ending with `ci-local: ALL GREEN`.
+  The same full gate will be repeated from the final report commit before push.
 
 ### Review, divergence, and shipping state
 
@@ -835,4 +838,4 @@ the 180-minute mock and 60-minute debrief.
   They do not change the pinned curriculum ownership, schedule, answer keys, or plan scope.
 - The C10-p18 raw/bounded searches selecting the same `k=11` is the sole explicit WONTFIX and is
   upheld independently by self, Opus, and GLM as non-blocking.
-- PR creation, PR-aware guard, and squash merge remain after the final clean-commit verification.
+- PR creation, PR-aware guard, and squash merge remain after the final report-commit verification.
