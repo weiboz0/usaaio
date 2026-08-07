@@ -87,23 +87,26 @@ table/document from that data so CI checks the calendar rather than trusting pro
 ## Pinned problem contract
 
 Every C11 statement names its time budget and grades every concept tag.
-Set A fundamentals are p01, p02, p03, p05, p06, p07, p09, and p10.
-Set B exam-register problems are p04, p08, and p11–p13.
+Set A fundamentals are p01, p02, p03, p05, and p07–p10.
+Set B exam-register problems are p04, p06, and p11–p13.
 Set C integration/scenario/challenge problems are p14–p24.
-Every owned concept has an answer-affecting Set A encounter: p01/p05 cover softmax, p02/p06
-cross-entropy, p03/p07 manual backpropagation, p03 autograd and optimizer lifecycle, p07 a
-manual trained-MLP update, p09 BatchNorm, and p10 dropout.
+Every owned concept has an answer-affecting Set A encounter: p01/p05 cover softmax, p02
+cross-entropy, p03/p07 manual backpropagation, p08 separately checks an autograd gradient and an
+optimizer-driven parameter update, p07 checks a manual trained-MLP update, p09 BatchNorm, and p10
+dropout.
+Set membership is the concept-encounter progression and is orthogonal to the informational
+intro/core/advanced difficulty tag.
 
 | Ids | Type | Difficulty | Minutes each | Primary concept contract |
 |---|---|---|---:|---|
 | p01 | MC, five options | intro | 15 | stable softmax and shift invariance |
 | p02 | MC, five options | intro | 15 | cross-entropy / negative log likelihood |
-| p03 | MC, five options | intro | 15 | manual/autograd/optimizer dependency order and gradient shape |
+| p03 | MC, five options | intro | 15 | manual-backpropagation dependency order and gradient shape |
 | p04 | numeric MC normal form, five options | intro | 15 | inverted-dropout expectation ratio as a reduced signed fraction with gcd constraint |
 | p05 | constrained coding | intro | 25 | stable NumPy softmax |
 | p06 | constrained coding | intro | 25 | categorical cross-entropy from logits via log-sum-exp |
 | p07 | constrained coding | core | 35 | manual local gradients, accumulation, and one certified MLP update |
-| p08 | constrained coding | core | 35 | autograd gradients against hand values |
+| p08 | constrained coding | core | 35 | autograd gradient against a hand value plus a separately certified optimizer update |
 | p09 | constrained coding | core | 35 | BatchNorm forward implementation with batch/running statistics and affine parameters |
 | p10 | constrained coding | core | 35 | inverted-dropout implementation with deterministic train/eval behavior |
 | p11 | proof/derivation | core | 40 | softmax Jacobian and fused CE gradient |
@@ -124,15 +127,16 @@ manual trained-MLP update, p09 BatchNorm, and p10 dropout.
 The table totals exactly 1,040 practice minutes.
 The 6/12/6 intro/core/advanced split is 25%/50%/25%, within the unit standard's deliberately
 rough 30%/45%/25% target.
-The five-point core excess keeps implementation/derivation prerequisites in the middle band and
-avoids misclassifying a 35-minute gradient implementation as intro or pushing it into challenge.
+The matching five-point intro deficit/core excess keeps implementation/derivation prerequisites
+in the middle band and avoids misclassifying a 35-minute gradient implementation as intro or
+pushing it into challenge.
 The minimum honest coverage sets are:
 
 - `softmax`: p01, p05, p11, p14, p21;
 - `cross-entropy-loss`: p02, p06, p11, p14, p21;
 - `manual-backpropagation`: p03, p07, p12, p15, p22;
-- `autograd-training`: p03, p08, p16, p19, p23;
-- `torch-optimizers`: p03, p16, p19, p23, p24;
+- `autograd-training`: p08, p16, p19, p23;
+- `torch-optimizers`: p08, p16, p19, p23, p24;
 - `trained-mlp`: p07, p15, p17, p20, p23, p24;
 - `batch-normalization`: p09, p13, p18, p20, p24;
 - `dropout`: p04, p10, p18, p20, p24.
@@ -258,6 +262,7 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 - `TODO.md`
 - `tests/test_integration.py`
 - `scripts/verify-register.py`
+- `tests/test_verify_register.py`
 
 ### Work
 
@@ -293,9 +298,10 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 7. Extend `scripts/verify-register.py`'s permanent register to C11.
    Require p01–p04 to expose exactly five labeled options A–E and the reasoning flag, require every
    C11 statement to carry a body line `**Time budget:** <minutes> minutes` matching its manifest
-   value, and require the same 75-minute body line in the four changed C7 statements.
-   Keep the existing metadata header schema exactly `{Type, Difficulty, Concepts}`; time is not a
-   fourth header field.
+   value, and keep the existing metadata header schema exactly `{Type, Difficulty, Concepts}`;
+   time is not a fourth header field.
+   Add fail-closed fixtures in `tests/test_verify_register.py` for four-vs-five options, missing or
+   wrong reasoning flag, missing/mismatched body budget, and an attempted fourth header field.
 8. Register Plan 017 as active without marking it complete.
    Atomically replace the stale deferred C7/C5 capacity TODO with the resolved decision: C7 is a
    substantive four-session double-length unit, while C5 remains a compliant standard 22-problem
@@ -418,6 +424,11 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    access, using the same independence rules as Phase 4.
 4. Use tiny synthetic CPU data, no pretrained-weight download, no network access, and robust
    loss/parameter/buffer invariants.
+5. In the same phase as the four C7 rewrites, extend the register with an explicit literal map
+   `{C7-p10, C7-p24, C7-p26, C7-p27} → 75` and require matching body-budget lines.
+   Comment why this is deliberately separate from C11's manifest-driven mechanism: C7 has no
+   honest historical per-problem minute data, so any future capstone-budget change must update
+   both the statement and this exception map.
 
 ### Verification
 
@@ -621,6 +632,10 @@ This phase is mandatory because the plan ships and changes teaching units.
   `shipped_concepts` additions through scope-check's anchor ownership rule, makes both C11/C7
   timing contracts explicit without fabricating C7 per-problem data, manifest-enforces C11's
   calibrated problem-minute sum, and uses only repository-valid `uv run` commands.
+- `[self]` Final delta review confirms the Set partition is a disjoint cover of p01–p24, p08's
+  two tags have separate executable assertions, the C11/C7 register checks land only when their
+  target statements exist, and all exact-count/minute contracts remain unchanged.
+- **Final delta verdict: APPROVE.**
 - No open self-review finding remains.
 
 ### Slot 3 — GPT-5.6-terra (2026-08-07)
@@ -662,6 +677,7 @@ This phase is mandatory because the plan ships and changes teaching units.
   substring.
 - `[terra] [FIXED]` Scope tests now prove the Round 2 C8 correction clause remains while its
   canonical row is partial and disappears only when that row becomes covered.
+- **Final delta verdict on `eb28228`: APPROVE.**
 
 ### Slot 4 — GLM-5.2 (2026-08-07)
 
@@ -680,6 +696,7 @@ This phase is mandatory because the plan ships and changes teaching units.
 - `[glm] [FIXED]` C11-p24 now grades optimizer control as part of its trained-network ablation,
   giving `torch-optimizers` a fourth honest practice rather than leaving it at the three-practice
   floor.
+- **Final delta verdict on `eb28228`: APPROVE.**
 
 ### Slot 2 — Claude Opus 5 (2026-08-07)
 
@@ -772,6 +789,13 @@ This phase is mandatory because the plan ships and changes teaching units.
   three-field metadata header.
 - `[opus] [FIXED]` The retained unestimated C8 sentence is self-contained when its estimated table
   and scoped-delta prose are suppressed.
+- `[opus] [FIXED]` The estimate reconciliation now calls the 30–44-hour artifact the planned
+  neural unit, not eight planned-unit rows.
+- `[opus] [FIXED]` C11's register and its fail-closed fixtures land in Phase 1; the literal C7
+  budget exception lands with the rewritten statements in Phase 5 and documents its asymmetric
+  source of truth.
+- `[opus] [FIXED]` C11-p08 now provides a 35-minute Set A task with separate assertions for the
+  autograd gradient and optimizer update; p03 returns to a single manual-backpropagation concept.
 - **Delta re-review verdict:** APPROVE.
 
 ## Content Review
