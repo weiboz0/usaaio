@@ -121,8 +121,9 @@ probes, explicit tolerances, and answer-affecting concept tags.
 | C12-p29 | C | challenge | core | 50 | exact two-round AdaBoost weight/coefficient ledger |
 | C12-p30 | C | challenge | advanced | 50 | robust k-means empty-cluster/init comparison |
 
-The exact distribution is five MC, eight constrained coding, four proof/derivations, four
-integrative, four scenario, and five challenge problems; 9 intro, 14 core, and 7 advanced.
+The exact distribution is four five-option `mc`, one five-option numeric `mc-normal-form`, eight
+constrained coding, four proof/derivations, four integrative, four scenario, and five challenge
+problems; 9 intro, 14 core, and 7 advanced.
 The exact practice-minute sum is 1,410.
 
 ### Concept coverage ledger
@@ -210,6 +211,8 @@ at least 115 minutes of already unlocked practice.
 The 185-minute transfer has a constructive path: release 115 minutes from Weeks 29–33 while
 C7/C9/C10 remain open, and propagate 70 minutes forward through the overlapping
 F6/C6 → F7 → C11 → C9 practice windows before moving C9/C10 work late.
+Any F7 minutes moved inside that relay retain the post-Session-4 high-volume boundary; Phase 1
+re-pins the literal F7 pacing ledger to the new exact weeks rather than relaxing the invariant.
 
 Every week remains 450–500 minutes.
 Weeks 1–39 contain one to three lesson sessions; Week 40 is the sole final-assessment exception.
@@ -296,8 +299,9 @@ Write fail-first tests against the Plan 017 baseline that require:
    individually named problem precedes its `after_session` even if aggregate minutes fit;
 10. exactly five registered classical mutations, each resolving one file/cell/source replacement
     and failing closed on zero/multiple match or unexpected success.
-11. C12 belongs to the strict statement register, so every MC has exact A–E options plus the
-    required reasoning flag and every manifest-backed time budget is exact.
+11. C12 belongs to the strict statement register: every `mc` and `mc-normal-form` statement has
+    exact A–E options and the literal `Reasoning is required.` flag, p05 additionally has all
+    numeric gcd/sign rules, and every manifest-backed time budget is exact.
 
 The tests must fail for the missing unit/schema/evidence/schedule/mutation implementation, not for
 an unrelated fixture or absent ignored corpus.
@@ -333,7 +337,8 @@ an unrelated fixture or absent ignored corpus.
 2. Create the full 30-row manifest before notebooks exist, including exact metadata, minutes,
    paths, `concept_sessions`, `after_session`, and concept tags.
 3. Implement strict optional `concept_sessions` parsing and general manifest-backed statement
-   budget validation; add C12 to the strict MC reasoning/option register.
+   budget validation; add C12 to the strict MC register with the same required-reasoning branch as
+   C11 while retaining p05's normal-form constraints.
 4. Extend the schedule to 40 weeks and rebalance allocations without changing any pre-existing
    unit total.
 5. Replace hard-coded 35-week/final-mock assumptions in the checker, CLI help, renderer, and
@@ -352,6 +357,8 @@ an unrelated fixture or absent ignored corpus.
   and non-final mock mutation each fails for the intended reason.
 - Exact arithmetic independently recomputes every unit, week, semester, and course total.
 - Renderer tests reject stale 35/19/Week-35 prose and derive the final milestone from the mock.
+- The literal F7 pacing regression is re-pinned to the new allocation and still proves that only
+  its five-minute bridge precedes full four-session instruction.
 
 ## Phase 2 — Build the six-session teaching spine
 
@@ -402,14 +409,16 @@ Each statement:
 - uses only taught/prerequisite concepts;
 - declares its exact time budget and reasoning/coding contract;
 - pins deterministic inputs and independent expected-output requirements;
-- gives exactly A–E for MC and all gcd/sign rules for normal form;
+- gives exactly A–E and `Reasoning is required.` for all five MC-family statements, with p05
+  additionally carrying all gcd/sign rules for normal form;
 - ends with student-facing placeholders only, never a solved output.
 
 ### Verification
 
 - `python3 scripts/verify-register.py --statements-only` passes 437/437.
 - The strict C12 register rejects a missing reasoning flag, non-A–E MC options, and a mismatched
-  manifest-backed time budget in focused negative tests.
+  manifest-backed time budget in focused negative tests; `Reasoning is not required.` is also
+  rejected for C12.
 - Exact ledger and concept-floor tests pass.
 - `uv run usaaio-tools hygiene-check`, `prereq-check`, `coverage-check`, `tolerance-check`, and
   `overlap-scan` pass.
@@ -608,6 +617,24 @@ Round-2 verdicts: self **REJECT** after accepting GLM's contradiction; Opus **RE
   allocation-index exact, p05's type is accurate, and Phase 6 commands are executable as written.
 
 ### Round 3 — final delta
+
+- [opus] [CONCERN] The 70-minute relay can alter F7's literal pacing regression; re-pin its exact
+  allocation without weakening the post-Session-4 high-volume rule.
+- [opus] [NIT] The plan still called the mix five undifferentiated MCs and did not state that p05
+  carries both A–E options and normal-form constraints.
+- [opus] [NIT] Pin whether C12 permits `Reasoning is not required.` or requires positive reasoning.
+- [glm] [NIT] Likewise clarify that Phase 0's A–E assertion includes `mc-normal-form`.
+
+Round-3 verdicts: self **APPROVE**; Opus **APPROVE WITH NITS**; Terra **APPROVE**; GLM
+**APPROVE WITH NITS**.
+
+### Round 3 nit resolution
+
+- Phase 1 now re-pins F7's exact pacing ledger while retaining the bridge/high-volume boundary.
+- The exact mix is four `mc` plus one `mc-normal-form`; all five carry A–E and the literal
+  `Reasoning is required.`, while p05 also carries gcd/sign normal-form rules.
+
+### Round 4 — nit-only confirmation
 
 Final exact-model verdicts are recorded here before Phase 0 begins.
 
