@@ -110,18 +110,23 @@ They may tag C11 concepts only where those concepts change a scored deliverable.
 
 ## Knowledge-point closure
 
-| Knowledge point | Final owner/evidence boundary | New evidence |
-|---|---|---|
-| softmax | C11 | theory, derivation, implementation |
-| cross-entropy-loss | C11 | theory, derivation, implementation |
-| backpropagation-by-hand | C11 | theory, derivation, implementation |
-| pytorch-autograd-and-optimizer-training | C11 | implementation, model training |
-| multilayer-perceptron-model | C5 + C11 | model training |
-| fully-connected-network-from-scratch | C5 + C11 | model training |
-| batch-normalization | C7 theory + C11 | derivation, implementation, model training |
-| dropout | C11 | theory, implementation, model training |
-| pytorch-deep-learning-programming | C6 + C11/C7 | model training |
-| convolutional-neural-network-basics | C7 | model training |
+Every coverage-map row retains exactly one `destination` even when evidence spans prerequisite
+units.
+Existing `shipped_concepts` remain and the additions below make every new anchor resolve to a
+concept taught by that anchor's unit.
+
+| Knowledge point | Single destination | Evidence units | `shipped_concepts` additions | New evidence |
+|---|---|---|---|---|
+| softmax | C11 | C11 | softmax | theory, derivation, implementation |
+| cross-entropy-loss | C11 | C11 | cross-entropy-loss | theory, derivation, implementation |
+| backpropagation-by-hand | C11 | C11 | manual-backpropagation | theory, derivation, implementation |
+| pytorch-autograd-and-optimizer-training | C11 | C6, C11 | autograd-training, torch-optimizers | implementation, model training |
+| multilayer-perceptron-model | C11 | C5, C11 | trained-mlp | model training |
+| fully-connected-network-from-scratch | C11 | C5, C11 | manual-backpropagation, trained-mlp | model training |
+| batch-normalization | C11 | C7, C11 | batch-normalization | derivation, implementation, model training |
+| dropout | C11 | C11 | dropout | theory, implementation, model training |
+| pytorch-deep-learning-programming | C6 | C6, C11 | autograd-training, torch-optimizers | model training |
+| convolutional-neural-network-basics | C7 | C7 | cnn-training | model training |
 
 The first eight rows replace `P015-R1-NEURAL-TRAINING` with shipped evidence.
 The last two rows are the coherently adjacent existing-unit gaps explicitly named by the Plan 015
@@ -157,14 +162,16 @@ lesson sessions, 91 to 99 lesson/review/overview notebooks, and 857 to 913 unit 
 Manifested time moves from 14,767 to 16,625 minutes and scheduled time from 15,007 to 16,865
 minutes, including the unchanged 180-minute mock and 60-minute debrief.
 
-The 34-week schedule keeps Semester 1 unchanged at 16 weeks / 7,915 minutes.
-Semester 2 grows to 18 weeks / 8,950 minutes, inserts C11 after C6 and before C7, and keeps
+The 35-week schedule keeps Semester 1 unchanged at 16 weeks / 7,915 minutes.
+Semester 2 grows to 19 weeks / 8,950 minutes, inserts C11 after C6 and before C7, and keeps
 `r1-001` plus its debrief at the final gate.
 `curriculum/course-schedule.yaml` becomes the machine-readable schedule source.
 A schedule checker reconciles every allocated session, practice minute, review minute, mock, and
-debrief against the manifests and prerequisite graph, rejects a weekly total outside 450–500
-minutes, while a renderer owns the corresponding table and arithmetic in
-`docs/course-structure.md`.
+debrief against the manifests and prerequisite graph and rejects a weekly total outside 450–500
+minutes.
+A renderer owns only sentinel-delimited numeric baseline, semester arithmetic, weekly table, and
+captured-total regions in `docs/course-structure.md`; the optional-mock policy, grading guidance,
+and prerequisite narrative outside those markers remain human-authored and byte-preserved.
 
 ## Evidence and roadmap transition
 
