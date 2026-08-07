@@ -112,6 +112,28 @@ def _check_after(root: Path, mutate: Callable[[dict[str, Any]], None]):
     return _schedule_checker().check_schedule(root)
 
 
+def _split_allocation(schedule: dict[str, Any], *, index: int) -> None:
+    allocation = schedule["weeks"][0]["allocations"][index]
+    original_minutes = allocation["minutes"]
+    allocation["minutes"] = original_minutes // 2
+    schedule["weeks"][0]["allocations"].append(
+        {**allocation, "minutes": original_minutes - allocation["minutes"]}
+    )
+
+
+def _duplicate_allocation(schedule: dict[str, Any], *, index: int) -> None:
+    schedule["weeks"][0]["allocations"].append(
+        dict(schedule["weeks"][0]["allocations"][index])
+    )
+
+
+def _swap_first_two_weeks(schedule: dict[str, Any]) -> None:
+    first = schedule["weeks"][0]["allocations"]
+    second = schedule["weeks"][1]["allocations"]
+    schedule["weeks"][0]["allocations"] = second
+    schedule["weeks"][1]["allocations"] = first
+
+
 @pytest.mark.parametrize(
     ("mutate", "message"),
     [
@@ -130,6 +152,28 @@ def _check_after(root: Path, mutate: Callable[[dict[str, Any]], None]):
             "unknown unit unknown-unit",
         ),
         (
+            lambda schedule: schedule["weeks"][0]["allocations"][0].update(
+                kind="self-study"
+            ),
+            "week 1 allocation 0 has unknown kind self-study",
+        ),
+        (
+            lambda schedule: _duplicate_allocation(schedule, index=1),
+            "practice allocation for U01 must appear exactly once",
+        ),
+        (
+            lambda schedule: _split_allocation(schedule, index=1),
+            "practice allocation for U01 must appear exactly once",
+        ),
+        (
+            lambda schedule: _duplicate_allocation(schedule, index=2),
+            "review allocation for U01 must appear exactly once",
+        ),
+        (
+            lambda schedule: _split_allocation(schedule, index=2),
+            "review allocation for U01 must appear exactly once",
+        ),
+        (
             lambda schedule: schedule["weeks"][0]["allocations"][1].update(minutes=299),
             "U01 practice minutes",
         ),
@@ -139,7 +183,19 @@ def _check_after(root: Path, mutate: Callable[[dict[str, Any]], None]):
         ),
         (
             lambda schedule: schedule["weeks"][1].update(week=1),
+            "duplicate week 1",
+        ),
+        (
+            _swap_first_two_weeks,
             "prerequisite U01 must complete before U02 starts",
+        ),
+        (
+            lambda schedule: schedule["weeks"][0].update(week="one"),
+            "week row 0 week must be an integer",
+        ),
+        (
+            lambda schedule: schedule["weeks"].pop(9),
+            "missing week 10",
         ),
         (
             lambda schedule: schedule["weeks"][0]["allocations"][1].update(minutes=299),

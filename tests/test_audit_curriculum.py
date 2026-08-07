@@ -446,9 +446,11 @@ def test_real_repository_inventory_counts() -> None:
     }
 
 
-def test_scheduled_minutes_come_from_canonical_schedule_not_prose(tmp_path: Path) -> None:
-    _make_minimal_repo(tmp_path)
-    manifest_path = tmp_path / "units" / "U1-vectors" / "manifest.yaml"
+def _install_canonical_schedule_fixture(
+    root: Path, *, lesson_kind: str = "lesson-session"
+) -> None:
+    _make_minimal_repo(root)
+    manifest_path = root / "units" / "U1-vectors" / "manifest.yaml"
     manifest = yaml.safe_load(manifest_path.read_text())
     manifest["estimated_minutes"] = {
         "lesson": 100,
@@ -457,7 +459,7 @@ def test_scheduled_minutes_come_from_canonical_schedule_not_prose(tmp_path: Path
         "review": 10,
     }
     manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
-    mock_manifest_path = tmp_path / "mocktests" / "r1-mini" / "manifest.yaml"
+    mock_manifest_path = root / "mocktests" / "r1-mini" / "manifest.yaml"
     mock_manifest = yaml.safe_load(mock_manifest_path.read_text())
     mock_manifest["duration_minutes"] = 180
     mock_manifest_path.write_text(yaml.safe_dump(mock_manifest, sort_keys=False))
@@ -469,7 +471,7 @@ def test_scheduled_minutes_come_from_canonical_schedule_not_prose(tmp_path: Path
                 "semester": 1,
                 "allocations": [
                     {
-                        "kind": "lesson-session",
+                        "kind": lesson_kind,
                         "unit": "U1-vectors",
                         "session": 1,
                         "minutes": 100,
@@ -482,9 +484,13 @@ def test_scheduled_minutes_come_from_canonical_schedule_not_prose(tmp_path: Path
             }
         ],
     }
-    schedule_path = tmp_path / "curriculum" / "course-schedule.yaml"
+    schedule_path = root / "curriculum" / "course-schedule.yaml"
     schedule_path.parent.mkdir(parents=True)
     schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False))
+
+
+def test_scheduled_minutes_come_from_canonical_schedule_not_prose(tmp_path: Path) -> None:
+    _install_canonical_schedule_fixture(tmp_path)
     (tmp_path / "docs" / "course-structure.md").write_text(
         "# Deliberately stale prose\n\nThe course ends with a 9,999-minute debrief.\n"
     )
@@ -493,6 +499,18 @@ def test_scheduled_minutes_come_from_canonical_schedule_not_prose(tmp_path: Path
 
     assert counts["manifested_minutes"] == 210
     assert counts["scheduled_minutes"] == 450
+
+
+def test_inventory_rejects_invalid_canonical_schedule_instead_of_summing_yaml(
+    tmp_path: Path,
+) -> None:
+    _install_canonical_schedule_fixture(tmp_path, lesson_kind="invented-kind")
+
+    with pytest.raises(
+        audit.InventoryError,
+        match="course-schedule.yaml.*unknown kind invented-kind",
+    ):
+        audit.build_inventory(tmp_path)
 
 
 @pytest.mark.parametrize(

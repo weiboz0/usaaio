@@ -19,37 +19,50 @@ ROOT = Path(__file__).parents[1]
 PLAN017_CLOSURE = {
     "softmax": (
         "C11-neural-training",
-        {"softmax"},
+        ["softmax"],
         {"theory": "C11-p01", "derivation": "C11-p11", "implementation": "C11-p05"},
     ),
     "cross-entropy-loss": (
         "C11-neural-training",
-        {"cross-entropy-loss"},
+        ["cross-entropy-loss"],
         {"theory": "C11-p02", "derivation": "C11-p11", "implementation": "C11-p06"},
     ),
     "backpropagation-by-hand": (
         "C11-neural-training",
-        {"manual-backpropagation"},
+        ["manual-backpropagation"],
         {"theory": "C11-p03", "derivation": "C11-p12", "implementation": "C11-p07"},
     ),
     "pytorch-autograd-and-optimizer-training": (
         "C11-neural-training",
-        {"autograd-training", "torch-optimizers"},
+        ["requires-grad", "layer-freezing", "autograd-training", "torch-optimizers"],
         {"implementation": "C11-p08", "model-training": "C11-p16"},
     ),
     "multilayer-perceptron-model": (
         "C11-neural-training",
-        {"trained-mlp"},
+        [
+            "mlp-architecture",
+            "activation-functions",
+            "manual-weights",
+            "decision-boundaries-geometric",
+            "trained-mlp",
+        ],
         {"model-training": "C11-p15"},
     ),
     "fully-connected-network-from-scratch": (
         "C11-neural-training",
-        {"manual-backpropagation", "trained-mlp"},
+        [
+            "mlp-architecture",
+            "activation-functions",
+            "manual-weights",
+            "decision-boundaries-geometric",
+            "manual-backpropagation",
+            "trained-mlp",
+        ],
         {"model-training": "C11-p15"},
     ),
     "batch-normalization": (
         "C11-neural-training",
-        {"batch-normalization"},
+        ["layer-freezing", "requires-grad", "resnet-architecture", "batch-normalization"],
         {
             "derivation": "C11-p13",
             "implementation": "C11-p09",
@@ -58,17 +71,29 @@ PLAN017_CLOSURE = {
     ),
     "dropout": (
         "C11-neural-training",
-        {"dropout"},
+        ["dropout"],
         {"theory": "C11-p04", "implementation": "C11-p10", "model-training": "C11-p24"},
     ),
     "pytorch-deep-learning-programming": (
         "C6-pytorch",
-        {"autograd-training", "torch-optimizers"},
+        [
+            "torch-tensors",
+            "nn-module",
+            "custom-layers",
+            "autograd-training",
+            "torch-optimizers",
+        ],
         {"model-training": "C11-p16"},
     ),
     "convolutional-neural-network-basics": (
         "C7-cnn-transfer",
-        {"cnn-training"},
+        [
+            "convolution",
+            "feature-maps",
+            "receptive-field",
+            "feature-hierarchy",
+            "cnn-training",
+        ],
         {"model-training": "C7-p10"},
     ),
 }
@@ -986,6 +1011,52 @@ def _add_unestimated_c8_point(data: dict[str, Any], *, covered: bool) -> None:
     )
 
 
+def _add_pending_c7_training_point(data: dict[str, Any]) -> None:
+    data["topics"]["atomic_targets"].append(
+        {
+            "id": "convolutional-neural-network-basics",
+            "parent": "foundation",
+            "source_refs": ["source-1"],
+            "required_for": ["round-1", "round-2"],
+            "modalities": ["model-training"],
+        }
+    )
+    data["roadmap"]["knowledge_points"].append(
+        {
+            "id": "convolutional-neural-network-basics",
+            "layer": "round-1-core",
+            "requirement": "required",
+            "coverage": "partial",
+            "source_refs": ["source-1"],
+            "depends_on": [],
+            "shipped_concepts": ["c1"],
+            "evidence_by_modality": {
+                "model-training": {"lesson_anchors": [], "practices": []}
+            },
+            "disposition": "existing-unit-extension",
+            "destination": "C7-cnn-transfer",
+            "deficits": {"modalities_missing": ["model-training"]},
+            "rationale": "CNN training evidence remains pending.",
+            "consequence": "The C7 extension must return to the roadmap.",
+        }
+    )
+
+
+def _add_pending_neural_tranche(data: dict[str, Any]) -> None:
+    data["roadmap"]["planned_units"].append(
+        {
+            "id": "P015-R1-NEURAL-TRAINING",
+            "title": "Round 1 neural-training completion",
+            "layer": "round-1-core",
+            "prerequisites": [],
+            "knowledge_points": [],
+            "provisional_concepts": ["future-neural-training"],
+            "estimated_hours": {"min": 30, "max": 44},
+            "schedule_action": "extend",
+        }
+    )
+
+
 @pytest.mark.parametrize("broken", ["layer", "owner", "dependency"])
 def test_round_1_boundary_rejects_round_2_placement_ownership_and_dependency(
     tmp_path: Path, broken: str
@@ -1370,15 +1441,18 @@ def test_renderer_recomputes_real_plan017_baseline() -> None:
 
 
 def test_plan017_closure_has_exact_destinations_additions_and_primary_practices() -> None:
+    report = check_scope(ROOT)
+    assert report.ok, report.errors
+
     roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
     points = {point["id"]: point for point in roadmap["knowledge_points"]}
 
-    for point_id, (destination, additions, primary_by_modality) in PLAN017_CLOSURE.items():
+    for point_id, (destination, shipped_concepts, primary_by_modality) in PLAN017_CLOSURE.items():
         point = points[point_id]
         assert point["coverage"] == "covered"
         assert point["disposition"] == "keep"
         assert point["destination"] == destination
-        assert additions <= set(point["shipped_concepts"])
+        assert point["shipped_concepts"] == shipped_concepts
         assert point["deficits"] == {"modalities_missing": []}
         for modality, primary_id in primary_by_modality.items():
             evidence = point["evidence_by_modality"][modality]
@@ -1426,6 +1500,36 @@ def test_completed_plan017_neural_extensions_are_not_rendered_as_pending() -> No
         assert "C7 CNN training" not in document
         assert "C6 and C8 are not yet estimated" not in document
         assert "C8" in document
+
+
+def test_c7_extension_returns_only_when_cnn_training_owner_is_pending(
+    tmp_path: Path,
+) -> None:
+    contract = _base_contract(tmp_path)
+    without_pending_owner = renderer.render_documents(tmp_path)
+    assert all("C7 CNN training" not in document for document in without_pending_owner.values())
+
+    _add_pending_c7_training_point(contract)
+    _write_yaml(tmp_path / "curriculum" / "official-topics.yaml", contract["topics"])
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
+    with_pending_owner = renderer.render_documents(tmp_path)
+
+    assert all("C7 CNN training" in document for document in with_pending_owner.values())
+
+
+def test_neural_tranche_returns_only_when_its_planned_unit_is_restored(
+    tmp_path: Path,
+) -> None:
+    contract = _base_contract(tmp_path)
+    without_planned_unit = renderer.render_documents(tmp_path)
+    title = "Round 1 neural-training completion"
+    assert all(title not in document for document in without_planned_unit.values())
+
+    _add_pending_neural_tranche(contract)
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
+    with_planned_unit = renderer.render_documents(tmp_path)
+
+    assert all(title in document for document in with_planned_unit.values())
 
 
 def test_unestimated_c8_clause_remains_but_estimated_extension_section_is_suppressed(

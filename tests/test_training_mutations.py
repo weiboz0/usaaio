@@ -6,6 +6,44 @@ from pathlib import Path
 
 import pytest
 
+EXPECTED_MUTATIONS = [
+    {
+        "id": "c11-p16-delay-zero-grad",
+        "notebook": "units/C11-neural-training/practice/p16_solution.ipynb",
+        "mutation_kind": "delay-zero-grad-until-after-backward",
+        "target_marker": "PLAN017_MUTATION_TARGET: C11-p16-zero-grad",
+        "expected_failure_marker": "PLAN017_ANSWER_CHECK: C11-p16-training",
+    },
+    {
+        "id": "c11-p23-noop-optimizer-step",
+        "notebook": "units/C11-neural-training/practice/p23_solution.ipynb",
+        "mutation_kind": "replace-optimizer-step-with-no-op",
+        "target_marker": "PLAN017_MUTATION_TARGET: C11-p23-optimizer-step",
+        "expected_failure_marker": "PLAN017_ANSWER_CHECK: C11-p23-training",
+    },
+    {
+        "id": "c7-p10-forbidden-frozen-update",
+        "notebook": "units/C7-cnn-transfer/practice/p10_solution.ipynb",
+        "mutation_kind": "enable-forbidden-frozen-parameter-update",
+        "target_marker": "PLAN017_MUTATION_TARGET: C7-p10-frozen-update",
+        "expected_failure_marker": "PLAN017_ANSWER_CHECK: C7-p10-freezing",
+    },
+    {
+        "id": "c7-p27-move-committed-predictions",
+        "notebook": "units/C7-cnn-transfer/practice/p27_solution.ipynb",
+        "mutation_kind": "move-committed-predictions-below-verifier",
+        "target_marker": "PLAN017_MUTATION_TARGET: C7-p27-committed-predictions",
+        "expected_failure_marker": "PLAN017_VERIFIER: C7-p27-committed-predictions",
+    },
+    {
+        "id": "c7-p27-train-mode-buffer-audit",
+        "notebook": "units/C7-cnn-transfer/practice/p27_solution.ipynb",
+        "mutation_kind": "replace-eval-mode-with-train-mode-for-buffer-audit",
+        "target_marker": "PLAN017_MUTATION_TARGET: C7-p27-eval-mode",
+        "expected_failure_marker": "PLAN017_ANSWER_CHECK: C7-p27-mode-buffer-audit",
+    },
+]
+
 
 def _mutation_module():
     try:
@@ -53,6 +91,8 @@ def _spec(module, *, search: str, replacement: str):
     return module.MutationSpec(
         id="fixture-mutation",
         notebook="fixture/solution.ipynb",
+        mutation_kind="replace-source",
+        target_marker="# MUTATION_TARGET",
         search=search,
         replacement=replacement,
         expected_failure_marker="# ANSWER_CHECK",
@@ -62,18 +102,18 @@ def _spec(module, *, search: str, replacement: str):
 def test_permanent_registry_has_the_exact_five_real_notebook_mutations() -> None:
     module = _mutation_module()
 
-    assert len(module.MUTATIONS) == 5
-    assert [mutation.notebook for mutation in module.MUTATIONS] == [
-        "units/C11-neural-training/practice/p16_solution.ipynb",
-        "units/C11-neural-training/practice/p23_solution.ipynb",
-        "units/C7-cnn-transfer/practice/p10_solution.ipynb",
-        "units/C7-cnn-transfer/practice/p27_solution.ipynb",
-        "units/C7-cnn-transfer/practice/p27_solution.ipynb",
+    actual = [
+        {
+            "id": mutation.id,
+            "notebook": mutation.notebook,
+            "mutation_kind": mutation.mutation_kind,
+            "target_marker": mutation.target_marker,
+            "expected_failure_marker": mutation.expected_failure_marker,
+        }
+        for mutation in module.MUTATIONS
     ]
-    assert len({mutation.id for mutation in module.MUTATIONS}) == 5
-    assert all(mutation.search for mutation in module.MUTATIONS)
-    assert all(mutation.replacement for mutation in module.MUTATIONS)
-    assert all(mutation.expected_failure_marker for mutation in module.MUTATIONS)
+
+    assert actual == EXPECTED_MUTATIONS
 
 
 def test_mutation_runner_rejects_a_zero_match_target(tmp_path: Path) -> None:
@@ -152,3 +192,24 @@ def test_mutation_runner_accepts_failure_at_registered_answer_check(
 
     assert result.mutation_id == "fixture-mutation"
     assert result.failure_cell == 1
+
+
+def test_mutation_cli_executes_the_registered_contract(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    module = _mutation_module()
+    notebook = tmp_path / "fixture" / "solution.ipynb"
+    _write_notebook(notebook, "value = 1  # MUTATION_TARGET\n")
+    spec = _spec(
+        module,
+        search="value = 1  # MUTATION_TARGET",
+        replacement="value = 2  # MUTATION_TARGET",
+    )
+    monkeypatch.setattr(module, "MUTATIONS", (spec,))
+
+    assert module.main(["--root", str(tmp_path)]) == 0
+    output = capsys.readouterr()
+    assert "fixture-mutation" in output.out
+    assert output.err == ""
