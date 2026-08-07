@@ -50,9 +50,9 @@ progression:
 5. variance-reducing and bias-reducing ensembles;
 6. centroid-based unsupervised learning and cross-family comparison.
 
-The unit reuses C11's cross-entropy insight, C2/C3's linear-model and optimization machinery,
-F7's kernel/duality foundation, and C4's pipeline/cross-validation discipline without reteaching
-those prerequisites.
+The unit derives binary cross-entropy from scratch, then reuses C2/C3's linear-model and
+optimization machinery, F7's kernel/duality foundation, and C4's pipeline/cross-validation
+discipline without importing any undeclared C11 concept.
 It gives every family a first-principles implementation or derivation, an actual fitted model, and
 a comparison boundary.
 
@@ -86,8 +86,8 @@ C12 owns exactly these ten concepts:
 
 ### Session 1 — Logistic regression as a trained linear classifier
 
-Start from the affine score already taught in C2, derive odds, log-odds, and the sigmoid map, and
-connect binary cross-entropy to the categorical loss in C11.
+Start from the affine score already taught in C2, derive odds, log-odds, the sigmoid map, and
+binary cross-entropy directly from binary labels and predicted probabilities.
 Derive the stable mean loss and gradient `X.T @ (p - y) / N`, train with deterministic gradient
 descent, interpret the `0.5` decision threshold, and compare a NumPy implementation with sklearn.
 The lesson distinguishes probability calibration from classification accuracy and treats perfect
@@ -206,14 +206,19 @@ No answer check accepts a self-consistent implementation as its own reference.
 ## Practice-before-instruction contract
 
 C12's manifest records an optional `concept_sessions` mapping from each owned concept to the
-first lesson session that teaches it, and records `minutes` for every practice.
+first lesson session that teaches it, an `after_session` value for every practice, and `minutes`
+for every practice.
 The model/manifest validator checks that the mapping covers exactly `concepts_taught` and refers to
-valid session numbers.
-The schedule checker derives the latest required session for each practice from its owned concept
-tags and rejects cumulative scheduled practice that exceeds the minutes unlocked by delivered
-sessions.
-This makes the C11 pacing invariant generic for new units rather than relying on a handwritten
-C12 week list.
+valid session numbers; it also requires each `after_session` value to be at least the latest
+session implied by that practice's owned concept tags.
+Every C12 schedule practice allocation lists exact `problem_ids`.
+The schedule checker requires those lists to partition the manifest practices exactly once,
+requires allocation minutes to equal the listed problems' minute sum, and rejects any listed
+problem whose `after_session` has not yet been delivered.
+This explicit per-problem binding handles subtopics such as kernel SVMs that intentionally remain
+inside the broader `svm` concept while being taught one session later.
+This provides a generic, stronger successor to C11's handwritten pacing invariant rather than
+relying on a handwritten C12 week list.
 
 ## Schedule extension
 
@@ -240,11 +245,17 @@ The final schedule must preserve these machine-checked invariants:
   `concept_sessions` and per-problem minutes;
 - mock and debrief are the final two course allocations.
 
-The five additional weeks require at least 2,250 minutes at the lower weekly bound.
-C12 contributes 2,010 minutes, so rebalancing at least 240 minutes of existing late-Semester-2
-practice into Weeks 36–40 is both necessary and sufficient.
-The final Semester-2 total of 10,960 lies 160 minutes above its 24-week minimum, providing a
-direct arithmetic feasibility certificate without weakening the weekly band.
+Weeks 34–40 require at least 3,150 minutes at the lower weekly bound.
+Their two baseline weeks contribute 985 minutes and C12 adds 2,010, so at least 155 minutes must
+move from Weeks 17–33 into Weeks 34–40; moving the mock/debrief within that seven-week window does
+not change this arithmetic.
+Baseline Weeks 17–33 contain 315 minutes above their 7,650-minute lower bound, so shifting 155
+leaves exactly the final Semester-2 surplus of 160 minutes.
+Week 34 starts at the 500-minute ceiling and therefore must displace at least 90 minutes when C12
+Session 1 arrives; Week 35 falls to 335 minutes after moving the assessment and adding Session 2,
+so it must receive at least 115 minutes of unlocked practice.
+The final allocation-level schedule, rather than this aggregate certificate, must prove every
+weekly and per-problem ordering constraint.
 
 The schedule checker must stop hard-coding Week 35.
 It derives the unique final-assessment week from the schedule, requires that week to be the final
@@ -253,9 +264,9 @@ semester, milestone, and first-instruction region.
 
 ## Evidence and roadmap transition
 
-For each of the five rows, Plan 018 records exact lesson anchors, at least three honest practices
-per required modality where possible, disposition `keep`, empty deficits, and destination
-`C12-classical-models`.
+For each of the five rows, Plan 018 records exact lesson anchors, at least one honest practice in
+every required modality and at least three distinct qualifying practices overall, disposition
+`keep`, empty deficits, and destination `C12-classical-models`.
 The audit and roadmap are regenerated from the canonical map.
 The Round 1 acknowledged gap set becomes empty; only Round 2 warnings remain.
 
@@ -288,11 +299,11 @@ Round 1 gap boundary before content exists.
 A permanent classical-model mutation runner copies five real C12 solution notebooks, applies one
 exactly-once corruption per family, and requires the real final answer checks to reject:
 
-- a wrong logistic mean-gradient factor;
-- a wrong signed-margin/hinge branch;
-- a maximum-impurity tree split;
-- a missing bootstrap or boosting-weight update;
-- a non-centroid Lloyd update.
+- a wrong logistic mean-gradient factor in p07;
+- a wrong signed-margin/hinge branch in p08;
+- a maximum-impurity tree split in p10;
+- a missing AdaBoost weight update in p29;
+- a non-centroid Lloyd update in p13.
 
 The runner fails closed when a target matches zero or multiple cells or a mutant executes
 successfully.

@@ -33,7 +33,7 @@ Create `units/C12-classical-models/` with:
 - exactly 30 separate solution notebooks;
 - `review.ipynb` with a 10–15-item self-quiz spanning all owned concepts;
 - `manifest.yaml` with exact minutes, set/type/difficulty tags, `concept_sessions`, prerequisites,
-  provenance, and statement/solution paths.
+  per-problem `after_session`, provenance, and statement/solution paths.
 
 C12 is a Round 1 core, double-length unit with explicit prerequisites:
 
@@ -70,6 +70,17 @@ It owns exactly these ten concepts:
 Each session contains 6–10 substantive sections, at least two checkpoints per section, collected
 checkpoint answers, and the unit-wide required worked examples, pitfalls, exam connections, and
 going-deeper material.
+
+The exact `concept_sessions` mapping is:
+
+- Session 1: `logistic-regression`;
+- Session 2: `svm`, `margin-and-hinge-loss`;
+- Session 4: `decision-trees`, `tree-split-criteria`;
+- Session 5: `ensemble-learning`, `bagging-and-boosting`;
+- Session 6: `k-means`, `lloyd-algorithm`, `classical-model-comparison`.
+
+Session 3 deepens the already introduced `svm` concept into the kernel case; its later practice
+floor is represented by per-problem `after_session`, not by inventing a duplicate owned concept.
 
 ### Exact practice ledger
 
@@ -132,6 +143,29 @@ The manifest must give each owned concept at least these direct problem paths:
 Additional prerequisite tags are allowed only when they change a scored deliverable.
 No practice may rely on an owned concept before the session named by `concept_sessions`.
 
+The exact per-problem instruction floor is:
+
+- after Session 1: p01, p06, p07, p14, p26;
+- after Session 2: p02, p08, p18, p22;
+- after Session 3: p09, p15, p27;
+- after Session 4: p03, p10, p11, p16, p23, p28;
+- after Session 5: p04, p12, p19, p24, p29;
+- after Session 6: p05, p13, p17, p20, p21, p25, p30.
+
+Each practice row records that floor as `after_session`.
+It must be no earlier than the maximum `concept_sessions` value implied by the problem's owned
+concept tags; the explicit value governs later-taught subtopics such as kernel SVMs.
+
+For coverage-map evidence, use these direct modality ledgers (additional honest reuse is allowed):
+
+| Official row | Theory | Implementation | Model training |
+|---|---|---|---|
+| logistic regression | p01, p14, p26 | p06, p07, p18 | p07, p18, p21 |
+| support-vector machine | p02, p15, p27 | p08, p09, p27 | p09, p18, p21 |
+| decision trees | p03, p16, p23 | p10, p11, p28 | p11, p19, p21 |
+| ensemble learning | p04, p24, p29 | p12, p19, p29 | p12, p19, p21 |
+| k-means clustering | p05, p17, p25 | p13, p20, p30 | p13, p20, p21 |
+
 ### Minutes and corpus deltas
 
 C12 manifests:
@@ -167,7 +201,12 @@ Extend `curriculum/course-schedule.yaml` to 40 weeks:
 - C12 sessions 1–6 occur in Weeks 34–39;
 - the existing mock and debrief move together to final Week 40;
 - C12's last practice and 60-minute review precede the mock in Week 40;
-- existing late-Semester-2 practice is rebalanced as needed, with no unit-minute change.
+- at least 155 minutes of existing practice move from Weeks 17–33 into Weeks 34–40, with no
+  unit-minute change.
+
+Week 34 begins at 500 minutes and must displace at least 90 minutes when C12 Session 1 is added.
+Week 35 becomes 335 minutes after the mock/debrief move and Session 2 is added, so it must receive
+at least 115 minutes of already unlocked practice.
 
 Every week remains 450–500 minutes.
 Weeks 1–39 contain one to three lesson sessions; Week 40 is the sole final-assessment exception.
@@ -179,14 +218,17 @@ The unique final assessment week is derived from the schedule rather than hard-c
    carrying `minutes`; retain the separate closed-world C7 exception.
 2. Add optional `concept_sessions` to the unit-manifest model.
    When present, keys must equal `concepts_taught`, values must be positive integers within the
-   lesson-session count, and every practice must tag at least one owned concept.
-3. Generalize schedule practice-capacity validation for manifests carrying both
-   `concept_sessions` and complete per-problem minutes.
+   lesson-session count, every practice must tag at least one owned concept, and every practice
+   must carry a valid `after_session` no earlier than its concept-derived floor.
+3. Generalize schedule practice-order validation for manifests carrying `concept_sessions`,
+   `after_session`, and complete per-problem minutes. Their schedule practice allocations must
+   list exact `problem_ids`; the lists partition the manifest exactly once, allocation minutes
+   equal the listed minute sums, and each problem follows its required session.
 4. Derive the unique final-assessment week and reject absent, duplicate, non-final, or improperly
    ordered mock/debrief allocations.
 5. Add `tools/verify_classical_mutations.py` with exactly five fail-closed real-answer-check
-   mutations: logistic mean factor, signed hinge branch, maximum-impurity split, missing ensemble
-   resample/reweight, and non-centroid Lloyd update.
+   mutations: p07 logistic mean factor, p08 signed hinge branch, p10 maximum-impurity split, p29
+   missing AdaBoost weight update, and p13 non-centroid Lloyd update.
 6. Wire the mutation runner into `scripts/ci-local.sh` without weakening the existing training
    mutation runner.
 
@@ -234,15 +276,17 @@ Write fail-first tests against the Plan 017 baseline that require:
 1. exact final corpus counts and deltas listed above;
 2. a `C12-classical-models` manifest with five exact prerequisites, ten exact owned concepts, six
    90-minute sessions, 30 exact practice rows, 1,410 practice minutes, and 60 review minutes;
-3. the exact p01–p30 set/type/difficulty/minute ledger and concept-coverage ledger;
-4. optional `concept_sessions` parsing and all malformed/closure-invalid negative cases;
+3. the exact p01–p30 set/type/difficulty/minute/`after_session` ledger and concept-coverage ledger;
+4. optional `concept_sessions` parsing, required `after_session` behavior, and all malformed or
+   closure-invalid negative cases;
 5. general manifest-minute versus statement-budget validation outside C11;
 6. five coverage rows promoted to shipped C12 evidence and no remaining Round 1 warning;
 7. removal of `P015-R1-CLASSICAL-BREADTH` and retargeting of the R2 capstone prerequisite;
 8. 40 exact schedule weeks, C12 sessions in Weeks 34–39, mock/debrief in Week 40, totals
    7,915/10,960/18,875, every week 450–500, regular weeks with one to three lessons, prerequisite
    completion, review finality, and mock/debrief terminal ordering;
-9. generic practice-capacity rejection when scheduled minutes exceed concept-unlocked minutes;
+9. exact schedule `problem_ids` partitioning, minute reconciliation, and rejection when an
+   individually named problem precedes its `after_session` even if aggregate minutes fit;
 10. exactly five registered classical mutations, each resolving one file/cell/source replacement
     and failing closed on zero/multiple match or unexpected success.
 
@@ -273,13 +317,14 @@ an unrelated fixture or absent ignored corpus.
 1. Add the ten C12 concept definitions, prerequisite edges, Round 1 layer, and new unit mapping to
    the canonical syllabus without renaming shipped concepts.
 2. Create the full 30-row manifest before notebooks exist, including exact metadata, minutes,
-   paths, `concept_sessions`, and concept tags.
+   paths, `concept_sessions`, `after_session`, and concept tags.
 3. Implement strict optional `concept_sessions` parsing and general manifest-backed statement
    budget validation.
 4. Extend the schedule to 40 weeks and rebalance allocations without changing any pre-existing
    unit total.
 5. Replace the hard-coded final mock week with a derived unique final-assessment contract.
-6. Implement generic concept-unlocked practice-capacity validation.
+6. Add exact `problem_ids` to every C12 schedule practice chunk and implement generic exact-once,
+   minute-sum, and per-problem instruction-order validation.
 7. Stage the five canonical coverage rows and placeholder transition, but do not claim coverage
    until lesson/practice evidence exists.
 
@@ -287,8 +332,9 @@ an unrelated fixture or absent ignored corpus.
 
 - Phase 0 model, manifest, schedule, and budget tests pass.
 - `uv run usaaio-tools schedule-check` passes.
-- A deliberate reversed session, post-review practice, early C12 practice, duplicate mock, and
-  non-final mock mutation each fails for the intended reason.
+- A deliberate reversed session, post-review practice, early kernel-SVM problem hidden in an
+  otherwise legal chunk, missing/duplicate problem id, wrong chunk minute sum, duplicate mock,
+  and non-final mock mutation each fails for the intended reason.
 - Exact arithmetic independently recomputes every unit, week, semester, and course total.
 
 ## Phase 2 — Build the six-session teaching spine
@@ -397,8 +443,8 @@ Every solution:
 
 ### Work
 
-1. Bind exact lesson anchors and at least three direct practices to every required modality for
-   each of the five official rows.
+1. Bind exact lesson anchors and the declared modality ledger to each official row, proving at
+   least one honest practice per required modality and at least three distinct practices overall.
 2. Remove the Round 1 placeholder and retarget downstream planned prerequisites only after the
    coverage checker reports all five rows covered.
 3. Implement the five exactly-once classical mutations against actual final answer-check cells.
@@ -472,7 +518,43 @@ Any fresh-kernel, mutation, coverage, schedule, PDF, or CI failure blocks the ph
 
 ## Plan Review
 
-Plan-review findings are recorded here before Phase 0 begins.
+### Round 1 — commit `5ce8e74`
+
+- [self] [BLOCKER] The design reused C11 cross-entropy without declaring C11; derive binary
+  cross-entropy wholly inside Session 1 instead.
+- [self] [CONCERN] The claimed 240-minute schedule certificate mixed new-week and whole-unit
+  totals; recompute the exact Week 34–40 pool.
+- [terra] [BLOCKER] Aggregate unlocked minutes cannot prove that a particular kernel-SVM, tree,
+  ensemble, or k-means problem follows its lesson; bind scheduled chunks to exact problems and
+  enforce per-problem floors.
+- [terra] [BLOCKER] The C11 dependency claim violates prerequisite honesty; remove it or add C11.
+- [glm] [BLOCKER] The same undeclared C11 dependency would fail `prereq-check` if honestly tagged.
+- [glm] [CONCERN] `concept_sessions` alone cannot distinguish Session-2 linear SVM from Session-3
+  kernel SVM practice.
+- [glm] [CONCERN] The schedule feasibility arithmetic and Week-34/35 displacement were incomplete.
+- [glm] [NIT] The generic pacing wording implied C11's handwritten test would disappear.
+- [glm] [NIT] `mc-normal-form` needed validator treatment. No change: it is already a registered,
+  widely shipped type in `scripts/verify-register.py` and 18 existing manifests.
+- [glm] [NIT] Monitor the 900-second CI-growth ceiling for ML-heavy notebooks. Retained as a hard
+  performance regression limit; Phase 6 records actual timing.
+
+Initial verdicts: self **REJECT**; Terra **REJECT**; GLM **REJECT**. The initial Opus run was
+superseded before verdict so that the corrected commit, rather than a changing worktree, receives
+the required exact-model review.
+
+### Resolution
+
+- Session 1 now derives BCE directly and expressly excludes undeclared C11 concepts.
+- Every practice has an exact `after_session`; schedule practice allocations list exact
+  `problem_ids`, partition the manifest once, reconcile minutes, and enforce order.
+- The SVM split is explicit: `svm` begins in Session 2, while p09/p15/p27 require Session 3.
+- The schedule certificate now proves that Weeks 34–40 need 3,150 minutes, takes 985 baseline plus
+  2,010 new plus 155 shifted, and states the Week-34 displacement and Week-35 backfill bounds.
+- Evidence modalities and all five mutation targets are now exact ledgers.
+
+### Round 2 — corrected commit
+
+Final exact-model verdicts are recorded here before Phase 0 begins.
 
 ## Content Review
 
