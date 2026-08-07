@@ -39,7 +39,7 @@ This is the selected design.
 `C11-neural-training` is a double-length unit placed after C6 and before C7.
 It owns the eight provisional concepts from Plan 015 and supplies the missing model-training
 evidence for the existing PyTorch-programming knowledge point.
-C7 then adds a fourth session plus three substantive training rewrites and owns one new
+C7 then adds a fourth session plus four substantive training expansions and owns one new
 `cnn-training` concept.
 That added session makes C7 genuinely double-length under the existing 4–6-session and
 24–30-practice contract; the design does not weaken or reinterpret the standard.

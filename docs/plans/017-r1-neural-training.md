@@ -153,6 +153,10 @@ mode/trainability/graph controls across real train/eval steps.
    ids/paths.
 4. Require C7's canonical syllabus entry to set `length: double`, four sessions, 27 distinct
    practices, `cnn-training`, and explicit prerequisites `[C6-pytorch, C11-neural-training]`.
+   Require the exact `cnn-training` practice-id set
+   `{C7-p10, C7-p24, C7-p26, C7-p27}` while preserving p10's
+   layer-freezing/module/gradient/parameter-count contract, p24's tensor-shape trace, p26's
+   convolution/shape-helper contract, and p27's layer-freezing/gradient-control contract.
 5. Require the ten target rows to become checker-derived `covered`, with no missing modality,
    `keep`, exact destinations, non-empty anchors, and required practice evidence.
 6. Require the planned-unit queue to exclude `P015-R1-NEURAL-TRAINING` and the remaining Round 1
@@ -323,7 +327,9 @@ mode/trainability/graph controls across real train/eval steps.
   registered sentinels, executes each mutant, and fails if a target resolves zero/multiple times,
   if execution succeeds, or if failure occurs before the expected answer-check/verifier cell.
 - Run focused prerequisite/coverage tests proving four sessions + 27 practices is a compliant
-  double-length unit and `cnn-training` has three distinct practices.
+  double-length unit and that the exact four ids
+  `{C7-p10, C7-p24, C7-p26, C7-p27}` grade `cnn-training` while retaining every pinned original
+  concept contract.
 
 ## Phase 6 — Promote evidence and regenerate the schedule
 
@@ -492,6 +498,10 @@ This phase is mandatory because the plan ships and changes teaching units.
   rather than allowing fixture-only tests to stand in for registry execution.
   Phase 6 and `scripts/ci-local.sh` now require
   `python3 -m tools.verify_training_mutations .` verbatim.
+- `[terra] [FIXED]` Final calibration added C7-p26 as a fourth training capstone but initially
+  left verification at the generic three-problem floor and a stale design summary.
+  Phase 0 and Phase 5 now require the exact four-id `cnn-training` set plus each problem's
+  preserved original concept contract, and the design consistently names four expansions.
 
 ### Review 3 — GLM-5.2 (2026-08-07)
 
