@@ -636,7 +636,17 @@ Round-3 verdicts: self **APPROVE**; Opus **APPROVE WITH NITS**; Terra **APPROVE*
 
 ### Round 4 — nit-only confirmation
 
-Final exact-model verdicts are recorded here before Phase 0 begins.
+- [self] **APPROVE** — recomputed all concept-derived floors, the 30-problem partition, the
+  7,780/3,180 schedule windows, corpus totals, and named phase ownership at commit `5fb6f15`.
+- [opus] **APPROVE** — verified the F7 re-pin retains the high-volume invariant, the exact MC mix
+  and totals reconcile, every MC-family statement uses A–E plus required reasoning, and p05 keeps
+  its additive normal-form rules.
+- [terra] **APPROVE** — the nit-only delta introduced no regression.
+- [glm] **APPROVE** — all Round-3 nits are closed; schedule, concept, mutation, and corpus
+  contracts remain unchanged.
+
+Plan-gate consensus: **APPROVE (4/4, zero open blocker or concern).** Phase 0 may begin only from
+the commit containing this record.
 
 ## Content Review
 
