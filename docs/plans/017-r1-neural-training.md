@@ -65,6 +65,8 @@ Remove `P015-R1-NEURAL-TRAINING` and the C7/C6 neural extension notices only whe
 rows are fully evidenced.
 Regenerate the audit, roadmap, material inventory, and a 35-week prerequisite-valid course
 schedule with C11 after C6 and before C7.
+Introduce `curriculum/course-schedule.yaml` as the canonical allocation and render the schedule
+table/document from that data so CI checks the calendar rather than trusting prose arithmetic.
 
 ## Pinned problem contract
 
@@ -136,6 +138,8 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
 - `tests/test_audit_curriculum.py`
 - `tests/test_prereq_coverage.py`
 - `tests/test_scope.py`
+- `tests/test_schedule.py`
+- `tests/test_training_mutations.py`
 
 ### Work
 
@@ -153,6 +157,11 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
    gap ids to equal the five Plan 018 topics exactly.
 7. Require a 35-week schedule: Semester 1 remains 16 weeks / 7,915 minutes; Semester 2 is 19
    weeks / 9,385 minutes; C11 finishes before C7 starts and the mock/debrief remain last.
+8. Pin a fail-closed schedule consumer that accounts for every manifested lesson session exactly
+   once, reconciles per-unit practice/review totals, enforces prerequisite completion before a
+   dependent starts, and reconciles the mock/debrief with `r1-001`.
+9. Pin a mutation-runner registry against the real solution notebooks and require zero-match,
+   multi-match, non-failing-mutant, and wrong-failure-location fixtures to fail.
 
 ### Verification
 
@@ -283,6 +292,8 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
 - `units/C7-cnn-transfer/practice/p27.ipynb`
 - paired p10/p24/p27 solution notebooks
 - `units/C7-cnn-transfer/manifest.yaml`
+- `tools/verify_training_mutations.py`
+- `tests/test_training_mutations.py`
 
 ### Work
 
@@ -297,8 +308,15 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
 ### Verification
 
 - Fresh-execute the new C7 lesson, changed overview/review, and all three changed solutions.
-- Run a corruption test that wrong optimizer ordering, uncommitted predictions, parameter
-  leakage, or mode misuse fails the real answer check.
+- Run the permanent mutation registry against the real solutions.
+  It must apply these exactly-once corruptions and observe failure in the registered final answer
+  check: C11-p16 moves `zero_grad` after `backward`; C11-p23 replaces `optimizer.step()` with a
+  no-op; C7-p10 enables a forbidden frozen-parameter update; C7-p27 moves committed predictions
+  below the marked verifier; and C7-p27 separately substitutes training mode for the registered
+  evaluation/buffer audit.
+- The runner copies notebooks to a temporary directory, applies source-level mutations only at
+  registered sentinels, executes each mutant, and fails if a target resolves zero/multiple times,
+  if execution succeeds, or if failure occurs before the expected answer-check/verifier cell.
 - Run focused prerequisite/coverage tests proving four sessions + 27 practices is a compliant
   double-length unit and `cnn-training` has three distinct practices.
 
@@ -312,25 +330,55 @@ and training, and C7-p27 audits mode/trainability/graph controls across real tra
 - `docs/curriculum-roadmap.md`
 - `docs/course-structure.md`
 - `syllabus.md`
-- relevant audit/integration/scope tests
+- `curriculum/course-schedule.yaml`
+- `tools/model.py`
+- `tools/cli.py`
+- `tools/checks/schedule.py`
+- `tools/render_course_structure.py`
+- `tools/render_curriculum_roadmap.py`
+- `tools/audit_curriculum.py`
+- `scripts/ci-local.sh`
+- `tests/test_schedule.py`
+- `tests/test_scope.py`
+- relevant audit/integration tests
 
 ### Work
 
 1. Add exact primary/secondary lesson anchors and honest practice evidence for all ten targets.
 2. Remove `P015-R1-NEURAL-TRAINING` only after its eight owned rows are covered.
-3. Regenerate the audit and roadmap; assert the Round 1 gap set is exactly the five Plan 018
+3. Make roadmap pending-state prose consumer-driven.
+   Existing-unit extension rows are keyed to uncovered knowledge points, and tranche-queue rows
+   are keyed to still-present `planned_units`; covering/removing the neural owners must suppress
+   C7, the obsolete C6 completion sentence, and the neural-tranche queue entry without a second
+   manual status flag.
+4. Update `tests/test_scope.py` so a covered CNN-training row removes C7 from the rendered pending
+   table and removal of `P015-R1-NEURAL-TRAINING` removes its queue entry; retain negative fixtures
+   proving either item returns when its canonical owner is pending.
+5. Regenerate the audit and roadmap; assert the Round 1 gap set is exactly the five Plan 018
    classical topics and no completed neural unit remains in a pending extension table.
-4. Regenerate material inventory after every final notebook change.
-5. Expand the course to 35 weeks without altering Semester 1: S1 is 7,915 minutes over 16 weeks,
+6. Regenerate material inventory after every final notebook change.
+7. Add `curriculum/course-schedule.yaml` with one allocation record per week and render
+   `docs/course-structure.md` from it.
+   The schedule checker must account for each manifested session exactly once by unit/session
+   index, reconcile each unit's practice and review allocations exactly, reject unknown/duplicate
+   allocations, require all prerequisite units to complete before a dependent unit's first
+   session, and require the manifest-owned mock plus debrief to be the final scheduled events.
+8. Expand the course to 35 weeks without altering Semester 1: S1 is 7,915 minutes over 16 weeks,
    S2 is 9,385 minutes over 19 weeks, and total scheduled time is 17,300 minutes.
-6. Keep strict order C5 → C6 → C11 → C7 and keep the mock/debrief at the final gate.
+9. Keep strict completion/start order C5 → C6 → C11 → C7 and keep the mock/debrief at the final
+   gate.
+10. Change `tools/audit_curriculum.py` to obtain scheduled totals from the validated canonical
+    schedule rather than a prose regex, and add `schedule-check` plus renderer `--check` to
+    `scripts/ci-local.sh`.
 
 ### Verification
 
 - `python3 tools/audit_curriculum.py --check`
 - `python3 tools/render_curriculum_roadmap.py --check`
+- `python3 tools/render_course_structure.py --check`
+- `python3 -m tools.cli schedule-check .`
 - material-inventory check mode
-- focused schedule arithmetic and prerequisite-order tests
+- `python3 -m pytest tests/test_schedule.py tests/test_scope.py tests/test_audit_curriculum.py -q`
 - `python3 -m tools.cli scope-check .` with only Round 2 warnings and the five explicit Plan 018
   Round 1 warnings.
 
@@ -343,7 +391,8 @@ This phase is mandatory because the plan ships and changes teaching units.
 2. Confirm every solution reproduces its statement contract and final answer check.
 3. Run statement hygiene, warning-strict nbformat validation for all changed notebooks, manifest
    validation, blueprint conformance, overlap scan, prerequisite closure, practice coverage,
-   scope, answer-key, tolerance, inventory, audit-freshness, roadmap-freshness, and PDF build.
+   scope, schedule, answer-key, tolerance, training mutations, inventory, audit-freshness,
+   roadmap-freshness, course-structure freshness, and PDF build.
 4. Run focused tests first, then `scripts/ci-local.sh` from a clean commit.
 5. Confirm exact final corpus values: 18 units, 139 concepts, 407 practices, 63 lesson sessions,
    99 lesson/review/overview notebooks, 913 unit notebooks, 17,060 manifested minutes, and 17,300
@@ -373,6 +422,10 @@ This phase is mandatory because the plan ships and changes teaching units.
   exactly the five Plan 018 classical topics.
 - C7 is substantively four-session/double-length and no longer a recorded non-conformance.
 - C5 remains a standard 22-problem unit and is not overloaded.
+- The canonical schedule checker and renderer account for every minute and enforce prerequisite
+  completion/start order; no schedule acceptance rests on handwritten prose.
+- The permanent mutation registry proves the actual training answer checks reject all five named
+  corruption classes and fails closed on unresolved or unexpectedly passing mutants.
 - All 27 changed/new solutions and all changed teaching notebooks fresh-execute cleanly.
 - The four-way content gate passes with no `[OPEN]` finding.
 - Final `scripts/ci-local.sh` and PR-aware pre-merge guard pass from the shipping commit.
@@ -397,6 +450,26 @@ This phase is mandatory because the plan ships and changes teaching units.
   existing-unit modalities named by the canonical queue without entering Plan 018 or Round 2.
   C7 satisfies the existing double-length standard substantively rather than by label alone.
 - No open self-review finding remains.
+
+### Review 2 — GPT-5.6-terra (2026-08-07)
+
+- **Initial verdict:** REJECT.
+- `[terra] [FIXED]` The draft promised to retire C7/C6/neural pending prose but omitted the
+  hard-coded producer `tools/render_curriculum_roadmap.py` and its exact `tests/test_scope.py`
+  expectations.
+  Phase 6 now changes both, keys extension/tranche output to canonical uncovered/planned owners,
+  and requires negative reappearance fixtures.
+- `[terra] [FIXED]` The 35-week schedule was prose with unnamed focused tests, so no durable
+  consumer could reject missing/duplicated allocations or bad order.
+  Phase 6 now adds canonical `curriculum/course-schedule.yaml`, a model/CLI checker, a renderer,
+  exact schedule tests, audit integration, and CI wiring that reconcile every manifested and mock
+  minute and enforce prerequisite completion before dependent start.
+- `[terra] [FIXED]` Positive execution alone could not prove optimizer/update/freeze/commitment/
+  mode contracts were answer-affecting.
+  Phase 5 now adds a permanent exactly-once source-mutation runner against the real solution
+  notebooks, five named corruptions, expected failure-cell checks, fail-closed fixtures, and CI
+  execution.
+- **Delta re-review:** pending.
 
 ## Content Review
 

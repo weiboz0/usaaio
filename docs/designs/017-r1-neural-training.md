@@ -145,6 +145,10 @@ minutes, including the unchanged 180-minute mock and 60-minute debrief.
 The 35-week schedule keeps Semester 1 unchanged at 16 weeks / 7,915 minutes.
 Semester 2 grows to 19 weeks / 9,385 minutes, inserts C11 after C6 and before C7, and keeps
 `r1-001` plus its debrief at the final gate.
+`curriculum/course-schedule.yaml` becomes the machine-readable schedule source.
+A schedule checker reconciles every allocated session, practice minute, review minute, mock, and
+debrief against the manifests and prerequisite graph, while a renderer owns the corresponding
+table and arithmetic in `docs/course-structure.md`.
 
 ## Evidence and roadmap transition
 
@@ -186,6 +190,12 @@ accepted.
 The named verification phase executes every changed solution and teaching notebook in fresh
 Jupyter kernels, runs focused negative and integration tests, regenerates curriculum evidence,
 and finishes with the full `scripts/ci-local.sh` gate.
+A permanent training-mutation runner copies the real changed solution notebooks, applies an
+exactly-once registered corruption for optimizer ordering, missing parameter updates, frozen
+parameter leakage, late prediction commitment, and mode/buffer misuse, and requires each mutant
+to fail its real final answer check.
+The runner fails closed if a mutation target matches zero or multiple source locations or if a
+mutant unexpectedly executes successfully.
 The four content reviewers blind-solve all 27 changed/new statements before reading solutions.
 
 ## Out of scope
@@ -196,4 +206,3 @@ The four content reviewers blind-solve all 27 changed/new statements before read
 - The plan does not add a second mock test or rewrite `r1-001`.
 - The plan does not legalize a unit overflow by changing the shared standard.
 - Student's t-test and importance sampling remain explicitly optional, non-required candidates.
-
