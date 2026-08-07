@@ -54,12 +54,6 @@ EXPECTED_UNIT_SHAPES = {
     "F7-kernels-convex-optimization": ([85, 85, 85, 85], 20, (340, 640, 45)),
 }
 
-# Temporary Phase 4 boundary. The final content phase deletes this exception and restores
-# full-green coverage after F7 creates every registered statement/solution pair.
-PLAN016_PENDING_PRACTICE_IDS = {
-    "F7-kernels-convex-optimization": tuple(range(1, 21)),
-}
-
 PLAN016_C10_PROMOTED_CONCEPTS = (
     "colab-markdown-solution-authoring",
     "markdown-code-snippets",
@@ -124,17 +118,6 @@ def _narrative_section(narrative: str, heading: str) -> str:
     )
     assert match is not None
     return match.group(1)
-
-
-def _plan016_expected_coverage_errors() -> set[str]:
-    errors: set[str] = set()
-    for unit_id, numbers in PLAN016_PENDING_PRACTICE_IDS.items():
-        manifest = ROOT / "units" / unit_id / "manifest.yaml"
-        for number in numbers:
-            stem = f"practice/p{number:02}"
-            errors.add(f"{manifest}: missing practice path {stem}.ipynb")
-            errors.add(f"{manifest}: missing solution path {stem}_solution.ipynb")
-    return errors
 
 
 def seed_repo(root: Path) -> None:
@@ -572,16 +555,12 @@ def test_plan016_syllabus_narrative_order_and_dependency_contract():
     assert "Double-length units (F5, F6) use 4–6 sessions." in standards
 
 
-def test_plan016_phase4_coverage_fails_only_for_pending_f7_paths():
+def test_plan016_practice_coverage_is_green():
     report = check_coverage(ROOT)
-    expected_errors = _plan016_expected_coverage_errors()
 
-    assert sum(len(numbers) for numbers in PLAN016_PENDING_PRACTICE_IDS.values()) == 20
-    assert len(expected_errors) == 40
-    assert not report.ok
+    assert report.ok
     assert report.warnings == []
-    assert len(report.errors) == len(expected_errors)
-    assert set(report.errors) == expected_errors
+    assert report.errors == []
 
 
 def test_ci_checks_other_than_plan016_pending_coverage_are_green():
