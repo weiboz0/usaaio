@@ -653,22 +653,55 @@ def test_c7_main_fails_closed_when_required_budget_id_is_missing(tmp_path, monke
     )
 
 
+def test_c7_main_fails_closed_when_unregistered_id_declares_a_budget(
+    tmp_path, monkeypatch, capsys
+):
+    unit = "C7-cnn-transfer"
+    problems = [
+        c7_budget_problem(
+            tmp_path,
+            problem_id,
+            budget_line="**Time budget:** 75 minutes",
+        )
+        for problem_id in (*C7_BUDGET_IDS, "C7-p28")
+    ]
+    manifest_path = tmp_path / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(yaml.safe_dump({"practice": problems}))
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", (unit,))
+
+    assert verify_register.main(["--statements-only"]) == 1
+    assert (
+        "C7-p28: time budget is declared for an id absent from the literal register"
+        in capsys.readouterr().out
+    )
+
+
 @pytest.mark.parametrize(
-    "bad_register",
+    ("bad_register", "finding"),
     [
-        {"C7-p10": 75, "C7-p24": 75, "C7-p26": 75},
-        {"C7-p10": 75, "C7-p24": 75, "C7-p26": 75, "C7-p27": 70},
-        {
-            "C7-p10": 75,
-            "C7-p24": 75,
-            "C7-p26": 75,
-            "C7-p27": 75,
-            "C7-p28": 75,
-        },
+        (
+            {"C7-p10": 75, "C7-p24": 75, "C7-p26": 75},
+            "C7-p27: time budget is declared for an id absent from the literal register",
+        ),
+        (
+            {"C7-p10": 75, "C7-p24": 75, "C7-p26": 75, "C7-p27": 70},
+            "C7-p27: time budget is missing or does not match literal register minutes 70",
+        ),
+        (
+            {
+                "C7-p10": 75,
+                "C7-p24": 75,
+                "C7-p26": 75,
+                "C7-p27": 75,
+                "C7-p28": 75,
+            },
+            "C7 budget register required id C7-p28 is missing from manifest",
+        ),
     ],
 )
 def test_c7_main_fails_closed_when_literal_register_shape_drifts(
-    tmp_path, monkeypatch, capsys, bad_register
+    tmp_path, monkeypatch, capsys, bad_register, finding
 ):
     unit = "C7-cnn-transfer"
     problems = [
@@ -686,4 +719,4 @@ def test_c7_main_fails_closed_when_literal_register_shape_drifts(
     monkeypatch.setattr(verify_register, "C7_BUDGET_REGISTER", bad_register)
 
     assert verify_register.main(["--statements-only"]) == 1
-    assert "C7 budget register must be exactly" in capsys.readouterr().out
+    assert finding in capsys.readouterr().out

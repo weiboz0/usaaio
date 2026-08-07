@@ -229,12 +229,17 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
         budgets = re.findall(r"(?m)^\*\*Time budget:\*\* ([1-9]\d*) minutes$", all_markdown)
         if budgets != [str(minutes)]:
             errors.append(f"time budget is missing or does not match manifest minutes {minutes}")
-    elif unit == "C7-cnn-transfer" and problem["id"] in C7_BUDGET_REGISTER:
-        minutes = C7_BUDGET_REGISTER[problem["id"]]
+    elif unit == "C7-cnn-transfer":
         budgets = re.findall(r"(?m)^\*\*Time budget:\*\* ([1-9]\d*) minutes$", all_markdown)
-        if budgets != [str(minutes)]:
+        if problem["id"] in C7_BUDGET_REGISTER:
+            minutes = C7_BUDGET_REGISTER[problem["id"]]
+            if budgets != [str(minutes)]:
+                errors.append(
+                    f"time budget is missing or does not match literal register minutes {minutes}"
+                )
+        elif budgets:
             errors.append(
-                f"time budget is missing or does not match literal register minutes {minutes}"
+                "time budget is declared for an id absent from the literal register"
             )
 
     for match in BOLD_BAN_RE.finditer(all_markdown):
@@ -261,19 +266,8 @@ def main(argv: list[str] | None = None) -> int:
         manifest_path = ROOT / "units" / unit / "manifest.yaml"
         manifest = yaml.safe_load(manifest_path.read_text())
         if unit == "C7-cnn-transfer":
-            expected_c7_budgets = {
-                "C7-p10": 75,
-                "C7-p24": 75,
-                "C7-p26": 75,
-                "C7-p27": 75,
-            }
-            if C7_BUDGET_REGISTER != expected_c7_budgets:
-                failures.append(
-                    "C7-budget-register: C7 budget register must be exactly "
-                    "{C7-p10: 75, C7-p24: 75, C7-p26: 75, C7-p27: 75}"
-                )
             manifest_ids = [problem.get("id") for problem in manifest.get("practice", [])]
-            for required_id in expected_c7_budgets:
+            for required_id in C7_BUDGET_REGISTER:
                 count = manifest_ids.count(required_id)
                 if count == 0:
                     failures.append(
