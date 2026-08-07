@@ -845,6 +845,20 @@ def test_course_renderer_derives_40_week_16_plus_24_calendar_and_final_milestone
     assert "followed by 19 weeks" not in rendered
 
 
+def test_course_renderer_places_semester_close_at_declared_boundary(
+    tmp_path: Path,
+) -> None:
+    _build_schedule_fixture(tmp_path, semester_1_weeks=15)
+    _write_region_document(tmp_path)
+
+    rendered = course_renderer.render_document(tmp_path)
+    week_15 = next(line for line in rendered.splitlines() if line.startswith("| 15 |"))
+    week_16 = next(line for line in rendered.splitlines() if line.startswith("| 16 |"))
+
+    assert "Semester 1 close" in week_15
+    assert "Semester 1 close" not in week_16
+
+
 def _rendered_first_instruction_pairs(document: str) -> list[tuple[str, int]]:
     match = re.search(
         r"<!-- BEGIN GENERATED: first-instruction -->\n(.*?)"

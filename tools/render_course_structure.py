@@ -177,6 +177,9 @@ def _week_description(week, prereqs: dict[str, list[str]]) -> str:
 
 
 def _table_region(schedule: CourseSchedule, prereqs: dict[str, list[str]]) -> str:
+    if schedule.semester_week_counts is None:
+        raise ValueError("validated schedule is missing its declared calendar")
+    semester_1_close_week = schedule.semester_week_counts[0]
     final_review: dict[str, int] = {}
     for week in schedule.weeks:
         for allocation in week.allocations:
@@ -196,7 +199,7 @@ def _table_region(schedule: CourseSchedule, prereqs: dict[str, list[str]]) -> st
             row.minutes for row in week.allocations if row.kind in {"practice", "review"}
         )
         gates = [f"{unit} review gate" for unit, number in final_review.items() if number == week.week]
-        if week.week == 16:
+        if week.week == semester_1_close_week:
             gates.append("Semester 1 close")
         if any(row.kind == "mock" for row in week.allocations):
             gates.extend(["`r1-001` summative gate", "debrief"])
