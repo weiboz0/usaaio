@@ -638,8 +638,196 @@ and nit is fixed in the final plan; the earlier GPT-5.6-sol pass is supplemental
 
 ## Content Review
 
-Pending implementation and the named verification phase.
+### Review 1 — self (GPT-5.6-sol, 2026-08-07)
+
+- **Verdict:** APPROVED after corrections.
+- The reviewer read and independently solved all 44 changed/new student statements before
+  opening their solutions at implementation commit `ad1ed09`.
+  All 44 answers matched, including the seeded F1/F5/C10 values, C2 normal-equation and
+  pseudoinverse derivations, C9 eigenspace/projector cases, and all 20 F7 kernel/convexity
+  problems.
+- `[self] [FIXED]` The first authoritative CI attempt exposed 43 newly nonconforming solution
+  titles among the 44 changed solutions, plus seven statements with noncanonical metadata
+  headers.
+  The producer notebooks were repaired rather than weakening `verify-register.py`; the check
+  now passes 383/383.
+- `[self] [FIXED]` The 60 missing cell ids in the 20 F7 solutions were isolated in metadata-only
+  commit `741fe2b`.
+  Stripping ids makes both sides semantically identical, and all 20 notebooks validate with
+  missing-id warnings promoted to errors.
+- `[self] [FIXED]` The C10 solution CSVs are now exact-path ignored; C9 p22–p24 state the
+  non-boolean `n_components` rule; and C9-p23 has a separately graded written derivation and
+  black-box-certification response.
+  The self blind delta derives
+  `inverse_transform(transform(X)) = (X - mu) C.T C + mu` with projector `C.T C` and agrees
+  with the solution.
+- `[self] [FIXED]` F5-p23 now has one unambiguous correct option, C10-p17/p18 name their exact
+  state/split contracts, and F7-p04 makes the student supply the convexity argument.
+- `[self] [WONTFIX]` The raw and corrected C10-p18 searches both choose `k=11`.
+  The separately graded defect remains observable as accuracy `0.826667` mislabeled against
+  macro-F1 `0.810348`, while reseeding would invalidate extensive deterministic contracts for
+  a secondary contrast.
+
+### Review 2 — Claude Opus 5 (2026-08-07)
+
+- **Initial verdict:** CHANGES REQUESTED after blind-solving all 44 statements; all 44 answers
+  matched their solutions.
+- `[opus] [FIXED]` Five C10 CSV write sites made the clean-tree shipping requirement impossible.
+  Exact ignore entries now cover all five generated artifacts, and fresh execution leaves
+  tracked status clean.
+- `[opus] [FIXED]` C9 claimed theory/derivation evidence through pure coding carriers.
+  C9-p23 now has a distinct written response that derives the retained projector and explains
+  why one sklearn comparison cannot certify the implementation contract.
+- `[opus] [FIXED]` Boolean rejection was enforced but unstated in C9-p22/p23/p24; each statement
+  now makes the rule explicit.
+- `[opus] [FIXED]` The register attribution/header failures and the 60 F7 missing ids are fixed
+  by `2f436be` and metadata-only `741fe2b` respectively.
+- `[opus] [FIXED]` The F5-p23 distractor, C10-p17 state wording, C10-p18 split names, and F7-p04
+  reasoning handover were corrected without changing any answer key.
+- `[opus] [WONTFIX]` The reviewer upheld the C10-p18 shared-`k` disposition because the metric
+  mislabel and unbounded-protocol defect remain separately visible and graded.
+- `[opus] [FIXED]` The delta draft introduced the corpus-unique phrase “2 points” without a unit
+  point scale.
+  It now says “separately graded,” preserving the evidence contract without importing mock-test
+  scoring vocabulary.
+- `[opus] [FIXED]` The in-flight Content Review and Post-Execution placeholders identified as a
+  sequencing item are replaced by this completed record before PR.
+- **Final delta verdict:** APPROVED.
+
+### Review 3 — GPT-5.6-terra (2026-08-07)
+
+- **Initial verdict:** CHANGES REQUESTED.
+- `[terra] [FIXED]` The governance edits are covered by the user's explicit authorization in
+  this thread.
+- `[terra] [FIXED]` Commit `741fe2b` adds exactly 60 deterministic ids across the 20 F7
+  solutions, with no source, output, execution-count, or other semantic change after ids are
+  stripped.
+  All ids are present, valid, and unique; warning-strict nbformat validation passes 20/20.
+- The delta review blind-derived `(X - mu) C.T C + mu`, identified `C.T C` as the orthogonal
+  retained-subspace projector, and named multiple unchecked class contracts before reading the
+  updated C9-p23 solution.
+  The solution matches.
+- Focused verification passed 217 tests; the sole location-deduplicated missing-id warning comes
+  from acknowledged pre-existing notebooks outside the 20 repaired F7 solutions.
+- **Final delta verdict:** APPROVED.
+
+### Review 4 — GLM-5.2 (2026-08-07)
+
+- **Initial verdict:** APPROVED after blind-solving all 44 statements with no answer-key
+  disagreement.
+- `[glm] [FIXED]` Delta review independently confirmed the C9-p23 reconstruction/projector,
+  the 60 metadata-only ids, exact title/header attribution, explicit boolean contract, C10
+  artifact ignores, and answer-neutral wording fixes.
+- `[glm] [WONTFIX]` C2-p20/p23 use `RTOL = 1e-10` only for conditioned coefficient/residual
+  comparisons, while orthogonality-to-zero checks remain absolute.
+  The statements document this deliberate numerical contract.
+- `[glm] [WONTFIX]` The C10-p18 shared-`k` result is non-blocking for the same independently
+  verified metric/protocol reason recorded above.
+- `verify-register` passed 383/383; `answerkey-check` and `coverage-check` passed; the affected
+  solutions executed cleanly; tracked status remained clean.
+- **Final delta verdict:** APPROVED.
+
+**GATE RESULT: PASS — 4/4.**
+Every reviewer blind-solved all 44 original changed/new statements before solution access.
+The three external reviewers independently blind-solved the only later substantive addition,
+C9-p23 Part B, while the active self-review re-derived and checked it against the solution.
+No `[OPEN]` finding remains.
 
 ## Post-Execution Report
 
-Pending implementation, verification, review, PR, and squash merge.
+### Delivered artifacts
+
+- Deepened F1, C10, F5, C2, and C9 at their existing owners and added the coherent
+  `F7-kernels-convex-optimization` foundation unit.
+- Shipped 21 canonical concepts through 17 atomic Plan 016 coverage targets.
+  All 17 are checker-derived `covered` with disposition `keep`; the acknowledged Round 1 gap
+  count falls from 32 to 15 without claiming Student's t-test or importance sampling as required.
+- Changed or added 115 source notebooks: 44 student statements, 44 separately authored
+  solutions, and 27 lesson/review/root-index notebooks.
+- Added double-length model/checker support, exact owner/prerequisite/register contracts,
+  regenerated audit/roadmap/inventory evidence, and a 31-week prerequisite-valid schedule.
+- Removed completed Plan 016 work from the roadmap queue.
+  The remaining estimate is only C7's 8–12-hour neural-training surface; C6/C8 remain explicitly
+  unestimated, and the classical-breadth node depends on shipped F7.
+
+### Final corpus and schedule
+
+| Measure | Final value |
+|---|---:|
+| Units | 17 |
+| Canonical concepts | 130 |
+| Unit practices | 383 |
+| Lesson sessions | 57 |
+| Unit lesson/review/root notebooks | 91 |
+| Unit notebooks | 857 |
+| Mock tests / mock notebooks | 1 / 10 |
+| Manifested minutes | 14,767 |
+| Scheduled minutes | 15,007 |
+| Semester 1 | 16 weeks / 7,915 minutes |
+| Semester 2 | 15 weeks / 7,092 minutes |
+
+The schedule orders F7 before C9 and places `r1-001` plus its debrief in Week 31.
+The manifested split is 4,740 lesson + 9,237 practice + 790 review minutes; the schedule adds
+the 180-minute mock and 60-minute debrief.
+
+### Source and isolation boundary
+
+- Student notebooks contain no solution cells or stored execution outputs.
+  Solutions live only in their paired `_solution.ipynb` notebooks, use fixed seed `20260804`
+  where randomness is present, declare explicit tolerances, and end with `### Answer check`.
+- Statement authors and blind solution authors used separate fresh sessions.
+  The four content reviewers repeated blind solving before solution access and found no answer-key
+  disagreement across the 44-problem set.
+- Problems are original to this project; no raw past paper, verbatim past-problem text, student
+  data, secret, or local reference artifact enters the tracked diff.
+- The five deterministic C10 CSVs created during solution execution are ignored build/runtime
+  artifacts and cannot be staged into the public source tree.
+
+### Fail-first and regression evidence
+
+- Before the double-length checker implementation, focused fixtures failed for missing/malformed
+  session data, below/above the 4–6 session band, below/above the 24–30 practice band, and
+  duplicate ids/paths.
+  Commits `db06b13`, `5349040`, and `a361485` implement the smallest model/checker change and
+  retain those negative cases plus real F6, planned F5, and hypothetical C7 regressions.
+- Phase 1 first pinned exact ownership, clusters, prerequisites, counts, minute totals, and the
+  controlled coverage boundary while notebook paths were intentionally absent.
+  Missing evidence remained blocking until the content phases shipped it; no checker was weakened.
+- The first full Phase 7 CI attempt stopped at register verification with 340/383 passing.
+  Root-cause tracing showed copied statement titles and seven legacy header forms in the new
+  producer notebooks; after fixing producers, `verify-register.py` passes 383/383.
+- Terra's missing-id finding was repaired separately in `741fe2b` and corruption-tested by
+  stripping ids from both commit sides.
+  There are zero semantic differences and warning-strict validation passes all 20 F7 solutions.
+
+### Fresh execution and verification evidence
+
+- Before the gate, all 44 changed/new solutions and all 27 changed lesson/review/root notebooks
+  fresh-executed in an isolated Jupyter configuration.
+  The later C2-p20 derivation solution was separately fresh-executed after its scored response was
+  added.
+- After content-gate corrections, 34 affected solutions fresh-executed again: all 20 F7, all 5
+  C9, all 6 F5, and C10-p15/p17/p18.
+  Stored-output hygiene remained clean.
+- The focused post-fix suite passed 207 tests, followed by reviewer reruns of 217 tests.
+  `verify-register` passed 383/383; answer-key, coverage, hygiene, tolerance, prerequisite, scope,
+  overlap, audit-freshness, and roadmap-freshness checks passed.
+- The one focused `MissingIDFieldWarning` is location-deduplicated from pre-existing out-of-scope
+  notebooks; warning-strict validation of the 20 changed F7 solutions is clean.
+- No fallback cell execution is counted as shipping evidence.
+- The final uninterrupted clean-commit `scripts/ci-local.sh` run is the remaining delivery step;
+  its exact result will replace this sentence before push, followed by the required repeat on the
+  final report commit.
+
+### Review, divergence, and shipping state
+
+- Self (GPT-5.6-sol): APPROVED.
+- Claude Opus 5: CHANGES REQUESTED, then APPROVED after delta review.
+- GPT-5.6-terra: CHANGES REQUESTED, then APPROVED after delta review.
+- GLM-5.2: APPROVED initially and after delta review.
+- Review-led additions were limited to honest contract completion: metadata ids/titles, ignored
+  runtime artifacts, explicit boolean wording, and one separately graded C9 derivation response.
+  They do not change the pinned curriculum ownership, schedule, answer keys, or plan scope.
+- The C10-p18 raw/bounded searches selecting the same `k=11` is the sole explicit WONTFIX and is
+  upheld independently by self, Opus, and GLM as non-blocking.
+- PR creation, PR-aware guard, and squash merge remain after the final clean-commit verification.
