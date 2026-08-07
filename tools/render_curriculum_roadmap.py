@@ -5,9 +5,9 @@ from __future__ import annotations
 import argparse
 import math
 import os
-import re
 import sys
 import tempfile
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -15,13 +15,14 @@ import yaml
 
 from tools.checks.schedule import load_validated_schedule
 from tools.checks.scope import LAYERS, MINIMUM_QUALIFYING_PRACTICES, check_scope
-from tools.model import KnowledgePoint, Roadmap, load_roadmap
+from tools.model import CourseSchedule, KnowledgePoint, Roadmap, load_roadmap
 
 AUDIT_PATH = Path("docs/audits/015-coverage-audit.md")
 ROADMAP_PATH = Path("docs/curriculum-roadmap.md")
 EDITORIAL_EXISTING_UNIT_ESTIMATES = {
     "convolutional-neural-network-basics": ("C7", 8.0, 12.0, "C7 CNN training"),
 }
+ScheduleLoader = Callable[[str | Path], CourseSchedule]
 
 TRANCHE_QUEUE = (
     (
@@ -108,7 +109,11 @@ def _number(value: object) -> int:
     return int(value) if value is not None else 0
 
 
-def current_time_baseline(root: str | Path) -> TimeBaseline:
+def current_time_baseline(
+    root: str | Path,
+    *,
+    _schedule_loader: ScheduleLoader = load_validated_schedule,
+) -> TimeBaseline:
     root = Path(root).resolve()
     manifested = 0
     for path in sorted(root.glob("units/*/manifest.yaml")):
@@ -119,18 +124,7 @@ def current_time_baseline(root: str | Path) -> TimeBaseline:
         manifested += sum(_number(value) for value in estimates.get("lesson_sessions") or [])
         manifested += _number(estimates.get("practice"))
         manifested += _number(estimates.get("review"))
-    schedule_path = root / "curriculum" / "course-schedule.yaml"
-    if schedule_path.is_file():
-        scheduled = load_validated_schedule(root, enforce_calendar=False).total_minutes
-    else:
-        # Small renderer fixtures predating the canonical calendar remain intentionally local.
-        mock_minutes = sum(
-            _number(_yaml(path).get("duration_minutes"))
-            for path in sorted(root.glob("mocktests/*/manifest.yaml"))
-        )
-        course_text = (root / "docs" / "course-structure.md").read_text(encoding="utf-8")
-        match = re.search(r"(\d+)-minute debrief", course_text)
-        scheduled = manifested + mock_minutes + (int(match.group(1)) if match else 0)
+    scheduled = _schedule_loader(root).total_minutes
     return TimeBaseline(
         manifested_minutes=manifested,
         scheduled_minutes=scheduled,
@@ -532,12 +526,16 @@ def _render_roadmap(
     return "\n".join(lines).rstrip() + "\n"
 
 
-def render_documents(root: str | Path) -> dict[Path, str]:
+def render_documents(
+    root: str | Path,
+    *,
+    _schedule_loader: ScheduleLoader = load_validated_schedule,
+) -> dict[Path, str]:
     root = Path(root).resolve()
     roadmap = load_roadmap(root)
     inventory = _yaml(root / "curriculum" / "material-inventory.yaml")
     topics = _yaml(root / "curriculum" / "official-topics.yaml")
-    baseline = current_time_baseline(root)
+    baseline = current_time_baseline(root, _schedule_loader=_schedule_loader)
     return {
         AUDIT_PATH: _render_audit(roadmap, inventory, baseline, topics),
         ROADMAP_PATH: _render_roadmap(roadmap, baseline, topics),
@@ -577,7 +575,11 @@ def _atomic_write(path: Path, content: str) -> None:
         temporary.unlink(missing_ok=True)
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(
+    argv: list[str] | None = None,
+    *,
+    _schedule_loader: ScheduleLoader = load_validated_schedule,
+) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", default=".")
     parser.add_argument("--check", action="store_true")
@@ -588,7 +590,7 @@ def main(argv: list[str] | None = None) -> int:
         for error in report.errors:
             print(f"ERROR scope-check: {error}", file=sys.stderr)
         return 1
-    rendered = render_documents(root)
+    rendered = render_documents(root, _schedule_loader=_schedule_loader)
     stale: list[str] = []
     outputs: list[tuple[Path, Path, str]] = []
     try:

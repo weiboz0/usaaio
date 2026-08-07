@@ -15,6 +15,16 @@ from tools.checks.schedule import load_validated_schedule
 from tools.model import CourseSchedule, load_syllabus
 
 DOCUMENT = Path("docs/course-structure.md")
+OWNED_REGIONS = (
+    "course-model",
+    "semester-model",
+    "weekly-table",
+    "semester-summary",
+    "summative-milestone",
+    "counts-output",
+    "arithmetic-output",
+    "first-instruction",
+)
 
 
 def _yaml(path: Path) -> dict:
@@ -271,6 +281,34 @@ def _bootstrap(document: str) -> str:
     return document
 
 
+def _validated_region_patterns(document: str) -> dict[str, re.Pattern[str]]:
+    patterns: dict[str, re.Pattern[str]] = {}
+    previous_end = -1
+    for name in OWNED_REGIONS:
+        begin = f"<!-- BEGIN GENERATED: {name} -->"
+        end = f"<!-- END GENERATED: {name} -->"
+        if document.count(begin) != 1 or document.count(end) != 1:
+            raise ValueError(
+                f"generated region {name} requires exactly one BEGIN and one END sentinel"
+            )
+        begin_at = document.index(begin)
+        end_at = document.index(end)
+        if begin_at >= end_at:
+            raise ValueError(f"generated region {name} sentinels are malformed or reversed")
+        if begin_at <= previous_end:
+            raise ValueError("generated course-structure regions are out of order or overlap")
+        pattern = re.compile(
+            rf"{re.escape(begin)}\n.*?{re.escape(end)}",
+            re.DOTALL,
+        )
+        matches = list(pattern.finditer(document))
+        if len(matches) != 1:
+            raise ValueError(f"generated region {name} is incomplete or malformed")
+        previous_end = matches[0].end()
+        patterns[name] = pattern
+    return patterns
+
+
 def render_document(root: str | Path, *, bootstrap: bool = False) -> str:
     root = Path(root).resolve()
     schedule = load_validated_schedule(root)
@@ -282,6 +320,7 @@ def render_document(root: str | Path, *, bootstrap: bool = False) -> str:
         if not bootstrap:
             raise ValueError("generated course-structure regions are missing")
         document = _bootstrap(document)
+    patterns = _validated_region_patterns(document)
     regions = {
         "course-model": _model_region(schedule, manifests),
         "semester-model": _semester_region(schedule),
@@ -299,14 +338,7 @@ def render_document(root: str | Path, *, bootstrap: bool = False) -> str:
         "first-instruction": _first_instruction(schedule),
     }
     for name, content in regions.items():
-        pattern = re.compile(
-            rf"<!-- BEGIN GENERATED: {re.escape(name)} -->\n.*?"
-            rf"<!-- END GENERATED: {re.escape(name)} -->",
-            re.DOTALL,
-        )
-        document, count = pattern.subn(_region(name, content), document, count=1)
-        if count != 1:
-            raise ValueError(f"missing or duplicate generated region {name}")
+        document = patterns[name].sub(_region(name, content), document)
     return document
 
 

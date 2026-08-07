@@ -17,14 +17,17 @@ import re
 import sys
 import unicodedata
 from collections import defaultdict
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
 import yaml
 
 from tools.checks.schedule import load_validated_schedule
+from tools.model import CourseSchedule
 
 INVENTORY_PATH = Path("curriculum/material-inventory.yaml")
+ScheduleLoader = Callable[[str | Path], CourseSchedule]
 
 
 class InventoryError(ValueError):
@@ -501,7 +504,11 @@ def _synthesis_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[st
     return records
 
 
-def build_inventory(root: str | Path) -> dict[str, Any]:
+def build_inventory(
+    root: str | Path,
+    *,
+    _schedule_loader: ScheduleLoader = load_validated_schedule,
+) -> dict[str, Any]:
     root = Path(root).resolve()
     _validate_input_file(root / "syllabus.md", root, "syllabus.md", "syllabus")
     syllabus_record, syllabus = _syllabus_record(root / "syllabus.md")
@@ -534,7 +541,7 @@ def build_inventory(root: str | Path) -> dict[str, Any]:
     review_minutes = sum(int(item["estimated_minutes"].get("review", 0)) for item in parsed_unit_manifests)
     manifested_minutes = lesson_minutes + practice_minutes + review_minutes
     try:
-        schedule = load_validated_schedule(root, enforce_calendar=False)
+        schedule = _schedule_loader(root)
     except ValueError as exc:
         raise InventoryError(str(exc)) from exc
 
@@ -569,7 +576,11 @@ def render_inventory(inventory: dict[str, Any]) -> str:
     return yaml.safe_dump(inventory, allow_unicode=True, sort_keys=False, width=120)
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(
+    argv: list[str] | None = None,
+    *,
+    _schedule_loader: ScheduleLoader = load_validated_schedule,
+) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=".", help="repository root")
     parser.add_argument("--check", action="store_true", help="fail if the generated inventory is missing or stale")
@@ -577,7 +588,9 @@ def main(argv: list[str] | None = None) -> int:
     root = Path(args.root).resolve()
     output = root / INVENTORY_PATH
     try:
-        rendered = render_inventory(build_inventory(root))
+        rendered = render_inventory(
+            build_inventory(root, _schedule_loader=_schedule_loader)
+        )
         if args.check:
             if not output.exists():
                 print(f"ERROR material inventory missing: {INVENTORY_PATH}", file=sys.stderr)

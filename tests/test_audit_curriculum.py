@@ -6,8 +6,21 @@ import pytest
 import yaml
 
 from tools import audit_curriculum as audit
+from tools.checks.schedule import load_validated_schedule
 
 REPO_ROOT = Path(__file__).parents[1]
+
+
+def _fixture_schedule_loader(root: str | Path):
+    return load_validated_schedule(root, enforce_calendar=False)
+
+
+def _build_fixture_inventory(root: Path) -> dict:
+    return audit.build_inventory(root, _schedule_loader=_fixture_schedule_loader)
+
+
+def _fixture_audit_main(argv: list[str]) -> int:
+    return audit.main(argv, _schedule_loader=_fixture_schedule_loader)
 
 
 def _write_notebook(path: Path, cells: list[dict], *, metadata: dict | None = None) -> None:
@@ -278,8 +291,8 @@ def test_manifest_digest_rejects_non_string_keys_without_collisions(tmp_path: Pa
 def test_inventory_paths_and_rendering_are_deterministic(tmp_path: Path) -> None:
     _make_minimal_repo(tmp_path)
 
-    first = audit.build_inventory(tmp_path)
-    second = audit.build_inventory(tmp_path)
+    first = _build_fixture_inventory(tmp_path)
+    second = _build_fixture_inventory(tmp_path)
     inventoried_paths = first["input_paths"]
 
     assert inventoried_paths == sorted(inventoried_paths, key=str.encode)
@@ -290,7 +303,7 @@ def test_inventory_paths_and_rendering_are_deterministic(tmp_path: Path) -> None
 def test_declared_ids_are_recorded_without_coverage_inference(tmp_path: Path) -> None:
     _make_minimal_repo(tmp_path)
 
-    inventory = audit.build_inventory(tmp_path)
+    inventory = _build_fixture_inventory(tmp_path)
     statement = next(
         entry for entry in inventory["notebooks"] if entry["path"].endswith("practice/p01.ipynb")
     )
@@ -322,7 +335,7 @@ def test_synthesis_notebooks_keep_nearest_manifest_declarations(tmp_path: Path) 
     )
     _write_notebook(synthesis / "practice" / "p01.ipynb", [_markdown("# Bridge\n")])
 
-    inventory = audit.build_inventory(tmp_path)
+    inventory = _build_fixture_inventory(tmp_path)
     record = next(
         item
         for item in inventory["notebooks"]
@@ -335,7 +348,7 @@ def test_synthesis_notebooks_keep_nearest_manifest_declarations(tmp_path: Path) 
 
     (synthesis / "practice" / "p01.ipynb").unlink()
     with pytest.raises(audit.InventoryError, match="declared notebook is missing"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 def test_all_mock_rounds_are_discovered(tmp_path: Path) -> None:
@@ -354,7 +367,7 @@ def test_all_mock_rounds_are_discovered(tmp_path: Path) -> None:
             allocation["test"] = "r2-mini"
     schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False))
 
-    counts = audit.build_inventory(tmp_path)["counts"]
+    counts = _build_fixture_inventory(tmp_path)["counts"]
 
     assert counts["mocktests"] == 1
     assert counts["mock_notebooks"] == 2
@@ -366,7 +379,7 @@ def test_missing_declared_unit_notebook_fails_loudly(tmp_path: Path) -> None:
     missing.unlink()
 
     with pytest.raises(audit.InventoryError, match="declared notebook is missing"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 @pytest.mark.parametrize("escape_kind", ["parent", "symlink"])
@@ -389,7 +402,7 @@ def test_declared_unit_notebooks_cannot_escape_the_unit(
     manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False))
 
     with pytest.raises(audit.InventoryError, match="escapes its material directory"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 @pytest.mark.parametrize("material_tree", ["unit", "mock", "synthesis"])
@@ -413,7 +426,7 @@ def test_undeclared_notebook_symlinks_are_rejected(
     link.symlink_to(outside)
 
     with pytest.raises(audit.InventoryError, match="notebook symlinks are not allowed"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 @pytest.mark.parametrize("material_tree", ["unit", "mock", "synthesis"])
@@ -436,7 +449,7 @@ def test_external_manifest_symlinks_are_rejected(
     manifest.symlink_to(external)
 
     with pytest.raises(audit.InventoryError, match="manifest symlinks are not allowed"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 def test_missing_declared_mock_notebook_fails_loudly(tmp_path: Path) -> None:
@@ -445,7 +458,7 @@ def test_missing_declared_mock_notebook_fails_loudly(tmp_path: Path) -> None:
     missing.unlink()
 
     with pytest.raises(audit.InventoryError, match="declared notebook is missing"):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 def test_imported_bare_api_calls_are_recorded(tmp_path: Path) -> None:
@@ -460,16 +473,16 @@ def test_imported_bare_api_calls_are_recorded(tmp_path: Path) -> None:
 def test_check_mode_catches_missing_and_stale_inventory_then_passes(tmp_path: Path, capsys) -> None:
     _make_minimal_repo(tmp_path)
 
-    assert audit.main(["--root", str(tmp_path), "--check"]) == 1
+    assert _fixture_audit_main(["--root", str(tmp_path), "--check"]) == 1
     assert "missing" in capsys.readouterr().err
 
-    assert audit.main(["--root", str(tmp_path)]) == 0
+    assert _fixture_audit_main(["--root", str(tmp_path)]) == 0
     output = tmp_path / "curriculum" / "material-inventory.yaml"
     assert output.is_file()
-    assert audit.main(["--root", str(tmp_path), "--check"]) == 0
+    assert _fixture_audit_main(["--root", str(tmp_path), "--check"]) == 0
 
     output.write_text(output.read_text() + "# stale\n")
-    assert audit.main(["--root", str(tmp_path), "--check"]) == 1
+    assert _fixture_audit_main(["--root", str(tmp_path), "--check"]) == 1
     assert "stale" in capsys.readouterr().err
 
 
@@ -549,10 +562,19 @@ def test_scheduled_minutes_come_from_canonical_schedule_not_prose(tmp_path: Path
         "# Deliberately stale prose\n\nThe course ends with a 9,999-minute debrief.\n"
     )
 
-    counts = audit.build_inventory(tmp_path)["counts"]
+    counts = _build_fixture_inventory(tmp_path)["counts"]
 
     assert counts["manifested_minutes"] == 210
     assert counts["scheduled_minutes"] == 450
+
+
+def test_inventory_production_consumer_requires_the_full_canonical_schedule(
+    tmp_path: Path,
+) -> None:
+    _install_canonical_schedule_fixture(tmp_path)
+
+    with pytest.raises(audit.InventoryError, match="missing week 2"):
+        audit.build_inventory(tmp_path)
 
 
 def test_inventory_rejects_invalid_canonical_schedule_instead_of_summing_yaml(
@@ -564,7 +586,7 @@ def test_inventory_rejects_invalid_canonical_schedule_instead_of_summing_yaml(
         audit.InventoryError,
         match="course-schedule.yaml.*unknown kind invented-kind",
     ):
-        audit.build_inventory(tmp_path)
+        _build_fixture_inventory(tmp_path)
 
 
 @pytest.mark.parametrize(

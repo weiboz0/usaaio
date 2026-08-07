@@ -9,6 +9,8 @@ from typing import Any
 import pytest
 import yaml
 
+from tools import render_course_structure as course_renderer
+
 ROOT = Path(__file__).parents[1]
 
 
@@ -124,6 +126,41 @@ def _check_after(root: Path, mutate: Callable[[dict[str, Any]], None]):
     mutate(schedule)
     _write_yaml(root / "curriculum" / "course-schedule.yaml", schedule)
     return _schedule_checker().check_schedule(root)
+
+
+def _write_region_document(root: Path) -> str:
+    human_sections = [
+        "# Fixture course\n\nHuman optional-mock policy.\n\n",
+        "\n\nHuman grading policy.\n\n",
+        "\n\nHuman explanatory prerequisite prose.\n",
+    ]
+    regions = [
+        course_renderer._region(name, f"old generated {name}")
+        for name in course_renderer.OWNED_REGIONS
+    ]
+    document = (
+        human_sections[0]
+        + "\n\n".join(regions[:4])
+        + human_sections[1]
+        + "\n\n".join(regions[4:])
+        + human_sections[2]
+    )
+    path = root / "docs" / "course-structure.md"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(document)
+    return document
+
+
+def _outside_generated(document: str) -> str:
+    for name in course_renderer.OWNED_REGIONS:
+        document = re.sub(
+            rf"<!-- BEGIN GENERATED: {re.escape(name)} -->\n.*?"
+            rf"<!-- END GENERATED: {re.escape(name)} -->",
+            "",
+            document,
+            flags=re.DOTALL,
+        )
+    return document
 
 
 def _split_allocation(
@@ -296,6 +333,50 @@ def test_schedule_checker_accepts_a_fully_allocated_prerequisite_valid_fixture(
     report = _schedule_checker().check_schedule(tmp_path)
 
     assert report.ok, report.errors
+
+
+def test_course_renderer_preserves_all_bytes_outside_generated_regions(
+    tmp_path: Path,
+) -> None:
+    _build_schedule_fixture(tmp_path)
+    before = _write_region_document(tmp_path)
+    outside_before = _outside_generated(before)
+
+    assert course_renderer.main(["--root", str(tmp_path)]) == 0
+
+    after = (tmp_path / "docs" / "course-structure.md").read_text()
+    assert _outside_generated(after) == outside_before
+
+
+@pytest.mark.parametrize("check", [False, True])
+def test_course_renderer_rejects_a_duplicate_complete_sentinel_pair(
+    tmp_path: Path, check: bool
+) -> None:
+    _build_schedule_fixture(tmp_path)
+    document = _write_region_document(tmp_path)
+    duplicate = course_renderer._region("course-model", "duplicate")
+    (tmp_path / "docs" / "course-structure.md").write_text(
+        document + "\n" + duplicate + "\n"
+    )
+    args = ["--root", str(tmp_path), *(["--check"] if check else [])]
+
+    assert course_renderer.main(args) == 1
+
+
+@pytest.mark.parametrize("damage", ["missing", "malformed"])
+def test_course_renderer_rejects_missing_or_malformed_sentinels(
+    tmp_path: Path, damage: str
+) -> None:
+    _build_schedule_fixture(tmp_path)
+    document = _write_region_document(tmp_path)
+    region = course_renderer._region("weekly-table", "old generated weekly-table")
+    if damage == "missing":
+        document = document.replace(region, "")
+    else:
+        document = document.replace("<!-- END GENERATED: weekly-table -->", "")
+    (tmp_path / "docs" / "course-structure.md").write_text(document)
+
+    assert course_renderer.main(["--root", str(tmp_path), "--check"]) == 1
 
 
 def test_schedule_checker_accepts_consecutive_multiweek_practice_chunks(

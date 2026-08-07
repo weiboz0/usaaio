@@ -4,6 +4,7 @@ import os
 import re
 from collections.abc import Callable
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
@@ -97,6 +98,33 @@ PLAN017_CLOSURE = {
         {"model-training": "C7-p10"},
     ),
 }
+
+
+def _fixture_schedule_loader(root: str | Path):
+    root = Path(root)
+    manifested = 0
+    for path in root.glob("units/*/manifest.yaml"):
+        estimates = yaml.safe_load(path.read_text()).get("estimated_minutes") or {}
+        manifested += sum(estimates.get("lesson_sessions") or [])
+        manifested += int(estimates.get("practice", 0))
+        manifested += int(estimates.get("review", 0))
+    mock = sum(
+        int(yaml.safe_load(path.read_text()).get("duration_minutes", 0))
+        for path in root.glob("mocktests/*/manifest.yaml")
+    )
+    course = (root / "docs" / "course-structure.md").read_text()
+    match = re.search(r"(\d+)-minute debrief", course)
+    return SimpleNamespace(
+        total_minutes=manifested + mock + (int(match.group(1)) if match else 0)
+    )
+
+
+def _render_fixture_documents(root: Path):
+    return renderer.render_documents(root, _schedule_loader=_fixture_schedule_loader)
+
+
+def _fixture_renderer_main(argv: list[str]) -> int:
+    return renderer.main(argv, _schedule_loader=_fixture_schedule_loader)
 
 
 def test_scope_checker_module_exists() -> None:
@@ -1377,7 +1405,7 @@ def test_renderer_owns_both_documents_and_keeps_assessments_separate(tmp_path: P
     evidence["assessments"] = [{"id": "U1-core-p1", "role": "primary"}]
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
 
-    rendered = renderer.render_documents(tmp_path)
+    rendered = _render_fixture_documents(tmp_path)
 
     assert set(rendered) == {
         Path("docs/audits/015-coverage-audit.md"),
@@ -1401,7 +1429,7 @@ def test_renderer_labels_unit_and_total_inventoried_notebook_counts(tmp_path: Pa
     }
     _write_yaml(tmp_path / "curriculum" / "material-inventory.yaml", contract["inventory"])
 
-    audit = renderer.render_documents(tmp_path)[
+    audit = _render_fixture_documents(tmp_path)[
         Path("docs/audits/015-coverage-audit.md")
     ]
 
@@ -1417,7 +1445,7 @@ def test_renderer_surfaces_checker_derived_practice_shortfall(tmp_path: Path) ->
     point["deficits"]["modalities_missing"] = []
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
 
-    rendered = renderer.render_documents(tmp_path)
+    rendered = _render_fixture_documents(tmp_path)
     audit = rendered[Path("docs/audits/015-coverage-audit.md")]
     roadmap = rendered[Path("docs/curriculum-roadmap.md")]
 
@@ -1431,6 +1459,15 @@ def test_renderer_and_scope_checker_share_the_practice_threshold() -> None:
         renderer.MINIMUM_QUALIFYING_PRACTICES
         == scope_checker.MINIMUM_QUALIFYING_PRACTICES
     )
+
+
+def test_roadmap_production_consumer_requires_the_full_canonical_schedule(
+    tmp_path: Path,
+) -> None:
+    _base_contract(tmp_path)
+
+    with pytest.raises(ValueError, match="course-schedule.yaml"):
+        renderer.render_documents(tmp_path)
 
 
 def test_renderer_recomputes_real_plan017_baseline() -> None:
@@ -1506,13 +1543,13 @@ def test_c7_extension_returns_only_when_cnn_training_owner_is_pending(
     tmp_path: Path,
 ) -> None:
     contract = _base_contract(tmp_path)
-    without_pending_owner = renderer.render_documents(tmp_path)
+    without_pending_owner = _render_fixture_documents(tmp_path)
     assert all("C7 CNN training" not in document for document in without_pending_owner.values())
 
     _add_pending_c7_training_point(contract)
     _write_yaml(tmp_path / "curriculum" / "official-topics.yaml", contract["topics"])
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
-    with_pending_owner = renderer.render_documents(tmp_path)
+    with_pending_owner = _render_fixture_documents(tmp_path)
 
     assert all("C7 CNN training" in document for document in with_pending_owner.values())
 
@@ -1521,13 +1558,13 @@ def test_neural_tranche_returns_only_when_its_planned_unit_is_restored(
     tmp_path: Path,
 ) -> None:
     contract = _base_contract(tmp_path)
-    without_planned_unit = renderer.render_documents(tmp_path)
+    without_planned_unit = _render_fixture_documents(tmp_path)
     title = "Round 1 neural-training completion"
     assert all(title not in document for document in without_planned_unit.values())
 
     _add_pending_neural_tranche(contract)
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
-    with_planned_unit = renderer.render_documents(tmp_path)
+    with_planned_unit = _render_fixture_documents(tmp_path)
 
     assert all(title in document for document in with_planned_unit.values())
 
@@ -1540,7 +1577,7 @@ def test_unestimated_c8_clause_remains_but_estimated_extension_section_is_suppre
     _write_yaml(tmp_path / "curriculum" / "official-topics.yaml", contract["topics"])
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
 
-    rendered = renderer.render_documents(tmp_path)
+    rendered = _render_fixture_documents(tmp_path)
 
     for document in rendered.values():
         assert "C8" in document
@@ -1563,7 +1600,7 @@ def test_unestimated_c8_clause_disappears_only_after_its_canonical_row_is_covere
     _write_yaml(tmp_path / "curriculum" / "official-topics.yaml", contract["topics"])
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
 
-    rendered = renderer.render_documents(tmp_path)
+    rendered = _render_fixture_documents(tmp_path)
 
     for document in rendered.values():
         assert (
@@ -1590,7 +1627,7 @@ def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: 
     _write_yaml(tmp_path / "curriculum" / "official-topics.yaml", contract["topics"])
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
 
-    rendered = renderer.render_documents(tmp_path)
+    rendered = _render_fixture_documents(tmp_path)
 
     for document in rendered.values():
         assert "Current manifested baseline: **420 minutes / 7 hours**" in document
@@ -1676,7 +1713,7 @@ def test_renderer_is_input_order_independent(tmp_path: Path) -> None:
     planned["provisional_concepts"] = ["z-concept", "a-concept"]
     _write_yaml(tmp_path / "curriculum" / "official-topics.yaml", contract["topics"])
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
-    first = renderer.render_documents(tmp_path)
+    first = _render_fixture_documents(tmp_path)
     contract["roadmap"]["knowledge_points"].reverse()
     contract["roadmap"]["planned_units"].reverse()
     contract["topics"]["atomic_targets"].reverse()
@@ -1692,7 +1729,7 @@ def test_renderer_is_input_order_independent(tmp_path: Path) -> None:
     _write_yaml(tmp_path / "curriculum" / "official-topics.yaml", contract["topics"])
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
 
-    assert renderer.render_documents(tmp_path) == first
+    assert _render_fixture_documents(tmp_path) == first
 
 
 def test_renderer_fractional_hour_totals_are_planned_unit_order_independent(
@@ -1713,11 +1750,11 @@ def test_renderer_fractional_hour_totals_are_planned_unit_order_independent(
     ]
     contract["roadmap"]["planned_units"] = units
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
-    first = renderer.render_documents(tmp_path)
+    first = _render_fixture_documents(tmp_path)
     contract["roadmap"]["planned_units"] = list(reversed(units))
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
 
-    second = renderer.render_documents(tmp_path)
+    second = _render_fixture_documents(tmp_path)
 
     assert second == first
     for document in second.values():
@@ -1727,12 +1764,12 @@ def test_renderer_fractional_hour_totals_are_planned_unit_order_independent(
 def test_renderer_check_detects_stale_output_without_overwriting(tmp_path: Path) -> None:
     _base_contract(tmp_path)
 
-    assert renderer.main(["--root", str(tmp_path)]) == 0
-    assert renderer.main(["--root", str(tmp_path), "--check"]) == 0
+    assert _fixture_renderer_main(["--root", str(tmp_path)]) == 0
+    assert _fixture_renderer_main(["--root", str(tmp_path), "--check"]) == 0
     audit = tmp_path / "docs" / "audits" / "015-coverage-audit.md"
     audit.write_text("stale\n")
 
-    assert renderer.main(["--root", str(tmp_path), "--check"]) == 1
+    assert _fixture_renderer_main(["--root", str(tmp_path), "--check"]) == 1
     assert audit.read_text() == "stale\n"
 
 
@@ -1743,7 +1780,7 @@ def test_renderer_rejects_symlinked_output_file_without_touching_target(tmp_path
     output = tmp_path / "docs" / "audits" / "015-coverage-audit.md"
     output.symlink_to(outside)
 
-    assert renderer.main(["--root", str(tmp_path)]) == 1
+    assert _fixture_renderer_main(["--root", str(tmp_path)]) == 1
     assert outside.read_text() == "sentinel\n"
 
 
@@ -1761,7 +1798,7 @@ def test_renderer_rejects_symlinked_output_parent_without_writing_outside(
     outside.joinpath("015-plan014-reconciliation.md").write_text(reconciliation_text)
     audits.symlink_to(outside, target_is_directory=True)
 
-    assert renderer.main(["--root", str(tmp_path)]) == 1
+    assert _fixture_renderer_main(["--root", str(tmp_path)]) == 1
     assert not outside.joinpath("015-coverage-audit.md").exists()
 
 
@@ -1778,7 +1815,7 @@ def test_renderer_replaces_outputs_atomically_inside_their_parent_directories(
 
     monkeypatch.setattr(os, "replace", record_replace)
 
-    assert renderer.main(["--root", str(tmp_path)]) == 0
+    assert _fixture_renderer_main(["--root", str(tmp_path)]) == 0
     assert {target.relative_to(tmp_path) for _, target in replacements} == {
         Path("docs/audits/015-coverage-audit.md"),
         Path("docs/curriculum-roadmap.md"),
@@ -1793,7 +1830,7 @@ def test_scope_pass_implies_roadmap_loader_and_renderer_accept_contract(tmp_path
 
     assert report.ok, report.errors
     loaded = model.load_roadmap(tmp_path)
-    rendered = renderer.render_documents(tmp_path)
+    rendered = _render_fixture_documents(tmp_path)
     assert loaded.knowledge_points[0].id == "topic-a"
     assert set(rendered) == {
         Path("docs/audits/015-coverage-audit.md"),
