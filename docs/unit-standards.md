@@ -43,15 +43,15 @@ the content gate's reviewers enforce the qualitative parts against this document
 
 ### Recorded non-conformance
 
-**`C7-cnn-transfer` ships 27 problems against a 24 ceiling. It is over the band, and that is
-recorded here rather than legalized.**
-C7 is not double-length: it runs three lesson sessions where the rule above requires 4–6.
+**At the Plan 014 gate, `C7-cnn-transfer` shipped 27 problems against a 24 ceiling.
+It was over the band, and that was recorded here rather than legalized.**
+C7 was not double-length: it ran three lesson sessions where the rule above required 4–6.
 At that gate, its 10 taught concepts and 672 practice minutes were both corpus maxima, which
 explained the overflow without excusing it.
-The resolution is a unit *capacity* decision — split C7, rehome concepts such as
-`feature-hierarchy`, `receptive-field`, or `tensor-shape-tracing`, or trim — and it is deferred
+The required resolution was a unit *capacity* decision — split C7, rehome concepts such as
+`feature-hierarchy`, `receptive-field`, or `tensor-shape-tracing`, or trim — and it was deferred
 to a dedicated plan; see `TODO.md`.
-`C5-neural-networks` carries the same open question.
+`C5-neural-networks` carried the same open question.
 
 This entry exists because plan 014 tried twice to make the overflow legal and its content gate
 rejected both attempts.
