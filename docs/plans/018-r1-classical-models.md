@@ -61,7 +61,7 @@ It owns exactly these ten concepts:
 | Session | File | Required teaching surface |
 |---:|---|---|
 | 1 | `01-logistic-regression.ipynb` | log-odds, sigmoid, stable BCE, mean gradient, deterministic NumPy training, sklearn comparison, separation/calibration |
-| 2 | `02-linear-svm-margin-and-hinge.ipynb` | functional/geometric margin, hard/soft constraints, hinge loss, `C`, support vectors, vectorized subgradient training |
+| 2 | `02-linear-svm-margin-and-hinge.ipynb` | functional/geometric margin, hard/soft constraints, hinge loss, `C`, support vectors, vectorized subgradient training, first logistic-versus-margin comparison axes |
 | 3 | `03-kernel-svm-and-dual-intuition.ipynb` | F7 dual/KKT handoff, support-vector decision function, linear/polynomial/RBF kernels, scaling, `C`/`gamma`, fitted `SVC` |
 | 4 | `04-decision-trees.ipynb` | Gini/entropy, weighted impurity, information gain, tie-breaking, recursion, stopping/pruning, from-scratch depth-limited tree |
 | 5 | `05-ensembles.ipynb` | voting, bootstrap aggregation, random forests, feature subsampling, AdaBoost update, bias/variance, fitted ensembles |
@@ -74,10 +74,10 @@ going-deeper material.
 The exact `concept_sessions` mapping is:
 
 - Session 1: `logistic-regression`;
-- Session 2: `svm`, `margin-and-hinge-loss`;
+- Session 2: `svm`, `margin-and-hinge-loss`, `classical-model-comparison`;
 - Session 4: `decision-trees`, `tree-split-criteria`;
 - Session 5: `ensemble-learning`, `bagging-and-boosting`;
-- Session 6: `k-means`, `lloyd-algorithm`, `classical-model-comparison`.
+- Session 6: `k-means`, `lloyd-algorithm`.
 
 Session 3 deepens the already introduced `svm` concept into the kernel case; its later practice
 floor is represented by per-problem `after_session`, not by inventing a duplicate owned concept.
@@ -138,7 +138,7 @@ The manifest must give each owned concept at least these direct problem paths:
 - `bagging-and-boosting`: p04, p12, p19, p24, p29;
 - `k-means`: p05, p13, p17, p20, p21, p25, p30;
 - `lloyd-algorithm`: p05, p13, p17, p20, p30;
-- `classical-model-comparison`: p18, p21, p22, p24, p25, p26.
+- `classical-model-comparison`: p18, p21, p22, p24, p25.
 
 Additional prerequisite tags are allowed only when they change a scored deliverable.
 No practice may rely on an owned concept before the session named by `concept_sessions`.
@@ -201,12 +201,15 @@ Extend `curriculum/course-schedule.yaml` to 40 weeks:
 - C12 sessions 1–6 occur in Weeks 34–39;
 - the existing mock and debrief move together to final Week 40;
 - C12's last practice and 60-minute review precede the mock in Week 40;
-- at least 155 minutes of existing practice move from Weeks 17–33 into Weeks 34–40, with no
-  unit-minute change.
+- exactly 185 minutes of existing practice move from Weeks 17–33 into Weeks 34–40, yielding
+  7,780 and 3,180 minutes in those two windows respectively, with no unit-minute change.
 
 Week 34 begins at 500 minutes and must displace at least 90 minutes when C12 Session 1 is added.
 Week 35 becomes 335 minutes after the mock/debrief move and Session 2 is added, so it must receive
 at least 115 minutes of already unlocked practice.
+The 185-minute transfer has a constructive path: release 115 minutes from Weeks 29–33 while
+C7/C9/C10 remain open, and propagate 70 minutes forward through the overlapping
+F6/C6 → F7 → C11 → C9 practice windows before moving C9/C10 work late.
 
 Every week remains 450–500 minutes.
 Weeks 1–39 contain one to three lesson sessions; Week 40 is the sole final-assessment exception.
@@ -223,7 +226,8 @@ The unique final assessment week is derived from the schedule rather than hard-c
 3. Generalize schedule practice-order validation for manifests carrying `concept_sessions`,
    `after_session`, and complete per-problem minutes. Their schedule practice allocations must
    list exact `problem_ids`; the lists partition the manifest exactly once, allocation minutes
-   equal the listed minute sums, and each problem follows its required session.
+   equal the listed minute sums, and each problem follows its required session in flattened
+   allocation order, including within the same week.
 4. Derive the unique final-assessment week and reject absent, duplicate, non-final, or improperly
    ordered mock/debrief allocations.
 5. Add `tools/verify_classical_mutations.py` with exactly five fail-closed real-answer-check
@@ -262,6 +266,7 @@ The unique final assessment week is derived from the schedule rather than hard-c
 ### Files
 
 - `tests/test_model.py`
+- `tests/test_cli.py`
 - `tests/test_schedule.py`
 - `tests/test_scope.py`
 - `tests/test_audit_curriculum.py`
@@ -273,7 +278,8 @@ The unique final assessment week is derived from the schedule rather than hard-c
 
 Write fail-first tests against the Plan 017 baseline that require:
 
-1. exact final corpus counts and deltas listed above;
+1. exact final corpus counts and deltas listed above, C12's `length: double` syllabus status, and
+   the updated double-length standards roster;
 2. a `C12-classical-models` manifest with five exact prerequisites, ten exact owned concepts, six
    90-minute sessions, 30 exact practice rows, 1,410 practice minutes, and 60 review minutes;
 3. the exact p01–p30 set/type/difficulty/minute/`after_session` ledger and concept-coverage ledger;
@@ -284,11 +290,14 @@ Write fail-first tests against the Plan 017 baseline that require:
 7. removal of `P015-R1-CLASSICAL-BREADTH` and retargeting of the R2 capstone prerequisite;
 8. 40 exact schedule weeks, C12 sessions in Weeks 34–39, mock/debrief in Week 40, totals
    7,915/10,960/18,875, every week 450–500, regular weeks with one to three lessons, prerequisite
-   completion, review finality, and mock/debrief terminal ordering;
+   completion, review finality, mock/debrief terminal ordering, exact 7,780/3,180 Semester-2
+   window totals, and renderer output derived as 40/16/24 with the milestone in Week 40;
 9. exact schedule `problem_ids` partitioning, minute reconciliation, and rejection when an
    individually named problem precedes its `after_session` even if aggregate minutes fit;
 10. exactly five registered classical mutations, each resolving one file/cell/source replacement
     and failing closed on zero/multiple match or unexpected success.
+11. C12 belongs to the strict statement register, so every MC has exact A–E options plus the
+    required reasoning flag and every manifest-backed time budget is exact.
 
 The tests must fail for the missing unit/schema/evidence/schedule/mutation implementation, not for
 an unrelated fixture or absent ignored corpus.
@@ -307,22 +316,28 @@ an unrelated fixture or absent ignored corpus.
 - `units/C12-classical-models/manifest.yaml`
 - `curriculum/coverage-map.yaml`
 - `curriculum/course-schedule.yaml`
+- `docs/curriculum-architecture.md`
+- `docs/unit-standards.md`
 - `tools/model.py`
+- `tools/cli.py`
 - `tools/checks/schedule.py`
+- `tools/render_course_structure.py`
 - `scripts/verify-register.py`
 - Phase 0 tests
 
 ### Work
 
-1. Add the ten C12 concept definitions, prerequisite edges, Round 1 layer, and new unit mapping to
-   the canonical syllabus without renaming shipped concepts.
+1. Add the ten C12 concept definitions, prerequisite edges, Round 1 layer, new unit mapping, and
+   exact `length: double` status to the canonical syllabus without renaming shipped concepts;
+   update the standards roster and its literal regression test to include C12.
 2. Create the full 30-row manifest before notebooks exist, including exact metadata, minutes,
    paths, `concept_sessions`, `after_session`, and concept tags.
 3. Implement strict optional `concept_sessions` parsing and general manifest-backed statement
-   budget validation.
+   budget validation; add C12 to the strict MC reasoning/option register.
 4. Extend the schedule to 40 weeks and rebalance allocations without changing any pre-existing
    unit total.
-5. Replace the hard-coded final mock week with a derived unique final-assessment contract.
+5. Replace hard-coded 35-week/final-mock assumptions in the checker, CLI help, renderer, and
+   curriculum architecture with schedule-derived 40/16/24 and unique-final-assessment contracts.
 6. Add exact `problem_ids` to every C12 schedule practice chunk and implement generic exact-once,
    minute-sum, and per-problem instruction-order validation.
 7. Stage the five canonical coverage rows and placeholder transition, but do not claim coverage
@@ -336,6 +351,7 @@ an unrelated fixture or absent ignored corpus.
   otherwise legal chunk, missing/duplicate problem id, wrong chunk minute sum, duplicate mock,
   and non-final mock mutation each fails for the intended reason.
 - Exact arithmetic independently recomputes every unit, week, semester, and course total.
+- Renderer tests reject stale 35/19/Week-35 prose and derive the final milestone from the mock.
 
 ## Phase 2 — Build the six-session teaching spine
 
@@ -392,6 +408,8 @@ Each statement:
 ### Verification
 
 - `python3 scripts/verify-register.py --statements-only` passes 437/437.
+- The strict C12 register rejects a missing reasoning flag, non-A–E MC options, and a mismatched
+  manifest-backed time budget in focused negative tests.
 - Exact ledger and concept-floor tests pass.
 - `uv run usaaio-tools hygiene-check`, `prereq-check`, `coverage-check`, `tolerance-check`, and
   `overlap-scan` pass.
@@ -419,6 +437,10 @@ Every solution:
 - uses explicit tolerances and deterministic seeds;
 - ends with `### Answer check` containing executable assertions that reject self-consistent wrong
   implementations.
+- in p07, p08, p10, p13, and p29, places a named `PLAN018_MUTATION_TARGET:` marker on the correct
+  computation and a matching `PLAN018_ANSWER_CHECK:` marker on the independent rejecting
+  assertion; no mutation replacement string or expected wrong answer is provided to the blind
+  solver.
 
 ### Verification
 
@@ -474,7 +496,8 @@ Run, inspect, and record:
 6. `uv run usaaio-tools schedule-check`, `prereq-check`, `coverage-check`, `scope-check`,
    `tolerance-check`, `hygiene-check`, `blueprint-check`, `overlap-scan`, and `answerkey-check`;
 7. `uv run python -m tools.audit_curriculum --check`,
-   `tools.render_curriculum_roadmap --check`, and `tools.render_course_structure --check`;
+   `uv run python -m tools.render_curriculum_roadmap --check`, and
+   `uv run python -m tools.render_course_structure --check`;
 8. exact corpus, schedule, tracked-artifact, no-output, and no-secret assertions;
 9. final clean-commit `bash scripts/ci-local.sh`, timed against the 2,172.52-second Plan 017
    baseline with a maximum allowed increase of 900 seconds.
@@ -553,6 +576,38 @@ the required exact-model review.
 - Evidence modalities and all five mutation targets are now exact ledgers.
 
 ### Round 2 — corrected commit
+
+- [glm] [BLOCKER] `classical-model-comparison` was first mapped to Session 6 while p18, p22, p24,
+  and p26 carried earlier `after_session` values.
+- [opus] [BLOCKER] Independently found the same comparison-ledger contradiction.
+- [opus] [BLOCKER] `tools/render_course_structure.py` retained literal 35/19/Week-35 output and was
+  absent from every phase, so generated documentation could remain coherently stale.
+- [opus] [CONCERN] C12's `length: double` status and the static standards roster were not explicit.
+- [opus] [CONCERN] The theoretical 155-minute transfer minimum was feasible but knife-edged and
+  overstated the reachability of the full 315-minute arithmetic surplus.
+- [opus] [CONCERN] Mutation target/check markers were not assigned to the blind solution phase.
+- [opus] [CONCERN] C12 was not explicitly added to `REGISTER_UNITS`, leaving MC format unenforced.
+- [opus] [CONCERN] `docs/curriculum-architecture.md` retained a stale 35-week policy statement.
+- [opus] [NIT] The per-problem ordering contract did not explicitly state same-week flattened
+  allocation order, and the design called numeric-normal-form p05 a five-option MC.
+- [terra] [NIT] Two Phase 6 renderer checks omitted `uv run python -m`.
+
+Round-2 verdicts: self **REJECT** after accepting GLM's contradiction; Opus **REJECT**; Terra
+**APPROVE WITH NITS**; GLM **REJECT**.
+
+### Round 2 resolution
+
+- `classical-model-comparison` now begins with explicit logistic-versus-margin criteria in Session
+  2, expands through later families, and drops the invalid p26 tag; all five remaining paths meet
+  their per-problem floors.
+- Renderer, CLI, static architecture, double-length roster, literal regression, and strict C12
+  statement-register changes now have named Phase 0 tests and Phase 1 ownership.
+- The schedule targets a reachable 185-minute transfer and exact 7,780/3,180 windows, creating 30
+  minutes of late-window slack.
+- The blind solution contract supplies marker locations without replacement strings, ordering is
+  allocation-index exact, p05's type is accurate, and Phase 6 commands are executable as written.
+
+### Round 3 — final delta
 
 Final exact-model verdicts are recorded here before Phase 0 begins.
 

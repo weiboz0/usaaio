@@ -101,6 +101,8 @@ Move to the soft-margin primal and hinge loss, explain the role of `C`, and impl
 hinge objective plus a valid subgradient step.
 The lesson uses small two-dimensional data so students can audit the separating hyperplane,
 margin width, violations, and parameter movement directly.
+It introduces the first explicit model-comparison axes by contrasting logistic probability and
+calibration workflows with margin-based decisions; later sessions extend the same framework.
 
 ### Session 3 — Dual intuition and kernel SVM training
 
@@ -163,8 +165,9 @@ The Round 2 capstone prerequisite that names the placeholder is retargeted to sh
 ## Practice and timing contract
 
 C12 is double-length with exactly 30 practices and six 90-minute sessions.
-The practices comprise five five-option MC problems, eight constrained-coding tasks, four
-proof/derivations, four integrative arcs, four scenarios, and five challenges.
+The practices comprise four five-option MC problems, one numeric normal-form MC problem, eight
+constrained-coding tasks, four proof/derivations, four integrative arcs, four scenarios, and five
+challenges.
 Difficulty is exactly 9 intro, 14 core, and 7 advanced.
 Every one of the ten taught concepts appears in at least three distinct statements, and every
 official family has at least three direct model-training practices.
@@ -192,7 +195,8 @@ minutes, including the unchanged 180-minute mock and 60-minute debrief.
 
 | Ids | Type / minutes | Primary contract |
 |---|---|---|
-| p01–p05 | five-option MC / 20 each | logistic, SVM, tree, ensemble, and k-means fundamentals; p05 is numeric normal form |
+| p01–p04 | five-option MC / 20 each | logistic, SVM, tree, and ensemble fundamentals |
+| p05 | numeric normal-form MC / 20 | one Lloyd step and its reduced objective |
 | p06–p13 | constrained coding / 55 each | stable sigmoid/loss, logistic training, hinge/subgradient, kernel SVC, split search, recursive tree, ensemble fit, Lloyd fit |
 | p14–p17 | proof/derivation / 45 each | logistic gradient, margin/hinge/dual chain, impurity reduction, Lloyd monotonicity |
 | p18–p21 | integrative / 65 each | logistic-vs-SVM, tree-to-ensemble, k-means diagnostics, full model benchmark |
@@ -214,7 +218,7 @@ session implied by that practice's owned concept tags.
 Every C12 schedule practice allocation lists exact `problem_ids`.
 The schedule checker requires those lists to partition the manifest practices exactly once,
 requires allocation minutes to equal the listed problems' minute sum, and rejects any listed
-problem whose `after_session` has not yet been delivered.
+problem whose `after_session` has not already appeared earlier in flattened allocation order.
 This explicit per-problem binding handles subtopics such as kernel SVMs that intentionally remain
 inside the broader `svm` concept while being taught one session later.
 This provides a generic, stronger successor to C11's handwritten pacing invariant rather than
@@ -246,18 +250,24 @@ The final schedule must preserve these machine-checked invariants:
 - mock and debrief are the final two course allocations.
 
 Weeks 34–40 require at least 3,150 minutes at the lower weekly bound.
-Their two baseline weeks contribute 985 minutes and C12 adds 2,010, so at least 155 minutes must
-move from Weeks 17–33 into Weeks 34–40; moving the mock/debrief within that seven-week window does
-not change this arithmetic.
-Baseline Weeks 17–33 contain 315 minutes above their 7,650-minute lower bound, so shifting 155
-leaves exactly the final Semester-2 surplus of 160 minutes.
+Their two baseline weeks contribute 985 minutes and C12 adds 2,010, so the theoretical transfer
+minimum is 155 minutes; moving the mock/debrief within that seven-week window does not change this
+arithmetic.
+The implementation instead transfers exactly 185 minutes from Weeks 17–33, producing 3,180
+minutes in Weeks 34–40 and 7,780 in Weeks 17–33.
+This leaves 30 minutes of late-window and 130 minutes of early-window slack rather than relying on
+the knife-edge minimum, and does not assume that all 315 arithmetic surplus minutes are reachable
+through prerequisite- and review-valid forward moves.
+The reachability witness releases 115 minutes directly from Weeks 29–33, whose C7/C9/C10 windows
+remain open, and propagates the remaining 70 minutes through the overlapping open-unit chain
+F6/C6 → F7 → C11 → C9 before moving C9/C10 work into the late window.
 Week 34 starts at the 500-minute ceiling and therefore must displace at least 90 minutes when C12
 Session 1 arrives; Week 35 falls to 335 minutes after moving the assessment and adding Session 2,
 so it must receive at least 115 minutes of unlocked practice.
 The final allocation-level schedule, rather than this aggregate certificate, must prove every
 weekly and per-problem ordering constraint.
 
-The schedule checker must stop hard-coding Week 35.
+The schedule checker, CLI help, and course-structure renderer must stop hard-coding Week 35.
 It derives the unique final-assessment week from the schedule, requires that week to be the final
 week, applies the lesson-session exception only there, and the renderer updates every owned week,
 semester, milestone, and first-instruction region.
