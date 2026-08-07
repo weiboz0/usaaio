@@ -412,6 +412,8 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 - `units/C7-cnn-transfer/practice/p27.ipynb`
 - paired p10/p24/p26/p27 solution notebooks
 - `units/C7-cnn-transfer/manifest.yaml`
+- `scripts/verify-register.py`
+- `tests/test_verify_register.py`
 - `tools/verify_training_mutations.py`
 - `tests/test_training_mutations.py`
 
@@ -429,6 +431,8 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    Comment why this is deliberately separate from C11's manifest-driven mechanism: C7 has no
    honest historical per-problem minute data, so any future capstone-budget change must update
    both the statement and this exception map.
+   Add fail-closed `tests/test_verify_register.py` fixtures for a missing required C7 id, a
+   non-75 literal map value, and a statement body budget that disagrees with the literal map.
 
 ### Verification
 
@@ -677,6 +681,8 @@ This phase is mandatory because the plan ships and changes teaching units.
   substring.
 - `[terra] [FIXED]` Scope tests now prove the Round 2 C8 correction clause remains while its
   canonical row is partial and disappears only when that row becomes covered.
+- `[terra] [FIXED]` Phase 5 now scopes both register files and requires negative fixtures for a
+  missing C7 exception id, wrong literal value, and mismatched statement body budget.
 - **Final delta verdict on `eb28228`: APPROVE.**
 
 ### Slot 4 — GLM-5.2 (2026-08-07)
