@@ -97,10 +97,11 @@ dropout.
 Set assignment and informational difficulty tags are separate dimensions: Set A fundamentals
 span intro/core, Set B's constrained-coding, normal-form, and proof register spans intro/core, and
 Set C's integration, scenario, and challenge work spans core/advanced.
-Five constrained-coding tasks stay in Set A as first executable drills for their concepts.
-C11-p06 deliberately moves stable cross-entropy implementation into Set B after the Set A p02
-conceptual drill, so the exam register retains constrained coding alongside normal-form MC and
-reasoning-required proofs.
+Five constrained-coding tasks stay in Set A as first executable drills for their concepts;
+cross-entropy is the deliberate exception.
+C11-p06 moves stable cross-entropy implementation into Set B after the Set A p02 conceptual drill,
+so the exam register retains constrained coding alongside normal-form MC and reasoning-required
+proofs.
 Cross-entropy is the chosen bridge because its log-sum-exp stability and loss normal form are an
 exam-register extension of p02, while p05's shift-invariant softmax routine is the foundational
 executable object reused by later drills; all statements remain original rather than adapted.
@@ -138,27 +139,28 @@ rough 30%/45%/25% target.
 The matching five-point intro deficit/core excess keeps implementation/derivation prerequisites
 in the middle band and avoids misclassifying a 35-minute gradient implementation as intro or
 pushing it into challenge.
-The exact manifest concept-tag assignments are:
+The exact manifest concept-tag assignments below are canonical; the later minimum coverage sets
+are their inverse, and the problem table's final column is explanatory prose.
+Grouped by set, they are:
 
-- p01 `[softmax]`; p02 `[cross-entropy-loss]`; p03 `[manual-backpropagation]`;
-  p04 `[dropout]`;
-- p05 `[softmax]`; p06 `[cross-entropy-loss]`;
+- Set A: p01 `[softmax]`; p02 `[cross-entropy-loss]`;
+  p03 `[manual-backpropagation]`; p05 `[softmax]`;
   p07 `[manual-backpropagation, trained-mlp]`;
   p08 `[autograd-training, torch-optimizers]`; p09 `[batch-normalization]`;
   p10 `[dropout]`;
-- p11 `[softmax, cross-entropy-loss]`; p12 `[manual-backpropagation]`;
-  p13 `[batch-normalization]`; p14 `[softmax, cross-entropy-loss]`;
+- Set B: p04 `[dropout]`; p06 `[cross-entropy-loss]`;
+  p11 `[softmax, cross-entropy-loss]`; p12 `[manual-backpropagation]`;
+  p13 `[batch-normalization]`;
+- Set C: p14 `[softmax, cross-entropy-loss]`;
   p15 `[manual-backpropagation, trained-mlp]`;
   p16 `[autograd-training, torch-optimizers]`;
-- p17 `[trained-mlp]`; p18 `[batch-normalization, dropout]`;
+  p17 `[trained-mlp]`; p18 `[batch-normalization, dropout]`;
   p19 `[autograd-training, torch-optimizers]`;
   p20 `[trained-mlp, batch-normalization, dropout]`;
-- p21 `[softmax, cross-entropy-loss]`; p22 `[manual-backpropagation]`;
+  p21 `[softmax, cross-entropy-loss]`; p22 `[manual-backpropagation]`;
   p23 `[autograd-training, torch-optimizers, trained-mlp]`;
   p24 `[torch-optimizers, trained-mlp, batch-normalization, dropout]`.
 
-For every pNN row, exact paths are `practice/pNN.ipynb` and
-`practice/pNN_solution.ipynb`.
 The minimum honest coverage sets are:
 
 - `softmax`: p01, p05, p11, p14, p21;
@@ -169,6 +171,9 @@ The minimum honest coverage sets are:
 - `trained-mlp`: p07, p15, p17, p20, p23, p24;
 - `batch-normalization`: p09, p13, p18, p20, p24;
 - `dropout`: p04, p10, p18, p20, p24.
+
+For every pNN row, exact manifest-relative paths are `practice/pNN.ipynb` and
+`practice/pNN_solution.ipynb`.
 
 The coverage-map promotion uses these exact primary practices for every newly closed modality;
 pre-existing modalities retain their already registered C5/C6/C7 evidence:
@@ -336,7 +341,7 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
    The default full mode must require a non-empty `solution_path` key, require the declared file
    to exist, and validate its header.
    Add fail-closed fixtures in `tests/test_verify_register.py` for four-vs-five options, missing or
-   wrong reasoning flag, missing/mismatched body budget, an attempted fourth header field, and a
+   wrong reasoning flag, missing/mismatched body budget, an attempted fourth header field, an
    omitted `solution_path` key, and a declared statement/solution path that does not exist.
    Missing statements must fail first with named per-problem findings rather than an uncaught
    traceback; the already-named missing-solution behavior receives a regression fixture.
@@ -692,6 +697,7 @@ This phase is mandatory because the plan ships and changes teaching units.
   4/5, and all final corpus count/minute contracts remain unchanged while tests pin the revised
   set mapping.
 - **Final delta verdict: APPROVE.**
+- **Final exact-delta verdict on `fe3c455`: APPROVE.**
 - No open self-review finding remains.
 
 ### Slot 3 — GPT-5.6-terra (2026-08-07)
@@ -736,6 +742,7 @@ This phase is mandatory because the plan ships and changes teaching units.
 - `[terra] [FIXED]` Phase 5 now scopes both register files and requires negative fixtures for a
   missing C7 exception id, wrong literal value, and mismatched statement body budget.
 - **Final delta verdict on `eb28228`: APPROVE.**
+- **Final exact-delta verdict on `fe3c455`: APPROVE.**
 
 ### Slot 4 — GLM-5.2 (2026-08-07)
 
@@ -755,6 +762,7 @@ This phase is mandatory because the plan ships and changes teaching units.
   giving `torch-optimizers` a fourth honest practice rather than leaving it at the three-practice
   floor.
 - **Final delta verdict on `eb28228`: APPROVE.**
+- **Final exact-delta verdict on `fe3c455`: APPROVE.**
 
 ### Slot 2 — Claude Opus 5 (2026-08-07)
 
@@ -870,7 +878,7 @@ This phase is mandatory because the plan ships and changes teaching units.
   positive fixtures proving it still runs every statement check; full mode requires the
   `solution_path` key, existence, and header.
 - **Prior delta re-review verdict:** APPROVE.
-- **Current delta re-review:** pending.
+- **Final exact-delta verdict on `fe3c455`: APPROVE WITH NITS.**
 
 ## Content Review
 
