@@ -250,8 +250,8 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 4. Convert the C7 standards note from unresolved non-conformance to a recorded resolution based
    on the substantive fourth session; record that C5 remains a standard 22-problem unit because
    training moved to C11, update the double-length roster to F5, F6, C7, and C11, and correct the
-   stale claim that C7's ten concepts/672 minutes are corpus maxima by naming C10's 12 concepts/
-   730 minutes.
+   stale claim that C7's ten concepts/672 minutes are corpus maxima by naming C10's 12 taught
+   concepts as the concept maximum and C11's 1,040 practice minutes as the practice maximum.
 5. Update the syllabus core rationale, double-length narrative, and suggested topological order,
    plus their exact integration assertions, so C11 appears between C6 and C7 and “the other
    double-length unit” is no longer asserted.
@@ -431,8 +431,9 @@ and runs verification; lesson/statement and blind-solution sessions remain separ
 3. Make roadmap pending-state prose consumer-driven.
    Existing-unit extension rows are keyed to uncovered knowledge points, and tranche-queue rows
    are keyed to still-present `planned_units`; covering/removing the neural owners must suppress
-   C7, the obsolete C6 completion sentence, and the neural-tranche queue entry without a second
-   manual status flag.
+   C7, only the obsolete C6 clause from the combined C6/C8 completion sentence, and the neural-
+   tranche queue entry without a second manual status flag; the still-uncovered Round 2 C8 clause
+   must remain.
 4. Update `tests/test_scope.py` so a covered CNN-training row removes C7 from the rendered pending
    table and removal of `P015-R1-NEURAL-TRAINING` removes its queue entry; retain negative fixtures
    proving either item returns when its canonical owner is pending.
@@ -603,6 +604,10 @@ This phase is mandatory because the plan ships and changes teaching units.
 - `[glm]` Independently verified the baseline counts and minutes, all Plan 017 arithmetic, C7
   prerequisite transitivity, the double-length bands, and the existence of referenced current
   producers/consumers; no blocker remains.
+- `[glm] [FIXED]` The standards correction now names C11's final 1,040 practice minutes, not
+  C10's pre-plan 730, as the post-plan practice maximum.
+- `[glm] [FIXED]` The roadmap contract removes only the obsolete C6 clause from the combined C6/C8
+  sentence and explicitly preserves the still-uncovered Round 2 C8 clause.
 
 ### Slot 2 — Claude Opus 5 (2026-08-07)
 
