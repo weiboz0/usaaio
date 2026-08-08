@@ -229,9 +229,23 @@ def test_scenario_solutions_expose_structured_audit_evidence(problem: str) -> No
 def test_p25_protocol_pins_reproducible_clustering_controls() -> None:
     protocol = _execute_solution("p25")["audit_protocol_p25"]
 
+    assert protocol["primary_k"] == 4
     assert protocol["k_grid"] == (2, 3, 4, 5, 6)
     assert protocol["init"] == "k-means++"
     assert protocol["n_init"] == 50
     assert protocol["seed"] == 20260804
     assert protocol["scaling_fit_scope"] == "modeling sample only"
     assert protocol["empty_cluster_policy"] == "farthest eligible row, then row index"
+
+
+def test_p22_cost_threshold_remains_symbolic() -> None:
+    namespace = _execute_solution("p22")
+
+    assert namespace["cost_assumptions_p22"] == ("C_FP > 0", "C_FN > C_FP")
+    assert namespace["threshold_expression_p22"] == "C_FP / (C_FP + C_FN)"
+    assert namespace["threshold_properties_p22"] == ("threshold > 0", "threshold < 1/2")
+
+    source = _code("p22", solution=True)
+    assert "cost_fp_p22 = 1.0" not in source
+    assert "cost_fn_p22 = 4.0" not in source
+    assert "0.2" not in source
