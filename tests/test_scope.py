@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import re
+from collections import Counter
 from collections.abc import Callable
 from pathlib import Path
 from types import SimpleNamespace
@@ -1907,3 +1908,124 @@ def test_scope_pass_implies_roadmap_loader_and_renderer_accept_contract(tmp_path
         Path("docs/audits/015-coverage-audit.md"),
         Path("docs/curriculum-roadmap.md"),
     }
+
+
+BOOK2_ROADMAP_MEMBERSHIP = {
+    "B2-019-attention-transformers": [
+        "attention-mechanism-foundations",
+        "self-attention",
+        "multi-head-attention",
+        "positional-encoding",
+        "attention-complexity-analysis",
+        "attention-from-scratch",
+        "transformer-architecture-foundations",
+    ],
+    "B2-020-language-transformers": [
+        "nlp-word-embeddings",
+        "nlp-transformers",
+        "nlp-pretraining",
+        "nlp-fine-tuning",
+        "transformer-nlp-applications",
+    ],
+    "B2-021-cross-modal-transformers-vision": [
+        "vision-transformers",
+        "graph-neural-network-transformer-applications",
+        "object-detection",
+        "unet",
+    ],
+    "B2-022-probabilistic-latent-models": [
+        "multivariate-gaussian",
+        "gaussian-reparameterization",
+        "kl-divergence",
+        "autoencoder",
+        "variational-autoencoder",
+    ],
+    "B2-023-generative-models-diffusion": [
+        "generative-adversarial-network",
+        "denoising-diffusion-probabilistic-models",
+        "stable-diffusion",
+    ],
+    "B2-024-gpu-scientific-ml-capstone": [
+        "gpu-colab-l4-workflow",
+        "semi-supervised-pseudo-labeling",
+        "scientific-ml-inverse-problems",
+        "mixture-parameter-regression",
+        "open-ended-experiment-design",
+        "open-ended-model-evaluation",
+    ],
+}
+
+
+def _book2_partition_errors(raw: dict[str, Any]) -> list[str]:
+    rows = raw["planned_units"]
+    ids = [str(row["id"]) for row in rows]
+    memberships = [
+        str(point)
+        for row in rows
+        if str(row["id"]).startswith("B2-")
+        for point in row["knowledge_points"]
+    ]
+    counts = Counter(memberships)
+    errors = []
+    if len(rows) != 6 or set(ids) != set(BOOK2_ROADMAP_MEMBERSHIP):
+        errors.append("six exact B2 membership rows required")
+    if len(counts) != 30 or any(count != 1 for count in counts.values()):
+        errors.append("all 30 Round 2 targets must occur exactly once")
+    if any(unit_id.startswith("P015-R2-") for unit_id in ids):
+        errors.append("legacy P015 Round 2 row remains")
+    points = {row["id"]: row for row in raw["knowledge_points"]}
+    embedding = points.get("nlp-word-embeddings", {})
+    if embedding.get("coverage") != "partial" or embedding.get("destination") != "C8-embeddings":
+        errors.append("C8 embedding destination exception was lost")
+    return errors
+
+
+def _book2_partition_fixture() -> dict[str, Any]:
+    return {
+        "planned_units": [
+            {"id": unit_id, "knowledge_points": list(points)}
+            for unit_id, points in BOOK2_ROADMAP_MEMBERSHIP.items()
+        ],
+        "knowledge_points": [
+            {
+                "id": point,
+                "coverage": "partial" if point == "nlp-word-embeddings" else "missing",
+                "destination": (
+                    "C8-embeddings"
+                    if point == "nlp-word-embeddings"
+                    else next(
+                        unit_id
+                        for unit_id, points in BOOK2_ROADMAP_MEMBERSHIP.items()
+                        if point in points
+                    )
+                ),
+            }
+            for points in BOOK2_ROADMAP_MEMBERSHIP.values()
+            for point in points
+        ],
+    }
+
+
+def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets() -> None:
+    raw = _book2_partition_fixture()
+
+    assert _book2_partition_errors(raw) == []
+
+
+@pytest.mark.parametrize("damage", ["duplicate", "legacy-row", "embedding-destination"])
+def test_book2_roadmap_partition_mutations_are_detected(damage: str) -> None:
+    raw = _book2_partition_fixture()
+    if damage == "duplicate":
+        raw["planned_units"][1]["knowledge_points"].append(
+            "attention-mechanism-foundations"
+        )
+    elif damage == "legacy-row":
+        raw["planned_units"][0]["id"] = "P015-R2-TRANSFORMERS-NLP"
+    else:
+        point = next(
+            row for row in raw["knowledge_points"]
+            if row["id"] == "nlp-word-embeddings"
+        )
+        point["destination"] = "B2-020-language-transformers"
+
+    assert _book2_partition_errors(raw)

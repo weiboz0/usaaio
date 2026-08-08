@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 from posixpath import normpath
 
@@ -5,7 +6,7 @@ import yaml
 
 from tools.checks.coverage import check_coverage
 from tools.checks.prereq import check_prereq
-from tools.model import load_syllabus, load_unit_manifests
+from tools.model import load_mock_manifests, load_syllabus, load_unit_manifests
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -570,3 +571,89 @@ def test_normal_length_c7_overflow_behavior_is_unchanged(tmp_path):
 
     assert report.ok
     assert not any("double-length unit C7-cnn-transfer" in error for error in report.errors)
+
+
+def test_valid_book2_fixture_preserves_existing_r1_manifests_and_r1_namespace(
+    tmp_path: Path,
+) -> None:
+    shutil.copy2(ROOT / "syllabus.md", tmp_path / "syllabus.md")
+    for source in sorted(ROOT.glob("units/*/manifest.yaml")):
+        destination = tmp_path / source.relative_to(ROOT)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, destination)
+    r1_source = ROOT / "mocktests" / "r1-001" / "manifest.yaml"
+    r1_destination = tmp_path / "mocktests" / "r1-001" / "manifest.yaml"
+    r1_destination.parent.mkdir(parents=True)
+    shutil.copy2(r1_source, r1_destination)
+    before = {
+        path.relative_to(tmp_path).as_posix(): path.read_bytes()
+        for path in sorted(tmp_path.glob("units/*/manifest.yaml"))
+    }
+    namespace_before = [manifest.test for manifest in load_mock_manifests(tmp_path)]
+
+    book2 = tmp_path / "units" / "B2-019-attention-transformers" / "manifest.yaml"
+    _write = {
+        "unit": "B2-019-attention-transformers",
+        "book": 2,
+        "round": 2,
+        "layer": "round-2-extension",
+        "track": "extension",
+        "concepts_taught": [
+            "matrix-transpose",
+            "query-key-value-attention",
+            "scaled-dot-product-attention",
+            "attention-mask",
+            "causal-self-attention",
+            "multi-head-attention",
+            "sinusoidal-positional-encoding",
+            "attention-complexity",
+            "transformer-residual-layernorm",
+            "position-wise-feed-forward",
+            "transformer-block",
+        ],
+        "concepts_used": [
+            "softmax",
+            "matrix-multiplication",
+            "broadcasting",
+            "variance",
+            "torch-tensors",
+            "nn-module",
+            "torch-optimizers",
+            "autograd-training",
+        ],
+        "concept_prerequisites": [
+            "softmax",
+            "matrix-multiplication",
+            "broadcasting",
+            "variance",
+            "torch-tensors",
+            "nn-module",
+            "torch-optimizers",
+            "autograd-training",
+        ],
+        "prereq_units": [
+            "C6-pytorch",
+            "C7-cnn-transfer",
+            "C8-embeddings",
+            "C11-neural-training",
+        ],
+        "bridge_diagnostic": {
+            "path": "lessons/00-book1-bridge.ipynb",
+            "minutes": 30,
+            "referenced_concepts": ["softmax"],
+        },
+        "coverage_claims": [],
+        "practice": [],
+    }
+    book2.parent.mkdir(parents=True)
+    book2.write_text(yaml.safe_dump(_write, sort_keys=False))
+
+    after = {
+        path.relative_to(tmp_path).as_posix(): path.read_bytes()
+        for path in sorted(tmp_path.glob("units/*/manifest.yaml"))
+        if not path.parent.name.startswith("B2-")
+    }
+    namespace_after = [manifest.test for manifest in load_mock_manifests(tmp_path)]
+
+    assert after == before
+    assert namespace_before == namespace_after == ["r1-001"]

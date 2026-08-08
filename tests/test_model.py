@@ -304,3 +304,203 @@ def test_unit_manifest_rejects_malformed_or_closure_invalid_session_contracts(
 
     with pytest.raises(ValueError):
         load_unit_manifests(tmp_path)
+
+
+BOOK2_UNIT = "B2-019-attention-transformers"
+BOOK2_CONCEPTS = [
+    "matrix-transpose",
+    "query-key-value-attention",
+    "scaled-dot-product-attention",
+    "attention-mask",
+    "causal-self-attention",
+    "multi-head-attention",
+    "sinusoidal-positional-encoding",
+    "attention-complexity",
+    "transformer-residual-layernorm",
+    "position-wise-feed-forward",
+    "transformer-block",
+]
+BOOK2_UNIT_PREREQS = [
+    "C6-pytorch",
+    "C7-cnn-transfer",
+    "C8-embeddings",
+    "C11-neural-training",
+]
+BOOK2_CONCEPT_PREREQS = [
+    "softmax",
+    "matrix-multiplication",
+    "broadcasting",
+    "variance",
+    "torch-tensors",
+    "nn-module",
+    "torch-optimizers",
+    "autograd-training",
+]
+BOOK2_CLAIMS = [
+    "attention-mechanism-foundations",
+    "self-attention",
+    "multi-head-attention",
+    "positional-encoding",
+    "attention-complexity-analysis",
+    "attention-from-scratch",
+    "transformer-architecture-foundations",
+]
+
+
+def _write_book2_model_fixture(root: Path) -> None:
+    root.joinpath("syllabus.md").write_text(
+        "# Fixture\n\n<!-- syllabus-canonical -->\n```yaml\n"
+        + yaml.safe_dump(
+            {
+                "baseline": {"math": ["arithmetic"]},
+                "clusters": ["fixture"],
+                "concepts": [
+                    {"id": concept, "cluster": "fixture"}
+                    for concept in [*BOOK2_CONCEPT_PREREQS, *BOOK2_CONCEPTS]
+                ],
+                "units": [
+                    {
+                        "id": BOOK2_UNIT,
+                        "track": "extension",
+                        "title": "Attention and Transformer Mechanics",
+                        "book": 2,
+                        "layer": "round-2-extension",
+                        "round": 2,
+                        "prereqs": BOOK2_UNIT_PREREQS,
+                        "concept_prerequisites": BOOK2_CONCEPT_PREREQS,
+                        "teaches": BOOK2_CONCEPTS,
+                    }
+                ],
+            },
+            sort_keys=False,
+        )
+        + "```\n"
+    )
+    unit_dir = root / "units" / BOOK2_UNIT
+    unit_dir.mkdir(parents=True)
+    claims = [
+        {
+            "knowledge_point": point,
+            "first_session": index,
+            "modalities": ["theory", "derivation", "implementation"],
+            "evidence_concepts": [BOOK2_CONCEPTS[min(index - 1, 10)]],
+            "evidence_by_modality": {},
+        }
+        for index, point in enumerate(BOOK2_CLAIMS, start=1)
+    ]
+    manifest = {
+        "unit": BOOK2_UNIT,
+        "book": 2,
+        "layer": "round-2-extension",
+        "round": 2,
+        "track": "extension",
+        "concepts_taught": BOOK2_CONCEPTS,
+        "concepts_used": BOOK2_CONCEPT_PREREQS,
+        "concept_prerequisites": BOOK2_CONCEPT_PREREQS,
+        "prereq_units": BOOK2_UNIT_PREREQS,
+        "bridge_diagnostic": {
+            "path": "lessons/00-book1-bridge.ipynb",
+            "minutes": 30,
+            "referenced_concepts": BOOK2_CONCEPT_PREREQS,
+        },
+        "estimated_minutes": {
+            "lesson_sessions": [90, 90, 90, 90, 90],
+            "practice": 60,
+            "review": 60,
+        },
+        "coverage_claims": claims,
+        "practice": [
+            {
+                "id": "B2-019-p01",
+                "concepts": BOOK2_CONCEPTS,
+                "path": "practice/p01.ipynb",
+                "solution_path": "practice/p01_solution.ipynb",
+                "minutes": 60,
+                "compute": {"policy": "cpu", "seed": 20260808},
+            }
+        ],
+    }
+    unit_dir.joinpath("manifest.yaml").write_text(
+        yaml.safe_dump(manifest, sort_keys=False)
+    )
+
+
+def test_model_defaults_existing_book1_records_without_collapsing_the_two_dags(
+    tmp_path: Path,
+) -> None:
+    tmp_path.joinpath("syllabus.md").write_text(
+        """<!-- syllabus-canonical -->
+```yaml
+baseline: {math: [arithmetic]}
+clusters: [fixture]
+concepts: [{id: prior-concept, cluster: fixture}, {id: owned-concept, cluster: fixture}]
+units:
+  - id: C1-book1
+    track: core
+    title: Book 1
+    prereqs: []
+    teaches: [owned-concept]
+```
+"""
+    )
+    unit_dir = tmp_path / "units" / "C1-book1"
+    unit_dir.mkdir(parents=True)
+    unit_dir.joinpath("manifest.yaml").write_text(
+        """unit: C1-book1
+concepts_taught: [owned-concept]
+concepts_used: [prior-concept]
+prereq_units: []
+practice:
+  - id: C1-p01
+    concepts: [owned-concept]
+    path: practice/p01.ipynb
+    solution_path: practice/p01_solution.ipynb
+"""
+    )
+
+    unit = load_syllabus(tmp_path).units["C1-book1"]
+    manifest = load_unit_manifests(tmp_path)[0]
+
+    assert (unit.book, unit.round, unit.layer) == (1, 1, "round-1-core")
+    assert unit.prereqs == []
+    assert unit.concept_prerequisites == []
+    assert (manifest.book, manifest.round, manifest.layer, manifest.track) == (
+        1,
+        1,
+        "round-1-core",
+        "core",
+    )
+    assert manifest.prereq_units == []
+    assert manifest.concept_prerequisites == ["prior-concept"]
+    assert manifest.practice[0].compute.policy == "cpu"
+
+
+def test_model_parses_the_exact_explicit_book2_contract(tmp_path: Path) -> None:
+    _write_book2_model_fixture(tmp_path)
+
+    unit = load_syllabus(tmp_path).units[BOOK2_UNIT]
+    manifest = load_unit_manifests(tmp_path)[0]
+
+    assert (unit.book, unit.round, unit.layer, unit.track) == (
+        2,
+        2,
+        "round-2-extension",
+        "extension",
+    )
+    assert unit.prereqs == BOOK2_UNIT_PREREQS
+    assert unit.concept_prerequisites == BOOK2_CONCEPT_PREREQS
+    assert unit.teaches == BOOK2_CONCEPTS
+    assert (manifest.book, manifest.round, manifest.layer, manifest.track) == (
+        2,
+        2,
+        "round-2-extension",
+        "extension",
+    )
+    assert manifest.prereq_units == BOOK2_UNIT_PREREQS
+    assert manifest.concept_prerequisites == BOOK2_CONCEPT_PREREQS
+    assert manifest.concepts_taught == BOOK2_CONCEPTS
+    assert manifest.bridge_diagnostic.minutes == 30
+    assert manifest.bridge_diagnostic.path == "lessons/00-book1-bridge.ipynb"
+    assert [claim.knowledge_point for claim in manifest.coverage_claims] == BOOK2_CLAIMS
+    assert manifest.practice[0].compute.policy == "cpu"
+    assert manifest.practice[0].compute.seed == 20260808

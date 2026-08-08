@@ -1362,3 +1362,39 @@ def test_pre_merge_guard_rejects_parallel_roadmap_ownership_collisions(tmp_path)
     assert proc.returncode == 1
     assert "roadmap knowledge-point ownership collision: topic-a" in proc.stdout
     assert "roadmap planned-unit ownership collision: P-collision" in proc.stdout
+
+
+def test_pre_merge_guard_rejects_b2_unit_id_collision_legacy_regex_misses(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    script = repo / "scripts" / "pre-merge-guard.sh"
+    script.parent.mkdir()
+    script.write_bytes((ROOT / "scripts" / "pre-merge-guard.sh").read_bytes())
+    script.chmod(0o755)
+    for name in ("B2-019-attention", "B2-019-collision"):
+        directory = repo / "units" / name
+        directory.mkdir(parents=True)
+        directory.joinpath("manifest.yaml").write_text(f"unit: {name}\n")
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh"],
+        cwd=repo,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 1
+    assert "duplicate units number(s): B2-019" in proc.stdout
+
+
+def test_ci_registers_book2_boundary_and_schedule_checks() -> None:
+    script = (ROOT / "scripts" / "ci-local.sh").read_text()
+
+    assert "layer-boundary-check" in script
+    assert "book2-schedule-check" in script

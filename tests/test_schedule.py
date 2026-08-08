@@ -1112,3 +1112,27 @@ def test_rendered_first_instruction_region_exactly_matches_the_schedule_source()
     assert positions["C5-neural-networks"] < positions["C6-pytorch"]
     assert positions["C6-pytorch"] < positions["C11-neural-training"]
     assert positions["C11-neural-training"] < positions["C7-cnn-transfer"]
+
+
+def test_book2_sidecar_creation_cannot_rewrite_checked_in_book1_schedule(
+    tmp_path: Path,
+) -> None:
+    source = ROOT / "curriculum" / "course-schedule.yaml"
+    before = source.read_bytes()
+    _write_yaml(
+        tmp_path / "curriculum" / "book2-schedule.yaml",
+        {
+            "schedule_version": 1,
+            "book": 2,
+            "starts_after_global_week": 40,
+            "total_book_weeks": 6,
+            "final_assessment": {
+                "kind": "future-r2-mock",
+                "status": "planned",
+                "after_book_week": 6,
+            },
+            "weeks": [],
+        },
+    )
+
+    assert source.read_bytes() == before
