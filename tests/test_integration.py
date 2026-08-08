@@ -101,6 +101,20 @@ PLAN017_NEW_CONCEPTS = {
     "cnn-training",
 }
 
+PLAN019_B2_019_CONCEPTS = (
+    "matrix-transpose",
+    "query-key-value-attention",
+    "scaled-dot-product-attention",
+    "attention-mask",
+    "causal-self-attention",
+    "multi-head-attention",
+    "sinusoidal-positional-encoding",
+    "attention-complexity",
+    "transformer-residual-layernorm",
+    "position-wise-feed-forward",
+    "transformer-block",
+)
+
 PLAN017_C11_CONCEPTS_USED = [
     "numpy-arrays",
     "array-indexing-slicing",
@@ -426,19 +440,81 @@ def test_plan018_manifests_have_exact_final_counts_and_minutes():
     assert sum(minute_totals.values()) == 18635
 
 
-def test_plan018_all_concepts_have_single_syllabus_and_manifest_owners():
+def test_concepts_have_manifest_owners_except_valid_nonlive_planned_book2_units():
     syllabus = load_syllabus(ROOT)
+    manifests = load_unit_manifests(ROOT)
+    roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
     syllabus_owner_counts = Counter(
         concept for unit in syllabus.units.values() for concept in unit.teaches
     )
     manifest_owner_counts = Counter(
         concept
-        for manifest in load_unit_manifests(ROOT)
+        for manifest in manifests
         for concept in manifest.concepts_taught
     )
+    manifest_owner_units = {
+        concept: manifest.unit_id
+        for manifest in manifests
+        for concept in manifest.concepts_taught
+    }
+    manifest_units = {manifest.unit_id for manifest in manifests}
+    planned_units = {row["id"]: row for row in roadmap["planned_units"]}
+    knowledge_points = {row["id"]: row for row in roadmap["knowledge_points"]}
+    nonlive_book2_units = {
+        unit.id
+        for unit in syllabus.units.values()
+        if unit.book == 2 and unit.id not in manifest_units
+    }
 
-    assert set(syllabus.concepts) == set(syllabus_owner_counts) == set(manifest_owner_counts)
-    assert len(syllabus.concepts) == 149
+    assert set(syllabus.concepts) == set(syllabus_owner_counts)
+    assert set(syllabus_owner_counts.values()) == {1}
+    assert set(manifest_owner_counts) <= set(syllabus.concepts)
+    assert set(manifest_owner_counts.values()) == {1}
+    assert nonlive_book2_units == {"B2-019-attention-transformers"}
+    assert syllabus.units["B2-019-attention-transformers"].teaches == list(
+        PLAN019_B2_019_CONCEPTS
+    )
+    assert {
+        concept
+        for unit in syllabus.units.values()
+        if unit.book == 2
+        for concept in unit.teaches
+    } == set(PLAN019_B2_019_CONCEPTS)
+    assert (
+        set(planned_units) - {"B2-019-attention-transformers"}
+    ).isdisjoint(syllabus.units)
+
+    for unit in syllabus.units.values():
+        manifest_counts = {
+            concept: manifest_owner_counts[concept] for concept in unit.teaches
+        }
+        if unit.book == 1 or unit.id in manifest_units:
+            assert manifest_counts == {concept: 1 for concept in unit.teaches}
+            assert {
+                concept: manifest_owner_units[concept] for concept in unit.teaches
+            } == {concept: unit.id for concept in unit.teaches}
+            continue
+
+        assert unit.book == 2
+        assert re.fullmatch(r"B2-[0-9]{3}-.+", unit.id)
+        planned = planned_units[unit.id]
+        assert planned["layer"] == "round-2-extension"
+        memberships = planned["knowledge_points"]
+        assert memberships
+        assert len(memberships) == len(set(memberships))
+        for point_id in memberships:
+            point = knowledge_points[point_id]
+            assert point["destination"] == unit.id
+            assert point["coverage"] == "missing"
+            assert point["shipped_concepts"] == []
+            assert all(
+                not evidence["lesson_anchors"]
+                and not evidence["practices"]
+                and not evidence["assessments"]
+                for evidence in point["evidence_by_modality"].values()
+            )
+        assert manifest_counts == {concept: 0 for concept in unit.teaches}
+
     assert {concept: syllabus_owner_counts[concept] for concept in PLAN017_NEW_CONCEPTS} == {
         concept: 1 for concept in PLAN017_NEW_CONCEPTS
     }
@@ -578,12 +654,12 @@ def test_plan018_c12_manifest_is_the_exact_double_length_contract():
         ] == [f"C12-p{number:02}" for number in problem_numbers]
 
 
-def test_plan018_exact_final_corpus_counts_and_double_length_roster():
+def test_plan019_phase1_exact_live_corpus_counts_and_double_length_roster():
     manifests = load_unit_manifests(ROOT)
     syllabus = load_syllabus(ROOT)
 
     assert len(manifests) == 19
-    assert len(syllabus.concepts) == 149
+    assert len(syllabus.concepts) == 160
     assert sum(len(manifest.practice) for manifest in manifests) == 437
     assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 69
     minute_total = sum(
@@ -973,7 +1049,9 @@ def test_plan018_coverage_map_preserves_prior_rows_and_retires_classical_placeho
 
     assert "P015-R1-MATH-KERNEL-OPT" not in planned
     assert "P015-R1-CLASSICAL-BREADTH" not in planned
-    assert "C12-classical-models" in planned["P015-R2-CAPSTONE"]["prerequisites"]
+    assert "C12-classical-models" in planned[
+        "B2-024-gpu-scientific-ml-capstone"
+    ]["prerequisites"]
     assert points["seaborn-programming"]["depends_on"] == [
         "numpy-programming",
         "matplotlib-pyplot-programming",
@@ -1010,9 +1088,14 @@ def test_plan018_coverage_map_preserves_prior_rows_and_retires_classical_placeho
         assert point["deficits"] == {"modalities_missing": []}
 
 
-def test_plan018_syllabus_narrative_order_and_dependency_contract():
+def test_plan019_phase1_book1_narrative_order_and_book2_dependency_contract():
     syllabus = _canonical_syllabus_yaml()
     units = {unit["id"]: unit for unit in syllabus["units"]}
+    book1_units = {
+        unit_id: unit
+        for unit_id, unit in units.items()
+        if unit.get("book", 1) == 1
+    }
     assert units["F5-probability"]["length"] == "double"
     assert units["F6-svd-spectral"]["length"] == "double"
     assert units["C7-cnn-transfer"]["length"] == "double"
@@ -1047,7 +1130,7 @@ def test_plan018_syllabus_narrative_order_and_dependency_contract():
     )
     order = re.search(r"^F1 → .* → C12$", order_section, re.MULTILINE)
     assert order is not None
-    by_short_id = {unit_id.split("-", 1)[0]: unit_id for unit_id in units}
+    by_short_id = {unit_id.split("-", 1)[0]: unit_id for unit_id in book1_units}
     ordered_unit_ids = [by_short_id[short_id] for short_id in order.group(0).split(" → ")]
     expected_order = [
         "F1-scientific-python",
@@ -1071,13 +1154,29 @@ def test_plan018_syllabus_narrative_order_and_dependency_contract():
         "C12-classical-models",
     ]
     assert ordered_unit_ids == expected_order
-    assert set(ordered_unit_ids) == set(units)
+    assert set(ordered_unit_ids) == set(book1_units)
     assert len(ordered_unit_ids) == len(set(ordered_unit_ids)) == 19
     positions = {unit_id: index for index, unit_id in enumerate(ordered_unit_ids)}
     for unit_id in ordered_unit_ids:
         assert all(
-            positions[prereq] < positions[unit_id] for prereq in units[unit_id]["prereqs"]
+            positions[prereq] < positions[unit_id]
+            for prereq in book1_units[unit_id]["prereqs"]
         )
+    book2 = units["B2-019-attention-transformers"]
+    assert (
+        book2["book"],
+        book2["round"],
+        book2["layer"],
+        book2["track"],
+    ) == (2, 2, "round-2-extension", "extension")
+    assert book2["prereqs"] == [
+        "C6-pytorch",
+        "C7-cnn-transfer",
+        "C8-embeddings",
+        "C11-neural-training",
+    ]
+    book2_position = len(ordered_unit_ids)
+    assert all(positions[prereq] < book2_position for prereq in book2["prereqs"])
 
     project = tomllib.loads((ROOT / "pyproject.toml").read_text())
     assert any(dependency.startswith("seaborn>=") for dependency in project["project"]["dependencies"])
@@ -1393,20 +1492,36 @@ def test_pre_merge_guard_rejects_b2_unit_id_collision_legacy_regex_misses(
     assert "duplicate units number(s): B2-019" in proc.stdout
 
 
-def test_ci_executes_book2_boundary_schedule_mutation_and_preserved_checks() -> None:
-    lines = [
+def _ci_noncomment_lines() -> list[str]:
+    return [
         line.strip()
         for line in (ROOT / "scripts" / "ci-local.sh").read_text().splitlines()
         if line.strip() and not line.lstrip().startswith("#")
     ]
-    checks = next(line for line in lines if line.startswith("for c in "))
+
+
+def test_ci_executes_book2_boundary_before_derived_and_preserves_r1_checks() -> None:
+    lines = _ci_noncomment_lines()
+    checks = next(line for line in lines if line.startswith("for c in prereq-check"))
 
     assert "uv run usaaio-tools layer-boundary-check" in lines
-    assert "uv run usaaio-tools book2-schedule-check" in lines
-    assert "uv run python -m tools.verify_attention_mutations --root ." in lines
     assert "uv run python -m tools.audit_curriculum --check" in lines
+    assert lines.index("uv run usaaio-tools layer-boundary-check") < lines.index(
+        "uv run python -m tools.audit_curriculum --check"
+    )
     assert "bash scripts/build-pdf.sh || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }" in lines
     assert "prereq-check" in checks
     assert "coverage-check" in checks
     assert "blueprint-check" in checks
     assert "notebooks=$(find units mocktests -path '*/solutions/*.ipynb' -o -path '*/practice/*solution*.ipynb')" in lines
+
+
+def test_ci_executes_book2_schedule_check() -> None:
+    assert "uv run usaaio-tools book2-schedule-check" in _ci_noncomment_lines()
+
+
+def test_ci_executes_attention_mutations() -> None:
+    assert (
+        "uv run python -m tools.verify_attention_mutations --root ."
+        in _ci_noncomment_lines()
+    )

@@ -216,6 +216,7 @@ git commit -m "test: pin Book 2 attention boundary"
 - Modify: `scripts/pre-merge-guard.sh`
 - Modify: `syllabus.md`
 - Modify: `curriculum/coverage-map.yaml`
+- Modify: `curriculum/material-inventory.yaml` (generated metadata only)
 - Modify: `docs/curriculum-roadmap.md` (generated)
 - Modify: `tests/test_integration.py`
 
@@ -226,25 +227,28 @@ Default only existing Book 1 records; reject missing fields on Book 2 records.
 Implement the layer-boundary CLI/checker and call it from `ci-local.sh` before derived inventory/PDF checks.
 Replace all three legacy `P015-R2-*` rows with six Book 2 planned-unit rows and add the eleven B2-019 concepts plus the B2-019 syllabus row without changing Book 1 ownership.
 Move every missing target's destination to its corresponding B2 unit, except the partial `nlp-word-embeddings` row: it remains `disposition: extend-existing-unit`, `destination: C8-embeddings`, and partial until Plan 020 introduces its explicitly checked `bridge_completion` rather than violating the existing-unit disposition contract.
-Generate only the roadmap after its source coverage map changes; do not create a live B2-019 manifest or regenerate material inventory until every manifest-declared notebook exists in Phase 3.
+Generate the roadmap after its source coverage map changes and refresh the material inventory metadata when the canonical syllabus digest or concept count changes.
+The Phase 1 inventory refresh must remain metadata-only: do not create a live B2-019 manifest, material row, or other B2 artifact entry before every manifest-declared notebook exists in Phase 3.
 
 Run the Book/layer subset of the Phase 0 suite and:
 
 ```bash
 PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache uv run pytest -q \
   tests/test_model.py tests/test_scope.py tests/test_prereq_coverage.py \
-  tests/test_layer_boundary.py tests/test_integration.py
+  tests/test_layer_boundary.py tests/test_integration.py \
+  -k 'not test_ci_executes_book2_schedule_check and not test_ci_executes_attention_mutations'
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache uv run python -m tools.audit_curriculum --check
 PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache uv run usaaio-tools layer-boundary-check
 ```
 
-Expected: all Book 2 parser/checker tests pass; no live B2-019 manifest, schedule, coverage claim, or inventory row exists yet.
+Expected: all Phase 1 Book 2 parser/checker tests pass with the two Phase 2/4 CI-wiring assertions explicitly deselected; the material inventory reports the current canonical syllabus metadata but no live B2-019 manifest, schedule, coverage claim, material row, or other B2 artifact entry exists yet.
 
 Commit:
 
 ```bash
 git add tools/model.py tools/checks/scope.py tools/checks/layer_boundary.py tools/cli.py \
   scripts/ci-local.sh scripts/pre-merge-guard.sh syllabus.md curriculum/coverage-map.yaml \
-  docs/curriculum-roadmap.md tests/test_integration.py
+  curriculum/material-inventory.yaml docs/curriculum-roadmap.md tests/test_integration.py
 git commit -m "feat: enforce Book 2 curriculum boundaries"
 ```
 

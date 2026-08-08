@@ -647,26 +647,6 @@ def test_valid_book2_fixture_preserves_existing_r1_manifests_and_r1_namespace(
         "coverage_claims": [],
         "practice": [],
     }
-    syllabus_path = tmp_path / "syllabus.md"
-    prefix, canonical = syllabus_path.read_text().split("```yaml\n", maxsplit=1)
-    canonical, suffix = canonical.split("```", maxsplit=1)
-    syllabus_data = yaml.safe_load(canonical)
-    cluster = syllabus_data["clusters"][0]
-    syllabus_data["concepts"].extend(
-        {"id": concept, "cluster": cluster} for concept in _write["concepts_taught"]
-    )
-    syllabus_data["units"].append(
-        {
-            "id": _write["unit"],
-            "track": _write["track"],
-            "title": "Attention and transformers",
-            "prereqs": _write["prereq_units"],
-            "teaches": _write["concepts_taught"],
-        }
-    )
-    syllabus_path.write_text(
-        prefix + "```yaml\n" + yaml.safe_dump(syllabus_data, sort_keys=False) + "```" + suffix
-    )
     book2.parent.mkdir(parents=True)
     book2.write_text(yaml.safe_dump(_write, sort_keys=False))
 

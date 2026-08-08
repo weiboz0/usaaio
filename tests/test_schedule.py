@@ -1149,6 +1149,11 @@ def test_book2_sidecar_creation_cannot_rewrite_checked_in_book1_schedule(
             "concepts_used": ["softmax"],
             "concept_prerequisites": ["softmax"],
             "prereq_units": ["U35"],
+            "bridge_diagnostic": {
+                "path": "lessons/00-book1-bridge.ipynb",
+                "minutes": 30,
+                "referenced_concepts": ["softmax"],
+            },
             "coverage_claims": [],
             "practice": [],
         },

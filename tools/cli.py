@@ -10,6 +10,7 @@ from tools.checks.answerkey import check_answerkey
 from tools.checks.blueprint import check_blueprint
 from tools.checks.coverage import check_coverage
 from tools.checks.hygiene import check_hygiene
+from tools.checks.layer_boundary import check_layer_boundary
 from tools.checks.new_mocktest import scaffold_mocktest
 from tools.checks.overlap import check_overlap
 from tools.checks.prereq import check_prereq
@@ -29,6 +30,10 @@ SUBCOMMANDS: dict[str, tuple[str, CheckFn | None]] = {
     "scope-check": ("verify the layered curriculum roadmap contract", check_scope),
     "schedule-check": ("verify the canonical 40-week allocation", check_schedule),
     "hygiene-check": ("verify student notebooks contain no solutions or outputs", check_hygiene),
+    "layer-boundary-check": (
+        "verify the Book 1 / Book 2 ownership and evidence boundary",
+        check_layer_boundary,
+    ),
     "tolerance-check": ("verify calls state absolute and relative tolerances", check_tolerance),
     "new-mocktest": ("scaffold a mock test from the blueprint", None),
 }

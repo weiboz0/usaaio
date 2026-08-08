@@ -161,9 +161,9 @@ def _build_layer_fixture(root: Path) -> dict[str, Any]:
             "book": 2,
             "layer": "round-2-extension",
             "round": 2,
-            "prereqs": UNIT_PREREQS,
-            "concept_prerequisites": CONCEPT_PREREQS,
-            "teaches": BOOK2_CONCEPTS,
+            "prereqs": list(UNIT_PREREQS),
+            "concept_prerequisites": list(CONCEPT_PREREQS),
+            "teaches": list(BOOK2_CONCEPTS),
         }
     )
     syllabus = {
@@ -226,14 +226,14 @@ def _build_layer_fixture(root: Path) -> dict[str, Any]:
         "layer": "round-2-extension",
         "round": 2,
         "track": "extension",
-        "concepts_taught": BOOK2_CONCEPTS,
-        "concepts_used": CONCEPT_PREREQS,
-        "concept_prerequisites": CONCEPT_PREREQS,
-        "prereq_units": UNIT_PREREQS,
+        "concepts_taught": list(BOOK2_CONCEPTS),
+        "concepts_used": list(CONCEPT_PREREQS),
+        "concept_prerequisites": list(CONCEPT_PREREQS),
+        "prereq_units": list(UNIT_PREREQS),
         "bridge_diagnostic": {
             "path": "lessons/00-book1-bridge.ipynb",
             "minutes": 30,
-            "referenced_concepts": CONCEPT_PREREQS,
+            "referenced_concepts": list(CONCEPT_PREREQS),
         },
         "estimated_minutes": {
             "lesson_sessions": [90, 90, 90, 90, 90],
@@ -321,6 +321,22 @@ def _mutate_wrong_owner(data: dict[str, Any], root: Path) -> None:
     _write_yaml(path, manifest)
 
 
+def _mutate_b2_id_as_book1_tuple(data: dict[str, Any], root: Path) -> None:
+    del root
+    book1_tuple = {
+        "book": 1,
+        "round": 1,
+        "layer": "round-1-core",
+        "track": "core",
+    }
+    syllabus_unit = next(
+        row for row in data["syllabus"]["units"] if row["id"] == BOOK2_UNIT
+    )
+    syllabus_unit.update(book1_tuple)
+    data["manifest"].update(book1_tuple)
+    data["manifest"]["coverage_claims"] = []
+
+
 def _mutate_unit_prereq(data: dict[str, Any], root: Path) -> None:
     del root
     data["manifest"]["prereq_units"].pop()
@@ -372,7 +388,26 @@ def _mutate_two_qualifying_practices(data: dict[str, Any], root: Path) -> None:
 
 def _mutate_two_owned_tags(data: dict[str, Any], root: Path) -> None:
     del root
-    data["manifest"]["practice"][2]["concepts"].remove("matrix-transpose")
+    data["manifest"]["practice"][0]["concepts"].remove("matrix-transpose")
+
+
+def _mutate_missing_covered_claim(data: dict[str, Any], root: Path) -> None:
+    del root
+    data["manifest"]["coverage_claims"] = [
+        claim
+        for claim in data["manifest"]["coverage_claims"]
+        if claim["knowledge_point"] != "transformer-architecture-foundations"
+    ]
+
+
+def _mutate_claim_for_uncovered_point(data: dict[str, Any], root: Path) -> None:
+    del root
+    point = next(
+        point
+        for point in data["roadmap"]["knowledge_points"]
+        if point["id"] == "transformer-architecture-foundations"
+    )
+    point["coverage"] = "partial"
 
 
 def test_valid_book2_layer_fixture_is_accepted(tmp_path: Path) -> None:
@@ -382,6 +417,20 @@ def test_valid_book2_layer_fixture_is_accepted(tmp_path: Path) -> None:
 
     assert report.ok, report.errors
     assert report.errors == []
+
+
+def test_live_book2_manifest_without_claims_is_valid_while_map_is_not_covered(
+    tmp_path: Path,
+) -> None:
+    data = _build_layer_fixture(tmp_path)
+    data["manifest"]["coverage_claims"] = []
+    for index, point in enumerate(data["roadmap"]["knowledge_points"]):
+        point["coverage"] = "partial" if index == 0 else "missing"
+    _rewrite_fixture(tmp_path, data)
+
+    report = _layer_checker().check_layer_boundary(tmp_path)
+
+    assert report.ok, report.errors
 
 
 @pytest.mark.parametrize(
@@ -396,6 +445,11 @@ def test_valid_book2_layer_fixture_is_accepted(tmp_path: Path) -> None:
             _mutate_wrong_owner,
             "is not owned by a Book 2 syllabus unit",
             id="wrong-book2-owner",
+        ),
+        pytest.param(
+            _mutate_b2_id_as_book1_tuple,
+            "B2-* records must declare the canonical Book 2 tuple",
+            id="b2-id-spoofed-as-book1",
         ),
         pytest.param(
             _mutate_unit_prereq,
@@ -446,6 +500,22 @@ def test_valid_book2_layer_fixture_is_accepted(tmp_path: Path) -> None:
             _mutate_two_owned_tags,
             "requires at least 3 direct practice tags",
             id="owned-concept-fewer-than-three-direct-tags",
+        ),
+        pytest.param(
+            _mutate_missing_covered_claim,
+            (
+                "coverage_claims missing covered roadmap point "
+                "transformer-architecture-foundations"
+            ),
+            id="covered-roadmap-point-missing-claim",
+        ),
+        pytest.param(
+            _mutate_claim_for_uncovered_point,
+            (
+                "coverage claim transformer-architecture-foundations has no covered "
+                f"roadmap point for destination {BOOK2_UNIT}"
+            ),
+            id="uncovered-roadmap-point-has-extra-claim",
         ),
     ],
 )

@@ -701,6 +701,8 @@ def _check_planned_units(
     planned = {str(row.get("id", "")): row for row in rows}
     all_units = existing_units | set(planned)
     for unit_id, row in planned.items():
+        if unit_id.startswith("P015-R2-"):
+            errors.append("legacy P015-R2 planned-unit rows are forbidden")
         layer = str(row.get("layer", ""))
         if layer not in known_layers:
             errors.append(f"planned unit {unit_id}: unknown layer {layer}")
@@ -1023,26 +1025,51 @@ def _check_roadmap(
             errors.append(f"knowledge point {point_id}: unknown destination {destination}")
         if coverage in {"partial", "missing"} and not destination:
             errors.append(f"{coverage} {point_id} requires a destination")
-        if disposition in {"keep", "extend-existing-unit"} and destination not in existing_units:
-            errors.append(
-                f"knowledge point {point_id}: {disposition} requires an existing-unit destination"
-            )
-        if disposition in {"new-unit", "defer-optional"} and (
-            destination not in planned or destination not in planned_owners.get(point_id, [])
-        ):
-            errors.append(
-                f"knowledge point {point_id}: {disposition} requires a planned-unit "
-                "destination owner"
-            )
+        embedding_bridge = point_id == "nlp-word-embeddings"
+        if embedding_bridge:
+            if not (
+                coverage == "partial"
+                and disposition == "extend-existing-unit"
+                and destination == "C8-embeddings"
+            ):
+                errors.append(
+                    "nlp-word-embeddings must retain destination C8-embeddings, "
+                    "partial coverage, and extend-existing-unit disposition"
+                )
+            if planned_owners.get(point_id, []) != ["B2-020-language-transformers"]:
+                errors.append(
+                    "nlp-word-embeddings must belong to the "
+                    "B2-020-language-transformers planned-unit membership row"
+                )
+        else:
+            if (
+                disposition in {"keep", "extend-existing-unit"}
+                and destination not in existing_units
+            ):
+                errors.append(
+                    f"knowledge point {point_id}: {disposition} requires an "
+                    "existing-unit destination"
+                )
+            if disposition in {"new-unit", "defer-optional"} and (
+                destination not in planned
+                or destination not in planned_owners.get(point_id, [])
+            ):
+                errors.append(
+                    f"knowledge point {point_id}: {disposition} requires a planned-unit "
+                    "destination owner"
+                )
 
-        owners = list(planned_owners.get(point_id, []))
-        if disposition in {"keep", "extend-existing-unit"} and destination in existing_units:
-            owners.append(str(destination))
-        if len(owners) != 1 or destination not in owners:
-            errors.append(
-                f"knowledge point {point_id} must have exactly one destination owner; "
-                f"destination={destination!r}, owners={sorted(owners)}"
-            )
+            owners = list(planned_owners.get(point_id, []))
+            if (
+                disposition in {"keep", "extend-existing-unit"}
+                and destination in existing_units
+            ):
+                owners.append(str(destination))
+            if len(owners) != 1 or destination not in owners:
+                errors.append(
+                    f"knowledge point {point_id} must have exactly one destination owner; "
+                    f"destination={destination!r}, owners={sorted(owners)}"
+                )
 
         if target is None:
             continue

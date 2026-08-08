@@ -7,8 +7,8 @@ layers:
   - optional-enrichment
 
 planned_units:
-  - id: P015-R2-TRANSFORMERS-NLP
-    title: Attention, Transformers, and NLP
+  - id: B2-019-attention-transformers
+    title: Attention and Transformer Mechanics
     layer: round-2-extension
     prerequisites:
     - C6-pytorch
@@ -23,72 +23,88 @@ planned_units:
     - attention-complexity-analysis
     - attention-from-scratch
     - transformer-architecture-foundations
-    - transformer-nlp-applications
-    - vision-transformers
-    - graph-neural-network-transformer-applications
+    provisional_concepts: []
+    estimated_hours:
+      min: 22
+      max: 28
+    schedule_action: extend
+  - id: B2-020-language-transformers
+    title: Language Transformers
+    layer: round-2-extension
+    prerequisites:
+    - B2-019-attention-transformers
+    knowledge_points:
+    - nlp-word-embeddings
     - nlp-transformers
     - nlp-pretraining
     - nlp-fine-tuning
-    provisional_concepts:
-    - attention
-    - self-attention
-    - multi-head-attention
-    - positional-encoding
-    - transformer-blocks
-    - layer-normalization
-    - residual-connections
-    - position-wise-feed-forward-network
-    - attention-complexity
-    - nlp-transformers
-    - pretraining
-    - fine-tuning
-    - vision-transformers
-    - graph-attention
+    - transformer-nlp-applications
+    provisional_concepts: []
     estimated_hours:
-      min: 42
-      max: 64
+      min: 26
+      max: 32
     schedule_action: extend
-  - id: P015-R2-VISION-GEN
-    title: Advanced Vision and Generative Modeling
+  - id: B2-021-cross-modal-transformers-vision
+    title: Cross-modal Transformers and Advanced Vision
     layer: round-2-extension
     prerequisites:
-    - C7-cnn-transfer
-    - C11-neural-training
-    - P015-R2-TRANSFORMERS-NLP
+    - B2-020-language-transformers
     knowledge_points:
+    - vision-transformers
+    - graph-neural-network-transformer-applications
     - object-detection
     - unet
-    - autoencoder
-    - variational-autoencoder
-    - generative-adversarial-network
-    - denoising-diffusion-probabilistic-models
-    - stable-diffusion
+    provisional_concepts: []
+    estimated_hours:
+      min: 22
+      max: 28
+    schedule_action: extend
+  - id: B2-022-probabilistic-latent-models
+    title: Probabilistic Latent Models
+    layer: round-2-extension
+    prerequisites:
+    - F4-multivar-calculus
+    - F5-probability
+    - F6-svd-spectral
+    - C7-cnn-transfer
+    - C11-neural-training
+    knowledge_points:
     - multivariate-gaussian
     - gaussian-reparameterization
     - kl-divergence
-    provisional_concepts:
-    - object-detection
-    - unet
-    - autoencoders
-    - vae
-    - reparameterization
-    - kl-divergence
-    - gans
-    - ddpm
-    - stable-diffusion
-    - multivariate-gaussian
+    - autoencoder
+    - variational-autoencoder
+    provisional_concepts: []
     estimated_hours:
-      min: 54
-      max: 82
+      min: 22
+      max: 28
     schedule_action: extend
-  - id: P015-R2-CAPSTONE
+  - id: B2-023-generative-models-diffusion
+    title: Generative Models and Diffusion
+    layer: round-2-extension
+    prerequisites:
+    - B2-020-language-transformers
+    - B2-021-cross-modal-transformers-vision
+    - B2-022-probabilistic-latent-models
+    knowledge_points:
+    - generative-adversarial-network
+    - denoising-diffusion-probabilistic-models
+    - stable-diffusion
+    provisional_concepts: []
+    estimated_hours:
+      min: 20
+      max: 26
+    schedule_action: extend
+  - id: B2-024-gpu-scientific-ml-capstone
     title: GPU Scientific Modeling Capstone
     layer: round-2-extension
     prerequisites:
     - C10-competition-craft
     - C12-classical-models
-    - P015-R2-TRANSFORMERS-NLP
-    - P015-R2-VISION-GEN
+    - B2-020-language-transformers
+    - B2-021-cross-modal-transformers-vision
+    - B2-022-probabilistic-latent-models
+    - B2-023-generative-models-diffusion
     knowledge_points:
     - gpu-colab-l4-workflow
     - semi-supervised-pseudo-labeling
@@ -96,18 +112,10 @@ planned_units:
     - open-ended-experiment-design
     - open-ended-model-evaluation
     - mixture-parameter-regression
-    provisional_concepts:
-    - colab-gpu-workflow
-    - semi-supervised-learning
-    - pseudo-labeling
-    - inverse-problems
-    - scientific-ml
-    - experiment-design
-    - ablation-analysis
-    - mixture-parameter-estimation
+    provisional_concepts: []
     estimated_hours:
       min: 30
-      max: 46
+      max: 40
     schedule_action: extend
 
 knowledge_points:
@@ -1805,7 +1813,7 @@ knowledge_points:
       derivation: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-019-attention-transformers
     deficits: {modalities_missing: [theory, derivation, implementation]}
     rationale: No query-key-value, score, weighting, or attention computation exists.
     consequence: Every transformer topic lacks its first prerequisite.
@@ -1821,7 +1829,7 @@ knowledge_points:
       derivation: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-019-attention-transformers
     deficits: {modalities_missing: [theory, derivation, implementation]}
     rationale: No sequence self-attention exists.
     consequence: Students cannot model within-sequence interactions.
@@ -1837,7 +1845,7 @@ knowledge_points:
       derivation: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-019-attention-transformers
     deficits: {modalities_missing: [theory, derivation, implementation]}
     rationale: No head splitting, projections, concatenation, or implementation exists.
     consequence: Multi-head transformer blocks cannot be understood or built.
@@ -1852,7 +1860,7 @@ knowledge_points:
       theory: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-019-attention-transformers
     deficits: {modalities_missing: [theory, implementation]}
     rationale: No positional signal or encoding implementation exists.
     consequence: Students cannot explain how order enters attention models.
@@ -1867,7 +1875,7 @@ knowledge_points:
       theory: {lesson_anchors: [], practices: [], assessments: []}
       derivation: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-019-attention-transformers
     deficits: {modalities_missing: [theory, derivation]}
     rationale: No sequence-length memory or time analysis exists.
     consequence: Students cannot reason about standard versus linear attention costs.
@@ -1883,7 +1891,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-019-attention-transformers
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: No attention module or trained attention model exists.
     consequence: The official from-scratch attention expectation is wholly unmet.
@@ -1899,7 +1907,7 @@ knowledge_points:
       derivation: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-019-attention-transformers
     deficits: {modalities_missing: [theory, derivation, implementation]}
     rationale: Transformer occurrences refer only to sklearn transformers; no attention-residual-LayerNorm-feed-forward block architecture exists.
     consequence: The standard transformer block and its normalization/residual system are absent.
@@ -1915,7 +1923,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-020-language-transformers
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: Existing NLP uses fixed GloVe retrieval, not transformer applications.
     consequence: Students cannot apply transformers to NLP tasks.
@@ -1931,7 +1939,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-021-cross-modal-transformers-vision
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: No image patching, class token, ViT implementation, or training exists.
     consequence: The official vision-transformer application is missing.
@@ -1947,7 +1955,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-021-cross-modal-transformers-vision
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: No graph representation, message passing, graph attention, or training exists.
     consequence: The official graph-transformer application is absent.
@@ -2006,7 +2014,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-020-language-transformers
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: No NLP transformer exists.
     consequence: The central modern NLP family is missing.
@@ -2022,7 +2030,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-020-language-transformers
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: Loading pretrained GloVe or ResNet is not teaching or executing a pretraining objective.
     consequence: Students cannot reason about or run pretraining.
@@ -2038,7 +2046,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-TRANSFORMERS-NLP
+    destination: B2-020-language-transformers
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: C7 discusses hypothetical transfer adjustment but performs no NLP fine-tuning.
     consequence: Students cannot adapt pretrained NLP models.
@@ -2054,7 +2062,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-VISION-GEN
+    destination: B2-021-cross-modal-transformers-vision
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: Existing CNN work has no boxes, localization loss, detector, or training.
     consequence: Object detection is absent.
@@ -2070,7 +2078,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-VISION-GEN
+    destination: B2-021-cross-modal-transformers-vision
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: No encoder-decoder, skip concatenation, segmentation, or UNet training exists.
     consequence: UNet and its diffusion prerequisite role are absent.
@@ -2086,7 +2094,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-VISION-GEN
+    destination: B2-022-probabilistic-latent-models
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: Dimensionality reduction is PCA and SVD only; no learned encoder-decoder exists.
     consequence: Autoencoder and VAE prerequisites are missing.
@@ -2103,7 +2111,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-VISION-GEN
+    destination: B2-022-probabilistic-latent-models
     deficits: {modalities_missing: [theory, derivation, implementation, model-training]}
     rationale: No latent probabilistic model, ELBO, reparameterized encoder, or VAE training exists.
     consequence: The official VAE family is wholly absent.
@@ -2120,7 +2128,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-VISION-GEN
+    destination: B2-023-generative-models-diffusion
     deficits: {modalities_missing: [theory, derivation, implementation, model-training]}
     rationale: No generator-discriminator game, objective, implementation, or training exists.
     consequence: GAN coverage is absent.
@@ -2137,7 +2145,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-VISION-GEN
+    destination: B2-023-generative-models-diffusion
     deficits: {modalities_missing: [theory, derivation, implementation, model-training]}
     rationale: No forward noising, reverse denoising, schedule, noise objective, or DDPM training exists.
     consequence: Diffusion-model theory and practice are absent.
@@ -2153,7 +2161,7 @@ knowledge_points:
       implementation: {lesson_anchors: [], practices: [], assessments: []}
       model-training: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-VISION-GEN
+    destination: B2-023-generative-models-diffusion
     deficits: {modalities_missing: [theory, implementation, model-training]}
     rationale: No latent diffusion, text conditioning, pipeline use, or training exists.
     consequence: Stable Diffusion is absent.
@@ -2169,7 +2177,7 @@ knowledge_points:
       derivation: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-VISION-GEN
+    destination: B2-022-probabilistic-latent-models
     deficits: {modalities_missing: [theory, derivation, implementation]}
     rationale: F5 teaches scalar Gaussians and generic covariance but never a Gaussian vector or covariance-matrix density.
     consequence: VAE and diffusion prerequisites are not closed.
@@ -2185,7 +2193,7 @@ knowledge_points:
       derivation: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-VISION-GEN
+    destination: B2-022-probabilistic-latent-models
     deficits: {modalities_missing: [theory, derivation, implementation]}
     rationale: No location-scale reparameterization or differentiable latent sampling exists.
     consequence: Gradient-based latent-variable training is blocked.
@@ -2201,7 +2209,7 @@ knowledge_points:
       derivation: {lesson_anchors: [], practices: [], assessments: []}
       implementation: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-VISION-GEN
+    destination: B2-022-probabilistic-latent-models
     deficits: {modalities_missing: [theory, derivation, implementation]}
     rationale: No entropy, distributional cross-entropy, KL definition, Gaussian KL derivation, or implementation exists.
     consequence: VAE and diffusion objectives lack a prerequisite.
@@ -2217,7 +2225,7 @@ knowledge_points:
       model-training: {lesson_anchors: [], practices: [], assessments: []}
       competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-CAPSTONE
+    destination: B2-024-gpu-scientific-ml-capstone
     deficits: {modalities_missing: [implementation, model-training, competition-workflow]}
     rationale: The only device teaching says the course is CPU-only; no Colab L4, device movement, memory handling, or GPU training is practiced.
     consequence: Students cannot execute the official R2 GPU workflow.
@@ -2234,7 +2242,7 @@ knowledge_points:
       model-training: {lesson_anchors: [], practices: [], assessments: []}
       competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-CAPSTONE
+    destination: B2-024-gpu-scientific-ml-capstone
     deficits: {modalities_missing: [theory, implementation, model-training, competition-workflow]}
     rationale: No limited-label learning, pseudo-label selection, clustering-assisted labeling, or leakage-safe validation workflow exists.
     consequence: The observed R2 semi-supervised image-modeling capability is missing.
@@ -2251,7 +2259,7 @@ knowledge_points:
       model-training: {lesson_anchors: [], practices: [], assessments: []}
       competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-CAPSTONE
+    destination: B2-024-gpu-scientific-ml-capstone
     deficits: {modalities_missing: [theory, implementation, model-training, competition-workflow]}
     rationale: No inverse-problem formulation, observation operator, learned inversion, or competition workflow exists.
     consequence: An observed R2 scientific-modeling capability is missing.
@@ -2266,7 +2274,7 @@ knowledge_points:
       model-training: {lesson_anchors: [], practices: [], assessments: []}
       competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-CAPSTONE
+    destination: B2-024-gpu-scientific-ml-capstone
     deficits: {modalities_missing: [model-training, competition-workflow]}
     rationale: C10's bounded kNN campaign is useful prerequisite practice but not open-ended architecture or experiment design.
     consequence: Students cannot plan a broad R2 modeling investigation.
@@ -2281,7 +2289,7 @@ knowledge_points:
       model-training: {lesson_anchors: [], practices: [], assessments: []}
       competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-CAPSTONE
+    destination: B2-024-gpu-scientific-ml-capstone
     deficits: {modalities_missing: [model-training, competition-workflow]}
     rationale: Existing evaluation is a pinned R1 tabular protocol without scientific diagnostics, ablations, robustness, or family comparison.
     consequence: Students cannot defend open-ended R2 model choices.
@@ -2298,7 +2306,7 @@ knowledge_points:
       model-training: {lesson_anchors: [], practices: [], assessments: []}
       competition-workflow: {lesson_anchors: [], practices: [], assessments: []}
     disposition: new-unit
-    destination: P015-R2-CAPSTONE
+    destination: B2-024-gpu-scientific-ml-capstone
     deficits: {modalities_missing: [theory, implementation, model-training, competition-workflow]}
     rationale: No mixture-function process, parameter identifiability, regression model, or evaluation workflow exists.
     consequence: An observed R2 parameter-estimation capability is missing.

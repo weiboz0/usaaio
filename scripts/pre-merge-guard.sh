@@ -52,8 +52,12 @@ done
 for dir in units mocktests; do
   names=""
   for ref in "${refs[@]}"; do names+="$(collect "$ref" "$dir")"$'\n'; done
-  # unit dirs: NN-name; mocktest dirs: r1-NNN
-  check_dupes "$dir" "$(printf '%s\n' "$names" | sort -u)" '^(r[0-9]-)?[0-9]+'
+  # unit dirs: NN-name or B2-NNN-name; mocktest dirs: r1-NNN
+  if [[ "$dir" == "units" ]]; then
+    check_dupes "$dir" "$(printf '%s\n' "$names" | sort -u)" '^(B[0-9]-)?[0-9]+'
+  else
+    check_dupes "$dir" "$(printf '%s\n' "$names" | sort -u)" '^r[0-9]-[0-9]+'
+  fi
 done
 
 if [[ $check_roadmap_union -eq 1 ]]; then

@@ -1,7 +1,7 @@
 inventory_version: 1
 counts:
   units: 19
-  concepts: 149
+  concepts: 160
   unit_practices: 437
   lesson_sessions: 69
   unit_nonpractice_notebooks: 107
@@ -1034,7 +1034,7 @@ manifests:
   semantic_sha256: 529275be25edee7e74999da5791d92d1b6de8f12f1a16a684dfbb9512a360952
 - path: syllabus.md
   kind: canonical-yaml
-  semantic_sha256: d04d8b8b62323f2da20721790b30db165692183389a210d0484c8da622427ec7
+  semantic_sha256: 8f425cfb814d8cf3921d2a99b3e11fbcdbe847d6ba201598b9cee4f8ccf554c4
 - path: units/C1-ml-fundamentals/manifest.yaml
   kind: yaml
   semantic_sha256: 127dda704e1713a7d11492b18bbd2097d3a444d922b6dbbbcac4b00dd9161ac5

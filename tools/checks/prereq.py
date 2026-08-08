@@ -90,7 +90,21 @@ def check_prereq(root: str | Path) -> Report:
             errors.append(f"{manifest.path}: concepts_taught drift from syllabus")
         if set(manifest.prereq_units) != set(unit.prereqs):
             errors.append(f"{manifest.path}: prereq_units drift from syllabus")
+        if manifest.concept_prerequisites != unit.concept_prerequisites:
+            errors.append(
+                f"{manifest.path}: concept_prerequisites drift from syllabus"
+            )
+        if manifest.book == 2 and manifest.concept_prerequisites != manifest.concepts_used:
+            errors.append(
+                f"{manifest.path}: concept_prerequisites must exactly equal concepts_used"
+            )
         allowed = taught_closure(syllabus, list(unit.prereqs))
+        for concept in manifest.concept_prerequisites:
+            if concept not in allowed:
+                errors.append(
+                    f"{manifest.path}: concept prerequisite {concept} is outside the "
+                    "prereq-unit taught closure"
+                )
         for concept in manifest.concepts_used:
             if concept not in allowed:
                 errors.append(f"{manifest.path}: uses untaught concept {concept}")

@@ -62,6 +62,7 @@ step "4/8 register verification"
 python3 scripts/verify-register.py || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
 
 step "5/8 generated curriculum evidence"
+uv run usaaio-tools layer-boundary-check
 uv run python -m tools.audit_curriculum --check
 uv run python -m tools.render_curriculum_roadmap --check
 uv run python -m tools.render_course_structure --check

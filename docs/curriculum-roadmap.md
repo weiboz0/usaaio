@@ -24,13 +24,13 @@ Planned hours are estimates and are not manifested time.
 |---|---:|---:|
 | shared-foundation | 0 | 0 |
 | round-1-core | 0 | 0 |
-| round-2-extension | 126 | 192 |
+| round-2-extension | 142 | 182 |
 | optional-enrichment | 0 | 0 |
-| **Planned-unit subtotal** | **126** | **192** |
+| **Planned-unit subtotal** | **142** | **182** |
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-Baseline plus planned-unit subtotal: **436.58–502.58 manifested-baseline hours** and **440.58–506.58 scheduled-baseline hours**.
+Baseline plus planned-unit subtotal: **452.58–492.58 manifested-baseline hours** and **456.58–496.58 scheduled-baseline hours**.
 
 The unestimated C8 `nlp-word-embeddings` model-training correction remains pending.
 
@@ -120,37 +120,37 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 
 | Knowledge point | Requirement | Coverage | Modalities missing | Practice shortfall | Destination | Dependencies |
 |---|---|---|---|---:|---|---|
-| attention-complexity-analysis | required | missing | derivation, theory | 3 | P015-R2-TRANSFORMERS-NLP | self-attention |
-| attention-from-scratch | required | missing | implementation, model-training, theory | 3 | P015-R2-TRANSFORMERS-NLP | multi-head-attention, positional-encoding, pytorch-autograd-and-optimizer-training |
-| attention-mechanism-foundations | required | missing | derivation, implementation, theory | 3 | P015-R2-TRANSFORMERS-NLP | linear-algebra-foundations, softmax |
-| autoencoder | required | missing | implementation, model-training, theory | 3 | P015-R2-VISION-GEN | fully-connected-network-from-scratch, loss-functions |
-| denoising-diffusion-probabilistic-models | required | missing | derivation, implementation, model-training, theory | 3 | P015-R2-VISION-GEN | gaussian-reparameterization, kl-divergence, multivariate-gaussian, unet |
-| gaussian-reparameterization | bridge | missing | derivation, implementation, theory | 3 | P015-R2-VISION-GEN | multivariate-gaussian, pytorch-autograd-and-optimizer-training |
-| generative-adversarial-network | required | missing | derivation, implementation, model-training, theory | 3 | P015-R2-VISION-GEN | convolutional-neural-network-basics, fully-connected-network-from-scratch |
-| gpu-colab-l4-workflow | required | missing | competition-workflow, implementation, model-training | 3 | P015-R2-CAPSTONE | colab-coding-submission, pytorch-autograd-and-optimizer-training |
-| graph-neural-network-transformer-applications | required | missing | implementation, model-training, theory | 3 | P015-R2-TRANSFORMERS-NLP | transformer-architecture-foundations |
-| kl-divergence | bridge | missing | derivation, implementation, theory | 3 | P015-R2-VISION-GEN | conditional-probability, expectation, multivariate-gaussian |
-| mixture-parameter-regression | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | P015-R2-CAPSTONE | linear-regression, multivariate-gaussian, open-ended-experiment-design |
-| multi-head-attention | required | missing | derivation, implementation, theory | 3 | P015-R2-TRANSFORMERS-NLP | self-attention |
-| multivariate-gaussian | bridge | missing | derivation, implementation, theory | 3 | P015-R2-VISION-GEN | eigenvalues-and-eigenvectors, probability-and-statistics-foundations |
-| nlp-fine-tuning | required | missing | implementation, model-training, theory | 3 | P015-R2-TRANSFORMERS-NLP | nlp-pretraining, pytorch-autograd-and-optimizer-training |
-| nlp-pretraining | required | missing | implementation, model-training, theory | 3 | P015-R2-TRANSFORMERS-NLP | nlp-transformers |
+| attention-complexity-analysis | required | missing | derivation, theory | 3 | B2-019-attention-transformers | self-attention |
+| attention-from-scratch | required | missing | implementation, model-training, theory | 3 | B2-019-attention-transformers | multi-head-attention, positional-encoding, pytorch-autograd-and-optimizer-training |
+| attention-mechanism-foundations | required | missing | derivation, implementation, theory | 3 | B2-019-attention-transformers | linear-algebra-foundations, softmax |
+| autoencoder | required | missing | implementation, model-training, theory | 3 | B2-022-probabilistic-latent-models | fully-connected-network-from-scratch, loss-functions |
+| denoising-diffusion-probabilistic-models | required | missing | derivation, implementation, model-training, theory | 3 | B2-023-generative-models-diffusion | gaussian-reparameterization, kl-divergence, multivariate-gaussian, unet |
+| gaussian-reparameterization | bridge | missing | derivation, implementation, theory | 3 | B2-022-probabilistic-latent-models | multivariate-gaussian, pytorch-autograd-and-optimizer-training |
+| generative-adversarial-network | required | missing | derivation, implementation, model-training, theory | 3 | B2-023-generative-models-diffusion | convolutional-neural-network-basics, fully-connected-network-from-scratch |
+| gpu-colab-l4-workflow | required | missing | competition-workflow, implementation, model-training | 3 | B2-024-gpu-scientific-ml-capstone | colab-coding-submission, pytorch-autograd-and-optimizer-training |
+| graph-neural-network-transformer-applications | required | missing | implementation, model-training, theory | 3 | B2-021-cross-modal-transformers-vision | transformer-architecture-foundations |
+| kl-divergence | bridge | missing | derivation, implementation, theory | 3 | B2-022-probabilistic-latent-models | conditional-probability, expectation, multivariate-gaussian |
+| mixture-parameter-regression | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | B2-024-gpu-scientific-ml-capstone | linear-regression, multivariate-gaussian, open-ended-experiment-design |
+| multi-head-attention | required | missing | derivation, implementation, theory | 3 | B2-019-attention-transformers | self-attention |
+| multivariate-gaussian | bridge | missing | derivation, implementation, theory | 3 | B2-022-probabilistic-latent-models | eigenvalues-and-eigenvectors, probability-and-statistics-foundations |
+| nlp-fine-tuning | required | missing | implementation, model-training, theory | 3 | B2-020-language-transformers | nlp-pretraining, pytorch-autograd-and-optimizer-training |
+| nlp-pretraining | required | missing | implementation, model-training, theory | 3 | B2-020-language-transformers | nlp-transformers |
 | nlp-tokenization | required | covered | — | 0 | C8-embeddings | python-programming |
-| nlp-transformers | required | missing | implementation, model-training, theory | 3 | P015-R2-TRANSFORMERS-NLP | nlp-tokenization, transformer-architecture-foundations |
+| nlp-transformers | required | missing | implementation, model-training, theory | 3 | B2-020-language-transformers | nlp-tokenization, transformer-architecture-foundations |
 | nlp-word-embeddings | required | partial | model-training | 0 | C8-embeddings | linear-algebra-foundations, nlp-tokenization |
-| object-detection | required | missing | implementation, model-training, theory | 3 | P015-R2-VISION-GEN | convolutional-neural-network-basics |
-| open-ended-experiment-design | bridge | missing | competition-workflow, model-training | 3 | P015-R2-CAPSTONE | end-to-end-model-selection, gpu-colab-l4-workflow |
-| open-ended-model-evaluation | bridge | missing | competition-workflow, model-training | 3 | P015-R2-CAPSTONE | hidden-test-model-evaluation, open-ended-experiment-design |
-| positional-encoding | required | missing | implementation, theory | 3 | P015-R2-TRANSFORMERS-NLP | self-attention |
-| scientific-ml-inverse-problems | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | P015-R2-CAPSTONE | end-to-end-model-selection, pytorch-autograd-and-optimizer-training |
-| self-attention | required | missing | derivation, implementation, theory | 3 | P015-R2-TRANSFORMERS-NLP | attention-mechanism-foundations |
-| semi-supervised-pseudo-labeling | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | P015-R2-CAPSTONE | convolutional-neural-network-basics, k-means-clustering, open-ended-experiment-design |
-| stable-diffusion | required | missing | implementation, model-training, theory | 3 | P015-R2-VISION-GEN | denoising-diffusion-probabilistic-models, transformer-nlp-applications, variational-autoencoder |
-| transformer-architecture-foundations | required | missing | derivation, implementation, theory | 3 | P015-R2-TRANSFORMERS-NLP | attention-from-scratch, multilayer-perceptron-model |
-| transformer-nlp-applications | required | missing | implementation, model-training, theory | 3 | P015-R2-TRANSFORMERS-NLP | nlp-tokenization, transformer-architecture-foundations |
-| unet | required | missing | implementation, model-training, theory | 3 | P015-R2-VISION-GEN | convolutional-neural-network-basics |
-| variational-autoencoder | required | missing | derivation, implementation, model-training, theory | 3 | P015-R2-VISION-GEN | autoencoder, gaussian-reparameterization, kl-divergence, multivariate-gaussian |
-| vision-transformers | required | missing | implementation, model-training, theory | 3 | P015-R2-TRANSFORMERS-NLP | convolutional-neural-network-basics, transformer-architecture-foundations |
+| object-detection | required | missing | implementation, model-training, theory | 3 | B2-021-cross-modal-transformers-vision | convolutional-neural-network-basics |
+| open-ended-experiment-design | bridge | missing | competition-workflow, model-training | 3 | B2-024-gpu-scientific-ml-capstone | end-to-end-model-selection, gpu-colab-l4-workflow |
+| open-ended-model-evaluation | bridge | missing | competition-workflow, model-training | 3 | B2-024-gpu-scientific-ml-capstone | hidden-test-model-evaluation, open-ended-experiment-design |
+| positional-encoding | required | missing | implementation, theory | 3 | B2-019-attention-transformers | self-attention |
+| scientific-ml-inverse-problems | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | B2-024-gpu-scientific-ml-capstone | end-to-end-model-selection, pytorch-autograd-and-optimizer-training |
+| self-attention | required | missing | derivation, implementation, theory | 3 | B2-019-attention-transformers | attention-mechanism-foundations |
+| semi-supervised-pseudo-labeling | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | B2-024-gpu-scientific-ml-capstone | convolutional-neural-network-basics, k-means-clustering, open-ended-experiment-design |
+| stable-diffusion | required | missing | implementation, model-training, theory | 3 | B2-023-generative-models-diffusion | denoising-diffusion-probabilistic-models, transformer-nlp-applications, variational-autoencoder |
+| transformer-architecture-foundations | required | missing | derivation, implementation, theory | 3 | B2-019-attention-transformers | attention-from-scratch, multilayer-perceptron-model |
+| transformer-nlp-applications | required | missing | implementation, model-training, theory | 3 | B2-020-language-transformers | nlp-tokenization, transformer-architecture-foundations |
+| unet | required | missing | implementation, model-training, theory | 3 | B2-021-cross-modal-transformers-vision | convolutional-neural-network-basics |
+| variational-autoencoder | required | missing | derivation, implementation, model-training, theory | 3 | B2-022-probabilistic-latent-models | autoencoder, gaussian-reparameterization, kl-divergence, multivariate-gaussian |
+| vision-transformers | required | missing | implementation, model-training, theory | 3 | B2-021-cross-modal-transformers-vision | convolutional-neural-network-basics, transformer-architecture-foundations |
 
 ### optional-enrichment
 
@@ -162,16 +162,25 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 
 | Unit | Title | Layer | Hours | Schedule action | Prerequisites | Owns | Provisional concepts |
 |---|---|---|---:|---|---|---|---|
-| P015-R2-CAPSTONE | GPU Scientific Modeling Capstone | round-2-extension | 30–46 | extend | C10-competition-craft, C12-classical-models, P015-R2-TRANSFORMERS-NLP, P015-R2-VISION-GEN | gpu-colab-l4-workflow, mixture-parameter-regression, open-ended-experiment-design, open-ended-model-evaluation, scientific-ml-inverse-problems, semi-supervised-pseudo-labeling | ablation-analysis, colab-gpu-workflow, experiment-design, inverse-problems, mixture-parameter-estimation, pseudo-labeling, scientific-ml, semi-supervised-learning |
-| P015-R2-TRANSFORMERS-NLP | Attention, Transformers, and NLP | round-2-extension | 42–64 | extend | C11-neural-training, C6-pytorch, C7-cnn-transfer, C8-embeddings | attention-complexity-analysis, attention-from-scratch, attention-mechanism-foundations, graph-neural-network-transformer-applications, multi-head-attention, nlp-fine-tuning, nlp-pretraining, nlp-transformers, positional-encoding, self-attention, transformer-architecture-foundations, transformer-nlp-applications, vision-transformers | attention, attention-complexity, fine-tuning, graph-attention, layer-normalization, multi-head-attention, nlp-transformers, position-wise-feed-forward-network, positional-encoding, pretraining, residual-connections, self-attention, transformer-blocks, vision-transformers |
-| P015-R2-VISION-GEN | Advanced Vision and Generative Modeling | round-2-extension | 54–82 | extend | C11-neural-training, C7-cnn-transfer, P015-R2-TRANSFORMERS-NLP | autoencoder, denoising-diffusion-probabilistic-models, gaussian-reparameterization, generative-adversarial-network, kl-divergence, multivariate-gaussian, object-detection, stable-diffusion, unet, variational-autoencoder | autoencoders, ddpm, gans, kl-divergence, multivariate-gaussian, object-detection, reparameterization, stable-diffusion, unet, vae |
+| B2-019-attention-transformers | Attention and Transformer Mechanics | round-2-extension | 22–28 | extend | C11-neural-training, C6-pytorch, C7-cnn-transfer, C8-embeddings | attention-complexity-analysis, attention-from-scratch, attention-mechanism-foundations, multi-head-attention, positional-encoding, self-attention, transformer-architecture-foundations | — |
+| B2-020-language-transformers | Language Transformers | round-2-extension | 26–32 | extend | B2-019-attention-transformers | nlp-fine-tuning, nlp-pretraining, nlp-transformers, nlp-word-embeddings, transformer-nlp-applications | — |
+| B2-021-cross-modal-transformers-vision | Cross-modal Transformers and Advanced Vision | round-2-extension | 22–28 | extend | B2-020-language-transformers | graph-neural-network-transformer-applications, object-detection, unet, vision-transformers | — |
+| B2-022-probabilistic-latent-models | Probabilistic Latent Models | round-2-extension | 22–28 | extend | C11-neural-training, C7-cnn-transfer, F4-multivar-calculus, F5-probability, F6-svd-spectral | autoencoder, gaussian-reparameterization, kl-divergence, multivariate-gaussian, variational-autoencoder | — |
+| B2-023-generative-models-diffusion | Generative Models and Diffusion | round-2-extension | 20–26 | extend | B2-020-language-transformers, B2-021-cross-modal-transformers-vision, B2-022-probabilistic-latent-models | denoising-diffusion-probabilistic-models, generative-adversarial-network, stable-diffusion | — |
+| B2-024-gpu-scientific-ml-capstone | GPU Scientific Modeling Capstone | round-2-extension | 30–40 | extend | B2-020-language-transformers, B2-021-cross-modal-transformers-vision, B2-022-probabilistic-latent-models, B2-023-generative-models-diffusion, C10-competition-craft, C12-classical-models | gpu-colab-l4-workflow, mixture-parameter-regression, open-ended-experiment-design, open-ended-model-evaluation, scientific-ml-inverse-problems, semi-supervised-pseudo-labeling | — |
 
 ## Dependency-ordered content tranche queue
 
-1. **Round 2 transformers and NLP:** Self/multi-head attention, positional encoding, transformer architecture and complexity, from-scratch attention, LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP applications, pre-training, and fine-tuning, followed by vision-transformer and graph-neural-network applications.
+1. **Attention and Transformer Mechanics:** Query-key-value attention, scaled dot products, masks, multi-head attention, positional encoding, complexity, from-scratch training, and Transformer blocks.
 
-2. **Round 2 advanced vision and generative modeling:** Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after multivariate Gaussian, reparameterization, and KL prerequisites.
+2. **Language Transformers:** Complete word-embedding model training, then add NLP Transformers, pretraining, fine-tuning, and language applications.
 
-3. **Round 2 open-ended/GPU capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
+3. **Cross-modal Transformers and Advanced Vision:** Vision-transformer and graph-neural-network applications, object detection, and UNet.
+
+4. **Probabilistic Latent Models:** Multivariate Gaussian foundations, reparameterization, KL divergence, autoencoders, and variational autoencoders.
+
+5. **Generative Models and Diffusion:** GAN, denoising diffusion, and Stable Diffusion after the latent-model prerequisites.
+
+6. **GPU Scientific Modeling Capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
 
 Each tranche updates the shipped syllabus and roadmap atomically.

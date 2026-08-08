@@ -7,6 +7,7 @@ import yaml
 
 from tools import audit_curriculum as audit
 from tools.checks.schedule import load_validated_schedule
+from tools.model import load_syllabus
 
 REPO_ROOT = Path(__file__).parents[1]
 
@@ -491,12 +492,20 @@ def test_check_mode_catches_missing_and_stale_inventory_then_passes(tmp_path: Pa
     assert "stale" in capsys.readouterr().err
 
 
-def test_plan018_real_repository_inventory_has_exact_final_counts() -> None:
-    counts = audit.build_inventory(REPO_ROOT)["counts"]
+def test_plan019_phase1_real_repository_inventory_has_exact_two_layer_counts() -> None:
+    inventory = audit.build_inventory(REPO_ROOT)
+    counts = inventory["counts"]
+    syllabus = load_syllabus(REPO_ROOT)
+    book2_concepts = {
+        concept
+        for unit in syllabus.units.values()
+        if unit.book == 2
+        for concept in unit.teaches
+    }
 
     assert counts == {
         "units": 19,
-        "concepts": 149,
+        "concepts": 160,
         "unit_practices": 437,
         "lesson_sessions": 69,
         "unit_nonpractice_notebooks": 107,
@@ -506,6 +515,14 @@ def test_plan018_real_repository_inventory_has_exact_final_counts() -> None:
         "manifested_minutes": 18_635,
         "scheduled_minutes": 18_875,
     }
+    assert len(book2_concepts) == 11
+    assert counts["concepts"] - len(book2_concepts) == 149
+    material_paths = {
+        row["path"]
+        for section in ("manifests", "notebooks")
+        for row in inventory[section]
+    }
+    assert not any(path.startswith("units/B2-") for path in material_paths)
 
 
 def _install_canonical_schedule_fixture(

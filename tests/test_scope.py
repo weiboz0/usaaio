@@ -1121,16 +1121,16 @@ def _add_pending_c7_training_point(data: dict[str, Any]) -> None:
     )
 
 
-def _add_pending_neural_tranche(data: dict[str, Any]) -> None:
+def _add_pending_attention_tranche(data: dict[str, Any]) -> None:
     data["roadmap"]["planned_units"].append(
         {
-            "id": "P015-R1-NEURAL-TRAINING",
-            "title": "Round 1 neural-training completion",
-            "layer": "round-1-core",
+            "id": "B2-019-attention-transformers",
+            "title": "Attention and Transformer Mechanics",
+            "layer": "round-2-extension",
             "prerequisites": [],
             "knowledge_points": [],
-            "provisional_concepts": ["future-neural-training"],
-            "estimated_hours": {"min": 30, "max": 44},
+            "provisional_concepts": ["future-attention-transformers"],
+            "estimated_hours": {"min": 28, "max": 38},
             "schedule_action": "extend",
         }
     )
@@ -1581,7 +1581,7 @@ def test_plan018_classical_rows_are_shipped_with_exact_direct_evidence() -> None
             assert evidence["assessments"] == []
 
     assert "P015-R1-CLASSICAL-BREADTH" not in planned
-    capstone_prereqs = planned["P015-R2-CAPSTONE"]["prerequisites"]
+    capstone_prereqs = planned["B2-024-gpu-scientific-ml-capstone"]["prerequisites"]
     assert "P015-R1-CLASSICAL-BREADTH" not in capstone_prereqs
     assert "C12-classical-models" in capstone_prereqs
 
@@ -1625,19 +1625,36 @@ def test_c7_extension_returns_only_when_cnn_training_owner_is_pending(
     assert all("C7 CNN training" in document for document in with_pending_owner.values())
 
 
-def test_neural_tranche_returns_only_when_its_planned_unit_is_restored(
+def test_attention_tranche_returns_only_when_its_planned_unit_is_restored(
     tmp_path: Path,
 ) -> None:
     contract = _base_contract(tmp_path)
     without_planned_unit = _render_fixture_documents(tmp_path)
-    title = "Round 1 neural-training completion"
+    title = "Attention and Transformer Mechanics"
     assert all(title not in document for document in without_planned_unit.values())
 
-    _add_pending_neural_tranche(contract)
+    _add_pending_attention_tranche(contract)
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
     with_planned_unit = _render_fixture_documents(tmp_path)
 
     assert all(title in document for document in with_planned_unit.values())
+
+
+def test_attention_tranche_uses_the_canonical_planned_unit_title(tmp_path: Path) -> None:
+    contract = _base_contract(tmp_path)
+    _add_pending_attention_tranche(contract)
+    canonical_title = "Renamed Attention Foundations"
+    contract["roadmap"]["planned_units"][0]["title"] = canonical_title
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
+
+    rendered = _render_fixture_documents(tmp_path)
+
+    for document in rendered.values():
+        tranche_queue = document[
+            document.index("## Dependency-ordered content tranche queue") :
+        ]
+        assert canonical_title in tranche_queue
+        assert "Attention and Transformer Mechanics" not in tranche_queue
 
 
 def test_unestimated_c8_clause_remains_but_estimated_extension_section_is_suppressed(
@@ -1717,11 +1734,11 @@ def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: 
         assert "**8.75–10.75 scheduled-baseline hours**" in document
 
 
-def test_plan018_renderer_recomputes_the_round2_only_planned_delta() -> None:
+def test_renderer_recomputes_the_design019_book2_planned_delta() -> None:
     rendered = renderer.render_documents(Path(__file__).parents[1])
 
     for document in rendered.values():
-        assert "| **Planned-unit subtotal** | **126** | **192** |" in document
+        assert "| **Planned-unit subtotal** | **142** | **182** |" in document
         assert (
             "This range is a renderer-owned editorial estimate, not a field in the canonical coverage map."
             in document
@@ -1731,24 +1748,39 @@ def test_plan018_renderer_recomputes_the_round2_only_planned_delta() -> None:
         assert "C6 and C8 are not yet estimated" not in document
         assert "C8" in document
         assert "so this is not a complete roadmap total" not in document
-        assert "**436.58–502.58 manifested-baseline hours**" in document
-        assert "**440.58–506.58 scheduled-baseline hours**" in document
+        assert "**452.58–492.58 manifested-baseline hours**" in document
+        assert "**456.58–496.58 scheduled-baseline hours**" in document
         assert "student-t-test" in document
         assert "importance-sampling" in document
         assert "Total roadmap delta" not in document
 
 
-def test_both_documents_end_with_exact_post_plan018_tranche_queue() -> None:
+def test_both_documents_render_exact_design019_book2_plan_order() -> None:
     rendered = renderer.render_documents(ROOT)
 
-    titles = [
-        "Round 2 transformers and NLP",
-        "Round 2 advanced vision and generative modeling",
-        "Round 2 open-ended/GPU capstone",
+    unit_ids = [
+        "B2-019-attention-transformers",
+        "B2-020-language-transformers",
+        "B2-021-cross-modal-transformers-vision",
+        "B2-022-probabilistic-latent-models",
+        "B2-023-generative-models-diffusion",
+        "B2-024-gpu-scientific-ml-capstone",
     ]
+    planned_by_id = {
+        unit.id: unit for unit in model.load_roadmap(ROOT).planned_units
+    }
+    tranche_titles = [planned_by_id[unit_id].title for unit_id in unit_ids]
+    roadmap = rendered[Path("docs/curriculum-roadmap.md")]
+    planned_units = roadmap[roadmap.index("## Planned units") :]
+    offsets = [planned_units.index(unit_id) for unit_id in unit_ids]
+    assert offsets == sorted(offsets)
     for document in rendered.values():
-        offsets = [document.index(title) for title in titles]
-        assert offsets == sorted(offsets)
+        tranche_queue = document[
+            document.index("## Dependency-ordered content tranche queue") :
+        ]
+        tranche_offsets = [tranche_queue.index(title) for title in tranche_titles]
+        assert tranche_offsets == sorted(tranche_offsets)
+        assert all(tranche_queue.count(title) == 1 for title in tranche_titles)
         assert document.rstrip().endswith(
             "Each tranche updates the shipped syllabus and roadmap atomically."
         )

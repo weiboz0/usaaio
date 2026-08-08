@@ -26,7 +26,7 @@ baseline:   # Calc AB + basic Python allowlist — usable WITHOUT being taught
            classes-basics, file-io-basics]
 clusters: [python-scientific, linear-algebra, calculus-multivar, probability-statistics,
            ml-concepts, pytorch, cnn-vision, nlp-embeddings, applied-ml, competition-craft,
-           numpy]   # numpy is a distribution-level bucket: python-scientific concepts fold
+           attention-transformers, numpy]   # numpy is a distribution-level bucket: python-scientific concepts fold
                     # into it for blueprint topic accounting (blueprint cluster_fold)
 concepts:
   # --- F1 ---
@@ -197,6 +197,18 @@ concepts:
   - {id: k-means,                    cluster: ml-concepts}
   - {id: lloyd-algorithm,            cluster: ml-concepts}
   - {id: classical-model-comparison, cluster: ml-concepts}
+  # --- Book 2 / B2-019 ---
+  - {id: matrix-transpose,            cluster: attention-transformers}
+  - {id: query-key-value-attention,   cluster: attention-transformers}
+  - {id: scaled-dot-product-attention, cluster: attention-transformers}
+  - {id: attention-mask,              cluster: attention-transformers}
+  - {id: causal-self-attention,       cluster: attention-transformers}
+  - {id: multi-head-attention,        cluster: attention-transformers}
+  - {id: sinusoidal-positional-encoding, cluster: attention-transformers}
+  - {id: attention-complexity,        cluster: attention-transformers}
+  - {id: transformer-residual-layernorm, cluster: attention-transformers}
+  - {id: position-wise-feed-forward,  cluster: attention-transformers}
+  - {id: transformer-block,           cluster: attention-transformers}
 units:
   - id: F1-scientific-python
     track: foundation
@@ -327,6 +339,19 @@ units:
     teaches: [logistic-regression, svm, margin-and-hinge-loss, decision-trees,
               tree-split-criteria, ensemble-learning, bagging-and-boosting, k-means,
               lloyd-algorithm, classical-model-comparison]
+  - id: B2-019-attention-transformers
+    track: extension
+    title: Attention and Transformer Mechanics
+    book: 2
+    layer: round-2-extension
+    round: 2
+    prereqs: [C6-pytorch, C7-cnn-transfer, C8-embeddings, C11-neural-training]
+    concept_prerequisites: [softmax, matrix-multiplication, broadcasting, variance,
+                            torch-tensors, nn-module, torch-optimizers, autograd-training]
+    teaches: [matrix-transpose, query-key-value-attention, scaled-dot-product-attention,
+              attention-mask, causal-self-attention, multi-head-attention,
+              sinusoidal-positional-encoding, attention-complexity,
+              transformer-residual-layernorm, position-wise-feed-forward, transformer-block]
 ```
 
 ## Foundation track — rationale

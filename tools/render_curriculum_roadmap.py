@@ -26,45 +26,39 @@ ScheduleLoader = Callable[[str | Path], CourseSchedule]
 
 TRANCHE_QUEUE = (
     (
-        "P015-R1-NEURAL-TRAINING",
-        "Round 1 neural-training completion",
+        "B2-019-attention-transformers",
         (
-            "Softmax, cross-entropy, manual backpropagation, a fully connected network from "
-            "scratch, then complete C6 model training through PyTorch autograd/optimizers, "
-            "explicit BatchNorm/dropout ownership, and C7 CNN training. Forward propagation "
-            "is already a shipped prerequisite, not a new gap."
+            "Query-key-value attention, scaled dot products, masks, multi-head attention, "
+            "positional encoding, complexity, from-scratch training, and Transformer blocks."
         ),
     ),
     (
-        "P015-R1-CLASSICAL-BREADTH",
-        "Round 1 classical-model breadth",
+        "B2-020-language-transformers",
         (
-            "Logistic regression, SVM, decision trees, ensembles, and k-means, with "
-            "comparison and implementation exercises."
+            "Complete word-embedding model training, then add NLP Transformers, pretraining, "
+            "fine-tuning, and language applications."
         ),
     ),
     (
-        "P015-R2-TRANSFORMERS-NLP",
-        "Round 2 transformers and NLP",
+        "B2-021-cross-modal-transformers-vision",
         (
-            "Self/multi-head attention, positional encoding, transformer architecture and "
-            "complexity, from-scratch attention, LayerNorm/residual/feed-forward block "
-            "structure, C8 word-embedding training, NLP applications, pre-training, and "
-            "fine-tuning, followed by vision-transformer and graph-neural-network "
-            "applications."
+            "Vision-transformer and graph-neural-network applications, object detection, "
+            "and UNet."
         ),
     ),
     (
-        "P015-R2-VISION-GEN",
-        "Round 2 advanced vision and generative modeling",
+        "B2-022-probabilistic-latent-models",
         (
-            "Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after "
-            "multivariate Gaussian, reparameterization, and KL prerequisites."
+            "Multivariate Gaussian foundations, reparameterization, KL divergence, "
+            "autoencoders, and variational autoencoders."
         ),
     ),
     (
-        "P015-R2-CAPSTONE",
-        "Round 2 open-ended/GPU capstone",
+        "B2-023-generative-models-diffusion",
+        "GAN, denoising diffusion, and Stable Diffusion after the latent-model prerequisites.",
+    ),
+    (
+        "B2-024-gpu-scientific-ml-capstone",
         (
             "Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter "
             "estimation, experiment design, reproducibility, GPU workflow, and model evaluation."
@@ -254,10 +248,10 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
 
 def _append_tranche_queue(lines: list[str], roadmap: Roadmap) -> None:
     lines.extend(["## Dependency-ordered content tranche queue", ""])
-    planned = {unit.id for unit in roadmap.planned_units}
+    planned = {unit.id: unit for unit in roadmap.planned_units}
     visible = [row for row in TRANCHE_QUEUE if row[0] in planned]
-    for number, (_, title, description) in enumerate(visible, start=1):
-        lines.extend([f"{number}. **{title}:** {description}", ""])
+    for number, (unit_id, description) in enumerate(visible, start=1):
+        lines.extend([f"{number}. **{planned[unit_id].title}:** {description}", ""])
     lines.append("Each tranche updates the shipped syllabus and roadmap atomically.")
 
 

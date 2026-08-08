@@ -30,13 +30,13 @@ Planned hours are estimates and are not manifested time.
 |---|---:|---:|
 | shared-foundation | 0 | 0 |
 | round-1-core | 0 | 0 |
-| round-2-extension | 126 | 192 |
+| round-2-extension | 142 | 182 |
 | optional-enrichment | 0 | 0 |
-| **Planned-unit subtotal** | **126** | **192** |
+| **Planned-unit subtotal** | **142** | **182** |
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-Baseline plus planned-unit subtotal: **436.58–502.58 manifested-baseline hours** and **440.58–506.58 scheduled-baseline hours**.
+Baseline plus planned-unit subtotal: **452.58–492.58 manifested-baseline hours** and **456.58–496.58 scheduled-baseline hours**.
 
 The unestimated C8 `nlp-word-embeddings` model-training correction remains pending.
 
@@ -107,7 +107,7 @@ Assessments: r1-001-p07-2, r1-001-p08-2
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-019-attention-transformers
 - **Dependencies:** self-attention
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, theory
@@ -131,7 +131,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-019-attention-transformers
 - **Dependencies:** multi-head-attention, positional-encoding, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -158,7 +158,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-019-attention-transformers
 - **Dependencies:** linear-algebra-foundations, softmax
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
@@ -185,7 +185,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-VISION-GEN
+- **Destination:** B2-022-probabilistic-latent-models
 - **Dependencies:** fully-connected-network-from-scratch, loss-functions
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -593,7 +593,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-VISION-GEN
+- **Destination:** B2-023-generative-models-diffusion
 - **Dependencies:** gaussian-reparameterization, kl-divergence, multivariate-gaussian, unet
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, model-training, theory
@@ -782,7 +782,7 @@ Assessments: r1-001-p08-3
 - **Layer:** round-2-extension
 - **Requirement:** bridge
 - **Coverage:** missing
-- **Destination:** P015-R2-VISION-GEN
+- **Destination:** B2-022-probabilistic-latent-models
 - **Dependencies:** multivariate-gaussian, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
@@ -809,7 +809,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-VISION-GEN
+- **Destination:** B2-023-generative-models-diffusion
 - **Dependencies:** convolutional-neural-network-basics, fully-connected-network-from-scratch
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, model-training, theory
@@ -839,7 +839,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-CAPSTONE
+- **Destination:** B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** colab-coding-submission, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, implementation, model-training
@@ -893,7 +893,7 @@ Assessments: r1-001-p04-2
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-021-cross-modal-transformers-vision
 - **Dependencies:** transformer-architecture-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -998,7 +998,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** bridge
 - **Coverage:** missing
-- **Destination:** P015-R2-VISION-GEN
+- **Destination:** B2-022-probabilistic-latent-models
 - **Dependencies:** conditional-probability, expectation, multivariate-gaussian
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
@@ -1292,7 +1292,7 @@ Assessments: r1-001-p05-10, r1-001-p05-8
 - **Layer:** round-2-extension
 - **Requirement:** bridge
 - **Coverage:** missing
-- **Destination:** P015-R2-CAPSTONE
+- **Destination:** B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** linear-regression, multivariate-gaussian, open-ended-experiment-design
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, implementation, model-training, theory
@@ -1322,7 +1322,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-019-attention-transformers
 - **Dependencies:** self-attention
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
@@ -1403,7 +1403,7 @@ Assessments: r1-001-p02-1, r1-001-p04-2
 - **Layer:** round-2-extension
 - **Requirement:** bridge
 - **Coverage:** missing
-- **Destination:** P015-R2-VISION-GEN
+- **Destination:** B2-022-probabilistic-latent-models
 - **Dependencies:** eigenvalues-and-eigenvectors, probability-and-statistics-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
@@ -1430,7 +1430,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-020-language-transformers
 - **Dependencies:** nlp-pretraining, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -1457,7 +1457,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-020-language-transformers
 - **Dependencies:** nlp-transformers
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -1508,7 +1508,7 @@ Assessments: r1-001-p05-1, r1-001-p05-2
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-020-language-transformers
 - **Dependencies:** nlp-tokenization, transformer-architecture-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -1634,7 +1634,7 @@ Assessments: r1-001-p05-4, r1-001-p06-1
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-VISION-GEN
+- **Destination:** B2-021-cross-modal-transformers-vision
 - **Dependencies:** convolutional-neural-network-basics
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -1688,7 +1688,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** bridge
 - **Coverage:** missing
-- **Destination:** P015-R2-CAPSTONE
+- **Destination:** B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** end-to-end-model-selection, gpu-colab-l4-workflow
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, model-training
@@ -1712,7 +1712,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** bridge
 - **Coverage:** missing
-- **Destination:** P015-R2-CAPSTONE
+- **Destination:** B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** hidden-test-model-evaluation, open-ended-experiment-design
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, model-training
@@ -1808,7 +1808,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-019-attention-transformers
 - **Dependencies:** self-attention
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, theory
@@ -1973,7 +1973,7 @@ Assessments: r1-001-p07-1, r1-001-p08-3
 - **Layer:** round-2-extension
 - **Requirement:** bridge
 - **Coverage:** missing
-- **Destination:** P015-R2-CAPSTONE
+- **Destination:** B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** end-to-end-model-selection, pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, implementation, model-training, theory
@@ -2045,7 +2045,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-019-attention-transformers
 - **Dependencies:** attention-mechanism-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
@@ -2072,7 +2072,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** bridge
 - **Coverage:** missing
-- **Destination:** P015-R2-CAPSTONE
+- **Destination:** B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** convolutional-neural-network-basics, k-means-clustering, open-ended-experiment-design
 - **Shipped concepts:** —
 - **Modalities missing:** competition-workflow, implementation, model-training, theory
@@ -2129,7 +2129,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-VISION-GEN
+- **Destination:** B2-023-generative-models-diffusion
 - **Dependencies:** denoising-diffusion-probabilistic-models, transformer-nlp-applications, variational-autoencoder
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -2234,7 +2234,7 @@ Assessments: r1-001-p09
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-019-attention-transformers
 - **Dependencies:** attention-from-scratch, multilayer-perceptron-model
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, theory
@@ -2261,7 +2261,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-020-language-transformers
 - **Dependencies:** nlp-tokenization, transformer-architecture-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -2288,7 +2288,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-VISION-GEN
+- **Destination:** B2-021-cross-modal-transformers-vision
 - **Dependencies:** convolutional-neural-network-basics
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -2363,7 +2363,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-VISION-GEN
+- **Destination:** B2-022-probabilistic-latent-models
 - **Dependencies:** autoencoder, gaussian-reparameterization, kl-divergence, multivariate-gaussian
 - **Shipped concepts:** —
 - **Modalities missing:** derivation, implementation, model-training, theory
@@ -2393,7 +2393,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** missing
-- **Destination:** P015-R2-TRANSFORMERS-NLP
+- **Destination:** B2-021-cross-modal-transformers-vision
 - **Dependencies:** convolutional-neural-network-basics, transformer-architecture-foundations
 - **Shipped concepts:** —
 - **Modalities missing:** implementation, model-training, theory
@@ -2417,10 +2417,16 @@ Assessments: —
 
 ## Dependency-ordered content tranche queue
 
-1. **Round 2 transformers and NLP:** Self/multi-head attention, positional encoding, transformer architecture and complexity, from-scratch attention, LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP applications, pre-training, and fine-tuning, followed by vision-transformer and graph-neural-network applications.
+1. **Attention and Transformer Mechanics:** Query-key-value attention, scaled dot products, masks, multi-head attention, positional encoding, complexity, from-scratch training, and Transformer blocks.
 
-2. **Round 2 advanced vision and generative modeling:** Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after multivariate Gaussian, reparameterization, and KL prerequisites.
+2. **Language Transformers:** Complete word-embedding model training, then add NLP Transformers, pretraining, fine-tuning, and language applications.
 
-3. **Round 2 open-ended/GPU capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
+3. **Cross-modal Transformers and Advanced Vision:** Vision-transformer and graph-neural-network applications, object detection, and UNet.
+
+4. **Probabilistic Latent Models:** Multivariate Gaussian foundations, reparameterization, KL divergence, autoencoders, and variational autoencoders.
+
+5. **Generative Models and Diffusion:** GAN, denoising diffusion, and Stable Diffusion after the latent-model prerequisites.
+
+6. **GPU Scientific Modeling Capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
 
 Each tranche updates the shipped syllabus and roadmap atomically.
