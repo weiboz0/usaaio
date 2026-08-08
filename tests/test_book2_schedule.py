@@ -168,56 +168,113 @@ def test_valid_book2_schedule_has_independent_numbering_and_exact_ledger(
     assert schedule.final_assessment.after_book_week == 6
 
 
+def _mutate_stale_after_book_week(root: Path, schedule: dict[str, Any]) -> None:
+    unit = "B2-020-language-transformers"
+    unit_dir = root / "units" / unit
+    unit_dir.mkdir(parents=True)
+    for relative in ("practice/p01.ipynb", "practice/p01_solution.ipynb"):
+        path = unit_dir / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("{}")
+    _write_yaml(
+        unit_dir / "manifest.yaml",
+        {
+            "unit": unit,
+            "book": 2,
+            "layer": "round-2-extension",
+            "round": 2,
+            "track": "extension",
+            "concepts_taught": ["language-transformer-extension"],
+            "concepts_used": ["softmax"],
+            "concept_prerequisites": ["softmax"],
+            "prereq_units": [UNIT],
+            "coverage_claims": [],
+            "estimated_minutes": {"lesson_sessions": [90], "practice": 20, "review": 60},
+            "practice": [
+                {
+                    "id": "B2-020-p01",
+                    "concepts": ["language-transformer-extension"],
+                    "path": "practice/p01.ipynb",
+                    "solution_path": "practice/p01_solution.ipynb",
+                    "minutes": 20,
+                    "compute": {"policy": "cpu", "seed": 20260808},
+                }
+            ],
+        },
+    )
+    schedule.update(total_book_weeks=7, total_minutes=1830)
+    schedule["weeks"].append(
+        {
+            "book_week": 7,
+            "global_week": 47,
+            "allocations": [
+                {"kind": "lesson-session", "unit": unit, "session": 1, "minutes": 90},
+                {
+                    "kind": "practice",
+                    "unit": unit,
+                    "chunk": 1,
+                    "minutes": 20,
+                    "problem_ids": ["B2-020-p01"],
+                },
+                {"kind": "review", "unit": unit, "minutes": 60},
+            ],
+        }
+    )
+
+
 @pytest.mark.parametrize(
-    "mutate",
+    ("mutate", "fragment"),
     [
         pytest.param(
-            lambda schedule: schedule["weeks"][2].update(book_week=4),
+            lambda root, schedule: schedule["weeks"][2].update(book_week=4),
+            "book_week values must be contiguous 1..6",
             id="noncontiguous-local-weeks",
         ),
         pytest.param(
-            lambda schedule: schedule["weeks"][2].update(global_week=99),
+            lambda root, schedule: schedule["weeks"][2].update(global_week=99),
+            "global_week must equal starts_after_global_week + book_week",
             id="wrong-global-offset",
         ),
         pytest.param(
-            lambda schedule: schedule.update(starts_after_global_week=39),
+            lambda root, schedule: schedule.update(starts_after_global_week=39),
+            "starts_after_global_week must be 40",
             id="not-after-book1-week-40",
         ),
         pytest.param(
-            lambda schedule: schedule.pop("final_assessment"),
+            lambda root, schedule: schedule.pop("final_assessment"),
+            "final_assessment is required",
             id="missing-final-assessment-marker",
         ),
         pytest.param(
-            lambda schedule: schedule["final_assessment"].update(status="final"),
+            lambda root, schedule: schedule["final_assessment"].update(status="final"),
+            "final_assessment.status must be planned",
             id="unknown-final-assessment-status",
         ),
         pytest.param(
-            lambda schedule: (
-                schedule.update(total_book_weeks=7),
-                schedule["weeks"].append(
-                    {"book_week": 7, "global_week": 47, "allocations": []}
-                ),
-            ),
+            _mutate_stale_after_book_week,
+            "final_assessment.after_book_week must equal total_book_weeks",
             id="stale-after-book-week-after-extension",
         ),
         pytest.param(
-            lambda schedule: schedule["weeks"][0]["allocations"][0].update(minutes=29),
+            lambda root, schedule: schedule["weeks"][0]["allocations"][0].update(minutes=29),
+            "bridge-diagnostic allocation must match manifest minutes 30",
             id="bridge-diagnostic-reconciliation",
         ),
     ],
 )
 def test_book2_schedule_rejects_malformed_or_stale_fixtures(
     tmp_path: Path,
-    mutate: Callable[[dict[str, Any]], object],
+    mutate: Callable[[Path, dict[str, Any]], object],
+    fragment: str,
 ) -> None:
     schedule = _build_book2_schedule_fixture(tmp_path)
-    mutate(schedule)
+    mutate(tmp_path, schedule)
     _write_yaml(tmp_path / "curriculum" / "book2-schedule.yaml", schedule)
 
     report = _book2_checker().check_book2_schedule(tmp_path)
 
     assert not report.ok
-    assert report.errors
+    assert any(fragment in error for error in report.errors), report.errors
 
 
 def test_book2_renderer_is_separate_and_labels_every_entry_as_round2_extension(

@@ -1393,8 +1393,20 @@ def test_pre_merge_guard_rejects_b2_unit_id_collision_legacy_regex_misses(
     assert "duplicate units number(s): B2-019" in proc.stdout
 
 
-def test_ci_registers_book2_boundary_and_schedule_checks() -> None:
-    script = (ROOT / "scripts" / "ci-local.sh").read_text()
+def test_ci_executes_book2_boundary_schedule_mutation_and_preserved_checks() -> None:
+    lines = [
+        line.strip()
+        for line in (ROOT / "scripts" / "ci-local.sh").read_text().splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    checks = next(line for line in lines if line.startswith("for c in "))
 
-    assert "layer-boundary-check" in script
-    assert "book2-schedule-check" in script
+    assert "uv run usaaio-tools layer-boundary-check" in lines
+    assert "uv run usaaio-tools book2-schedule-check" in lines
+    assert "uv run python -m tools.verify_attention_mutations --root ." in lines
+    assert "uv run python -m tools.audit_curriculum --check" in lines
+    assert "bash scripts/build-pdf.sh || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }" in lines
+    assert "prereq-check" in checks
+    assert "coverage-check" in checks
+    assert "blueprint-check" in checks
+    assert "notebooks=$(find units mocktests -path '*/solutions/*.ipynb' -o -path '*/practice/*solution*.ipynb')" in lines

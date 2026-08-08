@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 import re
-from collections import Counter
 from collections.abc import Callable
 from pathlib import Path
 from types import SimpleNamespace
@@ -1956,76 +1955,149 @@ BOOK2_ROADMAP_MEMBERSHIP = {
 }
 
 
-def _book2_partition_errors(raw: dict[str, Any]) -> list[str]:
-    rows = raw["planned_units"]
-    ids = [str(row["id"]) for row in rows]
-    memberships = [
-        str(point)
-        for row in rows
-        if str(row["id"]).startswith("B2-")
-        for point in row["knowledge_points"]
+def _write_book2_roadmap_fixture(root: Path) -> dict[str, Any]:
+    contract = _base_contract(root)
+    topics = contract["topics"]
+    roadmap = contract["roadmap"]
+    topics["categories"].append(
+        {
+            "id": "round2-only",
+            "parent": None,
+            "kind": "official",
+            "source_refs": ["source-1"],
+            "required_for": ["round-2"],
+        }
+    )
+    for points in BOOK2_ROADMAP_MEMBERSHIP.values():
+        for point in points:
+            modalities = ["theory", "model-training"] if point == "nlp-word-embeddings" else ["theory"]
+            topics["atomic_targets"].append(
+                {
+                    "id": point,
+                    "parent": "round2-only",
+                    "source_refs": ["source-1"],
+                    "required_for": ["round-2"],
+                    "modalities": modalities,
+                }
+            )
+    roadmap["planned_units"] = [
+        {
+            "id": unit_id,
+            "title": unit_id,
+            "layer": "round-2-extension",
+            "prerequisites": [],
+            "knowledge_points": list(points),
+            "provisional_concepts": [f"{unit_id}-concept"],
+            "estimated_hours": {"min": 1, "max": 1},
+            "schedule_action": "extend",
+        }
+        for unit_id, points in BOOK2_ROADMAP_MEMBERSHIP.items()
     ]
-    counts = Counter(memberships)
-    errors = []
-    if len(rows) != 6 or set(ids) != set(BOOK2_ROADMAP_MEMBERSHIP):
-        errors.append("six exact B2 membership rows required")
-    if len(counts) != 30 or any(count != 1 for count in counts.values()):
-        errors.append("all 30 Round 2 targets must occur exactly once")
-    if any(unit_id.startswith("P015-R2-") for unit_id in ids):
-        errors.append("legacy P015 Round 2 row remains")
-    points = {row["id"]: row for row in raw["knowledge_points"]}
-    embedding = points.get("nlp-word-embeddings", {})
-    if embedding.get("coverage") != "partial" or embedding.get("destination") != "C8-embeddings":
-        errors.append("C8 embedding destination exception was lost")
-    return errors
-
-
-def _book2_partition_fixture() -> dict[str, Any]:
-    return {
-        "planned_units": [
-            {"id": unit_id, "knowledge_points": list(points)}
-            for unit_id, points in BOOK2_ROADMAP_MEMBERSHIP.items()
-        ],
-        "knowledge_points": [
-            {
+    for unit_id, points in BOOK2_ROADMAP_MEMBERSHIP.items():
+        for point in points:
+            row = {
                 "id": point,
-                "coverage": "partial" if point == "nlp-word-embeddings" else "missing",
-                "destination": (
-                    "C8-embeddings"
-                    if point == "nlp-word-embeddings"
-                    else next(
-                        unit_id
-                        for unit_id, points in BOOK2_ROADMAP_MEMBERSHIP.items()
-                        if point in points
-                    )
-                ),
+                "layer": "round-2-extension",
+                "requirement": "required",
+                "coverage": "missing",
+                "source_refs": ["source-1"],
+                "depends_on": [],
+                "shipped_concepts": [],
+                "evidence_by_modality": {},
+                "disposition": "new-unit",
+                "destination": unit_id,
+                "deficits": {"modalities_missing": ["theory"]},
+                "rationale": "Book 2 fixture gap.",
+                "consequence": "Book 2 fixture consequence.",
             }
-            for points in BOOK2_ROADMAP_MEMBERSHIP.values()
-            for point in points
-        ],
-    }
+            if point == "nlp-word-embeddings":
+                row.update(
+                    coverage="partial",
+                    shipped_concepts=["c2"],
+                    evidence_by_modality={
+                        "theory": {
+                            "lesson_anchors": [
+                                {
+                                    "path": "units/U2-unrelated/lessons/01-lesson.ipynb",
+                                    "heading": "Lesson",
+                                    "cell_ordinal": 1,
+                                    "role": "primary",
+                                }
+                            ],
+                            "practices": [
+                                {"id": f"U2-unrelated-p{number}", "role": "primary"}
+                                for number in range(1, 4)
+                            ],
+                            "assessments": [],
+                        }
+                    },
+                    disposition="extend-existing-unit",
+                    destination="U2-unrelated",
+                    deficits={"modalities_missing": ["model-training"]},
+                )
+            roadmap["knowledge_points"].append(row)
+    for name, filename in (
+        ("sources", "sources.yaml"),
+        ("topics", "official-topics.yaml"),
+        ("inventory", "material-inventory.yaml"),
+        ("roadmap", "coverage-map.yaml"),
+    ):
+        _write_yaml(root / "curriculum" / filename, contract[name])
+    return contract
 
 
-def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets() -> None:
-    raw = _book2_partition_fixture()
+def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets(
+    tmp_path: Path,
+) -> None:
+    _write_book2_roadmap_fixture(tmp_path)
 
-    assert _book2_partition_errors(raw) == []
+    loaded = model.load_roadmap(tmp_path)
+    report = check_scope(tmp_path)
+
+    planned = {unit.id: unit.knowledge_points for unit in loaded.planned_units}
+    assert planned == BOOK2_ROADMAP_MEMBERSHIP
+    assert len({point for points in planned.values() for point in points}) == 30
+    assert all(not unit_id.startswith("P015-R2-") for unit_id in planned)
+    embedding = next(point for point in loaded.knowledge_points if point.id == "nlp-word-embeddings")
+    assert (embedding.coverage, embedding.destination) == ("partial", "U2-unrelated")
+    assert report.ok, report.errors
 
 
-@pytest.mark.parametrize("damage", ["duplicate", "legacy-row", "embedding-destination"])
-def test_book2_roadmap_partition_mutations_are_detected(damage: str) -> None:
-    raw = _book2_partition_fixture()
-    if damage == "duplicate":
-        raw["planned_units"][1]["knowledge_points"].append(
-            "attention-mechanism-foundations"
-        )
-    elif damage == "legacy-row":
-        raw["planned_units"][0]["id"] = "P015-R2-TRANSFORMERS-NLP"
-    else:
-        point = next(
-            row for row in raw["knowledge_points"]
-            if row["id"] == "nlp-word-embeddings"
-        )
-        point["destination"] = "B2-020-language-transformers"
+@pytest.mark.parametrize(
+    ("mutate", "fragment"),
+    [
+        (
+            lambda contract: contract["roadmap"]["planned_units"][1]["knowledge_points"].append(
+                "attention-mechanism-foundations"
+            ),
+            "knowledge point attention-mechanism-foundations must have exactly one destination owner",
+        ),
+        (
+            lambda contract: contract["roadmap"]["planned_units"][0].update(
+                id="P015-R2-TRANSFORMERS-NLP"
+            ),
+            "legacy P015-R2 planned-unit rows are forbidden",
+        ),
+        (
+            lambda contract: next(
+                row
+                for row in contract["roadmap"]["knowledge_points"]
+                if row["id"] == "nlp-word-embeddings"
+            ).update(destination="B2-020-language-transformers", disposition="new-unit"),
+            "nlp-word-embeddings must retain destination U2-unrelated",
+        ),
+    ],
+)
+def test_book2_roadmap_partition_mutations_fail_scope_check(
+    tmp_path: Path,
+    mutate: Callable[[dict[str, Any]], None],
+    fragment: str,
+) -> None:
+    contract = _write_book2_roadmap_fixture(tmp_path)
+    mutate(contract)
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
 
-    assert _book2_partition_errors(raw)
+    report = check_scope(tmp_path)
+
+    assert not report.ok
+    assert any(fragment in error for error in report.errors), report.errors

@@ -4,6 +4,7 @@ from pathlib import Path
 import pytest
 import yaml
 
+from tools.checks.prereq import check_prereq
 from tools.model import (
     load_blueprint,
     load_mock_manifests,
@@ -345,6 +346,54 @@ BOOK2_CLAIMS = [
     "attention-from-scratch",
     "transformer-architecture-foundations",
 ]
+BOOK2_CLAIM_ROWS = [
+    (
+        "attention-mechanism-foundations",
+        1,
+        ["theory", "derivation", "implementation"],
+        ["query-key-value-attention", "scaled-dot-product-attention"],
+    ),
+    (
+        "self-attention",
+        2,
+        ["theory", "derivation", "implementation"],
+        ["scaled-dot-product-attention", "causal-self-attention", "attention-mask"],
+    ),
+    (
+        "multi-head-attention",
+        3,
+        ["theory", "derivation", "implementation"],
+        ["multi-head-attention"],
+    ),
+    (
+        "positional-encoding",
+        3,
+        ["theory", "implementation"],
+        ["sinusoidal-positional-encoding"],
+    ),
+    (
+        "attention-complexity-analysis",
+        3,
+        ["theory", "derivation"],
+        ["attention-complexity"],
+    ),
+    (
+        "attention-from-scratch",
+        4,
+        ["theory", "implementation", "model-training"],
+        ["scaled-dot-product-attention", "causal-self-attention"],
+    ),
+    (
+        "transformer-architecture-foundations",
+        5,
+        ["theory", "derivation", "implementation"],
+        [
+            "transformer-block",
+            "transformer-residual-layernorm",
+            "position-wise-feed-forward",
+        ],
+    ),
+]
 
 
 def _write_book2_model_fixture(root: Path) -> None:
@@ -381,12 +430,12 @@ def _write_book2_model_fixture(root: Path) -> None:
     claims = [
         {
             "knowledge_point": point,
-            "first_session": index,
-            "modalities": ["theory", "derivation", "implementation"],
-            "evidence_concepts": [BOOK2_CONCEPTS[min(index - 1, 10)]],
+            "first_session": session,
+            "modalities": modalities,
+            "evidence_concepts": evidence_concepts,
             "evidence_by_modality": {},
         }
-        for index, point in enumerate(BOOK2_CLAIMS, start=1)
+        for point, session, modalities, evidence_concepts in BOOK2_CLAIM_ROWS
     ]
     manifest = {
         "unit": BOOK2_UNIT,
@@ -439,6 +488,7 @@ units:
     track: core
     title: Book 1
     prereqs: []
+    concept_prerequisites: [prior-concept]
     teaches: [owned-concept]
 ```
 """
@@ -463,7 +513,7 @@ practice:
 
     assert (unit.book, unit.round, unit.layer) == (1, 1, "round-1-core")
     assert unit.prereqs == []
-    assert unit.concept_prerequisites == []
+    assert unit.concept_prerequisites == ["prior-concept"]
     assert (manifest.book, manifest.round, manifest.layer, manifest.track) == (
         1,
         1,
@@ -501,6 +551,49 @@ def test_model_parses_the_exact_explicit_book2_contract(tmp_path: Path) -> None:
     assert manifest.concepts_taught == BOOK2_CONCEPTS
     assert manifest.bridge_diagnostic.minutes == 30
     assert manifest.bridge_diagnostic.path == "lessons/00-book1-bridge.ipynb"
-    assert [claim.knowledge_point for claim in manifest.coverage_claims] == BOOK2_CLAIMS
+    assert [
+        (
+            claim.knowledge_point,
+            claim.first_session,
+            claim.modalities,
+            claim.evidence_concepts,
+        )
+        for claim in manifest.coverage_claims
+    ] == BOOK2_CLAIM_ROWS
     assert manifest.practice[0].compute.policy == "cpu"
     assert manifest.practice[0].compute.seed == 20260808
+
+
+def test_prereq_checker_rejects_book1_concept_prerequisite_drift(tmp_path: Path) -> None:
+    tmp_path.joinpath("syllabus.md").write_text(
+        """<!-- syllabus-canonical -->
+```yaml
+baseline: {math: [prior-concept]}
+clusters: [fixture]
+concepts: [{id: owned-concept, cluster: fixture}]
+units:
+  - id: C1-book1
+    track: core
+    title: Book 1
+    prereqs: []
+    concept_prerequisites: [prior-concept]
+    teaches: [owned-concept]
+```
+"""
+    )
+    unit_dir = tmp_path / "units" / "C1-book1"
+    unit_dir.mkdir(parents=True)
+    unit_dir.joinpath("manifest.yaml").write_text(
+        """unit: C1-book1
+concepts_taught: [owned-concept]
+concepts_used: [prior-concept]
+concept_prerequisites: []
+prereq_units: []
+practice: []
+"""
+    )
+
+    report = check_prereq(tmp_path)
+
+    assert not report.ok
+    assert any("concept_prerequisites drift from syllabus" in error for error in report.errors)

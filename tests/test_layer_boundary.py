@@ -309,11 +309,14 @@ def _mutate_book1_round2_leak(data: dict[str, Any], root: Path) -> None:
 
 
 def _mutate_wrong_owner(data: dict[str, Any], root: Path) -> None:
-    del root
     b2 = next(row for row in data["syllabus"]["units"] if row["id"] == BOOK2_UNIT)
     c6 = next(row for row in data["syllabus"]["units"] if row["id"] == "C6-pytorch")
     b2["teaches"].remove("matrix-transpose")
     c6["teaches"].append("matrix-transpose")
+    path = root / "units" / "C6-pytorch" / "manifest.yaml"
+    manifest = yaml.safe_load(path.read_text())
+    manifest["concepts_taught"].append("matrix-transpose")
+    _write_yaml(path, manifest)
 
 
 def _mutate_unit_prereq(data: dict[str, Any], root: Path) -> None:
@@ -380,25 +383,74 @@ def test_valid_book2_layer_fixture_is_accepted(tmp_path: Path) -> None:
 
 
 @pytest.mark.parametrize(
-    "mutate",
+    ("mutate", "fragment"),
     [
-        pytest.param(_mutate_book1_round2_leak, id="book1-round2-leak"),
-        pytest.param(_mutate_wrong_owner, id="wrong-book2-owner"),
-        pytest.param(_mutate_unit_prereq, id="unit-prerequisite-mismatch"),
-        pytest.param(_mutate_concept_prereq, id="concept-prerequisite-mismatch"),
-        pytest.param(_mutate_missing_diagnostic, id="missing-bridge-diagnostic"),
-        pytest.param(_mutate_non_subset_evidence, id="non-subset-evidence-concepts"),
-        pytest.param(_mutate_missing_derivation, id="required-modality-absent"),
-        pytest.param(_mutate_early_coverage, id="early-in-unit-coverage"),
-        pytest.param(_mutate_missing_seed, id="missing-compute-seed"),
-        pytest.param(_mutate_missing_cpu_solution, id="cpu-task-missing-local-solution"),
-        pytest.param(_mutate_two_qualifying_practices, id="fewer-than-three-qualifying-practices"),
-        pytest.param(_mutate_two_owned_tags, id="owned-concept-fewer-than-three-direct-tags"),
+        pytest.param(
+            _mutate_book1_round2_leak,
+            "Book 1 artifact claims Round 2 coverage",
+            id="book1-round2-leak",
+        ),
+        pytest.param(
+            _mutate_wrong_owner,
+            "is not owned by a Book 2 syllabus unit",
+            id="wrong-book2-owner",
+        ),
+        pytest.param(
+            _mutate_unit_prereq,
+            "prereq_units drift from syllabus",
+            id="unit-prerequisite-mismatch",
+        ),
+        pytest.param(
+            _mutate_concept_prereq,
+            "concept_prerequisites drift from syllabus",
+            id="concept-prerequisite-mismatch",
+        ),
+        pytest.param(
+            _mutate_missing_diagnostic,
+            "bridge_diagnostic is required",
+            id="missing-bridge-diagnostic",
+        ),
+        pytest.param(
+            _mutate_non_subset_evidence,
+            "evidence_concepts must be a nonempty subset of concepts_taught",
+            id="non-subset-evidence-concepts",
+        ),
+        pytest.param(
+            _mutate_missing_derivation,
+            "modalities must exactly match the coverage-map requirement",
+            id="required-modality-absent",
+        ),
+        pytest.param(
+            _mutate_early_coverage,
+            "first_session must follow same-unit knowledge-point dependencies",
+            id="early-in-unit-coverage",
+        ),
+        pytest.param(
+            _mutate_missing_seed,
+            "compute.seed is required",
+            id="missing-compute-seed",
+        ),
+        pytest.param(
+            _mutate_missing_cpu_solution,
+            "cpu task requires a local solution path",
+            id="cpu-task-missing-local-solution",
+        ),
+        pytest.param(
+            _mutate_two_qualifying_practices,
+            "requires at least 3 qualifying practice ids",
+            id="fewer-than-three-qualifying-practices",
+        ),
+        pytest.param(
+            _mutate_two_owned_tags,
+            "requires at least 3 direct practice tags",
+            id="owned-concept-fewer-than-three-direct-tags",
+        ),
     ],
 )
 def test_layer_boundary_rejects_true_book2_mutations(
     tmp_path: Path,
     mutate: Callable[[dict[str, Any], Path], None],
+    fragment: str,
 ) -> None:
     data = _build_layer_fixture(tmp_path)
     mutate(data, tmp_path)
@@ -407,4 +459,4 @@ def test_layer_boundary_rejects_true_book2_mutations(
     report = _layer_checker().check_layer_boundary(tmp_path)
 
     assert not report.ok
-    assert report.errors
+    assert any(fragment in error for error in report.errors), report.errors
