@@ -590,6 +590,8 @@ def test_valid_book2_fixture_preserves_existing_r1_manifests_and_r1_namespace(
         for path in sorted(tmp_path.glob("units/*/manifest.yaml"))
     }
     namespace_before = [manifest.test for manifest in load_mock_manifests(tmp_path)]
+    before_report = check_prereq(tmp_path)
+    assert before_report.ok, before_report.errors
 
     book2 = tmp_path / "units" / "B2-019-attention-transformers" / "manifest.yaml"
     _write = {
@@ -645,8 +647,35 @@ def test_valid_book2_fixture_preserves_existing_r1_manifests_and_r1_namespace(
         "coverage_claims": [],
         "practice": [],
     }
+    syllabus_path = tmp_path / "syllabus.md"
+    prefix, canonical = syllabus_path.read_text().split("```yaml\n", maxsplit=1)
+    canonical, suffix = canonical.split("```", maxsplit=1)
+    syllabus_data = yaml.safe_load(canonical)
+    cluster = syllabus_data["clusters"][0]
+    syllabus_data["concepts"].extend(
+        {"id": concept, "cluster": cluster} for concept in _write["concepts_taught"]
+    )
+    syllabus_data["units"].append(
+        {
+            "id": _write["unit"],
+            "track": _write["track"],
+            "title": "Attention and transformers",
+            "prereqs": _write["prereq_units"],
+            "teaches": _write["concepts_taught"],
+        }
+    )
+    syllabus_path.write_text(
+        prefix + "```yaml\n" + yaml.safe_dump(syllabus_data, sort_keys=False) + "```" + suffix
+    )
     book2.parent.mkdir(parents=True)
     book2.write_text(yaml.safe_dump(_write, sort_keys=False))
+
+    parsed_book2 = next(
+        manifest
+        for manifest in load_unit_manifests(tmp_path)
+        if manifest.unit_id == "B2-019-attention-transformers"
+    )
+    after_report = check_prereq(tmp_path)
 
     after = {
         path.relative_to(tmp_path).as_posix(): path.read_bytes()
@@ -655,5 +684,8 @@ def test_valid_book2_fixture_preserves_existing_r1_manifests_and_r1_namespace(
     }
     namespace_after = [manifest.test for manifest in load_mock_manifests(tmp_path)]
 
+    assert parsed_book2.concepts_taught == _write["concepts_taught"]
+    assert parsed_book2.prereq_units == _write["prereq_units"]
+    assert after_report.ok, after_report.errors
     assert after == before
     assert namespace_before == namespace_after == ["r1-001"]

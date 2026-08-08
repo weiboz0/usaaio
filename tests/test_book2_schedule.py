@@ -39,14 +39,18 @@ def _write_yaml(path: Path, value: object) -> None:
 def _book2_checker():
     try:
         return importlib.import_module("tools.checks.book2_schedule")
-    except ModuleNotFoundError:
+    except ModuleNotFoundError as exc:
+        if exc.name != "tools.checks.book2_schedule":
+            raise
         pytest.fail("tools.checks.book2_schedule must validate the independent Book 2 route")
 
 
 def _book2_renderer():
     try:
         return importlib.import_module("tools.render_book2_structure")
-    except ModuleNotFoundError:
+    except ModuleNotFoundError as exc:
+        if exc.name != "tools.render_book2_structure":
+            raise
         pytest.fail("tools.render_book2_structure must render Book 2 independently")
 
 
@@ -290,7 +294,10 @@ def test_book2_renderer_is_separate_and_labels_every_entry_as_round2_extension(
     assert book1.read_bytes() == b"BOOK 1 BYTES\n"
     assert "Book 2" in rendered
     assert "Round 2 extension" in rendered
-    assert rendered.count("Round 2 extension") >= 6
+    schedule = _book2_checker().load_validated_book2_schedule(tmp_path)
+    rendered_entries = [line for line in rendered.splitlines() if UNIT in line]
+    assert len(rendered_entries) == len(schedule.weeks)
+    assert all("Round 2 extension" in entry for entry in rendered_entries)
 
 
 def test_valid_book2_fixture_does_not_change_book1_renderer_or_schedule_bytes(

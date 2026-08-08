@@ -98,7 +98,9 @@ def _touch(root: Path, relative: str) -> None:
 def _layer_checker():
     try:
         return importlib.import_module("tools.checks.layer_boundary")
-    except ModuleNotFoundError:
+    except ModuleNotFoundError as exc:
+        if exc.name != "tools.checks.layer_boundary":
+            raise
         pytest.fail(
             "tools.checks.layer_boundary must enforce the Book 1 / Book 2 boundary"
         )

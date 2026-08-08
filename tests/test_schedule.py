@@ -10,6 +10,7 @@ import pytest
 import yaml
 
 from tools import render_course_structure as course_renderer
+from tools.model import load_unit_manifests
 
 ROOT = Path(__file__).parents[1]
 
@@ -1117,8 +1118,10 @@ def test_rendered_first_instruction_region_exactly_matches_the_schedule_source()
 def test_book2_sidecar_creation_cannot_rewrite_checked_in_book1_schedule(
     tmp_path: Path,
 ) -> None:
-    source = ROOT / "curriculum" / "course-schedule.yaml"
+    _build_schedule_fixture(tmp_path)
+    source = tmp_path / "curriculum" / "course-schedule.yaml"
     before = source.read_bytes()
+    book1_manifests_before = load_unit_manifests(tmp_path)
     _write_yaml(
         tmp_path / "curriculum" / "book2-schedule.yaml",
         {
@@ -1134,5 +1137,34 @@ def test_book2_sidecar_creation_cannot_rewrite_checked_in_book1_schedule(
             "weeks": [],
         },
     )
+    _write_yaml(
+        tmp_path / "units" / "B2-019-attention-transformers" / "manifest.yaml",
+        {
+            "unit": "B2-019-attention-transformers",
+            "book": 2,
+            "round": 2,
+            "layer": "round-2-extension",
+            "track": "extension",
+            "concepts_taught": ["attention"],
+            "concepts_used": ["softmax"],
+            "concept_prerequisites": ["softmax"],
+            "prereq_units": ["U35"],
+            "coverage_claims": [],
+            "practice": [],
+        },
+    )
 
+    parsed_book2 = next(
+        manifest
+        for manifest in load_unit_manifests(tmp_path)
+        if manifest.unit_id == "B2-019-attention-transformers"
+    )
+
+    assert parsed_book2.concepts_taught == ["attention"]
+    assert parsed_book2.prereq_units == ["U35"]
+    assert {manifest.unit_id for manifest in book1_manifests_before} == {
+        manifest.unit_id
+        for manifest in load_unit_manifests(tmp_path)
+        if not manifest.unit_id.startswith("B2-")
+    }
     assert source.read_bytes() == before

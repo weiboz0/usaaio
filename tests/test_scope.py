@@ -1955,8 +1955,79 @@ BOOK2_ROADMAP_MEMBERSHIP = {
 }
 
 
+def _add_c8_embeddings_fixture(root: Path, contract: dict[str, Any]) -> None:
+    syllabus_path = root / "syllabus.md"
+    syllabus = syllabus_path.read_text()
+    syllabus = syllabus.replace(
+        "  - {id: c2, cluster: foundation}\n",
+        "  - {id: c2, cluster: foundation}\n"
+        "  - {id: c8-embedding, cluster: foundation}\n",
+    ).replace(
+        "  - id: U2-unrelated\n"
+        "    track: foundation\n"
+        "    title: Unrelated\n"
+        "    prereqs: []\n"
+        "    teaches: [c2]\n",
+        "  - id: U2-unrelated\n"
+        "    track: foundation\n"
+        "    title: Unrelated\n"
+        "    prereqs: []\n"
+        "    teaches: [c2]\n"
+        "  - id: C8-embeddings\n"
+        "    track: core\n"
+        "    title: Embeddings\n"
+        "    prereqs: []\n"
+        "    teaches: [c8-embedding]\n",
+    )
+    syllabus_path.write_text(syllabus)
+    _write_yaml(
+        root / "units" / "C8-embeddings" / "manifest.yaml",
+        {
+            "unit": "C8-embeddings",
+            "concepts_taught": ["c8-embedding"],
+            "concepts_used": [],
+            "prereq_units": [],
+            "estimated_minutes": {
+                "lesson_sessions": [60],
+                "practice": 120,
+                "review": 30,
+            },
+            "practice": [
+                {
+                    "id": f"C8-embeddings-p{number}",
+                    "concepts": ["c8-embedding"],
+                    "path": f"practice/p{number}.ipynb",
+                    "solution_path": f"practice/p{number}_solution.ipynb",
+                }
+                for number in range(1, 4)
+            ],
+        },
+    )
+    notebooks = contract["inventory"]["notebooks"]
+    notebooks.append(
+        {
+            "path": "units/C8-embeddings/lessons/01-lesson.ipynb",
+            "anchors": [{"heading_path": ["Lesson"], "cell_ordinal": 1}],
+            "declared_unit_ids": ["C8-embeddings"],
+            "declared_concept_ids": ["c8-embedding"],
+            "declared_problem_ids": [],
+        }
+    )
+    notebooks.extend(
+        {
+            "path": f"units/C8-embeddings/practice/p{number}.ipynb",
+            "anchors": [{"heading_path": ["Practice"], "cell_ordinal": 1}],
+            "declared_unit_ids": ["C8-embeddings"],
+            "declared_concept_ids": ["c8-embedding"],
+            "declared_problem_ids": [f"C8-embeddings-p{number}"],
+        }
+        for number in range(1, 4)
+    )
+
+
 def _write_book2_roadmap_fixture(root: Path) -> dict[str, Any]:
     contract = _base_contract(root)
+    _add_c8_embeddings_fixture(root, contract)
     topics = contract["topics"]
     roadmap = contract["roadmap"]
     topics["categories"].append(
@@ -2013,7 +2084,7 @@ def _write_book2_roadmap_fixture(root: Path) -> dict[str, Any]:
             if point == "nlp-word-embeddings":
                 row.update(
                     coverage="partial",
-                    shipped_concepts=["c2"],
+                    shipped_concepts=["c8-embedding"],
                     evidence_by_modality={
                         "theory": {
                             "lesson_anchors": [
