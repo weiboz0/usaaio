@@ -810,4 +810,8 @@ PR readiness, or merge readiness.
 
 ### Shipping-rehearsal CI
 
-Pending execution on the report commit; this is not the final post-Opus shipping run.
+On the report commit, `bash scripts/ci-local.sh` exited 0 and printed
+`ci-local: ALL GREEN` in `2370.873` seconds.
+The full suite and embedded pre-merge guard passed.
+The existing Round 2 scope, nbformat missing-cell-id, and overlap warnings remained non-blocking.
+This is a shipping rehearsal only, not the final post-Opus shipping run.
