@@ -70,9 +70,19 @@ def _model_region(schedule: CourseSchedule, manifests: dict[str, dict]) -> str:
     scheduled = schedule.total_minutes
     in_class = lesson + 240
     independent = practice + review
+    if (
+        schedule.semester_week_counts is None
+        or schedule.declared_week_count is None
+    ):
+        raise ValueError("validated schedule is missing its declared calendar")
+    semester_lengths = schedule.semester_week_counts
+    week_count = schedule.declared_week_count
     return "\n".join(
         [
-            "The shipped Round 1 schedule runs for 35 weeks in two semesters: 16 weeks followed by 19 weeks.",
+            (
+                f"The shipped Round 1 schedule runs for {week_count} weeks in two semesters: "
+                f"{semester_lengths[0]} weeks followed by {semester_lengths[1]} weeks."
+            ),
             f"The {len(manifests)} unit manifests provide {lesson:,} lesson minutes, {practice:,} practice minutes, and {review:,} review minutes.",
             f"Manifested content is therefore {lesson:,} + {practice:,} + {review:,} = {manifested:,} minutes = {_number(manifested / 60)} hours.",
             f"Those manifests contain {sessions} lesson sessions and {practices} practices across {len(manifests)} units.",
@@ -80,27 +90,45 @@ def _model_region(schedule: CourseSchedule, manifests: dict[str, dict]) -> str:
             f"The scheduled course adds the 180-minute `r1-001` mock and its 60-minute debrief, for {manifested:,} + 240 = {scheduled:,} minutes = {_number(scheduled / 60)} hours.",
             f"The manifested division is {_number(lesson / 60)} lesson hours and {_number(independent / 60)} independent practice/review hours.",
             f"The scheduled division is {_number(in_class / 60)} in-class hours, including the mock and debrief, and {_number(independent / 60)} independent hours.",
-            f"Across 35 weeks, that is about {_number(in_class / 60 / 35)} in-class hours and {_number(independent / 60 / 35)} independent hours per week.",
+            (
+                f"Across {week_count} weeks, that is about "
+                f"{_number(in_class / 60 / week_count)} in-class hours and "
+                f"{_number(independent / 60 / week_count)} independent hours per week."
+            ),
             "The remaining planned extensions in `docs/curriculum-roadmap.md` are editorial estimates, not manifested time, and do not fit silently into this calendar.",
         ]
     )
 
 
 def _semester_region(schedule: CourseSchedule) -> str:
-    first = schedule.weeks[:16]
-    second = schedule.weeks[16:]
+    first = [week for week in schedule.weeks if week.semester == 1]
+    second = [week for week in schedule.weeks if week.semester == 2]
     first_units = _first_units(first)
     second_units = _first_units(second)
     s1 = sum(a.minutes for w in first for a in w.allocations)
     s2 = sum(a.minutes for w in second for a in w.allocations)
-    s2_manifested = _minutes(schedule, {"lesson-session", "practice", "review"}, range(17, 36))
+    s2_manifested = sum(
+        allocation.minutes
+        for week in second
+        for allocation in week.allocations
+        if allocation.kind in {"lesson-session", "practice", "review"}
+    )
+    first_range = f"Weeks {first[0].week}–{first[-1].week}"
+    second_range = f"Weeks {second[0].week}–{second[-1].week}"
     return "\n".join(
         [
-            f"Semester 1 is Weeks 1–16 and follows {' → '.join(first_units)}.",
-            f"Its manifested allocation is {s1:,} minutes = {_number(s1 / 60)} hours, or {_number(s1 / 60 / 16)} hours per week.",
-            f"Semester 2 is Weeks 17–35 and follows {' → '.join(second_units)} → `r1-001`.",
+            f"Semester 1 is {first_range} and follows {' → '.join(first_units)}.",
+            (
+                f"Its manifested allocation is {s1:,} minutes = {_number(s1 / 60)} hours, "
+                f"or {_number(s1 / 60 / len(first))} hours per week."
+            ),
+            f"Semester 2 is {second_range} and follows {' → '.join(second_units)} → `r1-001`.",
             f"Its manifested allocation is {s2_manifested:,} minutes = {_number(s2_manifested / 60)} hours.",
-            f"Adding the 180-minute mock and 60-minute debrief gives {s2_manifested:,} + 240 = {s2:,} minutes = {_number(s2 / 60)} hours, or {_number(s2 / 60 / 19)} hours per week.",
+            (
+                f"Adding the 180-minute mock and 60-minute debrief gives "
+                f"{s2_manifested:,} + 240 = {s2:,} minutes = {_number(s2 / 60)} hours, "
+                f"or {_number(s2 / 60 / len(second))} hours per week."
+            ),
         ]
     )
 
@@ -149,6 +177,9 @@ def _week_description(week, prereqs: dict[str, list[str]]) -> str:
 
 
 def _table_region(schedule: CourseSchedule, prereqs: dict[str, list[str]]) -> str:
+    if schedule.semester_week_counts is None:
+        raise ValueError("validated schedule is missing its declared calendar")
+    semester_1_close_week = schedule.semester_week_counts[0]
     final_review: dict[str, int] = {}
     for week in schedule.weeks:
         for allocation in week.allocations:
@@ -168,9 +199,9 @@ def _table_region(schedule: CourseSchedule, prereqs: dict[str, list[str]]) -> st
             row.minutes for row in week.allocations if row.kind in {"practice", "review"}
         )
         gates = [f"{unit} review gate" for unit, number in final_review.items() if number == week.week]
-        if week.week == 16:
+        if week.week == semester_1_close_week:
             gates.append("Semester 1 close")
-        if week.week == 35:
+        if any(row.kind == "mock" for row in week.allocations):
             gates.extend(["`r1-001` summative gate", "debrief"])
         gate = ", ".join(gates) + "." if gates else "No unit-review gate."
         lines.append(
@@ -182,7 +213,8 @@ def _table_region(schedule: CourseSchedule, prereqs: dict[str, list[str]]) -> st
 
 def _semester_summary(schedule: CourseSchedule) -> str:
     lines: list[str] = []
-    for semester, weeks in ((1, schedule.weeks[:16]), (2, schedule.weeks[16:])):
+    for semester in (1, 2):
+        weeks = [week for week in schedule.weeks if week.semester == semester]
         in_class = sum(
             row.minutes
             for week in weeks
@@ -227,8 +259,18 @@ def _counts_region(manifests: dict[str, dict]) -> str:
 
 
 def _arithmetic_region(schedule: CourseSchedule) -> str:
-    s1 = sum(row.minutes for week in schedule.weeks[:16] for row in week.allocations)
-    s2 = sum(row.minutes for week in schedule.weeks[16:] for row in week.allocations)
+    s1 = sum(
+        row.minutes
+        for week in schedule.weeks
+        if week.semester == 1
+        for row in week.allocations
+    )
+    s2 = sum(
+        row.minutes
+        for week in schedule.weeks
+        if week.semester == 2
+        for row in week.allocations
+    )
     return "\n".join(
         [
             "The semester and table arithmetic was captured independently as:",
@@ -321,6 +363,12 @@ def render_document(root: str | Path, *, bootstrap: bool = False) -> str:
             raise ValueError("generated course-structure regions are missing")
         document = _bootstrap(document)
     patterns = _validated_region_patterns(document)
+    mock_week, mock = next(
+        (week.week, allocation)
+        for week in schedule.weeks
+        for allocation in week.allocations
+        if allocation.kind == "mock"
+    )
     regions = {
         "course-model": _model_region(schedule, manifests),
         "semester-model": _semester_region(schedule),
@@ -329,8 +377,8 @@ def render_document(root: str | Path, *, bootstrap: bool = False) -> str:
         ),
         "semester-summary": _semester_summary(schedule),
         "summative-milestone": (
-            "The summative milestone is `r1-001` in Week 35, scored against its "
-            "300-point blueprint during its 180-minute duration and followed by the "
+            f"The summative milestone is `{mock.test}` in Week {mock_week}, scored against its "
+            f"300-point blueprint during its {mock.minutes}-minute duration and followed by the "
             "60-minute debrief."
         ),
         "counts-output": _counts_region(manifests),

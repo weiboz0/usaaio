@@ -404,6 +404,121 @@ def test_c11_statement_requires_matching_body_time_budget(tmp_path, monkeypatch)
     ]
 
 
+def test_every_manifest_backed_problem_requires_its_exact_body_time_budget(
+    tmp_path, monkeypatch
+):
+    unit = "C2-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C2-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing\n\n"
+        "**Time budget:** 20 minutes\n\nPrompt.",
+    )
+    problem["minutes"] = 15
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+
+    assert verify_register._check_problem(unit, problem) == [
+        "C2-p01: time budget is missing or does not match manifest minutes 15"
+    ]
+
+
+def _write_c12_mc(
+    root: Path,
+    *,
+    number: int = 1,
+    problem_type: str = "mc",
+    options: str = "ABCDE",
+    reasoning: str = "Reasoning is required.",
+    normal_form_rules: str = "",
+) -> dict:
+    problem_id = f"C12-p{number:02}"
+    path = root / "units" / "C12-classical-models" / "practice" / f"p{number:02}.ipynb"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    type_label = verify_register.TYPE_LABELS[problem_type]
+    option_lines = "\n\n".join(f"{letter}. option {letter}" for letter in options)
+    path.write_text(
+        json.dumps(
+            {
+                "cells": [
+                    {
+                        "cell_type": "markdown",
+                        "source": (
+                            f"# C12-classical-models — Practice p{number:02}\n\n"
+                            f"**Type:** {type_label} · **Difficulty:** intro "
+                            "· **Concepts:** logistic-regression\n\n"
+                            "**Time budget:** 20 minutes\n\n"
+                            f"{option_lines}\n\n{reasoning}\n\n{normal_form_rules}"
+                        ),
+                    }
+                ],
+                "metadata": {},
+                "nbformat": 4,
+                "nbformat_minor": 5,
+            }
+        )
+    )
+    return {
+        "id": problem_id,
+        "path": f"practice/p{number:02}.ipynb",
+        "type": problem_type,
+        "difficulty": "intro",
+        "concepts": ["logistic-regression"],
+        "minutes": 20,
+    }
+
+
+def test_c12_is_in_the_strict_statement_register():
+    assert "C12-classical-models" in verify_register.REGISTER_UNITS
+
+
+@pytest.mark.parametrize(
+    ("kwargs", "finding"),
+    [
+        pytest.param(
+            {"options": "ABCD"},
+            "MC options are not exactly A.-through-E. in order",
+            id="four-options",
+        ),
+        pytest.param(
+            {"reasoning": "Explain your choice."},
+            "MC reasoning flag must say 'Reasoning is required.'",
+            id="missing-reasoning",
+        ),
+        pytest.param(
+            {"reasoning": "Reasoning is not required."},
+            "MC reasoning flag must say 'Reasoning is required.'",
+            id="negative-reasoning",
+        ),
+    ],
+)
+def test_c12_mc_requires_exact_options_and_literal_positive_reasoning(
+    tmp_path, monkeypatch, kwargs, finding
+):
+    problem = _write_c12_mc(tmp_path, **kwargs)
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+
+    assert f"C12-p01: {finding}" in verify_register._check_problem(
+        "C12-classical-models", problem
+    )
+
+
+def test_c12_p05_normal_form_requires_positive_denominator_and_reduced_gcd_rules(
+    tmp_path, monkeypatch
+):
+    problem = _write_c12_mc(
+        tmp_path,
+        number=5,
+        problem_type="mc-normal-form",
+        normal_form_rules="Give the result as a fraction a/b.",
+    )
+    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+
+    assert verify_register._check_problem("C12-classical-models", problem) == [
+        "C12-p05: normal-form MC must state b > 0 and gcd(|a|, b) = 1"
+    ]
+
+
 def test_statement_header_rejects_a_fourth_field(tmp_path, monkeypatch):
     problem = c11_problem(
         tmp_path,

@@ -41,3 +41,11 @@ def test_main_no_subcommand_prints_help(capsys):
 def test_main_check_subcommand_in_process(capsys):
     assert main(["prereq-check"]) == 0
     assert "PASS prereq-check" in capsys.readouterr().out
+
+
+def test_schedule_help_describes_the_canonical_40_week_allocation():
+    proc = run_cli("--help")
+
+    assert proc.returncode == 0
+    assert "verify the canonical 40-week allocation" in proc.stdout
+    assert "canonical 35-week allocation" not in proc.stdout

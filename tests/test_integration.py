@@ -258,6 +258,65 @@ PLAN017_C7_PRESERVED_CONCEPTS = {
     "C7-p27": {"layer-freezing", "requires-grad"},
 }
 
+PLAN018_C12_CONCEPTS = [
+    "logistic-regression",
+    "svm",
+    "margin-and-hinge-loss",
+    "decision-trees",
+    "tree-split-criteria",
+    "ensemble-learning",
+    "bagging-and-boosting",
+    "k-means",
+    "lloyd-algorithm",
+    "classical-model-comparison",
+]
+
+PLAN018_C12_PRACTICE_LEDGER = [
+    ("C12-p01", "A", "mc", "intro", 20, 1),
+    ("C12-p02", "A", "mc", "intro", 20, 2),
+    ("C12-p03", "A", "mc", "intro", 20, 4),
+    ("C12-p04", "A", "mc", "intro", 20, 5),
+    ("C12-p05", "A", "mc-normal-form", "intro", 20, 6),
+    ("C12-p06", "A", "constrained-coding", "intro", 55, 1),
+    ("C12-p07", "B", "constrained-coding", "core", 55, 1),
+    ("C12-p08", "B", "constrained-coding", "core", 55, 2),
+    ("C12-p09", "B", "constrained-coding", "advanced", 55, 3),
+    ("C12-p10", "A", "constrained-coding", "intro", 55, 4),
+    ("C12-p11", "B", "constrained-coding", "core", 55, 4),
+    ("C12-p12", "B", "constrained-coding", "core", 55, 5),
+    ("C12-p13", "A", "constrained-coding", "intro", 55, 6),
+    ("C12-p14", "B", "proof", "core", 45, 1),
+    ("C12-p15", "C", "proof", "advanced", 45, 3),
+    ("C12-p16", "B", "proof", "core", 45, 4),
+    ("C12-p17", "B", "proof", "core", 45, 6),
+    ("C12-p18", "C", "integrative", "advanced", 65, 2),
+    ("C12-p19", "C", "integrative", "advanced", 65, 5),
+    ("C12-p20", "C", "integrative", "core", 65, 6),
+    ("C12-p21", "C", "integrative", "advanced", 65, 6),
+    ("C12-p22", "C", "scenario", "intro", 45, 2),
+    ("C12-p23", "C", "scenario", "core", 45, 4),
+    ("C12-p24", "C", "scenario", "core", 45, 5),
+    ("C12-p25", "C", "scenario", "core", 45, 6),
+    ("C12-p26", "C", "challenge", "core", 50, 1),
+    ("C12-p27", "C", "challenge", "advanced", 50, 3),
+    ("C12-p28", "C", "challenge", "core", 50, 4),
+    ("C12-p29", "C", "challenge", "core", 50, 5),
+    ("C12-p30", "C", "challenge", "advanced", 50, 6),
+]
+
+PLAN018_C12_CONCEPT_COVERAGE = {
+    "logistic-regression": [1, 6, 7, 14, 18, 21, 22, 26],
+    "svm": [2, 8, 9, 15, 18, 21, 22, 27],
+    "margin-and-hinge-loss": [2, 8, 15, 18, 27],
+    "decision-trees": [3, 10, 11, 16, 19, 21, 23, 28],
+    "tree-split-criteria": [3, 10, 16, 23, 28],
+    "ensemble-learning": [4, 12, 19, 21, 24, 29],
+    "bagging-and-boosting": [4, 12, 19, 24, 29],
+    "k-means": [5, 13, 17, 20, 21, 25, 30],
+    "lloyd-algorithm": [5, 13, 17, 20, 30],
+    "classical-model-comparison": [18, 21, 22, 24, 25],
+}
+
 
 def _manifest(unit_id: str) -> dict[str, object]:
     return yaml.safe_load((ROOT / "units" / unit_id / "manifest.yaml").read_text())
@@ -344,7 +403,7 @@ def test_plan016_new_concepts_have_exact_clusters_and_single_owners():
     }
 
 
-def test_plan017_manifests_have_exact_final_counts_and_minutes():
+def test_plan018_manifests_have_exact_final_counts_and_minutes():
     for unit_id, (sessions, practice_count, minute_totals) in EXPECTED_UNIT_SHAPES.items():
         manifest = _manifest(unit_id)
         minutes = manifest["estimated_minutes"]
@@ -353,9 +412,9 @@ def test_plan017_manifests_have_exact_final_counts_and_minutes():
         assert len(manifest["practice"]) == practice_count
 
     manifests = load_unit_manifests(ROOT)
-    assert len(manifests) == 18
-    assert sum(len(manifest.practice) for manifest in manifests) == 407
-    assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 63
+    assert len(manifests) == 19
+    assert sum(len(manifest.practice) for manifest in manifests) == 437
+    assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 69
     minute_totals = {
         field: sum(
             _manifest(manifest.unit_id)["estimated_minutes"][field]
@@ -363,11 +422,11 @@ def test_plan017_manifests_have_exact_final_counts_and_minutes():
         )
         for field in ("lesson", "practice", "review")
     }
-    assert minute_totals == {"lesson": 5280, "practice": 10480, "review": 865}
-    assert sum(minute_totals.values()) == 16625
+    assert minute_totals == {"lesson": 5820, "practice": 11890, "review": 925}
+    assert sum(minute_totals.values()) == 18635
 
 
-def test_plan017_new_concepts_have_single_syllabus_and_manifest_owners():
+def test_plan018_all_concepts_have_single_syllabus_and_manifest_owners():
     syllabus = load_syllabus(ROOT)
     syllabus_owner_counts = Counter(
         concept for unit in syllabus.units.values() for concept in unit.teaches
@@ -379,7 +438,7 @@ def test_plan017_new_concepts_have_single_syllabus_and_manifest_owners():
     )
 
     assert set(syllabus.concepts) == set(syllabus_owner_counts) == set(manifest_owner_counts)
-    assert len(syllabus.concepts) == 139
+    assert len(syllabus.concepts) == 149
     assert {concept: syllabus_owner_counts[concept] for concept in PLAN017_NEW_CONCEPTS} == {
         concept: 1 for concept in PLAN017_NEW_CONCEPTS
     }
@@ -451,6 +510,104 @@ def test_plan017_c11_manifest_is_the_exact_pinned_training_contract():
     assert actual_rows == expected_rows
     assert all(type(row[-1]) is int and row[-1] > 0 for row in actual_rows)
     assert sum(row[-1] for row in actual_rows) == 1040
+
+
+def test_plan018_c12_manifest_is_the_exact_double_length_contract():
+    syllabus = _canonical_syllabus_yaml()
+    units = {unit["id"]: unit for unit in syllabus["units"]}
+    c12 = units["C12-classical-models"]
+    manifest = _manifest("C12-classical-models")
+
+    assert c12["length"] == "double"
+    assert c12["prereqs"] == [
+        "C1-ml-fundamentals",
+        "C2-linear-models",
+        "C3-gradient-descent",
+        "C4-classical-ml-practice",
+        "F7-kernels-convex-optimization",
+    ]
+    assert c12["teaches"] == PLAN018_C12_CONCEPTS
+    assert manifest["prereq_units"] == c12["prereqs"]
+    assert manifest["concepts_taught"] == PLAN018_C12_CONCEPTS
+    assert manifest["concept_sessions"] == {
+        "logistic-regression": 1,
+        "svm": 2,
+        "margin-and-hinge-loss": 2,
+        "decision-trees": 4,
+        "tree-split-criteria": 4,
+        "ensemble-learning": 5,
+        "bagging-and-boosting": 5,
+        "k-means": 6,
+        "lloyd-algorithm": 6,
+        "classical-model-comparison": 2,
+    }
+    assert manifest["estimated_minutes"] == {
+        "lesson": 540,
+        "lesson_sessions": [90, 90, 90, 90, 90, 90],
+        "practice": 1410,
+        "review": 60,
+    }
+
+    actual_ledger = [
+        (
+            row["id"],
+            row["set"],
+            row["type"],
+            row["difficulty"],
+            row["minutes"],
+            row["after_session"],
+        )
+        for row in manifest["practice"]
+    ]
+    assert actual_ledger == PLAN018_C12_PRACTICE_LEDGER
+    assert [row["path"] for row in manifest["practice"]] == [
+        f"practice/p{number:02}.ipynb" for number in range(1, 31)
+    ]
+    assert [row["solution_path"] for row in manifest["practice"]] == [
+        f"practice/p{number:02}_solution.ipynb" for number in range(1, 31)
+    ]
+    assert [row["provenance"] for row in manifest["practice"]] == ["original"] * 30
+    assert all("adapted-from" not in row for row in manifest["practice"])
+    assert sum(row["minutes"] for row in manifest["practice"]) == 1410
+
+    for concept, problem_numbers in PLAN018_C12_CONCEPT_COVERAGE.items():
+        assert [
+            row["id"]
+            for row in manifest["practice"]
+            if concept in row["concepts"]
+        ] == [f"C12-p{number:02}" for number in problem_numbers]
+
+
+def test_plan018_exact_final_corpus_counts_and_double_length_roster():
+    manifests = load_unit_manifests(ROOT)
+    syllabus = load_syllabus(ROOT)
+
+    assert len(manifests) == 19
+    assert len(syllabus.concepts) == 149
+    assert sum(len(manifest.practice) for manifest in manifests) == 437
+    assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 69
+    minute_total = sum(
+        sum(_manifest(manifest.unit_id)["estimated_minutes"][field] for field in (
+            "lesson",
+            "practice",
+            "review",
+        ))
+        for manifest in manifests
+    )
+    assert minute_total == 18635
+
+    double_units = {
+        unit.id for unit in syllabus.units.values() if unit.length == "double"
+    }
+    assert double_units == {
+        "F5-probability",
+        "F6-svd-spectral",
+        "C7-cnn-transfer",
+        "C11-neural-training",
+        "C12-classical-models",
+    }
+    standards = (ROOT / "docs" / "unit-standards.md").read_text()
+    assert "Double-length units (F5, F6, C7, C11, C12) use 4–6 sessions." in standards
 
 
 def test_plan017_c7_manifest_is_double_length_and_preserves_capstone_contracts():
@@ -809,19 +966,14 @@ def test_plan016_f7_manifest_has_exact_foundation_contract_and_register():
     ] == expected_rows
 
 
-def test_plan016_coverage_map_conversion_is_controlled():
+def test_plan018_coverage_map_preserves_prior_rows_and_retires_classical_placeholder():
     roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
     planned = {unit["id"]: unit for unit in roadmap["planned_units"]}
     points = {point["id"]: point for point in roadmap["knowledge_points"]}
 
     assert "P015-R1-MATH-KERNEL-OPT" not in planned
-    assert planned["P015-R1-CLASSICAL-BREADTH"]["prerequisites"] == [
-        "C1-ml-fundamentals",
-        "C2-linear-models",
-        "C3-gradient-descent",
-        "C4-classical-ml-practice",
-        "F7-kernels-convex-optimization",
-    ]
+    assert "P015-R1-CLASSICAL-BREADTH" not in planned
+    assert "C12-classical-models" in planned["P015-R2-CAPSTONE"]["prerequisites"]
     assert points["seaborn-programming"]["depends_on"] == [
         "numpy-programming",
         "matplotlib-pyplot-programming",
@@ -858,13 +1010,14 @@ def test_plan016_coverage_map_conversion_is_controlled():
         assert point["deficits"] == {"modalities_missing": []}
 
 
-def test_plan017_syllabus_narrative_order_and_dependency_contract():
+def test_plan018_syllabus_narrative_order_and_dependency_contract():
     syllabus = _canonical_syllabus_yaml()
     units = {unit["id"]: unit for unit in syllabus["units"]}
     assert units["F5-probability"]["length"] == "double"
     assert units["F6-svd-spectral"]["length"] == "double"
     assert units["C7-cnn-transfer"]["length"] == "double"
     assert units["C11-neural-training"]["length"] == "double"
+    assert units["C12-classical-models"]["length"] == "double"
     narrative = _syllabus_narrative()
     foundation = _narrative_section(narrative, "Foundation track — rationale")
     core = _narrative_section(narrative, "Core track — rationale")
@@ -892,7 +1045,7 @@ def test_plan017_syllabus_narrative_order_and_dependency_contract():
     order_section = _narrative_section(
         narrative, "Suggested order (one feasible topological sort)"
     )
-    order = re.search(r"^F1 → .* → C10$", order_section, re.MULTILINE)
+    order = re.search(r"^F1 → .* → C12$", order_section, re.MULTILINE)
     assert order is not None
     by_short_id = {unit_id.split("-", 1)[0]: unit_id for unit_id in units}
     ordered_unit_ids = [by_short_id[short_id] for short_id in order.group(0).split(" → ")]
@@ -915,10 +1068,11 @@ def test_plan017_syllabus_narrative_order_and_dependency_contract():
         "F7-kernels-convex-optimization",
         "C9-dimensionality-reduction",
         "C10-competition-craft",
+        "C12-classical-models",
     ]
     assert ordered_unit_ids == expected_order
     assert set(ordered_unit_ids) == set(units)
-    assert len(ordered_unit_ids) == len(set(ordered_unit_ids)) == 18
+    assert len(ordered_unit_ids) == len(set(ordered_unit_ids)) == 19
     positions = {unit_id: index for index, unit_id in enumerate(ordered_unit_ids)}
     for unit_id in ordered_unit_ids:
         assert all(
@@ -929,7 +1083,7 @@ def test_plan017_syllabus_narrative_order_and_dependency_contract():
     assert any(dependency.startswith("seaborn>=") for dependency in project["project"]["dependencies"])
     assert re.search(r'^name = "seaborn"$', (ROOT / "uv.lock").read_text(), re.MULTILINE)
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
-    assert "Double-length units (F5, F6, C7, C11) use 4–6 sessions." in standards
+    assert "Double-length units (F5, F6, C7, C11, C12) use 4–6 sessions." in standards
 
 
 def test_plan016_practice_coverage_is_green():
@@ -1075,13 +1229,18 @@ def test_scope_cli_is_registered_and_loader_errors_are_blocking(tmp_path):
     assert "invalid choice" not in proc.stderr
 
 
-def test_ci_local_wires_inventory_scope_and_generated_document_checks():
+def test_ci_local_wires_both_mutation_runners_and_generated_document_checks():
     script = (ROOT / "scripts" / "ci-local.sh").read_text()
 
     assert "python -m tools.audit_curriculum --check" in script
     assert 'usaaio-tools "$c"' in script
     assert "scope-check" in script
     assert "python -m tools.render_curriculum_roadmap --check" in script
+    training = "python -m tools.verify_training_mutations --root ."
+    classical = "python -m tools.verify_classical_mutations --root ."
+    assert training in script
+    assert classical in script
+    assert script.index(training) < script.index(classical)
 
 
 def test_pre_merge_guard_runs_embedded_yaml_with_uv_python():

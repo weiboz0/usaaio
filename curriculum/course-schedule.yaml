@@ -1,8 +1,12 @@
 schedule_version: 1
+calendar:
+  semester_1_weeks: 16
+  semester_2_weeks: 24
+  total_weeks: 40
 totals:
   semester_1: 7915
-  semester_2: 8950
-  scheduled: 16865
+  semester_2: 10960
+  scheduled: 18875
 weeks:
 - week: 1
   semester: 1
@@ -379,7 +383,7 @@ weeks:
   - kind: practice
     unit: F6-svd-spectral
     chunk: 3
-    minutes: 200
+    minutes: 167
   - kind: practice
     unit: C6-pytorch
     chunk: 1
@@ -402,7 +406,7 @@ weeks:
   - kind: practice
     unit: C6-pytorch
     chunk: 2
-    minutes: 262
+    minutes: 229
 - week: 22
   semester: 2
   allocations:
@@ -410,6 +414,10 @@ weeks:
     unit: F6-svd-spectral
     session: 5
     minutes: 85
+  - kind: practice
+    unit: F6-svd-spectral
+    chunk: 5
+    minutes: 33
   - kind: review
     unit: F6-svd-spectral
     chunk: 1
@@ -417,7 +425,7 @@ weeks:
   - kind: practice
     unit: C6-pytorch
     chunk: 3
-    minutes: 145
+    minutes: 112
   - kind: lesson-session
     unit: F7-kernels-convex-optimization
     session: 1
@@ -433,6 +441,10 @@ weeks:
 - week: 23
   semester: 2
   allocations:
+  - kind: practice
+    unit: C6-pytorch
+    chunk: 4
+    minutes: 66
   - kind: review
     unit: C6-pytorch
     chunk: 1
@@ -448,7 +460,7 @@ weeks:
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 2
-    minutes: 235
+    minutes: 169
 - week: 24
   semester: 2
   allocations:
@@ -463,11 +475,11 @@ weeks:
   - kind: practice
     unit: C11-neural-training
     chunk: 1
-    minutes: 126
+    minutes: 58
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 3
-    minutes: 146
+    minutes: 212
 - week: 25
   semester: 2
   allocations:
@@ -497,7 +509,7 @@ weeks:
   - kind: practice
     unit: C11-neural-training
     chunk: 3
-    minutes: 235
+    minutes: 233
   - kind: practice
     unit: F7-kernels-convex-optimization
     chunk: 5
@@ -527,7 +539,7 @@ weeks:
   - kind: practice
     unit: C11-neural-training
     chunk: 5
-    minutes: 180
+    minutes: 250
   - kind: review
     unit: C11-neural-training
     chunk: 1
@@ -535,7 +547,7 @@ weeks:
   - kind: practice
     unit: C9-dimensionality-reduction
     chunk: 1
-    minutes: 120
+    minutes: 50
 - week: 29
   semester: 2
   allocations:
@@ -550,7 +562,7 @@ weeks:
   - kind: practice
     unit: C7-cnn-transfer
     chunk: 1
-    minutes: 200
+    minutes: 195
   - kind: practice
     unit: C9-dimensionality-reduction
     chunk: 2
@@ -569,7 +581,7 @@ weeks:
   - kind: practice
     unit: C7-cnn-transfer
     chunk: 2
-    minutes: 200
+    minutes: 195
   - kind: practice
     unit: C9-dimensionality-reduction
     chunk: 3
@@ -584,7 +596,7 @@ weeks:
   - kind: practice
     unit: C7-cnn-transfer
     chunk: 3
-    minutes: 200
+    minutes: 195
   - kind: practice
     unit: C9-dimensionality-reduction
     chunk: 4
@@ -603,7 +615,7 @@ weeks:
   - kind: practice
     unit: C7-cnn-transfer
     chunk: 4
-    minutes: 225
+    minutes: 175
   - kind: practice
     unit: C9-dimensionality-reduction
     chunk: 5
@@ -631,6 +643,10 @@ weeks:
     unit: C9-dimensionality-reduction
     chunk: 7
     minutes: 35
+  - kind: practice
+    unit: C9-dimensionality-reduction
+    chunk: 8
+    minutes: 70
   - kind: review
     unit: C9-dimensionality-reduction
     chunk: 1
@@ -638,37 +654,127 @@ weeks:
   - kind: practice
     unit: C10-competition-craft
     chunk: 2
-    minutes: 175
+    minutes: 55
 - week: 34
   semester: 2
   allocations:
-  - kind: lesson-session
-    unit: C10-competition-craft
-    session: 4
-    minutes: 85
-  - kind: practice
-    unit: C10-competition-craft
-    chunk: 3
-    minutes: 305
   - kind: practice
     unit: C7-cnn-transfer
     chunk: 5
-    minutes: 50
+    minutes: 115
   - kind: review
     unit: C7-cnn-transfer
     chunk: 1
     minutes: 60
+  - kind: lesson-session
+    unit: C10-competition-craft
+    session: 4
+    minutes: 85
+  - kind: lesson-session
+    unit: C12-classical-models
+    session: 1
+    minutes: 90
+  - kind: practice
+    unit: C12-classical-models
+    chunk: 1
+    minutes: 100
+    problem_ids: [C12-p06, C12-p14]
 - week: 35
   semester: 2
   allocations:
+  - kind: lesson-session
+    unit: C12-classical-models
+    session: 2
+    minutes: 90
+  - kind: practice
+    unit: C12-classical-models
+    chunk: 2
+    minutes: 225
+    problem_ids: [C12-p01, C12-p07, C12-p08, C12-p22, C12-p26]
+  - kind: practice
+    unit: C10-competition-craft
+    chunk: 3
+    minutes: 165
+- week: 36
+  semester: 2
+  allocations:
+  - kind: lesson-session
+    unit: C12-classical-models
+    session: 3
+    minutes: 90
+  - kind: practice
+    unit: C12-classical-models
+    chunk: 3
+    minutes: 150
+    problem_ids: [C12-p09, C12-p15, C12-p27]
   - kind: practice
     unit: C10-competition-craft
     chunk: 4
-    minutes: 190
+    minutes: 210
+- week: 37
+  semester: 2
+  allocations:
+  - kind: lesson-session
+    unit: C12-classical-models
+    session: 4
+    minutes: 90
+  - kind: practice
+    unit: C12-classical-models
+    chunk: 4
+    minutes: 270
+    problem_ids: [C12-p03, C12-p10, C12-p11, C12-p16, C12-p23, C12-p28]
+  - kind: practice
+    unit: C10-competition-craft
+    chunk: 5
+    minutes: 90
+- week: 38
+  semester: 2
+  allocations:
+  - kind: lesson-session
+    unit: C12-classical-models
+    session: 5
+    minutes: 90
+  - kind: practice
+    unit: C12-classical-models
+    chunk: 5
+    minutes: 235
+    problem_ids: [C12-p04, C12-p12, C12-p19, C12-p24, C12-p29]
+  - kind: practice
+    unit: C10-competition-craft
+    chunk: 6
+    minutes: 125
+- week: 39
+  semester: 2
+  allocations:
+  - kind: lesson-session
+    unit: C12-classical-models
+    session: 6
+    minutes: 90
+  - kind: practice
+    unit: C12-classical-models
+    chunk: 6
+    minutes: 280
+    problem_ids: [C12-p02, C12-p05, C12-p18, C12-p20, C12-p21, C12-p25]
+  - kind: practice
+    unit: C10-competition-craft
+    chunk: 7
+    minutes: 25
   - kind: review
     unit: C10-competition-craft
     chunk: 1
     minutes: 55
+- week: 40
+  semester: 2
+  allocations:
+  - kind: practice
+    unit: C12-classical-models
+    chunk: 7
+    minutes: 150
+    problem_ids: [C12-p13, C12-p17, C12-p30]
+  - kind: review
+    unit: C12-classical-models
+    chunk: 1
+    minutes: 60
   - kind: mock
     test: r1-001
     minutes: 180

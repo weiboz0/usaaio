@@ -28,6 +28,7 @@ REGISTER_UNITS = (
     "F2-vectors",
     "C1-ml-fundamentals",
     "C11-neural-training",
+    "C12-classical-models",
 )
 # Tests may override this inventory; normal runs discover every unit manifest.
 UNITS: tuple[str, ...] | None = None
@@ -212,7 +213,7 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
     # The multiple-choice option-format checks stay scoped to the tranche-1 units that were
     # authored against that exact register; widening them is a separate, evidence-led change.
     if unit in REGISTER_UNITS and problem["type"].startswith("mc"):
-        if unit == "C11-neural-training":
+        if unit in {"C11-neural-training", "C12-classical-models"}:
             if "Reasoning is required." not in all_markdown or (
                 "Reasoning is not required." in all_markdown
             ):
@@ -223,19 +224,26 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
         legacy = re.search(r"(?m)^-\s+\*\*(?:\([A-E]\)|[A-E]\.)\*\*", all_markdown)
         if options != OPTION_LETTERS or legacy:
             errors.append("MC options are not exactly A.-through-E. in order")
+        if (
+            unit == "C12-classical-models"
+            and problem["id"] == "C12-p05"
+            and ("b > 0" not in all_markdown or "gcd(|a|, b) = 1" not in all_markdown)
+        ):
+            errors.append("normal-form MC must state b > 0 and gcd(|a|, b) = 1")
 
-    if unit == "C11-neural-training":
-        minutes = problem.get("minutes")
+    minutes = problem.get("minutes")
+    if minutes is not None:
         budgets = re.findall(r"(?m)^\*\*Time budget:\*\* ([1-9]\d*) minutes$", all_markdown)
         if budgets != [str(minutes)]:
             errors.append(f"time budget is missing or does not match manifest minutes {minutes}")
     elif unit == "C7-cnn-transfer":
         budgets = re.findall(r"(?m)^\*\*Time budget:\*\* ([1-9]\d*) minutes$", all_markdown)
         if problem["id"] in C7_BUDGET_REGISTER:
-            minutes = C7_BUDGET_REGISTER[problem["id"]]
-            if budgets != [str(minutes)]:
+            literal_minutes = C7_BUDGET_REGISTER[problem["id"]]
+            if budgets != [str(literal_minutes)]:
                 errors.append(
-                    f"time budget is missing or does not match literal register minutes {minutes}"
+                    "time budget is missing or does not match literal register minutes "
+                    f"{literal_minutes}"
                 )
         elif budgets:
             errors.append(

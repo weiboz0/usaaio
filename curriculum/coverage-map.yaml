@@ -7,31 +7,6 @@ layers:
   - optional-enrichment
 
 planned_units:
-  - id: P015-R1-CLASSICAL-BREADTH
-    title: Classical Supervised and Unsupervised Models
-    layer: round-1-core
-    prerequisites:
-    - C1-ml-fundamentals
-    - C2-linear-models
-    - C3-gradient-descent
-    - C4-classical-ml-practice
-    - F7-kernels-convex-optimization
-    knowledge_points:
-    - logistic-regression
-    - support-vector-machine
-    - decision-trees
-    - ensemble-learning
-    - k-means-clustering
-    provisional_concepts:
-    - logistic-regression
-    - svm
-    - decision-trees
-    - ensemble-learning
-    - k-means
-    estimated_hours:
-      min: 32
-      max: 48
-    schedule_action: extend
   - id: P015-R2-TRANSFORMERS-NLP
     title: Attention, Transformers, and NLP
     layer: round-2-extension
@@ -111,7 +86,7 @@ planned_units:
     layer: round-2-extension
     prerequisites:
     - C10-competition-craft
-    - P015-R1-CLASSICAL-BREADTH
+    - C12-classical-models
     - P015-R2-TRANSFORMERS-NLP
     - P015-R2-VISION-GEN
     knowledge_points:
@@ -811,51 +786,78 @@ knowledge_points:
   - id: logistic-regression
     layer: round-1-core
     requirement: required
-    coverage: missing
+    coverage: covered
     source_refs: [official-syllabus-2026-08-06]
     depends_on: [linear-regression, loss-functions, gradient-descent-optimization]
-    shipped_concepts: []
+    shipped_concepts: [logistic-regression]
     evidence_by_modality:
-      theory: {lesson_anchors: [], practices: [], assessments: []}
-      implementation: {lesson_anchors: [], practices: [], assessments: []}
-      model-training: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-CLASSICAL-BREADTH
-    deficits: {modalities_missing: [theory, implementation, model-training]}
-    rationale: A single answer-key mention is not teaching; no sigmoid, logit objective, classifier, or training exists.
-    consequence: A named official classical model is absent.
+      theory:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/01-logistic-regression.ipynb, heading: 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 4. Deriving the mean gradient and shape ledger', cell_ordinal: 1, role: primary}]
+        practices: [{id: C12-p01, role: primary}, {id: C12-p14, role: primary}, {id: C12-p26, role: primary}]
+        assessments: []
+      implementation:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/01-logistic-regression.ipynb, heading: 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 5. Worked example: deterministic NumPy training', cell_ordinal: 2, role: primary}]
+        practices: [{id: C12-p06, role: primary}, {id: C12-p07, role: primary}, {id: C12-p18, role: primary}]
+        assessments: []
+      model-training:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/01-logistic-regression.ipynb, heading: 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 5. Worked example: deterministic NumPy training', cell_ordinal: 2, role: primary}]
+        practices: [{id: C12-p07, role: primary}, {id: C12-p18, role: primary}, {id: C12-p21, role: primary}]
+        assessments: []
+    disposition: keep
+    destination: C12-classical-models
+    deficits: {modalities_missing: []}
+    rationale: C12 derives the logit objective and mean gradient, implements stable NumPy training, and practices the model in theory, implementation, and training settings.
+    consequence: Students can derive, implement, fit, and audit logistic regression.
   - id: support-vector-machine
     layer: round-1-core
     requirement: required
-    coverage: missing
+    coverage: covered
     source_refs: [official-syllabus-2026-08-06]
     depends_on: [valid-kernel-positive-definite-proof, constrained-optimization-lagrangian-duality]
-    shipped_concepts: []
+    shipped_concepts: [svm, margin-and-hinge-loss]
     evidence_by_modality:
-      theory: {lesson_anchors: [], practices: [], assessments: []}
-      implementation: {lesson_anchors: [], practices: [], assessments: []}
-      model-training: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-CLASSICAL-BREADTH
-    deficits: {modalities_missing: [theory, implementation, model-training]}
-    rationale: No margin, hinge loss, support vector, primal-dual SVM, kernel classifier, or training task exists.
-    consequence: The official SVM family and its kernel consumer remain missing.
+      theory:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb, heading: 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss > 3. Soft margin, slack, hinge loss, and `C`', cell_ordinal: 1, role: primary}, {path: units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb, heading: 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition > 1. From the soft-margin primal to dual coefficients', cell_ordinal: 1, role: primary}]
+        practices: [{id: C12-p02, role: primary}, {id: C12-p15, role: primary}, {id: C12-p27, role: primary}]
+        assessments: []
+      implementation:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb, heading: 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss > 4. Vectorized objective and one valid subgradient step', cell_ordinal: 2, role: primary}]
+        practices: [{id: C12-p08, role: primary}, {id: C12-p09, role: primary}, {id: C12-p27, role: primary}]
+        assessments: []
+      model-training:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb, heading: 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition > 5. Worked example: fit and reconstruct an RBF decision score', cell_ordinal: 2, role: primary}]
+        practices: [{id: C12-p09, role: primary}, {id: C12-p18, role: primary}, {id: C12-p21, role: primary}]
+        assessments: []
+    disposition: keep
+    destination: C12-classical-models
+    deficits: {modalities_missing: []}
+    rationale: C12 develops margin and hinge-loss mechanics, connects primal and dual views, and fits both linear and kernel SVMs across the required modalities.
+    consequence: Students can derive, implement, fit, and compare support-vector machines.
   - id: decision-trees
     layer: round-1-core
     requirement: required
-    coverage: missing
+    coverage: covered
     source_refs: [official-syllabus-2026-08-06]
     depends_on: [supervised-learning-foundations, loss-functions]
-    shipped_concepts: []
+    shipped_concepts: [decision-trees, tree-split-criteria]
     evidence_by_modality:
-      theory: {lesson_anchors: [], practices: [], assessments: []}
-      implementation: {lesson_anchors: [], practices: [], assessments: []}
-      model-training: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-CLASSICAL-BREADTH
-    deficits: {modalities_missing: [theory, implementation, model-training]}
-    rationale: No split criterion, recursive construction, pruning, implementation, or fitted tree exists.
-    consequence: Tree-based modeling is absent.
+      theory:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/04-decision-trees.ipynb, heading: 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 2. Candidate thresholds and weighted child impurity', cell_ordinal: 1, role: primary}]
+        practices: [{id: C12-p03, role: primary}, {id: C12-p16, role: primary}, {id: C12-p23, role: primary}]
+        assessments: []
+      implementation:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/04-decision-trees.ipynb, heading: 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 3. Deterministic best-split search', cell_ordinal: 2, role: primary}]
+        practices: [{id: C12-p10, role: primary}, {id: C12-p11, role: primary}, {id: C12-p28, role: primary}]
+        assessments: []
+      model-training:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/04-decision-trees.ipynb, heading: 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 5. Worked tree construction', cell_ordinal: 2, role: primary}]
+        practices: [{id: C12-p11, role: primary}, {id: C12-p19, role: primary}, {id: C12-p21, role: primary}]
+        assessments: []
+    disposition: keep
+    destination: C12-classical-models
+    deficits: {modalities_missing: []}
+    rationale: C12 derives impurity reduction, implements deterministic split search and recursive construction, and fits and evaluates trees in direct practice.
+    consequence: Students can construct, train, regularize, and audit decision trees.
   - id: knn
     layer: round-1-core
     requirement: required
@@ -884,19 +886,28 @@ knowledge_points:
   - id: ensemble-learning
     layer: round-1-core
     requirement: required
-    coverage: missing
+    coverage: covered
     source_refs: [official-syllabus-2026-08-06]
     depends_on: [decision-trees, bias-variance-tradeoff]
-    shipped_concepts: []
+    shipped_concepts: [ensemble-learning, bagging-and-boosting]
     evidence_by_modality:
-      theory: {lesson_anchors: [], practices: [], assessments: []}
-      implementation: {lesson_anchors: [], practices: [], assessments: []}
-      model-training: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-CLASSICAL-BREADTH
-    deficits: {modalities_missing: [theory, implementation, model-training]}
-    rationale: No bagging, boosting, random forest, voting, or ensemble training appears.
-    consequence: Official ensemble breadth is absent.
+      theory:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/05-ensembles.ipynb, heading: 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 4. AdaBoost: sequential reweighting', cell_ordinal: 1, role: primary}]
+        practices: [{id: C12-p04, role: primary}, {id: C12-p24, role: primary}, {id: C12-p29, role: primary}]
+        assessments: []
+      implementation:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/05-ensembles.ipynb, heading: 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 4. AdaBoost: sequential reweighting', cell_ordinal: 2, role: primary}]
+        practices: [{id: C12-p12, role: primary}, {id: C12-p19, role: primary}, {id: C12-p29, role: primary}]
+        assessments: []
+      model-training:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/05-ensembles.ipynb, heading: 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 5. Worked comparison: fit bagging, forest, and boosting', cell_ordinal: 2, role: primary}]
+        practices: [{id: C12-p12, role: primary}, {id: C12-p19, role: primary}, {id: C12-p21, role: primary}]
+        assessments: []
+    disposition: keep
+    destination: C12-classical-models
+    deficits: {modalities_missing: []}
+    rationale: C12 teaches voting, bagging, random forests, and AdaBoost reweighting, then implements and fits the ensemble families in direct practice.
+    consequence: Students can explain, implement, train, and compare major ensemble methods.
   - id: bias-variance-tradeoff
     layer: round-1-core
     requirement: required
@@ -1038,19 +1049,28 @@ knowledge_points:
   - id: k-means-clustering
     layer: round-1-core
     requirement: required
-    coverage: missing
+    coverage: covered
     source_refs: [official-syllabus-2026-08-06]
     depends_on: [unsupervised-learning-foundations, distance-metrics, expectation]
-    shipped_concepts: []
+    shipped_concepts: [k-means, lloyd-algorithm]
     evidence_by_modality:
-      theory: {lesson_anchors: [], practices: [], assessments: []}
-      implementation: {lesson_anchors: [], practices: [], assessments: []}
-      model-training: {lesson_anchors: [], practices: [], assessments: []}
-    disposition: new-unit
-    destination: P015-R1-CLASSICAL-BREADTH
-    deficits: {modalities_missing: [theory, implementation, model-training]}
-    rationale: C1 toy split rules are not Lloyd's algorithm; no centroid update, objective descent, initialization, or fitted k-means exists.
-    consequence: The named official clustering algorithm is missing.
+      theory:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb, heading: 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison > 2. Lloyd assignment and centroid update', cell_ordinal: 1, role: primary}]
+        practices: [{id: C12-p05, role: primary}, {id: C12-p17, role: primary}, {id: C12-p25, role: primary}]
+        assessments: []
+      implementation:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb, heading: 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison > 5. Worked Lloyd implementation and objective trace', cell_ordinal: 2, role: primary}]
+        practices: [{id: C12-p13, role: primary}, {id: C12-p20, role: primary}, {id: C12-p30, role: primary}]
+        assessments: []
+      model-training:
+        lesson_anchors: [{path: units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb, heading: 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison > 6. Scaling, diagnostics, and sklearn comparison', cell_ordinal: 2, role: primary}]
+        practices: [{id: C12-p13, role: primary}, {id: C12-p20, role: primary}, {id: C12-p21, role: primary}]
+        assessments: []
+    disposition: keep
+    destination: C12-classical-models
+    deficits: {modalities_missing: []}
+    rationale: C12 derives Lloyd assignment and centroid updates, implements objective-monotone clustering with empty-cluster handling, and fits and audits k-means directly.
+    consequence: Students can derive, implement, fit, and diagnose k-means clustering.
   - id: principal-component-analysis
     layer: round-1-core
     requirement: required

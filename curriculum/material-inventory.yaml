@@ -1,15 +1,15 @@
 inventory_version: 1
 counts:
-  units: 18
-  concepts: 139
-  unit_practices: 407
-  lesson_sessions: 63
-  unit_nonpractice_notebooks: 99
-  unit_notebooks: 913
+  units: 19
+  concepts: 149
+  unit_practices: 437
+  lesson_sessions: 69
+  unit_nonpractice_notebooks: 107
+  unit_notebooks: 981
   mocktests: 1
   mock_notebooks: 10
-  manifested_minutes: 16625
-  scheduled_minutes: 16865
+  manifested_minutes: 18635
+  scheduled_minutes: 18875
 input_paths:
 - docs/course-structure.md
 - mocktests/r1-001/manifest.yaml
@@ -189,6 +189,75 @@ input_paths:
 - units/C11-neural-training/practice/p24.ipynb
 - units/C11-neural-training/practice/p24_solution.ipynb
 - units/C11-neural-training/review.ipynb
+- units/C12-classical-models/lesson.ipynb
+- units/C12-classical-models/lessons/01-logistic-regression.ipynb
+- units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb
+- units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb
+- units/C12-classical-models/lessons/04-decision-trees.ipynb
+- units/C12-classical-models/lessons/05-ensembles.ipynb
+- units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb
+- units/C12-classical-models/manifest.yaml
+- units/C12-classical-models/practice/p01.ipynb
+- units/C12-classical-models/practice/p01_solution.ipynb
+- units/C12-classical-models/practice/p02.ipynb
+- units/C12-classical-models/practice/p02_solution.ipynb
+- units/C12-classical-models/practice/p03.ipynb
+- units/C12-classical-models/practice/p03_solution.ipynb
+- units/C12-classical-models/practice/p04.ipynb
+- units/C12-classical-models/practice/p04_solution.ipynb
+- units/C12-classical-models/practice/p05.ipynb
+- units/C12-classical-models/practice/p05_solution.ipynb
+- units/C12-classical-models/practice/p06.ipynb
+- units/C12-classical-models/practice/p06_solution.ipynb
+- units/C12-classical-models/practice/p07.ipynb
+- units/C12-classical-models/practice/p07_solution.ipynb
+- units/C12-classical-models/practice/p08.ipynb
+- units/C12-classical-models/practice/p08_solution.ipynb
+- units/C12-classical-models/practice/p09.ipynb
+- units/C12-classical-models/practice/p09_solution.ipynb
+- units/C12-classical-models/practice/p10.ipynb
+- units/C12-classical-models/practice/p10_solution.ipynb
+- units/C12-classical-models/practice/p11.ipynb
+- units/C12-classical-models/practice/p11_solution.ipynb
+- units/C12-classical-models/practice/p12.ipynb
+- units/C12-classical-models/practice/p12_solution.ipynb
+- units/C12-classical-models/practice/p13.ipynb
+- units/C12-classical-models/practice/p13_solution.ipynb
+- units/C12-classical-models/practice/p14.ipynb
+- units/C12-classical-models/practice/p14_solution.ipynb
+- units/C12-classical-models/practice/p15.ipynb
+- units/C12-classical-models/practice/p15_solution.ipynb
+- units/C12-classical-models/practice/p16.ipynb
+- units/C12-classical-models/practice/p16_solution.ipynb
+- units/C12-classical-models/practice/p17.ipynb
+- units/C12-classical-models/practice/p17_solution.ipynb
+- units/C12-classical-models/practice/p18.ipynb
+- units/C12-classical-models/practice/p18_solution.ipynb
+- units/C12-classical-models/practice/p19.ipynb
+- units/C12-classical-models/practice/p19_solution.ipynb
+- units/C12-classical-models/practice/p20.ipynb
+- units/C12-classical-models/practice/p20_solution.ipynb
+- units/C12-classical-models/practice/p21.ipynb
+- units/C12-classical-models/practice/p21_solution.ipynb
+- units/C12-classical-models/practice/p22.ipynb
+- units/C12-classical-models/practice/p22_solution.ipynb
+- units/C12-classical-models/practice/p23.ipynb
+- units/C12-classical-models/practice/p23_solution.ipynb
+- units/C12-classical-models/practice/p24.ipynb
+- units/C12-classical-models/practice/p24_solution.ipynb
+- units/C12-classical-models/practice/p25.ipynb
+- units/C12-classical-models/practice/p25_solution.ipynb
+- units/C12-classical-models/practice/p26.ipynb
+- units/C12-classical-models/practice/p26_solution.ipynb
+- units/C12-classical-models/practice/p27.ipynb
+- units/C12-classical-models/practice/p27_solution.ipynb
+- units/C12-classical-models/practice/p28.ipynb
+- units/C12-classical-models/practice/p28_solution.ipynb
+- units/C12-classical-models/practice/p29.ipynb
+- units/C12-classical-models/practice/p29_solution.ipynb
+- units/C12-classical-models/practice/p30.ipynb
+- units/C12-classical-models/practice/p30_solution.ipynb
+- units/C12-classical-models/review.ipynb
 - units/C2-linear-models/lesson.ipynb
 - units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb
 - units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb
@@ -958,14 +1027,14 @@ input_paths:
 documents:
 - path: docs/course-structure.md
   kind: document
-  semantic_sha256: 173aa1b422d2d3bbf5f1a2a8648107d4149d4b25f74efdb4ce3049ef675fc4eb
+  semantic_sha256: 75518825359dd1e0ed3501c0301fbdfb1fc685d6944465f924f1f88c0d25e642
 manifests:
 - path: mocktests/r1-001/manifest.yaml
   kind: yaml
   semantic_sha256: 529275be25edee7e74999da5791d92d1b6de8f12f1a16a684dfbb9512a360952
 - path: syllabus.md
   kind: canonical-yaml
-  semantic_sha256: adf9e621cb7ca2ce63cd01ee09eabd87e3f98613f9c6ecf28bbddc7105a9c064
+  semantic_sha256: d04d8b8b62323f2da20721790b30db165692183389a210d0484c8da622427ec7
 - path: units/C1-ml-fundamentals/manifest.yaml
   kind: yaml
   semantic_sha256: 127dda704e1713a7d11492b18bbd2097d3a444d922b6dbbbcac4b00dd9161ac5
@@ -975,6 +1044,9 @@ manifests:
 - path: units/C11-neural-training/manifest.yaml
   kind: yaml
   semantic_sha256: dd2fd9a90dca8e05e9317ff408b6c066dad72f89d7dc95665758304f62680c80
+- path: units/C12-classical-models/manifest.yaml
+  kind: yaml
+  semantic_sha256: 0ce01a7a631710725a477ebd600d7b9e13aed749f7cde0a9f6ca1685f874f261
 - path: units/C2-linear-models/manifest.yaml
   kind: yaml
   semantic_sha256: 73104be56b89e70cdaadd9974bb5b1412d458a38f2a1d40bdd0e0f5d098f0023
@@ -11015,6 +11087,2909 @@ notebooks:
   - np.random.default_rng
   - torch.manual_seed
   - torch.set_default_dtype
+- path: units/C12-classical-models/lesson.ipynb
+  kind: notebook
+  semantic_sha256: 45d1f298aa5cbe2147f4ba6a42e5dee43731c180f0007abf5ba0baa0674266f0
+  anchors:
+  - anchor: 'units/C12-classical-models/lesson.ipynb :: C12-classical-models — Classical Supervised and Unsupervised Models
+      (Unit Overview) > Reproducibility contract :: cell 1'
+    heading_path:
+    - C12-classical-models — Classical Supervised and Unsupervised Models (Unit Overview)
+    - Reproducibility contract
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lesson.ipynb :: C12-classical-models — Classical Supervised and Unsupervised Models
+      (Unit Overview) > Reproducibility contract :: cell 2'
+    heading_path:
+    - C12-classical-models — Classical Supervised and Unsupervised Models (Unit Overview)
+    - Reproducibility contract
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - classical-model-comparison
+  - decision-trees
+  - ensemble-learning
+  - k-means
+  - lloyd-algorithm
+  - logistic-regression
+  - margin-and-hinge-loss
+  - svm
+  - tree-split-criteria
+  declared_problem_ids: []
+  api_tokens:
+  - np.random.default_rng
+- path: units/C12-classical-models/lessons/01-logistic-regression.ipynb
+  kind: notebook
+  semantic_sha256: c5479c3b4de5cf8865f4333b847e3f77f9115e44b71d8a5844a313f4896306f9
+  anchors:
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 1. From an affine score to log-odds :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - 1. From an affine score to log-odds
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 2. Sigmoid and stable evaluation :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - 2. Sigmoid and stable evaluation
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 2. Sigmoid and stable evaluation :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - 2. Sigmoid and stable evaluation
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 3. Deriving binary cross-entropy from an observed event :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - 3. Deriving binary cross-entropy from an observed event
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 3. Deriving binary cross-entropy from an observed event :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - 3. Deriving binary cross-entropy from an observed event
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 4. Deriving the mean gradient and shape ledger :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - 4. Deriving the mean gradient and shape ledger
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 4. Deriving the mean gradient and shape ledger :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - 4. Deriving the mean gradient and shape ledger
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 5. Worked example: deterministic NumPy training :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - '5. Worked example: deterministic NumPy training'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 5. Worked example: deterministic NumPy training :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - '5. Worked example: deterministic NumPy training'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 6. `LogisticRegression`, thresholds, accuracy, and calibration :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - 6. `LogisticRegression`, thresholds, accuracy, and calibration
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 6. `LogisticRegression`, thresholds, accuracy, and calibration :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - 6. `LogisticRegression`, thresholds, accuracy, and calibration
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > 7. Separation, pitfalls, exam connections, and forward link :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - 7. Separation, pitfalls, exam connections, and forward link
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic
+      Regression as a Trained Linear Classifier > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - classical-model-comparison
+  - decision-trees
+  - ensemble-learning
+  - k-means
+  - lloyd-algorithm
+  - logistic-regression
+  - margin-and-hinge-loss
+  - svm
+  - tree-split-criteria
+  declared_problem_ids: []
+  api_tokens:
+  - loss_trace.append
+  - losses.mean
+  - np.abs
+  - np.all
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.empty_like
+  - np.exp
+  - np.isclose
+  - np.isfinite
+  - np.linalg.norm
+  - np.log
+  - np.log1p
+  - np.maximum
+  - np.random.default_rng
+  - np.zeros
+  - pipeline.fit
+  - pipeline.predict
+  - pipeline.predict_proba
+  - w.copy
+  - y_train.astype
+- path: units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb
+  kind: notebook
+  semantic_sha256: 80ac30511c6b7a63ce20a129f35900fd26835e3d9354273cc55d091fa3f9254b
+  anchors:
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss > 1. Scores, label encoding, and functional margin :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    - 1. Scores, label encoding, and functional margin
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss > 2. Geometric margin, hard constraints, and support vectors :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    - 2. Geometric margin, hard constraints, and support vectors
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss > 3. Soft margin, slack, hinge loss, and `C` :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    - 3. Soft margin, slack, hinge loss, and `C`
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss > 4. Vectorized objective and one valid subgradient step :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    - 4. Vectorized objective and one valid subgradient step
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss > 4. Vectorized objective and one valid subgradient step :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    - 4. Vectorized objective and one valid subgradient step
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss > 5. Worked example: audit a boundary and its violations :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    - '5. Worked example: audit a boundary and its violations'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss > 5. Worked example: audit a boundary and its violations :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    - '5. Worked example: audit a boundary and its violations'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss > 6. First explicit model-comparison axes :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    - 6. First explicit model-comparison axes
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss > 7. Pitfalls, exam connections, and forward link :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    - 7. Pitfalls, exam connections, and forward link
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
+      Linear SVM, Margins, and Hinge Loss > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - classical-model-comparison
+  - decision-trees
+  - ensemble-learning
+  - k-means
+  - lloyd-algorithm
+  - logistic-regression
+  - margin-and-hinge-loss
+  - svm
+  - tree-split-criteria
+  declared_problem_ids: []
+  api_tokens:
+  - hinges.mean
+  - np.array
+  - np.asarray
+  - np.isclose
+  - np.maximum
+  - np.random.default_rng
+  - np.zeros
+- path: units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb
+  kind: notebook
+  semantic_sha256: 5650278adea7fa107de98375cfb1c421377c934257cba8cdb324d79a8bd5658b
+  anchors:
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition > 1. From the soft-margin primal to dual coefficients :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    - 1. From the soft-margin primal to dual coefficients
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition > 2. Complementary slackness and the support-vector decision function :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    - 2. Complementary slackness and the support-vector decision function
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition > 3. Linear, polynomial, and RBF kernels :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    - 3. Linear, polynomial, and RBF kernels
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition > 3. Linear, polynomial, and RBF kernels :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    - 3. Linear, polynomial, and RBF kernels
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition > 4. Scaling and the interaction of `C` and `gamma` :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    - 4. Scaling and the interaction of `C` and `gamma`
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition > 5. Worked example: fit and reconstruct an RBF decision score :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    - '5. Worked example: fit and reconstruct an RBF decision score'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition > 5. Worked example: fit and reconstruct an RBF decision score :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    - '5. Worked example: fit and reconstruct an RBF decision score'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition > 6. Linear versus kernel SVM on the comparison axes :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    - 6. Linear versus kernel SVM on the comparison axes
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition > 7. Pitfalls, exam connections, and forward comparison :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    - 7. Pitfalls, exam connections, and forward comparison
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3:
+      Kernel SVM and Dual Intuition > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 3: Kernel SVM and Dual Intuition'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - classical-model-comparison
+  - decision-trees
+  - ensemble-learning
+  - k-means
+  - lloyd-algorithm
+  - logistic-regression
+  - margin-and-hinge-loss
+  - svm
+  - tree-split-criteria
+  declared_problem_ids: []
+  api_tokens:
+  - model.decision_function
+  - model.fit
+  - np.allclose
+  - np.array
+  - np.asarray
+  - np.diag
+  - np.exp
+  - np.random.default_rng
+- path: units/C12-classical-models/lessons/04-decision-trees.ipynb
+  kind: notebook
+  semantic_sha256: d49eea6f6c0dcef0fa688d5508f71abd6db82172e5948b405b2597b39c613c24
+  anchors:
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > 1. Node distributions, Gini impurity, and entropy :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - 1. Node distributions, Gini impurity, and entropy
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > 1. Node distributions, Gini impurity, and entropy :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - 1. Node distributions, Gini impurity, and entropy
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > 2. Candidate thresholds and weighted child impurity :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - 2. Candidate thresholds and weighted child impurity
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > 3. Deterministic best-split search :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - 3. Deterministic best-split search
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > 3. Deterministic best-split search :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - 3. Deterministic best-split search
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > 4. Recursion, leaves, and prediction :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - 4. Recursion, leaves, and prediction
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > 5. Worked tree construction :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - 5. Worked tree construction
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > 5. Worked tree construction :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - 5. Worked tree construction
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > 6. Stopping, regularization, and pruning :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - 6. Stopping, regularization, and pruning
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > 7. Comparison axes, pitfalls, and exam connections :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - 7. Comparison axes, pitfalls, and exam connections
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees
+      from Impurity to Prediction > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 4: Decision Trees from Impurity to Prediction'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - classical-model-comparison
+  - decision-trees
+  - ensemble-learning
+  - k-means
+  - lloyd-algorithm
+  - logistic-regression
+  - margin-and-hinge-loss
+  - svm
+  - tree-split-criteria
+  declared_problem_ids: []
+  api_tokens:
+  - left.all
+  - left.any
+  - left.mean
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.bincount
+  - np.isclose
+  - np.random.default_rng
+  - np.unique
+  - tree.fit
+  - tree.predict
+- path: units/C12-classical-models/lessons/05-ensembles.ipynb
+  kind: notebook
+  semantic_sha256: fd23f771b3c07611e4f610dfce6d528f47050e5780b023515bc89b0d266f6e82
+  anchors:
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > 1. Hard voting, soft voting, and additive scores :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - 1. Hard voting, soft voting, and additive scores
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > 2. Bootstrap aggregation and variance reduction :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - 2. Bootstrap aggregation and variance reduction
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > 2. Bootstrap aggregation and variance reduction :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - 2. Bootstrap aggregation and variance reduction
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > 3. Random forests decorrelate trees :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - 3. Random forests decorrelate trees
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > 4. AdaBoost: sequential reweighting :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - '4. AdaBoost: sequential reweighting'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > 4. AdaBoost: sequential reweighting :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - '4. AdaBoost: sequential reweighting'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > 5. Worked comparison: fit bagging, forest, and boosting :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - '5. Worked comparison: fit bagging, forest, and boosting'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > 5. Worked comparison: fit bagging, forest, and boosting :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - '5. Worked comparison: fit bagging, forest, and boosting'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > 6. Bagging versus boosting through bias and variance :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - 6. Bagging versus boosting through bias and variance
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > 7. Comparison axes, pitfalls, and exam connections :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - 7. Comparison axes, pitfalls, and exam connections
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random
+      Forests, and Boosting > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - classical-model-comparison
+  - decision-trees
+  - ensemble-learning
+  - k-means
+  - lloyd-algorithm
+  - logistic-regression
+  - margin-and-hinge-loss
+  - svm
+  - tree-split-criteria
+  declared_problem_ids: []
+  api_tokens:
+  - fitted.fit
+  - fitted.predict
+  - forest_importances.sum
+  - member.predict
+  - models.items
+  - np.arange
+  - np.array
+  - np.exp
+  - np.full
+  - np.isclose
+  - np.log
+  - np.random.default_rng
+  - np.setdiff1d
+  - np.unique
+  - np.vstack
+  - q_next.sum
+  - rng.integers
+- path: units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb
+  kind: notebook
+  semantic_sha256: 9b70e6cc5adecbb7f056880e076f8541eb31cc9e3ac404d99df8870fb7379fb2
+  anchors:
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 1. Unsupervised objective and geometry :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 1. Unsupervised objective and geometry
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 2. Lloyd assignment and centroid update :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 2. Lloyd assignment and centroid update
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 2. Lloyd assignment and centroid update :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 2. Lloyd assignment and centroid update
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 3. Why each step cannot increase WCSS :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 3. Why each step cannot increase WCSS
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 4. Initialization, `k-means++`, and empty clusters :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 4. Initialization, `k-means++`, and empty clusters
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 5. Worked Lloyd implementation and objective trace :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 5. Worked Lloyd implementation and objective trace
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 5. Worked Lloyd implementation and objective trace :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 5. Worked Lloyd implementation and objective trace
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 6. Scaling, diagnostics, and sklearn comparison :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 6. Scaling, diagnostics, and sklearn comparison
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 6. Scaling, diagnostics, and sklearn comparison :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 6. Scaling, diagnostics, and sklearn comparison
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 7. Full classical-model comparison matrix :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 7. Full classical-model comparison matrix
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 7. Full classical-model comparison matrix :: cell 2'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 7. Full classical-model comparison matrix
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 8. Pitfalls, exam connections, and closing synthesis :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 8. Pitfalls, exam connections, and closing synthesis
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > Checkpoint answers :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - Checkpoint answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - classical-model-comparison
+  - decision-trees
+  - ensemble-learning
+  - k-means
+  - lloyd-algorithm
+  - logistic-regression
+  - margin-and-hinge-loss
+  - svm
+  - tree-split-criteria
+  declared_problem_ids: []
+  api_tokens:
+  - X_compare.astype
+  - fold_scores.mean
+  - km.fit
+  - labels.copy
+  - np.all
+  - np.allclose
+  - np.argmax
+  - np.argmin
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.bincount
+  - np.diag
+  - np.diff
+  - np.flatnonzero
+  - np.isfinite
+  - np.linalg.norm
+  - np.max
+  - np.random.default_rng
+  - np.vstack
+  - trace.append
+  - y_compare.astype
+- path: units/C12-classical-models/practice/p01.ipynb
+  kind: notebook
+  semantic_sha256: dce2a993d57be1ac54a5cb46b3b9b5727c56eee15618ee0c2e88138317c81a46
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p01.ipynb :: C12-classical-models — Practice p01 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p01
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p01.ipynb :: C12-classical-models — Practice p01 > Your response :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p01
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - logistic-regression
+  declared_problem_ids:
+  - C12-p01
+  api_tokens: []
+- path: units/C12-classical-models/practice/p01_solution.ipynb
+  kind: notebook
+  semantic_sha256: 0a361ccc40fb2cdb2f144caebe93b50a17ee0adf43aafadc438d98bb0bc340ec
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p01_solution.ipynb :: C12-classical-models — Practice p01 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p01 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p01_solution.ipynb :: C12-classical-models — Practice p01 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p01 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p01_solution.ipynb :: C12-classical-models — Practice p01 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p01 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p01_solution.ipynb :: C12-classical-models — Practice p01 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p01 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p01_solution.ipynb :: C12-classical-models — Practice p01 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p01 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - logistic-regression
+  declared_problem_ids:
+  - C12-p01
+  api_tokens:
+  - np.isclose
+- path: units/C12-classical-models/practice/p02.ipynb
+  kind: notebook
+  semantic_sha256: 7c20f4342d3010c6e692e508bc5c3d8114c760c6c187c47959892abed1c56186
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p02.ipynb :: C12-classical-models — Practice p02 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p02
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p02.ipynb :: C12-classical-models — Practice p02 > Your response :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p02
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - margin-and-hinge-loss
+  - svm
+  declared_problem_ids:
+  - C12-p02
+  api_tokens: []
+- path: units/C12-classical-models/practice/p02_solution.ipynb
+  kind: notebook
+  semantic_sha256: 50914d85b5e9307c5d8700a78fb676abe4da16dd4bd75d97c2a7ad22216ecad6
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p02_solution.ipynb :: C12-classical-models — Practice p02 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p02 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p02_solution.ipynb :: C12-classical-models — Practice p02 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p02 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p02_solution.ipynb :: C12-classical-models — Practice p02 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p02 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p02_solution.ipynb :: C12-classical-models — Practice p02 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p02 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p02_solution.ipynb :: C12-classical-models — Practice p02 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p02 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - margin-and-hinge-loss
+  - svm
+  declared_problem_ids:
+  - C12-p02
+  api_tokens:
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.maximum
+- path: units/C12-classical-models/practice/p03.ipynb
+  kind: notebook
+  semantic_sha256: 4ca4d4bb055842ca33dfe2e9c797b1115988a8e06da57a685adf94990a5b7d87
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p03.ipynb :: C12-classical-models — Practice p03 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p03
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p03.ipynb :: C12-classical-models — Practice p03 > Your response :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p03
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  - tree-split-criteria
+  declared_problem_ids:
+  - C12-p03
+  api_tokens: []
+- path: units/C12-classical-models/practice/p03_solution.ipynb
+  kind: notebook
+  semantic_sha256: 0243d2c85237bb5fde370ab31253b04abe0fce0c47874c83855f0f3494aafca5
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p03_solution.ipynb :: C12-classical-models — Practice p03 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p03 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p03_solution.ipynb :: C12-classical-models — Practice p03 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p03 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p03_solution.ipynb :: C12-classical-models — Practice p03 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p03 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p03_solution.ipynb :: C12-classical-models — Practice p03 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p03 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p03_solution.ipynb :: C12-classical-models — Practice p03 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p03 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  - tree-split-criteria
+  declared_problem_ids:
+  - C12-p03
+  api_tokens:
+  - fractions.Fraction
+- path: units/C12-classical-models/practice/p04.ipynb
+  kind: notebook
+  semantic_sha256: e19b0281856209da5766417f7688d46794a713af3b343f67dc1629d42476749d
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p04.ipynb :: C12-classical-models — Practice p04 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p04
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p04.ipynb :: C12-classical-models — Practice p04 > Your response :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p04
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - ensemble-learning
+  declared_problem_ids:
+  - C12-p04
+  api_tokens: []
+- path: units/C12-classical-models/practice/p04_solution.ipynb
+  kind: notebook
+  semantic_sha256: 5e84f6852cf606701f31fa895c884ade9fdd998b48450048c5ee02626a09d251
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p04_solution.ipynb :: C12-classical-models — Practice p04 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p04 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p04_solution.ipynb :: C12-classical-models — Practice p04 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p04 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p04_solution.ipynb :: C12-classical-models — Practice p04 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p04 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p04_solution.ipynb :: C12-classical-models — Practice p04 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p04 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p04_solution.ipynb :: C12-classical-models — Practice p04 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p04 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - ensemble-learning
+  declared_problem_ids:
+  - C12-p04
+  api_tokens: []
+- path: units/C12-classical-models/practice/p05.ipynb
+  kind: notebook
+  semantic_sha256: 48dd30d594bffe1838431201d7836cf383a389788bcc885a1564575fbd5cda22
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p05.ipynb :: C12-classical-models — Practice p05 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p05
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p05.ipynb :: C12-classical-models — Practice p05 > Your response :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p05
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - k-means
+  - lloyd-algorithm
+  declared_problem_ids:
+  - C12-p05
+  api_tokens: []
+- path: units/C12-classical-models/practice/p05_solution.ipynb
+  kind: notebook
+  semantic_sha256: 356a62d449c8a5e225e6e01c5e8080696d0687648343b47bb62f54b8c5f86380
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p05_solution.ipynb :: C12-classical-models — Practice p05 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p05 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p05_solution.ipynb :: C12-classical-models — Practice p05 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p05 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p05_solution.ipynb :: C12-classical-models — Practice p05 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p05 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p05_solution.ipynb :: C12-classical-models — Practice p05 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p05 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p05_solution.ipynb :: C12-classical-models — Practice p05 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p05 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - k-means
+  - lloyd-algorithm
+  declared_problem_ids:
+  - C12-p05
+  api_tokens:
+  - fractions.Fraction
+- path: units/C12-classical-models/practice/p06.ipynb
+  kind: notebook
+  semantic_sha256: edabc461089412d53bce0f6be236806101a1cba282174ef1131732e3c076089d
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p06.ipynb :: C12-classical-models — Practice p06 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p06
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p06.ipynb :: C12-classical-models — Practice p06 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p06
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - logistic-regression
+  declared_problem_ids:
+  - C12-p06
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p06_solution.ipynb
+  kind: notebook
+  semantic_sha256: cada0fcc9925cf97419aca0565eb7b6a3af4475d769b4e71d9638baf462e7260
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p06_solution.ipynb :: C12-classical-models — Practice p06 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p06 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p06_solution.ipynb :: C12-classical-models — Practice p06 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p06 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p06_solution.ipynb :: C12-classical-models — Practice p06 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p06 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p06_solution.ipynb :: C12-classical-models — Practice p06 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p06 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p06_solution.ipynb :: C12-classical-models — Practice p06 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p06 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - logistic-regression
+  declared_problem_ids:
+  - C12-p06
+  api_tokens:
+  - array.astype
+  - losses.mean
+  - np.abs
+  - np.all
+  - np.allclose
+  - np.array
+  - np.asarray
+  - np.empty_like
+  - np.exp
+  - np.isclose
+  - np.iscomplexobj
+  - np.isfinite
+  - np.issubdtype
+  - np.log
+  - np.log1p
+  - np.maximum
+- path: units/C12-classical-models/practice/p07.ipynb
+  kind: notebook
+  semantic_sha256: 9229bffe713152b858cbb83fbbaffc3fc8f056669e0f41712fd96565955fd106
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p07.ipynb :: C12-classical-models — Practice p07 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p07
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p07.ipynb :: C12-classical-models — Practice p07 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p07
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - logistic-regression
+  declared_problem_ids:
+  - C12-p07
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p07_solution.ipynb
+  kind: notebook
+  semantic_sha256: a336ef195c7c8ae944a4982aae79cd3567f36e45dd9467c3e193e645afef0b9f
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p07_solution.ipynb :: C12-classical-models — Practice p07 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p07 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p07_solution.ipynb :: C12-classical-models — Practice p07 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p07 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p07_solution.ipynb :: C12-classical-models — Practice p07 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p07 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p07_solution.ipynb :: C12-classical-models — Practice p07 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p07 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p07_solution.ipynb :: C12-classical-models — Practice p07 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p07 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - logistic-regression
+  declared_problem_ids:
+  - C12-p07
+  api_tokens:
+  - np.abs
+  - np.all
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.empty
+  - np.empty_like
+  - np.exp
+  - np.isclose
+  - np.isfinite
+  - np.log
+  - np.log1p
+  - np.maximum
+  - np.mean
+  - np.zeros
+  - y_p07.astype
+- path: units/C12-classical-models/practice/p08.ipynb
+  kind: notebook
+  semantic_sha256: 66aa85cc36bcd679e324f92c65fb28ef35fa20f36fcadf114604fe0b5b692705
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p08.ipynb :: C12-classical-models — Practice p08 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p08
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p08.ipynb :: C12-classical-models — Practice p08 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p08
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - margin-and-hinge-loss
+  - svm
+  declared_problem_ids:
+  - C12-p08
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p08_solution.ipynb
+  kind: notebook
+  semantic_sha256: 8ed8d1003372fc753bd6f9e6f4906ce12f6ece0680eeaf0c8c2d592cc842fbea
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p08_solution.ipynb :: C12-classical-models — Practice p08 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p08 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p08_solution.ipynb :: C12-classical-models — Practice p08 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p08 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p08_solution.ipynb :: C12-classical-models — Practice p08 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p08 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p08_solution.ipynb :: C12-classical-models — Practice p08 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p08 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p08_solution.ipynb :: C12-classical-models — Practice p08 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p08 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - margin-and-hinge-loss
+  - svm
+  declared_problem_ids:
+  - C12-p08
+  api_tokens:
+  - np.all
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.isclose
+  - np.isfinite
+  - np.maximum
+  - scalars.append
+- path: units/C12-classical-models/practice/p09.ipynb
+  kind: notebook
+  semantic_sha256: 650bddc07d69296972fded40e60936732af34941de794d582c5e9c6bd4ee74d9
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p09.ipynb :: C12-classical-models — Practice p09 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p09
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p09.ipynb :: C12-classical-models — Practice p09 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p09
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - svm
+  declared_problem_ids:
+  - C12-p09
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p09_solution.ipynb
+  kind: notebook
+  semantic_sha256: 3082436cf789c33bc264c1c64c2bf5981e77d219ad17705b4902303fc7c1a232
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p09_solution.ipynb :: C12-classical-models — Practice p09 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p09 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p09_solution.ipynb :: C12-classical-models — Practice p09 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p09 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p09_solution.ipynb :: C12-classical-models — Practice p09 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p09 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p09_solution.ipynb :: C12-classical-models — Practice p09 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p09 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p09_solution.ipynb :: C12-classical-models — Practice p09 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p09 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - svm
+  declared_problem_ids:
+  - C12-p09
+  api_tokens:
+  - model.decision_function
+  - model.fit
+  - model.predict
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.count_nonzero
+  - np.exp
+  - np.isfinite
+  - np.issubdtype
+  - np.unique
+  - scaler.transform
+  - sklearn.pipeline.make_pipeline
+  - sklearn.preprocessing.StandardScaler
+  - sklearn.svm.SVC
+  - svc.support_.astype
+- path: units/C12-classical-models/practice/p10.ipynb
+  kind: notebook
+  semantic_sha256: 1300e1c21e4e54a6b98c37165bfa4767098b6ddb625484d3a7fe5f2879e9fc8f
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p10.ipynb :: C12-classical-models — Practice p10 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p10
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p10.ipynb :: C12-classical-models — Practice p10 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p10
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  - tree-split-criteria
+  declared_problem_ids:
+  - C12-p10
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p10_solution.ipynb
+  kind: notebook
+  semantic_sha256: be93554167540a4f590c512658a884a57e24e9de5fbb0d637d3b95514021ed06
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p10_solution.ipynb :: C12-classical-models — Practice p10 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p10 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p10_solution.ipynb :: C12-classical-models — Practice p10 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p10 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p10_solution.ipynb :: C12-classical-models — Practice p10 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p10 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p10_solution.ipynb :: C12-classical-models — Practice p10 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p10 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p10_solution.ipynb :: C12-classical-models — Practice p10 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p10 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  - tree-split-criteria
+  declared_problem_ids:
+  - C12-p10
+  api_tokens:
+  - candidates.append
+  - left.sum
+  - np.array
+  - np.isclose
+  - np.isfinite
+  - np.issubdtype
+  - np.unique
+- path: units/C12-classical-models/practice/p11.ipynb
+  kind: notebook
+  semantic_sha256: b59efcafef8fc66ed063315f60decef1c866fff1b679f3d7255bb5457f151820
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p11.ipynb :: C12-classical-models — Practice p11 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p11
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p11.ipynb :: C12-classical-models — Practice p11 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p11
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  declared_problem_ids:
+  - C12-p11
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p11_solution.ipynb
+  kind: notebook
+  semantic_sha256: 4cebf3d82dd622bd7f1c9c7c4fa674342aa60b5b2522ab420a9d6751a42ad576
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p11_solution.ipynb :: C12-classical-models — Practice p11 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p11 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p11_solution.ipynb :: C12-classical-models — Practice p11 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p11 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p11_solution.ipynb :: C12-classical-models — Practice p11 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p11 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p11_solution.ipynb :: C12-classical-models — Practice p11 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p11 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p11_solution.ipynb :: C12-classical-models — Practice p11 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p11 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  declared_problem_ids:
+  - C12-p11
+  api_tokens:
+  - candidates.append
+  - counts.max
+  - local_left.sum
+  - np.arange
+  - np.array
+  - np.array_equal
+  - np.empty
+  - np.flatnonzero
+  - np.isfinite
+  - np.issubdtype
+  - np.unique
+- path: units/C12-classical-models/practice/p12.ipynb
+  kind: notebook
+  semantic_sha256: 6aaa19ca4b75597a46c287226478b0f8b03bf466759791b689092b0c5af6acc2
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p12.ipynb :: C12-classical-models — Practice p12 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p12
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p12.ipynb :: C12-classical-models — Practice p12 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p12
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - ensemble-learning
+  declared_problem_ids:
+  - C12-p12
+  api_tokens:
+  - np.array
+  - np.random.default_rng
+  - rng_p12.normal
+- path: units/C12-classical-models/practice/p12_solution.ipynb
+  kind: notebook
+  semantic_sha256: e11107ed92e374b1c038269ae35fd038105d1c6c73482298854b95259b2f23c3
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p12_solution.ipynb :: C12-classical-models — Practice p12 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p12 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p12_solution.ipynb :: C12-classical-models — Practice p12 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p12 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p12_solution.ipynb :: C12-classical-models — Practice p12 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p12 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p12_solution.ipynb :: C12-classical-models — Practice p12 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p12 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p12_solution.ipynb :: C12-classical-models — Practice p12 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p12 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - ensemble-learning
+  declared_problem_ids:
+  - C12-p12
+  api_tokens:
+  - members.sum
+  - model.feature_importances_.astype
+  - model.fit
+  - model.predict_proba
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.isclose
+  - np.isfinite
+  - np.issubdtype
+  - np.random.default_rng
+  - np.unique
+  - np.vstack
+  - rng_p12.normal
+  - sklearn.ensemble.RandomForestClassifier
+  - tree.predict
+- path: units/C12-classical-models/practice/p13.ipynb
+  kind: notebook
+  semantic_sha256: e75be3f23526a064dc4cf4d1e788a1539464973cac32084a272fda56e4ccc400
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p13.ipynb :: C12-classical-models — Practice p13 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p13
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p13.ipynb :: C12-classical-models — Practice p13 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p13
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - k-means
+  - lloyd-algorithm
+  declared_problem_ids:
+  - C12-p13
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p13_solution.ipynb
+  kind: notebook
+  semantic_sha256: 121e87d171a88cf032ea90c7cce65711aa0bfe312c8fbaae8fc28d9b6817b9f8
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p13_solution.ipynb :: C12-classical-models — Practice p13 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p13 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p13_solution.ipynb :: C12-classical-models — Practice p13 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p13 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p13_solution.ipynb :: C12-classical-models — Practice p13 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p13 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p13_solution.ipynb :: C12-classical-models — Practice p13 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p13 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p13_solution.ipynb :: C12-classical-models — Practice p13 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p13 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - k-means
+  - lloyd-algorithm
+  declared_problem_ids:
+  - C12-p13
+  api_tokens:
+  - initial_centroids.copy
+  - labels.copy
+  - np.abs
+  - np.all
+  - np.allclose
+  - np.arange
+  - np.argmin
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.bincount
+  - np.diff
+  - np.flatnonzero
+  - np.isfinite
+  - np.isscalar
+  - np.linalg.norm
+  - np.vstack
+  - trace.append
+- path: units/C12-classical-models/practice/p14.ipynb
+  kind: notebook
+  semantic_sha256: 049d776ca99e0ca55bc442a6f8fbaea4ef3de91e6061414a1c86f2894c0a7aac
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p14.ipynb :: C12-classical-models — Practice p14 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p14
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p14.ipynb :: C12-classical-models — Practice p14 > Your derivation :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p14
+    - Your derivation
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - logistic-regression
+  declared_problem_ids:
+  - C12-p14
+  api_tokens: []
+- path: units/C12-classical-models/practice/p14_solution.ipynb
+  kind: notebook
+  semantic_sha256: 5699d2d7fd2c65ea9a6162b2f543518d645adc27e5263895c9b42084b22229b5
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p14_solution.ipynb :: C12-classical-models — Practice p14 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p14 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p14_solution.ipynb :: C12-classical-models — Practice p14 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p14 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p14_solution.ipynb :: C12-classical-models — Practice p14 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p14 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p14_solution.ipynb :: C12-classical-models — Practice p14 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p14 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p14_solution.ipynb :: C12-classical-models — Practice p14 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p14 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - logistic-regression
+  declared_problem_ids:
+  - C12-p14
+  api_tokens:
+  - np.abs
+  - np.allclose
+  - np.array
+  - np.exp
+  - np.log
+  - np.log1p
+  - np.maximum
+- path: units/C12-classical-models/practice/p15.ipynb
+  kind: notebook
+  semantic_sha256: f737a4477cdceaef1216490027bdb9613d846e1574c0f0ef681565c3067876e4
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p15.ipynb :: C12-classical-models — Practice p15 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p15
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p15.ipynb :: C12-classical-models — Practice p15 > Your proof :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p15
+    - Your proof
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - margin-and-hinge-loss
+  - svm
+  declared_problem_ids:
+  - C12-p15
+  api_tokens: []
+- path: units/C12-classical-models/practice/p15_solution.ipynb
+  kind: notebook
+  semantic_sha256: b25079a0f1704bb374180c585837aefc85ae2c9cc2b01ecc21ef2262a4f803d4
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p15_solution.ipynb :: C12-classical-models — Practice p15 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p15 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p15_solution.ipynb :: C12-classical-models — Practice p15 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p15 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p15_solution.ipynb :: C12-classical-models — Practice p15 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p15 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p15_solution.ipynb :: C12-classical-models — Practice p15 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p15 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p15_solution.ipynb :: C12-classical-models — Practice p15 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p15 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - margin-and-hinge-loss
+  - svm
+  declared_problem_ids:
+  - C12-p15
+  api_tokens:
+  - np.all
+  - np.allclose
+  - np.array
+  - np.array_equal
+- path: units/C12-classical-models/practice/p16.ipynb
+  kind: notebook
+  semantic_sha256: 24c7ae834e0923df2ea93900d9571d6955654311b243a94d6d60df612a5173da
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p16.ipynb :: C12-classical-models — Practice p16 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p16
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p16.ipynb :: C12-classical-models — Practice p16 > Your proof and exact impurity
+      table :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p16
+    - Your proof and exact impurity table
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  - tree-split-criteria
+  declared_problem_ids:
+  - C12-p16
+  api_tokens: []
+- path: units/C12-classical-models/practice/p16_solution.ipynb
+  kind: notebook
+  semantic_sha256: 04237d0e0a883595c29e704bd4a74d6438cb4f5602dd8fabfb06f1580e3ad618
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p16_solution.ipynb :: C12-classical-models — Practice p16 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p16 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p16_solution.ipynb :: C12-classical-models — Practice p16 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p16 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p16_solution.ipynb :: C12-classical-models — Practice p16 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p16 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p16_solution.ipynb :: C12-classical-models — Practice p16 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p16 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p16_solution.ipynb :: C12-classical-models — Practice p16 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p16 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  - tree-split-criteria
+  declared_problem_ids:
+  - C12-p16
+  api_tokens:
+  - fractions.Fraction
+- path: units/C12-classical-models/practice/p17.ipynb
+  kind: notebook
+  semantic_sha256: 1d5d2958136345d9cc463275412ab2fe2cf95d67032940e41d472d723e2523eb
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p17.ipynb :: C12-classical-models — Practice p17 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p17
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p17.ipynb :: C12-classical-models — Practice p17 > Your proof :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p17
+    - Your proof
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - k-means
+  - lloyd-algorithm
+  declared_problem_ids:
+  - C12-p17
+  api_tokens: []
+- path: units/C12-classical-models/practice/p17_solution.ipynb
+  kind: notebook
+  semantic_sha256: fb0932cb9e4b40a0dc1632b9ad70ad723dc850cfa323ed19a3d30394f961654d
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p17_solution.ipynb :: C12-classical-models — Practice p17 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p17 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p17_solution.ipynb :: C12-classical-models — Practice p17 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p17 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p17_solution.ipynb :: C12-classical-models — Practice p17 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p17 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p17_solution.ipynb :: C12-classical-models — Practice p17 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p17 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p17_solution.ipynb :: C12-classical-models — Practice p17 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p17 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - k-means
+  - lloyd-algorithm
+  declared_problem_ids:
+  - C12-p17
+  api_tokens:
+  - cluster_p17.mean
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.isclose
+  - np.sum
+- path: units/C12-classical-models/practice/p18.ipynb
+  kind: notebook
+  semantic_sha256: e706d7222ffef4c838b1725c29841c0207047c28fd0058480d1ff681c2fbe7b8
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p18.ipynb :: C12-classical-models — Practice p18 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p18
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p18.ipynb :: C12-classical-models — Practice p18 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p18
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - classical-model-comparison
+  - logistic-regression
+  - margin-and-hinge-loss
+  - svm
+  declared_problem_ids:
+  - C12-p18
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p18_solution.ipynb
+  kind: notebook
+  semantic_sha256: dbb8f5172b92577c2188dd67631d4fc80bc665f891f69f465dcc1a9e1c8cb2a4
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p18_solution.ipynb :: C12-classical-models — Practice p18 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p18 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p18_solution.ipynb :: C12-classical-models — Practice p18 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p18 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p18_solution.ipynb :: C12-classical-models — Practice p18 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p18 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p18_solution.ipynb :: C12-classical-models — Practice p18 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p18 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p18_solution.ipynb :: C12-classical-models — Practice p18 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p18 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - classical-model-comparison
+  - logistic-regression
+  - margin-and-hinge-loss
+  - svm
+  declared_problem_ids:
+  - C12-p18
+  api_tokens:
+  - X_train_p18.mean
+  - logistic.decision_function
+  - logistic.fit
+  - logistic.predict_proba
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.isclose
+  - np.maximum
+  - np.mean
+  - sklearn.linear_model.LogisticRegression
+  - sklearn.pipeline.make_pipeline
+  - sklearn.preprocessing.StandardScaler
+  - sklearn.svm.SVC
+  - svm.decision_function
+  - svm.fit
+- path: units/C12-classical-models/practice/p19.ipynb
+  kind: notebook
+  semantic_sha256: e927691ee20e455bb86a6e180ffe2bf409ecdaea84a1d7377613f08ed368f7a7
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p19.ipynb :: C12-classical-models — Practice p19 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p19
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p19.ipynb :: C12-classical-models — Practice p19 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p19
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - decision-trees
+  - ensemble-learning
+  declared_problem_ids:
+  - C12-p19
+  api_tokens:
+  - np.random.default_rng
+  - rng_p19.normal
+- path: units/C12-classical-models/practice/p19_solution.ipynb
+  kind: notebook
+  semantic_sha256: bbc5c3392c3bd0a47e201f9ada5a21b2709f9f08c5f62fd51842dd77fbf7d566
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p19_solution.ipynb :: C12-classical-models — Practice p19 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p19 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p19_solution.ipynb :: C12-classical-models — Practice p19 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p19 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p19_solution.ipynb :: C12-classical-models — Practice p19 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p19 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p19_solution.ipynb :: C12-classical-models — Practice p19 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p19 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p19_solution.ipynb :: C12-classical-models — Practice p19 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p19 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - decision-trees
+  - ensemble-learning
+  declared_problem_ids:
+  - C12-p19
+  api_tokens:
+  - bag.fit
+  - bag.predict
+  - bag_accuracy.mean
+  - bag_predictions.append
+  - bag_variance.mean
+  - bagging_models.append
+  - matrix.mean
+  - np.asarray
+  - np.isclose
+  - np.mean
+  - np.random.default_rng
+  - rng_p19.normal
+  - sklearn.ensemble.BaggingClassifier
+  - sklearn.tree.DecisionTreeClassifier
+  - tree.fit
+  - tree.predict
+  - tree_accuracy.mean
+  - tree_models.append
+  - tree_predictions.append
+  - tree_variance.mean
+- path: units/C12-classical-models/practice/p20.ipynb
+  kind: notebook
+  semantic_sha256: 8176e36ba565f9f34e3fe4d0d50ef4e8ff2ac776317ab29cd3b8a5c28fa9c2d7
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p20.ipynb :: C12-classical-models — Practice p20 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p20
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p20.ipynb :: C12-classical-models — Practice p20 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p20
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - k-means
+  - lloyd-algorithm
+  declared_problem_ids:
+  - C12-p20
+  api_tokens:
+  - np.random.default_rng
+  - np.vstack
+  - rng_p20.normal
+- path: units/C12-classical-models/practice/p20_solution.ipynb
+  kind: notebook
+  semantic_sha256: 7b777d20ea666e75083f3cc822b42447628fef45024c055658afc5f401888510
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p20_solution.ipynb :: C12-classical-models — Practice p20 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p20 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p20_solution.ipynb :: C12-classical-models — Practice p20 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p20 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p20_solution.ipynb :: C12-classical-models — Practice p20 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p20 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p20_solution.ipynb :: C12-classical-models — Practice p20 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p20 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p20_solution.ipynb :: C12-classical-models — Practice p20 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p20 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - k-means
+  - lloyd-algorithm
+  declared_problem_ids:
+  - C12-p20
+  api_tokens:
+  - np.allclose
+  - np.arange
+  - np.argmin
+  - np.array
+  - np.mean
+  - np.ones
+  - np.random.default_rng
+  - np.stack
+  - np.triu_indices
+  - np.vstack
+  - rng_p20.normal
+  - sklearn.cluster.KMeans
+- path: units/C12-classical-models/practice/p21.ipynb
+  kind: notebook
+  semantic_sha256: bea7840fc51cef8e0df315b4126081dbcdd22605a436142e0e50b898f5575549
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p21.ipynb :: C12-classical-models — Practice p21 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p21
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p21.ipynb :: C12-classical-models — Practice p21 > Public scaffold and primary-fit
+      clarification :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p21
+    - Public scaffold and primary-fit clarification
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p21.ipynb :: C12-classical-models — Practice p21 > Public scaffold and primary-fit
+      clarification :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p21
+    - Public scaffold and primary-fit clarification
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p21.ipynb :: C12-classical-models — Practice p21 > Public scaffold and primary-fit
+      clarification :: cell 3'
+    heading_path:
+    - C12-classical-models — Practice p21
+    - Public scaffold and primary-fit clarification
+    cell_ordinal: 3
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - classical-model-comparison
+  - decision-trees
+  - ensemble-learning
+  - k-means
+  - logistic-regression
+  - svm
+  declared_problem_ids:
+  - C12-p21
+  api_tokens:
+  - X_p21.astype
+  - np.array
+  - sklearn.datasets.make_moons
+  - y_p21.astype
+- path: units/C12-classical-models/practice/p21_solution.ipynb
+  kind: notebook
+  semantic_sha256: 05e37e1e65feb18dd801db58e900f5a7fb639c4b1810de3834314caa7ba18237
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p21_solution.ipynb :: C12-classical-models — Practice p21 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p21 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p21_solution.ipynb :: C12-classical-models — Practice p21 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p21 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p21_solution.ipynb :: C12-classical-models — Practice p21 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p21 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p21_solution.ipynb :: C12-classical-models — Practice p21 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p21 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p21_solution.ipynb :: C12-classical-models — Practice p21 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p21 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - classical-model-comparison
+  - decision-trees
+  - ensemble-learning
+  - k-means
+  - logistic-regression
+  - svm
+  declared_problem_ids:
+  - C12-p21
+  api_tokens:
+  - P21_KMEANS_SEEDS.copy
+  - X_p21.astype
+  - X_test.astype
+  - X_train.astype
+  - estimator.decision_function
+  - estimator.predict
+  - estimator.predict_proba
+  - expected_selected_p21.items
+  - fold_scores.mean
+  - kmeans_scaler.transform
+  - np.allclose
+  - np.arange
+  - np.argmax
+  - np.array
+  - np.isclose
+  - np.mean
+  - np.triu_indices
+  - np.vstack
+  - sklearn.cluster.KMeans
+  - sklearn.datasets.make_moons
+  - sklearn.ensemble.RandomForestClassifier
+  - sklearn.linear_model.LogisticRegression
+  - sklearn.model_selection.StratifiedKFold
+  - sklearn.model_selection.cross_val_score
+  - sklearn.model_selection.train_test_split
+  - sklearn.pipeline.make_pipeline
+  - sklearn.preprocessing.StandardScaler
+  - sklearn.svm.SVC
+  - sklearn.tree.DecisionTreeClassifier
+  - test_indices.astype
+  - train_indices.astype
+  - y_p21.astype
+  - y_test.astype
+  - y_train.astype
+- path: units/C12-classical-models/practice/p22.ipynb
+  kind: notebook
+  semantic_sha256: df04e66d1ed2c00a511db689af1ed4a8779218593207bcc529226958dae8e261
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p22.ipynb :: C12-classical-models — Practice p22 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p22
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p22.ipynb :: C12-classical-models — Practice p22 > Your workflow and model-choice
+      audit :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p22
+    - Your workflow and model-choice audit
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - classical-model-comparison
+  - logistic-regression
+  - svm
+  declared_problem_ids:
+  - C12-p22
+  api_tokens: []
+- path: units/C12-classical-models/practice/p22_solution.ipynb
+  kind: notebook
+  semantic_sha256: c833420482b399a1e96c8250f2972bbc59fe2cbc5b3c2ff31938a5f423345f55
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p22_solution.ipynb :: C12-classical-models — Practice p22 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p22 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p22_solution.ipynb :: C12-classical-models — Practice p22 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p22 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p22_solution.ipynb :: C12-classical-models — Practice p22 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p22 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p22_solution.ipynb :: C12-classical-models — Practice p22 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p22 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p22_solution.ipynb :: C12-classical-models — Practice p22 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p22 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - classical-model-comparison
+  - logistic-regression
+  - svm
+  declared_problem_ids:
+  - C12-p22
+  api_tokens:
+  - ast.parse
+- path: units/C12-classical-models/practice/p23.ipynb
+  kind: notebook
+  semantic_sha256: ed9c7ed3a72d25660d72dd9393ad8883422838a00b41b8a44f962f913030db12
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p23.ipynb :: C12-classical-models — Practice p23 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p23
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p23.ipynb :: C12-classical-models — Practice p23 > Your diagnosis and pruning/control
+      plan :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p23
+    - Your diagnosis and pruning/control plan
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  - tree-split-criteria
+  declared_problem_ids:
+  - C12-p23
+  api_tokens: []
+- path: units/C12-classical-models/practice/p23_solution.ipynb
+  kind: notebook
+  semantic_sha256: 1e55897d1bde62deae7c655a39fbbaa587e070dfa15affa900fa3c3662efc648
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p23_solution.ipynb :: C12-classical-models — Practice p23 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p23 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p23_solution.ipynb :: C12-classical-models — Practice p23 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p23 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p23_solution.ipynb :: C12-classical-models — Practice p23 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p23 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p23_solution.ipynb :: C12-classical-models — Practice p23 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p23 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p23_solution.ipynb :: C12-classical-models — Practice p23 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p23 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  - tree-split-criteria
+  declared_problem_ids:
+  - C12-p23
+  api_tokens: []
+- path: units/C12-classical-models/practice/p24.ipynb
+  kind: notebook
+  semantic_sha256: 4331ba51a3e25b6961cdb8e850fe85a731ef8429dbfc018bc317021b6f5001ae
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p24.ipynb :: C12-classical-models — Practice p24 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p24
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p24.ipynb :: C12-classical-models — Practice p24 > Your four-team decision
+      table :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p24
+    - Your four-team decision table
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - classical-model-comparison
+  - ensemble-learning
+  declared_problem_ids:
+  - C12-p24
+  api_tokens: []
+- path: units/C12-classical-models/practice/p24_solution.ipynb
+  kind: notebook
+  semantic_sha256: bda8d32fe8fceae0c793306595a016a2a951fca5d0ca0cf5fb27226ef53f18de
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p24_solution.ipynb :: C12-classical-models — Practice p24 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p24 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p24_solution.ipynb :: C12-classical-models — Practice p24 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p24 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p24_solution.ipynb :: C12-classical-models — Practice p24 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p24 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p24_solution.ipynb :: C12-classical-models — Practice p24 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p24 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p24_solution.ipynb :: C12-classical-models — Practice p24 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p24 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - classical-model-comparison
+  - ensemble-learning
+  declared_problem_ids:
+  - C12-p24
+  api_tokens:
+  - np.array
+  - np.asarray
+  - np.exp
+  - np.full
+  - np.isclose
+  - np.log
+  - team_decisions_p24.items
+  - unnormalized.sum
+- path: units/C12-classical-models/practice/p25.ipynb
+  kind: notebook
+  semantic_sha256: bb0bc6364f0ca61d1481bcc3ccccd88abec66b6cdedbd0a9ad619cf4c397dd49
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p25.ipynb :: C12-classical-models — Practice p25 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p25
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p25.ipynb :: C12-classical-models — Practice p25 > Your clustering-validity
+      audit :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p25
+    - Your clustering-validity audit
+    cell_ordinal: 1
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - classical-model-comparison
+  - k-means
+  declared_problem_ids:
+  - C12-p25
+  api_tokens: []
+- path: units/C12-classical-models/practice/p25_solution.ipynb
+  kind: notebook
+  semantic_sha256: a6d0b0bff771461647333cc8b6702a3b044d04ae537d8c2701fa0a0c11673bd7
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p25_solution.ipynb :: C12-classical-models — Practice p25 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p25 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p25_solution.ipynb :: C12-classical-models — Practice p25 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p25 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p25_solution.ipynb :: C12-classical-models — Practice p25 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p25 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p25_solution.ipynb :: C12-classical-models — Practice p25 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p25 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p25_solution.ipynb :: C12-classical-models — Practice p25 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p25 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - classical-model-comparison
+  - k-means
+  declared_problem_ids:
+  - C12-p25
+  api_tokens: []
+- path: units/C12-classical-models/practice/p26.ipynb
+  kind: notebook
+  semantic_sha256: e1f172925658d24a0cecd36c7566b80eb7c2f4a530c05e9939ab821ae0ccf12b
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p26.ipynb :: C12-classical-models — Practice p26 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p26
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p26.ipynb :: C12-classical-models — Practice p26 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p26
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - logistic-regression
+  declared_problem_ids:
+  - C12-p26
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p26_solution.ipynb
+  kind: notebook
+  semantic_sha256: 377f0a755c30065d24966a7b39bf55a5317e8a29ffaf55550c33969388dde2dc
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p26_solution.ipynb :: C12-classical-models — Practice p26 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p26 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p26_solution.ipynb :: C12-classical-models — Practice p26 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p26 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p26_solution.ipynb :: C12-classical-models — Practice p26 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p26 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p26_solution.ipynb :: C12-classical-models — Practice p26 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p26 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p26_solution.ipynb :: C12-classical-models — Practice p26 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p26 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - logistic-regression
+  declared_problem_ids:
+  - C12-p26
+  api_tokens:
+  - np.abs
+  - np.all
+  - np.allclose
+  - np.array
+  - np.asarray
+  - np.diff
+  - np.empty_like
+  - np.exp
+  - np.isfinite
+  - np.log1p
+  - np.maximum
+  - np.mean
+  - np.ones
+  - probabilities.astype
+  - y_p26.astype
+- path: units/C12-classical-models/practice/p27.ipynb
+  kind: notebook
+  semantic_sha256: 3466589cfbf02f08b7bce46568d74d8e0e408a036fad2343c11e6de806e34a0a
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p27.ipynb :: C12-classical-models — Practice p27 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p27
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p27.ipynb :: C12-classical-models — Practice p27 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p27
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - margin-and-hinge-loss
+  - svm
+  declared_problem_ids:
+  - C12-p27
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p27_solution.ipynb
+  kind: notebook
+  semantic_sha256: 8025fb9c5dad5dbecf1c3463ee60e2fdd229cdb128bd7c959c4344de5a7f4d82
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p27_solution.ipynb :: C12-classical-models — Practice p27 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p27 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p27_solution.ipynb :: C12-classical-models — Practice p27 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p27 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p27_solution.ipynb :: C12-classical-models — Practice p27 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p27 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p27_solution.ipynb :: C12-classical-models — Practice p27 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p27 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p27_solution.ipynb :: C12-classical-models — Practice p27 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p27 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - margin-and-hinge-loss
+  - svm
+  declared_problem_ids:
+  - C12-p27
+  api_tokens:
+  - contributions.sum
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.exp
+  - np.full
+  - np.isfinite
+  - np.where
+- path: units/C12-classical-models/practice/p28.ipynb
+  kind: notebook
+  semantic_sha256: 31c182c68ba7ccb7bcaa8da8289dbb1e5957d76e0c107c1c478dfc5b9e8ebbbb
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p28.ipynb :: C12-classical-models — Practice p28 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p28
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p28.ipynb :: C12-classical-models — Practice p28 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p28
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  - tree-split-criteria
+  declared_problem_ids:
+  - C12-p28
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p28_solution.ipynb
+  kind: notebook
+  semantic_sha256: 6a5af5b9d73d1ff68bccc96b19ee585b920676255b871f30c025785f719ae030
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p28_solution.ipynb :: C12-classical-models — Practice p28 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p28 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p28_solution.ipynb :: C12-classical-models — Practice p28 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p28 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p28_solution.ipynb :: C12-classical-models — Practice p28 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p28 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p28_solution.ipynb :: C12-classical-models — Practice p28 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p28 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p28_solution.ipynb :: C12-classical-models — Practice p28 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p28 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - decision-trees
+  - tree-split-criteria
+  declared_problem_ids:
+  - C12-p28
+  api_tokens:
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.empty
+  - np.isclose
+  - np.isfinite
+  - predictions_p28.copy
+  - steps.append
+  - traces.append
+- path: units/C12-classical-models/practice/p29.ipynb
+  kind: notebook
+  semantic_sha256: 173287a0e60f2e953b85ea99facb962d1f2193ff21f07fa89e02bd87fa6b7e89
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p29.ipynb :: C12-classical-models — Practice p29 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p29
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p29.ipynb :: C12-classical-models — Practice p29 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p29
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - ensemble-learning
+  declared_problem_ids:
+  - C12-p29
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p29_solution.ipynb
+  kind: notebook
+  semantic_sha256: 90d927d1515b0512f5a68286577123c8c8184151d0888a6695ae37127d35f1ff
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p29_solution.ipynb :: C12-classical-models — Practice p29 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p29 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p29_solution.ipynb :: C12-classical-models — Practice p29 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p29 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p29_solution.ipynb :: C12-classical-models — Practice p29 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p29 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p29_solution.ipynb :: C12-classical-models — Practice p29 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p29 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p29_solution.ipynb :: C12-classical-models — Practice p29 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p29 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - ensemble-learning
+  declared_problem_ids:
+  - C12-p29
+  api_tokens:
+  - np.all
+  - np.allclose
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.exp
+  - np.full
+  - np.isclose
+  - np.log
+  - np.where
+  - q2.astype
+  - q3.astype
+  - unnormalized_q2.astype
+  - unnormalized_q2.sum
+  - unnormalized_q3.astype
+  - unnormalized_q3.sum
+  - value.astype
+- path: units/C12-classical-models/practice/p30.ipynb
+  kind: notebook
+  semantic_sha256: 507fe941bbadf44ede37fe1cd134dd8bf33cd0c13efc80e5da898ab536a39bc1
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p30.ipynb :: C12-classical-models — Practice p30 :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p30
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p30.ipynb :: C12-classical-models — Practice p30 :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p30
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - k-means
+  - lloyd-algorithm
+  declared_problem_ids:
+  - C12-p30
+  api_tokens:
+  - np.array
+- path: units/C12-classical-models/practice/p30_solution.ipynb
+  kind: notebook
+  semantic_sha256: 5941aab6424409d1c9def6826d2f37254952278a5133cb247274f947946f0d9e
+  anchors:
+  - anchor: 'units/C12-classical-models/practice/p30_solution.ipynb :: C12-classical-models — Practice p30 — Solution :: cell
+      1'
+    heading_path:
+    - C12-classical-models — Practice p30 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p30_solution.ipynb :: C12-classical-models — Practice p30 — Solution :: cell
+      2'
+    heading_path:
+    - C12-classical-models — Practice p30 — Solution
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/practice/p30_solution.ipynb :: C12-classical-models — Practice p30 — Solution :: cell
+      3'
+    heading_path:
+    - C12-classical-models — Practice p30 — Solution
+    cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p30_solution.ipynb :: C12-classical-models — Practice p30 — Solution > Answer
+      check :: cell 1'
+    heading_path:
+    - C12-classical-models — Practice p30 — Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/practice/p30_solution.ipynb :: C12-classical-models — Practice p30 — Solution > Answer
+      check :: cell 2'
+    heading_path:
+    - C12-classical-models — Practice p30 — Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - k-means
+  - lloyd-algorithm
+  declared_problem_ids:
+  - C12-p30
+  api_tokens:
+  - initial_centroids.copy
+  - itertools.permutations
+  - labels.copy
+  - np.abs
+  - np.all
+  - np.allclose
+  - np.arange
+  - np.argmin
+  - np.array
+  - np.array_equal
+  - np.asarray
+  - np.bincount
+  - np.diff
+  - np.empty
+  - np.flatnonzero
+  - np.isclose
+  - np.isfinite
+  - np.isscalar
+  - np.linalg.norm
+  - np.mean
+  - np.ones
+  - np.stack
+  - np.sum
+  - np.triu_indices
+  - np.vstack
+  - sklearn.cluster.KMeans
+  - sklearn_model_p30.cluster_centers_.astype
+  - trace.append
+- path: units/C12-classical-models/review.ipynb
+  kind: notebook
+  semantic_sha256: 7ea568ce03f561fc829e8025bdbb6994d48deef94027765935959d12a1178c66
+  anchors:
+  - anchor: 'units/C12-classical-models/review.ipynb :: C12-classical-models — Review :: cell 1'
+    heading_path:
+    - C12-classical-models — Review
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/review.ipynb :: C12-classical-models — Review :: cell 2'
+    heading_path:
+    - C12-classical-models — Review
+    cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/review.ipynb :: C12-classical-models — Review > Concept summary :: cell 1'
+    heading_path:
+    - C12-classical-models — Review
+    - Concept summary
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/review.ipynb :: C12-classical-models — Review > Formula and API sheet :: cell 1'
+    heading_path:
+    - C12-classical-models — Review
+    - Formula and API sheet
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/review.ipynb :: C12-classical-models — Review > Comparison checklist and common repairs
+      :: cell 1'
+    heading_path:
+    - C12-classical-models — Review
+    - Comparison checklist and common repairs
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/review.ipynb :: C12-classical-models — Review > Self-quiz (13 items) :: cell 1'
+    heading_path:
+    - C12-classical-models — Review
+    - Self-quiz (13 items)
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/review.ipynb :: C12-classical-models — Review > What to redo for each weak spot ::
+      cell 1'
+    heading_path:
+    - C12-classical-models — Review
+    - What to redo for each weak spot
+    cell_ordinal: 1
+  - anchor: 'units/C12-classical-models/review.ipynb :: C12-classical-models — Review > What to redo for each weak spot ::
+      cell 2'
+    heading_path:
+    - C12-classical-models — Review
+    - What to redo for each weak spot
+    cell_ordinal: 2
+  declared_unit_ids:
+  - C12-classical-models
+  declared_concept_ids:
+  - bagging-and-boosting
+  - classical-model-comparison
+  - decision-trees
+  - ensemble-learning
+  - k-means
+  - lloyd-algorithm
+  - logistic-regression
+  - margin-and-hinge-loss
+  - svm
+  - tree-split-criteria
+  declared_problem_ids: []
+  api_tokens:
+  - np.random.default_rng
 - path: units/C2-linear-models/lesson.ipynb
   kind: notebook
   semantic_sha256: 1fced23116654ada8c80af9150e7d978d642174e3197f979bdcff49a78f5b740

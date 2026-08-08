@@ -99,6 +99,57 @@ PLAN017_CLOSURE = {
     ),
 }
 
+PLAN018_CLASSICAL_CLOSURE = {
+    "logistic-regression": {
+        "concepts": ["logistic-regression"],
+        "lesson_files": {"01-logistic-regression.ipynb"},
+        "practices": {
+            "theory": ["C12-p01", "C12-p14", "C12-p26"],
+            "implementation": ["C12-p06", "C12-p07", "C12-p18"],
+            "model-training": ["C12-p07", "C12-p18", "C12-p21"],
+        },
+    },
+    "support-vector-machine": {
+        "concepts": ["svm", "margin-and-hinge-loss"],
+        "lesson_files": {
+            "02-linear-svm-margin-and-hinge.ipynb",
+            "03-kernel-svm-and-dual-intuition.ipynb",
+        },
+        "practices": {
+            "theory": ["C12-p02", "C12-p15", "C12-p27"],
+            "implementation": ["C12-p08", "C12-p09", "C12-p27"],
+            "model-training": ["C12-p09", "C12-p18", "C12-p21"],
+        },
+    },
+    "decision-trees": {
+        "concepts": ["decision-trees", "tree-split-criteria"],
+        "lesson_files": {"04-decision-trees.ipynb"},
+        "practices": {
+            "theory": ["C12-p03", "C12-p16", "C12-p23"],
+            "implementation": ["C12-p10", "C12-p11", "C12-p28"],
+            "model-training": ["C12-p11", "C12-p19", "C12-p21"],
+        },
+    },
+    "ensemble-learning": {
+        "concepts": ["ensemble-learning", "bagging-and-boosting"],
+        "lesson_files": {"05-ensembles.ipynb"},
+        "practices": {
+            "theory": ["C12-p04", "C12-p24", "C12-p29"],
+            "implementation": ["C12-p12", "C12-p19", "C12-p29"],
+            "model-training": ["C12-p12", "C12-p19", "C12-p21"],
+        },
+    },
+    "k-means-clustering": {
+        "concepts": ["k-means", "lloyd-algorithm"],
+        "lesson_files": {"06-kmeans-and-model-comparison.ipynb"},
+        "practices": {
+            "theory": ["C12-p05", "C12-p17", "C12-p25"],
+            "implementation": ["C12-p13", "C12-p20", "C12-p30"],
+            "model-training": ["C12-p13", "C12-p20", "C12-p21"],
+        },
+    },
+}
+
 
 def _fixture_schedule_loader(root: str | Path):
     root = Path(root)
@@ -1470,11 +1521,11 @@ def test_roadmap_production_consumer_requires_the_full_canonical_schedule(
         renderer.render_documents(tmp_path)
 
 
-def test_renderer_recomputes_real_plan017_baseline() -> None:
+def test_renderer_recomputes_real_plan018_baseline() -> None:
     baseline = renderer.current_time_baseline(ROOT)
 
-    assert baseline.manifested_minutes == 16625
-    assert baseline.scheduled_minutes == 16865
+    assert baseline.manifested_minutes == 18635
+    assert baseline.scheduled_minutes == 18875
 
 
 def test_plan017_closure_has_exact_destinations_additions_and_primary_practices() -> None:
@@ -1499,27 +1550,47 @@ def test_plan017_closure_has_exact_destinations_additions_and_primary_practices(
             ] == [primary_id]
 
 
-def test_plan017_queue_consumers_and_remaining_round1_gaps_are_exact() -> None:
+def test_plan018_classical_rows_are_shipped_with_exact_direct_evidence() -> None:
+    report = check_scope(ROOT)
+    assert report.ok, report.errors
+    assert not [
+        warning
+        for warning in report.warnings
+        if any(point_id in warning for point_id in PLAN018_CLASSICAL_CLOSURE)
+    ]
+
     roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
+    points = {point["id"]: point for point in roadmap["knowledge_points"]}
     planned = {unit["id"]: unit for unit in roadmap["planned_units"]}
 
-    assert "P015-R1-NEURAL-TRAINING" not in planned
-    for consumer in ("P015-R2-TRANSFORMERS-NLP", "P015-R2-VISION-GEN"):
-        assert "P015-R1-NEURAL-TRAINING" not in planned[consumer]["prerequisites"]
-        assert "C11-neural-training" in planned[consumer]["prerequisites"]
+    for point_id, expected in PLAN018_CLASSICAL_CLOSURE.items():
+        point = points[point_id]
+        assert point["coverage"] == "covered"
+        assert point["destination"] == "C12-classical-models"
+        assert point["disposition"] == "keep"
+        assert point["shipped_concepts"] == expected["concepts"]
+        assert point["deficits"] == {"modalities_missing": []}
+        for modality, required_ids in expected["practices"].items():
+            evidence = point["evidence_by_modality"][modality]
+            actual_ids = [row["id"] for row in evidence["practices"]]
+            assert set(required_ids) <= set(actual_ids)
+            assert evidence["lesson_anchors"]
+            assert {
+                Path(anchor["path"]).name for anchor in evidence["lesson_anchors"]
+            } <= expected["lesson_files"]
+            assert evidence["assessments"] == []
+
+    assert "P015-R1-CLASSICAL-BREADTH" not in planned
+    capstone_prereqs = planned["P015-R2-CAPSTONE"]["prerequisites"]
+    assert "P015-R1-CLASSICAL-BREADTH" not in capstone_prereqs
+    assert "C12-classical-models" in capstone_prereqs
 
     remaining_round1 = {
         point["id"]
         for point in roadmap["knowledge_points"]
         if point["layer"] == "round-1-core" and point["coverage"] != "covered"
     }
-    assert remaining_round1 == {
-        "logistic-regression",
-        "support-vector-machine",
-        "decision-trees",
-        "ensemble-learning",
-        "k-means-clustering",
-    }
+    assert remaining_round1 == set()
 
 
 def test_every_covered_real_roadmap_row_uses_keep_disposition() -> None:
@@ -1646,11 +1717,11 @@ def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: 
         assert "**8.75–10.75 scheduled-baseline hours**" in document
 
 
-def test_real_renderer_distinguishes_planned_major_extension_and_minimum_scoped_deltas() -> None:
+def test_plan018_renderer_recomputes_the_round2_only_planned_delta() -> None:
     rendered = renderer.render_documents(Path(__file__).parents[1])
 
     for document in rendered.values():
-        assert "| **Planned-unit subtotal** | **158** | **240** |" in document
+        assert "| **Planned-unit subtotal** | **126** | **192** |" in document
         assert (
             "This range is a renderer-owned editorial estimate, not a field in the canonical coverage map."
             in document
@@ -1660,18 +1731,17 @@ def test_real_renderer_distinguishes_planned_major_extension_and_minimum_scoped_
         assert "C6 and C8 are not yet estimated" not in document
         assert "C8" in document
         assert "so this is not a complete roadmap total" not in document
-        assert "**435.08–517.08 manifested-baseline hours**" in document
-        assert "**439.08–521.08 scheduled-baseline hours**" in document
+        assert "**436.58–502.58 manifested-baseline hours**" in document
+        assert "**440.58–506.58 scheduled-baseline hours**" in document
         assert "student-t-test" in document
         assert "importance-sampling" in document
         assert "Total roadmap delta" not in document
 
 
-def test_both_documents_end_with_exact_post_plan017_tranche_queue() -> None:
+def test_both_documents_end_with_exact_post_plan018_tranche_queue() -> None:
     rendered = renderer.render_documents(ROOT)
 
     titles = [
-        "Round 1 classical-model breadth",
         "Round 2 transformers and NLP",
         "Round 2 advanced vision and generative modeling",
         "Round 2 open-ended/GPU capstone",
@@ -1690,6 +1760,7 @@ def test_both_documents_end_with_exact_post_plan017_tranche_queue() -> None:
         assert "C9 extension" not in document
         assert "C7 CNN training" not in document
         assert "Round 1 neural-training completion" not in document
+        assert "Round 1 classical-model breadth" not in document
         assert "Forward propagation is already a shipped prerequisite, not a new gap." not in document
 
 

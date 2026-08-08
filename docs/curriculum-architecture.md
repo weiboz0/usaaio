@@ -63,7 +63,7 @@ targets and GPU execution policy, then the observed integration capabilities.
 
 ## Capacity and promotion rule
 
-The validated 35-week schedule has no silent extension capacity: its only 240-minute difference
+The validated 40-week schedule has no silent extension capacity: its only 240-minute difference
 between manifested and scheduled totals is the final mock plus debrief, not slack.
 The margin below 500 minutes in an individual week is recovery buffer, not unallocated
 curriculum capacity.

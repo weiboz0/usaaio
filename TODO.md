@@ -18,7 +18,7 @@
 - [x] 015 — layered official-topic audit and R1/R2 roadmap (one curriculum graph, two exit gates)
 - [x] 016 — R1 foundation, workflow, and mathematical completion (delivery branch ready)
 - [x] 017 — R1 neural-training completion (delivery branch ready)
-- [ ] 018 — R1 classical-model breadth (follows Plan 017)
+- [x] 018 — R1 classical-model breadth (follows Plan 017; user-authorized unavailable-Opus waiver)
 
 ## Deferred, with a named owner plan still to be written
 
