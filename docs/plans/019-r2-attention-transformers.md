@@ -421,10 +421,10 @@ Expected: the PR guard reports `pre-merge-guard: OK`; the merged PR is the sole 
 
 ## Plan Review
 
-- [self] Pending.
-- [sol] Pending.
-- [glm] Pending.
-- [deepseek] Pending.
+- [self] APPROVE — substantive plan at `ad6f55a` has prerequisite-closed session order, exact 1,660-minute reconciliation, complete qualifying-practice and owned-concept tag ledgers, a non-overlapping Book 1/Book 2 boundary, and an executable verification phase.
+- [sol] APPROVE — final delta at `695a41d`; corrected qualifying-practice modality placement and every cited practice's intersection with its shipped concepts.
+- [glm] APPROVE WITH NITS — final delta at `ad6f55a`; bridge/subset, `track`, Book 2 layer, fixture-root, migration, and review-contract checks pass. Session 3 pacing remains for the content gate.
+- [deepseek] APPROVE WITH NITS — final delta at `ad6f55a`; the evidence, mutation, schedule, and destination-exception enforcement contracts have no remaining blocker or concern.
 
 ## Content Review
 
