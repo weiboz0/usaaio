@@ -2018,21 +2018,21 @@ def _write_book2_roadmap_fixture(root: Path) -> dict[str, Any]:
                         "theory": {
                             "lesson_anchors": [
                                 {
-                                    "path": "units/U2-unrelated/lessons/01-lesson.ipynb",
+                                    "path": "units/C8-embeddings/lessons/01-lesson.ipynb",
                                     "heading": "Lesson",
                                     "cell_ordinal": 1,
                                     "role": "primary",
                                 }
                             ],
                             "practices": [
-                                {"id": f"U2-unrelated-p{number}", "role": "primary"}
+                                {"id": f"C8-embeddings-p{number}", "role": "primary"}
                                 for number in range(1, 4)
                             ],
                             "assessments": [],
                         }
                     },
                     disposition="extend-existing-unit",
-                    destination="U2-unrelated",
+                    destination="C8-embeddings",
                     deficits={"modalities_missing": ["model-training"]},
                 )
             roadmap["knowledge_points"].append(row)
@@ -2059,7 +2059,7 @@ def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets(
     assert len({point for points in planned.values() for point in points}) == 30
     assert all(not unit_id.startswith("P015-R2-") for unit_id in planned)
     embedding = next(point for point in loaded.knowledge_points if point.id == "nlp-word-embeddings")
-    assert (embedding.coverage, embedding.destination) == ("partial", "U2-unrelated")
+    assert (embedding.coverage, embedding.destination) == ("partial", "C8-embeddings")
     assert report.ok, report.errors
 
 
@@ -2084,7 +2084,7 @@ def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets(
                 for row in contract["roadmap"]["knowledge_points"]
                 if row["id"] == "nlp-word-embeddings"
             ).update(destination="B2-020-language-transformers", disposition="new-unit"),
-            "nlp-word-embeddings must retain destination U2-unrelated",
+            "nlp-word-embeddings must retain destination C8-embeddings",
         ),
     ],
 )
