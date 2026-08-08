@@ -650,7 +650,63 @@ the commit containing this record.
 
 ## Content Review
 
-Content-review findings are recorded here during Phase 7.
+### Review 1 — self (2026-08-07)
+
+- **Verdict**: Approved.
+- [self] Blind-solved p01–p30 before opening solutions.
+  The compact ledger was p01–p05 `A, A, B, B, A`; p06–p13 matched the stable-BCE,
+  logistic-training, signed-hinge, kernel-reconstruction, weighted-Gini, recursive-tree,
+  seeded-forest, and repaired-Lloyd contracts; p14–p17 matched all four derivations; p18–p25
+  matched the integrative/scenario protocols; and p26–p30 matched separation, kernel scores,
+  the certified tree, the exact AdaBoost ledger, and robust Lloyd comparison.
+- [self] All six sessions form a prerequisite-closed progression from logistic probability to
+  margins/kernels, trees, ensembles, k-means, and the final comparison matrix.
+  Every practice follows its concept session and the requested output, tie, seed, validation,
+  and tolerance contracts are explicit.
+- [self] Phase 6 independently established 30/30 C12 solution execution, 8/8 teaching-notebook
+  execution, 437/437 register verification, both 5/5 mutation suites, 611 tests, all curriculum
+  checkers, PDF build, and the local guard.
+  The authoritative full CI run finished in 2,297.880 seconds, below the 3,072.52-second ceiling.
+
+### Review 2 — Terra, initial pass and exact-delta confirmation (2026-08-07)
+
+- **Initial verdict**: Changes requested.
+1. [terra] [FIXED] **Priority: Must Fix** — Session 2 defined every equality-margin row as a
+   support vector, contradicting Session 3's valid degenerate `alpha = 0` equality case.
+   → Response: commit `40f229b` now defines support vectors by nonzero dual coefficient, states
+   why equality alone is insufficient, updates checkpoint 2B and its answer, and adds a targeted
+   regression test.
+2. [terra] [FIXED] **Priority: Should Fix** — C12's manifest omitted the provenance promised by
+   the plan.
+   → Response: commit `40f229b` adds `provenance: original` to all 30 rows, asserts the exact
+   all-original/no-`adapted-from` contract, and regenerates the material inventory.
+- **Exact-delta verdict**: Approved.
+  Terra confirmed both fixes, 38 focused tests, current generated evidence, and a clean delta.
+
+### Review 3 — GLM 5.2, fresh no-session pass (2026-08-07)
+
+- **Verdict**: Approved.
+- [glm] File identity passed against immutable commit `40f229b`; the reviewer correctly identified
+  p01–p05 as logistic odds, SVM margins, weighted Gini, ensemble distinctions, and Lloyd WCSS.
+- [glm] The independent p01–p30 ledger matched all committed solutions, including exact p27
+  scores, the p28 tree, p29 weight distributions, and p30 WCSS.
+- [glm] No [OPEN] finding.
+  The reviewer reported 612 tests, 30/30 solutions, 8/8 teaching notebooks, both 5/5 mutation
+  registries, all curriculum checks, and the exact corpus/schedule totals green.
+- A prior GLM output was discarded rather than recorded as a verdict because its ledger
+  misidentified the actual problem numbering.
+  The accepted pass used a fresh no-session invocation, immutable `git show` inputs, and an
+  explicit file-identity precheck.
+
+### Review 4 — Opus 5 invocation blocked (2026-08-07)
+
+- **Verdict**: Not obtained; gate remains incomplete.
+1. [opus] [OPEN] **Priority: Must Fix** — the exact `claude-opus-5` runtime rejected the review
+   before reading content because the account had reached its weekly usage limit.
+   The runtime reports reset at **2026-08-09 16:00 America/Los_Angeles**.
+   No substitute model is permitted because the user explicitly selected Opus 5 for this slot.
+
+Content-gate status: **3/4 approved, blocked on exact Opus 5; no PR or merge permitted.**
 
 ## Post-Execution Report
 
