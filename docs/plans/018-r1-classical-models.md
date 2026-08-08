@@ -698,15 +698,18 @@ the commit containing this record.
   The accepted pass used a fresh no-session invocation, immutable `git show` inputs, and an
   explicit file-identity precheck.
 
-### Review 4 — Opus 5 invocation blocked (2026-08-07)
+### Review 4 — Opus 5 invocation unavailable; user-authorized waiver (2026-08-07)
 
-- **Verdict**: Not obtained; gate remains incomplete.
-1. [opus] [OPEN] **Priority: Must Fix** — the exact `claude-opus-5` runtime rejected the review
+- **Verdict**: Waived by direct user instruction.
+1. [opus] [WONTFIX] **Priority: Must Fix** — the exact `claude-opus-5` runtime rejected the review
    before reading content because the account had reached its weekly usage limit.
    The runtime reports reset at **2026-08-09 16:00 America/Los_Angeles**.
-   No substitute model is permitted because the user explicitly selected Opus 5 for this slot.
+   The user subsequently directed “continue without opus.”
+   This waives only Plan 018's unavailable Opus slot; it does not fabricate an Opus verdict,
+   substitute a reviewer, or alter the recorded approvals from self, Terra, and GLM 5.2.
 
-Content-gate status: **3/4 approved, blocked on exact Opus 5; no PR or merge permitted.**
+Content-gate status: **3 completed reviewers approved; the unavailable Opus slot is a
+user-authorized Plan-018-only waiver; no `[OPEN]` findings remain.**
 
 ## Post-Execution Report
 
@@ -715,9 +718,9 @@ Content-gate status: **3/4 approved, blocked on exact Opus 5; no PR or merge per
 Implementation and named Phase 6 verification are complete on
 `feature/plan-018-r1-classical-models`.
 Self, Terra, and exact GLM 5.2 approve the final content state.
-The exact Opus 5 slot is intentionally deferred until its 2026-08-09 16:00
-America/Los_Angeles quota reset, so this report does not claim gate closure, Plan completion,
-PR readiness, or merge readiness.
+The exact Opus 5 slot could not run because of an external quota.
+The user explicitly waived that unavailable slot for Plan 018 only, without substituting a model
+or claiming an Opus verdict.
 
 ### Shipped artifacts on the branch
 
@@ -789,8 +792,9 @@ PR readiness, or merge readiness.
 - Content self-review approved the final teaching system.
 - Terra requested two changes; both are fixed and its exact-delta verdict is Approved.
 - Exact GLM 5.2 approves with zero open content finding after the invalid first output was discarded.
-- Exact Opus 5 has not reviewed the content because of its external quota, so the mandatory
-  four-way consensus remains open by design.
+- Exact Opus 5 did not review the content because of its external quota.
+  The direct user waiver records the resulting reduction from four completed model reviews to
+  three; it is not evidence of an Opus approval.
 
 ### Known limitations and next gate
 
@@ -804,8 +808,7 @@ PR readiness, or merge readiness.
   scaffold; actual student timing should be monitored.
 - Student t-tests and importance sampling remain explicit optional, non-atomic candidates rather
   than automatic consequences of teaching Gaussian distributions or Monte Carlo ideas.
-- Next gate: run exact Opus 5 after the quota reset, resolve any finding, replace the pending status
-  with four-way consensus, mark `TODO.md`, run the true final clean-tip CI, then push/PR/guard/
+- Next gate: mark Plan 018 complete, run the true final clean-tip CI, then push/PR/guard/
   squash-merge before the Round 1 coverage review.
 
 ### Shipping-rehearsal CI
