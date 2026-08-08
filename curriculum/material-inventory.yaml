@@ -1046,7 +1046,7 @@ manifests:
   semantic_sha256: dd2fd9a90dca8e05e9317ff408b6c066dad72f89d7dc95665758304f62680c80
 - path: units/C12-classical-models/manifest.yaml
   kind: yaml
-  semantic_sha256: cf293b2786594718b185e0ec79873c575bf0d3e2a03c0b4ccae12bc69e939337
+  semantic_sha256: 0ce01a7a631710725a477ebd600d7b9e13aed749f7cde0a9f6ca1685f874f261
 - path: units/C2-linear-models/manifest.yaml
   kind: yaml
   semantic_sha256: 73104be56b89e70cdaadd9974bb5b1412d458a38f2a1d40bdd0e0f5d098f0023
@@ -11250,7 +11250,7 @@ notebooks:
   - y_train.astype
 - path: units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb
   kind: notebook
-  semantic_sha256: 40575944cfada2cd0d49e4ab00ec555c9508ae0cfe2e9850cc2ee302888c8f53
+  semantic_sha256: 80ac30511c6b7a63ce20a129f35900fd26835e3d9354273cc55d091fa3f9254b
   anchors:
   - anchor: 'units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2:
       Linear SVM, Margins, and Hinge Loss :: cell 1'

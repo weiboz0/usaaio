@@ -566,6 +566,8 @@ def test_plan018_c12_manifest_is_the_exact_double_length_contract():
     assert [row["solution_path"] for row in manifest["practice"]] == [
         f"practice/p{number:02}_solution.ipynb" for number in range(1, 31)
     ]
+    assert [row["provenance"] for row in manifest["practice"]] == ["original"] * 30
+    assert all("adapted-from" not in row for row in manifest["practice"])
     assert sum(row["minutes"] for row in manifest["practice"]) == 1410
 
     for concept, problem_numbers in PLAN018_C12_CONCEPT_COVERAGE.items():

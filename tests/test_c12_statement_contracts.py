@@ -199,3 +199,19 @@ def test_session3_teaches_alpha_box_cases_and_limits() -> None:
         "does not prove", "complementary slackness",
     ):
         assert marker in source
+
+
+def test_session2_defines_support_vectors_by_dual_state_with_equality_caveat() -> None:
+    path = (
+        ROOT
+        / "units"
+        / "C12-classical-models"
+        / "lessons"
+        / "02-linear-svm-margin-and-hinge.ipynb"
+    )
+    notebook = json.loads(path.read_text())
+    source = "\n".join(str(cell.get("source", "")) for cell in notebook["cells"])
+
+    assert "Rows attaining\\n$m_i=1$ are **support vectors**" not in source
+    assert "nonzero dual coefficient" in source
+    assert "margin equality alone does not certify support-vector status" in source
