@@ -7,7 +7,6 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-
 ROOT = Path(__file__).resolve().parents[1]
 PRACTICE = ROOT / "units" / "C12-classical-models" / "practice"
 PROBLEMS = tuple(f"p{index:02d}" for index in range(1, 31))
