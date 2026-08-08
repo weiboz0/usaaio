@@ -200,3 +200,76 @@ def test_classical_mutation_runner_fails_closed_on_unexpected_success(
         match="mutant executed successfully",
     ):
         module.run_mutation(tmp_path, spec)
+
+
+def test_classical_mutation_runner_rejects_search_without_bound_target_marker(
+    tmp_path: Path,
+) -> None:
+    module = _mutation_module()
+    _write_notebook(
+        tmp_path / "fixture" / "solution.ipynb",
+        "value = 1  # MUTATION_TARGET\n",
+    )
+    spec = _spec(module, search="value = 1", replacement="value = 2")
+
+    with pytest.raises(
+        module.MutationVerificationError,
+        match="target marker must be contained in search",
+    ):
+        module.run_mutation(tmp_path, spec)
+
+
+@pytest.mark.parametrize(
+    ("answer_source", "match_count"),
+    [
+        pytest.param("assert value == 1\n", 0, id="zero-match"),
+        pytest.param(
+            "assert value == 1  # ANSWER_CHECK\n# ANSWER_CHECK\n",
+            2,
+            id="multiple-match",
+        ),
+    ],
+)
+def test_classical_mutation_runner_fails_closed_on_nonunique_failure_marker(
+    tmp_path: Path,
+    answer_source: str,
+    match_count: int,
+) -> None:
+    module = _mutation_module()
+    notebook_path = tmp_path / "fixture" / "solution.ipynb"
+    _write_notebook(notebook_path, "value = 1  # MUTATION_TARGET\n")
+    notebook = json.loads(notebook_path.read_text())
+    notebook["cells"][1]["source"] = answer_source
+    notebook_path.write_text(json.dumps(notebook))
+    spec = _spec(
+        module,
+        search="value = 1  # MUTATION_TARGET",
+        replacement="value = 2  # MUTATION_TARGET",
+    )
+
+    with pytest.raises(
+        module.MutationVerificationError,
+        match=rf"expected failure marker matched {match_count} source locations",
+    ):
+        module.run_mutation(tmp_path, spec)
+
+
+def test_classical_mutation_runner_rejects_failure_before_registered_check(
+    tmp_path: Path,
+) -> None:
+    module = _mutation_module()
+    _write_notebook(
+        tmp_path / "fixture" / "solution.ipynb",
+        "value = 1  # MUTATION_TARGET\n",
+    )
+    spec = _spec(
+        module,
+        search="value = 1  # MUTATION_TARGET",
+        replacement="raise AssertionError('early failure')  # MUTATION_TARGET",
+    )
+
+    with pytest.raises(
+        module.MutationVerificationError,
+        match="failed at cell 0; expected failure at cell 1",
+    ):
+        module.run_mutation(tmp_path, spec)

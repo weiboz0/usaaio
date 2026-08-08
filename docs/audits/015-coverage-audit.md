@@ -9,34 +9,34 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 913 |
+| Unit notebooks | 981 |
 | Mock notebooks | 10 |
-| Unit practices | 407 |
-| Total inventoried notebooks | 923 |
+| Unit practices | 437 |
+| Total inventoried notebooks | 991 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
-| Coverage: covered | 57 |
-| Coverage: missing | 34 |
+| Coverage: covered | 62 |
+| Coverage: missing | 29 |
 | Coverage: partial | 1 |
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **16625 minutes / 277.08 hours**.
-Current scheduled baseline: **16865 minutes / 281.08 hours**.
+Current manifested baseline: **18635 minutes / 310.58 hours**.
+Current scheduled baseline: **18875 minutes / 314.58 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
 |---|---:|---:|
 | shared-foundation | 0 | 0 |
-| round-1-core | 32 | 48 |
+| round-1-core | 0 | 0 |
 | round-2-extension | 126 | 192 |
 | optional-enrichment | 0 | 0 |
-| **Planned-unit subtotal** | **158** | **240** |
+| **Planned-unit subtotal** | **126** | **192** |
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-Baseline plus planned-unit subtotal: **435.08–517.08 manifested-baseline hours** and **439.08–521.08 scheduled-baseline hours**.
+Baseline plus planned-unit subtotal: **436.58–502.58 manifested-baseline hours** and **440.58–506.58 scheduled-baseline hours**.
 
 The unestimated C8 `nlp-word-embeddings` model-training correction remains pending.
 
@@ -565,26 +565,26 @@ Assessments: r1-001-p09
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** missing
-- **Destination:** P015-R1-CLASSICAL-BREADTH
+- **Coverage:** covered
+- **Destination:** C12-classical-models
 - **Dependencies:** loss-functions, supervised-learning-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No split criterion, recursive construction, pruning, implementation, or fitted tree exists.
-- **Consequence:** Tree-based modeling is absent.
+- **Shipped concepts:** decision-trees, tree-split-criteria
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C12 derives impurity reduction, implements deterministic split search and recursive construction, and fits and evaluates trees in direct practice.
+- **Consequence:** Students can construct, train, regularize, and audit decision trees.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 3. Deterministic best-split search :: cell 2
+- **implementation practices:** C12-p10, C12-p11, C12-p28
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 5. Worked tree construction :: cell 2
+- **model-training practices:** C12-p11, C12-p19, C12-p21
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 2. Candidate thresholds and weighted child impurity :: cell 1
+- **theory practices:** C12-p03, C12-p16, C12-p23
 - **theory assessments:** —
 
-Practices: —
+Practices: C12-p03, C12-p10, C12-p11, C12-p16, C12-p19, C12-p21, C12-p23, C12-p28
 
 Assessments: —
 
@@ -703,26 +703,26 @@ Assessments: r1-001-p09
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** missing
-- **Destination:** P015-R1-CLASSICAL-BREADTH
+- **Coverage:** covered
+- **Destination:** C12-classical-models
 - **Dependencies:** bias-variance-tradeoff, decision-trees
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No bagging, boosting, random forest, voting, or ensemble training appears.
-- **Consequence:** Official ensemble breadth is absent.
+- **Shipped concepts:** bagging-and-boosting, ensemble-learning
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C12 teaches voting, bagging, random forests, and AdaBoost reweighting, then implements and fits the ensemble families in direct practice.
+- **Consequence:** Students can explain, implement, train, and compare major ensemble methods.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 4. AdaBoost: sequential reweighting :: cell 2
+- **implementation practices:** C12-p12, C12-p19, C12-p29
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 5. Worked comparison: fit bagging, forest, and boosting :: cell 2
+- **model-training practices:** C12-p12, C12-p19, C12-p21
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 4. AdaBoost: sequential reweighting :: cell 1
+- **theory practices:** C12-p04, C12-p24, C12-p29
 - **theory assessments:** —
 
-Practices: —
+Practices: C12-p04, C12-p12, C12-p19, C12-p21, C12-p24, C12-p29
 
 Assessments: —
 
@@ -970,26 +970,26 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** missing
-- **Destination:** P015-R1-CLASSICAL-BREADTH
+- **Coverage:** covered
+- **Destination:** C12-classical-models
 - **Dependencies:** distance-metrics, expectation, unsupervised-learning-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** C1 toy split rules are not Lloyd's algorithm; no centroid update, objective descent, initialization, or fitted k-means exists.
-- **Consequence:** The named official clustering algorithm is missing.
+- **Shipped concepts:** k-means, lloyd-algorithm
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C12 derives Lloyd assignment and centroid updates, implements objective-monotone clustering with empty-cluster handling, and fits and audits k-means directly.
+- **Consequence:** Students can derive, implement, fit, and diagnose k-means clustering.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6: Lloyd's k-means and Classical-Model Comparison > 5. Worked Lloyd implementation and objective trace :: cell 2
+- **implementation practices:** C12-p13, C12-p20, C12-p30
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6: Lloyd's k-means and Classical-Model Comparison > 6. Scaling, diagnostics, and sklearn comparison :: cell 2
+- **model-training practices:** C12-p13, C12-p20, C12-p21
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6: Lloyd's k-means and Classical-Model Comparison > 2. Lloyd assignment and centroid update :: cell 1
+- **theory practices:** C12-p05, C12-p17, C12-p25
 - **theory assessments:** —
 
-Practices: —
+Practices: C12-p05, C12-p13, C12-p17, C12-p20, C12-p21, C12-p25, C12-p30
 
 Assessments: —
 
@@ -1123,26 +1123,26 @@ Assessments: —
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** missing
-- **Destination:** P015-R1-CLASSICAL-BREADTH
+- **Coverage:** covered
+- **Destination:** C12-classical-models
 - **Dependencies:** gradient-descent-optimization, linear-regression, loss-functions
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** A single answer-key mention is not teaching; no sigmoid, logit objective, classifier, or training exists.
-- **Consequence:** A named official classical model is absent.
+- **Shipped concepts:** logistic-regression
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C12 derives the logit objective and mean gradient, implements stable NumPy training, and practices the model in theory, implementation, and training settings.
+- **Consequence:** Students can derive, implement, fit, and audit logistic regression.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 5. Worked example: deterministic NumPy training :: cell 2
+- **implementation practices:** C12-p06, C12-p07, C12-p18
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 5. Worked example: deterministic NumPy training :: cell 2
+- **model-training practices:** C12-p07, C12-p18, C12-p21
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 4. Deriving the mean gradient and shape ledger :: cell 1
+- **theory practices:** C12-p01, C12-p14, C12-p26
 - **theory assessments:** —
 
-Practices: —
+Practices: C12-p01, C12-p06, C12-p07, C12-p14, C12-p18, C12-p21, C12-p26
 
 Assessments: —
 
@@ -2179,26 +2179,26 @@ Assessments: r1-001-p01-1, r1-001-p01-3
 
 - **Layer:** round-1-core
 - **Requirement:** required
-- **Coverage:** missing
-- **Destination:** P015-R1-CLASSICAL-BREADTH
+- **Coverage:** covered
+- **Destination:** C12-classical-models
 - **Dependencies:** constrained-optimization-lagrangian-duality, valid-kernel-positive-definite-proof
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No margin, hinge loss, support vector, primal-dual SVM, kernel classifier, or training task exists.
-- **Consequence:** The official SVM family and its kernel consumer remain missing.
+- **Shipped concepts:** margin-and-hinge-loss, svm
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** C12 develops margin and hinge-loss mechanics, connects primal and dual views, and fits both linear and kernel SVMs across the required modalities.
+- **Consequence:** Students can derive, implement, fit, and compare support-vector machines.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss > 4. Vectorized objective and one valid subgradient step :: cell 2
+- **implementation practices:** C12-p08, C12-p09, C12-p27
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3: Kernel SVM and Dual Intuition > 5. Worked example: fit and reconstruct an RBF decision score :: cell 2
+- **model-training practices:** C12-p09, C12-p18, C12-p21
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss > 3. Soft margin, slack, hinge loss, and `C` :: cell 1, units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3: Kernel SVM and Dual Intuition > 1. From the soft-margin primal to dual coefficients :: cell 1
+- **theory practices:** C12-p02, C12-p15, C12-p27
 - **theory assessments:** —
 
-Practices: —
+Practices: C12-p02, C12-p08, C12-p09, C12-p15, C12-p18, C12-p21, C12-p27
 
 Assessments: —
 
@@ -2417,12 +2417,10 @@ Assessments: —
 
 ## Dependency-ordered content tranche queue
 
-1. **Round 1 classical-model breadth:** Logistic regression, SVM, decision trees, ensembles, and k-means, with comparison and implementation exercises.
+1. **Round 2 transformers and NLP:** Self/multi-head attention, positional encoding, transformer architecture and complexity, from-scratch attention, LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP applications, pre-training, and fine-tuning, followed by vision-transformer and graph-neural-network applications.
 
-2. **Round 2 transformers and NLP:** Self/multi-head attention, positional encoding, transformer architecture and complexity, from-scratch attention, LayerNorm/residual/feed-forward block structure, C8 word-embedding training, NLP applications, pre-training, and fine-tuning, followed by vision-transformer and graph-neural-network applications.
+2. **Round 2 advanced vision and generative modeling:** Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after multivariate Gaussian, reparameterization, and KL prerequisites.
 
-3. **Round 2 advanced vision and generative modeling:** Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after multivariate Gaussian, reparameterization, and KL prerequisites.
-
-4. **Round 2 open-ended/GPU capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
+3. **Round 2 open-ended/GPU capstone:** Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter estimation, experiment design, reproducibility, GPU workflow, and model evaluation.
 
 Each tranche updates the shipped syllabus and roadmap atomically.
