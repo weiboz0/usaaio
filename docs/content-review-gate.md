@@ -8,9 +8,16 @@ The pre-PR quality gate for teaching content and mock tests
 | # | Reviewer | Dispatch | Model |
 |---|----------|----------|-------|
 | 1 | Self-review | active session inline | active session model |
-| 2 | Opus reviewer | `claudecode:claudecode-review` subagent, fresh and read-only (request `--model claude-opus-5`) | Claude Opus 5 |
-| 3 | Terra reviewer | separate fresh read-only subagent (request `--model gpt-5.6-terra`) | GPT-5.6-terra |
-| 4 | GLM | `opencode:opencode-review` subagent, read-only | opencode-go/glm-5.2 |
+| 2 | Sol reviewer | `codex:codex-rescue` subagent, fresh and read-only (request `--model gpt-5.6-sol`) | GPT-5.6-sol |
+| 3 | GLM reviewer | `opencode:opencode-review` subagent, fresh and read-only | opencode-go/glm-5.2 |
+| 4 | DeepSeek reviewer | `opencode:opencode-review` subagent, separate fresh and read-only (request `--model deepseek/deepseek-v4-flash`) | DeepSeek V4 Flash |
+
+**Temporary review rotation (new rounds only).** This roster applies to review rounds
+started after this policy is merged and before **2026-08-09 16:00 America/Los_Angeles**.
+For rounds started at or after that timestamp, slot 4 is a fresh, read-only Fable 5 reviewer
+instead of DeepSeek V4 Flash. Slots 1–3 are unchanged.
+The roster is fixed when a round begins; existing or pending rounds retain the roster recorded
+in their plan file and are never retroactively reassigned.
 
 Dispatch 2–4 in parallel with the inline self-review.
 Tooling code changes (`tools/`, `scripts/`) in the same plan get conventional code review
@@ -41,7 +48,8 @@ Findings append to the plan file's `## Content Review`, one review round per rev
     1. `[OPEN]` Finding with file/section reference. Priority: Must Fix / Should Fix / Nice to Have.
 
 Authors respond inline with `→ Response:` and retag `[FIXED]` / `[WONTFIX]` (with reason).
-Source tags: `[self]` / `[opus]` / `[terra]` / `[glm]`.
+Source tags before the cutoff: `[self]` / `[sol]` / `[glm]` / `[deepseek]`.
+At or after the cutoff: `[self]` / `[sol]` / `[glm]` / `[fable]`.
 
 ## Acceptance
 

@@ -81,23 +81,35 @@ while the named plan is unshipped.
 | # | Reviewer | Dispatch | Model |
 |---|----------|----------|-------|
 | 1 | Self-review | active session inline; record in `## Plan Review` | active session model |
-| 2 | Opus reviewer | `claudecode:claudecode-review` subagent, fresh and read-only (request `--model claude-opus-5`) | Claude Opus 5 |
-| 3 | Terra reviewer | separate fresh read-only subagent (request `--model gpt-5.6-terra`) | GPT-5.6-terra |
-| 4 | GLM | `opencode:opencode-review` subagent, read-only | opencode-go/glm-5.2 |
+| 2 | Sol reviewer | `codex:codex-rescue` subagent, fresh and read-only (request `--model gpt-5.6-sol`) | GPT-5.6-sol |
+| 3 | GLM reviewer | `opencode:opencode-review` subagent, fresh and read-only | opencode-go/glm-5.2 |
+| 4 | DeepSeek reviewer | `opencode:opencode-review` subagent, separate fresh and read-only (request `--model deepseek/deepseek-v4-flash`) | DeepSeek V4 Flash |
+
+**Temporary review rotation (new rounds only).** The roster above applies to review rounds
+started after this policy is merged and before **2026-08-09 16:00 America/Los_Angeles**.
+For rounds started at or after that timestamp, slot 4 is a fresh, read-only Fable 5 reviewer
+instead of DeepSeek V4 Flash. Slots 1–3 are unchanged.
+The roster is fixed when a round begins; existing or pending rounds retain the roster recorded
+in their plan file and are never retroactively reassigned.
 
 Dispatch 2–4 in parallel with the inline self-review (one message).
 Consensus is full blocking: all four APPROVE / APPROVE WITH NITS, no open blockers.
-Verdicts recorded in the plan file's `## Plan Review`, tagged `[self]` / `[opus]` /
-`[terra]` / `[glm]`.
+Verdicts use the reviewer tags stated by the active rotation:
+`[self]` / `[sol]` / `[glm]` / `[deepseek]` before the cutoff, then
+`[self]` / `[sol]` / `[glm]` / `[fable]`.
 Reviewers MUST REJECT a plan shipping units/mock tests without a named verification phase
 (design §2 "verification phase" rule; docs-only and tooling-only plans state the exemption
 in `## Out of scope`).
 
 ## Content-review gate (mandatory — 4-way, pre-PR)
 
-Same roster: active-session self-review, Claude Opus 5, GPT-5.6-terra, and GLM-5.2.
+Use the same temporary review rotation as the plan-review gate:
+active-session self-review, GPT-5.6-sol, GLM-5.2, and DeepSeek V4 Flash before
+2026-08-09 16:00 America/Los_Angeles; Fable 5 replaces the DeepSeek slot at or after that
+time. This applies only to rounds begun after this policy is merged; existing rounds keep
+their recorded roster.
 Duties and format: `docs/content-review-gate.md`.
-Findings tagged `[self]` / `[opus]` / `[terra]` / `[glm]` with
+Findings use the reviewer tags stated in `docs/content-review-gate.md` with
 `[OPEN]` / `[FIXED]` / `[WONTFIX]` in the plan file's `## Content Review`;
 all `[OPEN]` resolve before merge.
 
@@ -107,7 +119,7 @@ all `[OPEN]` resolve before merge.
 |------|----------|
 | Planning, review orchestration, test assembly | Active Codex session inline |
 | Lesson content + problem/mock-question STATEMENTS | `codex:codex-rescue` (GPT-5.6-sol) — user directive 2026-08-06 |
-| ANY job previously routed to Fable 5 (drafting, independent review, audits) | `codex:codex-rescue` (GPT-5.6-sol) — TEMPORARY, expires 2026-08-09 16:00 |
+| ANY job previously routed to Fable 5 (drafting, independent review, audits) | `codex:codex-rescue` (GPT-5.6-sol) — TEMPORARY, expires 2026-08-09 16:00, except the post-cutoff reviewer-slot-4 rotation above |
 | SOLUTIONS to practice + mock questions | `codex:codex-rescue` (GPT-5.6-sol) — SEPARATE fresh session, never reads statements' outlines; blind-solve independence is now session-level (same model family), cross-model verification lives in the gates |
 | Blind independent solving (content gate) | Gate roster (all four reviewers solve blind) |
 | Tooling code (`tools/`, `scripts/`) | `codex:codex-rescue` (GPT-5.6-sol) |
