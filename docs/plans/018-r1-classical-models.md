@@ -710,4 +710,104 @@ Content-gate status: **3/4 approved, blocked on exact Opus 5; no PR or merge per
 
 ## Post-Execution Report
 
-Completed during Phase 7 before shipping.
+### Status
+
+Implementation and named Phase 6 verification are complete on
+`feature/plan-018-r1-classical-models`.
+Self, Terra, and exact GLM 5.2 approve the final content state.
+The exact Opus 5 slot is intentionally deferred until its 2026-08-09 16:00
+America/Los_Angeles quota reset, so this report does not claim gate closure, Plan completion,
+PR readiness, or merge readiness.
+
+### Shipped artifacts on the branch
+
+- Added `C12-classical-models` as a double-length Round 1 unit with six 90-minute sessions,
+  an overview, a 60-minute review, 30 student statements, 30 separate executable solutions,
+  ten owned concepts, and 1,410 practice minutes.
+- Built a systematic progression through logistic regression, linear and kernel SVMs, decision
+  trees, voting/bagging/random forests/AdaBoost, Lloyd k-means, and cross-family model selection.
+- Added strict C12 statement contracts, solution regression tests, per-row original provenance,
+  and five permanent classical-model mutations tied to exact answer-check cells.
+- Promoted logistic regression, SVM, decision trees, ensemble learning, and k-means to
+  checker-derived covered evidence and removed the classical-breadth placeholder.
+- Extended the declared course calendar to 40 weeks, bound every C12 practice to exact scheduled
+  problem ids, and kept the mock/debrief terminal in Week 40.
+- Regenerated the material inventory, coverage audit, curriculum roadmap, and course structure.
+
+### Final curriculum boundary
+
+- Round 1 has **61 required/bridge atomic targets and 0 acknowledged gaps**.
+- The corpus has **19 units, 149 concepts, 437 practices, 69 lesson sessions, 107
+  teaching/review/overview notebooks, and 981 unit notebooks**.
+- Manifested content totals **18,635 minutes** and the 40-week schedule totals **18,875 minutes**,
+  including the 180-minute `r1-001` mock and 60-minute debrief.
+- Semester totals reconcile at **7,915 minutes** and **10,960 minutes**.
+- Round 2 remains separate and explicitly incomplete at 30 acknowledged gaps; no Round 2 unit was
+  started by this plan.
+
+### Deviations and corrections
+
+- The original schedule implementation relied on implicit week-count assumptions.
+  Phase 1 introduced a declared calendar schema and derived renderer boundaries from it, including
+  a non-16/24 regression case.
+- Statement review found under-specified return schemas and a p21 “primary fit” ambiguity.
+  The final statements pin output containers, candidate order, tie behavior, and `models[0]` as
+  the primary k-means fit, with public ordering scaffolding.
+- Independent solution review corrected p07/p08 validation, all p15 KKT box cases, p17 equality
+  and empty-cluster reasoning, structured answer checks for p22–p25, symbolic rather than invented
+  p22 costs, and p25's scenario-supplied primary `k=4`.
+- Terra's content review found that Session 2 overidentified equality-margin rows as support
+  vectors and that C12 provenance was not machine-readable.
+  Commit `40f229b` now defines support vectors by nonzero dual coefficient with the degeneracy
+  caveat and records/enforces `provenance: original` for all 30 practices.
+- One initial GLM content-review output used the wrong problem numbering and was rejected despite
+  its approval label.
+  The accepted replacement used a fresh no-session invocation, immutable commit reads, and a
+  file-identity precheck before blind solving.
+
+### Verification evidence
+
+- Fresh root execution passed all **30/30 C12 solutions** and all **8/8 C12 teaching notebooks**.
+- Register verification passed **437/437** both normally and in statements-only mode.
+- Neural-training mutations passed **5/5** and classical-model mutations passed **5/5**, each at
+  its registered failure cell.
+- The pre-content-gate authoritative `scripts/ci-local.sh` run passed lint, **611 tests**, all 442
+  solution notebooks, all 107 teaching notebooks, every curriculum checker, PDF build, and the
+  local pre-merge guard in **2,297.880 seconds**.
+  This is below the Plan 018 ceiling of 3,072.52 seconds.
+- After content-review fixes, the changed lesson fresh-executed, the focused C12/integration suite
+  passed 153 tests, the final C12/integration subset passed 38 tests, register verification remained
+  437/437, generated evidence was current, and the accepted GLM pass independently reported the
+  expanded **612-test** suite green.
+- A post-report clean-tip shipping-rehearsal CI run is recorded below after execution.
+
+### Reviewer divergence
+
+- Plan review initially rejected undeclared C11/BCE reuse, unproven per-problem ordering, schedule
+  arithmetic, comparison-session placement, renderer literals, and strict-register omissions.
+  Four review rounds resolved every item before implementation.
+- Content self-review approved the final teaching system.
+- Terra requested two changes; both are fixed and its exact-delta verdict is Approved.
+- Exact GLM 5.2 approves with zero open content finding after the invalid first output was discarded.
+- Exact Opus 5 has not reviewed the content because of its external quota, so the mandatory
+  four-way consensus remains open by design.
+
+### Known limitations and next gate
+
+- Zero checker gaps certify the declared Round 1 taxonomy, modality floors, prerequisite closure,
+  and practice counts; they do not by themselves certify mastery depth or mock-test calibration.
+- The repository still has one shipped summative mock, `r1-001`; breadth distribution across
+  additional mocks belongs to the requested post-merge Round 1 review.
+- Some notebooks emit the existing nbformat missing-cell-id deprecation warning, but hygiene and
+  execution pass.
+- p21 is intentionally an advanced capstone with a dense 65-minute contract and public ordering
+  scaffold; actual student timing should be monitored.
+- Student t-tests and importance sampling remain explicit optional, non-atomic candidates rather
+  than automatic consequences of teaching Gaussian distributions or Monte Carlo ideas.
+- Next gate: run exact Opus 5 after the quota reset, resolve any finding, replace the pending status
+  with four-way consensus, mark `TODO.md`, run the true final clean-tip CI, then push/PR/guard/
+  squash-merge before the Round 1 coverage review.
+
+### Shipping-rehearsal CI
+
+Pending execution on the report commit; this is not the final post-Opus shipping run.
