@@ -4,6 +4,7 @@
 
 Approved architecture amended on 2026-08-10 to make Book 1 and Book 2 physically separate, complete book roots.
 The amendment supersedes the earlier shared-root `units/`, `curriculum/`, `mocktests/`, `reference/`, and `syllabus.md` layout.
+On 2026-08-10 the user explicitly authorized the matching structure-only updates to protected repository governance files.
 
 ## Goal
 
@@ -92,9 +93,10 @@ books:
     depends_on: [book1]
 ```
 
-The registry rejects duplicate IDs, duplicate numbers, duplicate or escaping roots, unknown dependencies, dependency cycles, symlinked roots, and undeclared `book*/` directories.
+Registry-structure loading rejects duplicate IDs, duplicate numbers, duplicate or escaping roots, unknown dependencies, dependency cycles, symlinked roots, and undeclared `book*/` directories without validating an unselected sibling's content.
+Selected-book validation separately checks that book's required files; Book 2 additionally resolves only the exact unit and concept allowlists persisted in its syllabus `imports` block.
 Loaders never discover content by falling back to a root-level legacy path.
-Commands accept `--book book1`, `--book book2`, or `--all` when a combined operation is meaningful.
+Commands require `--book book1`, `--book book2`, or `--all` when a combined operation is meaningful; `--root` continues to identify the repository containing `books.yaml`.
 
 ## Atomic Book 1 migration
 
@@ -102,6 +104,7 @@ Plan 019 moves the existing Book 1 source tree with history-preserving Git moves
 
 - `syllabus.md` moves to `book1/syllabus.md`.
 - `curriculum/` moves to `book1/curriculum/`, except cross-book reports that are regenerated under shared `docs/`.
+- The existing `curriculum/sources.yaml` is renamed to the canonical `book1/curriculum/source-manifest.yaml`; Book 2 receives the same canonical filename and every consumer changes atomically.
 - `units/` moves to `book1/units/`.
 - `mocktests/` moves to `book1/mocktests/`.
 - Round 1 reference material moves to `book1/reference/`.
@@ -162,7 +165,8 @@ Book 2 declares its Book 1 dependencies explicitly.
 imports:
   book: book1
   units: [C6-pytorch, C7-cnn-transfer, C8-embeddings, C11-neural-training]
-  concepts: [softmax, matrix-multiplication, autograd-training, torch-optimizers]
+  concepts: [softmax, matrix-multiplication, broadcasting, variance,
+             torch-tensors, nn-module, torch-optimizers, autograd-training]
 ```
 
 An imported concept may appear in `concepts_used` but never in Book 2 `concepts_taught`.
