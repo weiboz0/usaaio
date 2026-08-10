@@ -249,8 +249,51 @@ def _division_parts(node: ast.AST) -> list[ast.AST]:
     return [node]
 
 
+def _repo_root_aliases(tree: ast.AST) -> set[str]:
+    aliases = {"ROOT", "repo_root"}
+    changed = True
+    while changed:
+        changed = False
+        for node in ast.walk(tree):
+            if not isinstance(node, (ast.Assign, ast.AnnAssign)):
+                continue
+            value = node.value
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+            if isinstance(value, ast.Name) and value.id in aliases:
+                for target in targets:
+                    if isinstance(target, ast.Name) and target.id not in aliases:
+                        aliases.add(target.id)
+                        changed = True
+    return aliases
+
+
+def _is_repo_root_expression(node: ast.AST, aliases: set[str]) -> bool:
+    if isinstance(node, ast.Name):
+        return node.id in aliases
+    if (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr in {"resolve", "absolute"}
+    ):
+        return _is_repo_root_expression(node.func.value, aliases)
+    return False
+
+
+def _path_literal_values(node: ast.AST) -> list[str]:
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        return [node.value]
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "Path":
+        return [
+            arg.value
+            for arg in node.args
+            if isinstance(arg, ast.Constant) and isinstance(arg.value, str)
+        ]
+    return []
+
+
 def _actual_python_root_accesses(path: Path) -> list[dict[str, object]]:
     tree = ast.parse(path.read_text(encoding="utf-8"))
+    aliases = _repo_root_aliases(tree)
     parents = {child: parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
     violations: list[dict[str, object]] = []
     for node in ast.walk(tree):
@@ -259,15 +302,23 @@ def _actual_python_root_accesses(path: Path) -> list[dict[str, object]]:
                 continue
             parts = _division_parts(node)
             anchor = parts[0]
-            values = [part.value for part in parts if isinstance(part, ast.Constant)]
-            if (
-                isinstance(anchor, ast.Name)
-                and anchor.id in {"ROOT", "repo_root"}
-                and any(
-                    _looks_like_content_path(value) for value in values if isinstance(value, str)
-                )
+            values = [value for part in parts[1:] for value in _path_literal_values(part)]
+            if _is_repo_root_expression(anchor, aliases) and any(
+                _looks_like_content_path(value) for value in values
             ):
                 violations.append({"line": node.lineno, "kind": "repo-root-path-join"})
+        if (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and node.func.attr == "joinpath"
+            and _is_repo_root_expression(node.func.value, aliases)
+            and any(
+                _looks_like_content_path(value)
+                for arg in node.args
+                for value in _path_literal_values(arg)
+            )
+        ):
+            violations.append({"line": node.lineno, "kind": "repo-root-path-join"})
         if (
             isinstance(node, ast.Call)
             and isinstance(node.func, ast.Name)
@@ -277,7 +328,7 @@ def _actual_python_root_accesses(path: Path) -> list[dict[str, object]]:
             and node.args[0].value == "syllabus.md"
         ):
             violations.append({"line": node.lineno, "kind": "literal-root-syllabus"})
-        if isinstance(node, ast.Call) and node.args:
+        if isinstance(node, ast.Call):
             function = node.func
             name = (
                 function.id
@@ -286,11 +337,9 @@ def _actual_python_root_accesses(path: Path) -> list[dict[str, object]]:
                 if isinstance(function, ast.Attribute)
                 else ""
             )
-            first = node.args[0]
-            if (
-                name.startswith("check_")
-                and isinstance(first, ast.Name)
-                and first.id in {"ROOT", "repo_root"}
+            if name.startswith("check_") and any(
+                _is_repo_root_expression(value, aliases)
+                for value in [*node.args, *(kw.value for kw in node.keywords)]
             ):
                 violations.append({"line": node.lineno, "kind": "unselected-checker-root"})
     return sorted(violations, key=lambda row: (int(row["line"]), str(row["kind"])))
@@ -303,6 +352,9 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
         "root-for-units-mocktests": re.compile(
             r"\bfor\s+(?:dir|[A-Za-z_][A-Za-z0-9_]*)\s+in\s+units\s+mocktests\b"
         ),
+        "root-find-variable-units": re.compile(
+            r"\bfind\s+[\"']?\$(?:ROOT|repo_root)(?:/|\}/)units(?:[/\"'\s]|$)"
+        ),
     }
     violations: list[dict[str, object]] = []
     for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
@@ -314,21 +366,25 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
     return violations
 
 
-def _actual_repository_root_accesses() -> dict[str, list[dict[str, object]]]:
+def _actual_repository_root_accesses(
+    repo: Path = ROOT,
+) -> dict[str, list[dict[str, object]]]:
     violations: dict[str, list[dict[str, object]]] = {}
     contract_tests = set(_inventory()["task0_contract_tests"])
-    for base in (ROOT / "tools", ROOT / "scripts", ROOT / "tests"):
+    for base in (repo / "tools", repo / "scripts", repo / "tests"):
+        if not base.is_dir():
+            continue
         for path in sorted(base.rglob("*.py")):
-            relative = path.relative_to(ROOT).as_posix()
+            relative = path.relative_to(repo).as_posix()
             if relative in contract_tests:
                 continue
             rows = _actual_python_root_accesses(path)
             if rows:
                 violations[relative] = rows
-    for path in sorted((ROOT / "scripts").rglob("*.sh")):
+    for path in sorted((repo / "scripts").rglob("*.sh")):
         rows = _actual_shell_root_accesses(path)
         if rows:
-            violations[path.relative_to(ROOT).as_posix()] = rows
+            violations[path.relative_to(repo).as_posix()] = rows
     return violations
 
 
@@ -351,6 +407,50 @@ def test_static_contract_allows_selected_book_local_joins() -> None:
         _invalid_root_accesses('find "$book_root/units" -name manifest.yaml', language="shell")
         == []
     )
+
+
+@pytest.mark.parametrize(
+    ("relative", "source", "line", "kind"),
+    [
+        ("tools/producer.py", 'ROOT.joinpath("units")\n', 1, "repo-root-path-join"),
+        ("tools/producer.py", 'BASE = ROOT\nBASE / "units"\n', 2, "repo-root-path-join"),
+        ("tools/producer.py", 'ROOT / Path("units")\n', 1, "repo-root-path-join"),
+        ("tools/producer.py", "check_scope(root=ROOT)\n", 1, "unselected-checker-root"),
+        (
+            "tools/producer.py",
+            'repo_root.resolve() / "curriculum"\n',
+            1,
+            "repo-root-path-join",
+        ),
+        (
+            "scripts/producer.sh",
+            'find "$repo_root/units" -name manifest.yaml\n',
+            1,
+            "root-find-variable-units",
+        ),
+    ],
+)
+def test_actual_scanner_rejects_root_access_mutations_in_discovered_producers(
+    tmp_path: Path, relative: str, source: str, line: int, kind: str
+) -> None:
+    producer = tmp_path / relative
+    producer.parent.mkdir(parents=True, exist_ok=True)
+    producer.write_text(source, encoding="utf-8")
+
+    assert _actual_repository_root_accesses(tmp_path) == {relative: [{"line": line, "kind": kind}]}
+
+
+def test_actual_scanner_allows_bookspec_and_book_local_root_joins(tmp_path: Path) -> None:
+    producer = tmp_path / "tools" / "producer.py"
+    producer.parent.mkdir(parents=True)
+    producer.write_text(
+        'book.root / "units"\nselected_root.joinpath("curriculum")\n', encoding="utf-8"
+    )
+    shell = tmp_path / "scripts" / "producer.sh"
+    shell.parent.mkdir(parents=True)
+    shell.write_text('find "$book_root/units" -name manifest.yaml\n', encoding="utf-8")
+
+    assert _actual_repository_root_accesses(tmp_path) == {}
 
 
 def test_actual_producers_have_no_repository_root_content_access() -> None:
@@ -447,6 +547,7 @@ def _clean_checkout_fixture(
 set -euo pipefail
 [[ ! -d .git ]]
 [[ ! -e UNTRACKED_WORKTREE_SENTINEL ]]
+[[ $(cat TRACKED_HEAD_SENTINEL) == "committed bytes" ]]
 printf 'archive:no-git\\nci:archive-local\\n' >> "$VERIFY_TRACE"
 BOOKS=(book1 book2)
 for book in "${BOOKS[@]}"; do
@@ -495,8 +596,12 @@ done
         cache = repo / book / "reference"
         cache.mkdir(parents=True)
     (repo / "book1" / "reference" / "cache").mkdir()
+    tracked_sentinel = repo / "TRACKED_HEAD_SENTINEL"
+    tracked_sentinel.write_text("committed bytes\n", encoding="utf-8")
     _git(repo, "add", ".")
     _git(repo, "commit", "-m", "clean checkout fixture")
+    tracked_sentinel.write_text("dirty staged bytes\n", encoding="utf-8")
+    _git(repo, "add", tracked_sentinel.name)
     (repo / "UNTRACKED_WORKTREE_SENTINEL").write_text(
         "must not enter the tracked-HEAD archive\n", encoding="utf-8"
     )
@@ -574,6 +679,17 @@ bash scripts/ci-local.sh
 """
 
 
+def _replace_with_tracked_worktree_copy_verifier(_source: str) -> str:
+    return """#!/usr/bin/env bash
+set -euo pipefail
+archive_dir=$(mktemp -d)
+trap 'rm -rf "$archive_dir"' EXIT
+git ls-files -z | tar --null -T - -cf - | tar -x -C "$archive_dir"
+cd "$archive_dir"
+bash scripts/ci-local.sh
+"""
+
+
 def _replace_pdf_output_with_empty_file(source: str) -> str:
     mutated = source.replace(
         "printf '%s\\n' '%PDF-1.4 fixture' > \"$book/build/student.pdf\"",
@@ -592,6 +708,12 @@ def _replace_pdf_output_with_empty_file(source: str) -> str:
             None,
             None,
             id="worktree-copy-leaks-untracked-sentinel",
+        ),
+        pytest.param(
+            _replace_with_tracked_worktree_copy_verifier,
+            None,
+            None,
+            id="tracked-worktree-copy-leaks-staged-sentinel",
         ),
         pytest.param(
             None,
@@ -667,6 +789,9 @@ def _init_scope_repo(tmp_path: Path) -> Path:
         ),
         encoding="utf-8",
     )
+    existing_token = repo / "docs" / "token-policy.md"
+    existing_token.parent.mkdir(parents=True)
+    existing_token.write_text("pre-existing token path\n", encoding="utf-8")
     _git(repo, "add", ".")
     _git(repo, "commit", "-m", "base")
     return repo
@@ -718,9 +843,24 @@ def test_staged_scope_rejects_new_token_and_secret_paths(tmp_path: Path, relativ
     assert relative in proc.stdout + proc.stderr
 
 
-@pytest.mark.parametrize("mutate_other_cell", [False, True], ids=["path-cell-only", "other-cell"])
+def test_staged_scope_rejects_modifying_preexisting_non_c8_token_path(tmp_path: Path) -> None:
+    repo = _init_scope_repo(tmp_path)
+    existing = repo / "docs" / "token-policy.md"
+    existing.write_text("modified token path\n", encoding="utf-8")
+    _git(repo, "add", existing.relative_to(repo).as_posix())
+
+    proc = _scope_proc(repo, "--cached")
+
+    assert proc.returncode != 0
+    assert "docs/token-policy.md" in proc.stdout + proc.stderr
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ["expected-root-resolution", "other-cell", "arbitrary-path-cell"],
+)
 def test_exact_c8_token_notebook_exception_is_cell_scoped(
-    tmp_path: Path, mutate_other_cell: bool
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
 ) -> None:
     repo = _init_scope_repo(tmp_path)
     old = repo / "units" / "C8-embeddings" / "lessons" / "01-tokens-and-embeddings.ipynb"
@@ -729,18 +869,39 @@ def test_exact_c8_token_notebook_exception_is_cell_scoped(
     old.rename(new)
     notebook = json.loads(new.read_text(encoding="utf-8"))
     notebook["cells"][1]["source"] = [
+        "import os\n",
         "from pathlib import Path\n",
-        "ROOT = Path(os.environ['USAAIO_BOOK_ROOT'])\n",
+        "ROOT = Path(os.environ['USAAIO_BOOK_ROOT']).resolve()\n",
     ]
-    if mutate_other_cell:
+    if mutation == "other-cell":
         notebook["cells"][2]["source"] = ["changed teaching body\n"]
+    elif mutation == "arbitrary-path-cell":
+        notebook["cells"][1]["source"] = [
+            "import os\n",
+            "from pathlib import Path\n",
+            "SECRET = 'unrelated rewrite'\n",
+            "ROOT = Path('/tmp/not-the-selected-book')\n",
+        ]
     new.write_text(json.dumps(notebook), encoding="utf-8")
     _git(repo, "add", "-A")
 
     proc = _scope_proc(repo, "--cached")
 
-    if mutate_other_cell:
+    if mutation != "expected-root-resolution":
         assert proc.returncode != 0
         assert "cell" in (proc.stdout + proc.stderr).lower()
     else:
         assert proc.returncode == 0, proc.stdout + proc.stderr
+        monkeypatch.setenv("USAAIO_BOOK_ROOT", str(repo / "book1"))
+        execution = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                "".join(notebook["cells"][1]["source"])
+                + f"\nassert ROOT == Path({str(repo / 'book1')!r}).resolve()\n",
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert execution.returncode == 0, execution.stdout + execution.stderr

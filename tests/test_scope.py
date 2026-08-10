@@ -2283,43 +2283,161 @@ def _bridge_rows(roadmap: dict[str, Any]) -> list[dict[str, Any]]:
     return [rows["nlp-tokenization"], rows["nlp-word-embeddings"]]
 
 
-def _qualified_bridge_values(rows: list[dict[str, Any]], kind: str) -> list[str]:
-    if kind == "concept":
-        return [str(value) for row in rows for value in row["shipped_concepts"]]
-    field = {"lesson": "lesson_anchors", "practice": "practices", "assessment": "assessments"}[
-        kind
-    ]
-    values: list[str] = []
-    for row in rows:
+_C8_LESSON = "book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb"
+_C8_BRIDGE_CANONICAL: dict[str, dict[str, Any]] = {
+    "nlp-tokenization": {
+        "shipped_concepts": ["book1:tokenization"],
+        "evidence_by_modality": {
+            modality: {
+                "lesson_anchors": [
+                    {
+                        "path": _C8_LESSON,
+                        "heading": "C8-embeddings — Session 1: Tokens and Embeddings > 1. From Text to Tokens",
+                        "cell_ordinal": 1,
+                        "role": "primary",
+                    }
+                ],
+                "practices": [
+                    {"id": f"book1:C8-p{number:02d}", "role": "primary"}
+                    for number in (1, 6, 15)
+                ],
+                "assessments": [
+                    {"id": f"book1:r1-001-p05-{number}", "role": "primary"}
+                    for number in (1, 2)
+                ],
+            }
+            for modality in ("theory", "implementation")
+        },
+    },
+    "nlp-word-embeddings": {
+        "shipped_concepts": [
+            "book1:word-embeddings",
+            "book1:gensim-usage",
+            "book1:embedding-matrices",
+        ],
+        "evidence_by_modality": {
+            "theory": {
+                "lesson_anchors": [
+                    {
+                        "path": _C8_LESSON,
+                        "heading": "C8-embeddings — Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors",
+                        "cell_ordinal": 1,
+                        "role": "primary",
+                    }
+                ],
+                "practices": [
+                    {"id": f"book1:C8-p{number:02d}", "role": "primary"}
+                    for number in (2, 12, 17)
+                ],
+                "assessments": [{"id": "book1:r1-001-p05-3", "role": "primary"}],
+            },
+            "implementation": {
+                "lesson_anchors": [
+                    {
+                        "path": _C8_LESSON,
+                        "heading": "C8-embeddings — Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors",
+                        "cell_ordinal": 1,
+                        "role": "primary",
+                    }
+                ],
+                "practices": [
+                    {"id": f"book1:C8-p{number:02d}", "role": "primary"}
+                    for number in (5, 13, 17)
+                ],
+                "assessments": [
+                    {"id": f"book1:r1-001-p05-{number}", "role": "primary"}
+                    for number in (3, 4)
+                ],
+            },
+            "model-training": {"lesson_anchors": [], "practices": [], "assessments": []},
+        },
+    },
+}
+
+
+def _assert_canonical_c8_bridge(rows: list[dict[str, Any]]) -> None:
+    actual = {
+        row["id"]: {
+            "shipped_concepts": row["shipped_concepts"],
+            "evidence_by_modality": row["evidence_by_modality"],
+        }
+        for row in rows
+    }
+    assert actual == _C8_BRIDGE_CANONICAL
+    for row in actual.values():
+        assert len(row["shipped_concepts"]) == len(set(row["shipped_concepts"]))
         for evidence in row["evidence_by_modality"].values():
-            if kind == "lesson":
-                values.extend(str(item["path"]) for item in evidence.get(field, []))
-            else:
-                values.extend(str(item["id"]) for item in evidence.get(field, []))
-    return values
+            for field, key in (
+                ("lesson_anchors", "path"),
+                ("practices", "id"),
+                ("assessments", "id"),
+            ):
+                values = [item[key] for item in evidence[field]]
+                assert len(values) == len(set(values)), (field, values)
 
 
 def test_two_c8_bridge_rows_resolve_exact_qualified_evidence_allowlist() -> None:
     books = _scope_books_module()
     catalog = books.load_book_catalog(ROOT)
     book2 = catalog.by_id("book2")
-    evidence = books.load_book_evidence_imports(book2)
     rows = _bridge_rows(_book2_roadmap(book2.root))
 
-    assert set(_qualified_bridge_values(rows, "concept")) == {
-        f"book1:{value}" for value in evidence.concepts
+    _assert_canonical_c8_bridge(rows)
+    evidence = books.load_book_evidence_imports(book2)
+    assert set(evidence.concepts) == {
+        value.removeprefix("book1:")
+        for row in rows
+        for value in row["shipped_concepts"]
     }
-    assert set(_qualified_bridge_values(rows, "lesson")) == {
-        f"book1:{value}" for value in evidence.lesson_paths
+    assert set(evidence.lesson_paths) == {
+        anchor["path"].removeprefix("book1:")
+        for row in rows
+        for modality in row["evidence_by_modality"].values()
+        for anchor in modality["lesson_anchors"]
     }
-    assert set(_qualified_bridge_values(rows, "practice")) == {
-        f"book1:{value}" for value in evidence.practices
+    assert set(evidence.practices) == {
+        practice["id"].removeprefix("book1:")
+        for row in rows
+        for modality in row["evidence_by_modality"].values()
+        for practice in modality["practices"]
     }
-    assert set(_qualified_bridge_values(rows, "assessment")) == {
-        f"book1:{value}" for value in evidence.assessments
+    assert set(evidence.assessments) == {
+        assessment["id"].removeprefix("book1:")
+        for row in rows
+        for modality in row["evidence_by_modality"].values()
+        for assessment in modality["assessments"]
     }
     report = check_scope(book2.root)
     assert report.ok, report.errors
+
+
+@pytest.mark.parametrize("mutation", ["swap-rows", "move-modality", "duplicate"])
+def test_c8_bridge_rejects_noncanonical_row_modality_and_duplicate_evidence(
+    tmp_path: Path, mutation: str
+) -> None:
+    _, book2 = _copy_two_book_scope_repo(tmp_path)
+    roadmap = _book2_roadmap(book2)
+    tokenization, embeddings = _bridge_rows(roadmap)
+    if mutation == "swap-rows":
+        tokenization["evidence_by_modality"]["theory"], embeddings["evidence_by_modality"][
+            "theory"
+        ] = (
+            embeddings["evidence_by_modality"]["theory"],
+            tokenization["evidence_by_modality"]["theory"],
+        )
+    elif mutation == "move-modality":
+        evidence = tokenization["evidence_by_modality"]
+        evidence["implementation"]["practices"] = evidence["theory"]["practices"]
+        evidence["theory"]["practices"] = []
+    else:
+        practices = embeddings["evidence_by_modality"]["implementation"]["practices"]
+        practices.append(dict(practices[0]))
+    _write_yaml(book2 / "curriculum" / "coverage-map.yaml", roadmap)
+
+    with pytest.raises(AssertionError):
+        _assert_canonical_c8_bridge(_bridge_rows(roadmap))
+    report = check_scope(book2)
+    assert not report.ok, mutation
 
 
 def _replace_first_qualified_bridge_value(
