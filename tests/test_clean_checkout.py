@@ -789,7 +789,7 @@ def _init_scope_repo(tmp_path: Path) -> Path:
         ),
         encoding="utf-8",
     )
-    existing_token = repo / "docs" / "token-policy.md"
+    existing_token = repo / "tests" / "token-policy.md"
     existing_token.parent.mkdir(parents=True)
     existing_token.write_text("pre-existing token path\n", encoding="utf-8")
     _git(repo, "add", ".")
@@ -829,10 +829,17 @@ def test_staged_scope_aborts_on_unrelated_notes_before_staging(tmp_path: Path) -
 
 
 @pytest.mark.parametrize(
-    "relative",
-    ["new-token-notes.md", ".env.local", "api-secret.md", "credential.txt"],
+    ("relative", "category"),
+    [
+        ("tests/new-token-notes.md", "token"),
+        ("tests/.env.local", "env"),
+        ("tests/api-secret.md", "secret"),
+        ("tests/credential.txt", "credential"),
+    ],
 )
-def test_staged_scope_rejects_new_token_and_secret_paths(tmp_path: Path, relative: str) -> None:
+def test_staged_scope_rejects_new_token_and_secret_paths(
+    tmp_path: Path, relative: str, category: str
+) -> None:
     repo = _init_scope_repo(tmp_path)
     (repo / relative).write_text("forbidden\n", encoding="utf-8")
     _git(repo, "add", "-f", relative)
@@ -840,19 +847,39 @@ def test_staged_scope_rejects_new_token_and_secret_paths(tmp_path: Path, relativ
     proc = _scope_proc(repo, "--cached")
 
     assert proc.returncode != 0
-    assert relative in proc.stdout + proc.stderr
+    output = proc.stdout + proc.stderr
+    assert relative in output
+    diagnostic = output.replace(relative, "").lower()
+    assert "protected" in diagnostic
+    assert category in diagnostic
+
+
+def test_staged_scope_allows_safe_named_path_under_same_tests_prefix(tmp_path: Path) -> None:
+    repo = _init_scope_repo(tmp_path)
+    relative = "tests/ordinary-notes.md"
+    path = repo / relative
+    path.write_text("ordinary test fixture\n", encoding="utf-8")
+    _git(repo, "add", relative)
+
+    proc = _scope_proc(repo, "--cached")
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
 
 
 def test_staged_scope_rejects_modifying_preexisting_non_c8_token_path(tmp_path: Path) -> None:
     repo = _init_scope_repo(tmp_path)
-    existing = repo / "docs" / "token-policy.md"
+    existing = repo / "tests" / "token-policy.md"
     existing.write_text("modified token path\n", encoding="utf-8")
     _git(repo, "add", existing.relative_to(repo).as_posix())
 
     proc = _scope_proc(repo, "--cached")
 
     assert proc.returncode != 0
-    assert "docs/token-policy.md" in proc.stdout + proc.stderr
+    output = proc.stdout + proc.stderr
+    assert "tests/token-policy.md" in output
+    diagnostic = output.replace("tests/token-policy.md", "").lower()
+    assert "protected" in diagnostic
+    assert "token" in diagnostic
 
 
 @pytest.mark.parametrize(
