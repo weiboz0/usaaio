@@ -168,12 +168,20 @@ imports:
           C6-pytorch, C7-cnn-transfer, C8-embeddings, C11-neural-training]
   concepts: [numpy-arrays, broadcasting, vectorization, elementwise-ops,
              aggregation-axis, random-seeding, dot-product, matrix-multiplication,
-             variance, torch-tensors, nn-module, requires-grad, tensor-shape-tracing,
-             softmax, cross-entropy-loss, torch-optimizers, autograd-training]
+             expectation, variance, independence, variance-of-sums, torch-tensors,
+             nn-module, requires-grad, tensor-shape-tracing, softmax,
+             cross-entropy-loss, torch-optimizers, autograd-training]
+evidence_imports:
+  book: book1
+  concepts: [tokenization, word-embeddings, gensim-usage, embedding-matrices]
+  lesson_paths: [units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb]
+  practices: [C8-p01, C8-p02, C8-p05, C8-p06, C8-p12, C8-p13, C8-p15, C8-p17]
+  assessments: [r1-001-p05-1, r1-001-p05-2, r1-001-p05-3, r1-001-p05-4]
 ```
 
 An imported concept may appear in `concepts_used` but never in Book 2 `concepts_taught`.
 A Book 2 manifest's `prereq_units` and `concept_prerequisites` must be the exact subset it actually uses from the persisted, transitively valid import allowlists; unused allowed imports need not appear in that manifest.
+Evidence imports are a separate exact allowlist for qualified cross-book coverage proof and never extend a manifest's prerequisites or Book 2 ownership.
 The Plan 020 embedding bridge teaches the new Book 2 concept `embedding-model-training` and does not re-own Book 1 tokenization or fixed-vector concepts.
 
 ## Book-local schedules and assessment
