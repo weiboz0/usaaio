@@ -1,0 +1,146 @@
+inventory_version: 1
+layout: pre-plan019-atomic-cutover
+generation:
+  python: AST string leaves participating in Path, joinpath, glob, rglob, or / joins
+  notebooks: code cells containing top-level pyproject.toml discovery
+python_consumers:
+  - tools/audit_curriculum.py
+  - tools/checks/hygiene.py
+  - tools/checks/new_mocktest.py
+  - tools/checks/overlap.py
+  - tools/checks/schedule.py
+  - tools/checks/scope.py
+  - tools/model.py
+  - tools/render_course_structure.py
+  - tools/render_curriculum_roadmap.py
+  - scripts/verify-register.py
+  - tests/test_answerkey.py
+  - tests/test_audit_curriculum.py
+  - tests/test_blueprint.py
+  - tests/test_book2_schedule.py
+  - tests/test_c11_solution_regressions.py
+  - tests/test_c12_solution_regressions.py
+  - tests/test_c12_statement_contracts.py
+  - tests/test_hygiene.py
+  - tests/test_integration.py
+  - tests/test_layer_boundary.py
+  - tests/test_model.py
+  - tests/test_new_mocktest.py
+  - tests/test_overlap.py
+  - tests/test_prereq_coverage.py
+  - tests/test_schedule.py
+  - tests/test_scope.py
+  - tests/test_tolerance.py
+  - tests/test_verify_register.py
+shell_consumers:
+  - scripts/build-pdf.sh
+  - scripts/ci-local.sh
+  - scripts/fetch-reference.sh
+  - scripts/pre-merge-guard.sh
+task0_contract_tests:
+  - tests/test_books.py
+  - tests/test_book_isolation.py
+  - tests/test_clean_checkout.py
+  - tests/test_reference_migration.py
+special_notebook_consumers:
+  - path: units/C4-classical-ml-practice/lessons/01-pandas-and-data-loading.ipynb
+    cells: [22]
+    classification: pandas-data-repository-fallback
+  - path: mocktests/r1-001/problems/p09.ipynb
+    cells: [3]
+    classification: non-pyproject-relative-data-fallback
+  - path: mocktests/r1-001/solutions/p09_solution.ipynb
+    cells: [2, 14]
+    classification: non-pyproject-relative-data-and-generator-fallback
+split_token_python_consumers:
+  - tests/test_c11_solution_regressions.py
+  - tests/test_c12_solution_regressions.py
+  - tests/test_c12_statement_contracts.py
+token_path_exception:
+  old_path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+  new_path: book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+  path_resolution_cells: [1]
+notebook_pyproject_discovery:
+  - {path: mocktests/r1-001/problems/p05.ipynb, cells: [1]}
+  - {path: mocktests/r1-001/problems/p07.ipynb, cells: [1]}
+  - {path: mocktests/r1-001/solutions/p05_solution.ipynb, cells: [1]}
+  - {path: mocktests/r1-001/solutions/p07_solution.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/lessons/02-resnet-reading.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/lessons/03-truncation-and-transfer.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p08.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p08_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p09.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p09_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p11.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p11_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p12.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p12_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p14.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p14_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p15.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p15_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p16.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p16_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p17.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p17_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p19.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p19_solution.ipynb, cells: [2]}
+  - {path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/lessons/02-matrices-and-similarity.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/lessons/03-neighbors-and-retrieval.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p05.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p05_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p07.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p07_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p08.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p08_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p09.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p09_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p10.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p10_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p11.ipynb, cells: [2]}
+  - {path: units/C8-embeddings/practice/p11_solution.ipynb, cells: [2]}
+  - {path: units/C8-embeddings/practice/p12.ipynb, cells: [2]}
+  - {path: units/C8-embeddings/practice/p12_solution.ipynb, cells: [2]}
+  - {path: units/C8-embeddings/practice/p13.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p13_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p14.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p14_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p16.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p16_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p17.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p17_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p18.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p18_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p19.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p19_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p20.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p20_solution.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/lessons/03-truncated-svd-practice.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p07.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p07_solution.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p09.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p09_solution.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p12.ipynb, cells: [2]}
+  - {path: units/C9-dimensionality-reduction/practice/p12_solution.ipynb, cells: [2]}
+  - {path: units/C9-dimensionality-reduction/practice/p14.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p14_solution.ipynb, cells: [1]}
+staged_scope:
+  exact_files:
+    - books.yaml
+    - .gitignore
+    - AGENTS.md
+    - docs/architecture/decisions.md
+    - docs/designs/000-project-design.md
+    - docs/designs/019-r2-book-architecture.md
+    - docs/plans/019-r2-attention-transformers.md
+  prefixes:
+    - book1/
+    - book2/
+    - curriculum/
+    - units/
+    - mocktests/
+    - reference/
+    - tools/
+    - scripts/
+    - tests/

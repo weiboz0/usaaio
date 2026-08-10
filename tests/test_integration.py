@@ -3,12 +3,14 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tomllib
 from collections import Counter
 from pathlib import Path
 
+import pytest
 import yaml
 
 from tools.checks.blueprint import check_blueprint
@@ -1525,3 +1527,219 @@ def test_ci_executes_attention_mutations() -> None:
         "uv run python -m tools.verify_attention_mutations --root ."
         in _ci_noncomment_lines()
     )
+
+
+def _plan019_roadmap(*, r1_destination: str, r2_destination: str) -> str:
+    return yaml.safe_dump(
+        {
+            "roadmap_version": 1,
+            "layers": ["round-1-core", "round-2-extension"],
+            "planned_units": [],
+            "knowledge_points": [
+                {
+                    "id": "r1-topic",
+                    "layer": "round-1-core",
+                    "destination": r1_destination,
+                },
+                {
+                    "id": "r2-topic",
+                    "layer": "round-2-extension",
+                    "destination": r2_destination,
+                },
+            ],
+        },
+        sort_keys=False,
+    )
+
+
+def _install_plan019_guard(repo: Path) -> None:
+    script = repo / "scripts" / "pre-merge-guard.sh"
+    script.parent.mkdir(parents=True, exist_ok=True)
+    script.write_bytes((ROOT / "scripts" / "pre-merge-guard.sh").read_bytes())
+    script.chmod(0o755)
+
+
+def _write_legacy_layout(repo: Path) -> None:
+    (repo / "units" / "C1-base").mkdir(parents=True, exist_ok=True)
+    (repo / "units" / "C1-base" / "manifest.yaml").write_text("unit: C1-base\n")
+    coverage = repo / "curriculum" / "coverage-map.yaml"
+    coverage.parent.mkdir(parents=True, exist_ok=True)
+    coverage.write_text(_plan019_roadmap(r1_destination="C1-base", r2_destination="B2-019"))
+    (repo / "syllabus.md").write_text("legacy\n")
+
+
+def _cut_over_fixture(repo: Path) -> None:
+    for legacy in ("units", "curriculum"):
+        shutil.rmtree(repo / legacy)
+    (repo / "syllabus.md").unlink()
+    (repo / "books.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "books_version": 1,
+                "books": [
+                    {"id": "book1", "number": 1, "root": "book1", "depends_on": []},
+                    {
+                        "id": "book2",
+                        "number": 2,
+                        "root": "book2",
+                        "depends_on": ["book1"],
+                    },
+                ],
+            },
+            sort_keys=False,
+        )
+    )
+    for book in ("book1", "book2"):
+        (repo / book / "units").mkdir(parents=True, exist_ok=True)
+        (repo / book / "curriculum").mkdir(parents=True, exist_ok=True)
+    (repo / "book1/curriculum/coverage-map.yaml").write_text(
+        _plan019_roadmap(r1_destination="C1-base", r2_destination="B2-019")
+    )
+    (repo / "book2/curriculum/coverage-map.yaml").write_text(
+        _plan019_roadmap(r1_destination="C1-base", r2_destination="B2-019")
+    )
+
+
+def _legacy_union_fixture(tmp_path: Path) -> tuple[Path, Path]:
+    repo = tmp_path / "repo"
+    remote = tmp_path / "remote.git"
+    other = tmp_path / "other"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    _install_plan019_guard(repo)
+    _write_legacy_layout(repo)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "legacy base")
+    _git(tmp_path, "init", "--bare", str(remote))
+    _git(repo, "remote", "add", "origin", str(remote))
+    _git(repo, "push", "-u", "origin", "main")
+    _git(repo, "checkout", "-b", "feature")
+    _cut_over_fixture(repo)
+    _git(tmp_path, "clone", "-b", "main", str(remote), str(other))
+    _git(other, "config", "user.email", "test@example.com")
+    _git(other, "config", "user.name", "Test")
+    return repo, other
+
+
+def _push_parallel_main(other: Path) -> None:
+    _git(other, "add", ".")
+    _git(other, "commit", "-m", "parallel main")
+    _git(other, "push", "origin", "main")
+
+
+def _run_plan019_guard(repo: Path, tmp_path: Path) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh", "--pr"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def test_pre_merge_guard_translates_legacy_unit_collision_into_book1(
+    tmp_path: Path,
+) -> None:
+    repo, other = _legacy_union_fixture(tmp_path)
+    (repo / "book1/units/C13-feature").mkdir(parents=True)
+    (repo / "book1/units/C13-feature/manifest.yaml").write_text("unit: C13-feature\n")
+    (other / "units/C13-main").mkdir(parents=True)
+    (other / "units/C13-main/manifest.yaml").write_text("unit: C13-main\n")
+    _push_parallel_main(other)
+
+    proc = _run_plan019_guard(repo, tmp_path)
+
+    assert proc.returncode == 1
+    assert "C13" in proc.stdout + proc.stderr
+    assert "book1" in proc.stdout + proc.stderr
+
+
+def test_pre_merge_guard_allows_noncolliding_legacy_book1_addition(
+    tmp_path: Path,
+) -> None:
+    repo, other = _legacy_union_fixture(tmp_path)
+    (repo / "book1/units/C14-feature").mkdir(parents=True)
+    (repo / "book1/units/C14-feature/manifest.yaml").write_text("unit: C14-feature\n")
+    (other / "units/C13-main").mkdir(parents=True)
+    (other / "units/C13-main/manifest.yaml").write_text("unit: C13-main\n")
+    _push_parallel_main(other)
+
+    proc = _run_plan019_guard(repo, tmp_path)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+@pytest.mark.parametrize("layer", ["r1", "r2"])
+def test_pre_merge_guard_translates_combined_legacy_coverage_row_collisions(
+    tmp_path: Path, layer: str
+) -> None:
+    repo, other = _legacy_union_fixture(tmp_path)
+    relative = f"book{1 if layer == 'r1' else 2}/curriculum/coverage-map.yaml"
+    feature_path = repo / relative
+    feature_path.write_text(
+        _plan019_roadmap(
+            r1_destination="C13-feature" if layer == "r1" else "C1-base",
+            r2_destination="B2-020-feature" if layer == "r2" else "B2-019",
+        )
+    )
+    (other / "curriculum/coverage-map.yaml").write_text(
+        _plan019_roadmap(
+            r1_destination="C13-main" if layer == "r1" else "C1-base",
+            r2_destination="B2-020-main" if layer == "r2" else "B2-019",
+        )
+    )
+    _push_parallel_main(other)
+
+    proc = _run_plan019_guard(repo, tmp_path)
+
+    assert proc.returncode == 1
+    assert f"{layer}-topic" in proc.stdout + proc.stderr
+
+
+def test_pre_merge_guard_rejects_untranslatable_legacy_addition(tmp_path: Path) -> None:
+    repo, other = _legacy_union_fixture(tmp_path)
+    (other / "curriculum/unclassified-new-contract.yaml").write_text("new: true\n")
+    _push_parallel_main(other)
+
+    proc = _run_plan019_guard(repo, tmp_path)
+
+    assert proc.returncode == 1
+    assert "untranslatable" in (proc.stdout + proc.stderr).lower()
+    assert "unclassified-new-contract.yaml" in proc.stdout + proc.stderr
+
+
+def test_pre_merge_guard_handles_post_cutover_origin_main_without_translation(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo-post"
+    remote = tmp_path / "remote-post.git"
+    other = tmp_path / "other-post"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    _install_plan019_guard(repo)
+    _write_legacy_layout(repo)
+    _cut_over_fixture(repo)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "post-cutover base")
+    _git(tmp_path, "init", "--bare", str(remote))
+    _git(repo, "remote", "add", "origin", str(remote))
+    _git(repo, "push", "-u", "origin", "main")
+    _git(repo, "checkout", "-b", "feature")
+    _git(tmp_path, "clone", "-b", "main", str(remote), str(other))
+    _git(other, "config", "user.email", "test@example.com")
+    _git(other, "config", "user.name", "Test")
+    (repo / "book1/units/C13-feature").mkdir(parents=True)
+    (repo / "book1/units/C13-feature/manifest.yaml").write_text("unit: C13-feature\n")
+    (other / "book1/units/C13-main").mkdir(parents=True)
+    (other / "book1/units/C13-main/manifest.yaml").write_text("unit: C13-main\n")
+    _push_parallel_main(other)
+
+    proc = _run_plan019_guard(repo, tmp_path)
+
+    assert proc.returncode == 1
+    assert "C13" in proc.stdout + proc.stderr

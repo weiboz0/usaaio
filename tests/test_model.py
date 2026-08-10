@@ -1,3 +1,4 @@
+import importlib
 import re
 from pathlib import Path
 
@@ -13,6 +14,15 @@ from tools.model import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _books_module():
+    try:
+        return importlib.import_module("tools.books")
+    except ModuleNotFoundError as exc:
+        if exc.name != "tools.books":
+            raise
+        pytest.fail("tools.books is the missing Plan 019 registry producer")
 
 
 def test_load_syllabus_real_repo():
@@ -597,3 +607,79 @@ practice: []
 
     assert not report.ok
     assert any("concept_prerequisites drift from syllabus" in error for error in report.errors)
+
+
+def _write_selected_book_model_fixture(repo: Path) -> object:
+    (repo / "books.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "books_version": 1,
+                "books": [
+                    {"id": "book1", "number": 1, "root": "book1", "depends_on": []}
+                ],
+            },
+            sort_keys=False,
+        )
+    )
+    book_root = repo / "book1"
+    book_root.mkdir()
+    book_root.joinpath("syllabus.md").write_text(
+        """<!-- syllabus-canonical -->
+```yaml
+baseline: {math: [arithmetic]}
+clusters: [fixture]
+concepts: [{id: owned, cluster: fixture}]
+units:
+  - id: C1-book1
+    track: core
+    title: Book 1
+    prereqs: []
+    teaches: [owned]
+```
+"""
+    )
+    unit = book_root / "units" / "C1-book1"
+    unit.mkdir(parents=True)
+    unit.joinpath("manifest.yaml").write_text(
+        """unit: C1-book1
+concepts_taught: [owned]
+concepts_used: []
+prereq_units: []
+practice: []
+"""
+    )
+    return _books_module().load_book_catalog(repo).by_id("book1")
+
+
+def test_model_loaders_receive_the_selected_bookspec_root(tmp_path: Path) -> None:
+    book = _write_selected_book_model_fixture(tmp_path)
+
+    assert set(load_syllabus(book.root).units) == {"C1-book1"}
+    assert [manifest.unit_id for manifest in load_unit_manifests(book.root)] == [
+        "C1-book1"
+    ]
+    with pytest.raises((FileNotFoundError, ValueError)):
+        load_syllabus(tmp_path)
+
+
+def test_mock_loader_uses_authoritative_book_number_not_directory_basename(
+    tmp_path: Path,
+) -> None:
+    book = _write_selected_book_model_fixture(tmp_path)
+    wrong_round = book.root / "mocktests" / "r2-001"
+    wrong_round.mkdir(parents=True)
+    wrong_round.joinpath("manifest.yaml").write_text(
+        """test: r2-001
+blueprint_version: 1
+generated: null
+status: draft
+generation_parameters: {}
+duration_minutes: 1
+total_points: 0
+time_budget: {min: 0, max: 0}
+problems: []
+"""
+    )
+
+    with pytest.raises(ValueError, match="book 1.*r1-|r2-001.*book 1"):
+        load_mock_manifests(book.root, book_number=book.number)

@@ -1173,3 +1173,39 @@ def test_book2_sidecar_creation_cannot_rewrite_checked_in_book1_schedule(
         if not manifest.unit_id.startswith("B2-")
     }
     assert source.read_bytes() == before
+
+
+def test_schedule_checker_is_bound_to_the_selected_bookspec_root(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _write_yaml(
+        repo / "books.yaml",
+        {
+            "books_version": 1,
+            "books": [
+                {"id": "book1", "number": 1, "root": "book1", "depends_on": []}
+            ],
+        },
+    )
+    book_root = repo / "book1"
+    book_root.mkdir()
+    _build_schedule_fixture(book_root)
+    try:
+        books = importlib.import_module("tools.books")
+    except ModuleNotFoundError as exc:
+        if exc.name != "tools.books":
+            raise
+        pytest.fail("tools.books is the missing Plan 019 registry producer")
+    book = books.load_book_catalog(repo).by_id("book1")
+
+    selected = _schedule_checker().check_schedule(book.root)
+
+    assert selected.ok, selected.errors
+    try:
+        unselected = _schedule_checker().check_schedule(repo)
+    except (FileNotFoundError, ValueError):
+        pass
+    else:
+        assert not unselected.ok

@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import importlib
 import os
 import re
+import shutil
 from collections.abc import Callable
 from pathlib import Path
 from types import SimpleNamespace
@@ -13,9 +15,48 @@ import yaml
 from tools import model
 from tools import render_curriculum_roadmap as renderer
 from tools.checks import scope as scope_checker
+from tools.checks.prereq import taught_closure
 from tools.checks.scope import check_scope
 
 ROOT = Path(__file__).parents[1]
+
+BOOK1_OWNED_R2_DEPENDENCIES = {
+    "attention-mechanism-foundations": ["linear-algebra-foundations", "softmax"],
+    "attention-from-scratch": ["pytorch-autograd-and-optimizer-training"],
+    "transformer-architecture-foundations": ["multilayer-perceptron-model"],
+    "vision-transformers": ["convolutional-neural-network-basics"],
+    "nlp-tokenization": ["python-programming"],
+    "nlp-word-embeddings": ["linear-algebra-foundations"],
+    "nlp-fine-tuning": ["pytorch-autograd-and-optimizer-training"],
+    "object-detection": ["convolutional-neural-network-basics"],
+    "unet": ["convolutional-neural-network-basics"],
+    "autoencoder": ["fully-connected-network-from-scratch", "loss-functions"],
+    "generative-adversarial-network": [
+        "fully-connected-network-from-scratch",
+        "convolutional-neural-network-basics",
+    ],
+    "multivariate-gaussian": [
+        "probability-and-statistics-foundations",
+        "eigenvalues-and-eigenvectors",
+    ],
+    "gaussian-reparameterization": ["pytorch-autograd-and-optimizer-training"],
+    "kl-divergence": ["conditional-probability", "expectation"],
+    "gpu-colab-l4-workflow": [
+        "colab-coding-submission",
+        "pytorch-autograd-and-optimizer-training",
+    ],
+    "semi-supervised-pseudo-labeling": [
+        "convolutional-neural-network-basics",
+        "k-means-clustering",
+    ],
+    "scientific-ml-inverse-problems": [
+        "end-to-end-model-selection",
+        "pytorch-autograd-and-optimizer-training",
+    ],
+    "open-ended-experiment-design": ["end-to-end-model-selection"],
+    "open-ended-model-evaluation": ["hidden-test-model-evaluation"],
+    "mixture-parameter-regression": ["linear-regression"],
+}
 
 PLAN017_CLOSURE = {
     "softmax": (
@@ -2204,3 +2245,206 @@ def test_book2_roadmap_partition_mutations_fail_scope_check(
 
     assert not report.ok
     assert any(fragment in error for error in report.errors), report.errors
+
+
+def _scope_books_module():
+    try:
+        return importlib.import_module("tools.books")
+    except ModuleNotFoundError as exc:
+        if exc.name != "tools.books":
+            raise
+        pytest.fail("tools.books is the missing Plan 019 registry producer")
+
+
+def _copy_two_book_scope_repo(destination: Path) -> tuple[Path, Path]:
+    books_path = ROOT / "books.yaml"
+    assert books_path.is_file(), "books.yaml is the missing atomic-cutover producer"
+    shutil.copy2(books_path, destination / "books.yaml")
+    for book_id in ("book1", "book2"):
+        source = ROOT / book_id
+        assert source.is_dir(), f"{book_id}/ is the missing atomic-cutover root"
+        shutil.copytree(source, destination / book_id, ignore=shutil.ignore_patterns("build"))
+    return destination / "book1", destination / "book2"
+
+
+def _book2_roadmap(book2: Path) -> dict[str, Any]:
+    return yaml.safe_load(
+        (book2 / "curriculum" / "coverage-map.yaml").read_text(encoding="utf-8")
+    )
+
+
+def _bridge_rows(roadmap: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = {
+        row["id"]: row
+        for row in roadmap["knowledge_points"]
+        if row["id"] in {"nlp-tokenization", "nlp-word-embeddings"}
+    }
+    assert set(rows) == {"nlp-tokenization", "nlp-word-embeddings"}
+    return [rows["nlp-tokenization"], rows["nlp-word-embeddings"]]
+
+
+def _qualified_bridge_values(rows: list[dict[str, Any]], kind: str) -> list[str]:
+    if kind == "concept":
+        return [str(value) for row in rows for value in row["shipped_concepts"]]
+    field = {"lesson": "lesson_anchors", "practice": "practices", "assessment": "assessments"}[
+        kind
+    ]
+    values: list[str] = []
+    for row in rows:
+        for evidence in row["evidence_by_modality"].values():
+            if kind == "lesson":
+                values.extend(str(item["path"]) for item in evidence.get(field, []))
+            else:
+                values.extend(str(item["id"]) for item in evidence.get(field, []))
+    return values
+
+
+def test_two_c8_bridge_rows_resolve_exact_qualified_evidence_allowlist() -> None:
+    books = _scope_books_module()
+    catalog = books.load_book_catalog(ROOT)
+    book2 = catalog.by_id("book2")
+    evidence = books.load_book_evidence_imports(book2)
+    rows = _bridge_rows(_book2_roadmap(book2.root))
+
+    assert set(_qualified_bridge_values(rows, "concept")) == {
+        f"book1:{value}" for value in evidence.concepts
+    }
+    assert set(_qualified_bridge_values(rows, "lesson")) == {
+        f"book1:{value}" for value in evidence.lesson_paths
+    }
+    assert set(_qualified_bridge_values(rows, "practice")) == {
+        f"book1:{value}" for value in evidence.practices
+    }
+    assert set(_qualified_bridge_values(rows, "assessment")) == {
+        f"book1:{value}" for value in evidence.assessments
+    }
+    report = check_scope(book2.root)
+    assert report.ok, report.errors
+
+
+def _replace_first_qualified_bridge_value(
+    rows: list[dict[str, Any]], kind: str, transform: Callable[[str], str]
+) -> None:
+    if kind == "concept":
+        rows[0]["shipped_concepts"][0] = transform(rows[0]["shipped_concepts"][0])
+        return
+    field = {"lesson": "lesson_anchors", "practice": "practices", "assessment": "assessments"}[
+        kind
+    ]
+    key = "path" if kind == "lesson" else "id"
+    for row in rows:
+        for evidence in row["evidence_by_modality"].values():
+            if evidence.get(field):
+                evidence[field][0][key] = transform(evidence[field][0][key])
+                return
+    raise AssertionError(f"no {kind} evidence in C8 bridge fixture")
+
+
+def _reown_tokenization_in_book2(book2: Path) -> None:
+    path = book2 / "syllabus.md"
+    text = path.read_text(encoding="utf-8")
+    match = re.search(
+        r"(<!-- syllabus-canonical -->\s*```yaml\n)(.*?)(\n```)", text, re.DOTALL
+    )
+    assert match is not None
+    raw = yaml.safe_load(match.group(2))
+    cluster = raw["concepts"][0]["cluster"]
+    raw["concepts"].append({"id": "tokenization", "cluster": cluster})
+    unit = next(row for row in raw["units"] if row["id"] == "B2-019-attention-transformers")
+    unit["teaches"].append("tokenization")
+    replacement = match.group(1) + yaml.safe_dump(raw, sort_keys=False).rstrip() + match.group(3)
+    path.write_text(text[: match.start()] + replacement + text[match.end() :], encoding="utf-8")
+
+
+@pytest.mark.parametrize(
+    ("kind", "mutation"),
+    [
+        pytest.param("concept", "unqualified", id="unqualified-concept"),
+        pytest.param("lesson", "unqualified", id="unqualified-lesson"),
+        pytest.param("practice", "unqualified", id="unqualified-practice"),
+        pytest.param("assessment", "unqualified", id="unqualified-assessment"),
+        pytest.param("concept", "wrong-owner", id="wrong-owner"),
+        pytest.param("practice", "missing", id="missing"),
+        pytest.param("concept", "reowned", id="book2-reowned"),
+    ],
+)
+def test_c8_bridge_qualified_evidence_mutations_fail_independently(
+    tmp_path: Path, kind: str, mutation: str
+) -> None:
+    _, book2 = _copy_two_book_scope_repo(tmp_path)
+    roadmap = _book2_roadmap(book2)
+    rows = _bridge_rows(roadmap)
+    if mutation == "unqualified":
+        _replace_first_qualified_bridge_value(rows, kind, lambda value: value.removeprefix("book1:"))
+    elif mutation == "wrong-owner":
+        _replace_first_qualified_bridge_value(
+            rows, kind, lambda value: value.replace("book1:", "book2:", 1)
+        )
+    elif mutation == "missing":
+        _replace_first_qualified_bridge_value(rows, kind, lambda _value: "book1:missing")
+    else:
+        _reown_tokenization_in_book2(book2)
+    _write_yaml(book2 / "curriculum" / "coverage-map.yaml", roadmap)
+
+    report = check_scope(book2)
+
+    assert not report.ok, mutation
+
+
+def test_every_r2_book1_dependency_edge_is_qualified() -> None:
+    catalog = _scope_books_module().load_book_catalog(ROOT)
+    book2 = catalog.by_id("book2")
+    rows = {row["id"]: row for row in _book2_roadmap(book2.root)["knowledge_points"]}
+
+    for point, expected_dependencies in BOOK1_OWNED_R2_DEPENDENCIES.items():
+        dependencies = rows[point]["depends_on"]
+        for dependency in expected_dependencies:
+            assert f"book1:{dependency}" in dependencies, (point, dependencies)
+            assert dependency not in dependencies, (point, dependencies)
+
+
+def test_unqualified_mutation_of_every_r2_book1_edge_fails_scope_check(
+    tmp_path: Path,
+) -> None:
+    _, book2 = _copy_two_book_scope_repo(tmp_path)
+    roadmap = _book2_roadmap(book2)
+    rows = {row["id"]: row for row in roadmap["knowledge_points"]}
+    for point, dependencies in BOOK1_OWNED_R2_DEPENDENCIES.items():
+        rows[point]["depends_on"] = [
+            value.removeprefix("book1:")
+            if value in {f"book1:{dependency}" for dependency in dependencies}
+            else value
+            for value in rows[point]["depends_on"]
+        ]
+    _write_yaml(book2 / "curriculum" / "coverage-map.yaml", roadmap)
+
+    report = check_scope(book2)
+
+    assert not report.ok
+    for point in BOOK1_OWNED_R2_DEPENDENCIES:
+        assert any(point in error and "qualified" in error for error in report.errors), report.errors
+
+
+def test_imported_taught_closure_is_limited_to_persisted_book1_allowlists() -> None:
+    books = _scope_books_module()
+    catalog = books.load_book_catalog(ROOT)
+    book1 = catalog.by_id("book1")
+    book2 = catalog.by_id("book2")
+    imports = books.load_book_imports(book2)
+    evidence = books.load_book_evidence_imports(book2)
+    book2_syllabus = model.load_syllabus(book2.root)
+    book1_syllabus = model.load_syllabus(book1.root)
+
+    closure = taught_closure(
+        book2_syllabus,
+        [f"book1:{unit}" for unit in imports.units],
+        catalog=catalog,
+        book=book2,
+    )
+
+    book2_owned = set(book2_syllabus.concepts)
+    assert book2_owned.isdisjoint(imports.concepts)
+    assert set(imports.concepts) <= closure
+    assert set(evidence.concepts).isdisjoint(closure)
+    imported_book1_concepts = closure & set(book1_syllabus.concepts)
+    assert imported_book1_concepts == set(imports.concepts)
