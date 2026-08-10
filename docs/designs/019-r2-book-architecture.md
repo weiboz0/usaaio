@@ -164,13 +164,16 @@ Book 2 declares its Book 1 dependencies explicitly.
 ```yaml
 imports:
   book: book1
-  units: [C6-pytorch, C7-cnn-transfer, C8-embeddings, C11-neural-training]
-  concepts: [softmax, matrix-multiplication, broadcasting, variance,
-             torch-tensors, nn-module, torch-optimizers, autograd-training]
+  units: [F1-scientific-python, F2-vectors, F3-matrices, F5-probability,
+          C6-pytorch, C7-cnn-transfer, C8-embeddings, C11-neural-training]
+  concepts: [numpy-arrays, broadcasting, vectorization, elementwise-ops,
+             aggregation-axis, random-seeding, dot-product, matrix-multiplication,
+             variance, torch-tensors, nn-module, requires-grad, tensor-shape-tracing,
+             softmax, cross-entropy-loss, torch-optimizers, autograd-training]
 ```
 
 An imported concept may appear in `concepts_used` but never in Book 2 `concepts_taught`.
-A Book 2 manifest's `prereq_units` and `concept_prerequisites` must exactly match its declared and transitively valid imports.
+A Book 2 manifest's `prereq_units` and `concept_prerequisites` must be the exact subset it actually uses from the persisted, transitively valid import allowlists; unused allowed imports need not appear in that manifest.
 The Plan 020 embedding bridge teaches the new Book 2 concept `embedding-model-training` and does not re-own Book 1 tokenization or fixed-vector concepts.
 
 ## Book-local schedules and assessment

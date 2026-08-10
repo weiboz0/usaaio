@@ -110,7 +110,7 @@ position-wise-feed-forward
 transformer-block
 ```
 
-Book 2 declares imports from `book1` for units `[C6-pytorch, C7-cnn-transfer, C8-embeddings, C11-neural-training]` and concepts `[softmax, matrix-multiplication, broadcasting, variance, torch-tensors, nn-module, torch-optimizers, autograd-training]`.
+Book 2 declares imports from `book1` for units `[F1-scientific-python, F2-vectors, F3-matrices, F5-probability, C6-pytorch, C7-cnn-transfer, C8-embeddings, C11-neural-training]` and concepts `[numpy-arrays, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, dot-product, matrix-multiplication, variance, torch-tensors, nn-module, requires-grad, tensor-shape-tracing, softmax, cross-entropy-loss, torch-optimizers, autograd-training]`.
 At the registry boundary, diagnostics use qualified identities such as `book1:C6-pytorch` and `book1:softmax`.
 Within a book, existing local IDs remain unchanged.
 
@@ -148,7 +148,7 @@ The Book 2 schedule totals 1,660 minutes across local weeks 1–6 and display we
 | 1 | `lessons/01-query-key-value-and-scaled-dot-product.ipynb` | matrix transpose, Q/K/V, scale, stable row softmax, weighted values |
 | 2 | `lessons/02-self-attention-and-masks.ipynb` | sequence shapes, padding masks, causal masks before softmax |
 | 3 | `lessons/03-multi-head-position-and-cost.ipynb` | head projections/concat, sinusoidal position, exact time and score-memory cost |
-| 4 | `lessons/04-attention-module-and-tiny-training.ipynb` | tested PyTorch attention module and seeded causal training task |
+| 4 | `lessons/04-attention-module-and-tiny-training.ipynb` | tested PyTorch attention module and seeded causal cross-entropy training task |
 | 5 | `lessons/05-transformer-blocks-and-architecture.ipynb` | pre-norm residual block, feed-forward sublayer, encoder/decoder roles |
 
 ### Exact practice ledger
@@ -171,7 +171,7 @@ The Book 2 schedule totals 1,660 minutes across local weeks 1–6 and display we
 | p14 | proof | 45 | causal dependence only on positions at or before i |
 | p15 | proof | 45 | multi-head projection and concatenation dimensions |
 | p16 | proof | 45 | score time and memory scaling in n, d, h |
-| p17 | integrative | 65 | seeded causal predictor with positional input |
+| p17 | integrative | 65 | seeded causal predictor with positional input and cross-entropy loss |
 | p18 | integrative | 65 | from-scratch attention mask audit |
 | p19 | integrative | 65 | encoder recurrence and LayerNorm ordering |
 | p20 | integrative | 65 | encoder/decoder/cross-attention Q/K/V sources |
@@ -224,7 +224,7 @@ Every Book 2-owned concept has at least three direct practice tags.
 6. Layer-boundary mutations preserve all prior Book 1/Round 2 ownership, evidence, compute, and coverage checks.
 7. Schedule mutations cover local/global numbering, exact reconciliation, stale final marker, and cross-book leakage.
 8. Five answer-affecting mutations remove scaling, mask after softmax, concatenate the wrong head axis, omit positional addition, and reverse residual/LayerNorm order.
-9. The PR guard translates pre-cutover `origin/main` Book 1 paths into their post-cutover namespace before collision checks and rejects any untranslatable legacy addition.
+9. The PR guard detects old versus new layout, translates pre-cutover Book 1 paths, R2 references, and combined curriculum rows into their post-cutover book namespaces before collision checks, and rejects any untranslatable legacy addition.
 
 ## Execution ownership
 
@@ -247,6 +247,8 @@ The user explicitly authorized the structure-only updates to `AGENTS.md` and `do
 
 ## Task 0 — Pin the atomic filesystem contract in failing tests
 
+The practice and coverage tables use `pNN` only as readable shorthand for canonical manifest IDs `B2-019-pNN`.
+
 **Files:**
 
 - Create: `tests/test_books.py`
@@ -263,10 +265,14 @@ The user explicitly authorized the structure-only updates to `AGENTS.md` and `do
 - [ ] Write `test_book1_results_are_byte_identical_after_valid_book2_fixture` across syllabus, schedule, inventory, renderer, answer key, and PDF input discovery.
 - [ ] Write `test_book1_selection_does_not_validate_missing_or_corrupt_book2_content` and the converse dependency-scoped Book 2 import test.
 - [ ] Write `test_cross_book_import_requires_registry_dependency_and_qualified_owner`.
-- [ ] Write clean-checkout producer-to-consumer assertions for every path moved in Task 2.
+- [ ] Write qualified coverage-evidence tests for the two C8 bridge rows: valid Book 1 concept/lesson/practice/assessment references pass; unqualified, wrong-owner, missing, or Book 2-reowned variants fail independently.
+- [ ] Write clean-checkout producer-to-consumer assertions for every path moved in Task 2, including fresh execution of all Book 1 and Book 2 solution notebooks inside the archive.
 - [ ] Write shell/static mutations that reject repository-root `find units`, `for dir in units mocktests`, repository-root `Path("syllabus.md")`, and any checker invoked without a selected `BookSpec.root`; do not use a zero-match literal search that would also reject valid book-local `root / "units"` joins.
-- [ ] Write PR-union fixtures for an old-layout `origin/main`, including a colliding new `units/C13-*`, a noncolliding old Book 1 unit, and an untranslatable legacy addition.
+- [ ] Commit an exact consumer-inventory fixture generated from Python AST path joins plus notebook source cells; it must include split-token joins such as `ROOT / "units"`, explicitly cover `test_c11_solution_regressions.py`, `test_c12_solution_regressions.py`, and `test_c12_statement_contracts.py`, and pin all 64 baseline top-level `pyproject.toml` discovery notebooks.
+  The migration fails if a newly discovered consumer is not classified.
+- [ ] Write PR-union fixtures for old-layout and post-cutover `origin/main`, including a colliding new `units/C13-*`, noncolliding old Book 1 content, R1 and R2 coverage-row mutations inside the old combined map, and an untranslatable legacy addition.
 - [ ] Write local-reference migration fixtures for mixed tracked/ignored R1 and R2 corpora, shared cache, outlines, unexpected entries, reruns, and proof that raw files remain ignored.
+  Separately assert the derived-analysis split: Book 1 keeps only R1 source rows and pre-R2 sections, while Book 2 keeps only R2 source rows and the complete `## Round 2 shape and topics` section onward.
 - [ ] Run:
 
 ```bash
@@ -330,6 +336,7 @@ Do not use reset, checkout, clean, or deletion as rollback; the last committed r
 - Create: `scripts/verify-clean-checkout.sh`
 - Modify: `.gitignore`
 - Move: `syllabus.md` → `book1/syllabus.md`
+- Modify after move: `book1/syllabus.md`
 - Move: four same-named curriculum YAML files → `book1/curriculum/`
 - Move and rename: `curriculum/sources.yaml` → `book1/curriculum/source-manifest.yaml`
 - Move: `units/` → `book1/units/`
@@ -342,6 +349,7 @@ Do not use reset, checkout, clean, or deletion as rollback; the last committed r
 - Modify: `docs/README.md`
 - Modify: `docs/curriculum-architecture.md`
 - Modify: `docs/curriculum-roadmap.md`
+- Modify: `docs/mocktest-generation.md`
 - Modify: `TODO.md`
 - Modify: `tools/model.py`
 - Modify: `tools/cli.py`
@@ -361,13 +369,13 @@ Do not use reset, checkout, clean, or deletion as rollback; the last committed r
 - Modify: `tools/render_curriculum_roadmap.py`
 - Modify: `tools/verify_training_mutations.py`
 - Modify: `tools/verify_classical_mutations.py`
-- Modify: `units/C7-cnn-transfer/lessons/02-resnet-reading.ipynb` before its move, only for book-root resolution
+- Modify: all 64 baseline Book 1 notebooks containing top-level `pyproject.toml`/repository-root discovery, only in their path-resolution cells
 - Modify: `scripts/build-pdf.sh`
 - Modify: `scripts/fetch-reference.sh`
 - Modify: `scripts/verify-register.py`
 - Modify: `scripts/ci-local.sh`
 - Modify: `scripts/pre-merge-guard.sh`
-- Modify: every existing `tests/test_*.py` path consumer and fixture path named by `rg -l 'syllabus.md|units/|curriculum/|mocktests/|reference/' tests`
+- Modify: every existing `tests/test_*.py` path consumer, discovered by AST/string-token inventory rather than a slash-only regex
 - Modify: `tests/test_book2_schedule.py`
 - Modify: `tests/test_layer_boundary.py`
 
@@ -378,12 +386,17 @@ Do not use reset, checkout, clean, or deletion as rollback; the last committed r
 - [ ] Use `git mv` for every tracked source and generated artifact so history remains traceable.
 - [ ] Before moving `reference/`, run the migration script in dry-run mode.
   It accepts only `.gitkeep`, `analysis.md`, `r1-*`, `r2-*`, `cache/`, and `outlines-*`; it refuses unknown entries, moves ignored `r1-*`, the shared cache, and the existing Round 1 outlines under Book 1, moves ignored `r2-*` under Book 2, leaves no root `reference/`, and never stages raw files.
+- [ ] Split tracked `analysis.md` semantically, not by file copy: Book 1 retains the methodology, only the `r1-2026`/`r1-2025` source rows, and all R1 sections before `## Round 2 shape and topics`; Book 2 receives the methodology, only the R2 source rows, and that Round 2 heading through end-of-file.
+  Fail if either output contains the other round's source IDs or round-specific section headings.
 - [ ] Translate every existing `.gitignore` rule, including Book 1/Book 2 build and raw-reference rules, all C10 generated CSVs, and R1 mock held-out/student/solution artifacts.
   Add `git check-ignore` assertions for every protected generated path under its new book root and prove the corresponding source files are not accidentally ignored.
 - [ ] Create the exact two-record `books.yaml` registry.
+- [ ] Partition the committed WIP syllabus explicitly: remove the eleven attention concepts and `B2-019-attention-transformers` row from moved `book1/syllabus.md`, preserve its 149 concepts and 19 units, and write those eleven concepts, the B2-019 unit, and the persisted import allowlists only to `book2/syllabus.md`.
 - [ ] Partition coverage, topic, and renamed source-manifest contracts deterministically: shared-foundation and Round 1 exit rows into Book 1, Round 2 exit rows into Book 2, and only referenced source metadata into each book.
 - [ ] Preserve `nlp-word-embeddings` as a partial Book 2 bridge whose destination is `book1:C8-embeddings`.
 - [ ] Preserve covered `nlp-tokenization` as a Book 2 exit row with qualified evidence owned by `book1:C8-embeddings`; neither bridge re-owns Book 1 concepts.
+- [ ] Encode those two cross-book evidence rows with qualified concepts (`book1:<concept>`), lesson paths (`book1:units/...`), practice IDs (`book1:C8-*`), assessment IDs (`book1:r1-001-*`), and destination `book1:C8-embeddings`.
+  Scope validation resolves each evidence reference against the named owner book through the registry dependency edge, but does not add it to a Book 2 manifest's prerequisite allowlist or ownership set.
 - [ ] Create an empty Book 2 inventory and a planned assessment blueprint with exactly `blueprint_version: 1`, `book: 2`, `target: round-2`, `status: planned`, `assessment_prefix: r2-`, and qualified `derived_from` metadata.
   Planned blueprint mode is valid only while no `r2-*` manifest exists, grants no conformance credit, and must be replaced by Plan 024 before an R2 assessment becomes live.
 - [ ] Create the six-unit roadmap with no B2 material rows or coverage credit.
@@ -402,16 +415,19 @@ usaaio-tools --all prereq-check
 - [ ] Attach the parser helper so live commands now require exactly one of `--book` or `--all`; keep `--root` as the repository root and reject using `--all` for commands without aggregate semantics.
 
 - [ ] Define `--all` as registry-order iteration with book-qualified diagnostics and a nonzero exit when any book fails.
-- [ ] Set notebook execution CWD to the selected book root.
-  Change only the C7 cache-resolution cell to read the injected `USAAIO_BOOK_ROOT`; preserve every other existing Book 1 notebook byte and prohibit repository-root fallbacks.
+- [ ] Set notebook execution CWD to the selected book root and inject `USAAIO_BOOK_ROOT`.
+  Mechanically rewrite every inventoried Book 1 notebook path-resolution cell that walks to top-level `pyproject.toml`; resolve the environment value first and otherwise walk upward only to the nearest directory containing book-local `syllabus.md` and `curriculum/`.
+  Preserve every non-path cell byte-for-byte and prohibit repository-root cache/content fallbacks.
 - [ ] Make Book 1 schedule, mock, PDF, overlap, inventory, and renderer consumers enumerate only `book1/`.
 - [ ] Make Book 2 consumers enumerate only `book2/` and resolve Book 1 imports through `books.yaml`.
 - [ ] Parameterize `scripts/build-pdf.sh` by selected book and write only beneath that book's `build/`.
   Book 1 retains its existing mock source set; Book 2 discovers student-facing unit notebooks and must fail, not pass vacuously, when a live unit yields zero PDF sources or outputs.
-- [ ] Update the pre-merge guard to normalize a pre-cutover `origin/main` namespace (`units`, `mocktests`, syllabus, curriculum, and references) into Book 1 before computing the prospective merge union.
-  Detect translated unit/mock/roadmap collisions, allow the known baseline migration, and reject any new or untranslatable legacy addition.
+- [ ] Update the pre-merge guard to detect layout per ref using `git cat-file -e <ref>:books.yaml`.
+  For a pre-cutover ref, normalize `units`, `mocktests`, syllabus, and R1 references into Book 1, R2 references into Book 2, and split combined curriculum rows schema-wise by layer/round/qualified destination before computing the prospective merge union; for a post-cutover ref, do no translation.
+  Detect translated unit/mock/R1-row/R2-row collisions, allow the known baseline migration, and reject any new or untranslatable legacy addition.
+- [ ] Make the guard reject staged `.gh-token`, `.env*`, `*token*`, `*secret*`, `*credential*`, raw-paper, student-data, and translated generated-grading-artifact paths before the atomic commit.
 - [ ] Update CI to run registry validation, each book independently, cross-book imports, aggregate reports, and legacy-path rejection.
-- [ ] Apply the user-authorized structure-only governance migration: make `AGENTS.md`, `docs/architecture/decisions.md`, Design 000, the docs index, curriculum architecture, roadmap prose, and live TODO paths name `books.yaml` plus the two complete book roots.
+- [ ] Apply the user-authorized structure-only governance migration: make `AGENTS.md`, `docs/architecture/decisions.md`, Design 000, the docs index, curriculum architecture, roadmap prose, `docs/mocktest-generation.md`, and live TODO paths name `books.yaml`, mandatory book selection, and the two complete book roots.
   Do not change reviewer rosters, lifecycle policy, or unrelated decisions.
 - [ ] Assert root legacy paths are absent, are not symlinks, and cannot be recreated without failing CI.
 - [ ] Inventory path literals as a review aid, then rely on Task 0's structural/static and runtime mutations to distinguish invalid repository-root access from valid book-local joins:
@@ -428,10 +444,13 @@ Expected: every match is either a selected book-root join, a translated pre-cuto
 
 ```bash
 git status --short
-git add -A -- books.yaml book1 book2 syllabus.md curriculum units mocktests reference \
-  tools scripts tests docs AGENTS.md TODO.md .gitignore
+git add -A
+git diff --cached --name-only
+bash scripts/pre-merge-guard.sh
 git commit -m "refactor: split curriculum into complete book roots"
 ```
+
+The staged-name inspection and guard must show no secret/token/credential path, raw paper, student data, generated C10 grading artifact, or legacy root before the commit runs.
 
 ## Task 3 — Rebuild generated Book 1 evidence and prove clean-checkout equivalence
 
@@ -447,8 +466,8 @@ git commit -m "refactor: split curriculum into complete book roots"
 - [ ] Regenerate Book 1 inventory and learner documents from `book1/` only.
 - [ ] Generate the shared curriculum roadmap by reading both registered books in dependency order; preserve book-qualified ownership and never treat the aggregate output as a third source of truth.
 - [ ] Assert the same 19 units, 149 concepts, 437 practices, 69 lesson sessions, 40 schedule weeks, and `r1-001` assessment namespace.
-- [ ] Compare every Book 1 manifest and notebook blob hash under `4cc3894:units/` with its `book1/units/` destination.
-  The sole allowed notebook delta is the C7 cache-resolution cell: compare all other cells byte-for-byte and prove the changed cell differs only by replacing repository-root discovery with `USAAIO_BOOK_ROOT`.
+- [ ] Compare every Book 1 manifest and notebook blob under `4cc3894:units/` and `4cc3894:mocktests/` with its Book 1 destination.
+  For inventoried root-discovery notebooks, compare every non-path cell byte-for-byte and prove each changed cell differs only by replacing top-level `pyproject.toml` discovery with selected-book-root resolution; all other notebook and manifest blobs remain identical.
 - [ ] Execute the existing R1 mock solution from Book 1 CWD so its unchanged `mocktests/r1-001/...` local path resolves within the selected root.
 - [ ] Build Book 1 PDFs and assert the same source notebook set and output count.
 - [ ] Run Book 1 solution execution, answer-key, hygiene, prerequisite, coverage, schedule, overlap, PDF, and renderer checks.
@@ -510,7 +529,7 @@ git commit -m "feat: add independent Book 2 schedule"
 
 - [ ] The statement author creates the bridge, five lessons, overview, review, generator, and all 24 final student statements without solution outlines.
 - [ ] Every path and identifier matches the content and evidence tables above.
-- [ ] The bridge diagnoses all eight imported concepts and links every failure to its qualified Book 1 owner/remediation unit, including variance, `nn.Module`, and optimizer fluency.
+- [ ] The bridge diagnoses the complete imported prerequisite allowlist in coherent groups and links every failure to its qualified Book 1 owner/remediation unit, including NumPy reductions/vectorization, dot products, variance, tensor shapes, cross-entropy, `nn.Module`, autograd, and optimizer fluency.
 - [ ] Create the manifest only after all declared statement-side paths exist.
 - [ ] In the same commit that makes the manifest live, change the schedule from `staged` to `live` and require exact manifest reconciliation for all 24 practice IDs and minutes.
 - [ ] Record `compute.policy: cpu`, seed `20260808`, exact minutes, sessions, imports, concept tags, and solution paths.
@@ -572,7 +591,8 @@ git commit -m "test: lock Book 2 attention evidence"
 - [ ] Mount local raw reference corpora only at `book1/reference/` and `book2/reference/` when overlap checks require them; never stage raw files.
 - [ ] Build Book 1 into `book1/build/` from exactly its pre-cutover mock source set and assert its established nonzero PDF count.
 - [ ] Build exactly 32 nonexecuted student-facing B2-019 PDFs into `book2/build/units/B2-019-attention-transformers/`: overview, bridge plus five lessons, review, and 24 practices; zero discovered Book 2 outputs is a failure.
-- [ ] Run `scripts/verify-clean-checkout.sh`, which extracts `git archive HEAD` into a fresh temporary directory, supplies no untracked legacy content, runs registry/CLI/document/PDF checks there, asserts ignored generated files remain untracked, and removes only its validated temporary directory.
+- [ ] Run `scripts/verify-clean-checkout.sh`, which extracts `git archive HEAD` into a fresh temporary directory, supplies no untracked legacy content, mounts only the validated local pretrained cache at the declared `book1/reference/cache/` resource path, and runs the full `scripts/ci-local.sh` there including fresh solution-notebook execution and PDF builds.
+  It must reject a root-level cache, assert the expected loud raw-paper-absent diagnostic, assert ignored generated files remain untracked, and remove only its validated temporary directory.
 - [ ] Run:
 
 ```bash
@@ -620,6 +640,11 @@ cd /tmp && GH_TOKEN=$(cat /home/chris/workshop/usaaio/.gh-token) \
   - [fable] APPROVE WITH NITS — raised the same source/schedule/governance issues plus required-file, staged-schedule, import, CLI, and bridge precision.
 - Round 2 reviews the consolidated amendment and the user's explicit governance authorization:
   - [self] APPROVE — all first-round findings are mapped to named files, contracts, negative mutations, and verification; schedule arithmetic revalidated at 1,660 minutes with p01–p24 exactly once.
+  - [sol] REJECT — found remaining notebook/test consumers, prerequisite imports, layer-aware union handling, archived notebook execution, mock workflow prose, and reference semantic-split gaps.
+  - [glm] APPROVE WITH NITS — requested explicit qualified cross-book evidence resolution and tighter import wording.
+  - [fable] REJECT — reproduced the atomic staging-command failure and requested explicit syllabus partition, loss import, standalone book-root fallback, and post-cutover guard detection.
+- Round 3 reviews the focused closure amendment:
+  - [self] APPROVE — pinned all 64 root-discovery notebooks, split-token tests, semantic R1/R2 evidence, prerequisite imports, old/new union modes, full archived CI, workflow docs, and safe atomic staging; arithmetic remains exact.
   - [sol] Pending fresh review.
   - [glm] Pending fresh review.
   - [fable] Pending fresh review.
