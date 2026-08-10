@@ -416,6 +416,7 @@ def _clean_checkout_fixture(
     *,
     verifier_mutator: Callable[[str], str] | None = None,
     ci_mutator: Callable[[str], str] | None = None,
+    build_mutator: Callable[[str], str] | None = None,
 ) -> tuple[Path, Path]:
     repo = tmp_path / "clean-repo"
     repo.mkdir()
@@ -445,12 +446,14 @@ def _clean_checkout_fixture(
     ci_source = """#!/usr/bin/env bash
 set -euo pipefail
 [[ ! -d .git ]]
+[[ ! -e UNTRACKED_WORKTREE_SENTINEL ]]
 printf 'archive:no-git\\nci:archive-local\\n' >> "$VERIFY_TRACE"
 BOOKS=(book1 book2)
 for book in "${BOOKS[@]}"; do
   [[ -d "$book" ]]
   printf 'book:%s\\n' "$book" >> "$VERIFY_TRACE"
   bash scripts/build-pdf.sh "$book"
+  [[ -s "$book/build/student.pdf" ]]
 done
 mapfile -t solutions < <(find book1 book2 -type f -name '*_solution.ipynb' | LC_ALL=C sort)
 [[ ${#solutions[@]} -eq 2 ]]
@@ -472,16 +475,18 @@ done
     ci = repo / "scripts" / "ci-local.sh"
     ci.write_text(ci_source, encoding="utf-8")
     ci.chmod(0o755)
-    build = repo / "scripts" / "build-pdf.sh"
-    build.write_text(
+    build_source = (
         "#!/usr/bin/env bash\n"
         "set -euo pipefail\n"
         "book=$1\n"
         'mkdir -p "$book/build"\n'
-        'touch "$book/build/student.pdf"\n'
-        'printf \'pdf:%s\\n\' "$book" >> "$VERIFY_TRACE"\n',
-        encoding="utf-8",
+        "printf '%s\\n' '%PDF-1.4 fixture' > \"$book/build/student.pdf\"\n"
+        'printf \'pdf:%s\\n\' "$book" >> "$VERIFY_TRACE"\n'
     )
+    if build_mutator is not None:
+        build_source = build_mutator(build_source)
+    build = repo / "scripts" / "build-pdf.sh"
+    build.write_text(build_source, encoding="utf-8")
     build.chmod(0o755)
     for book in ("book1", "book2"):
         solution = repo / book / "units" / f"{book}-unit" / "practice" / "p01_solution.ipynb"
@@ -492,6 +497,9 @@ done
     (repo / "book1" / "reference" / "cache").mkdir()
     _git(repo, "add", ".")
     _git(repo, "commit", "-m", "clean checkout fixture")
+    (repo / "UNTRACKED_WORKTREE_SENTINEL").write_text(
+        "must not enter the tracked-HEAD archive\n", encoding="utf-8"
+    )
     return repo, tmp_path / "trace.log"
 
 
@@ -554,13 +562,41 @@ def _comment_out_ci_invocation(source: str) -> str:
     return "".join(mutated)
 
 
+def _replace_with_worktree_copy_verifier(_source: str) -> str:
+    return """#!/usr/bin/env bash
+set -euo pipefail
+archive_dir=$(mktemp -d)
+trap 'rm -rf "$archive_dir"' EXIT
+cp -a . "$archive_dir/repo"
+rm -rf "$archive_dir/repo/.git"
+cd "$archive_dir/repo"
+bash scripts/ci-local.sh
+"""
+
+
+def _replace_pdf_output_with_empty_file(source: str) -> str:
+    mutated = source.replace(
+        "printf '%s\\n' '%PDF-1.4 fixture' > \"$book/build/student.pdf\"",
+        'touch "$book/build/student.pdf"',
+    )
+    assert mutated != source, "fixture could not locate the nonempty PDF write"
+    return mutated
+
+
 @pytest.mark.parametrize(
-    ("verifier_mutator", "ci_mutator"),
+    ("verifier_mutator", "ci_mutator", "build_mutator"),
     [
-        pytest.param(_comment_out_ci_invocation, None, id="comment-only-verifier"),
+        pytest.param(_comment_out_ci_invocation, None, None, id="comment-only-verifier"),
+        pytest.param(
+            _replace_with_worktree_copy_verifier,
+            None,
+            None,
+            id="worktree-copy-leaks-untracked-sentinel",
+        ),
         pytest.param(
             None,
             lambda source: source.replace("BOOKS=(book1 book2)", "BOOKS=(book1)"),
+            None,
             id="omitted-book",
         ),
         pytest.param(
@@ -568,7 +604,14 @@ def _comment_out_ci_invocation(source: str) -> str:
             lambda source: source.replace("find book1 book2 -type f", "find book1 -type f").replace(
                 "[[ ${#solutions[@]} -eq 2 ]]", "[[ ${#solutions[@]} -eq 1 ]]"
             ),
+            None,
             id="omitted-solution",
+        ),
+        pytest.param(
+            None,
+            None,
+            _replace_pdf_output_with_empty_file,
+            id="zero-byte-pdf",
         ),
     ],
 )
@@ -576,9 +619,13 @@ def test_clean_checkout_adversarial_noop_and_omission_mutations_fail(
     tmp_path: Path,
     verifier_mutator: Callable[[str], str] | None,
     ci_mutator: Callable[[str], str] | None,
+    build_mutator: Callable[[str], str] | None,
 ) -> None:
     repo, trace = _clean_checkout_fixture(
-        tmp_path, verifier_mutator=verifier_mutator, ci_mutator=ci_mutator
+        tmp_path,
+        verifier_mutator=verifier_mutator,
+        ci_mutator=ci_mutator,
+        build_mutator=build_mutator,
     )
 
     proc = _run_clean_checkout_fixture(repo, trace)
