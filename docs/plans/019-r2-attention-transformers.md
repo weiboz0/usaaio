@@ -166,32 +166,36 @@ The 255/275/420/325/325/60 weekly totals intentionally ramp through the derivati
 
 ### Exact practice ledger
 
-| ID | Type | Minutes | Primary contract |
-|---|---|---:|---|
-| p01 | MC | 20 | identify Q/K/V roles and a valid attention row |
-| p02 | MC normal form | 20 | exact scaled score and softmax weight |
-| p03 | MC | 20 | scaled self-attention with Q=K=V, output shape, interaction |
-| p04 | MC | 20 | causal versus padding masks before softmax |
-| p05 | MC | 20 | positional encoding and permutation equivariance |
-| p06 | constrained coding | 50 | stable NumPy scaled-dot-product attention |
-| p07 | constrained coding | 50 | batched scaled self-attention transpose contract |
-| p08 | constrained coding | 50 | additive causal mask with forbidden weights zero |
-| p09 | constrained coding | 50 | sinusoidal table plus pinned embedding probes |
-| p10 | constrained coding | 50 | derive then implement head split/concatenation |
-| p11 | constrained coding | 50 | PyTorch attention module with scale and mask |
-| p12 | constrained coding | 50 | pre-norm residual/feed-forward block |
-| p13 | proof | 45 | variance control by division by sqrt(d_k) |
-| p14 | proof | 45 | causal dependence only on positions at or before i |
-| p15 | proof | 45 | multi-head projection and concatenation dimensions |
-| p16 | proof | 45 | score time and memory scaling in n, d, h |
-| p17 | integrative | 65 | seeded causal predictor with positional input and cross-entropy loss |
-| p18 | integrative | 65 | from-scratch attention mask audit |
-| p19 | integrative | 65 | encoder recurrence and LayerNorm ordering |
-| p20 | integrative | 65 | encoder/decoder/cross-attention Q/K/V sources |
-| p21 | integrative | 65 | exact cost under fixed length/dimension budgets |
-| p22 | scenario | 55 | choose and justify mask policy |
-| p23 | challenge | 55 | reconstruct two heads and certify memory budget |
-| p24 | challenge | 55 | repair residual/norm/mask bug |
+| ID | Set | Type | Difficulty | Minutes | Primary contract |
+|---|---|---|---|---:|---|
+| p01 | A | MC | intro | 20 | identify Q/K/V roles and a valid attention row |
+| p02 | A | MC normal form | intro | 20 | exact scaled score and softmax weight |
+| p03 | A | MC | core | 20 | scaled self-attention with Q=K=V, output shape, interaction |
+| p04 | A | MC | intro | 20 | causal versus padding masks before softmax |
+| p05 | A | MC | core | 20 | positional encoding and permutation equivariance |
+| p06 | B | constrained coding | intro | 50 | stable NumPy scaled-dot-product attention |
+| p07 | B | constrained coding | intro | 50 | batched scaled self-attention transpose contract |
+| p08 | B | constrained coding | core | 50 | additive causal mask with forbidden weights zero |
+| p09 | B | constrained coding | intro | 50 | sinusoidal table plus pinned embedding probes |
+| p10 | B | constrained coding | core | 50 | derive then implement head split/concatenation |
+| p11 | B | constrained coding | advanced | 50 | PyTorch attention module with scale and mask |
+| p12 | B | constrained coding | core | 50 | pre-norm residual/feed-forward block |
+| p13 | B | proof | core | 45 | variance control by division by sqrt(d_k) |
+| p14 | B | proof | core | 45 | causal dependence only on positions at or before i |
+| p15 | B | proof | advanced | 45 | multi-head projection and concatenation dimensions |
+| p16 | B | proof | core | 45 | score time and memory scaling in n, d, h |
+| p17 | C | integrative | advanced | 65 | seeded causal predictor with positional input and cross-entropy loss |
+| p18 | C | integrative | core | 65 | from-scratch attention mask audit |
+| p19 | C | integrative | advanced | 65 | encoder recurrence and LayerNorm ordering |
+| p20 | C | scenario | core | 65 | encoder/decoder/cross-attention Q/K/V sources |
+| p21 | C | integrative | core | 65 | exact cost under fixed length/dimension budgets |
+| p22 | C | scenario | intro | 55 | choose and justify mask policy |
+| p23 | C | challenge | advanced | 55 | reconstruct two heads and certify memory budget |
+| p24 | C | challenge | advanced | 55 | repair residual/norm/mask bug |
+
+Set A is p01-p05, Set B is p06-p16, and Set C is p17-p24.
+The difficulty count is exactly 7 intro, 11 core, and 6 advanced practices (29.2%, 45.8%, and 25.0%).
+The type mix is 5 MC, 7 constrained coding, 4 proof, 4 integrative, 2 scenario, and 2 challenge practices.
 
 Every coding statement pins shapes, dtypes, seed `20260808`, allowed and banned APIs, fixed probes, and explicit `atol` and `rtol`.
 Student notebooks contain no solutions or executed output.
@@ -280,13 +284,13 @@ The practice and coverage tables use `pNN` only as readable shorthand for canoni
 - [ ] Write `test_book1_selection_does_not_validate_missing_or_corrupt_book2_content` and the converse dependency-scoped Book 2 import test.
 - [ ] Write `test_cross_book_import_requires_registry_dependency_and_qualified_owner`.
 - [ ] Write qualified coverage-evidence tests for the two C8 bridge rows: valid Book 1 concept/lesson/practice/assessment references pass; unqualified, wrong-owner, missing, or Book 2-reowned variants fail independently.
-- [ ] Write qualified `depends_on` tests for all seven R2 rows that consume Book 1 knowledge points and imported-unit closure tests proving `taught_closure` resolves only allowlisted Book 1 units/concepts without copying them into Book 2.
+- [ ] Write qualified `depends_on` tests for every R2 row with a Book 1-owned dependency edge and imported-unit closure tests proving `taught_closure` resolves only allowlisted Book 1 units/concepts without copying them into Book 2.
 - [ ] Write clean-checkout producer-to-consumer assertions for every path moved in Task 2, including fresh execution of all Book 1 and Book 2 solution notebooks inside the archive.
 - [ ] Write shell/static mutations that reject repository-root `find units`, `for dir in units mocktests`, repository-root `Path("syllabus.md")`, and any checker invoked without a selected `BookSpec.root`; do not use a zero-match literal search that would also reject valid book-local `root / "units"` joins.
-- [ ] Commit an exact consumer-inventory fixture generated from Python AST path joins plus notebook source cells; it must include split-token joins such as `ROOT / "units"`, explicitly cover `test_c11_solution_regressions.py`, `test_c12_solution_regressions.py`, and `test_c12_statement_contracts.py`, and pin all 64 baseline top-level `pyproject.toml` discovery notebooks.
+- [ ] Commit an exact consumer-inventory fixture generated from Python AST path joins plus notebook source cells; it must include split-token joins such as `ROOT / "units"`, explicitly cover `test_c11_solution_regressions.py`, `test_c12_solution_regressions.py`, and `test_c12_statement_contracts.py`, and pin all 64 baseline notebooks whose code cells perform top-level `pyproject.toml` discovery.
   The migration fails if a newly discovered consumer is not classified.
 - [ ] Write PR-union fixtures for old-layout and post-cutover `origin/main`, including a colliding new `units/C13-*`, noncolliding old Book 1 content, R1 and R2 coverage-row mutations inside the old combined map, and an untranslatable legacy addition.
-- [ ] Write staged-scope/secret fixtures proving unrelated `notes.md` aborts before staging, new or modified token/secret paths fail, and the rename-only unchanged C8 tokenization notebook is the sole provenance-based exception.
+- [ ] Write staged-scope/secret fixtures proving unrelated `notes.md` aborts before staging, new token/secret paths fail, and the exact pre-existing C8 tokenization notebook is the sole provenance-based exception: its rename plus its inventoried path-resolution code-cell rewrite passes only when every other cell is byte-identical to the merge base.
 - [ ] Write local-reference migration fixtures for mixed tracked/ignored R1 and R2 corpora, shared cache, outlines, unexpected entries, reruns, and proof that raw files remain ignored.
   Separately assert the derived-analysis split: Book 1 keeps only R1 source rows and pre-R2 sections, while Book 2 keeps only R2 source rows and the complete `## Round 2 shape and topics` section onward.
 - [ ] Run:
@@ -450,11 +454,14 @@ usaaio-tools --all prereq-check
   For a pre-cutover ref, normalize `units`, `mocktests`, syllabus, and R1 references into Book 1, R2 references into Book 2, and split combined curriculum rows schema-wise by layer/round/qualified destination before computing the prospective merge union; for a post-cutover ref, do no translation.
   Detect translated unit/mock/R1-row/R2-row collisions, allow the known baseline migration, and reject any new or untranslatable legacy addition.
 - [ ] Make the guard reject new or content-modified staged `.gh-token`, `.env*`, `*token*`, `*secret*`, `*credential*`, raw-paper, student-data, and translated generated-grading-artifact paths before the atomic commit.
-  The sole token-name exception is a rename-only path whose blob hash already exists on the merge base, such as the unchanged curricular `01-tokens-and-embeddings.ipynb`; any content change or new token-named path remains a hard stop.
+  The sole token-name exception is the exact pre-existing curricular path `book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb`, listed in the committed path inventory.
+  It may differ from the merge-base blob only by the repository-to-book rename and the inventoried path-resolution code-cell rewrite; the verifier must compare notebook cells and require every other cell to remain byte-identical.
+  Any other changed cell or any new token-named path remains a hard stop.
 - [ ] Update CI to run registry validation, each book independently, cross-book imports, aggregate reports, and legacy-path rejection.
 - [ ] Invoke existing training/classical mutation tools with `--book book1` (or selected `book1/` root), and invoke the attention mutation tool with `--book book2`; no mutation command receives repository root as a content root.
 - [ ] Apply the user-authorized structure-only governance migration: make `AGENTS.md`, `docs/architecture/decisions.md`, Design 000, the docs index, curriculum architecture, roadmap prose, `docs/mocktest-generation.md`, and live TODO paths name `books.yaml`, mandatory book selection, and the two complete book roots.
   Do not change reviewer rosters, lifecycle policy, or unrelated decisions.
+- [ ] Replace Design 000's statement that unit lessons carry no PDF obligation with the two-book policy: Book 1 retains its mock-test PDFs, while every live Book 2 unit requires a book-local student-facing PDF collection; B2-019 must produce exactly the 32 sources and outputs specified above.
 - [ ] Assert root legacy paths are absent, are not symlinks, and cannot be recreated without failing CI.
 - [ ] Inventory path literals as a review aid, then rely on Task 0's structural/static and runtime mutations to distinguish invalid repository-root access from valid book-local joins:
 
@@ -687,6 +694,11 @@ cd /tmp && GH_TOKEN=$(cat /home/chris/workshop/usaaio/.gh-token) \
   - [fable] APPROVE WITH NITS — requested a no-embedding authoring constraint, weekly-load rationale, guard environment prefix, and overview filename clarity.
 - Round 4 reviews final closure:
   - [self] APPROVE — probability prerequisites, exact evidence authority, cross-book dependency/closure checks, double-length standards, learner-visible labels, provenance-aware secret protection, and allowlisted staging are now explicit and mutation-tested.
+  - [sol] REJECT — required a path-cell-aware curricular token exception, a second scenario practice, and exact set/difficulty classifications.
+  - [glm] REJECT — independently found the token exception contradiction and required the changed Book 2 PDF policy to be explicit in Design 000.
+  - [fable] APPROVE WITH NITS — requested removal of the stale seven-row count and noted the already-planned WIP rewrite.
+- Round 5 reviews the deterministic Round 4 closure:
+  - [self] APPROVE — the ledger now pins sets, types, and an exact 7/11/6 difficulty mix; p20 supplies the second scenario; the token exception permits only the inventoried path cell while byte-locking all other cells; Design 000's Book 2 PDF policy and dependency-test scope are explicit.
   - [sol] Pending fresh review.
   - [glm] Pending fresh review.
   - [fable] Pending fresh review.
