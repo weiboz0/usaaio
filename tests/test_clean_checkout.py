@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 import re
 import shutil
 import subprocess
 import sys
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -39,26 +41,70 @@ def _notebook_pyproject_cells(path: Path) -> list[int]:
     ]
 
 
+def _discover_pyproject_notebooks(repo: Path) -> list[dict[str, object]]:
+    roots = (
+        (repo / "units", "units"),
+        (repo / "mocktests", "mocktests"),
+        (repo / "book1" / "units", "units"),
+        (repo / "book1" / "mocktests", "mocktests"),
+        (repo / "book2" / "units", "book2/units"),
+        (repo / "book2" / "mocktests", "book2/mocktests"),
+    )
+    rows: list[dict[str, object]] = []
+    for root, normalized_prefix in roots:
+        if not root.is_dir():
+            continue
+        for path in sorted(root.rglob("*.ipynb")):
+            if "build" in path.parts:
+                continue
+            cells = _notebook_pyproject_cells(path)
+            if cells:
+                relative = path.relative_to(root).as_posix()
+                rows.append({"path": f"{normalized_prefix}/{relative}", "cells": cells})
+    return sorted(rows, key=lambda row: str(row["path"]).encode())
+
+
 def test_path_inventory_pins_exactly_64_code_cell_pyproject_consumers() -> None:
     rows = _inventory()["notebook_pyproject_discovery"]
     assert len(rows) == 64
     assert len({row["path"] for row in rows}) == 64
 
     baseline_present = (ROOT / rows[0]["path"]).exists()
-    discovered: list[dict[str, object]] = []
-    for row in rows:
-        old_path = ROOT / row["path"]
-        migrated_path = ROOT / "book1" / row["path"]
-        if baseline_present:
-            assert old_path.is_file(), row["path"]
-            cells = _notebook_pyproject_cells(old_path)
-            if cells:
-                discovered.append({"path": row["path"], "cells": cells})
-        else:
-            assert migrated_path.is_file(), row["path"]
-            assert _notebook_pyproject_cells(migrated_path) == []
+    discovered = _discover_pyproject_notebooks(ROOT)
     if baseline_present:
         assert discovered == rows
+    else:
+        assert discovered == [], discovered
+        for row in rows:
+            migrated_path = ROOT / "book1" / row["path"]
+            assert migrated_path.is_file(), row["path"]
+            assert _notebook_pyproject_cells(migrated_path) == []
+
+
+def test_a_65th_unclassified_pyproject_notebook_is_discovered(tmp_path: Path) -> None:
+    rows = _inventory()["notebook_pyproject_discovery"]
+    for row in rows:
+        path = tmp_path / row["path"]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        cell_count = max(row["cells"]) + 1
+        cells = [{"cell_type": "markdown", "source": ["fixture\n"]} for _ in range(cell_count)]
+        for index in row["cells"]:
+            cells[index] = {"cell_type": "code", "source": ["Path('pyproject.toml')\n"]}
+        path.write_text(json.dumps({"cells": cells}), encoding="utf-8")
+    extra = tmp_path / "units" / "C99-unclassified" / "lesson.ipynb"
+    extra.parent.mkdir(parents=True)
+    extra.write_text(
+        json.dumps({"cells": [{"cell_type": "code", "source": ["Path('pyproject.toml')\n"]}]}),
+        encoding="utf-8",
+    )
+
+    discovered = _discover_pyproject_notebooks(tmp_path)
+
+    assert len(discovered) == 65
+    assert discovered != rows
+    assert {row["path"] for row in discovered} - {row["path"] for row in rows} == {
+        "units/C99-unclassified/lesson.ipynb"
+    }
 
 
 def test_path_inventory_names_split_token_and_special_relative_consumers() -> None:
@@ -74,6 +120,39 @@ def test_path_inventory_names_split_token_and_special_relative_consumers() -> No
         "mocktests/r1-001/problems/p09.ipynb": [3],
         "mocktests/r1-001/solutions/p09_solution.ipynb": [2, 14],
     }
+    expected_markers = {
+        "units/C4-classical-ml-practice/lessons/01-pandas-and-data-loading.ipynb": {
+            22: ("fallback: repo root", "units/C4-classical-ml-practice/practice/data")
+        },
+        "mocktests/r1-001/problems/p09.ipynb": {
+            3: ("../data/p09_train.csv", "mocktests/r1-001/data/p09_train.csv")
+        },
+        "mocktests/r1-001/solutions/p09_solution.ipynb": {
+            2: ("../data/p09_train.csv", "mocktests/r1-001/data/p09_train.csv"),
+            14: ("../data/gen_p09.py", "mocktests/r1-001/data/gen_p09.py"),
+        },
+    }
+    for relative, cells in expected_markers.items():
+        path = ROOT / relative
+        legacy = path.exists()
+        if not path.exists():
+            path = ROOT / "book1" / relative
+        assert path.is_file(), relative
+        notebook = json.loads(path.read_text(encoding="utf-8"))
+        for index, markers in cells.items():
+            source = "".join(notebook["cells"][index]["source"])
+            if legacy:
+                assert all(marker in source for marker in markers), (relative, index)
+            else:
+                assert not any(marker in source for marker in markers[1:]), (relative, index)
+                assert "USAAIO_BOOK_ROOT" in source or "book_root" in source.lower(), (
+                    relative,
+                    index,
+                )
+    for relative in inventory["split_token_python_consumers"]:
+        path = ROOT / relative
+        assert path.is_file()
+        assert _python_path_consumers(path), relative
 
 
 def _looks_like_content_path(value: str) -> bool:
@@ -164,6 +243,95 @@ def _invalid_root_accesses(source: str, *, language: str) -> list[str]:
     return [pattern for pattern in patterns if re.search(pattern, source)]
 
 
+def _division_parts(node: ast.AST) -> list[ast.AST]:
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Div):
+        return [*_division_parts(node.left), *_division_parts(node.right)]
+    return [node]
+
+
+def _actual_python_root_accesses(path: Path) -> list[dict[str, object]]:
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+    parents = {child: parent for parent in ast.walk(tree) for child in ast.iter_child_nodes(parent)}
+    violations: list[dict[str, object]] = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Div):
+            if isinstance(parents.get(node), ast.BinOp):
+                continue
+            parts = _division_parts(node)
+            anchor = parts[0]
+            values = [part.value for part in parts if isinstance(part, ast.Constant)]
+            if (
+                isinstance(anchor, ast.Name)
+                and anchor.id in {"ROOT", "repo_root"}
+                and any(
+                    _looks_like_content_path(value) for value in values if isinstance(value, str)
+                )
+            ):
+                violations.append({"line": node.lineno, "kind": "repo-root-path-join"})
+        if (
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "Path"
+            and node.args
+            and isinstance(node.args[0], ast.Constant)
+            and node.args[0].value == "syllabus.md"
+        ):
+            violations.append({"line": node.lineno, "kind": "literal-root-syllabus"})
+        if isinstance(node, ast.Call) and node.args:
+            function = node.func
+            name = (
+                function.id
+                if isinstance(function, ast.Name)
+                else function.attr
+                if isinstance(function, ast.Attribute)
+                else ""
+            )
+            first = node.args[0]
+            if (
+                name.startswith("check_")
+                and isinstance(first, ast.Name)
+                and first.id in {"ROOT", "repo_root"}
+            ):
+                violations.append({"line": node.lineno, "kind": "unselected-checker-root"})
+    return sorted(violations, key=lambda row: (int(row["line"]), str(row["kind"])))
+
+
+def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
+    patterns = {
+        "root-find-units": re.compile(r"\bfind\s+units(?:\s|$)"),
+        "root-find-units-mocktests": re.compile(r"\bfind\s+units\s+mocktests(?:\s|$)"),
+        "root-for-units-mocktests": re.compile(
+            r"\bfor\s+(?:dir|[A-Za-z_][A-Za-z0-9_]*)\s+in\s+units\s+mocktests\b"
+        ),
+    }
+    violations: list[dict[str, object]] = []
+    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        for kind, pattern in patterns.items():
+            if pattern.search(line):
+                violations.append({"line": line_number, "kind": kind})
+    return violations
+
+
+def _actual_repository_root_accesses() -> dict[str, list[dict[str, object]]]:
+    violations: dict[str, list[dict[str, object]]] = {}
+    contract_tests = set(_inventory()["task0_contract_tests"])
+    for base in (ROOT / "tools", ROOT / "scripts", ROOT / "tests"):
+        for path in sorted(base.rglob("*.py")):
+            relative = path.relative_to(ROOT).as_posix()
+            if relative in contract_tests:
+                continue
+            rows = _actual_python_root_accesses(path)
+            if rows:
+                violations[relative] = rows
+    for path in sorted((ROOT / "scripts").rglob("*.sh")):
+        rows = _actual_shell_root_accesses(path)
+        if rows:
+            violations[path.relative_to(ROOT).as_posix()] = rows
+    return violations
+
+
 @pytest.mark.parametrize(
     ("source", "language"),
     [
@@ -183,6 +351,18 @@ def test_static_contract_allows_selected_book_local_joins() -> None:
         _invalid_root_accesses('find "$book_root/units" -name manifest.yaml', language="shell")
         == []
     )
+
+
+def test_actual_producers_have_no_repository_root_content_access() -> None:
+    actual = _actual_repository_root_accesses()
+    expected_transition = _inventory()["repository_root_violations"]
+    if (ROOT / "syllabus.md").exists():
+        assert actual == expected_transition
+        pytest.fail(
+            "pre-cutover repository-root consumers remain and must be migrated atomically: "
+            + ", ".join(actual)
+        )
+    assert actual == {}, actual
 
 
 def test_atomic_cutover_has_every_moved_producer_and_no_legacy_root() -> None:
@@ -207,20 +387,204 @@ def test_atomic_cutover_has_every_moved_producer_and_no_legacy_root() -> None:
         assert not path.is_symlink(), f"legacy symlink remains: {legacy}"
 
 
-def test_clean_checkout_verifier_archives_and_runs_every_solution_consumer() -> None:
-    script = ROOT / "scripts" / "verify-clean-checkout.sh"
-    assert script.is_file(), "scripts/verify-clean-checkout.sh is the missing producer"
-    source = script.read_text(encoding="utf-8")
-    for contract in (
-        "git archive",
-        "scripts/ci-local.sh",
-        "book1/reference/cache",
-        "USAAIO_BOOK_ROOT",
-        "_solution.ipynb",
-        "book1",
-        "book2",
-    ):
-        assert contract in source
+def _solution_notebook(book: str) -> str:
+    return json.dumps(
+        {
+            "cells": [
+                {
+                    "cell_type": "code",
+                    "execution_count": None,
+                    "metadata": {},
+                    "outputs": [],
+                    "source": [
+                        "import os\n",
+                        "from pathlib import Path\n",
+                        "with Path(os.environ['VERIFY_TRACE']).open('a') as trace:\n",
+                        "    trace.write('solution:' + os.environ['NOTEBOOK_PATH'] + '\\n')\n",
+                    ],
+                }
+            ],
+            "metadata": {},
+            "nbformat": 4,
+            "nbformat_minor": 5,
+        }
+    )
+
+
+def _clean_checkout_fixture(
+    tmp_path: Path,
+    *,
+    verifier_mutator: Callable[[str], str] | None = None,
+    ci_mutator: Callable[[str], str] | None = None,
+) -> tuple[Path, Path]:
+    repo = tmp_path / "clean-repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    source_verifier = ROOT / "scripts" / "verify-clean-checkout.sh"
+    assert source_verifier.is_file(), "scripts/verify-clean-checkout.sh is the missing producer"
+    verifier = repo / "scripts" / "verify-clean-checkout.sh"
+    verifier.parent.mkdir(parents=True)
+    verifier_source = source_verifier.read_text(encoding="utf-8")
+    if verifier_mutator is not None:
+        verifier_source = verifier_mutator(verifier_source)
+    verifier.write_text(verifier_source, encoding="utf-8")
+    verifier.chmod(0o755)
+    (repo / "books.yaml").write_text(
+        "books_version: 1\n"
+        "books:\n"
+        "  - {id: book1, number: 1, root: book1, depends_on: []}\n"
+        "  - {id: book2, number: 2, root: book2, depends_on: [book1]}\n",
+        encoding="utf-8",
+    )
+    (repo / "pyproject.toml").write_text(
+        "[project]\nname = 'clean-checkout-fixture'\nversion = '0.0.0'\n",
+        encoding="utf-8",
+    )
+    ci_source = """#!/usr/bin/env bash
+set -euo pipefail
+[[ ! -d .git ]]
+printf 'archive:no-git\\nci:archive-local\\n' >> "$VERIFY_TRACE"
+BOOKS=(book1 book2)
+for book in "${BOOKS[@]}"; do
+  [[ -d "$book" ]]
+  printf 'book:%s\\n' "$book" >> "$VERIFY_TRACE"
+  bash scripts/build-pdf.sh "$book"
+done
+mapfile -t solutions < <(find book1 book2 -type f -name '*_solution.ipynb' | LC_ALL=C sort)
+[[ ${#solutions[@]} -eq 2 ]]
+for notebook in "${solutions[@]}"; do
+  NOTEBOOK_PATH="$notebook" "$TEST_PYTHON" - "$notebook" <<'PY'
+import json
+import sys
+
+namespace = {}
+raw = json.load(open(sys.argv[1], encoding="utf-8"))
+for cell in raw["cells"]:
+    if cell["cell_type"] == "code":
+        exec("".join(cell["source"]), namespace)
+PY
+done
+"""
+    if ci_mutator is not None:
+        ci_source = ci_mutator(ci_source)
+    ci = repo / "scripts" / "ci-local.sh"
+    ci.write_text(ci_source, encoding="utf-8")
+    ci.chmod(0o755)
+    build = repo / "scripts" / "build-pdf.sh"
+    build.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "book=$1\n"
+        'mkdir -p "$book/build"\n'
+        'touch "$book/build/student.pdf"\n'
+        'printf \'pdf:%s\\n\' "$book" >> "$VERIFY_TRACE"\n',
+        encoding="utf-8",
+    )
+    build.chmod(0o755)
+    for book in ("book1", "book2"):
+        solution = repo / book / "units" / f"{book}-unit" / "practice" / "p01_solution.ipynb"
+        solution.parent.mkdir(parents=True)
+        solution.write_text(_solution_notebook(book), encoding="utf-8")
+        cache = repo / book / "reference"
+        cache.mkdir(parents=True)
+    (repo / "book1" / "reference" / "cache").mkdir()
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "clean checkout fixture")
+    return repo, tmp_path / "trace.log"
+
+
+def _run_clean_checkout_fixture(repo: Path, trace: Path) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["bash", "scripts/verify-clean-checkout.sh"],
+        cwd=repo,
+        env={
+            **os.environ,
+            "TEST_PYTHON": sys.executable,
+            "VERIFY_TRACE": str(trace),
+            "USAAIO_REFERENCE_CACHE": str(repo / "book1/reference/cache"),
+        },
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def _assert_complete_clean_checkout_trace(
+    proc: subprocess.CompletedProcess[str], trace: Path
+) -> None:
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    lines = trace.read_text(encoding="utf-8").splitlines()
+    assert lines.count("archive:no-git") == 1
+    assert lines.count("ci:archive-local") == 1
+    assert {line for line in lines if line.startswith("book:")} == {
+        "book:book1",
+        "book:book2",
+    }
+    assert {line for line in lines if line.startswith("pdf:")} == {
+        "pdf:book1",
+        "pdf:book2",
+    }
+    assert {line for line in lines if line.startswith("solution:")} == {
+        "solution:book1/units/book1-unit/practice/p01_solution.ipynb",
+        "solution:book2/units/book2-unit/practice/p01_solution.ipynb",
+    }
+
+
+def test_clean_checkout_verifier_executes_archive_local_ci_pdfs_and_all_solutions(
+    tmp_path: Path,
+) -> None:
+    repo, trace = _clean_checkout_fixture(tmp_path)
+
+    proc = _run_clean_checkout_fixture(repo, trace)
+
+    _assert_complete_clean_checkout_trace(proc, trace)
+
+
+def _comment_out_ci_invocation(source: str) -> str:
+    lines = source.splitlines(keepends=True)
+    mutated = [
+        f"# mutation removed CI: {line}"
+        if "ci-local.sh" in line and line.strip() and not line.lstrip().startswith("#")
+        else line
+        for line in lines
+    ]
+    assert mutated != lines, "fixture could not locate the archive-local CI invocation"
+    return "".join(mutated)
+
+
+@pytest.mark.parametrize(
+    ("verifier_mutator", "ci_mutator"),
+    [
+        pytest.param(_comment_out_ci_invocation, None, id="comment-only-verifier"),
+        pytest.param(
+            None,
+            lambda source: source.replace("BOOKS=(book1 book2)", "BOOKS=(book1)"),
+            id="omitted-book",
+        ),
+        pytest.param(
+            None,
+            lambda source: source.replace("find book1 book2 -type f", "find book1 -type f").replace(
+                "[[ ${#solutions[@]} -eq 2 ]]", "[[ ${#solutions[@]} -eq 1 ]]"
+            ),
+            id="omitted-solution",
+        ),
+    ],
+)
+def test_clean_checkout_adversarial_noop_and_omission_mutations_fail(
+    tmp_path: Path,
+    verifier_mutator: Callable[[str], str] | None,
+    ci_mutator: Callable[[str], str] | None,
+) -> None:
+    repo, trace = _clean_checkout_fixture(
+        tmp_path, verifier_mutator=verifier_mutator, ci_mutator=ci_mutator
+    )
+
+    proc = _run_clean_checkout_fixture(repo, trace)
+
+    with pytest.raises((AssertionError, FileNotFoundError)):
+        _assert_complete_clean_checkout_trace(proc, trace)
 
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib
+import shutil
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -8,7 +9,7 @@ from typing import Any
 import pytest
 import yaml
 
-REQUIRED_FILES = (
+REQUIRED_PATHS = (
     "syllabus.md",
     "curriculum/course-schedule.yaml",
     "curriculum/coverage-map.yaml",
@@ -17,6 +18,8 @@ REQUIRED_FILES = (
     "curriculum/source-manifest.yaml",
     "mocktests/blueprint.yaml",
     "docs/course-structure.md",
+    "units",
+    "reference",
 )
 
 
@@ -101,7 +104,7 @@ def _write_book(
     )
     (root / "syllabus.md").write_text(syllabus, encoding="utf-8")
     if complete:
-        for relative in REQUIRED_FILES[1:]:
+        for relative in REQUIRED_PATHS[1:-2]:
             path = root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             if path.suffix == ".yaml":
@@ -138,11 +141,18 @@ def write_two_book_repo(repo: Path, *, corrupt_book2: bool = False) -> None:
 @pytest.mark.parametrize(
     ("mutation", "message"),
     [
-        pytest.param(
-            lambda repo: (repo / "units").mkdir(),
-            "legacy root",
-            id="legacy-units-root",
-        ),
+        *[
+            pytest.param(
+                lambda repo, legacy=legacy: (
+                    (repo / legacy).mkdir()
+                    if "." not in legacy
+                    else (repo / legacy).write_text("legacy\n")
+                ),
+                "legacy root",
+                id=f"legacy-{legacy.replace('.', '-')}-root",
+            )
+            for legacy in ("syllabus.md", "curriculum", "units", "mocktests", "reference")
+        ],
         pytest.param(
             lambda repo: _write_yaml(
                 repo / "books.yaml",
@@ -161,6 +171,14 @@ def write_two_book_repo(repo: Path, *, corrupt_book2: bool = False) -> None:
             ),
             "escaping",
             id="escaping-root",
+        ),
+        pytest.param(
+            lambda repo: _mutate_registry(
+                repo,
+                lambda raw: raw["books"][0].update(root=str((repo / "book1").resolve())),
+            ),
+            "absolute",
+            id="absolute-root",
         ),
     ],
 )
@@ -209,6 +227,18 @@ def _mutate_registry(repo: Path, mutate: Callable[[dict[str, Any]], None]) -> No
             id="dependency-cycle",
         ),
         pytest.param(
+            lambda repo: _mutate_registry(
+                repo, lambda raw: raw["books"][1].update(depends_on=["book9"])
+            ),
+            "unknown.*depend",
+            id="unknown-dependency",
+        ),
+        pytest.param(
+            lambda repo: _mutate_registry(repo, lambda raw: raw.update(extra="forbidden")),
+            "unexpected|exactly",
+            id="unexpected-registry-key",
+        ),
+        pytest.param(
             lambda repo: (
                 (repo / "book2").rename(repo / "real-book2"),
                 (repo / "book2").symlink_to(repo / "real-book2", target_is_directory=True),
@@ -235,18 +265,32 @@ def test_catalog_structure_mutation_matrix(
         _books_module().load_book_catalog(tmp_path)
 
 
-@pytest.mark.parametrize("relative", REQUIRED_FILES)
+@pytest.mark.parametrize("relative", REQUIRED_PATHS)
 def test_selected_book_validation_reports_each_missing_required_file(
     tmp_path: Path, relative: str
 ) -> None:
     write_two_book_repo(tmp_path)
     missing = tmp_path / "book1" / relative
-    missing.unlink()
+    if missing.is_dir():
+        shutil.rmtree(missing)
+    else:
+        missing.unlink()
     catalog = _books_module().load_book_catalog(tmp_path)
 
     errors = _books_module().validate_book_root(catalog.by_id("book1"))
 
     assert any(relative in error for error in errors), errors
+
+
+@pytest.mark.parametrize("directory", ["units", "reference"])
+def test_empty_required_directories_need_a_tracked_marker(tmp_path: Path, directory: str) -> None:
+    write_two_book_repo(tmp_path)
+    (tmp_path / "book1" / directory / ".gitkeep").unlink()
+    catalog = _books_module().load_book_catalog(tmp_path)
+
+    errors = _books_module().validate_book_root(catalog.by_id("book1"))
+
+    assert any(directory in error and "tracked" in error for error in errors), errors
 
 
 def test_book1_selection_does_not_validate_missing_or_corrupt_book2_content(

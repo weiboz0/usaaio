@@ -2443,8 +2443,64 @@ def test_imported_taught_closure_is_limited_to_persisted_book1_allowlists() -> N
     )
 
     book2_owned = set(book2_syllabus.concepts)
+    book2_owned_units = set(book2_syllabus.units)
     assert book2_owned.isdisjoint(imports.concepts)
+    assert book2_owned_units.isdisjoint(imports.units)
     assert set(imports.concepts) <= closure
     assert set(evidence.concepts).isdisjoint(closure)
     imported_book1_concepts = closure & set(book1_syllabus.concepts)
     assert imported_book1_concepts == set(imports.concepts)
+
+
+def test_imported_taught_closure_authorized_subset_is_exact() -> None:
+    books = _scope_books_module()
+    catalog = books.load_book_catalog(ROOT)
+    book1 = catalog.by_id("book1")
+    book2 = catalog.by_id("book2")
+    imports = books.load_book_imports(book2)
+    book1_syllabus = model.load_syllabus(book1.root)
+    book2_syllabus = model.load_syllabus(book2.root)
+    requested = "F1-scientific-python"
+    expected = set(book1_syllabus.units[requested].teaches) & set(imports.concepts)
+
+    closure = taught_closure(
+        book2_syllabus,
+        [f"book1:{requested}"],
+        catalog=catalog,
+        book=book2,
+    )
+
+    assert closure & set(book1_syllabus.concepts) == expected
+    assert expected == {
+        "numpy-arrays",
+        "broadcasting",
+        "vectorization",
+        "elementwise-ops",
+        "aggregation-axis",
+        "random-seeding",
+    }
+
+
+@pytest.mark.parametrize(
+    ("requested", "message"),
+    [
+        pytest.param("book1:C5-neural-networks", "allowlist", id="nonallowlisted-unit"),
+        pytest.param("F1-scientific-python", "qualified", id="unqualified-unit"),
+        pytest.param("book2:F1-scientific-python", "owner", id="wrong-owner-unit"),
+    ],
+)
+def test_imported_taught_closure_rejects_unauthorized_unit_requests(
+    requested: str, message: str
+) -> None:
+    books = _scope_books_module()
+    catalog = books.load_book_catalog(ROOT)
+    book2 = catalog.by_id("book2")
+    syllabus = model.load_syllabus(book2.root)
+
+    with pytest.raises(ValueError, match=message):
+        taught_closure(
+            syllabus,
+            [requested],
+            catalog=catalog,
+            book=book2,
+        )

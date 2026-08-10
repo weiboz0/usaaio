@@ -119,6 +119,12 @@ def test_reference_migration_moves_mixed_tracked_and_ignored_corpus_idempotently
     assert (repo / "book2/reference/r2-2026/raw.pdf").read_text() == "ignored round 2 raw"
     assert (repo / "book1/reference/cache/model.bin").read_text() == "ignored shared cache"
     assert (repo / "book1/reference/outlines-round1.md").is_file()
+    assert not list((repo / "book1/reference").glob("r2-*"))
+    assert not list((repo / "book2/reference").glob("r1-*"))
+    assert not (repo / "book2/reference/cache").exists()
+    assert not list((repo / "book2/reference").glob("outlines-*"))
+    assert len(list(repo.glob("book*/reference/cache/model.bin"))) == 1
+    assert len(list(repo.glob("book*/reference/outlines-round1.md"))) == 1
     for relative in (
         "book1/reference/r1-2026/raw.pdf",
         "book2/reference/r2-2026/raw.pdf",
@@ -165,6 +171,7 @@ def test_reference_analysis_is_split_semantically_at_the_round2_heading(
     assert "## Round 2 shape and topics" not in book1
     assert "r2-2026" in book2
     assert "r1-2026" not in book2 and "r1-2025" not in book2
+    assert "r2-2026" not in book1
     assert "## Round 1 topic findings" not in book2
     assert book2.endswith(
         "## Round 2 shape and topics\n\n"

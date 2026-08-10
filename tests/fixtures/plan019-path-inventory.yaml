@@ -42,6 +42,76 @@ task0_contract_tests:
   - tests/test_book_isolation.py
   - tests/test_clean_checkout.py
   - tests/test_reference_migration.py
+repository_root_violations:
+  scripts/ci-local.sh:
+    - {line: 20, kind: root-find-units}
+    - {line: 20, kind: root-find-units-mocktests}
+    - {line: 49, kind: root-find-units}
+  scripts/pre-merge-guard.sh:
+    - {line: 52, kind: root-for-units-mocktests}
+  scripts/verify-register.py:
+    - {line: 118, kind: repo-root-path-join}
+    - {line: 167, kind: repo-root-path-join}
+    - {line: 271, kind: repo-root-path-join}
+    - {line: 274, kind: repo-root-path-join}
+  tests/test_blueprint.py:
+    - {line: 15, kind: repo-root-path-join}
+    - {line: 16, kind: repo-root-path-join}
+    - {line: 17, kind: repo-root-path-join}
+    - {line: 251, kind: repo-root-path-join}
+    - {line: 252, kind: repo-root-path-join}
+  tests/test_book2_schedule.py:
+    - {line: 306, kind: repo-root-path-join}
+    - {line: 307, kind: repo-root-path-join}
+    - {line: 308, kind: repo-root-path-join}
+    - {line: 312, kind: repo-root-path-join}
+  tests/test_c11_solution_regressions.py:
+    - {line: 10, kind: repo-root-path-join}
+  tests/test_c12_solution_regressions.py:
+    - {line: 11, kind: repo-root-path-join}
+  tests/test_c12_statement_contracts.py:
+    - {line: 9, kind: repo-root-path-join}
+    - {line: 178, kind: repo-root-path-join}
+    - {line: 194, kind: repo-root-path-join}
+    - {line: 206, kind: repo-root-path-join}
+  tests/test_integration.py:
+    - {line: 338, kind: repo-root-path-join}
+    - {line: 349, kind: repo-root-path-join}
+    - {line: 358, kind: repo-root-path-join}
+    - {line: 378, kind: repo-root-path-join}
+    - {line: 379, kind: repo-root-path-join}
+    - {line: 383, kind: repo-root-path-join}
+    - {line: 448, kind: repo-root-path-join}
+    - {line: 767, kind: repo-root-path-join}
+    - {line: 962, kind: repo-root-path-join}
+    - {line: 972, kind: repo-root-path-join}
+    - {line: 1048, kind: repo-root-path-join}
+    - {line: 1191, kind: unselected-checker-root}
+    - {line: 1200, kind: unselected-checker-root}
+    - {line: 1201, kind: unselected-checker-root}
+    - {line: 1202, kind: unselected-checker-root}
+    - {line: 1203, kind: unselected-checker-root}
+  tests/test_new_mocktest.py:
+    - {line: 14, kind: repo-root-path-join}
+    - {line: 15, kind: repo-root-path-join}
+  tests/test_prereq_coverage.py:
+    - {line: 97, kind: unselected-checker-root}
+    - {line: 515, kind: unselected-checker-root}
+    - {line: 579, kind: repo-root-path-join}
+    - {line: 584, kind: repo-root-path-join}
+  tests/test_schedule.py:
+    - {line: 880, kind: unselected-checker-root}
+    - {line: 883, kind: repo-root-path-join}
+    - {line: 972, kind: repo-root-path-join}
+    - {line: 1006, kind: repo-root-path-join}
+    - {line: 1029, kind: repo-root-path-join}
+    - {line: 1052, kind: repo-root-path-join}
+    - {line: 1100, kind: repo-root-path-join}
+  tests/test_scope.py:
+    - {line: 1573, kind: unselected-checker-root}
+    - {line: 1576, kind: repo-root-path-join}
+    - {line: 1595, kind: unselected-checker-root}
+    - {line: 1603, kind: repo-root-path-join}
 special_notebook_consumers:
   - path: units/C4-classical-ml-practice/lessons/01-pandas-and-data-loading.ipynb
     cells: [22]
