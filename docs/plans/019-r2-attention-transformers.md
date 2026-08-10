@@ -699,9 +699,11 @@ cd /tmp && GH_TOKEN=$(cat /home/chris/workshop/usaaio/.gh-token) \
   - [fable] APPROVE WITH NITS — requested removal of the stale seven-row count and noted the already-planned WIP rewrite.
 - Round 5 reviews the deterministic Round 4 closure:
   - [self] APPROVE — the ledger now pins sets, types, and an exact 7/11/6 difficulty mix; p20 supplies the second scenario; the token exception permits only the inventoried path cell while byte-locking all other cells; Design 000's Book 2 PDF policy and dependency-test scope are explicit.
-  - [sol] Pending fresh review.
-  - [glm] Pending fresh review.
-  - [fable] Pending fresh review.
+  - [sol] APPROVE WITH NITS — all Round 4 blockers are closed; implementation must treat the missing migration scripts as intentional Task 0 red producers and pass full `BookSpec` policy to mock-aware checks.
+  - [glm] APPROVE WITH NITS — independently verified the complete arithmetic, 64-notebook inventory, import/evidence closure, and atomic migration; implementation must keep shared governance/audit paths repo-root-aware and preserve the already-covered imported `nlp-tokenization` row.
+  - [fable] APPROVE WITH NITS — independently verified every quantitative and closure claim; implementation should name the C4 fallback cell in the consumer fixture and later align Design 019's coarse dependency diagram with its normative import block.
+
+Round 5 reaches full consensus: all four reviewers returned APPROVE or APPROVE WITH NITS and no `[OPEN]` blocker remains.
 
 The earlier `[deepseek]` round reviewed the superseded shared-root plan and provides no verdict for this amendment.
 
