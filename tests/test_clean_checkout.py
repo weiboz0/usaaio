@@ -470,9 +470,34 @@ def _shell_words(source: str) -> list[str]:
     return words
 
 
+def _shell_word_text(source: str) -> str:
+    """Preserve literal word segments while masking their expansion markers."""
+    output: list[str] = []
+    in_single = False
+    in_double = False
+    escaped = False
+    for character in source:
+        if escaped:
+            output.append(" " if character in {"$", "`"} else character)
+            escaped = False
+            continue
+        if character == "\\" and not in_single:
+            output.append(character)
+            escaped = True
+            continue
+        if character == "'" and not in_double:
+            in_single = not in_single
+            output.append(character)
+            continue
+        if character == '"' and not in_single:
+            in_double = not in_double
+        output.append(" " if in_single and character in {"$", "`"} else character)
+    return "".join(output)
+
+
 def _shell_normalized_word(word: str) -> str | None:
     try:
-        normalized = shlex.split(_shell_expanding_text(word), posix=True)
+        normalized = shlex.split(_shell_word_text(word), posix=True)
     except ValueError:
         return None
     return normalized[0] if len(normalized) == 1 else None
@@ -511,7 +536,7 @@ def _without_shell_redirections(tokens: list[str]) -> list[str] | None:
     while index < len(tokens):
         operator_index = index
         if (
-            tokens[operator_index].isdigit()
+            re.fullmatch(r"__USAAIO_SHELL_FD_\d+__", tokens[operator_index])
             and operator_index + 1 < len(tokens)
             and tokens[operator_index + 1] in operators
         ):
@@ -527,9 +552,53 @@ def _without_shell_redirections(tokens: list[str]) -> list[str] | None:
     return argv
 
 
+def _mark_adjacent_shell_fds(command: str) -> str:
+    output: list[str] = []
+    in_single = False
+    in_double = False
+    escaped = False
+    index = 0
+    while index < len(command):
+        character = command[index]
+        if escaped:
+            output.append(character)
+            escaped = False
+            index += 1
+            continue
+        if character == "\\" and not in_single:
+            output.append(character)
+            escaped = True
+            index += 1
+            continue
+        if character == "'" and not in_double:
+            in_single = not in_single
+        elif character == '"' and not in_single:
+            in_double = not in_double
+        if not in_single and not in_double and character.isdigit():
+            end = index
+            while end < len(command) and command[end].isdigit():
+                end += 1
+            at_word_boundary = (
+                index == 0
+                or command[index - 1].isspace()
+                or command[index - 1] in ";|&("
+            )
+            if at_word_boundary and end < len(command) and command[end] in "<>":
+                output.append(f"__USAAIO_SHELL_FD_{command[index:end]}__")
+                index = end
+                continue
+        output.append(character)
+        index += 1
+    return "".join(output)
+
+
 def _is_git_root_command(command: str) -> bool:
     try:
-        lexer = shlex.shlex(command, posix=True, punctuation_chars="><&;|")
+        lexer = shlex.shlex(
+            _mark_adjacent_shell_fds(command),
+            posix=True,
+            punctuation_chars="><&;|",
+        )
         lexer.whitespace_split = True
         lexer.commenters = ""
         tokens = list(lexer)
@@ -1178,6 +1247,95 @@ def test_actual_scanner_allows_bounded_shell_command_near_misses(
     producer.write_text(source, encoding="utf-8")
 
     assert _actual_repository_root_accesses(tmp_path) == {}
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        'find "$PWD"/\'units\' -name manifest.yaml\n',
+        'find "${PWD}"/\'un\'\'its\' -name manifest.yaml\n',
+        'find "$PWD"\'/\'units -name manifest.yaml\n',
+        (
+            'project="$PWD"\n'
+            'find "${project}"/\'units\' -name manifest.yaml\n'
+        ),
+    ],
+)
+def test_actual_scanner_rejects_expanding_and_literal_word_segments(
+    tmp_path: Path, source: str
+) -> None:
+    producer = tmp_path / "scripts" / "producer.sh"
+    producer.parent.mkdir(parents=True)
+    producer.write_text(source, encoding="utf-8")
+
+    expected_line = 2 if source.startswith("project=") else 1
+    assert _actual_repository_root_accesses(tmp_path) == {
+        "scripts/producer.sh": [
+            {"line": expected_line, "kind": "root-find-variable-units"}
+        ]
+    }
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        "find '$PWD/units' -name manifest.yaml\n",
+        "find '${PWD}'/'units' -name manifest.yaml\n",
+        "find '$PWD'/\"units\" -name manifest.yaml\n",
+        (
+            'project="$PWD"\n'
+            "find '${project}'/units -name manifest.yaml\n"
+        ),
+    ],
+)
+def test_actual_scanner_allows_nonexpanding_literal_word_segments(
+    tmp_path: Path, source: str
+) -> None:
+    producer = tmp_path / "scripts" / "safe-selected.sh"
+    producer.parent.mkdir(parents=True)
+    producer.write_text(source, encoding="utf-8")
+
+    assert _actual_repository_root_accesses(tmp_path) == {}
+
+
+@pytest.mark.parametrize(
+    "command",
+    [
+        "2 > /dev/null git rev-parse --show-toplevel",
+        "git 2 > /dev/null rev-parse --show-toplevel",
+        "git rev-parse 2 > /dev/null --show-toplevel",
+        "git rev-parse --show-toplevel 2 > /dev/null",
+    ],
+)
+def test_actual_scanner_does_not_treat_spaced_digits_as_redirect_fds(
+    tmp_path: Path, command: str
+) -> None:
+    producer = tmp_path / "scripts" / "safe-selected.sh"
+    producer.parent.mkdir(parents=True)
+    producer.write_text(
+        f'book_root=$( {command} )\nfind "$book_root/units" -name manifest.yaml\n',
+        encoding="utf-8",
+    )
+
+    assert _actual_repository_root_accesses(tmp_path) == {}
+
+
+def test_actual_scanner_allows_spaced_bare_redirect_in_exact_git_command(
+    tmp_path: Path,
+) -> None:
+    producer = tmp_path / "scripts" / "producer.sh"
+    producer.parent.mkdir(parents=True)
+    producer.write_text(
+        'book_root=$(git > /dev/null rev-parse --show-toplevel)\n'
+        'find "$book_root/units" -name manifest.yaml\n',
+        encoding="utf-8",
+    )
+
+    assert _actual_repository_root_accesses(tmp_path) == {
+        "scripts/producer.sh": [
+            {"line": 2, "kind": "root-find-variable-units"}
+        ]
+    }
 
 
 def test_actual_producers_have_no_repository_root_content_access() -> None:
