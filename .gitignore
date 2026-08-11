@@ -6,7 +6,10 @@ __pycache__/
 .codex-buddy/
 
 # Build outputs (rendered PDFs etc.)
-build/
+book1/build/
+book2/build/
+book1/**/build/
+book2/**/build/
 
 # OS / editor
 .DS_Store
@@ -15,23 +18,26 @@ build/
 .gh-token
 
 # Public repo: raw past-test papers stay local-only (copyright).
-# Only reference/analysis.md and other original derived work are committed.
-reference/*
-!reference/.gitkeep
-!reference/analysis.md
+# Only book-local reference/analysis.md and placeholders are committed.
+book1/reference/*
+!book1/reference/.gitkeep
+!book1/reference/analysis.md
+book2/reference/*
+!book2/reference/.gitkeep
+!book2/reference/analysis.md
 
 # C10 grading register: the held-back split is regenerated at grading time
 # by `make_dataset.py --with-test` and must never be committed (public repo;
 # committing it would break the hidden-test teaching device).
-units/C10-competition-craft/data/heldout.csv
+book1/units/C10-competition-craft/data/heldout.csv
 
 # C10 solution notebooks materialize these deterministic grading artifacts when
-# executed from the repository root. They are student outputs, not source files.
-units/C10-competition-craft/practice/p15_contract.csv
-units/C10-competition-craft/practice/p17_log.csv
-units/C10-competition-craft/practice/p17_predictions.csv
-units/C10-competition-craft/practice/p18_audit.csv
-units/C10-competition-craft/practice/p18_predictions.csv
+# executed from the selected Book 1 root. They are student outputs, not source files.
+book1/units/C10-competition-craft/practice/p15_contract.csv
+book1/units/C10-competition-craft/practice/p17_log.csv
+book1/units/C10-competition-craft/practice/p17_predictions.csv
+book1/units/C10-competition-craft/practice/p18_audit.csv
+book1/units/C10-competition-craft/practice/p18_predictions.csv
 
 # Mock test r1-001 P9 grading data is regenerated from its seeded script.
-mocktests/r1-001/data/p09_heldout.csv
+book1/mocktests/r1-001/data/p09_heldout.csv

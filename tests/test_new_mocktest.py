@@ -7,12 +7,13 @@ from tools.checks.new_mocktest import scaffold_mocktest
 from tools.model import load_mock_manifests
 
 ROOT = Path(__file__).resolve().parents[1]
+BOOK1_ROOT = ROOT / "book1"
 
 
 def seed_repo(root: Path) -> None:
     (root / "mocktests").mkdir()
-    (root / "mocktests" / "blueprint.yaml").write_text((ROOT / "mocktests/blueprint.yaml").read_text())
-    (root / "syllabus.md").write_text((ROOT / "syllabus.md").read_text())
+    (root / "mocktests" / "blueprint.yaml").write_text((BOOK1_ROOT / "mocktests/blueprint.yaml").read_text())
+    (root / "syllabus.md").write_text((BOOK1_ROOT / "syllabus.md").read_text())
 
 
 def test_new_mocktest_scaffolds_defaults(tmp_path):
@@ -47,6 +48,21 @@ def test_new_mocktest_refuses_overwrite(tmp_path):
     scaffold_mocktest(tmp_path, "r1-001", "2026-08-15")
     with pytest.raises(FileExistsError):
         scaffold_mocktest(tmp_path, "r1-001", "2026-08-15")
+
+
+def test_new_mocktest_derives_assessment_prefix_from_book_number(tmp_path):
+    seed_repo(tmp_path)
+    with pytest.raises(ValueError, match="test id must match r2-NNN"):
+        scaffold_mocktest(tmp_path, "r1-001", "2026-08-15", book_number=2)
+
+
+def test_new_mocktest_rejects_planned_blueprint(tmp_path):
+    (tmp_path / "mocktests").mkdir()
+    (tmp_path / "mocktests" / "blueprint.yaml").write_text(
+        "blueprint_version: 1\nbook: 2\nstatus: planned\nassessment_prefix: r2-\n"
+    )
+    with pytest.raises(ValueError, match="blueprint is planned"):
+        scaffold_mocktest(tmp_path, "r2-001", "2026-08-15", book_number=2)
 
 
 def test_draft_manifest_loud_skipped_by_blueprint_check(tmp_path):

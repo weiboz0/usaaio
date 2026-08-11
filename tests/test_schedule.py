@@ -13,6 +13,7 @@ from tools import render_course_structure as course_renderer
 from tools.model import load_unit_manifests
 
 ROOT = Path(__file__).parents[1]
+BOOK1_ROOT = ROOT / "book1"
 
 
 def _schedule_checker():
@@ -877,17 +878,17 @@ def _rendered_first_instruction_pairs(document: str) -> list[tuple[str, int]]:
 
 
 def test_real_schedule_has_exact_plan018_calendar_and_complete_allocation() -> None:
-    report = _schedule_checker().check_schedule(ROOT)
+    report = _schedule_checker().check_schedule(BOOK1_ROOT)
     assert report.ok, report.errors
 
-    schedule = yaml.safe_load((ROOT / "curriculum" / "course-schedule.yaml").read_text())
+    schedule = yaml.safe_load((BOOK1_ROOT / "curriculum" / "course-schedule.yaml").read_text())
     weeks = schedule["weeks"]
     assert schedule["calendar"] == {
         "semester_1_weeks": 16,
         "semester_2_weeks": 24,
         "total_weeks": 40,
     }
-    validated = _schedule_checker().load_validated_schedule(ROOT)
+    validated = _schedule_checker().load_validated_schedule(BOOK1_ROOT)
     assert validated.semester_week_counts == (16, 24)
     assert validated.declared_week_count == 40
     assert len(weeks) == 40
@@ -969,7 +970,7 @@ def test_real_schedule_has_exact_plan018_calendar_and_complete_allocation() -> N
 
 
 def test_real_c12_schedule_has_exact_problem_ids_minutes_and_partition() -> None:
-    schedule = yaml.safe_load((ROOT / "curriculum" / "course-schedule.yaml").read_text())
+    schedule = yaml.safe_load((BOOK1_ROOT / "curriculum" / "course-schedule.yaml").read_text())
     expected = {
         34: (["C12-p06", "C12-p14"], 100),
         35: (["C12-p01", "C12-p07", "C12-p08", "C12-p22", "C12-p26"], 225),
@@ -1003,7 +1004,7 @@ def test_real_c12_schedule_has_exact_problem_ids_minutes_and_partition() -> None
 
 def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
     manifest = yaml.safe_load(
-        (ROOT / "units" / "C11-neural-training" / "manifest.yaml").read_text()
+        (BOOK1_ROOT / "units" / "C11-neural-training" / "manifest.yaml").read_text()
     )
     concepts_added_by_session = [
         {"softmax", "cross-entropy-loss"},
@@ -1026,7 +1027,7 @@ def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
     assert capacities == [250, 375, 520, 740, 1040]
 
     schedule = yaml.safe_load(
-        (ROOT / "curriculum" / "course-schedule.yaml").read_text()
+        (BOOK1_ROOT / "curriculum" / "course-schedule.yaml").read_text()
     )
     delivered_sessions = 0
     scheduled_practice = 0
@@ -1049,7 +1050,7 @@ def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
 
 def test_f7_instruction_precedes_high_volume_practice() -> None:
     schedule = yaml.safe_load(
-        (ROOT / "curriculum" / "course-schedule.yaml").read_text()
+        (BOOK1_ROOT / "curriculum" / "course-schedule.yaml").read_text()
     )
     rows = [
         (week["week"], allocation)
@@ -1081,7 +1082,7 @@ def test_f7_instruction_precedes_high_volume_practice() -> None:
 
 
 def test_course_structure_states_interleaving_and_prerequisite_order_contract() -> None:
-    document = course_renderer.render_document(ROOT)
+    document = course_renderer.render_document(BOOK1_ROOT)
 
     assert "independent units may interleave" in document
     assert (
@@ -1097,7 +1098,7 @@ def test_course_structure_states_interleaving_and_prerequisite_order_contract() 
 
 
 def test_rendered_first_instruction_region_exactly_matches_the_schedule_source() -> None:
-    schedule = yaml.safe_load((ROOT / "curriculum" / "course-schedule.yaml").read_text())
+    schedule = yaml.safe_load((BOOK1_ROOT / "curriculum" / "course-schedule.yaml").read_text())
     first_week: dict[str, int] = {}
     for week in schedule["weeks"]:
         for allocation in week["allocations"]:
@@ -1105,7 +1106,7 @@ def test_rendered_first_instruction_region_exactly_matches_the_schedule_source()
                 first_week.setdefault(allocation["unit"], week["week"])
     expected = list(first_week.items())
 
-    document = course_renderer.render_document(ROOT)
+    document = course_renderer.render_document(BOOK1_ROOT)
     actual = _rendered_first_instruction_pairs(document)
 
     assert actual == expected

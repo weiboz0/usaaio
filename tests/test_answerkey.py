@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 from tools.checks.answerkey import check_answerkey
@@ -5,6 +6,35 @@ from tools.cli import main
 from tools.model import load_mock_manifests
 
 FIXTURES = Path(__file__).parent / "fixtures" / "answerkey"
+
+
+def _registered_fixture(tmp_path: Path, content_root: Path) -> Path:
+    repo = tmp_path / "repo"
+    book = repo / "book1"
+    shutil.copytree(content_root, book)
+    (repo / "books.yaml").write_text(
+        "books_version: 1\n"
+        "books:\n"
+        "  - {id: book1, number: 1, root: book1, depends_on: []}\n",
+        encoding="utf-8",
+    )
+    for relative in (
+        "syllabus.md",
+        "curriculum/course-schedule.yaml",
+        "curriculum/coverage-map.yaml",
+        "curriculum/material-inventory.yaml",
+        "curriculum/official-topics.yaml",
+        "curriculum/source-manifest.yaml",
+        "mocktests/blueprint.yaml",
+        "docs/course-structure.md",
+        "units/.gitkeep",
+        "reference/.gitkeep",
+    ):
+        path = book / relative
+        if not path.exists():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("{}\n" if path.suffix == ".yaml" else "fixture\n")
+    return repo
 
 
 def write_direct_key_fixture(
@@ -41,24 +71,26 @@ problems:
     )
 
 
-def test_answerkey_fixture_passes_with_numeric_tolerance(capsys):
+def test_answerkey_fixture_passes_with_numeric_tolerance(tmp_path, capsys):
     root = FIXTURES / "pass"
     report = check_answerkey(root)
 
     assert report.ok
     assert report.errors == []
     assert report.skipped is None
-    assert main(["--root", str(root), "answerkey-check"]) == 0
+    repo = _registered_fixture(tmp_path, root)
+    assert main(["--root", str(repo), "--book", "book1", "answerkey-check"]) == 0
     assert "PASS answerkey-check" in capsys.readouterr().out
 
 
-def test_answerkey_fixture_reports_mismatch(capsys):
+def test_answerkey_fixture_reports_mismatch(tmp_path, capsys):
     root = FIXTURES / "mismatch"
     report = check_answerkey(root)
 
     assert not report.ok
     assert any("r1-001-p01" in error and "answers.md" in error for error in report.errors)
-    assert main(["--root", str(root), "answerkey-check"]) == 1
+    repo = _registered_fixture(tmp_path, root)
+    assert main(["--root", str(repo), "--book", "book1", "answerkey-check"]) == 1
     assert "FAIL answerkey-check" in capsys.readouterr().err
 
 
@@ -95,13 +127,14 @@ def test_answerkey_marker_comparison_normalizes_whitespace(tmp_path):
     assert check_answerkey(tmp_path).ok
 
 
-def test_answerkey_draft_only_fixture_is_loud_skip(capsys):
+def test_answerkey_draft_only_fixture_is_loud_skip(tmp_path, capsys):
     root = FIXTURES / "draft-only"
 
     report = check_answerkey(root)
     assert report.ok
     assert report.skipped is not None
-    assert main(["--root", str(root), "answerkey-check"]) == 3
+    repo = _registered_fixture(tmp_path, root)
+    assert main(["--root", str(repo), "--book", "book1", "answerkey-check"]) == 3
     assert "SKIP answerkey-check" in capsys.readouterr().out
 
 

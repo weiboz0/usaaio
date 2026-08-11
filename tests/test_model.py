@@ -15,6 +15,7 @@ from tools.model import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+BOOK1_ROOT = ROOT / "book1"
 
 
 def _books_module():
@@ -27,7 +28,7 @@ def _books_module():
 
 
 def test_load_syllabus_real_repo():
-    syllabus = load_syllabus(ROOT)
+    syllabus = load_syllabus(BOOK1_ROOT)
     taught = [concept for unit in syllabus.units.values() for concept in unit.teaches]
     assert len(syllabus.units) >= 16
     assert len(syllabus.concepts) >= 100
@@ -45,7 +46,7 @@ def test_sentinel_must_be_unique(tmp_path):
 
 
 def test_load_blueprint_real_repo():
-    blueprint = load_blueprint(ROOT)
+    blueprint = load_blueprint(BOOK1_ROOT)
     assert sum(row["target"] for row in blueprint.topic_distribution.values()) == blueprint.total_points
 
 

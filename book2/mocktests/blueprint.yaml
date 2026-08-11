@@ -1,0 +1,8 @@
+blueprint_version: 1
+book: 2
+target: round-2
+status: planned
+assessment_prefix: r2-
+derived_from:
+- book2:reference/analysis.md
+- book2:curriculum/official-topics.yaml

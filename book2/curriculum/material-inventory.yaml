@@ -1,0 +1,16 @@
+inventory_version: 1
+counts:
+  units: 0
+  concepts: 11
+  unit_practices: 0
+  lesson_sessions: 0
+  unit_nonpractice_notebooks: 0
+  unit_notebooks: 0
+  mocktests: 0
+  mock_notebooks: 0
+  manifested_minutes: 0
+  scheduled_minutes: 0
+input_paths: []
+documents: []
+manifests: []
+notebooks: []

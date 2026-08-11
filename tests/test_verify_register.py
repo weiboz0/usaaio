@@ -44,7 +44,7 @@ def test_any_unpriced_bold_ban_clause_is_rejected(tmp_path, monkeypatch):
         "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing\n\n"
         "**Banned in this part: loops.**",
     )
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     errors = verify_register._check_problem(unit, problem)
 
@@ -61,7 +61,7 @@ def test_every_bold_ban_clause_is_checked_independently(tmp_path, monkeypatch):
         "**Banned (zero points): loops.**\n\n"
         "**Additionally banned: comprehensions.**",
     )
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     errors = verify_register._check_problem(unit, problem)
 
@@ -77,7 +77,7 @@ def test_semantic_zero_point_price_in_bold_span_is_accepted(tmp_path, monkeypatc
         "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing\n\n"
         "**Banned in this part: loops. Any use scores zero points.**",
     )
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     assert verify_register._check_problem(unit, problem) == []
 
@@ -91,7 +91,7 @@ def test_emphasized_banned_word_is_not_a_bold_ban_clause(tmp_path, monkeypatch):
         "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing\n\n"
         "Loops are **banned** (zero points).",
     )
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     assert verify_register._check_problem(unit, problem) == []
 
@@ -106,10 +106,10 @@ def test_main_accepts_any_registered_problem_count(tmp_path, monkeypatch, capsys
     )
     manifest_path = tmp_path / "units" / unit / "manifest.yaml"
     manifest_path.write_text(yaml.safe_dump({"practice": [problem]}))
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     monkeypatch.setattr(verify_register, "UNITS", (unit,))
 
-    assert verify_register.main(["--statements-only"]) == 0
+    assert verify_register.main(["--book", "book1", "--statements-only"]) == 0
     assert "register verification: 1/1 passed (1 problems checked)" in capsys.readouterr().out
 
 
@@ -153,7 +153,7 @@ def test_header_concept_and_difficulty_drift_is_caught(tmp_path, monkeypatch):
         "# C7-example — Practice p01\n\n"
         "**Type:** scenario analysis · **Difficulty:** advanced · **Concepts:** testing",
     )
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     # The manifest says difficulty "core"; the header says "advanced".
     errors = verify_register._check_problem(unit, problem)
     assert any("difficulty" in error for error in errors)
@@ -168,7 +168,7 @@ def test_reordered_concepts_are_caught(tmp_path, monkeypatch):
         "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** beta, alpha",
     )
     problem["concepts"] = ["alpha", "beta"]
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     errors = verify_register._check_problem(unit, problem)
     assert any("concepts" in error for error in errors)
 
@@ -181,7 +181,7 @@ def test_blank_lines_around_the_header_are_tolerated(tmp_path, monkeypatch):
         "\n\n# C7-example — Practice p01\n\n\n"
         "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
     )
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     assert verify_register._check_problem(unit, problem) == []
 
 
@@ -195,7 +195,7 @@ def test_statement_without_markdown_reports_instead_of_crashing(tmp_path, monkey
     )
     path = tmp_path / "units" / unit / "practice" / "p01.ipynb"
     path.write_text(json.dumps({"cells": [{"cell_type": "code", "source": "x = 1"}]}))
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     errors = verify_register._check_problem(unit, problem)
     assert errors and "no markdown cell" in errors[0]
 
@@ -228,7 +228,7 @@ def test_solution_header_drift_is_caught(tmp_path, monkeypatch):
         )
     )
     problem["solution_path"] = "practice/p01_solution.ipynb"
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     errors = verify_register._check_solution_header(unit, problem)
     assert any("solution header concepts" in error for error in errors)
 
@@ -258,7 +258,7 @@ def test_solution_without_a_header_skips_the_field_checks(tmp_path, monkeypatch)
         )
     )
     problem["solution_path"] = "practice/p01_solution.ipynb"
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     assert verify_register._check_solution_header(unit, problem) == []
 
 
@@ -289,7 +289,7 @@ def test_solution_title_mis_attribution_is_caught(tmp_path, monkeypatch):
         )
     )
     problem["solution_path"] = "practice/p01_solution.ipynb"
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     errors = verify_register._check_solution_header(unit, problem)
     assert any("solution title" in error for error in errors)
 
@@ -339,7 +339,7 @@ def test_relocated_solution_header_cannot_opt_out(tmp_path, monkeypatch):
         )
     )
     problem["solution_path"] = "practice/p01_solution.ipynb"
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     errors = verify_register._check_solution_header(unit, problem)
     assert any("solution title" in error for error in errors)
 
@@ -371,7 +371,7 @@ def c11_problem(root: Path, markdown: str) -> dict:
 
 def test_c11_mc_requires_exactly_five_options(tmp_path, monkeypatch):
     problem = c11_problem(tmp_path, c11_statement(options=4))
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     assert verify_register._check_problem("C11-neural-training", problem) == [
         "C11-p01: MC options are not exactly A.-through-E. in order"
@@ -379,7 +379,7 @@ def test_c11_mc_requires_exactly_five_options(tmp_path, monkeypatch):
 
 
 def test_c11_mc_requires_positive_reasoning_flag(tmp_path, monkeypatch):
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     missing = c11_problem(tmp_path, c11_statement(reasoning="Explain your choice."))
     assert verify_register._check_problem("C11-neural-training", missing) == [
         "C11-p01: MC reasoning flag must say 'Reasoning is required.'"
@@ -392,7 +392,7 @@ def test_c11_mc_requires_positive_reasoning_flag(tmp_path, monkeypatch):
 
 
 def test_c11_statement_requires_matching_body_time_budget(tmp_path, monkeypatch):
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     missing = c11_problem(tmp_path, c11_statement().replace("**Time budget:** 15 minutes\n\n", ""))
     assert verify_register._check_problem("C11-neural-training", missing) == [
         "C11-p01: time budget is missing or does not match manifest minutes 15"
@@ -416,7 +416,7 @@ def test_every_manifest_backed_problem_requires_its_exact_body_time_budget(
         "**Time budget:** 20 minutes\n\nPrompt.",
     )
     problem["minutes"] = 15
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     assert verify_register._check_problem(unit, problem) == [
         "C2-p01: time budget is missing or does not match manifest minutes 15"
@@ -496,7 +496,7 @@ def test_c12_mc_requires_exact_options_and_literal_positive_reasoning(
     tmp_path, monkeypatch, kwargs, finding
 ):
     problem = _write_c12_mc(tmp_path, **kwargs)
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     assert f"C12-p01: {finding}" in verify_register._check_problem(
         "C12-classical-models", problem
@@ -512,7 +512,7 @@ def test_c12_p05_normal_form_requires_positive_denominator_and_reduced_gcd_rules
         problem_type="mc-normal-form",
         normal_form_rules="Give the result as a fraction a/b.",
     )
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     assert verify_register._check_problem("C12-classical-models", problem) == [
         "C12-p05: normal-form MC must state b > 0 and gcd(|a|, b) = 1"
@@ -524,7 +524,7 @@ def test_statement_header_rejects_a_fourth_field(tmp_path, monkeypatch):
         tmp_path,
         c11_statement(extra=" · **Time:** 15 minutes"),
     )
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     assert verify_register._check_problem("C11-neural-training", problem) == [
         "C11-p01: header fields must be exactly Type / Difficulty / Concepts"
@@ -534,7 +534,7 @@ def test_statement_header_rejects_a_fourth_field(tmp_path, monkeypatch):
 def test_missing_statement_path_is_a_named_finding(tmp_path, monkeypatch):
     problem = c11_problem(tmp_path, c11_statement())
     (tmp_path / "units/C11-neural-training/practice/p01.ipynb").unlink()
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     assert verify_register._check_problem("C11-neural-training", problem) == [
         "C11-p01: statement path does not exist"
@@ -543,7 +543,7 @@ def test_missing_statement_path_is_a_named_finding(tmp_path, monkeypatch):
 
 def test_full_mode_requires_solution_key_and_existing_path(tmp_path, monkeypatch):
     problem = c11_problem(tmp_path, c11_statement())
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     assert verify_register._check_solution_header("C11-neural-training", problem) == [
         "C11-p01: solution_path is missing"
@@ -571,7 +571,7 @@ def test_c11_full_mode_requires_solution_metadata_header(tmp_path, monkeypatch):
         )
     )
     problem["solution_path"] = "practice/p01_solution.ipynb"
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
 
     assert verify_register._check_solution_header("C11-neural-training", problem) == [
         "C11-p01: solution metadata header is missing"
@@ -585,14 +585,14 @@ def test_statements_only_accepts_absent_solutions_but_checks_statements(
     problem = c11_problem(tmp_path, c11_statement())
     manifest_path = tmp_path / "units" / unit / "manifest.yaml"
     manifest_path.write_text(yaml.safe_dump({"practice": [problem]}))
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     monkeypatch.setattr(verify_register, "UNITS", (unit,))
 
-    assert verify_register.main(["--statements-only"]) == 0
+    assert verify_register.main(["--book", "book1", "--statements-only"]) == 0
     assert "1/1 passed" in capsys.readouterr().out
 
     c11_problem(tmp_path, c11_statement(options=4))
-    assert verify_register.main(["--statements-only"]) == 1
+    assert verify_register.main(["--book", "book1", "--statements-only"]) == 1
     assert "MC options" in capsys.readouterr().out
 
 
@@ -654,10 +654,10 @@ def test_statements_only_main_rejects_each_malformed_statement(
         problem["path"] = "practice/missing.ipynb"
     manifest_path = tmp_path / "units" / unit / "manifest.yaml"
     manifest_path.write_text(yaml.safe_dump({"practice": [problem]}))
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     monkeypatch.setattr(verify_register, "UNITS", (unit,))
 
-    assert verify_register.main(["--statements-only"]) == 1
+    assert verify_register.main(["--book", "book1", "--statements-only"]) == 1
     assert f"FAIL C11-p01: {finding}" in capsys.readouterr().out
 
 
@@ -670,10 +670,10 @@ def test_full_mode_reports_missing_statement_and_solution_without_traceback(
     problem["solution_path"] = "practice/missing_solution.ipynb"
     manifest_path = tmp_path / "units" / unit / "manifest.yaml"
     manifest_path.write_text(yaml.safe_dump({"practice": [problem]}))
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     monkeypatch.setattr(verify_register, "UNITS", (unit,))
 
-    assert verify_register.main([]) == 1
+    assert verify_register.main(["--book", "book1"]) == 1
     output = capsys.readouterr().out
     assert "C11-p01: statement path does not exist" in output
     assert "C11-p01: solution_path does not exist" in output
@@ -728,7 +728,7 @@ def test_c7_budget_register_is_the_exact_literal_exception_map():
 
 @pytest.mark.parametrize("problem_id", C7_BUDGET_IDS)
 def test_c7_registered_capstone_requires_exact_body_budget(tmp_path, monkeypatch, problem_id):
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     problem = c7_budget_problem(
         tmp_path,
         problem_id,
@@ -759,10 +759,10 @@ def test_c7_main_fails_closed_when_required_budget_id_is_missing(tmp_path, monke
     ]
     manifest_path = tmp_path / "units" / unit / "manifest.yaml"
     manifest_path.write_text(yaml.safe_dump({"practice": problems}))
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     monkeypatch.setattr(verify_register, "UNITS", (unit,))
 
-    assert verify_register.main(["--statements-only"]) == 1
+    assert verify_register.main(["--book", "book1", "--statements-only"]) == 1
     assert (
         "C7 budget register required id C7-p27 is missing from manifest" in capsys.readouterr().out
     )
@@ -782,10 +782,10 @@ def test_c7_main_fails_closed_when_unregistered_id_declares_a_budget(
     ]
     manifest_path = tmp_path / "units" / unit / "manifest.yaml"
     manifest_path.write_text(yaml.safe_dump({"practice": problems}))
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     monkeypatch.setattr(verify_register, "UNITS", (unit,))
 
-    assert verify_register.main(["--statements-only"]) == 1
+    assert verify_register.main(["--book", "book1", "--statements-only"]) == 1
     assert (
         "C7-p28: time budget is declared for an id absent from the literal register"
         in capsys.readouterr().out
@@ -829,9 +829,9 @@ def test_c7_main_fails_closed_when_literal_register_shape_drifts(
     ]
     manifest_path = tmp_path / "units" / unit / "manifest.yaml"
     manifest_path.write_text(yaml.safe_dump({"practice": problems}))
-    monkeypatch.setattr(verify_register, "ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
     monkeypatch.setattr(verify_register, "UNITS", (unit,))
     monkeypatch.setattr(verify_register, "C7_BUDGET_REGISTER", bad_register)
 
-    assert verify_register.main(["--statements-only"]) == 1
+    assert verify_register.main(["--book", "book1", "--statements-only"]) == 1
     assert finding in capsys.readouterr().out

@@ -6,6 +6,9 @@ from pathlib import Path
 
 import pytest
 
+ROOT = Path(__file__).resolve().parents[1]
+BOOK1_ROOT = ROOT / "book1"
+
 EXPECTED_MUTATIONS = [
     {
         "id": "c12-p07-logistic-mean-factor",
@@ -122,7 +125,7 @@ def test_classical_registry_has_exactly_five_answer_check_mutations() -> None:
 
 def test_each_classical_mutation_resolves_one_file_cell_and_source_replacement() -> None:
     module = _mutation_module()
-    root = Path(__file__).resolve().parents[1]
+    root = BOOK1_ROOT
 
     assert len(module.MUTATIONS) == 5
     for mutation in module.MUTATIONS:

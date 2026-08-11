@@ -1,19 +1,19 @@
 # Mock-Test Generation Pipeline
 
-The repeatable procedure for producing every `mocktests/r1-NNN/`.
-Authoritative inputs: `mocktests/blueprint.yaml` (test spec) and `syllabus.md`
+The repeatable procedure for producing every `book1/mocktests/r1-NNN/`.
+Authoritative inputs: `book1/mocktests/blueprint.yaml` (test spec) and `book1/syllabus.md`
 (concept vocabulary + unit DAG).
 Design rationale: `docs/designs/000-project-design.md §2b`.
 
 ## Pipeline
 
-1. **Blueprint** — read `mocktests/blueprint.yaml` at its current `blueprint_version`.
+1. **Blueprint** — select Book 1 and read `book1/mocktests/blueprint.yaml` at its current `blueprint_version`.
    Changing the blueprint is a reviewed change like any other (plan + gates).
 2. **Instantiate** — create the test skeleton and problem-spec sheet.
-   Run `uv run usaaio-tools new-mocktest r1-NNN --date YYYY-MM-DD`.
+   Run `uv run usaaio-tools --book book1 new-mocktest r1-NNN --date YYYY-MM-DD`.
 
    ```
-   mocktests/r1-NNN/
+   book1/mocktests/r1-NNN/
    ├── test.md          # front matter: instructions, duration, points table
    ├── theory/          # theory question sources (Markdown + math)
    ├── problems/        # student-facing programming notebooks (no solutions/outputs)
@@ -42,9 +42,9 @@ Design rationale: `docs/designs/000-project-design.md §2b`.
 4. **Verify** — `bash scripts/ci-local.sh` (verification map below).
 5. **Gate** — the 4-way content-review gate (`docs/content-review-gate.md`), including the
    blind-solve and fidelity duties; fidelity compares against
-   `reference/analysis.md ## Style notes`.
+   `book1/reference/analysis.md ## Style notes`.
 
-## Manifest schema (`mocktests/r1-NNN/manifest.yaml`)
+## Manifest schema (`book1/mocktests/r1-NNN/manifest.yaml`)
 
 ```yaml
 test: r1-001
@@ -128,7 +128,7 @@ Field rules:
 |-------|----------|
 | prereq-check | manifest schema shape; tested-only-if-taught closure over `units`/`concepts` |
 | blueprint-check | `texture`, `sections` ranges, `topic_distribution` (after `cluster_fold`), `difficulty_mix` bands |
-| overlap-scan | provenance rules vs the local reference corpus; loud skip without corpus names `bash scripts/fetch-reference.sh` |
+| overlap-scan | provenance rules vs the local Book 1 reference corpus; fetch with `bash scripts/fetch-reference.sh --book book1` |
 | coverage-check | (units, not mock tests) every taught concept practiced |
 | hygiene-check | student notebooks free of solutions/outputs |
 | solution execution | every solutions/ notebook runs clean |

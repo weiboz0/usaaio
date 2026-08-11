@@ -548,6 +548,18 @@ def check_schedule(root: str | Path) -> Report:
     root = Path(root).resolve()
     errors: list[str] = []
     try:
+        raw = yaml.safe_load((root / "curriculum" / "course-schedule.yaml").read_text())
+        if isinstance(raw, dict) and raw.get("status") == "planned":
+            if raw != {
+                "schedule_version": 1,
+                "book": 2,
+                "status": "planned",
+                "weeks": [],
+            }:
+                errors.append("planned Book 2 schedule must be the exact empty skeleton")
+            if list((root / "units").glob("*/manifest.yaml")):
+                errors.append("planned Book 2 schedule is forbidden once a live manifest exists")
+            return Report(name="schedule-check", ok=not errors, errors=errors)
         schedule = _parse_schedule(root, errors)
         if schedule is not None:
             _validate(root, schedule, errors)
@@ -561,6 +573,13 @@ def load_validated_schedule(
 ) -> CourseSchedule:
     root = Path(root).resolve()
     errors: list[str] = []
+    schedule_path = root / "curriculum" / "course-schedule.yaml"
+    raw = yaml.safe_load(schedule_path.read_text()) if schedule_path.is_file() else None
+    if isinstance(raw, dict) and raw.get("status") == "planned":
+        report = check_schedule(root)
+        if not report.ok:
+            raise ValueError("course-schedule.yaml: " + "; ".join(report.errors))
+        return CourseSchedule(schedule_version=1, weeks=[])
     schedule = _parse_schedule(root, errors)
     if schedule is not None:
         _validate(root, schedule, errors, enforce_calendar=enforce_calendar)

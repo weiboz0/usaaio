@@ -7,9 +7,9 @@ requires every declared solution path; solution metadata is checked where presen
 multiple-choice option-format checks remain scoped to the tranche-1 units that were
 authored against that exact register.
 
-Scope note: "every unit" means every manifest under units/. Mock-test statements under
-mocktests/ carry their own per-part header register and are NOT covered here — the count
-this script prints is a count of unit practice problems.
+Scope note: "every unit" means every manifest under the explicitly selected Book 1
+`units/` tree. Mock-test statements carry their own per-part header register and are NOT
+covered here — the count this script prints is a count of unit practice problems.
 """
 
 from __future__ import annotations
@@ -23,6 +23,11 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+BOOK_ROOT = ROOT / "book1"
+
+
+def _content_root() -> Path:
+    return BOOK_ROOT
 REGISTER_UNITS = (
     "F1-scientific-python",
     "F2-vectors",
@@ -115,7 +120,7 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
     relative = problem.get("solution_path")
     if not isinstance(relative, str) or not relative.strip():
         return [f"{problem['id']}: solution_path is missing"]
-    path = ROOT / "units" / unit / relative
+    path = _content_root() / "units" / unit / relative
     if not path.is_file():
         return [f"{problem['id']}: solution_path does not exist"]
     notebook = json.loads(path.read_text())
@@ -164,7 +169,7 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
     relative = problem.get("path")
     if not isinstance(relative, str) or not relative.strip():
         return [f"{problem['id']}: statement path is missing"]
-    path = ROOT / "units" / unit / relative
+    path = _content_root() / "units" / unit / relative
     if not path.is_file():
         return [f"{problem['id']}: statement path does not exist"]
     notebook = json.loads(path.read_text())
@@ -259,6 +264,7 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--book", choices=("book1",), required=True)
     parser.add_argument(
         "--statements-only",
         action="store_true",
@@ -268,10 +274,10 @@ def main(argv: list[str] | None = None) -> int:
     checked = 0
     failures: list[str] = []
     units = UNITS or tuple(
-        path.parent.name for path in sorted((ROOT / "units").glob("*/manifest.yaml"))
+        path.parent.name for path in sorted((_content_root() / "units").glob("*/manifest.yaml"))
     )
     for unit in units:
-        manifest_path = ROOT / "units" / unit / "manifest.yaml"
+        manifest_path = _content_root() / "units" / unit / "manifest.yaml"
         manifest = yaml.safe_load(manifest_path.read_text())
         if unit == "C7-cnn-transfer":
             manifest_ids = [problem.get("id") for problem in manifest.get("practice", [])]

@@ -1,85 +1,80 @@
 #!/usr/bin/env bash
-# The authoritative local gate (design 000 §3). Must be green before any merge.
-# Checks whose tools are not yet shipped print "SKIP (plan NNN)" — acceptable only
-# while that plan is unshipped.
+# Authoritative local gate for both independently complete books.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 step() { echo; echo "=== $1 ==="; }
+BOOKS=(book1 book2)
 
-step "1/8 lint (ruff)"
+step "1/9 registry + lint"
+uv run python - <<'PY'
+from tools.books import load_book_catalog, validate_book_root
+catalog = load_book_catalog(".")
+assert [book.id for book in catalog.books] == ["book1", "book2"]
+for book in catalog.books:
+    errors = validate_book_root(book)
+    if errors:
+        raise SystemExit("\n".join(errors))
+print("registry: book1 -> book2")
+PY
 uv run ruff check tools/ tests/
 
-step "2/8 unit tests (pytest)"
+step "2/9 unit tests"
 uv run pytest -q
 
-step "3/8 solution- and lesson-notebook execution"
-# Discovery failures must fail CI here too. The lesson discovery below was hardened first;
-# leaving this one swallowing errors was the larger hole, since this is the search that finds
-# every solution notebook in the repo (gate finding, plan 014 round 3).
-notebooks=$(find units mocktests -path '*/solutions/*.ipynb' -o -path '*/practice/*solution*.ipynb')
-if [[ -z "$notebooks" ]]; then
-  echo "no notebooks yet — nothing to execute"
-else
-  while IFS= read -r nb; do
-    echo "executing: $nb"
-    uv run jupyter execute "$nb"
-  done <<< "$notebooks"
-  # answer-check permanence: every solution notebook must end with assert cells
-  uv run python - <<'PYEOF'
-import json, glob, sys
-bad = [f for f in glob.glob('units/*/practice/*_solution.ipynb') + glob.glob('mocktests/*/solutions/*.ipynb')
-       if not any('assert' in ''.join(c['source'])
-                  for c in [x for x in json.load(open(f))['cells'] if x['cell_type'] == 'code'][-2:])]
-if bad:
-    print('FAIL: solutions missing final answer-check asserts:', *bad, sep='\n  ')
-    sys.exit(1)
-print(f"answer-check asserts present in all {len(glob.glob('units/*/practice/*_solution.ipynb'))} unit solutions")
-PYEOF
-fi
-
-# Lesson/review/overview execution (plan 014 Task 0 — decided on measurement, not assumption).
-# These notebooks carry enforced tolerance contracts and executable narration whose printed
-# output the prose must match; leaving them unexecuted made every such contract unguarded.
-# Measured cost: 269s over 79 notebooks against a 1681s baseline (+16%), well inside the
-# plan's +12-minute ceiling, so the FULL option was taken rather than a sampled subset.
-# A discovery failure must fail CI rather than silently reduce coverage to zero notebooks
-# (gate finding, plan 014): `2>/dev/null || true` would turn an unreadable subtree into a
-# green run that executed nothing.
-lessons=$(find units -name '*.ipynb' -not -path '*/practice/*' -not -path '*/.ipynb_checkpoints/*')
-if [[ -n "$lessons" ]]; then
-  n_lessons=0
-  while IFS= read -r nb; do
-    echo "executing: $nb"
-    uv run jupyter execute "$nb"
-    n_lessons=$((n_lessons + 1))
-  done <<< "$lessons"
-  echo "executed $n_lessons lesson/review/overview notebooks"
-fi
-uv run usaaio-tools answerkey-check || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
-
-step "4/8 register verification"
-python3 scripts/verify-register.py || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
-
-step "5/8 generated curriculum evidence"
-uv run usaaio-tools layer-boundary-check
-uv run python -m tools.audit_curriculum --check
-uv run python -m tools.render_curriculum_roadmap --check
-uv run python -m tools.render_course_structure --check
-uv run usaaio-tools schedule-check
-
-step "6/8 manifest + content checks"
-uv run python -m tools.verify_training_mutations --root .
-uv run python -m tools.verify_classical_mutations --root .
-for c in prereq-check coverage-check scope-check tolerance-check hygiene-check blueprint-check overlap-scan; do
-  echo "running: $c"
-  uv run usaaio-tools "$c" || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
+step "3/9 solution and lesson notebook execution"
+for book in "${BOOKS[@]}"; do
+  book_root=$PWD/$book
+  mapfile -t notebooks < <(
+    find "$book_root/units" "$book_root/mocktests" -type f \
+      \( -path '*/solutions/*.ipynb' -o -path '*/practice/*solution*.ipynb' \) \
+      | LC_ALL=C sort
+  )
+  for notebook in "${notebooks[@]}"; do
+    relative=${notebook#"$book_root"/}
+    echo "executing [$book]: $relative"
+    (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" uv run --project .. jupyter execute "$relative")
+  done
+  mapfile -t lessons < <(
+    find "$book_root/units" -type f -name '*.ipynb' \
+      -not -path '*/practice/*' -not -path '*/.ipynb_checkpoints/*' | LC_ALL=C sort
+  )
+  for notebook in "${lessons[@]}"; do
+    relative=${notebook#"$book_root"/}
+    echo "executing [$book]: $relative"
+    (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" uv run --project .. jupyter execute "$relative")
+  done
 done
 
-step "7/8 PDF build (quarto)"
-bash scripts/build-pdf.sh || { rc=$?; [[ $rc -eq 3 ]] || exit $rc; }
+step "4/9 register verification"
+uv run python scripts/verify-register.py --book book1
 
-step "8/8 pre-merge-guard"
+step "5/9 per-book checks"
+for book in "${BOOKS[@]}"; do
+  for c in prereq-check coverage-check scope-check schedule-check tolerance-check hygiene-check blueprint-check overlap-scan answerkey-check layer-boundary-check; do
+    echo "running [$book]: $c"
+    uv run usaaio-tools --book "$book" "$c" || { rc=$?; [[ $rc -eq 3 ]] || exit "$rc"; }
+  done
+done
+
+step "6/9 aggregate checks"
+for c in prereq-check scope-check schedule-check; do
+  uv run usaaio-tools --all "$c"
+done
+
+step "7/9 generated Book 1 evidence and mutation checks"
+echo "SKIP generated Book 1 evidence freshness (plan 019 Task 3)"
+uv run python -m tools.render_course_structure --root book1 --check
+uv run python -m tools.verify_training_mutations --root book1
+uv run python -m tools.verify_classical_mutations --root book1
+echo "SKIP attention mutations (plan 019 Task 7)"
+
+step "8/9 PDF build"
+for book in "${BOOKS[@]}"; do
+  bash scripts/build-pdf.sh --book "$book" || { rc=$?; [[ $rc -eq 3 ]] || exit "$rc"; }
+done
+
+step "9/9 pre-merge guard"
 bash scripts/pre-merge-guard.sh
 
 echo

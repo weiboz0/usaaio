@@ -492,20 +492,18 @@ def test_check_mode_catches_missing_and_stale_inventory_then_passes(tmp_path: Pa
     assert "stale" in capsys.readouterr().err
 
 
-def test_plan019_phase1_real_repository_inventory_has_exact_two_layer_counts() -> None:
-    inventory = audit.build_inventory(REPO_ROOT)
+def test_plan019_cutover_real_book1_inventory_and_book2_ownership_are_partitioned() -> None:
+    book1_root = REPO_ROOT / "book1"
+    book2_root = REPO_ROOT / "book2"
+    inventory = audit.build_inventory(book1_root)
     counts = inventory["counts"]
-    syllabus = load_syllabus(REPO_ROOT)
-    book2_concepts = {
-        concept
-        for unit in syllabus.units.values()
-        if unit.book == 2
-        for concept in unit.teaches
-    }
+    syllabus = load_syllabus(book1_root)
+    book2_syllabus = load_syllabus(book2_root)
+    book2_concepts = set(book2_syllabus.concepts)
 
     assert counts == {
         "units": 19,
-        "concepts": 160,
+        "concepts": 149,
         "unit_practices": 437,
         "lesson_sessions": 69,
         "unit_nonpractice_notebooks": 107,
@@ -516,7 +514,7 @@ def test_plan019_phase1_real_repository_inventory_has_exact_two_layer_counts() -
         "scheduled_minutes": 18_875,
     }
     assert len(book2_concepts) == 11
-    assert counts["concepts"] - len(book2_concepts) == 149
+    assert set(syllabus.concepts).isdisjoint(book2_concepts)
     material_paths = {
         row["path"]
         for section in ("manifests", "notebooks")

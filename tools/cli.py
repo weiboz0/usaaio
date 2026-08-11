@@ -6,6 +6,7 @@ from collections.abc import Callable
 from pathlib import Path
 
 import tools
+from tools.books import load_book_catalog, validate_book_root
 from tools.checks.answerkey import check_answerkey
 from tools.checks.blueprint import check_blueprint
 from tools.checks.coverage import check_coverage
@@ -71,6 +72,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="usaaio-tools")
     parser.add_argument("--version", action="version", version=f"usaaio-tools {tools.__version__}")
     parser.add_argument("--root", default=".", help="repository root")
+    add_book_selection_arguments(parser)
     sub = parser.add_subparsers(dest="command")
     for name, (help_text, fn) in SUBCOMMANDS.items():
         command_parser = sub.add_parser(name, help=help_text)
@@ -78,14 +80,46 @@ def main(argv: list[str] | None = None) -> int:
             command_parser.add_argument("test_id")
             command_parser.add_argument("--date", required=True)
 
-    args = parser.parse_args(argv)
+    arguments = sys.argv[1:] if argv is None else argv
+    if not arguments:
+        parser.print_help()
+        return 0
+    args = parser.parse_args(arguments)
     if args.command is None:
         parser.print_help()
         return 0
 
-    if args.command == "new-mocktest":
+    try:
+        catalog = load_book_catalog(args.root)
+    except (ValueError, OSError) as exc:
+        print(f"ERROR book-selection: {exc}", file=sys.stderr)
+        return 1
+    if args.all_books:
+        selected = list(catalog.books)
+    else:
         try:
-            path = scaffold_mocktest(args.root, args.test_id, args.date)
+            selected = [catalog.by_id(args.book)]
+        except KeyError as exc:
+            print(f"ERROR book-selection: {exc}", file=sys.stderr)
+            return 1
+    for book in selected:
+        structural_errors = validate_book_root(book)
+        if structural_errors:
+            for error in structural_errors:
+                print(f"ERROR {book.id}: {error}", file=sys.stderr)
+            return 1
+
+    if args.command == "new-mocktest":
+        if args.all_books:
+            print("ERROR new-mocktest: --all is not supported", file=sys.stderr)
+            return 1
+        try:
+            path = scaffold_mocktest(
+                selected[0].root,
+                args.test_id,
+                args.date,
+                book_number=selected[0].number,
+            )
         except (FileExistsError, ValueError) as exc:
             print(f"ERROR new-mocktest: {exc}", file=sys.stderr)
             return 1
@@ -95,7 +129,13 @@ def main(argv: list[str] | None = None) -> int:
     check = SUBCOMMANDS[args.command][1]
     assert check is not None
     try:
-        return print_report(check(args.root))
+        exit_code = 0
+        for book in selected:
+            report = check(book.root)
+            if len(selected) > 1:
+                report.name = f"{book.id}:{report.name}"
+            exit_code = max(exit_code, print_report(report))
+        return exit_code
     except (ValueError, KeyError, OSError) as exc:
         # Loader/config failures (bad sentinel, invalid status, malformed manifest,
         # missing files) surface as check errors, not tracebacks; exit 1 still blocks.

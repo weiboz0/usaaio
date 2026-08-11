@@ -1,11 +1,30 @@
 #!/usr/bin/env bash
-# Re-downloads the public past-test corpus into reference/ (gitignored, local-only).
+# Re-downloads the public past-test corpus into a selected book's reference root
+# (gitignored, local-only).
 # Sources: https://www.usaaio.org/past-problems (public Google Drive links).
 # 2025 R1/R2 live in forum threads and are NOT auto-fetched:
 #   https://forum.beaver-edge.ai/c/ai-olympiads/usa-north-america-ai-olympiad/8
 #   https://forum.beaver-edge.ai/c/ai-olympiads/2025-usa-na-aio-round-2/9
 set -euo pipefail
-cd "$(dirname "$0")/.."
+repo_root=$(cd "$(dirname "$0")/.." && pwd)
+
+usage() {
+  echo "usage: scripts/fetch-reference.sh (--book book1|--book book2|--all)" >&2
+}
+
+selection=""
+if [[ ${1:-} == "--all" && $# -eq 1 ]]; then
+  selection="all"
+elif [[ ${1:-} == "--book" && $# -eq 2 ]]; then
+  selection=$2
+else
+  usage
+  exit 2
+fi
+if [[ $selection != "all" && $selection != "book1" && $selection != "book2" ]]; then
+  usage
+  exit 2
+fi
 
 try_download() {  # try_download <url> <dest>
   curl -fsSL --retry 3 --max-time 120 "$1" -o "$2"
@@ -42,9 +61,17 @@ fetch() {  # fetch <drive-file-id> <dest-path>
   echo "fetched: $dest ($(file -b "$dest"))"
 }
 
-fetch "11z6HzS92y5f6OdeBf7GUtb7PBgF7_RlC" "reference/r1-2026/paper.pdf"
-fetch "1YXa62A14vF69ccAQjdWITwTCaCOoyscN" "reference/r2-2026/day1.pdf"
-fetch "1pp3PYo8f-M9HIvEs9VVKwCJAzIL-nmg4" "reference/r2-2026/day2.pdf"
-fetch "1C-2ewSPxNUX6dLL-oxE4FzhJBtjoOIo7" "reference/r2-2026/rationale.pdf"
+if [[ $selection == "all" || $selection == "book1" ]]; then
+  fetch "11z6HzS92y5f6OdeBf7GUtb7PBgF7_RlC" \
+    "$repo_root/book1/reference/r1-2026/paper.pdf"
+fi
+if [[ $selection == "all" || $selection == "book2" ]]; then
+  fetch "1YXa62A14vF69ccAQjdWITwTCaCOoyscN" \
+    "$repo_root/book2/reference/r2-2026/day1.pdf"
+  fetch "1pp3PYo8f-M9HIvEs9VVKwCJAzIL-nmg4" \
+    "$repo_root/book2/reference/r2-2026/day2.pdf"
+  fetch "1C-2ewSPxNUX6dLL-oxE4FzhJBtjoOIo7" \
+    "$repo_root/book2/reference/r2-2026/rationale.pdf"
+fi
 
 echo "corpus complete"

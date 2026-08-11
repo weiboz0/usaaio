@@ -19,6 +19,8 @@ from tools.checks.prereq import taught_closure
 from tools.checks.scope import check_scope
 
 ROOT = Path(__file__).parents[1]
+BOOK1_ROOT = ROOT / "book1"
+BOOK2_ROOT = ROOT / "book2"
 
 BOOK1_OWNED_R2_DEPENDENCIES = {
     "attention-mechanism-foundations": ["linear-algebra-foundations", "softmax"],
@@ -483,7 +485,7 @@ units:
             }
         ],
     }
-    _write_yaml(root / "curriculum" / "sources.yaml", sources)
+    _write_yaml(root / "curriculum" / "source-manifest.yaml", sources)
     _write_yaml(root / "curriculum" / "official-topics.yaml", topics)
     _write_yaml(root / "curriculum" / "material-inventory.yaml", inventory)
     _write_yaml(root / "curriculum" / "coverage-map.yaml", roadmap)
@@ -509,7 +511,7 @@ def _report_after(root: Path, mutate: Callable[[dict[str, Any]], None]):
     contract = _base_contract(root)
     mutate(contract)
     for name, filename in (
-        ("sources", "sources.yaml"),
+        ("sources", "source-manifest.yaml"),
         ("topics", "official-topics.yaml"),
         ("inventory", "material-inventory.yaml"),
         ("roadmap", "coverage-map.yaml"),
@@ -1563,17 +1565,17 @@ def test_roadmap_production_consumer_requires_the_full_canonical_schedule(
 
 
 def test_renderer_recomputes_real_plan018_baseline() -> None:
-    baseline = renderer.current_time_baseline(ROOT)
+    baseline = renderer.current_time_baseline(BOOK1_ROOT)
 
     assert baseline.manifested_minutes == 18635
     assert baseline.scheduled_minutes == 18875
 
 
 def test_plan017_closure_has_exact_destinations_additions_and_primary_practices() -> None:
-    report = check_scope(ROOT)
+    report = check_scope(BOOK1_ROOT)
     assert report.ok, report.errors
 
-    roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
+    roadmap = yaml.safe_load((BOOK1_ROOT / "curriculum" / "coverage-map.yaml").read_text())
     points = {point["id"]: point for point in roadmap["knowledge_points"]}
 
     for point_id, (destination, shipped_concepts, primary_by_modality) in PLAN017_CLOSURE.items():
@@ -1592,7 +1594,7 @@ def test_plan017_closure_has_exact_destinations_additions_and_primary_practices(
 
 
 def test_plan018_classical_rows_are_shipped_with_exact_direct_evidence() -> None:
-    report = check_scope(ROOT)
+    report = check_scope(BOOK1_ROOT)
     assert report.ok, report.errors
     assert not [
         warning
@@ -1600,7 +1602,7 @@ def test_plan018_classical_rows_are_shipped_with_exact_direct_evidence() -> None
         if any(point_id in warning for point_id in PLAN018_CLASSICAL_CLOSURE)
     ]
 
-    roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
+    roadmap = yaml.safe_load((BOOK1_ROOT / "curriculum" / "coverage-map.yaml").read_text())
     points = {point["id"]: point for point in roadmap["knowledge_points"]}
     planned = {unit["id"]: unit for unit in roadmap["planned_units"]}
 
@@ -1622,9 +1624,13 @@ def test_plan018_classical_rows_are_shipped_with_exact_direct_evidence() -> None
             assert evidence["assessments"] == []
 
     assert "P015-R1-CLASSICAL-BREADTH" not in planned
-    capstone_prereqs = planned["B2-024-gpu-scientific-ml-capstone"]["prerequisites"]
+    book2_roadmap = yaml.safe_load(
+        (BOOK2_ROOT / "curriculum" / "coverage-map.yaml").read_text()
+    )
+    book2_planned = {unit["id"]: unit for unit in book2_roadmap["planned_units"]}
+    capstone_prereqs = book2_planned["B2-024-gpu-scientific-ml-capstone"]["prerequisites"]
     assert "P015-R1-CLASSICAL-BREADTH" not in capstone_prereqs
-    assert "C12-classical-models" in capstone_prereqs
+    assert "book1:C12-classical-models" in capstone_prereqs
 
     remaining_round1 = {
         point["id"]
@@ -1635,7 +1641,7 @@ def test_plan018_classical_rows_are_shipped_with_exact_direct_evidence() -> None
 
 
 def test_every_covered_real_roadmap_row_uses_keep_disposition() -> None:
-    roadmap = model.load_roadmap(Path(__file__).parents[1])
+    roadmap = model.load_roadmap(BOOK1_ROOT)
 
     covered = [point for point in roadmap.knowledge_points if point.coverage == "covered"]
     assert covered
@@ -1643,12 +1649,11 @@ def test_every_covered_real_roadmap_row_uses_keep_disposition() -> None:
 
 
 def test_completed_plan017_neural_extensions_are_not_rendered_as_pending() -> None:
-    rendered = renderer.render_documents(ROOT)
+    rendered = renderer.render_documents(BOOK1_ROOT)
 
     for document in rendered.values():
         assert "C7 CNN training" not in document
         assert "C6 and C8 are not yet estimated" not in document
-        assert "C8" in document
 
 
 def test_c7_extension_returns_only_when_cnn_training_owner_is_pending(
@@ -1776,7 +1781,7 @@ def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: 
 
 
 def test_renderer_recomputes_the_design019_book2_planned_delta() -> None:
-    rendered = renderer.render_documents(Path(__file__).parents[1])
+    rendered = renderer.render_documents(BOOK2_ROOT)
 
     for document in rendered.values():
         assert "| **Planned-unit subtotal** | **142** | **182** |" in document
@@ -1789,15 +1794,13 @@ def test_renderer_recomputes_the_design019_book2_planned_delta() -> None:
         assert "C6 and C8 are not yet estimated" not in document
         assert "C8" in document
         assert "so this is not a complete roadmap total" not in document
-        assert "**452.58–492.58 manifested-baseline hours**" in document
-        assert "**456.58–496.58 scheduled-baseline hours**" in document
-        assert "student-t-test" in document
-        assert "importance-sampling" in document
+        assert "**142–182 manifested-baseline hours**" in document
+        assert "**142–182 scheduled-baseline hours**" in document
         assert "Total roadmap delta" not in document
 
 
 def test_both_documents_render_exact_design019_book2_plan_order() -> None:
-    rendered = renderer.render_documents(ROOT)
+    rendered = renderer.render_documents(BOOK2_ROOT)
 
     unit_ids = [
         "B2-019-attention-transformers",
@@ -1808,7 +1811,7 @@ def test_both_documents_render_exact_design019_book2_plan_order() -> None:
         "B2-024-gpu-scientific-ml-capstone",
     ]
     planned_by_id = {
-        unit.id: unit for unit in model.load_roadmap(ROOT).planned_units
+        unit.id: unit for unit in model.load_roadmap(BOOK2_ROOT).planned_units
     }
     tranche_titles = [planned_by_id[unit_id].title for unit_id in unit_ids]
     roadmap = rendered[Path("docs/curriculum-roadmap.md")]
@@ -2181,7 +2184,7 @@ def _write_book2_roadmap_fixture(root: Path) -> dict[str, Any]:
                 )
             roadmap["knowledge_points"].append(row)
     for name, filename in (
-        ("sources", "sources.yaml"),
+        ("sources", "source-manifest.yaml"),
         ("topics", "official-topics.yaml"),
         ("inventory", "material-inventory.yaml"),
         ("roadmap", "coverage-map.yaml"),

@@ -9,6 +9,8 @@ from tools.checks.prereq import check_prereq
 from tools.model import load_mock_manifests, load_syllabus, load_unit_manifests
 
 ROOT = Path(__file__).resolve().parents[1]
+BOOK1_ROOT = ROOT / "book1"
+BOOK2_ROOT = ROOT / "book2"
 
 
 def write_syllabus(
@@ -94,7 +96,7 @@ practice:
 
 
 def test_prereq_pass_on_real_syllabus():
-    report = check_prereq(ROOT)
+    report = check_prereq(BOOK1_ROOT)
     assert report.ok
     assert report.errors == []
 
@@ -494,14 +496,14 @@ def test_double_length_coverage_accepts_compliant_unit(tmp_path):
 
 
 def test_double_length_coverage_real_f6_passes():
-    syllabus = load_syllabus(ROOT)
+    syllabus = load_syllabus(BOOK1_ROOT)
     assert "F6-svd-spectral" in syllabus.units
     unit = syllabus.units["F6-svd-spectral"]
     assert unit.length == "double"
 
     matching_manifests = [
         manifest
-        for manifest in load_unit_manifests(ROOT)
+        for manifest in load_unit_manifests(BOOK1_ROOT)
         if manifest.unit_id == "F6-svd-spectral"
     ]
     assert len(matching_manifests) == 1
@@ -512,7 +514,7 @@ def test_double_length_coverage_real_f6_passes():
     assert 24 <= len({problem.id for problem in manifest.practice}) <= 30
     assert 24 <= len({normpath(problem.path) for problem in manifest.practice}) <= 30
 
-    report = check_coverage(ROOT)
+    report = check_coverage(BOOK1_ROOT)
 
     assert not any("double-length unit F6-svd-spectral" in error for error in report.errors)
 
@@ -573,99 +575,37 @@ def test_normal_length_c7_overflow_behavior_is_unchanged(tmp_path):
     assert not any("double-length unit C7-cnn-transfer" in error for error in report.errors)
 
 
-def test_valid_book2_fixture_preserves_existing_r1_manifests_and_r1_namespace(
+def test_planned_book2_root_preserves_existing_r1_manifests_and_r1_namespace(
     tmp_path: Path,
 ) -> None:
-    shutil.copy2(ROOT / "syllabus.md", tmp_path / "syllabus.md")
-    for source in sorted(ROOT.glob("units/*/manifest.yaml")):
-        destination = tmp_path / source.relative_to(ROOT)
+    book1 = tmp_path / "book1"
+    book2 = tmp_path / "book2"
+    book1.mkdir()
+    book2.mkdir()
+    shutil.copy2(BOOK1_ROOT / "syllabus.md", book1 / "syllabus.md")
+    shutil.copy2(BOOK2_ROOT / "syllabus.md", book2 / "syllabus.md")
+    for source in sorted(BOOK1_ROOT.glob("units/*/manifest.yaml")):
+        destination = book1 / source.relative_to(BOOK1_ROOT)
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, destination)
-    r1_source = ROOT / "mocktests" / "r1-001" / "manifest.yaml"
-    r1_destination = tmp_path / "mocktests" / "r1-001" / "manifest.yaml"
+    r1_source = BOOK1_ROOT / "mocktests" / "r1-001" / "manifest.yaml"
+    r1_destination = book1 / "mocktests" / "r1-001" / "manifest.yaml"
     r1_destination.parent.mkdir(parents=True)
     shutil.copy2(r1_source, r1_destination)
     before = {
-        path.relative_to(tmp_path).as_posix(): path.read_bytes()
-        for path in sorted(tmp_path.glob("units/*/manifest.yaml"))
+        path.relative_to(book1).as_posix(): path.read_bytes()
+        for path in sorted(book1.glob("units/*/manifest.yaml"))
     }
-    namespace_before = [manifest.test for manifest in load_mock_manifests(tmp_path)]
-    before_report = check_prereq(tmp_path)
+    namespace_before = [manifest.test for manifest in load_mock_manifests(book1)]
+    before_report = check_prereq(book1)
     assert before_report.ok, before_report.errors
-
-    book2 = tmp_path / "units" / "B2-019-attention-transformers" / "manifest.yaml"
-    _write = {
-        "unit": "B2-019-attention-transformers",
-        "book": 2,
-        "round": 2,
-        "layer": "round-2-extension",
-        "track": "extension",
-        "concepts_taught": [
-            "matrix-transpose",
-            "query-key-value-attention",
-            "scaled-dot-product-attention",
-            "attention-mask",
-            "causal-self-attention",
-            "multi-head-attention",
-            "sinusoidal-positional-encoding",
-            "attention-complexity",
-            "transformer-residual-layernorm",
-            "position-wise-feed-forward",
-            "transformer-block",
-        ],
-        "concepts_used": [
-            "softmax",
-            "matrix-multiplication",
-            "broadcasting",
-            "variance",
-            "torch-tensors",
-            "nn-module",
-            "torch-optimizers",
-            "autograd-training",
-        ],
-        "concept_prerequisites": [
-            "softmax",
-            "matrix-multiplication",
-            "broadcasting",
-            "variance",
-            "torch-tensors",
-            "nn-module",
-            "torch-optimizers",
-            "autograd-training",
-        ],
-        "prereq_units": [
-            "C6-pytorch",
-            "C7-cnn-transfer",
-            "C8-embeddings",
-            "C11-neural-training",
-        ],
-        "bridge_diagnostic": {
-            "path": "lessons/00-book1-bridge.ipynb",
-            "minutes": 30,
-            "referenced_concepts": ["softmax"],
-        },
-        "coverage_claims": [],
-        "practice": [],
-    }
-    book2.parent.mkdir(parents=True)
-    book2.write_text(yaml.safe_dump(_write, sort_keys=False))
-
-    parsed_book2 = next(
-        manifest
-        for manifest in load_unit_manifests(tmp_path)
-        if manifest.unit_id == "B2-019-attention-transformers"
-    )
-    after_report = check_prereq(tmp_path)
-
     after = {
-        path.relative_to(tmp_path).as_posix(): path.read_bytes()
-        for path in sorted(tmp_path.glob("units/*/manifest.yaml"))
-        if not path.parent.name.startswith("B2-")
+        path.relative_to(book1).as_posix(): path.read_bytes()
+        for path in sorted(book1.glob("units/*/manifest.yaml"))
     }
-    namespace_after = [manifest.test for manifest in load_mock_manifests(tmp_path)]
+    namespace_after = [manifest.test for manifest in load_mock_manifests(book1)]
 
-    assert parsed_book2.concepts_taught == _write["concepts_taught"]
-    assert parsed_book2.prereq_units == _write["prereq_units"]
-    assert after_report.ok, after_report.errors
+    assert load_unit_manifests(book2) == []
+    assert load_mock_manifests(book2) == []
     assert after == before
     assert namespace_before == namespace_after == ["r1-001"]

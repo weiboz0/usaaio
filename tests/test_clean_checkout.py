@@ -487,6 +487,44 @@ def test_atomic_cutover_has_every_moved_producer_and_no_legacy_root() -> None:
         assert not path.is_symlink(), f"legacy symlink remains: {legacy}"
 
 
+def test_book_local_generated_paths_are_ignored_without_ignoring_sources() -> None:
+    ignored = (
+        "book1/build/mock.pdf",
+        "book2/build/unit.pdf",
+        "book1/mocktests/r1-001/build/test.pdf",
+        "book1/reference/r1-2026/paper.pdf",
+        "book2/reference/r2-2026/day1.pdf",
+        "book1/units/C10-competition-craft/data/heldout.csv",
+        "book1/units/C10-competition-craft/practice/p15_contract.csv",
+        "book1/mocktests/r1-001/data/p09_heldout.csv",
+    )
+    sources = (
+        "book1/syllabus.md",
+        "book2/syllabus.md",
+        "book1/reference/analysis.md",
+        "book2/reference/analysis.md",
+        "book1/units/C10-competition-craft/data/make_dataset.py",
+        "book1/mocktests/r1-001/data/gen_p09.py",
+        "book1/mocktests/r1-001/problems/p09.ipynb",
+    )
+
+    for relative in ignored:
+        proc = subprocess.run(
+            ["git", "check-ignore", "--no-index", "--quiet", relative],
+            cwd=ROOT,
+            check=False,
+        )
+        assert proc.returncode == 0, relative
+    for relative in sources:
+        assert (ROOT / relative).is_file(), relative
+        proc = subprocess.run(
+            ["git", "check-ignore", "--no-index", "--quiet", relative],
+            cwd=ROOT,
+            check=False,
+        )
+        assert proc.returncode == 1, relative
+
+
 def _solution_notebook(book: str) -> str:
     return json.dumps(
         {
@@ -826,6 +864,22 @@ def test_staged_scope_aborts_on_unrelated_notes_before_staging(tmp_path: Path) -
     assert proc.returncode != 0
     assert "notes.md" in proc.stdout + proc.stderr
     assert _git(repo, "diff", "--cached", "--name-only").stdout == ""
+
+
+def test_staged_scope_preflight_accepts_inventoried_top_level_rename(
+    tmp_path: Path,
+) -> None:
+    repo = _init_scope_repo(tmp_path)
+    syllabus = repo / "syllabus.md"
+    syllabus.write_text("legacy syllabus\n", encoding="utf-8")
+    _git(repo, "add", "syllabus.md")
+    _git(repo, "commit", "-m", "add legacy syllabus")
+    (repo / "book1").mkdir(exist_ok=True)
+    _git(repo, "mv", "syllabus.md", "book1/syllabus.md")
+
+    proc = _scope_proc(repo, "--preflight")
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
 
 
 @pytest.mark.parametrize(

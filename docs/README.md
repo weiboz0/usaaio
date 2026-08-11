@@ -2,7 +2,9 @@
 
 Project documentation and the plan-driven execution lifecycle.
 
-- [Course structure](course-structure.md) — the two-semester pacing map (plan 012).
+- [Book 1 course structure](../book1/docs/course-structure.md) — the complete Round 1 pacing map.
+- [Book 2 course structure](../book2/docs/course-structure.md) — the complete Round 2 program skeleton.
+- [`books.yaml`](../books.yaml) — the authoritative book registry and dependency order.
 
 ## Plan-driven execution docs
 
@@ -22,5 +24,5 @@ Lifecycle per plan: design (or verbal alignment) → plan file committed on a fe
 
 - `development-workflow.md` — Steps 1–6 of the lifecycle, tailored for content development.
 - `content-review-gate.md` — the 4-way content-review gate (replaces a code-review gate).
-- `mocktest-generation.md` — the repeatable mock-test generation pipeline (stub until plan 003).
+- `mocktest-generation.md` — the book-selected repeatable mock-test generation pipeline.
 - `architecture/decisions.md` — single source of truth for cross-cutting decisions.

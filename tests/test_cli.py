@@ -28,7 +28,7 @@ def test_help_lists_planned_subcommands():
 
 
 def test_check_subcommand_runs():
-    proc = run_cli("prereq-check")
+    proc = run_cli("--book", "book1", "prereq-check")
     assert proc.returncode == 0
     assert "PASS prereq-check" in proc.stdout
 
@@ -39,7 +39,7 @@ def test_main_no_subcommand_prints_help(capsys):
 
 
 def test_main_check_subcommand_in_process(capsys):
-    assert main(["prereq-check"]) == 0
+    assert main(["--book", "book1", "prereq-check"]) == 0
     assert "PASS prereq-check" in capsys.readouterr().out
 
 

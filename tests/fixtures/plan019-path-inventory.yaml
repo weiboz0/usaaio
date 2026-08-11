@@ -4,6 +4,7 @@ generation:
   python: AST string leaves participating in Path, joinpath, glob, rglob, or / joins
   notebooks: code cells containing top-level pyproject.toml discovery
 python_consumers:
+  - tools/books.py
   - tools/audit_curriculum.py
   - tools/checks/hygiene.py
   - tools/checks/new_mocktest.py
@@ -200,9 +201,16 @@ staged_scope:
     - books.yaml
     - .gitignore
     - AGENTS.md
+    - TODO.md
+    - syllabus.md
+    - docs/course-structure.md
+    - docs/README.md
     - docs/architecture/decisions.md
+    - docs/curriculum-architecture.md
+    - docs/curriculum-roadmap.md
     - docs/designs/000-project-design.md
     - docs/designs/019-r2-book-architecture.md
+    - docs/mocktest-generation.md
     - docs/plans/019-r2-attention-transformers.md
   prefixes:
     - book1/
