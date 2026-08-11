@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import importlib
+import re
 import shutil
 from collections.abc import Callable
 from pathlib import Path
@@ -202,6 +203,18 @@ def _mutate_registry(repo: Path, mutate: Callable[[dict[str, Any]], None]) -> No
     _write_yaml(path, raw)
 
 
+def _mutate_syllabus_contract(
+    repo: Path, book_id: str, mutate: Callable[[dict[str, Any]], None]
+) -> None:
+    path = repo / book_id / "syllabus.md"
+    before, fenced = path.read_text(encoding="utf-8").split("```yaml\n", 1)
+    body, after = fenced.split("\n```", 1)
+    raw = yaml.safe_load(body)
+    mutate(raw)
+    rendered = yaml.safe_dump(raw, sort_keys=False).rstrip()
+    path.write_text(f"{before}```yaml\n{rendered}\n```{after}", encoding="utf-8")
+
+
 @pytest.mark.parametrize(
     ("mutation", "message"),
     [
@@ -274,6 +287,33 @@ def test_catalog_rejects_undeclared_symlink_alias_of_declared_book(tmp_path: Pat
         _books_module().load_book_catalog(tmp_path)
 
     assert str(exc_info.value) == f"{tmp_path}: undeclared book root book3 is a symlink"
+
+
+@pytest.mark.parametrize("consumer", ["validate", "imports", "evidence", "resolve"])
+def test_post_catalog_book_root_symlink_swap_fails_closed(tmp_path: Path, consumer: str) -> None:
+    write_two_book_repo(tmp_path)
+    books = _books_module()
+    catalog = books.load_book_catalog(tmp_path)
+    selected_id = "book1" if consumer == "resolve" else "book2"
+    selected = catalog.by_id(selected_id)
+    replacement = tmp_path / f"real-{selected_id}"
+    selected.root.rename(replacement)
+    selected.root.symlink_to(replacement, target_is_directory=True)
+
+    if consumer == "validate":
+        assert books.validate_book_root(selected) == [
+            f"{selected_id}: book root is symlinked or no longer canonical: {selected.root}"
+        ]
+        return
+    operation = {
+        "imports": lambda: books.load_book_imports(selected),
+        "evidence": lambda: books.load_book_evidence_imports(selected),
+        "resolve": lambda: books.resolve_qualified_import(
+            catalog, catalog.by_id("book2"), "book1:softmax"
+        ),
+    }[consumer]
+    with pytest.raises(ValueError, match="root is symlinked or no longer canonical"):
+        operation()
 
 
 @pytest.mark.parametrize("relative", REQUIRED_PATHS)
@@ -357,6 +397,80 @@ def test_cross_book_import_requires_registry_dependency_and_qualified_owner(
     catalog = books.load_book_catalog(tmp_path)
     with pytest.raises(ValueError, match="dependency"):
         books.resolve_qualified_import(catalog, catalog.by_id("book2"), "book1:softmax")
+
+
+@pytest.mark.parametrize(
+    ("mutation", "identity"),
+    [
+        pytest.param(
+            lambda raw: raw["imports"]["concepts"].append("C1-foundation"),
+            "C1-foundation",
+            id="prerequisite-unit-concept",
+        ),
+        pytest.param(
+            lambda raw: raw["evidence_imports"]["lesson_paths"].append("softmax"),
+            "softmax",
+            id="prerequisite-concept-evidence-lesson",
+        ),
+        pytest.param(
+            lambda raw: raw["evidence_imports"]["assessments"].append("C8-p01"),
+            "C8-p01",
+            id="evidence-practice-assessment",
+        ),
+    ],
+)
+def test_import_blocks_reject_cross_category_identity_collisions(
+    tmp_path: Path,
+    mutation: Callable[[dict[str, Any]], None],
+    identity: str,
+) -> None:
+    write_two_book_repo(tmp_path)
+    _mutate_syllabus_contract(tmp_path, "book2", mutation)
+    books = _books_module()
+    book2 = books.load_book_catalog(tmp_path).by_id("book2")
+
+    for loader in (books.load_book_imports, books.load_book_evidence_imports):
+        with pytest.raises(ValueError, match=rf"cross-category.*{re.escape(identity)}"):
+            loader(book2)
+
+
+def _write_practice_owner(repo: Path, unit_id: str, practice_id: str) -> None:
+    unit = repo / "book1" / "units" / unit_id
+    statement = unit / "practice" / "p01.ipynb"
+    statement.parent.mkdir(parents=True)
+    statement.write_text("{}\n", encoding="utf-8")
+    _write_yaml(
+        unit / "manifest.yaml",
+        {
+            "unit": unit_id,
+            "practice": [{"id": practice_id, "path": "practice/p01.ipynb"}],
+        },
+    )
+
+
+def _write_assessment_owner(repo: Path, test_id: str, assessment_id: str) -> None:
+    _write_yaml(
+        repo / "book1" / "mocktests" / test_id / "manifest.yaml",
+        {"problems": [{"id": assessment_id}]},
+    )
+
+
+@pytest.mark.parametrize("kind", ["practice", "assessment"])
+def test_evidence_resolution_rejects_duplicate_owner_matches(tmp_path: Path, kind: str) -> None:
+    write_two_book_repo(tmp_path)
+    if kind == "practice":
+        identity = "C8-p01"
+        _write_practice_owner(tmp_path, "C8-first", identity)
+        _write_practice_owner(tmp_path, "C8-second", identity)
+    else:
+        identity = "r1-001-p05-1"
+        _write_assessment_owner(tmp_path, "r1-001", identity)
+        _write_assessment_owner(tmp_path, "r1-002", identity)
+    books = _books_module()
+    catalog = books.load_book_catalog(tmp_path)
+
+    with pytest.raises(ValueError, match=rf"duplicate {kind} ownership.*{re.escape(identity)}"):
+        books.resolve_qualified_import(catalog, catalog.by_id("book2"), f"book1:{identity}")
 
 
 def test_book_selection_parser_helper_requires_exactly_one_selection() -> None:

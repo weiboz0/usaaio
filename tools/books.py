@@ -245,6 +245,8 @@ def load_book_catalog(repo_root: str | Path) -> BookCatalog:
 
 
 def _path_has_symlink_component(root: Path, path: Path) -> bool:
+    if not root.is_absolute() or root.is_symlink() or root.resolve(strict=False) != root:
+        return True
     relative = path.relative_to(root)
     current = root
     for part in relative.parts:
@@ -254,8 +256,26 @@ def _path_has_symlink_component(root: Path, path: Path) -> bool:
     return False
 
 
+def _book_root_diagnostic(book: BookSpec) -> str | None:
+    root = book.root
+    if not root.is_absolute() or root.is_symlink() or root.resolve(strict=False) != root:
+        return f"{book.id}: book root is symlinked or no longer canonical: {root}"
+    if not root.is_dir():
+        return f"{book.id}: book root is missing or not a directory: {root}"
+    return None
+
+
+def _require_book_root(book: BookSpec) -> None:
+    diagnostic = _book_root_diagnostic(book)
+    if diagnostic is not None:
+        raise ValueError(diagnostic)
+
+
 def validate_book_root(book: BookSpec) -> list[str]:
     """Return deterministic structural diagnostics for the selected book only."""
+    root_diagnostic = _book_root_diagnostic(book)
+    if root_diagnostic is not None:
+        return [root_diagnostic]
     errors: list[str] = []
     for relative in _REQUIRED_FILES:
         path = book.root / relative
@@ -286,8 +306,8 @@ def _book_contract(book: BookSpec) -> dict[str, Any]:
         raise ValueError(f"{book.root / 'syllabus.md'}: invalid canonical syllabus: {exc}") from exc
 
 
-def load_book_imports(book: BookSpec) -> BookImports:
-    raw = _book_contract(book).get("imports")
+def _parse_book_imports(book: BookSpec, contract: dict[str, Any]) -> BookImports:
+    raw = contract.get("imports")
     if raw is None:
         return BookImports(source_book="", units=(), concepts=())
     if not isinstance(raw, dict):
@@ -302,8 +322,8 @@ def load_book_imports(book: BookSpec) -> BookImports:
     )
 
 
-def load_book_evidence_imports(book: BookSpec) -> BookEvidenceImports:
-    raw = _book_contract(book).get("evidence_imports")
+def _parse_book_evidence_imports(book: BookSpec, contract: dict[str, Any]) -> BookEvidenceImports:
+    raw = contract.get("evidence_imports")
     if raw is None:
         return BookEvidenceImports(
             source_book="", concepts=(), lesson_paths=(), practices=(), assessments=()
@@ -343,6 +363,43 @@ def load_book_evidence_imports(book: BookSpec) -> BookEvidenceImports:
     )
 
 
+def _load_validated_import_blocks(
+    book: BookSpec,
+) -> tuple[BookImports, BookEvidenceImports]:
+    contract = _book_contract(book)
+    imports = _parse_book_imports(book, contract)
+    evidence = _parse_book_evidence_imports(book, contract)
+    categories = (
+        ("prerequisite units", imports.units),
+        ("prerequisite concepts", imports.concepts),
+        ("evidence concepts", evidence.concepts),
+        ("evidence lesson paths", evidence.lesson_paths),
+        ("evidence practices", evidence.practices),
+        ("evidence assessments", evidence.assessments),
+    )
+    owners: dict[str, str] = {}
+    for category, identities in categories:
+        for identity in identities:
+            previous = owners.get(identity)
+            if previous is not None:
+                raise ValueError(
+                    f"{book.root / 'syllabus.md'}: cross-category import identity "
+                    f"{identity!r} appears in {previous} and {category}"
+                )
+            owners[identity] = category
+    return imports, evidence
+
+
+def load_book_imports(book: BookSpec) -> BookImports:
+    imports, _ = _load_validated_import_blocks(book)
+    return imports
+
+
+def load_book_evidence_imports(book: BookSpec) -> BookEvidenceImports:
+    _, evidence = _load_validated_import_blocks(book)
+    return evidence
+
+
 def _owner_symbols(owner: BookSpec) -> tuple[set[str], set[str]]:
     raw = _book_contract(owner)
     raw_units = raw.get("units")
@@ -365,6 +422,7 @@ def _owner_symbols(owner: BookSpec) -> tuple[set[str], set[str]]:
 
 
 def _resolve_owner_path(owner: BookSpec, relative_value: str) -> Path:
+    _require_book_root(owner)
     relative = Path(relative_value)
     if (
         relative.is_absolute()
@@ -387,6 +445,7 @@ def _resolve_owner_path(owner: BookSpec, relative_value: str) -> Path:
 
 
 def _resolve_practice(owner: BookSpec, practice_id: str) -> Path:
+    matches: list[tuple[Path, object]] = []
     for manifest_path in sorted(owner.root.glob("units/*/manifest.yaml")):
         if _path_has_symlink_component(owner.root, manifest_path):
             continue
@@ -399,18 +458,26 @@ def _resolve_practice(owner: BookSpec, practice_id: str) -> Path:
         for row in practices:
             if not isinstance(row, dict) or row.get("id") != practice_id:
                 continue
-            path = row.get("path")
-            if not isinstance(path, str):
-                raise ValueError(  # noqa: TRY004
-                    f"{manifest_path}: practice {practice_id} has no valid path"
-                )
-            relative_path = manifest_path.parent.relative_to(owner.root) / path
-            return _resolve_owner_path(owner, str(relative_path))
-    raise ValueError(f"owner {owner.id} is missing practice {practice_id!r}")
+            matches.append((manifest_path, row.get("path")))
+    if not matches:
+        raise ValueError(f"owner {owner.id} is missing practice {practice_id!r}")
+    if len(matches) > 1:
+        locations = ", ".join(str(manifest) for manifest, _ in matches)
+        raise ValueError(
+            f"owner {owner.id} has duplicate practice ownership for {practice_id!r}: {locations}"
+        )
+    manifest_path, path = matches[0]
+    if not isinstance(path, str):
+        raise ValueError(  # noqa: TRY004
+            f"{manifest_path}: practice {practice_id} has no valid path"
+        )
+    relative_path = manifest_path.parent.relative_to(owner.root) / path
+    return _resolve_owner_path(owner, str(relative_path))
 
 
 def _resolve_assessment(owner: BookSpec, assessment_id: str) -> Path:
     pattern = f"mocktests/r{owner.number}-*/manifest.yaml"
+    matches: list[Path] = []
     for manifest_path in sorted(owner.root.glob(pattern)):
         if _path_has_symlink_component(owner.root, manifest_path):
             continue
@@ -420,35 +487,64 @@ def _resolve_assessment(owner: BookSpec, assessment_id: str) -> Path:
             raise ValueError(  # noqa: TRY004
                 f"{manifest_path}: problems must be a list"
             )
-        if any(isinstance(row, dict) and row.get("id") == assessment_id for row in problems):
-            return manifest_path
-    raise ValueError(f"owner {owner.id} is missing assessment {assessment_id!r}")
+        matches.extend(
+            manifest_path
+            for row in problems
+            if isinstance(row, dict) and row.get("id") == assessment_id
+        )
+    if not matches:
+        raise ValueError(f"owner {owner.id} is missing assessment {assessment_id!r}")
+    if len(matches) > 1:
+        locations = ", ".join(str(manifest) for manifest in matches)
+        raise ValueError(
+            f"owner {owner.id} has duplicate assessment ownership for "
+            f"{assessment_id!r}: {locations}"
+        )
+    return matches[0]
+
+
+def _require_catalog_book(catalog: BookCatalog, book: BookSpec) -> BookSpec:
+    repo_root = catalog.repo_root
+    if (
+        not repo_root.is_absolute()
+        or repo_root.is_symlink()
+        or repo_root.resolve(strict=False) != repo_root
+        or not repo_root.is_dir()
+    ):
+        raise ValueError(f"catalog repository root is no longer canonical: {repo_root}")
+    try:
+        registered = catalog.by_id(book.id)
+    except KeyError as exc:
+        raise ValueError(f"book {book.id!r} is not registered") from exc
+    if registered != book:
+        raise ValueError(f"book {book.id!r} does not match its registered BookSpec")
+    try:
+        book.root.relative_to(repo_root)
+    except ValueError as exc:
+        raise ValueError(f"book {book.id!r} root escapes the catalog repository") from exc
+    _require_book_root(book)
+    return registered
 
 
 def resolve_qualified_import(catalog: BookCatalog, importer: BookSpec, identity: str) -> Path:
     """Resolve one exact, qualified prerequisite or evidence import to its owner."""
+    _require_catalog_book(catalog, importer)
     if not isinstance(identity, str) or identity.count(":") != 1:
         raise ValueError(f"import {identity!r} must be qualified as book:id")
     owner_id, local_id = identity.split(":", 1)
     if not owner_id or not local_id:
         raise ValueError(f"import {identity!r} must be qualified as book:id")
-    try:
-        registered_importer = catalog.by_id(importer.id)
-    except KeyError as exc:
-        raise ValueError(f"importer {importer.id!r} is not registered") from exc
-    if registered_importer != importer:
-        raise ValueError(f"importer {importer.id!r} does not match its registered BookSpec")
     if owner_id == importer.id:
         raise ValueError(f"import {identity!r} names the importer as owner")
     try:
         owner = catalog.by_id(owner_id)
     except KeyError as exc:
         raise ValueError(f"import {identity!r} names an unknown owner") from exc
+    _require_catalog_book(catalog, owner)
     if owner_id not in importer.depends_on:
         raise ValueError(f"import {identity!r} lacks a declared dependency edge")
 
-    imports = load_book_imports(importer)
-    evidence = load_book_evidence_imports(importer)
+    imports, evidence = _load_validated_import_blocks(importer)
     categories: list[tuple[str, str]] = []
     if local_id in imports.units:
         categories.append(("unit", imports.source_book))

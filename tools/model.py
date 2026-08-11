@@ -778,17 +778,47 @@ def _problem_from(item: dict[str, Any]) -> ManifestProblem:
     )
 
 
+def _mock_manifest_path_is_unsafe(book_root: Path, manifest_path: Path) -> bool:
+    absolute_root = book_root.absolute()
+    absolute_manifest = manifest_path.absolute()
+    if absolute_root.is_symlink() or absolute_root.resolve(strict=False) != absolute_root:
+        return True
+    try:
+        relative = absolute_manifest.relative_to(absolute_root)
+    except ValueError:
+        return True
+    current = absolute_root
+    for part in relative.parts:
+        current /= part
+        if current.is_symlink():
+            return True
+    return not absolute_manifest.resolve(strict=False).is_relative_to(absolute_root)
+
+
 def load_mock_manifests(
     root: str | Path, *, book_number: int | None = None
 ) -> list[MockManifest]:
     if book_number is not None and (type(book_number) is not int or book_number <= 0):
         raise ValueError("book_number must be a positive integer")
     mocktests_root = Path(root) / "mocktests"
+    if _mock_manifest_path_is_unsafe(Path(root), mocktests_root):
+        raise ValueError(
+            f"{mocktests_root}: mocktests directory contains a symlink or resolves "
+            "outside selected book root"
+        )
     if book_number is None:
         # Keep the pre-cutover public behavior until CLI dispatch supplies BookSpec.number.
         manifests = sorted(mocktests_root.glob("r1-*/manifest.yaml"))
     else:
         manifests = sorted(mocktests_root.glob("r*-*/manifest.yaml"))
+    unsafe = [path for path in manifests if _mock_manifest_path_is_unsafe(Path(root), path)]
+    if unsafe:
+        names = ", ".join(str(path) for path in unsafe)
+        raise ValueError(
+            f"{mocktests_root}: mock manifest path contains a symlink or resolves "
+            f"outside selected book root: {names}"
+        )
+    if book_number is not None:
         wrong_round = [
             path
             for path in manifests

@@ -683,3 +683,24 @@ problems: []
 
     with pytest.raises(ValueError, match="book 1.*r1-|r2-001.*book 1"):
         load_mock_manifests(book.root, book_number=book.number)
+
+
+def test_mock_loader_rejects_symlinked_manifest_directory_outside_book_root(
+    tmp_path: Path,
+) -> None:
+    book_root = tmp_path / "selected"
+    mocktests = book_root / "mocktests"
+    mocktests.mkdir(parents=True)
+    external = tmp_path / "external" / "r2-001"
+    external.mkdir(parents=True)
+    external.joinpath("manifest.yaml").write_text(
+        """test: r2-001
+status: draft
+problems: []
+""",
+        encoding="utf-8",
+    )
+    (mocktests / "r2-001").symlink_to(external, target_is_directory=True)
+
+    with pytest.raises(ValueError, match="symlink|outside selected book root"):
+        load_mock_manifests(book_root, book_number=2)
