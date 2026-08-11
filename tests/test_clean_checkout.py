@@ -263,6 +263,13 @@ def _repo_root_aliases(tree: ast.AST) -> set[str]:
             discovered_root = (
                 "Path(__file__)" in rendered
                 and (".parents[" in rendered or ".parent" in rendered)
+            ) or bool(
+                re.fullmatch(
+                    r"(?:Path\.cwd\(\)|Path\(['\"]\.['\"]\)|"
+                    r"Path\(os\.getcwd\(\)\)|os\.getcwd\(\))"
+                    r"(?:\.(?:resolve|absolute)\(\))*",
+                    rendered,
+                )
             )
             if (isinstance(value, ast.Name) and value.id in aliases) or discovered_root:
                 for target in targets:
@@ -390,8 +397,14 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
         assignment = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)=(.*)$", line)
         if assignment:
             name, value = assignment.groups()
-            if "$PWD" in value or "$(pwd)" in value or any(
-                f"${alias}" in value for alias in aliases
+            if (
+                "$PWD" in value
+                or "$(pwd)" in value
+                or "$(git rev-parse --show-toplevel)" in value
+                or any(
+                    re.search(rf"\$\{{?{re.escape(alias)}\}}?", value)
+                    for alias in aliases
+                )
             ):
                 aliases.add(name)
         if any(
@@ -498,6 +511,52 @@ def test_static_contract_allows_selected_book_local_joins() -> None:
             2,
             "root-find-variable-units",
         ),
+        (
+            "tools/producer.py",
+            'PROJECT = Path.cwd()\nPROJECT / "units"\n',
+            2,
+            "repo-root-path-join",
+        ),
+        (
+            "tools/producer.py",
+            'PROJECT = Path(".").resolve()\nBASE = PROJECT\nBASE / "units"\n',
+            3,
+            "repo-root-path-join",
+        ),
+        (
+            "tools/producer.py",
+            'PROJECT = Path(os.getcwd())\nPROJECT.joinpath("curriculum")\n',
+            2,
+            "repo-root-path-join",
+        ),
+        (
+            "scripts/producer.sh",
+            (
+                'content_root=$(git rev-parse --show-toplevel)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+            "root-find-variable-units",
+        ),
+        (
+            "scripts/producer.sh",
+            (
+                'project=$(git rev-parse --show-toplevel)\ncontent_root="$project"\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            3,
+            "root-find-variable-units",
+        ),
+        (
+            "scripts/producer.sh",
+            (
+                'project="$(git rev-parse --show-toplevel)"\n'
+                'content_root="${project}"\n'
+                'find "${content_root}/units" -name manifest.yaml\n'
+            ),
+            3,
+            "root-find-variable-units",
+        ),
     ],
 )
 def test_actual_scanner_rejects_root_access_mutations_in_discovered_producers(
@@ -519,6 +578,18 @@ def test_actual_scanner_allows_bookspec_and_book_local_root_joins(tmp_path: Path
     shell = tmp_path / "scripts" / "producer.sh"
     shell.parent.mkdir(parents=True)
     shell.write_text('find "$book_root/units" -name manifest.yaml\n', encoding="utf-8")
+
+    cwd_selected = tmp_path / "tools" / "selected.py"
+    cwd_selected.write_text(
+        'repo = Path.cwd()\nbook_root = selected_book.root\nbook_root / "units"\n',
+        encoding="utf-8",
+    )
+    shell.write_text(
+        'repo=$(git rev-parse --show-toplevel)\n'
+        'book_root="$selected_book_root"\n'
+        'find "$book_root/units" -name manifest.yaml\n',
+        encoding="utf-8",
+    )
 
     assert _actual_repository_root_accesses(tmp_path) == {}
 

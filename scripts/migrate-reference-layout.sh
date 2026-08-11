@@ -96,8 +96,6 @@ if legacy.exists():
         Path("book2/reference/analysis.md"): book2,
     }
     existing = {path: path.read_text(encoding="utf-8") for path in outputs if path.exists()}
-    if existing and set(existing) != set(outputs):
-        raise SystemExit("partial reference analysis split has only one book-local output")
     for path, actual in existing.items():
         if actual != outputs[path]:
             raise SystemExit(f"partial reference analysis split is inconsistent: {path}")

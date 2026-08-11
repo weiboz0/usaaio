@@ -1403,6 +1403,7 @@ def test_pre_merge_guard_rejects_staged_protected_path(tmp_path: Path) -> None:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / relative).read_bytes())
     (repo / "scripts/pre-merge-guard.sh").chmod(0o755)
+    (repo / "scripts/verify-staged-scope.py").chmod(0o755)
     _git(repo, "add", ".")
     _git(repo, "commit", "-m", "base")
     protected = repo / "tests/.env.production"
@@ -1420,6 +1421,144 @@ def test_pre_merge_guard_rejects_staged_protected_path(tmp_path: Path) -> None:
 
     assert proc.returncode != 0
     assert "protected env path" in proc.stdout + proc.stderr
+
+
+@pytest.mark.parametrize(
+    ("mutation", "targets"),
+    [
+        pytest.param("delete", ("scripts/verify-staged-scope.py",), id="delete-verifier"),
+        pytest.param(
+            "delete",
+            ("tests/fixtures/plan019-path-inventory.yaml",),
+            id="delete-inventory",
+        ),
+        pytest.param(
+            "delete",
+            (
+                "scripts/verify-staged-scope.py",
+                "tests/fixtures/plan019-path-inventory.yaml",
+            ),
+            id="delete-both",
+        ),
+        pytest.param("replace", ("scripts/verify-staged-scope.py",), id="replace-verifier"),
+        pytest.param(
+            "replace",
+            ("tests/fixtures/plan019-path-inventory.yaml",),
+            id="replace-inventory",
+        ),
+        pytest.param("symlink", ("scripts/verify-staged-scope.py",), id="symlink-verifier"),
+        pytest.param(
+            "symlink",
+            ("tests/fixtures/plan019-path-inventory.yaml",),
+            id="symlink-inventory",
+        ),
+    ],
+)
+def test_pre_merge_guard_fails_closed_when_enforcement_file_is_mutated(
+    tmp_path: Path, mutation: str, targets: tuple[str, ...]
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    for relative in (
+        "scripts/pre-merge-guard.sh",
+        "scripts/verify-staged-scope.py",
+        "tests/fixtures/plan019-path-inventory.yaml",
+    ):
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / relative).read_bytes())
+    (repo / "scripts/pre-merge-guard.sh").chmod(0o755)
+    (repo / "scripts/verify-staged-scope.py").chmod(0o755)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+
+    for relative in targets:
+        target = repo / relative
+        target.unlink()
+        if mutation == "replace":
+            target.write_text("replacement\n", encoding="utf-8")
+        elif mutation == "symlink":
+            peer = repo / "enforcement-copy"
+            peer.write_bytes((ROOT / relative).read_bytes())
+            target.symlink_to(peer)
+    protected = repo / "tests/.env.production"
+    protected.write_text("SECRET=bad\n", encoding="utf-8")
+    _git(repo, "add", "-A", "-f")
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode != 0
+    diagnostic = proc.stdout + proc.stderr
+    assert "enforcement file" in diagnostic.lower()
+    assert any(relative in diagnostic for relative in targets)
+
+
+@pytest.mark.parametrize(
+    ("mutation", "relative"),
+    [
+        pytest.param("delete", "scripts/verify-staged-scope.py", id="index-delete"),
+        pytest.param(
+            "replace",
+            "tests/fixtures/plan019-path-inventory.yaml",
+            id="index-replace",
+        ),
+        pytest.param("symlink", "scripts/verify-staged-scope.py", id="index-symlink"),
+    ],
+)
+def test_pre_merge_guard_rejects_index_only_enforcement_mutation(
+    tmp_path: Path, mutation: str, relative: str
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    _install_pre_merge_enforcement(repo)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+
+    target = repo / relative
+    original = target.read_bytes()
+    protected = repo / "tests/.env.production"
+    protected.write_text("SECRET=bad\n", encoding="utf-8")
+    _git(repo, "add", "-f", "tests/.env.production")
+    if mutation == "delete":
+        _git(repo, "rm", "--cached", relative)
+    else:
+        target.unlink()
+        if mutation == "replace":
+            target.write_text("replacement\n", encoding="utf-8")
+        else:
+            peer = repo / "enforcement-copy"
+            peer.write_bytes(original)
+            target.symlink_to(peer)
+        _git(repo, "add", relative)
+        target.unlink()
+    target.write_bytes(original)
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode != 0
+    diagnostic = proc.stdout + proc.stderr
+    assert "enforcement file" in diagnostic.lower()
+    assert relative in diagnostic
 
 
 def _git(cwd: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -1489,6 +1628,19 @@ def test_pre_merge_guard_pr_mode_fails_when_origin_main_is_unavailable(tmp_path:
     assert "unverified" in proc.stderr
 
 
+def _install_pre_merge_enforcement(repo: Path) -> None:
+    for relative in (
+        "scripts/pre-merge-guard.sh",
+        "scripts/verify-staged-scope.py",
+        "tests/fixtures/plan019-path-inventory.yaml",
+    ):
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / relative).read_bytes())
+    (repo / "scripts/pre-merge-guard.sh").chmod(0o755)
+    (repo / "scripts/verify-staged-scope.py").chmod(0o755)
+
+
 def test_pre_merge_guard_rejects_parallel_roadmap_ownership_collisions(tmp_path):
     repo = tmp_path / "repo"
     remote = tmp_path / "remote.git"
@@ -1497,10 +1649,7 @@ def test_pre_merge_guard_rejects_parallel_roadmap_ownership_collisions(tmp_path)
     _git(repo, "init", "-b", "main")
     _git(repo, "config", "user.email", "test@example.com")
     _git(repo, "config", "user.name", "Test")
-    script = repo / "scripts" / "pre-merge-guard.sh"
-    script.parent.mkdir()
-    script.write_bytes((ROOT / "scripts" / "pre-merge-guard.sh").read_bytes())
-    script.chmod(0o755)
+    _install_pre_merge_enforcement(repo)
     coverage = repo / "curriculum" / "coverage-map.yaml"
     coverage.parent.mkdir()
     coverage.write_text(_roadmap(None, None))
@@ -1544,10 +1693,9 @@ def test_pre_merge_guard_rejects_b2_unit_id_collision_legacy_regex_misses(
     _git(repo, "init", "-b", "main")
     _git(repo, "config", "user.email", "test@example.com")
     _git(repo, "config", "user.name", "Test")
-    script = repo / "scripts" / "pre-merge-guard.sh"
-    script.parent.mkdir()
-    script.write_bytes((ROOT / "scripts" / "pre-merge-guard.sh").read_bytes())
-    script.chmod(0o755)
+    _install_pre_merge_enforcement(repo)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "enforcement base")
     for name in ("B2-019-attention", "B2-019-collision"):
         directory = repo / "units" / name
         directory.mkdir(parents=True)
@@ -1556,6 +1704,7 @@ def test_pre_merge_guard_rejects_b2_unit_id_collision_legacy_regex_misses(
     proc = subprocess.run(
         ["bash", "scripts/pre-merge-guard.sh"],
         cwd=repo,
+        env=_fake_uv_environment(tmp_path),
         capture_output=True,
         text=True,
         check=False,
@@ -1658,10 +1807,7 @@ def _plan019_roadmap(*, r1_destination: str, r2_destination: str) -> str:
 
 
 def _install_plan019_guard(repo: Path) -> None:
-    script = repo / "scripts" / "pre-merge-guard.sh"
-    script.parent.mkdir(parents=True, exist_ok=True)
-    script.write_bytes((ROOT / "scripts" / "pre-merge-guard.sh").read_bytes())
-    script.chmod(0o755)
+    _install_pre_merge_enforcement(repo)
 
 
 def _write_legacy_layout(repo: Path) -> None:

@@ -4,6 +4,8 @@ import shutil
 import subprocess
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).parents[1]
 
 
@@ -208,6 +210,52 @@ def test_reference_migration_resumes_after_both_analyses_written_before_legacy_r
     assert not (repo / "reference").exists()
     assert (repo / "book1/reference/analysis.md").read_text(encoding="utf-8") == expected1
     assert (repo / "book2/reference/analysis.md").read_text(encoding="utf-8") == expected2
+
+
+@pytest.mark.parametrize("existing_book", ["book1", "book2"])
+def test_reference_migration_resumes_between_atomic_analysis_replacements(
+    tmp_path: Path, existing_book: str
+) -> None:
+    oracle_base = tmp_path / "oracle"
+    oracle_base.mkdir()
+    oracle = _reference_repo(oracle_base)
+    oracle_proc = _run(oracle)
+    assert oracle_proc.returncode == 0, oracle_proc.stdout + oracle_proc.stderr
+    expected = {
+        book: (oracle / book / "reference/analysis.md").read_text(encoding="utf-8")
+        for book in ("book1", "book2")
+    }
+
+    interrupted_base = tmp_path / "interrupted"
+    interrupted_base.mkdir()
+    repo = _reference_repo(interrupted_base)
+    existing = repo / existing_book / "reference/analysis.md"
+    existing.parent.mkdir(parents=True, exist_ok=True)
+    existing.write_text(expected[existing_book], encoding="utf-8")
+
+    proc = _run(repo)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert not (repo / "reference").exists()
+    for book, content in expected.items():
+        assert (repo / book / "reference/analysis.md").read_text(encoding="utf-8") == content
+
+
+def test_reference_migration_rejects_corrupt_single_analysis_without_writing_peer(
+    tmp_path: Path,
+) -> None:
+    repo = _reference_repo(tmp_path)
+    partial = repo / "book1/reference/analysis.md"
+    partial.parent.mkdir(parents=True, exist_ok=True)
+    partial.write_text("corrupt partial\n", encoding="utf-8")
+
+    proc = _run(repo)
+
+    assert proc.returncode != 0
+    assert "inconsistent" in (proc.stdout + proc.stderr).lower()
+    assert partial.read_text(encoding="utf-8") == "corrupt partial\n"
+    assert not (repo / "book2/reference/analysis.md").exists()
+    assert (repo / "reference/analysis.md").is_file()
 
 
 def test_committed_reference_analyses_describe_current_per_book_fetch_and_scope() -> None:

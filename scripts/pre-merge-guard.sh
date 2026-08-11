@@ -22,16 +22,50 @@ fi
 
 scope_verifier=scripts/verify-staged-scope.py
 scope_inventory=tests/fixtures/plan019-path-inventory.yaml
-if [[ -f "$scope_verifier" && -f "$scope_inventory" ]]; then
-  uv run python "$scope_verifier" --protected-cached "$scope_inventory"
-  uv run python "$scope_verifier" --protected-diff "$scope_inventory"
-  range_base=$base
-  if [[ -z $range_base ]] && git show-ref --verify --quiet refs/heads/main; then
-    range_base=$(git merge-base HEAD main)
+require_enforcement_file() {
+  local path=$1 expected_mode=$2 expected_sha256=$3
+  local actual_sha256 index_entry index_mode index_sha256
+  if [[ ! -f "$path" || -L "$path" ]]; then
+    echo "FAIL: enforcement file must be a regular non-symlink file: $path" >&2
+    exit 1
   fi
-  if [[ -n $range_base ]]; then
-    uv run python "$scope_verifier" --protected-range --base "$range_base" "$scope_inventory"
+  actual_sha256=$(sha256sum "$path" | awk '{print $1}')
+  if [[ $actual_sha256 != "$expected_sha256" ]]; then
+    echo "FAIL: enforcement file integrity mismatch: $path" >&2
+    exit 1
   fi
+  index_entry=$(git ls-files -s -- "$path")
+  if [[ -z $index_entry ]]; then
+    echo "FAIL: enforcement file missing from prospective index: $path" >&2
+    exit 1
+  fi
+  index_mode=${index_entry%% *}
+  if [[ $index_mode != "$expected_mode" ]]; then
+    echo "FAIL: enforcement file is not a regular file in prospective index: $path " \
+      "(mode=$index_mode expected=$expected_mode)" >&2
+    exit 1
+  fi
+  index_sha256=$(git show ":$path" | sha256sum | awk '{print $1}')
+  if [[ $index_sha256 != "$expected_sha256" ]]; then
+    echo "FAIL: enforcement file prospective-index integrity mismatch: $path" >&2
+    exit 1
+  fi
+}
+require_enforcement_file "$scope_verifier" \
+  100755 \
+  6e8819d2ae6ac5fe5f81aaf43a4a38d6fbf79ac18c394d429a7e59fe27f2f17a
+require_enforcement_file "$scope_inventory" \
+  100644 \
+  6f1699e86218924608d25d81b6c290c6e087fdbd8947f4cfd09027abc28abc4d
+
+uv run python "$scope_verifier" --protected-cached "$scope_inventory"
+uv run python "$scope_verifier" --protected-diff "$scope_inventory"
+range_base=$base
+if [[ -z $range_base ]] && git show-ref --verify --quiet refs/heads/main; then
+  range_base=$(git merge-base HEAD main)
+fi
+if [[ -n $range_base ]]; then
+  uv run python "$scope_verifier" --protected-range --base "$range_base" "$scope_inventory"
 fi
 
 uv run python - "$mode" "$base" <<'PY'
