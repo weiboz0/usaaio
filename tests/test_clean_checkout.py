@@ -372,6 +372,47 @@ def _actual_python_root_accesses(path: Path) -> list[dict[str, object]]:
     return sorted(violations, key=lambda row: (int(row["line"]), str(row["kind"])))
 
 
+def _shell_expanding_text(source: str) -> str:
+    """Remove single-quoted shell literals while preserving expanding contexts."""
+    output: list[str] = []
+    in_single = False
+    in_double = False
+    escaped = False
+    for character in source:
+        if escaped:
+            output.append(character if not in_single else " ")
+            escaped = False
+            continue
+        if character == "\\" and not in_single:
+            output.append(character)
+            escaped = True
+            continue
+        if character == "'" and not in_double:
+            in_single = not in_single
+            output.append(" ")
+            continue
+        if character == '"' and not in_single:
+            in_double = not in_double
+        output.append(character if not in_single else " ")
+    return "".join(output)
+
+
+def _shell_discovers_repo_root(value: str, aliases: set[str]) -> bool:
+    expanding = _shell_expanding_text(value)
+    return bool(
+        re.search(r"\$(?:PWD\b|\{PWD\})", expanding)
+        or re.search(r"\$\(\s*pwd\s*\)", expanding)
+        or re.search(
+            r"\$\(\s*git\s+rev-parse\s+--show-toplevel(?=\s|\))[^)]*\)",
+            expanding,
+        )
+        or any(
+            re.search(rf"\$\{{?{re.escape(alias)}\}}?", expanding)
+            for alias in aliases
+        )
+    )
+
+
 def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
     patterns = {
         "root-find-units": re.compile(r"\bfind\s+units(?:\s|$)"),
@@ -391,24 +432,22 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
     for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
         if not line.strip() or line.lstrip().startswith("#"):
             continue
+        expanding_line = _shell_expanding_text(line)
         for kind, pattern in patterns.items():
-            if pattern.search(line):
+            if pattern.search(expanding_line):
                 violations.append({"line": line_number, "kind": kind})
-        assignment = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)=(.*)$", line)
+        assignment = re.match(
+            r"\s*([A-Za-z_][A-Za-z0-9_]*)=(.*)$", expanding_line
+        )
         if assignment:
             name, value = assignment.groups()
-            if (
-                "$PWD" in value
-                or "$(pwd)" in value
-                or "$(git rev-parse --show-toplevel)" in value
-                or any(
-                    re.search(rf"\$\{{?{re.escape(alias)}\}}?", value)
-                    for alias in aliases
-                )
-            ):
+            if _shell_discovers_repo_root(value, aliases):
                 aliases.add(name)
         if any(
-            re.search(rf"\$\{{?{re.escape(alias)}\}}?/units(?:[/\"'\s]|$)", line)
+            re.search(
+                rf"\$\{{?{re.escape(alias)}\}}?/units(?:[/\"'\s]|$)",
+                expanding_line,
+            )
             for alias in aliases - {"ROOT", "repo_root"}
         ):
             violations.append({"line": line_number, "kind": "root-find-variable-units"})
@@ -557,6 +596,52 @@ def test_static_contract_allows_selected_book_local_joins() -> None:
             3,
             "root-find-variable-units",
         ),
+        (
+            "scripts/producer.sh",
+            (
+                'content_root="${PWD}"\n'
+                'find "${content_root}/units" -name manifest.yaml\n'
+            ),
+            2,
+            "root-find-variable-units",
+        ),
+        (
+            "scripts/producer.sh",
+            (
+                'content_root="$(git rev-parse --show-toplevel 2>/dev/null)"\n'
+                'find "${content_root}/units" -name manifest.yaml\n'
+            ),
+            2,
+            "root-find-variable-units",
+        ),
+        (
+            "scripts/producer.sh",
+            (
+                'content_root="$( git rev-parse --show-toplevel )"\n'
+                'find "${content_root}/units" -name manifest.yaml\n'
+            ),
+            2,
+            "root-find-variable-units",
+        ),
+        (
+            "scripts/producer.sh",
+            (
+                'content_root=$(  git  rev-parse  --show-toplevel 2>&1 )\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+            "root-find-variable-units",
+        ),
+        (
+            "scripts/producer.sh",
+            (
+                'project="$(git rev-parse --show-toplevel 2> /dev/null)"\n'
+                'content_root="${project}"\n'
+                'find "${content_root}/units" -name manifest.yaml\n'
+            ),
+            3,
+            "root-find-variable-units",
+        ),
     ],
 )
 def test_actual_scanner_rejects_root_access_mutations_in_discovered_producers(
@@ -588,6 +673,16 @@ def test_actual_scanner_allows_bookspec_and_book_local_root_joins(tmp_path: Path
         'repo=$(git rev-parse --show-toplevel)\n'
         'book_root="$selected_book_root"\n'
         'find "$book_root/units" -name manifest.yaml\n',
+        encoding="utf-8",
+    )
+
+    safe_shell = tmp_path / "scripts" / "safe-selected.sh"
+    safe_shell.write_text(
+        'repo="${PWD}"\n'
+        'book_root="${SELECTED_BOOK_ROOT}"\n'
+        'find "${book_root}/units" -name manifest.yaml\n'
+        "literal='${PWD}'\n"
+        'find "${literal}/units" -name manifest.yaml\n',
         encoding="utf-8",
     )
 
