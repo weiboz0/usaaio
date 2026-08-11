@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import importlib
 import shutil
 from collections.abc import Callable
@@ -346,3 +347,15 @@ def test_cross_book_import_requires_registry_dependency_and_qualified_owner(
     catalog = books.load_book_catalog(tmp_path)
     with pytest.raises(ValueError, match="dependency"):
         books.resolve_qualified_import(catalog, catalog.by_id("book2"), "book1:softmax")
+
+
+def test_book_selection_parser_helper_requires_exactly_one_selection() -> None:
+    parser = argparse.ArgumentParser()
+    importlib.import_module("tools.cli").add_book_selection_arguments(parser)
+
+    assert parser.parse_args(["--book", "book2"]).book == "book2"
+    assert parser.parse_args(["--all"]).all_books is True
+    with pytest.raises(SystemExit):
+        parser.parse_args([])
+    with pytest.raises(SystemExit):
+        parser.parse_args(["--book", "book1", "--all"])

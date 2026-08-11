@@ -39,6 +39,18 @@ SUBCOMMANDS: dict[str, tuple[str, CheckFn | None]] = {
 }
 
 
+def add_book_selection_arguments(parser: argparse.ArgumentParser) -> None:
+    """Add the future cutover's required, mutually exclusive book selection."""
+    selection = parser.add_mutually_exclusive_group(required=True)
+    selection.add_argument("--book", metavar="BOOK_ID", help="select one registered book")
+    selection.add_argument(
+        "--all",
+        action="store_true",
+        dest="all_books",
+        help="select all registered books in dependency order",
+    )
+
+
 def print_report(report: Report) -> int:
     for warning in report.warnings:
         print(f"WARNING {report.name}: {warning}")

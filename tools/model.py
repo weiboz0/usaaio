@@ -365,6 +365,17 @@ def _canonical_yaml(markdown: str) -> str:
     return match.group(1)
 
 
+def load_syllabus_contract(root: str | Path) -> dict[str, Any]:
+    """Return the persisted canonical syllabus mapping for one content root."""
+    path = Path(root) / "syllabus.md"
+    raw = _parse_yaml(_canonical_yaml(path.read_text(encoding="utf-8")))
+    if not isinstance(raw, dict):
+        raise ValueError(  # noqa: TRY004
+            f"{path}: canonical syllabus must be a mapping"
+        )
+    return raw
+
+
 def _string_list(value: object, *, field_name: str, path: Path) -> list[str]:
     if not isinstance(value, list) or any(not isinstance(item, str) for item in value):
         raise ValueError(f"{path}: {field_name} must be a list of strings")
@@ -422,7 +433,7 @@ def _unit_contract(
 def load_syllabus(root: str | Path) -> Syllabus:
     root = Path(root)
     path = root / "syllabus.md"
-    raw = _parse_yaml(_canonical_yaml(path.read_text()))
+    raw = load_syllabus_contract(root)
     baseline = {item for values in raw["baseline"].values() for item in values}
     concepts = {entry["id"]: entry["cluster"] for entry in raw["concepts"]}
     units: dict[str, Unit] = {}
@@ -767,9 +778,30 @@ def _problem_from(item: dict[str, Any]) -> ManifestProblem:
     )
 
 
-def load_mock_manifests(root: str | Path) -> list[MockManifest]:
+def load_mock_manifests(
+    root: str | Path, *, book_number: int | None = None
+) -> list[MockManifest]:
+    if book_number is not None and (type(book_number) is not int or book_number <= 0):
+        raise ValueError("book_number must be a positive integer")
+    mocktests_root = Path(root) / "mocktests"
+    if book_number is None:
+        # Keep the pre-cutover public behavior until CLI dispatch supplies BookSpec.number.
+        manifests = sorted(mocktests_root.glob("r1-*/manifest.yaml"))
+    else:
+        manifests = sorted(mocktests_root.glob("r*-*/manifest.yaml"))
+        wrong_round = [
+            path
+            for path in manifests
+            if not path.parent.name.startswith(f"r{book_number}-")
+        ]
+        if wrong_round:
+            names = ", ".join(path.parent.name for path in wrong_round)
+            raise ValueError(
+                f"{mocktests_root}: book {book_number} assessments must use "
+                f"r{book_number}-* directories; found {names}"
+            )
     result: list[MockManifest] = []
-    for path in sorted(Path(root).glob("mocktests/r1-*/manifest.yaml")):
+    for path in manifests:
         raw = _read_manifest(path)
         problems = []
         for index, item in enumerate(raw.get("problems") or []):
