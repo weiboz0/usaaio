@@ -470,13 +470,61 @@ def _shell_words(source: str) -> list[str]:
     return words
 
 
+def _shell_normalized_word(word: str) -> str | None:
+    try:
+        normalized = shlex.split(_shell_expanding_text(word), posix=True)
+    except ValueError:
+        return None
+    return normalized[0] if len(normalized) == 1 else None
+
+
+def _shell_assignment(word: str) -> tuple[str, str] | None:
+    assignment = re.fullmatch(r"([A-Za-z_][A-Za-z0-9_]*)=(.*)", word)
+    return assignment.groups() if assignment else None
+
+
 def _shell_assignments(source: str) -> list[tuple[str, str]]:
+    words = _shell_words(source)
+    if not words:
+        return []
+    declaration_builtins = {"declare", "export", "local", "readonly", "typeset"}
+    if _shell_normalized_word(words[0]) in declaration_builtins:
+        return [
+            assignment
+            for word in words[1:]
+            if (assignment := _shell_assignment(word)) is not None
+        ]
     assignments: list[tuple[str, str]] = []
-    for word in _shell_words(source):
-        assignment = re.fullmatch(r"([A-Za-z_][A-Za-z0-9_]*)=(.*)", word)
-        if assignment:
-            assignments.append(assignment.groups())
+    for word in words:
+        assignment = _shell_assignment(word)
+        if assignment is None:
+            break
+        assignments.append(assignment)
     return assignments
+
+
+def _without_shell_redirections(tokens: list[str]) -> list[str] | None:
+    operators = {"<", ">", ">>", "<>", ">&", "<&", "&>"}
+    controls = operators | {";", "|", "||", "&&"}
+    argv: list[str] = []
+    index = 0
+    while index < len(tokens):
+        operator_index = index
+        if (
+            tokens[operator_index].isdigit()
+            and operator_index + 1 < len(tokens)
+            and tokens[operator_index + 1] in operators
+        ):
+            operator_index += 1
+        if tokens[operator_index] not in operators:
+            argv.append(tokens[index])
+            index += 1
+            continue
+        target_index = operator_index + 1
+        if target_index >= len(tokens) or tokens[target_index] in controls:
+            return None
+        index = target_index + 1
+    return argv
 
 
 def _is_git_root_command(command: str) -> bool:
@@ -487,19 +535,11 @@ def _is_git_root_command(command: str) -> bool:
         tokens = list(lexer)
     except ValueError:
         return False
-    if tokens[:3] != ["git", "rev-parse", "--show-toplevel"]:
-        return False
-    index = 3
-    while index < len(tokens):
-        if tokens[index].isdigit():
-            index += 1
-        if index >= len(tokens) or tokens[index] not in {">", ">>", ">&", "&>"}:
-            return False
-        index += 1
-        if index >= len(tokens) or tokens[index] in {">", ">>", ">&", "&>", ";", "|", "||", "&&"}:
-            return False
-        index += 1
-    return True
+    return _without_shell_redirections(tokens) == [
+        "git",
+        "rev-parse",
+        "--show-toplevel",
+    ]
 
 
 def _has_git_root_substitution(source: str) -> bool:
@@ -521,6 +561,28 @@ def _shell_discovers_repo_root(value: str, aliases: set[str]) -> bool:
     )
 
 
+def _shell_find_uses_units_root(source: str, aliases: set[str]) -> bool:
+    words = _shell_words(source)
+    index = 0
+    while index < len(words) and _shell_assignment(words[index]) is not None:
+        index += 1
+    if index >= len(words) or _shell_normalized_word(words[index]) != "find":
+        return False
+    index += 1
+    if index < len(words) and _shell_normalized_word(words[index]) == "--":
+        index += 1
+    if index >= len(words):
+        return False
+    path = _shell_normalized_word(words[index])
+    return bool(
+        path
+        and re.fullmatch(
+            rf"{_shell_variable_reference_pattern(aliases)}/units(?:/.*)?",
+            path,
+        )
+    )
+
+
 def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
     repository_root_reference = _shell_variable_reference_pattern(
         {"PWD", "ROOT", "repo_root"}
@@ -530,9 +592,6 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
         "root-find-units-mocktests": re.compile(r"\bfind\s+units\s+mocktests(?:\s|$)"),
         "root-for-units-mocktests": re.compile(
             r"\bfor\s+(?:dir|[A-Za-z_][A-Za-z0-9_]*)\s+in\s+units\s+mocktests\b"
-        ),
-        "root-find-variable-units": re.compile(
-            rf"\bfind\s+[\"']?{repository_root_reference}/units(?:[/\"'\s]|$)"
         ),
         "hardcoded-repo-book-root": re.compile(
             rf"{repository_root_reference}/book[12](?:[/\"'\s]|$)"
@@ -551,13 +610,7 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
         for name, value in _shell_assignments(line):
             if _shell_discovers_repo_root(value, aliases):
                 aliases.add(name)
-        if any(
-            re.search(
-                rf"{_shell_variable_reference_pattern({alias})}/units(?:[/\"'\s]|$)",
-                expanding_line,
-            )
-            for alias in aliases - root_names
-        ):
+        if _shell_find_uses_units_root(line, aliases):
             violations.append({"line": line_number, "kind": "root-find-variable-units"})
     return violations
 
@@ -1004,6 +1057,120 @@ def test_actual_scanner_rejects_normalized_shell_root_discovery(
     ],
 )
 def test_actual_scanner_allows_normalized_shell_near_misses(
+    tmp_path: Path, source: str
+) -> None:
+    producer = tmp_path / "scripts" / "safe-selected.sh"
+    producer.parent.mkdir(parents=True)
+    producer.write_text(source, encoding="utf-8")
+
+    assert _actual_repository_root_accesses(tmp_path) == {}
+
+
+@pytest.mark.parametrize(
+    ("source", "line"),
+    [
+        ('find "$PWD"/units -name manifest.yaml\n', 1),
+        ('find "${PWD}"/units -name manifest.yaml\n', 1),
+        ('find -- "$PWD/units" -name manifest.yaml\n', 1),
+        ('find "$PWD"/uni"ts" -name manifest.yaml\n', 1),
+        (
+            'project="$PWD"\nfind -- "${project}"/units -name manifest.yaml\n',
+            2,
+        ),
+        (
+            (
+                'content_root=$(git rev-parse --show-toplevel</dev/null)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'content_root=$(git rev-parse --show-toplevel < /dev/null)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'content_root=$(2>/dev/null git rev-parse --show-toplevel)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'content_root=$(git 2>/dev/null rev-parse --show-toplevel)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'content_root=$(2>"/dev/null" git rev-parse < /dev/null '
+                '--show-toplevel 3>&1)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'export marker content_root="$PWD"\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'declare -r marker content_root="${ROOT}"\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+    ],
+)
+def test_actual_scanner_rejects_bounded_shell_command_variants(
+    tmp_path: Path, source: str, line: int
+) -> None:
+    producer = tmp_path / "scripts" / "producer.sh"
+    producer.parent.mkdir(parents=True)
+    producer.write_text(source, encoding="utf-8")
+
+    assert _actual_repository_root_accesses(tmp_path) == {
+        "scripts/producer.sh": [{"line": line, "kind": "root-find-variable-units"}]
+    }
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        (
+            'book_root="${SELECTED_BOOK_ROOT}"\n'
+            'printf "%s\\n" book_root="$PWD"\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+        (
+            'book_root="${SELECTED_BOOK_ROOT}"\n'
+            'printf "%s\\n" ignored=value project="$PWD" book_root="$project"\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+        'printf find "$PWD/units"\n',
+        'find -- "$PWD_SUFFIX/units" -name manifest.yaml\n',
+        (
+            'book_root=$(git 2>/dev/null rev-parse --show-toplevel extra)\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+        (
+            'book_root=$(2>/dev/null echo git rev-parse --show-toplevel)\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+        (
+            'book_root=$(git rev-parse < /dev/null --show-prefix)\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+    ],
+)
+def test_actual_scanner_allows_bounded_shell_command_near_misses(
     tmp_path: Path, source: str
 ) -> None:
     producer = tmp_path / "scripts" / "safe-selected.sh"
