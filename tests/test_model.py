@@ -10,6 +10,7 @@ from tools.model import (
     load_blueprint,
     load_mock_manifests,
     load_syllabus,
+    load_syllabus_contract,
     load_unit_manifests,
 )
 
@@ -660,6 +661,21 @@ def test_model_loaders_receive_the_selected_bookspec_root(tmp_path: Path) -> Non
     ]
     with pytest.raises((FileNotFoundError, ValueError)):
         load_syllabus(tmp_path)
+
+
+@pytest.mark.parametrize("loader", [load_syllabus_contract, load_syllabus])
+def test_syllabus_loaders_reject_post_catalog_root_symlink_swap(
+    tmp_path: Path, loader
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    book = _write_selected_book_model_fixture(repo)
+    external = tmp_path / "external-book1"
+    book.root.rename(external)
+    book.root.symlink_to(external, target_is_directory=True)
+
+    with pytest.raises(ValueError, match="content root is symlinked or noncanonical"):
+        loader(book.root)
 
 
 def test_mock_loader_uses_authoritative_book_number_not_directory_basename(

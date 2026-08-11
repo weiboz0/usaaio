@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -365,9 +366,29 @@ def _canonical_yaml(markdown: str) -> str:
     return match.group(1)
 
 
+def _validated_content_path(root: str | Path, relative: str) -> Path:
+    normalized_root = Path(os.path.abspath(root))
+    if (
+        normalized_root.is_symlink()
+        or normalized_root.resolve(strict=False) != normalized_root
+    ):
+        raise ValueError(
+            f"{normalized_root}: content root is symlinked or noncanonical"
+        )
+    path = normalized_root / relative
+    current = normalized_root
+    for part in Path(relative).parts:
+        current /= part
+        if current.is_symlink():
+            raise ValueError(f"{path}: content path contains a symlink")
+    if not path.resolve(strict=False).is_relative_to(normalized_root):
+        raise ValueError(f"{path}: content path escapes its canonical root")
+    return path
+
+
 def load_syllabus_contract(root: str | Path) -> dict[str, Any]:
     """Return the persisted canonical syllabus mapping for one content root."""
-    path = Path(root) / "syllabus.md"
+    path = _validated_content_path(root, "syllabus.md")
     raw = _parse_yaml(_canonical_yaml(path.read_text(encoding="utf-8")))
     if not isinstance(raw, dict):
         raise ValueError(  # noqa: TRY004
