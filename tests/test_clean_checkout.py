@@ -303,22 +303,37 @@ def _actual_python_root_accesses(path: Path) -> list[dict[str, object]]:
             parts = _division_parts(node)
             anchor = parts[0]
             values = [value for part in parts[1:] for value in _path_literal_values(part)]
-            if _is_repo_root_expression(anchor, aliases) and any(
-                _looks_like_content_path(value) for value in values
-            ):
-                violations.append({"line": node.lineno, "kind": "repo-root-path-join"})
+            if _is_repo_root_expression(anchor, aliases):
+                if any(value in {"book1", "book2"} for value in values):
+                    violations.append(
+                        {"line": node.lineno, "kind": "hardcoded-repo-book-root"}
+                    )
+                elif any(_looks_like_content_path(value) for value in values):
+                    violations.append(
+                        {"line": node.lineno, "kind": "repo-root-path-join"}
+                    )
         if (
             isinstance(node, ast.Call)
             and isinstance(node.func, ast.Attribute)
             and node.func.attr == "joinpath"
             and _is_repo_root_expression(node.func.value, aliases)
             and any(
-                _looks_like_content_path(value)
+                value in {"book1", "book2"} or _looks_like_content_path(value)
                 for arg in node.args
                 for value in _path_literal_values(arg)
             )
         ):
-            violations.append({"line": node.lineno, "kind": "repo-root-path-join"})
+            values = [
+                value
+                for arg in node.args
+                for value in _path_literal_values(arg)
+            ]
+            kind = (
+                "hardcoded-repo-book-root"
+                if any(value in {"book1", "book2"} for value in values)
+                else "repo-root-path-join"
+            )
+            violations.append({"line": node.lineno, "kind": kind})
         if (
             isinstance(node, ast.Call)
             and isinstance(node.func, ast.Name)
@@ -355,6 +370,9 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
         "root-find-variable-units": re.compile(
             r"\bfind\s+[\"']?\$(?:ROOT|repo_root)(?:/|\}/)units(?:[/\"'\s]|$)"
         ),
+        "hardcoded-repo-book-root": re.compile(
+            r"\$(?:ROOT|repo_root)(?:/|\}/)book[12](?:[/\"'\s]|$)"
+        ),
     }
     violations: list[dict[str, object]] = []
     for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
@@ -379,6 +397,10 @@ def _actual_repository_root_accesses(
             if relative in contract_tests:
                 continue
             rows = _actual_python_root_accesses(path)
+            if relative.startswith("tests/"):
+                rows = [
+                    row for row in rows if row["kind"] != "hardcoded-repo-book-root"
+                ]
             if rows:
                 violations[relative] = rows
     for path in sorted((repo / "scripts").rglob("*.sh")):
@@ -427,6 +449,18 @@ def test_static_contract_allows_selected_book_local_joins() -> None:
             'find "$repo_root/units" -name manifest.yaml\n',
             1,
             "root-find-variable-units",
+        ),
+        (
+            "tools/producer.py",
+            'ROOT / "book1"\n',
+            1,
+            "hardcoded-repo-book-root",
+        ),
+        (
+            "scripts/producer.sh",
+            'book_root="$repo_root/book1"\n',
+            1,
+            "hardcoded-repo-book-root",
         ),
     ],
 )

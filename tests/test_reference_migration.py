@@ -178,3 +178,14 @@ def test_reference_analysis_is_split_semantically_at_the_round2_heading(
         "Round 2 overview that must remain complete.\n\n"
         "### Transformers\n\nRound 2-only details.\n"
     )
+
+
+def test_committed_reference_analyses_describe_current_per_book_fetch_and_scope() -> None:
+    book1 = (ROOT / "book1/reference/analysis.md").read_text(encoding="utf-8")
+    book2 = (ROOT / "book2/reference/analysis.md").read_text(encoding="utf-8")
+
+    assert "bash scripts/fetch-reference.sh --book book1" in book1
+    assert "bash scripts/fetch-reference.sh --book book2" in book2
+    assert "R2 topics are tabulated separately below" not in book1
+    assert "out of current scope" not in book2
+    assert "otherwise deferred" not in book2

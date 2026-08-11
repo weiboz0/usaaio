@@ -49,7 +49,9 @@ def taught_closure(
                 for owner_unit in owner_units
                 for concept in owner_syllabus.units[owner_unit].teaches
             }
-            imported_concepts.update(taught & set(imports.concepts))
+            imported_concepts.update(
+                f"{owner_id}:{concept}" for concept in taught & set(imports.concepts)
+            )
             continue
         if unit_id in syllabus.units:
             closure_units |= transitive_prereqs(syllabus, unit_id)

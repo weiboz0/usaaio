@@ -4,20 +4,20 @@ Original derived analysis of the public USA-NA-AIO past tests.
 No verbatim problem text appears in this file (public-repo policy, `decisions.md §2`);
 everything below is paraphrased or structural observation.
 Raw papers and the per-problem `index.yaml` files live only on machines that ran
-`bash scripts/fetch-reference.sh` + the indexing step (they are gitignored).
+`bash scripts/fetch-reference.sh --book book1` plus the indexing step (they are gitignored).
 
 ## Sources
 
 | Test | Source | Fetched | Local path | Indexed |
 |------|--------|---------|-----------|---------|
-| r1-2026 | usaaio.org/past-problems → Google Drive | 2026-08-03 | `reference/r1-2026/paper.pdf` (24 pp) | yes (37 sub-parts) |
+| r1-2026 | usaaio.org/past-problems → Google Drive | 2026-08-03 | `book1/reference/r1-2026/paper.pdf` (24 pp) | yes (37 sub-parts) |
 | r1-2025 | forum.beaver-edge.ai (per-part threads) | structure only | — | no |
 
 **2025 manual-export follow-up:** the 2025 R1 problems exist only as ~35+ individual forum
 threads (one per problem part), not as a downloadable paper.
 Visible thread titles establish the structure (below) without scraping content.
 If plan 003 needs the full 2025 text, export thread-by-thread manually into
-`reference/r1-2025/` using the same index schema.
+`book1/reference/r1-2025/` using the same index schema.
 
 ## Round 1 format
 
@@ -67,8 +67,7 @@ Fields marked (printed) appear in the paper; (external) come from the official s
 | Applied tabular ML (kNN pipeline, f1-macro, notebook craft) | 1 | 50 |
 | **Total** | **37** | **300** |
 
-(Each sub-part is assigned to its dominant cluster; totals verified against the index.
-R2 topics are tabulated separately below.)
+(Each sub-part is assigned to its dominant cluster; totals verified against the index.)
 
 ## Difficulty profile (against the Calc AB + basic Python baseline)
 
@@ -128,6 +127,6 @@ R2 topics are tabulated separately below.)
 5. `overlap-scan` should extract verbatim text from local PDFs via `pdftotext` at scan
    time (the committed analysis contains none) and compare against the local
    `index.yaml` `text:` fields; it must SKIP LOUDLY when the corpus is absent, naming
-   `bash scripts/fetch-reference.sh` as the remedy.
+   `bash scripts/fetch-reference.sh --book book1` as the remedy.
 6. `blueprint-check` tolerances should treat sub-part count and point distribution as the
    invariants, not problem count (see implication 4).

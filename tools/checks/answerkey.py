@@ -206,10 +206,12 @@ def _check_manifest(manifest: MockManifest) -> list[str]:
     return errors
 
 
-def check_answerkey(root: str | Path) -> Report:
+def check_answerkey(
+    root: str | Path, *, book_number: int | None = None
+) -> Report:
     """Check final mock manifests; drafts do not affect pass/fail results."""
 
-    manifests = load_mock_manifests(root)
+    manifests = load_mock_manifests(root, book_number=book_number)
     finals = [manifest for manifest in manifests if manifest.status == "final"]
     if not finals:
         return Report(

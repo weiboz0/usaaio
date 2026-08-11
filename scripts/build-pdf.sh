@@ -15,23 +15,39 @@ while (($#)); do
 done
 [[ -n "$book_id" ]] || { echo "build-pdf: --book is required" >&2; exit 2; }
 repo_root=$(cd "$repo_root" && pwd)
-book_root="$repo_root/$book_id"
-[[ -f "$repo_root/books.yaml" && -d "$book_root" ]] || {
+script_repo_root=$(cd "$(dirname "$0")/.." && pwd)
+python_bin=${USAAIO_PYTHON:-python3}
+
+if ! registry_record=$(PYTHONPATH="$script_repo_root${PYTHONPATH:+:$PYTHONPATH}" \
+  "$python_bin" - "$repo_root" "$book_id" <<'PY'
+import sys
+from tools.books import load_book_catalog
+
+catalog = load_book_catalog(sys.argv[1])
+book = catalog.by_id(sys.argv[2])
+print(f"{book.root}\t{book.number}")
+PY
+); then
+  echo "build-pdf: unknown or incomplete book $book_id" >&2
+  exit 1
+fi
+IFS=$'\t' read -r book_root book_number <<<"$registry_record"
+[[ -d "$book_root" ]] || {
   echo "build-pdf: unknown or incomplete book $book_id" >&2
   exit 1
 }
 
 shopt -s nullglob
 inputs=()
-if [[ $book_id == book1 ]]; then
-  for mocktest_dir in "$book_root"/mocktests/r1-*/; do
+if [[ $book_number == 1 ]]; then
+  for mocktest_dir in "$book_root"/mocktests/r${book_number}-*/; do
     [[ -f "${mocktest_dir}manifest.yaml" ]] || continue
     [[ -f "${mocktest_dir}test.md" ]] && inputs+=("${mocktest_dir}test.md")
     for path in "${mocktest_dir}"theory/*.md "${mocktest_dir}"problems/*.ipynb; do
       [[ -f "$path" ]] && inputs+=("$path")
     done
   done
-elif [[ $book_id == book2 ]]; then
+elif [[ $book_number == 2 ]]; then
   for manifest in "$book_root"/units/*/manifest.yaml; do
     [[ -f "$manifest" ]] || continue
     unit_dir=${manifest%/manifest.yaml}
@@ -49,7 +65,7 @@ elif [[ $book_id == book2 ]]; then
     inputs+=("${unit_inputs[@]}")
   done
 else
-  echo "build-pdf: unsupported book $book_id" >&2
+  echo "build-pdf: unsupported book number $book_number for $book_id" >&2
   exit 1
 fi
 
@@ -69,22 +85,44 @@ if ! quarto_bin=$(command -v quarto); then
   exit 3
 fi
 
+expected_outputs=()
 for relative in "${inputs[@]}"; do
   source="$repo_root/$relative"
   source_dir=$(dirname "$source")
-  unit_or_mock=${relative#*/}
-  unit_or_mock=${unit_or_mock%%/*}
-  if [[ $relative == book1/mocktests/* ]]; then
-    group=${relative#book1/mocktests/}; group=${group%%/*}
+  source_name=$(basename "$source")
+  stem=${source_name%.*}
+  if [[ $book_number == 1 ]]; then
+    within_book=${source#"$book_root/"}
+    group=${within_book#mocktests/}; group=${group%%/*}
+    output_dir="$book_root/build/$group"
+    output="$output_dir/$stem.pdf"
   else
-    group=${relative#book2/units/}; group=${group%%/*}
+    within_units=${source#"$book_root/units/"}
+    unit=${within_units%%/*}
+    within_unit=${within_units#"$unit/"}
+    parent=$(dirname "$within_unit")
+    output_dir="$book_root/build/units/$unit"
+    [[ $parent == . ]] || output_dir="$output_dir/$parent"
+    output="$output_dir/$stem.pdf"
   fi
-  output_dir="$book_root/build/$group"
+  expected_outputs+=("$output")
   mkdir -p "$output_dir"
   echo "rendering: $relative"
-  (cd "$source_dir" && "$quarto_bin" render "$(basename "$source")" --to typst --output-dir "$output_dir" --no-execute)
+  (cd "$source_dir" && "$quarto_bin" render "$source_name" --to typst --output-dir "$output_dir" --no-execute)
+  [[ -e "$output" ]] || { echo "build-pdf: missing PDF output for $relative" >&2; exit 1; }
+  [[ -s "$output" ]] || { echo "build-pdf: zero-byte PDF output for $relative" >&2; exit 1; }
 done
 
-outputs=$(find "$book_root/build" -type f -name '*.pdf' -size +0c | wc -l)
-((outputs > 0)) || { echo "build-pdf: zero nonempty outputs for $book_id" >&2; exit 1; }
+mapfile -t actual_outputs < <(find "$book_root/build" -type f -name '*.pdf' | LC_ALL=C sort)
+mapfile -t expected_outputs < <(printf '%s\n' "${expected_outputs[@]}" | LC_ALL=C sort -u)
+if ((${#actual_outputs[@]} != ${#expected_outputs[@]})); then
+  echo "build-pdf: output cardinality ${#actual_outputs[@]} does not match source cardinality ${#expected_outputs[@]}" >&2
+  exit 1
+fi
+for index in "${!expected_outputs[@]}"; do
+  [[ ${actual_outputs[$index]} == "${expected_outputs[$index]}" ]] || {
+    echo "build-pdf: output set does not exactly match the selected sources" >&2
+    exit 1
+  }
+done
 echo "build-pdf: rendered ${#inputs[@]} source(s) for $book_id"

@@ -6,24 +6,38 @@
 #   https://forum.beaver-edge.ai/c/ai-olympiads/usa-north-america-ai-olympiad/8
 #   https://forum.beaver-edge.ai/c/ai-olympiads/2025-usa-na-aio-round-2/9
 set -euo pipefail
-repo_root=$(cd "$(dirname "$0")/.." && pwd)
+script_repo_root=$(cd "$(dirname "$0")/.." && pwd)
+repo_root=$script_repo_root
 
 usage() {
-  echo "usage: scripts/fetch-reference.sh (--book book1|--book book2|--all)" >&2
+  echo "usage: scripts/fetch-reference.sh [--root REPO] (--book BOOK_ID|--all)" >&2
 }
 
 selection=""
-if [[ ${1:-} == "--all" && $# -eq 1 ]]; then
-  selection="all"
-elif [[ ${1:-} == "--book" && $# -eq 2 ]]; then
-  selection=$2
-else
-  usage
-  exit 2
-fi
-if [[ $selection != "all" && $selection != "book1" && $selection != "book2" ]]; then
-  usage
-  exit 2
+while (($#)); do
+  case "$1" in
+    --root) repo_root=$2; shift 2 ;;
+    --book) [[ -z $selection ]] || { usage; exit 2; }; selection=$2; shift 2 ;;
+    --all) [[ -z $selection ]] || { usage; exit 2; }; selection=all; shift ;;
+    *) usage; exit 2 ;;
+  esac
+done
+[[ -n $selection ]] || { usage; exit 2; }
+repo_root=$(cd "$repo_root" && pwd)
+python_bin=${USAAIO_PYTHON:-python3}
+if ! registry_records=$(PYTHONPATH="$script_repo_root${PYTHONPATH:+:$PYTHONPATH}" \
+  "$python_bin" - "$repo_root" "$selection" <<'PY'
+import sys
+from tools.books import load_book_catalog
+
+catalog = load_book_catalog(sys.argv[1])
+books = catalog.books if sys.argv[2] == "all" else (catalog.by_id(sys.argv[2]),)
+for book in books:
+    print(f"{book.id}\t{book.number}\t{book.root}")
+PY
+); then
+  echo "fetch-reference: unknown or invalid registered book selection $selection" >&2
+  exit 1
 fi
 
 try_download() {  # try_download <url> <dest>
@@ -61,17 +75,22 @@ fetch() {  # fetch <drive-file-id> <dest-path>
   echo "fetched: $dest ($(file -b "$dest"))"
 }
 
-if [[ $selection == "all" || $selection == "book1" ]]; then
-  fetch "11z6HzS92y5f6OdeBf7GUtb7PBgF7_RlC" \
-    "$repo_root/book1/reference/r1-2026/paper.pdf"
-fi
-if [[ $selection == "all" || $selection == "book2" ]]; then
-  fetch "1YXa62A14vF69ccAQjdWITwTCaCOoyscN" \
-    "$repo_root/book2/reference/r2-2026/day1.pdf"
-  fetch "1pp3PYo8f-M9HIvEs9VVKwCJAzIL-nmg4" \
-    "$repo_root/book2/reference/r2-2026/day2.pdf"
-  fetch "1C-2ewSPxNUX6dLL-oxE4FzhJBtjoOIo7" \
-    "$repo_root/book2/reference/r2-2026/rationale.pdf"
-fi
+while IFS=$'\t' read -r selected_id book_number book_root; do
+  [[ -n $selected_id ]] || continue
+  if [[ $book_number == 1 ]]; then
+    fetch "11z6HzS92y5f6OdeBf7GUtb7PBgF7_RlC" \
+      "$book_root/reference/r1-2026/paper.pdf"
+  elif [[ $book_number == 2 ]]; then
+    fetch "1YXa62A14vF69ccAQjdWITwTCaCOoyscN" \
+      "$book_root/reference/r2-2026/day1.pdf"
+    fetch "1pp3PYo8f-M9HIvEs9VVKwCJAzIL-nmg4" \
+      "$book_root/reference/r2-2026/day2.pdf"
+    fetch "1C-2ewSPxNUX6dLL-oxE4FzhJBtjoOIo7" \
+      "$book_root/reference/r2-2026/rationale.pdf"
+  else
+    echo "fetch-reference: unsupported book number $book_number for $selected_id" >&2
+    exit 1
+  fi
+done <<<"$registry_records"
 
 echo "corpus complete"

@@ -2567,10 +2567,12 @@ def test_imported_taught_closure_is_limited_to_persisted_book1_allowlists() -> N
     book2_owned_units = set(book2_syllabus.units)
     assert book2_owned.isdisjoint(imports.concepts)
     assert book2_owned_units.isdisjoint(imports.units)
-    assert set(imports.concepts) <= closure
-    assert set(evidence.concepts).isdisjoint(closure)
-    imported_book1_concepts = closure & set(book1_syllabus.concepts)
-    assert imported_book1_concepts == set(imports.concepts)
+    qualified_imports = {f"book1:{concept}" for concept in imports.concepts}
+    qualified_evidence = {f"book1:{concept}" for concept in evidence.concepts}
+    assert qualified_imports <= closure
+    assert set(imports.concepts).isdisjoint(closure)
+    assert qualified_evidence.isdisjoint(closure)
+    assert closure & set(book1_syllabus.concepts) == set()
 
 
 def test_imported_taught_closure_authorized_subset_is_exact() -> None:
@@ -2591,7 +2593,10 @@ def test_imported_taught_closure_authorized_subset_is_exact() -> None:
         book=book2,
     )
 
-    assert closure & set(book1_syllabus.concepts) == expected
+    assert closure & set(book1_syllabus.concepts) == set()
+    assert closure & {f"book1:{concept}" for concept in book1_syllabus.concepts} == {
+        f"book1:{concept}" for concept in expected
+    }
     assert expected == {
         "numpy-arrays",
         "broadcasting",

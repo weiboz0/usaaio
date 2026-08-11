@@ -22,11 +22,15 @@ from pathlib import Path
 
 import yaml
 
+from tools.books import load_book_catalog
+
 ROOT = Path(__file__).resolve().parents[1]
-BOOK_ROOT = ROOT / "book1"
+BOOK_ROOT: Path | None = None
 
 
 def _content_root() -> Path:
+    if BOOK_ROOT is None:
+        raise RuntimeError("register verification has no selected BookSpec root")
     return BOOK_ROOT
 REGISTER_UNITS = (
     "F1-scientific-python",
@@ -263,14 +267,25 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
 
 
 def main(argv: list[str] | None = None) -> int:
+    global BOOK_ROOT
     parser = argparse.ArgumentParser()
-    parser.add_argument("--book", choices=("book1",), required=True)
+    parser.add_argument("--root", type=Path, default=None)
+    parser.add_argument("--book", required=True)
     parser.add_argument(
         "--statements-only",
         action="store_true",
         help="validate statement/register contracts without requiring solutions",
     )
     args = parser.parse_args([] if argv is None else argv)
+    if args.root is not None or BOOK_ROOT is None:
+        catalog = load_book_catalog(args.root or ROOT)
+        book = catalog.by_id(args.book)
+        if book.number != 1:
+            parser.error(
+                f"registered book {args.book!r} is number {book.number}; "
+                "verify-register supports Book 1"
+            )
+        BOOK_ROOT = book.root
     checked = 0
     failures: list[str] = []
     units = UNITS or tuple(

@@ -1,5 +1,7 @@
 import importlib.util
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -111,6 +113,50 @@ def test_main_accepts_any_registered_problem_count(tmp_path, monkeypatch, capsys
 
     assert verify_register.main(["--book", "book1", "--statements-only"]) == 0
     assert "register verification: 1/1 passed (1 problems checked)" in capsys.readouterr().out
+
+
+def test_register_main_follows_noncanonical_registered_book1_root(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    book = repo / "round1"
+    unit = "C7-example"
+    problem = write_problem(
+        book,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
+    )
+    manifest_path = book / "units" / unit / "manifest.yaml"
+    manifest_path.write_text(
+        yaml.safe_dump({"practice": [problem]}), encoding="utf-8"
+    )
+    (repo / "books.yaml").write_text(
+        "books_version: 1\n"
+        "books:\n"
+        "  - {id: book1, number: 1, root: round1, depends_on: []}\n",
+        encoding="utf-8",
+    )
+
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--root",
+            str(repo),
+            "--book",
+            "book1",
+            "--statements-only",
+        ],
+        cwd=repo,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert "register verification: 1/1 passed" in proc.stdout
+    assert not (repo / "book1").exists()
 
 
 # --- Header agreement is enforced repo-wide (plan 014 gate). The type field admits only an

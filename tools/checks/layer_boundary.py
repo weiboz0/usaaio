@@ -193,6 +193,16 @@ def check_layer_boundary(root: str | Path) -> Report:
         syllabus = load_syllabus(root)
         manifests = load_unit_manifests(root)
         roadmap = load_roadmap(root)
+        catalog = None
+        book = None
+        if (root.parent / "books.yaml").is_file():
+            from tools.books import load_book_catalog
+
+            catalog = load_book_catalog(root.parent)
+            book = next(
+                (candidate for candidate in catalog.books if candidate.root == root),
+                None,
+            )
     except (KeyError, OSError, TypeError, ValueError) as exc:
         return Report(name="layer-boundary-check", ok=False, errors=[str(exc)])
     errors: list[str] = []
@@ -239,7 +249,16 @@ def check_layer_boundary(root: str | Path) -> Report:
             errors.append(
                 f"{manifest.path}: concept_prerequisites must exactly equal concepts_used"
             )
-        allowed = taught_closure(syllabus, manifest.prereq_units)
+        try:
+            allowed = taught_closure(
+                syllabus,
+                manifest.prereq_units,
+                catalog=catalog,
+                book=book,
+            )
+        except ValueError as exc:
+            errors.append(f"{manifest.path}: {exc}")
+            allowed = set(syllabus.baseline)
         if not set(manifest.concept_prerequisites) <= allowed:
             errors.append(
                 f"{manifest.path}: concept_prerequisites must be in the prereq-unit closure"

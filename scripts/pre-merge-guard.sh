@@ -29,8 +29,6 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-import yaml
-
 mode, base = sys.argv[1:]
 refs = ["WORKTREE"] + (["origin/main"] if mode == "--pr" else [])
 failures: list[str] = []
@@ -105,6 +103,8 @@ for book_id in ("book1", "book2"):
 
 
 def roadmap_parts(ref: str) -> tuple[dict[str, str], dict[str, tuple[str, ...]]]:
+    import yaml
+
     candidates = (
         ["book1/curriculum/coverage-map.yaml", "book2/curriculum/coverage-map.yaml"]
         if has_post_layout(ref)

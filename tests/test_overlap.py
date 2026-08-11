@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 import nbformat
+import pytest
 
 from tools.checks.overlap import check_overlap
 from tools.cli import print_report
@@ -14,8 +15,10 @@ def write_manifest(
     adapted_from: str = "",
     files: list[str] | None = None,
     problem_ids: list[str] | None = None,
+    book_number: int = 1,
 ) -> None:
-    test_dir = root / "mocktests" / "r1-001"
+    test_id = f"r{book_number}-001"
+    test_dir = root / "mocktests" / test_id
     test_dir.mkdir(parents=True)
     adapted_line = f"    adapted-from: {adapted_from}\n" if adapted_from else ""
     files_block = ""
@@ -40,7 +43,7 @@ def write_manifest(
     )
     test_dir.joinpath("manifest.yaml").write_text(
         f"""
-test: r1-001
+test: {test_id}
 blueprint_version: 1
 duration_minutes: 180
 total_points: 300
@@ -368,3 +371,24 @@ def test_overlap_partial_pdftotext_failure_warns(tmp_path, monkeypatch):
         _pytest.skip("pdftotext unavailable")
     report = check_overlap(tmp_path)
     assert any("NOT scanned" in w and "broken.pdf" in w for w in report.warnings)
+
+
+def test_overlap_scans_round2_manifest_with_authoritative_number(tmp_path: Path) -> None:
+    copied = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda"
+    write_reference(tmp_path, copied, ref_id="r2-fixture")
+    write_manifest(tmp_path, copied, book_number=2, problem_ids=["r2-001-p01"])
+
+    report = check_overlap(tmp_path, book_number=2)
+
+    assert not report.ok
+    assert any("r2-001-p01" in error for error in report.errors)
+
+
+def test_overlap_rejects_wrong_round_directory_for_selected_book2(
+    tmp_path: Path,
+) -> None:
+    write_reference(tmp_path, "alpha beta gamma delta epsilon zeta eta theta")
+    write_manifest(tmp_path, "fresh prompt")
+
+    with pytest.raises(ValueError, match="book 2 assessments"):
+        check_overlap(tmp_path, book_number=2)

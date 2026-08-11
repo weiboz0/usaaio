@@ -3,7 +3,6 @@
 import argparse
 import sys
 from collections.abc import Callable
-from pathlib import Path
 
 import tools
 from tools.books import load_book_catalog, validate_book_root
@@ -20,7 +19,7 @@ from tools.checks.scope import check_scope
 from tools.checks.tolerance import check_tolerance
 from tools.model import Report
 
-CheckFn = Callable[[str | Path], Report]
+CheckFn = Callable[..., Report]
 
 SUBCOMMANDS: dict[str, tuple[str, CheckFn | None]] = {
     "answerkey-check": ("cross-check mock-test answer keys against solutions", check_answerkey),
@@ -131,7 +130,10 @@ def main(argv: list[str] | None = None) -> int:
     try:
         exit_code = 0
         for book in selected:
-            report = check(book.root)
+            if args.command in {"answerkey-check", "overlap-scan"}:
+                report = check(book.root, book_number=book.number)
+            else:
+                report = check(book.root)
             if len(selected) > 1:
                 report.name = f"{book.id}:{report.name}"
             exit_code = max(exit_code, print_report(report))

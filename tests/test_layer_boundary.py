@@ -286,6 +286,99 @@ def _build_layer_fixture(root: Path) -> dict[str, Any]:
     return {"syllabus": syllabus, "manifest": manifest, "roadmap": roadmap}
 
 
+def _canonical_syllabus(contract: dict[str, Any]) -> str:
+    return (
+        "# Fixture\n\n<!-- syllabus-canonical -->\n```yaml\n"
+        + yaml.safe_dump(contract, sort_keys=False)
+        + "```\n"
+    )
+
+
+def _build_registered_layer_fixture(repo: Path) -> tuple[dict[str, Any], Path]:
+    book2 = repo / "book2"
+    book2.mkdir(parents=True)
+    data = _build_layer_fixture(book2)
+    book1 = repo / "book1"
+    (book1 / "units").mkdir(parents=True)
+    prereq_rows = [
+        row for row in data["syllabus"]["units"] if row["id"] in UNIT_PREREQS
+    ]
+    prereq_concepts = [
+        concept
+        for row in prereq_rows
+        for concept in row["teaches"]
+    ]
+    (book1 / "syllabus.md").write_text(
+        _canonical_syllabus(
+            {
+                "baseline": {"math": ["arithmetic"]},
+                "clusters": ["fixture"],
+                "concepts": [
+                    {"id": concept, "cluster": "fixture"}
+                    for concept in prereq_concepts
+                ],
+                "units": prereq_rows,
+            }
+        ),
+        encoding="utf-8",
+    )
+    for unit_id in UNIT_PREREQS:
+        (book2 / "units" / unit_id).rename(book1 / "units" / unit_id)
+
+    book2_unit = next(
+        row for row in data["syllabus"]["units"] if row["id"] == BOOK2_UNIT
+    )
+    book2_unit["prereqs"] = [f"book1:{unit}" for unit in UNIT_PREREQS]
+    book2_unit["concept_prerequisites"] = [
+        f"book1:{concept}" for concept in CONCEPT_PREREQS
+    ]
+    data["syllabus"] = {
+        "baseline": {"math": ["arithmetic"]},
+        "clusters": ["fixture"],
+        "imports": {
+            "book": "book1",
+            "units": list(UNIT_PREREQS),
+            "concepts": list(CONCEPT_PREREQS),
+        },
+        "evidence_imports": {
+            "book": "book1",
+            "concepts": [],
+            "lesson_paths": [],
+            "practices": [],
+            "assessments": [],
+        },
+        "concepts": [
+            {"id": concept, "cluster": "fixture"} for concept in BOOK2_CONCEPTS
+        ],
+        "units": [book2_unit],
+    }
+    data["manifest"]["prereq_units"] = list(book2_unit["prereqs"])
+    data["manifest"]["concept_prerequisites"] = list(
+        book2_unit["concept_prerequisites"]
+    )
+    data["manifest"]["concepts_used"] = list(book2_unit["concept_prerequisites"])
+    data["manifest"]["bridge_diagnostic"]["referenced_concepts"] = list(
+        book2_unit["concept_prerequisites"]
+    )
+    _rewrite_fixture(book2, data)
+    _write_yaml(
+        repo / "books.yaml",
+        {
+            "books_version": 1,
+            "books": [
+                {"id": "book1", "number": 1, "root": "book1", "depends_on": []},
+                {
+                    "id": "book2",
+                    "number": 2,
+                    "root": "book2",
+                    "depends_on": ["book1"],
+                },
+            ],
+        },
+    )
+    return data, book2
+
+
 def _rewrite_fixture(root: Path, data: dict[str, Any]) -> None:
     root.joinpath("syllabus.md").write_text(
         "# Fixture\n\n<!-- syllabus-canonical -->\n```yaml\n"
@@ -417,6 +510,41 @@ def test_valid_book2_layer_fixture_is_accepted(tmp_path: Path) -> None:
 
     assert report.ok, report.errors
     assert report.errors == []
+
+
+def test_first_live_registered_book2_layer_resolves_qualified_prereqs(
+    tmp_path: Path,
+) -> None:
+    _, book2 = _build_registered_layer_fixture(tmp_path / "repo")
+
+    report = _layer_checker().check_layer_boundary(book2)
+
+    assert report.ok, report.errors
+
+
+@pytest.mark.parametrize(
+    ("replacement", "fragment"),
+    [
+        pytest.param("book9:C6-pytorch", "unknown owner", id="wrong-owner"),
+        pytest.param(
+            "book1:C5-neural-networks", "allowlist", id="nonallowlisted-unit"
+        ),
+    ],
+)
+def test_first_live_registered_book2_layer_rejects_invalid_qualified_prereq(
+    tmp_path: Path, replacement: str, fragment: str
+) -> None:
+    data, book2 = _build_registered_layer_fixture(tmp_path / "repo")
+    original = data["manifest"]["prereq_units"][0]
+    data["manifest"]["prereq_units"][0] = replacement
+    data["syllabus"]["units"][0]["prereqs"][0] = replacement
+    assert original != replacement
+    _rewrite_fixture(book2, data)
+
+    report = _layer_checker().check_layer_boundary(book2)
+
+    assert not report.ok
+    assert any(fragment in error for error in report.errors), report.errors
 
 
 def test_live_book2_manifest_without_claims_is_valid_while_map_is_not_covered(

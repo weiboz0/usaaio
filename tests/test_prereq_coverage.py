@@ -2,6 +2,7 @@ import shutil
 from pathlib import Path
 from posixpath import normpath
 
+import pytest
 import yaml
 
 from tools.checks.coverage import check_coverage
@@ -11,6 +12,11 @@ from tools.model import load_mock_manifests, load_syllabus, load_unit_manifests
 ROOT = Path(__file__).resolve().parents[1]
 BOOK1_ROOT = ROOT / "book1"
 BOOK2_ROOT = ROOT / "book2"
+
+
+def _write_yaml(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(yaml.safe_dump(value, sort_keys=False), encoding="utf-8")
 
 
 def write_syllabus(
@@ -609,3 +615,100 @@ def test_planned_book2_root_preserves_existing_r1_manifests_and_r1_namespace(
     assert load_mock_manifests(book2) == []
     assert after == before
     assert namespace_before == namespace_after == ["r1-001"]
+
+
+def _write_first_live_registered_book2_fixture(
+    tmp_path: Path, *, replacement: str | None = None
+) -> Path:
+    repo = tmp_path / "repo"
+    book1 = repo / "book1"
+    book2 = repo / "book2"
+    book1.mkdir(parents=True)
+    book2.mkdir()
+    shutil.copy2(BOOK1_ROOT / "syllabus.md", book1 / "syllabus.md")
+    book2_syllabus = (BOOK2_ROOT / "syllabus.md").read_text(encoding="utf-8")
+    qualified_concepts = [
+        "book1:softmax",
+        "book1:matrix-multiplication",
+        "book1:broadcasting",
+        "book1:variance",
+        "book1:torch-tensors",
+        "book1:nn-module",
+        "book1:torch-optimizers",
+        "book1:autograd-training",
+    ]
+    if replacement is not None:
+        book2_syllabus = book2_syllabus.replace(
+            "  - book1:softmax\n", f"  - {replacement}\n", 1
+        )
+        qualified_concepts[0] = replacement
+    (book2 / "syllabus.md").write_text(book2_syllabus, encoding="utf-8")
+    _write_yaml(
+        repo / "books.yaml",
+        {
+            "books_version": 1,
+            "books": [
+                {"id": "book1", "number": 1, "root": "book1", "depends_on": []},
+                {
+                    "id": "book2",
+                    "number": 2,
+                    "root": "book2",
+                    "depends_on": ["book1"],
+                },
+            ],
+        },
+    )
+    unit = load_syllabus(book2).units["B2-019-attention-transformers"]
+    _write_yaml(
+        book2 / "units" / unit.id / "manifest.yaml",
+        {
+            "unit": unit.id,
+            "book": 2,
+            "layer": "round-2-extension",
+            "round": 2,
+            "track": "extension",
+            "concepts_taught": unit.teaches,
+            "concepts_used": qualified_concepts,
+            "concept_prerequisites": qualified_concepts,
+            "prereq_units": unit.prereqs,
+            "bridge_diagnostic": {
+                "path": "lessons/00-book1-bridge.ipynb",
+                "minutes": 30,
+                "referenced_concepts": qualified_concepts,
+            },
+            "coverage_claims": [],
+            "practice": [],
+        },
+    )
+    return book2
+
+
+def test_first_live_registered_book2_manifest_has_qualified_prereq_closure(
+    tmp_path: Path,
+) -> None:
+    book2 = _write_first_live_registered_book2_fixture(tmp_path)
+
+    report = check_prereq(book2)
+
+    assert report.ok, report.errors
+
+
+@pytest.mark.parametrize(
+    "replacement",
+    [
+        pytest.param("softmax", id="unqualified-foreign-concept"),
+        pytest.param("book9:softmax", id="wrong-owner-concept"),
+        pytest.param("book1:relu", id="nonallowlisted-concept"),
+    ],
+)
+def test_first_live_registered_book2_rejects_invalid_imported_concept_identity(
+    tmp_path: Path, replacement: str
+) -> None:
+    book2 = _write_first_live_registered_book2_fixture(
+        tmp_path, replacement=replacement
+    )
+
+    report = check_prereq(book2)
+
+    assert not report.ok
+    assert any(replacement in error for error in report.errors), report.errors

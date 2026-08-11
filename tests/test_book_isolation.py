@@ -6,6 +6,7 @@ import json
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -209,3 +210,179 @@ def test_each_registered_book_has_an_independent_complete_root() -> None:
         assert _books_module().validate_book_root(book) == []
         assert all((book.root / relative).exists() for relative in required)
         assert book.root.parent == catalog.repo_root
+
+
+def test_book1_pdf_inputs_follow_noncanonical_registered_root(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    shutil.copytree(ROOT / "book1", repo / "round1", ignore=shutil.ignore_patterns("build"))
+    (repo / "books.yaml").write_text(
+        "books_version: 1\n"
+        "books:\n"
+        "  - {id: book1, number: 1, root: round1, depends_on: []}\n",
+        encoding="utf-8",
+    )
+    script = ROOT / "scripts" / "build-pdf.sh"
+
+    proc = subprocess.run(
+        [
+            "bash",
+            str(script),
+            "--root",
+            str(repo),
+            "--book",
+            "book1",
+            "--list-inputs",
+        ],
+        cwd=repo,
+        env={**os.environ, "USAAIO_PYTHON": sys.executable},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    inputs = proc.stdout.splitlines()
+    assert len(inputs) == 10
+    assert all(path.startswith("round1/mocktests/r1-001/") for path in inputs)
+
+
+def test_fetch_reference_follows_noncanonical_registered_book1_root(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    paper = repo / "round1" / "reference" / "r1-2026" / "paper.pdf"
+    paper.parent.mkdir(parents=True)
+    paper.write_bytes(b"%PDF-1.4 fixture\n%%EOF\n")
+    (repo / "books.yaml").write_text(
+        "books_version: 1\n"
+        "books:\n"
+        "  - {id: book1, number: 1, root: round1, depends_on: []}\n",
+        encoding="utf-8",
+    )
+    bin_dir = tmp_path / "fetch-bin"
+    fake_file = bin_dir / "file"
+    fake_file.parent.mkdir()
+    fake_file.write_text(
+        "#!/usr/bin/env bash\nprintf 'PDF document, fixture\\n'\n",
+        encoding="utf-8",
+    )
+    fake_file.chmod(0o755)
+    script = ROOT / "scripts" / "fetch-reference.sh"
+
+    proc = subprocess.run(
+        ["bash", str(script), "--root", str(repo), "--book", "book1"],
+        cwd=repo,
+        env={
+            **os.environ,
+            "PATH": f"{bin_dir}:{os.environ['PATH']}",
+            "USAAIO_PYTHON": sys.executable,
+        },
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert f"exists: {paper}" in proc.stdout
+    assert not (repo / "book1").exists()
+
+
+def _write_fake_quarto(bin_dir: Path) -> None:
+    quarto = bin_dir / "quarto"
+    quarto.parent.mkdir(parents=True)
+    quarto.write_text(
+        """#!/usr/bin/env bash
+set -euo pipefail
+source=$2
+output_dir=
+while (($#)); do
+  if [[ $1 == --output-dir ]]; then output_dir=$2; shift 2; else shift; fi
+done
+mkdir -p "$output_dir"
+output="$output_dir/${source%.*}.pdf"
+if [[ ${FAKE_QUARTO_MODE:-pass} == omit && $source == p01.ipynb ]]; then exit 0; fi
+if [[ ${FAKE_QUARTO_MODE:-pass} == zero && $source == p01.ipynb ]]; then
+  : > "$output"
+else
+  printf '%%PDF-1.4 fixture\n%%%%EOF\n' > "$output"
+fi
+""",
+        encoding="utf-8",
+    )
+    quarto.chmod(0o755)
+
+
+def _live_noncanonical_book2_pdf_fixture(tmp_path: Path) -> tuple[Path, Path]:
+    repo = tmp_path / "repo"
+    book = repo / "advanced"
+    unit = book / "units" / "B2-019-attention-transformers"
+    for relative in (
+        "lesson.ipynb",
+        "lessons/01-attention.ipynb",
+        "review.ipynb",
+        "practice/p01.ipynb",
+        "practice/p01_solution.ipynb",
+    ):
+        path = unit / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("{}\n", encoding="utf-8")
+    (unit / "manifest.yaml").write_text(
+        "unit: B2-019-attention-transformers\nbook: 2\nstatus: live\n",
+        encoding="utf-8",
+    )
+    (repo / "books.yaml").write_text(
+        "books_version: 1\n"
+        "books:\n"
+        "  - {id: book2, number: 2, root: advanced, depends_on: []}\n",
+        encoding="utf-8",
+    )
+    bin_dir = tmp_path / "bin"
+    _write_fake_quarto(bin_dir)
+    return repo, bin_dir
+
+
+@pytest.mark.parametrize(
+    ("mode", "expected_fragment"),
+    [
+        pytest.param("pass", "rendered 4 source(s)", id="exact-cardinality"),
+        pytest.param("omit", "missing PDF output", id="omitted-output"),
+        pytest.param("zero", "zero-byte PDF output", id="zero-byte-output"),
+    ],
+)
+def test_book2_pdf_build_uses_registered_root_and_enforces_one_output_per_source(
+    tmp_path: Path, mode: str, expected_fragment: str
+) -> None:
+    repo, bin_dir = _live_noncanonical_book2_pdf_fixture(tmp_path)
+    script = ROOT / "scripts" / "build-pdf.sh"
+
+    proc = subprocess.run(
+        ["bash", str(script), "--root", str(repo), "--book", "book2"],
+        cwd=repo,
+        env={
+            **os.environ,
+            "PATH": f"{bin_dir}:{os.environ['PATH']}",
+            "FAKE_QUARTO_MODE": mode,
+            "USAAIO_PYTHON": sys.executable,
+        },
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    output = proc.stdout + proc.stderr
+
+    if mode == "pass":
+        assert proc.returncode == 0, output
+        expected = {
+            "units/B2-019-attention-transformers/lesson.pdf",
+            "units/B2-019-attention-transformers/lessons/01-attention.pdf",
+            "units/B2-019-attention-transformers/review.pdf",
+            "units/B2-019-attention-transformers/practice/p01.pdf",
+        }
+        actual = {
+            path.relative_to(repo / "advanced" / "build").as_posix()
+            for path in (repo / "advanced" / "build").rglob("*.pdf")
+        }
+        assert actual == expected
+    else:
+        assert proc.returncode != 0
+    assert expected_fragment in output
