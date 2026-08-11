@@ -73,6 +73,47 @@ class BookCatalog:
         raise KeyError(f"unknown book id {book_id!r}; available books: {available}")
 
 
+def resolve_contained_path(
+    root: str | Path,
+    relative: str | Path,
+    *,
+    label: str = "content path",
+    must_exist: bool = True,
+) -> Path:
+    """Resolve a book-local path without permitting traversal or symlink indirection."""
+    canonical_root = Path(root)
+    if (
+        not canonical_root.is_absolute()
+        or canonical_root.is_symlink()
+        or canonical_root.resolve(strict=False) != canonical_root
+    ):
+        raise ValueError(f"{label}: selected book root is not canonical: {canonical_root}")
+    requested = Path(relative)
+    if requested.is_absolute():
+        candidate = requested
+    else:
+        if ".." in requested.parts:
+            raise ValueError(f"{label}: path escapes selected book root: {relative}")
+        candidate = canonical_root / requested
+    try:
+        lexical = candidate.relative_to(canonical_root)
+    except ValueError as exc:
+        raise ValueError(f"{label}: path escapes selected book root: {relative}") from exc
+    current = canonical_root
+    for part in lexical.parts:
+        current /= part
+        if current.is_symlink():
+            raise ValueError(f"{label}: symlink component is forbidden: {current}")
+    if must_exist and not candidate.exists():
+        raise ValueError(f"{label}: path does not exist: {relative}")
+    resolved = candidate.resolve(strict=must_exist)
+    try:
+        resolved.relative_to(canonical_root)
+    except ValueError as exc:
+        raise ValueError(f"{label}: resolved path escapes selected book root: {relative}") from exc
+    return resolved
+
+
 def _load_yaml_mapping(path: Path, *, label: str) -> dict[str, Any]:
     try:
         raw = yaml.safe_load(path.read_text(encoding="utf-8"))

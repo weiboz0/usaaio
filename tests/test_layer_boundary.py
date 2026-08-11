@@ -523,6 +523,37 @@ def test_first_live_registered_book2_layer_resolves_qualified_prereqs(
 
 
 @pytest.mark.parametrize(
+    ("relative_path", "fragment"),
+    [
+        pytest.param(
+            "lessons/00-book1-bridge.ipynb",
+            "bridge_diagnostic requires a local existing path",
+            id="bridge-diagnostic",
+        ),
+        pytest.param(
+            "practice/p01_solution.ipynb",
+            "cpu task requires a local solution path",
+            id="cpu-solution",
+        ),
+    ],
+)
+def test_layer_boundary_rejects_symlinked_artifact_paths(
+    tmp_path: Path, relative_path: str, fragment: str
+) -> None:
+    _, book2 = _build_registered_layer_fixture(tmp_path / "repo")
+    artifact = book2 / "units" / BOOK2_UNIT / relative_path
+    target = artifact.parent / "symlink-target.ipynb"
+    target.write_text("{}\n", encoding="utf-8")
+    artifact.unlink()
+    artifact.symlink_to(target)
+
+    report = _layer_checker().check_layer_boundary(book2)
+
+    assert not report.ok
+    assert any(fragment in error for error in report.errors), report.errors
+
+
+@pytest.mark.parametrize(
     ("replacement", "fragment"),
     [
         pytest.param("book9:C6-pytorch", "unknown owner", id="wrong-owner"),

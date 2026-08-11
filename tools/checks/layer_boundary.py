@@ -6,6 +6,7 @@ import re
 from collections import Counter
 from pathlib import Path
 
+from tools.books import resolve_contained_path
 from tools.checks.prereq import taught_closure
 from tools.model import (
     KnowledgePoint,
@@ -45,24 +46,40 @@ def _check_bridge(
             f"{manifest.path}: bridge_diagnostic referenced_concepts must be disjoint "
             "from concepts_taught"
         )
-    diagnostic_path = (manifest.path.parent / diagnostic.path).resolve()
-    if not diagnostic_path.is_relative_to(root) or not diagnostic_path.is_file():
+    try:
+        diagnostic_path = resolve_contained_path(
+            root,
+            manifest.path.parent.relative_to(root) / diagnostic.path,
+            label=f"{manifest.path}: bridge_diagnostic",
+        )
+    except ValueError:
         errors.append(f"{manifest.path}: bridge_diagnostic requires a local existing path")
+    else:
+        if not diagnostic_path.is_file():
+            errors.append(
+                f"{manifest.path}: bridge_diagnostic requires a local existing path"
+            )
 
 
-def _check_compute(manifest: UnitManifest, errors: list[str]) -> None:
+def _check_compute(root: Path, manifest: UnitManifest, errors: list[str]) -> None:
     for problem in manifest.practice:
         label = f"{manifest.path}: practice {problem.id}"
         if problem.compute.seed is None:
             errors.append(f"{label} compute.seed is required")
         if problem.compute.policy != "cpu":
             errors.append(f"{label} unsupported compute.policy {problem.compute.policy!r}")
-        unit_root = manifest.path.parent.resolve()
-        solution = (unit_root / problem.solution_path).resolve()
-        if problem.compute.policy == "cpu" and (
-            not solution.is_relative_to(unit_root) or not solution.is_file()
-        ):
-            errors.append(f"{label} cpu task requires a local solution path")
+        if problem.compute.policy == "cpu":
+            try:
+                solution = resolve_contained_path(
+                    root,
+                    manifest.path.parent.relative_to(root) / problem.solution_path,
+                    label=f"{label} solution",
+                )
+            except ValueError:
+                errors.append(f"{label} cpu task requires a local solution path")
+            else:
+                if not solution.is_file():
+                    errors.append(f"{label} cpu task requires a local solution path")
 
 
 def _check_claims(
@@ -289,7 +306,7 @@ def check_layer_boundary(root: str | Path) -> Report:
                 )
 
         _check_bridge(root, manifest, errors)
-        _check_compute(manifest, errors)
+        _check_compute(root, manifest, errors)
         _check_claims(root, manifest, roadmap_points, errors)
 
     return Report(name="layer-boundary-check", ok=not errors, errors=errors)

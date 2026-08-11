@@ -386,3 +386,59 @@ def test_book2_pdf_build_uses_registered_root_and_enforces_one_output_per_source
     else:
         assert proc.returncode != 0
     assert expected_fragment in output
+
+
+def test_book2_pdf_rejects_student_source_symlink_outside_registered_root(
+    tmp_path: Path,
+) -> None:
+    repo, _ = _live_noncanonical_book2_pdf_fixture(tmp_path)
+    source = repo / "advanced/units/B2-019-attention-transformers/practice/p01.ipynb"
+    outside = tmp_path / "outside.ipynb"
+    outside.write_text("{}\n", encoding="utf-8")
+    source.unlink()
+    source.symlink_to(outside)
+
+    proc = subprocess.run(
+        [
+            "bash", str(ROOT / "scripts/build-pdf.sh"), "--root", str(repo),
+            "--book", "book2", "--list-inputs",
+        ],
+        cwd=repo,
+        env={**os.environ, "USAAIO_PYTHON": sys.executable},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode != 0
+    assert "symlink component is forbidden" in proc.stdout + proc.stderr
+
+
+def test_fetch_reference_rejects_symlinked_reference_destination(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    book = repo / "round1"
+    book.mkdir(parents=True)
+    outside = tmp_path / "outside-reference"
+    outside.mkdir()
+    (book / "reference").symlink_to(outside, target_is_directory=True)
+    (repo / "books.yaml").write_text(
+        "books_version: 1\nbooks:\n"
+        "  - {id: book1, number: 1, root: round1, depends_on: []}\n",
+        encoding="utf-8",
+    )
+
+    proc = subprocess.run(
+        [
+            "bash", str(ROOT / "scripts/fetch-reference.sh"), "--root", str(repo),
+            "--book", "book1",
+        ],
+        cwd=repo,
+        env={**os.environ, "USAAIO_PYTHON": sys.executable},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode != 0
+    assert "symlink component is forbidden" in proc.stdout + proc.stderr
+    assert list(outside.iterdir()) == []

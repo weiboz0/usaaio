@@ -40,6 +40,18 @@ PY
   exit 1
 fi
 
+require_contained_destination() { # require_contained_destination <book-root> <dest>
+  PYTHONPATH="$script_repo_root${PYTHONPATH:+:$PYTHONPATH}" \
+    "$python_bin" - "$1" "$2" <<'PY'
+import sys
+from tools.books import resolve_contained_path
+
+resolve_contained_path(
+    sys.argv[1], sys.argv[2], label="fetch-reference destination", must_exist=False
+)
+PY
+}
+
 try_download() {  # try_download <url> <dest>
   curl -fsSL --retry 3 --max-time 120 "$1" -o "$2"
 }
@@ -78,9 +90,17 @@ fetch() {  # fetch <drive-file-id> <dest-path>
 while IFS=$'\t' read -r selected_id book_number book_root; do
   [[ -n $selected_id ]] || continue
   if [[ $book_number == 1 ]]; then
+    require_contained_destination "$book_root" "$book_root/reference/r1-2026/paper.pdf"
+    require_contained_destination "$book_root" "$book_root/reference/r1-2026/paper.pdf.tmp"
     fetch "11z6HzS92y5f6OdeBf7GUtb7PBgF7_RlC" \
       "$book_root/reference/r1-2026/paper.pdf"
   elif [[ $book_number == 2 ]]; then
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/day1.pdf"
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/day2.pdf"
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/rationale.pdf"
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/day1.pdf.tmp"
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/day2.pdf.tmp"
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/rationale.pdf.tmp"
     fetch "1YXa62A14vF69ccAQjdWITwTCaCOoyscN" \
       "$book_root/reference/r2-2026/day1.pdf"
     fetch "1pp3PYo8f-M9HIvEs9VVKwCJAzIL-nmg4" \

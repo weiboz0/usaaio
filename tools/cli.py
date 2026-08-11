@@ -101,18 +101,16 @@ def main(argv: list[str] | None = None) -> int:
         except KeyError as exc:
             print(f"ERROR book-selection: {exc}", file=sys.stderr)
             return 1
-    for book in selected:
-        structural_errors = validate_book_root(book)
-        if structural_errors:
-            for error in structural_errors:
-                print(f"ERROR {book.id}: {error}", file=sys.stderr)
-            return 1
-
     if args.command == "new-mocktest":
         if args.all_books:
             print("ERROR new-mocktest: --all is not supported", file=sys.stderr)
             return 1
         try:
+            structural_errors = validate_book_root(selected[0])
+            if structural_errors:
+                for error in structural_errors:
+                    print(f"ERROR {selected[0].id}: {error}", file=sys.stderr)
+                return 1
             path = scaffold_mocktest(
                 selected[0].root,
                 args.test_id,
@@ -127,9 +125,15 @@ def main(argv: list[str] | None = None) -> int:
 
     check = SUBCOMMANDS[args.command][1]
     assert check is not None
-    try:
-        exit_code = 0
-        for book in selected:
+    exit_code = 0
+    for book in selected:
+        try:
+            structural_errors = validate_book_root(book)
+            if structural_errors:
+                for error in structural_errors:
+                    print(f"ERROR {book.id}: {error}", file=sys.stderr)
+                exit_code = 1
+                continue
             if args.command in {"answerkey-check", "overlap-scan"}:
                 report = check(book.root, book_number=book.number)
             else:
@@ -137,12 +141,11 @@ def main(argv: list[str] | None = None) -> int:
             if len(selected) > 1:
                 report.name = f"{book.id}:{report.name}"
             exit_code = max(exit_code, print_report(report))
-        return exit_code
-    except (ValueError, KeyError, OSError) as exc:
-        # Loader/config failures (bad sentinel, invalid status, malformed manifest,
-        # missing files) surface as check errors, not tracebacks; exit 1 still blocks.
-        print(f"ERROR {args.command}: {exc}", file=sys.stderr)
-        return 1
+        except (ValueError, KeyError, OSError) as exc:
+            # One malformed book must not suppress diagnostics for later --all books.
+            print(f"ERROR {book.id}:{args.command}: {exc}", file=sys.stderr)
+            exit_code = 1
+    return exit_code
 
 
 if __name__ == "__main__":

@@ -245,6 +245,21 @@ def test_coverage_missing_practice_file(tmp_path):
     assert any("missing practice path" in error for error in report.errors)
 
 
+def test_coverage_rejects_symlinked_practice_outside_selected_book(tmp_path):
+    write_syllabus(tmp_path)
+    write_unit(tmp_path)
+    outside = tmp_path.parent / "outside.ipynb"
+    outside.write_text("{}\n", encoding="utf-8")
+    practice = tmp_path / "units" / "U2" / "practice" / "p01.ipynb"
+    practice.unlink()
+    practice.symlink_to(outside)
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert any("symlink component is forbidden" in error for error in report.errors)
+
+
 def test_coverage_requires_three_tagged_problems_per_taught_concept(tmp_path):
     write_syllabus(tmp_path)
     write_unit(tmp_path, practice_count=2)

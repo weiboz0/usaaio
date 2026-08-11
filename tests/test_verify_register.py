@@ -159,6 +159,21 @@ def test_register_main_follows_noncanonical_registered_book1_root(
     assert not (repo / "book1").exists()
 
 
+def test_register_rejects_statement_escape_outside_selected_book(tmp_path, monkeypatch):
+    outside = tmp_path / "outside.ipynb"
+    outside.write_text("{}\n", encoding="utf-8")
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path / "book")
+    (tmp_path / "book").mkdir()
+    problem = {
+        "id": "U1-p01", "path": "../../../outside.ipynb", "type": "scenario",
+        "difficulty": "core", "concepts": ["testing"],
+    }
+
+    errors = verify_register._check_problem("U1", problem)
+
+    assert errors and "escapes selected book root" in errors[0]
+
+
 # --- Header agreement is enforced repo-wide (plan 014 gate). The type field admits only an
 # --- enumerated set of house glosses; two earlier, more permissive forms of this check each
 # --- let drift through and were caught at the gate.

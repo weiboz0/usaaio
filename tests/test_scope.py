@@ -2524,6 +2524,35 @@ def test_every_r2_book1_dependency_edge_is_qualified() -> None:
             assert dependency not in dependencies, (point, dependencies)
 
 
+def test_active_book2_roadmap_dependency_requires_persisted_import_destination(
+    tmp_path: Path,
+) -> None:
+    _, book2 = _copy_two_book_scope_repo(tmp_path)
+    roadmap = _book2_roadmap(book2)
+    point = next(
+        row for row in roadmap["knowledge_points"]
+        if row["id"] == "attention-mechanism-foundations"
+    )
+    point["depends_on"][0] = "book1:colab-markdown-solution-authoring"
+    _write_yaml(book2 / "curriculum/coverage-map.yaml", roadmap)
+
+    report = check_scope(book2)
+
+    assert not report.ok
+    assert any(
+        "active import book1:colab-markdown-solution-authoring" in error
+        and "imports.units" in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_future_book2_foreign_dependencies_remain_deferred_not_active_imports() -> None:
+    report = check_scope(BOOK2_ROOT)
+
+    assert report.ok, report.errors
+    assert not any("active import book1:colab-coding-submission" in error for error in report.errors)
+
+
 def test_unqualified_mutation_of_every_r2_book1_edge_fails_scope_check(
     tmp_path: Path,
 ) -> None:

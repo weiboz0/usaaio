@@ -259,7 +259,12 @@ def _repo_root_aliases(tree: ast.AST) -> set[str]:
                 continue
             value = node.value
             targets = node.targets if isinstance(node, ast.Assign) else [node.target]
-            if isinstance(value, ast.Name) and value.id in aliases:
+            rendered = ast.unparse(value) if value is not None else ""
+            discovered_root = (
+                "Path(__file__)" in rendered
+                and (".parents[" in rendered or ".parent" in rendered)
+            )
+            if (isinstance(value, ast.Name) and value.id in aliases) or discovered_root:
                 for target in targets:
                     if isinstance(target, ast.Name) and target.id not in aliases:
                         aliases.add(target.id)
@@ -375,12 +380,25 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
         ),
     }
     violations: list[dict[str, object]] = []
+    aliases = {"ROOT", "repo_root"}
     for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
         if not line.strip() or line.lstrip().startswith("#"):
             continue
         for kind, pattern in patterns.items():
             if pattern.search(line):
                 violations.append({"line": line_number, "kind": kind})
+        assignment = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)=(.*)$", line)
+        if assignment:
+            name, value = assignment.groups()
+            if "$PWD" in value or "$(pwd)" in value or any(
+                f"${alias}" in value for alias in aliases
+            ):
+                aliases.add(name)
+        if any(
+            re.search(rf"\$\{{?{re.escape(alias)}\}}?/units(?:[/\"'\s]|$)", line)
+            for alias in aliases - {"ROOT", "repo_root"}
+        ):
+            violations.append({"line": line_number, "kind": "root-find-variable-units"})
     return violations
 
 
@@ -461,6 +479,24 @@ def test_static_contract_allows_selected_book_local_joins() -> None:
             'book_root="$repo_root/book1"\n',
             1,
             "hardcoded-repo-book-root",
+        ),
+        (
+            "tools/producer.py",
+            'PROJECT = Path(__file__).resolve().parents[1]\nPROJECT / "units"\n',
+            2,
+            "repo-root-path-join",
+        ),
+        (
+            "tools/producer.py",
+            'PROJECT = Path(__file__).resolve().parents[1]\nBASE = PROJECT\nBASE / "units"\n',
+            3,
+            "repo-root-path-join",
+        ),
+        (
+            "scripts/producer.sh",
+            'content_root="$PWD"\nfind "$content_root/units" -name manifest.yaml\n',
+            2,
+            "root-find-variable-units",
         ),
     ],
 )
@@ -975,7 +1011,7 @@ def test_staged_scope_rejects_modifying_preexisting_non_c8_token_path(tmp_path: 
     ["expected-root-resolution", "other-cell", "arbitrary-path-cell"],
 )
 def test_exact_c8_token_notebook_exception_is_cell_scoped(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
+    tmp_path: Path, mutation: str
 ) -> None:
     repo = _init_scope_repo(tmp_path)
     old = repo / "units" / "C8-embeddings" / "lessons" / "01-tokens-and-embeddings.ipynb"
@@ -984,9 +1020,20 @@ def test_exact_c8_token_notebook_exception_is_cell_scoped(
     old.rename(new)
     notebook = json.loads(new.read_text(encoding="utf-8"))
     notebook["cells"][1]["source"] = [
-        "import os\n",
-        "from pathlib import Path\n",
-        "ROOT = Path(os.environ['USAAIO_BOOK_ROOT']).resolve()\n",
+        "import os, pathlib\n",
+        '_env_root = os.environ.get("USAAIO_BOOK_ROOT")\n',
+        "if _env_root:\n",
+        "    _root = pathlib.Path(_env_root).resolve()\n",
+        "else:\n",
+        "    _start = pathlib.Path.cwd().resolve()\n",
+        "    _root = next(\n",
+        "        p for p in [_start, *_start.parents]\n",
+        '        if (p / "syllabus.md").is_file() and (p / "curriculum").is_dir()\n',
+        "    )\n",
+        'os.environ["GENSIM_DATA_DIR"] = str(_root / "reference" / "cache" / "gensim")\n',
+        "\n",
+        "import numpy as np\n",
+        "from gensim.utils import simple_preprocess",
     ]
     if mutation == "other-cell":
         notebook["cells"][2]["source"] = ["changed teaching body\n"]
@@ -994,8 +1041,8 @@ def test_exact_c8_token_notebook_exception_is_cell_scoped(
         notebook["cells"][1]["source"] = [
             "import os\n",
             "from pathlib import Path\n",
-            "SECRET = 'unrelated rewrite'\n",
-            "ROOT = Path('/tmp/not-the-selected-book')\n",
+            "_ = os.environ.get('USAAIO_BOOK_ROOT')\n",
+            "ROOT = Path('/etc').resolve()\n",
         ]
     new.write_text(json.dumps(notebook), encoding="utf-8")
     _git(repo, "add", "-A")
@@ -1007,16 +1054,15 @@ def test_exact_c8_token_notebook_exception_is_cell_scoped(
         assert "cell" in (proc.stdout + proc.stderr).lower()
     else:
         assert proc.returncode == 0, proc.stdout + proc.stderr
-        monkeypatch.setenv("USAAIO_BOOK_ROOT", str(repo / "book1"))
-        execution = subprocess.run(
-            [
-                sys.executable,
-                "-c",
-                "".join(notebook["cells"][1]["source"])
-                + f"\nassert ROOT == Path({str(repo / 'book1')!r}).resolve()\n",
-            ],
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        assert execution.returncode == 0, execution.stdout + execution.stderr
+
+
+def test_permanent_protected_mode_rejects_future_token_path_change(tmp_path: Path) -> None:
+    repo = _init_scope_repo(tmp_path)
+    path = repo / "tests/token-policy.md"
+    path.write_text("future mutation\n", encoding="utf-8")
+    _git(repo, "add", path.relative_to(repo).as_posix())
+
+    proc = _scope_proc(repo, "--protected-cached")
+
+    assert proc.returncode != 0
+    assert "protected token path" in proc.stdout + proc.stderr

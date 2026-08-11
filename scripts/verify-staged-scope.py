@@ -9,6 +9,7 @@ only the inventoried root-resolution cell.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 import sys
@@ -30,14 +31,23 @@ def load_inventory(path: Path) -> dict:
     return raw
 
 
-def changed_paths(mode: str) -> list[str]:
-    if mode == "--cached":
+def changed_paths(mode: str, base: str | None = None) -> list[str]:
+    if mode in {"--cached", "--protected-cached"}:
         out = git(
             "diff",
             "--cached",
             "--name-only",
             "-z",
             "--diff-filter=ACDMRTUXB",
+        ).stdout
+        return [path for path in out.split("\0") if path]
+    if mode == "--protected-diff":
+        out = git("diff", "HEAD", "--name-only", "-z", "--diff-filter=ACDMRTUXB").stdout
+        return [path for path in out.split("\0") if path]
+    if mode == "--protected-range":
+        assert base is not None
+        out = git(
+            "diff", f"{base}..HEAD", "--name-only", "-z", "--diff-filter=ACDMRTUXB"
         ).stdout
         return [path for path in out.split("\0") if path]
     out = git("status", "--porcelain=v1", "-z", "--untracked-files=all").stdout
@@ -111,27 +121,33 @@ def blob(ref: str, path: str) -> bytes:
     return proc.stdout
 
 
-def validate_token_exception(path: str, inventory: dict) -> None:
+def validate_token_exception(
+    path: str, inventory: dict, *, old_ref: str, new_ref: str, status: str
+) -> None:
     exception = inventory.get("token_path_exception", {})
     old_path = exception.get("old_path")
     new_path = exception.get("new_path")
     cells = exception.get("path_resolution_cells")
     if path != new_path or not isinstance(old_path, str) or cells != [1]:
         raise ValueError(f"protected token path: {path}")
-    status = staged_status().get(path, "")
-    old_deleted = old_path in git("diff", "--cached", "--name-only", "--diff-filter=D").stdout.splitlines()
+    old_deleted = old_path in git(
+        "diff", "--cached" if new_ref == ":" else f"{old_ref}..{new_ref}",
+        "--name-only", "--diff-filter=D"
+    ).stdout.splitlines()
     if not (status.startswith("R") or (status == "A" and old_deleted)):
         raise ValueError(f"protected token exception must be a rename with scoped cell rewrite: {path}")
-    old = json.loads(blob("HEAD", old_path))
-    new = json.loads(blob(":", path))
+    old = json.loads(blob(old_ref, old_path))
+    new = json.loads(blob(new_ref, path))
     if len(old.get("cells", [])) != len(new.get("cells", [])):
         raise ValueError(f"protected token notebook cell count changed: {path}")
     for index, (before, after) in enumerate(zip(old["cells"], new["cells"], strict=True)):
         if index == 1:
-            source = "".join(after.get("source", []))
-            required = ("USAAIO_BOOK_ROOT", "Path", ".resolve()")
-            forbidden = ("/tmp/", "SECRET", "pyproject.toml")
-            if not all(item in source for item in required) or any(item in source for item in forbidden):
+            source_hash = hashlib.sha256(
+                json.dumps(
+                    after.get("source", []), ensure_ascii=False, separators=(",", ":")
+                ).encode("utf-8")
+            ).hexdigest()
+            if source_hash != exception.get("path_resolution_source_sha256"):
                 raise ValueError(f"protected token notebook path cell is not the expected rewrite: {path}")
             candidate_before = dict(before)
             candidate_after = dict(after)
@@ -151,29 +167,75 @@ def main() -> int:
     modes = parser.add_mutually_exclusive_group(required=True)
     modes.add_argument("--preflight", dest="mode", action="store_const", const="--preflight")
     modes.add_argument("--cached", dest="mode", action="store_const", const="--cached")
+    modes.add_argument(
+        "--protected-cached", dest="mode", action="store_const", const="--protected-cached"
+    )
+    modes.add_argument(
+        "--protected-diff", dest="mode", action="store_const", const="--protected-diff"
+    )
+    modes.add_argument(
+        "--protected-range", dest="mode", action="store_const", const="--protected-range"
+    )
+    parser.add_argument("--base")
     parser.add_argument("inventory", type=Path)
     args = parser.parse_args()
     inventory = load_inventory(args.inventory)
     failures: list[str] = []
-    paths = changed_paths(args.mode)
-    for path in paths:
-        if not allowed(path, inventory):
-            failures.append(f"outside Plan 019 staged scope: {path}")
-    if args.mode == "--cached":
+    if args.mode == "--protected-range" and not args.base:
+        parser.error("--protected-range requires --base")
+    paths = changed_paths(args.mode, args.base)
+    if args.mode in {"--preflight", "--cached"}:
+        for path in paths:
+            if not allowed(path, inventory):
+                failures.append(f"outside Plan 019 staged scope: {path}")
+    if args.mode in {
+        "--cached", "--protected-cached", "--protected-diff", "--protected-range"
+    }:
         token_exception = inventory.get("token_path_exception", {})
         exception_path = token_exception.get("new_path")
         exception_old_path = token_exception.get("old_path")
+        if args.mode in {"--cached", "--protected-cached"}:
+            deleted_paths = set(
+                git("diff", "--cached", "--name-only", "--diff-filter=D").stdout.splitlines()
+            )
+        elif args.mode == "--protected-diff":
+            deleted_paths = set(
+                git("diff", "HEAD", "--name-only", "--diff-filter=D").stdout.splitlines()
+            )
+        else:
+            deleted_paths = set(
+                git(
+                    "diff", f"{args.base}..HEAD", "--name-only", "--diff-filter=D"
+                ).stdout.splitlines()
+            )
         for path in paths:
             category = protected_category(path)
             if category is None:
                 continue
-            if path == exception_old_path and path in git(
-                "diff", "--cached", "--name-only", "--diff-filter=D"
-            ).stdout.splitlines():
+            if path == exception_old_path and path in deleted_paths and exception_path in paths:
                 continue
             if path == exception_path:
                 try:
-                    validate_token_exception(path, inventory)
+                    if args.mode in {"--cached", "--protected-cached"}:
+                        status = staged_status().get(path, "")
+                        old_ref, new_ref = "HEAD", ":"
+                    elif args.mode == "--protected-diff":
+                        status = git("diff", "HEAD", "--name-status", "-M").stdout
+                        status = next(
+                            (row.split("\t")[0] for row in status.splitlines() if row.endswith("\t" + path)),
+                            "",
+                        )
+                        old_ref, new_ref = "HEAD", ":"
+                    else:
+                        rows = git("diff", f"{args.base}..HEAD", "--name-status", "-M").stdout
+                        status = next(
+                            (row.split("\t")[0] for row in rows.splitlines() if row.endswith("\t" + path)),
+                            "",
+                        )
+                        old_ref, new_ref = args.base, "HEAD"
+                    validate_token_exception(
+                        path, inventory, old_ref=old_ref, new_ref=new_ref, status=status
+                    )
                 except ValueError as exc:
                     failures.append(str(exc))
             else:

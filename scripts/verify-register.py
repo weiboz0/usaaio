@@ -22,7 +22,7 @@ from pathlib import Path
 
 import yaml
 
-from tools.books import load_book_catalog
+from tools.books import load_book_catalog, resolve_contained_path
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOK_ROOT: Path | None = None
@@ -124,9 +124,17 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
     relative = problem.get("solution_path")
     if not isinstance(relative, str) or not relative.strip():
         return [f"{problem['id']}: solution_path is missing"]
-    path = _content_root() / "units" / unit / relative
+    try:
+        path = resolve_contained_path(
+            _content_root(), Path("units") / unit / relative,
+            label=f"{problem['id']}: solution_path",
+        )
+    except ValueError as exc:
+        if "path does not exist" in str(exc):
+            return [f"{problem['id']}: solution_path does not exist"]
+        return [str(exc)]
     if not path.is_file():
-        return [f"{problem['id']}: solution_path does not exist"]
+        return [f"{problem['id']}: solution_path is not a file"]
     notebook = json.loads(path.read_text())
     markdown = [_source(cell) for cell in notebook["cells"] if cell["cell_type"] == "markdown"]
     if not markdown:
@@ -173,9 +181,17 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
     relative = problem.get("path")
     if not isinstance(relative, str) or not relative.strip():
         return [f"{problem['id']}: statement path is missing"]
-    path = _content_root() / "units" / unit / relative
+    try:
+        path = resolve_contained_path(
+            _content_root(), Path("units") / unit / relative,
+            label=f"{problem['id']}: statement path",
+        )
+    except ValueError as exc:
+        if "path does not exist" in str(exc):
+            return [f"{problem['id']}: statement path does not exist"]
+        return [str(exc)]
     if not path.is_file():
-        return [f"{problem['id']}: statement path does not exist"]
+        return [f"{problem['id']}: statement path is not a file"]
     notebook = json.loads(path.read_text())
     markdown = [_source(cell) for cell in notebook["cells"] if cell["cell_type"] == "markdown"]
     errors: list[str] = []

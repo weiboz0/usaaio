@@ -965,6 +965,8 @@ def _check_roadmap(
     inventory_anchors, inventory_problem_ids = _inventory_indexes(inventory)
     all_problem_ids = inventory_problem_ids | _mock_problem_ids(root)
     imported_point_ids: set[str] = set()
+    known_foreign_point_ids: set[str] = set()
+    active_foreign_point_ids: set[str] = set()
     imported_units: set[str] = set()
     if catalog is not None and book is not None and book.depends_on:
         from tools.books import (
@@ -982,11 +984,68 @@ def _check_roadmap(
         for owner_id in book.depends_on:
             owner = catalog.by_id(owner_id)
             owner_roadmap = _yaml(owner.root / "curriculum" / "coverage-map.yaml")
-            imported_point_ids.update(
-                f"{owner_id}:{row['id']}"
+            owner_points = {
+                str(row["id"]): row
                 for row in owner_roadmap.get("knowledge_points", [])
                 if isinstance(row, dict) and isinstance(row.get("id"), str)
+            }
+            known_foreign_point_ids.update(
+                f"{owner_id}:{point_id}" for point_id in owner_points
             )
+            active_units = {
+                unit_id for unit_id in existing_units
+                if unit_id in {str(row.get("id", "")) for row in raw["planned_units"]}
+            }
+            active_points = {
+                str(row.get("id", ""))
+                for row in raw["knowledge_points"]
+                if str(row.get("destination", "")) in active_units
+            }
+            active_unit_prereq_concepts = {
+                concept.split(":", 1)[-1]
+                for unit_id in active_units
+                for concept in syllabus.units[unit_id].concept_prerequisites
+            }
+            for point in raw["knowledge_points"]:
+                if str(point.get("id", "")) not in active_points:
+                    continue
+                for dependency in _strings(point.get("depends_on")):
+                    if not dependency.startswith(f"{owner_id}:"):
+                        continue
+                    local_point = dependency.split(":", 1)[1]
+                    owner_point = owner_points.get(local_point)
+                    if owner_point is None:
+                        errors.append(
+                            f"knowledge point {point['id']}: unknown dependency {dependency}"
+                        )
+                        continue
+                    destination = str(owner_point.get("destination", ""))
+                    shipped = set(_strings(owner_point.get("shipped_concepts")))
+                    relevant = shipped & active_unit_prereq_concepts
+                    if owner_point.get("coverage") != "covered":
+                        errors.append(f"active import {dependency}: owner row is not covered")
+                        continue
+                    if destination not in prerequisite_imports.units:
+                        errors.append(
+                            f"active import {dependency}: destination {destination!r} "
+                            "is not in imports.units"
+                        )
+                        continue
+                    missing_relevant = relevant - set(prerequisite_imports.concepts)
+                    if missing_relevant:
+                        errors.append(
+                            f"active import {dependency}: relevant shipped concepts are not "
+                            f"in imports.concepts: {sorted(missing_relevant)}"
+                        )
+                        continue
+                    try:
+                        resolve_qualified_import(catalog, book, f"{owner_id}:{destination}")
+                        for concept in relevant:
+                            resolve_qualified_import(catalog, book, f"{owner_id}:{concept}")
+                    except ValueError as exc:
+                        errors.append(str(exc))
+                        continue
+                    active_foreign_point_ids.add(dependency)
             owner_syllabus = load_syllabus(owner.root)
             imported_units.update(f"{owner_id}:{unit_id}" for unit_id in owner_syllabus.units)
             owner_inventory = _yaml(owner.root / "curriculum" / "material-inventory.yaml")
@@ -1098,7 +1157,14 @@ def _check_roadmap(
                 errors.append(
                     f"knowledge point {point_id}: Book 1 dependency {dependency} must be qualified"
                 )
-            elif dependency not in imported_point_ids:
+            elif (
+                dependency in known_foreign_point_ids
+                and str(point.get("destination", "")) not in existing_units
+            ):
+                # Qualified future-plan dependencies stay named but are not usable by
+                # currently active content until that plan expands persisted imports.
+                continue
+            elif dependency not in imported_point_ids | active_foreign_point_ids:
                 errors.append(f"knowledge point {point_id}: unknown dependency {dependency}")
         destination_value = point.get("destination")
         destination = str(destination_value) if destination_value is not None else None

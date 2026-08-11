@@ -3,6 +3,7 @@ import sys
 
 import tools
 from tools.cli import SUBCOMMANDS, main
+from tools.model import Report
 
 
 def run_cli(*args):
@@ -49,3 +50,21 @@ def test_schedule_help_describes_the_canonical_40_week_allocation():
     assert proc.returncode == 0
     assert "verify the canonical 40-week allocation" in proc.stdout
     assert "canonical 35-week allocation" not in proc.stdout
+
+
+def test_all_continues_after_first_book_checker_exception(monkeypatch, capsys):
+    seen = []
+
+    def check(root):
+        seen.append(root.name)
+        if root.name == "book1":
+            raise ValueError("first-book-loader-failure")
+        return Report(name="probe", ok=True)
+
+    monkeypatch.setitem(SUBCOMMANDS, "prereq-check", ("probe", check))
+
+    assert main(["--all", "prereq-check"]) == 1
+    output = capsys.readouterr()
+    assert seen == ["book1", "book2"]
+    assert "ERROR book1:prereq-check: first-book-loader-failure" in output.err
+    assert "PASS book2:probe" in output.out

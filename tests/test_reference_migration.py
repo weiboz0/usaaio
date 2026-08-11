@@ -180,6 +180,36 @@ def test_reference_analysis_is_split_semantically_at_the_round2_heading(
     )
 
 
+def test_reference_migration_resumes_after_both_analyses_written_before_legacy_removed(
+    tmp_path: Path,
+) -> None:
+    oracle_base = tmp_path / "oracle"
+    oracle_base.mkdir()
+    oracle = _reference_repo(oracle_base)
+    oracle_proc = _run(oracle)
+    assert oracle_proc.returncode == 0, oracle_proc.stdout + oracle_proc.stderr
+    expected1 = (oracle / "book1/reference/analysis.md").read_text(encoding="utf-8")
+    expected2 = (oracle / "book2/reference/analysis.md").read_text(encoding="utf-8")
+
+    interrupted_base = tmp_path / "interrupted"
+    interrupted_base.mkdir()
+    repo = _reference_repo(interrupted_base)
+    for relative, content in (
+        ("book1/reference/analysis.md", expected1),
+        ("book2/reference/analysis.md", expected2),
+    ):
+        path = repo / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
+    proc = _run(repo)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert not (repo / "reference").exists()
+    assert (repo / "book1/reference/analysis.md").read_text(encoding="utf-8") == expected1
+    assert (repo / "book2/reference/analysis.md").read_text(encoding="utf-8") == expected2
+
+
 def test_committed_reference_analyses_describe_current_per_book_fetch_and_scope() -> None:
     book1 = (ROOT / "book1/reference/analysis.md").read_text(encoding="utf-8")
     book2 = (ROOT / "book2/reference/analysis.md").read_text(encoding="utf-8")

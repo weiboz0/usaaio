@@ -1373,9 +1373,9 @@ def test_ci_local_wires_both_mutation_runners_and_generated_document_checks():
     assert "SKIP generated Book 1 evidence freshness (plan 019 Task 3)" in script
     assert 'usaaio-tools --book "$book" "$c"' in script
     assert "scope-check" in script
-    assert "python -m tools.render_course_structure --root book1 --check" in script
-    training = "python -m tools.verify_training_mutations --root book1"
-    classical = "python -m tools.verify_classical_mutations --root book1"
+    assert 'python -m tools.render_course_structure --root "$book1_root" --check' in script
+    training = 'python -m tools.verify_training_mutations --root "$book1_root"'
+    classical = 'python -m tools.verify_classical_mutations --root "$book1_root"'
     assert training in script
     assert classical in script
     assert script.index(training) < script.index(classical)
@@ -1386,6 +1386,40 @@ def test_pre_merge_guard_runs_embedded_yaml_with_uv_python():
 
     assert "uv run python -" in script
     assert "python3 -" not in script
+
+
+def test_pre_merge_guard_rejects_staged_protected_path(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    for relative in (
+        "scripts/pre-merge-guard.sh",
+        "scripts/verify-staged-scope.py",
+        "tests/fixtures/plan019-path-inventory.yaml",
+    ):
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / relative).read_bytes())
+    (repo / "scripts/pre-merge-guard.sh").chmod(0o755)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+    protected = repo / "tests/.env.production"
+    protected.write_text("SECRET=bad\n", encoding="utf-8")
+    _git(repo, "add", "-f", "tests/.env.production")
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode != 0
+    assert "protected env path" in proc.stdout + proc.stderr
 
 
 def _git(cwd: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -1544,12 +1578,47 @@ def test_ci_executes_book2_boundary_before_derived_and_preserves_r1_checks() -> 
     checks = next(line for line in lines if line.startswith("for c in prereq-check"))
 
     assert "layer-boundary-check" in checks
-    assert "uv run python -m tools.render_course_structure --root book1 --check" in lines
+    assert 'uv run python -m tools.render_course_structure --root "$book1_root" --check' in lines
     assert 'bash scripts/build-pdf.sh --book "$book" || { rc=$?; [[ $rc -eq 3 ]] || exit "$rc"; }' in lines
     assert "prereq-check" in checks
     assert "coverage-check" in checks
     assert "blueprint-check" in checks
     assert 'find "$book_root/units" "$book_root/mocktests" -type f \\' in lines
+
+
+def test_ci_registry_probe_reports_noncanonical_roots_without_id_fallback(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    (repo / "round1").mkdir(parents=True)
+    (repo / "advanced").mkdir()
+    (repo / "books.yaml").write_text(
+        "books_version: 1\nbooks:\n"
+        "  - {id: book1, number: 1, root: round1, depends_on: []}\n"
+        "  - {id: book2, number: 2, root: advanced, depends_on: [book1]}\n",
+        encoding="utf-8",
+    )
+
+    proc = subprocess.run(
+        [
+            "bash", str(ROOT / "scripts/ci-local.sh"), "--root", str(repo),
+            "--registry-probe",
+        ],
+        cwd=ROOT,
+        env={**os.environ, "PATH": f"{Path.home() / '.local/bin'}:{os.environ['PATH']}"},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert proc.stdout.splitlines() == [
+        f"book1\t1\t{repo / 'round1'}",
+        f"book2\t2\t{repo / 'advanced'}",
+    ]
+    script = (ROOT / "scripts/ci-local.sh").read_text(encoding="utf-8")
+    assert "$PWD/$book" not in script
+    assert "--root book1" not in script
 
 
 def test_ci_executes_book2_schedule_check() -> None:

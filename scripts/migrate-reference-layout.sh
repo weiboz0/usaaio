@@ -54,19 +54,15 @@ move_entry() {
   fi
 }
 
-if [[ -e reference/analysis.md ]]; then
-  git mv reference/analysis.md book1/reference/analysis.md
-fi
-
 python3 - <<'PY'
 from pathlib import Path
 
-source = Path("book1/reference/analysis.md")
-if source.exists():
-    text = source.read_text(encoding="utf-8")
+legacy = Path("reference/analysis.md")
+if legacy.exists():
+    text = legacy.read_text(encoding="utf-8")
     marker = "## Round 2 shape and topics"
     if marker not in text:
-        raise SystemExit(f"{source}: missing semantic split heading {marker!r}")
+        raise SystemExit(f"{legacy}: missing semantic split heading {marker!r}")
     pre, r2 = text.split(marker, 1)
     lines = pre.splitlines(keepends=True)
     book1 = "".join(
@@ -95,9 +91,30 @@ if source.exists():
     book2 = book2_prefix + marker + r2
     if "r2-" in book1 or marker in book1 or "r1-" in book2 or "## Round 1" in book2:
         raise SystemExit("semantic reference split leaked round-specific content")
-    source.write_text(book1, encoding="utf-8")
-    Path("book2/reference/analysis.md").write_text(book2, encoding="utf-8")
+    outputs = {
+        Path("book1/reference/analysis.md"): book1,
+        Path("book2/reference/analysis.md"): book2,
+    }
+    existing = {path: path.read_text(encoding="utf-8") for path in outputs if path.exists()}
+    if existing and set(existing) != set(outputs):
+        raise SystemExit("partial reference analysis split has only one book-local output")
+    for path, actual in existing.items():
+        if actual != outputs[path]:
+            raise SystemExit(f"partial reference analysis split is inconsistent: {path}")
+    for path, content in outputs.items():
+        if not path.exists():
+            temporary = path.with_suffix(path.suffix + ".tmp")
+            temporary.write_text(content, encoding="utf-8")
+            temporary.replace(path)
 PY
+
+if [[ -e reference/analysis.md ]]; then
+  if git ls-files --error-unmatch reference/analysis.md >/dev/null 2>&1; then
+    git rm reference/analysis.md
+  else
+    rm reference/analysis.md
+  fi
+fi
 
 for path in reference/r1-* reference/cache reference/outlines-*; do
   [[ -e "$path" ]] || continue

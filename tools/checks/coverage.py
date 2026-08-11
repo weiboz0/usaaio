@@ -5,6 +5,7 @@ from posixpath import normpath
 
 import yaml
 
+from tools.books import resolve_contained_path
 from tools.model import Report, load_syllabus, load_unit_manifests
 
 
@@ -73,10 +74,21 @@ def check_coverage(root: str | Path) -> Report:
                 )
         unit_dir = manifest.path.parent
         for problem in manifest.practice:
-            if not (unit_dir / problem.path).exists():
-                errors.append(f"{manifest.path}: missing practice path {problem.path}")
-            if not (unit_dir / problem.solution_path).exists():
-                errors.append(f"{manifest.path}: missing solution path {problem.solution_path}")
+            for kind, relative in (
+                ("practice", problem.path),
+                ("solution", problem.solution_path),
+            ):
+                try:
+                    resolve_contained_path(
+                        root,
+                        unit_dir.relative_to(root) / relative,
+                        label=f"{manifest.path}: {kind} {problem.id}",
+                    )
+                except ValueError as exc:
+                    if "path does not exist" in str(exc):
+                        errors.append(f"{manifest.path}: missing {kind} path {relative}")
+                    else:
+                        errors.append(str(exc))
             for concept in problem.concepts:
                 if concept not in vocabulary:
                     errors.append(f"{manifest.path}: practice {problem.id} unknown concept {concept}")

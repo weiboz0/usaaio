@@ -131,6 +131,7 @@ token_path_exception:
   old_path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
   new_path: book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
   path_resolution_cells: [1]
+  path_resolution_source_sha256: c41afcaea3d06f3089e9aa446d3865e8d67a7fca3cb9d2e16b35ef0b755ffb45
 notebook_pyproject_discovery:
   - {path: mocktests/r1-001/problems/p05.ipynb, cells: [1]}
   - {path: mocktests/r1-001/problems/p07.ipynb, cells: [1]}
