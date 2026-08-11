@@ -266,6 +266,16 @@ def test_catalog_structure_mutation_matrix(
         _books_module().load_book_catalog(tmp_path)
 
 
+def test_catalog_rejects_undeclared_symlink_alias_of_declared_book(tmp_path: Path) -> None:
+    write_two_book_repo(tmp_path)
+    (tmp_path / "book3").symlink_to(tmp_path / "book1", target_is_directory=True)
+
+    with pytest.raises(ValueError) as exc_info:
+        _books_module().load_book_catalog(tmp_path)
+
+    assert str(exc_info.value) == f"{tmp_path}: undeclared book root book3 is a symlink"
+
+
 @pytest.mark.parametrize("relative", REQUIRED_PATHS)
 def test_selected_book_validation_reports_each_missing_required_file(
     tmp_path: Path, relative: str

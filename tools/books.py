@@ -232,6 +232,8 @@ def load_book_catalog(repo_root: str | Path) -> BookCatalog:
             continue
         if not (entry.is_dir() or entry.is_symlink()):
             continue
+        if entry.is_symlink():
+            raise ValueError(f"{root}: undeclared book root {entry.name} is a symlink")
         if entry.resolve(strict=False) not in declared_roots:
             raise ValueError(f"{root}: undeclared book root {entry.name}")
     for legacy in _FORBIDDEN_LEGACY_ROOTS:
