@@ -380,7 +380,9 @@ def _shell_expanding_text(source: str) -> str:
     escaped = False
     for character in source:
         if escaped:
-            output.append(character if not in_single else " ")
+            output.append(
+                " " if in_single or character in {"$", "`"} else character
+            )
             escaped = False
             continue
         if character == "\\" and not in_single:
@@ -397,23 +399,28 @@ def _shell_expanding_text(source: str) -> str:
     return "".join(output)
 
 
+def _shell_variable_reference_pattern(names: set[str]) -> str:
+    alternatives = "|".join(re.escape(name) for name in sorted(names))
+    return rf"\$(?:\{{(?:{alternatives})\}}|(?:{alternatives})(?![A-Za-z0-9_]))"
+
+
 def _shell_discovers_repo_root(value: str, aliases: set[str]) -> bool:
     expanding = _shell_expanding_text(value)
     return bool(
-        re.search(r"\$(?:PWD\b|\{PWD\})", expanding)
+        re.search(_shell_variable_reference_pattern({"PWD"}), expanding)
         or re.search(r"\$\(\s*pwd\s*\)", expanding)
         or re.search(
             r"\$\(\s*git\s+rev-parse\s+--show-toplevel(?=\s|\))[^)]*\)",
             expanding,
         )
-        or any(
-            re.search(rf"\$\{{?{re.escape(alias)}\}}?", expanding)
-            for alias in aliases
-        )
+        or re.search(_shell_variable_reference_pattern(aliases), expanding)
     )
 
 
 def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
+    repository_root_reference = _shell_variable_reference_pattern(
+        {"ROOT", "repo_root"}
+    )
     patterns = {
         "root-find-units": re.compile(r"\bfind\s+units(?:\s|$)"),
         "root-find-units-mocktests": re.compile(r"\bfind\s+units\s+mocktests(?:\s|$)"),
@@ -421,10 +428,10 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
             r"\bfor\s+(?:dir|[A-Za-z_][A-Za-z0-9_]*)\s+in\s+units\s+mocktests\b"
         ),
         "root-find-variable-units": re.compile(
-            r"\bfind\s+[\"']?\$(?:ROOT|repo_root)(?:/|\}/)units(?:[/\"'\s]|$)"
+            rf"\bfind\s+[\"']?{repository_root_reference}/units(?:[/\"'\s]|$)"
         ),
         "hardcoded-repo-book-root": re.compile(
-            r"\$(?:ROOT|repo_root)(?:/|\}/)book[12](?:[/\"'\s]|$)"
+            rf"{repository_root_reference}/book[12](?:[/\"'\s]|$)"
         ),
     }
     violations: list[dict[str, object]] = []
@@ -445,7 +452,7 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
                 aliases.add(name)
         if any(
             re.search(
-                rf"\$\{{?{re.escape(alias)}\}}?/units(?:[/\"'\s]|$)",
+                rf"{_shell_variable_reference_pattern({alias})}/units(?:[/\"'\s]|$)",
                 expanding_line,
             )
             for alias in aliases - {"ROOT", "repo_root"}
@@ -547,6 +554,18 @@ def test_static_contract_allows_selected_book_local_joins() -> None:
         (
             "scripts/producer.sh",
             'content_root="$PWD"\nfind "$content_root/units" -name manifest.yaml\n',
+            2,
+            "root-find-variable-units",
+        ),
+        (
+            "scripts/producer.sh",
+            'content_root="$ROOT"\nfind "$content_root/units" -name manifest.yaml\n',
+            2,
+            "root-find-variable-units",
+        ),
+        (
+            "scripts/producer.sh",
+            'content_root="${ROOT}"\nfind "$content_root/units" -name manifest.yaml\n',
             2,
             "root-find-variable-units",
         ),
@@ -685,6 +704,33 @@ def test_actual_scanner_allows_bookspec_and_book_local_root_joins(tmp_path: Path
         'find "${literal}/units" -name manifest.yaml\n',
         encoding="utf-8",
     )
+
+    assert _actual_repository_root_accesses(tmp_path) == {}
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        'literal="\\${PWD}"\nfind "${literal}/units" -name manifest.yaml\n',
+        (
+            'book_root="${ROOT_FOR_SELECTED_BOOK}"\n'
+            'find "${book_root}/units" -name manifest.yaml\n'
+        ),
+        'book_root="$ROOTED"\nfind "$book_root/units" -name manifest.yaml\n',
+        'book_root="${MY_PWD}"\nfind "${book_root}/units" -name manifest.yaml\n',
+        (
+            'selected_alias="${SELECTED_BOOK_ROOT}"\n'
+            'book_root="$selected_alias"\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+    ],
+)
+def test_actual_scanner_preserves_safe_shell_path_controls(
+    tmp_path: Path, source: str
+) -> None:
+    producer = tmp_path / "scripts" / "safe-selected.sh"
+    producer.parent.mkdir(parents=True)
+    producer.write_text(source, encoding="utf-8")
 
     assert _actual_repository_root_accesses(tmp_path) == {}
 
