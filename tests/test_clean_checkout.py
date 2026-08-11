@@ -4,6 +4,7 @@ import ast
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -404,22 +405,125 @@ def _shell_variable_reference_pattern(names: set[str]) -> str:
     return rf"\$(?:\{{(?:{alternatives})\}}|(?:{alternatives})(?![A-Za-z0-9_]))"
 
 
+def _shell_logical_lines(source: str) -> list[tuple[int, str]]:
+    """Join shell continuations and retain the first physical source line."""
+    logical: list[tuple[int, str]] = []
+    pending = ""
+    first_line = 1
+    for line_number, line in enumerate(source.splitlines(), start=1):
+        if not pending:
+            first_line = line_number
+        trailing_backslashes = len(line) - len(line.rstrip("\\"))
+        if trailing_backslashes % 2:
+            pending += line[:-1]
+            continue
+        logical.append((first_line, pending + line))
+        pending = ""
+    if pending:
+        logical.append((first_line, pending))
+    return logical
+
+
+def _shell_words(source: str) -> list[str]:
+    """Split top-level shell words without splitting command substitutions."""
+    words: list[str] = []
+    current: list[str] = []
+    in_single = False
+    in_double = False
+    escaped = False
+    command_depth = 0
+    index = 0
+    while index < len(source):
+        character = source[index]
+        if escaped:
+            current.append(character)
+            escaped = False
+            index += 1
+            continue
+        if character == "\\" and not in_single:
+            current.append(character)
+            escaped = True
+            index += 1
+            continue
+        if character == "'" and not in_double:
+            in_single = not in_single
+        elif character == '"' and not in_single:
+            in_double = not in_double
+        if (
+            character == "$"
+            and index + 1 < len(source)
+            and source[index + 1] == "("
+            and not in_single
+        ):
+            command_depth += 1
+        elif character == ")" and command_depth and not in_single:
+            command_depth -= 1
+        if character.isspace() and not in_single and not in_double and not command_depth:
+            if current:
+                words.append("".join(current))
+                current = []
+        else:
+            current.append(character)
+        index += 1
+    if current:
+        words.append("".join(current))
+    return words
+
+
+def _shell_assignments(source: str) -> list[tuple[str, str]]:
+    assignments: list[tuple[str, str]] = []
+    for word in _shell_words(source):
+        assignment = re.fullmatch(r"([A-Za-z_][A-Za-z0-9_]*)=(.*)", word)
+        if assignment:
+            assignments.append(assignment.groups())
+    return assignments
+
+
+def _is_git_root_command(command: str) -> bool:
+    try:
+        lexer = shlex.shlex(command, posix=True, punctuation_chars="><&;|")
+        lexer.whitespace_split = True
+        lexer.commenters = ""
+        tokens = list(lexer)
+    except ValueError:
+        return False
+    if tokens[:3] != ["git", "rev-parse", "--show-toplevel"]:
+        return False
+    index = 3
+    while index < len(tokens):
+        if tokens[index].isdigit():
+            index += 1
+        if index >= len(tokens) or tokens[index] not in {">", ">>", ">&", "&>"}:
+            return False
+        index += 1
+        if index >= len(tokens) or tokens[index] in {">", ">>", ">&", "&>", ";", "|", "||", "&&"}:
+            return False
+        index += 1
+    return True
+
+
+def _has_git_root_substitution(source: str) -> bool:
+    expanding = _shell_expanding_text(source)
+    for match in re.finditer(r"\$\(([^()]*)\)", expanding):
+        raw_command = source[match.start(1) : match.end(1)]
+        if _is_git_root_command(raw_command):
+            return True
+    return False
+
+
 def _shell_discovers_repo_root(value: str, aliases: set[str]) -> bool:
     expanding = _shell_expanding_text(value)
     return bool(
         re.search(_shell_variable_reference_pattern({"PWD"}), expanding)
         or re.search(r"\$\(\s*pwd\s*\)", expanding)
-        or re.search(
-            r"\$\(\s*git\s+rev-parse\s+--show-toplevel(?=\s|\))[^)]*\)",
-            expanding,
-        )
+        or _has_git_root_substitution(value)
         or re.search(_shell_variable_reference_pattern(aliases), expanding)
     )
 
 
 def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
     repository_root_reference = _shell_variable_reference_pattern(
-        {"ROOT", "repo_root"}
+        {"PWD", "ROOT", "repo_root"}
     )
     patterns = {
         "root-find-units": re.compile(r"\bfind\s+units(?:\s|$)"),
@@ -435,19 +539,16 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
         ),
     }
     violations: list[dict[str, object]] = []
-    aliases = {"ROOT", "repo_root"}
-    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+    root_names = {"PWD", "ROOT", "repo_root"}
+    aliases = set(root_names)
+    for line_number, line in _shell_logical_lines(path.read_text(encoding="utf-8")):
         if not line.strip() or line.lstrip().startswith("#"):
             continue
         expanding_line = _shell_expanding_text(line)
         for kind, pattern in patterns.items():
             if pattern.search(expanding_line):
                 violations.append({"line": line_number, "kind": kind})
-        assignment = re.match(
-            r"\s*([A-Za-z_][A-Za-z0-9_]*)=(.*)$", expanding_line
-        )
-        if assignment:
-            name, value = assignment.groups()
+        for name, value in _shell_assignments(line):
             if _shell_discovers_repo_root(value, aliases):
                 aliases.add(name)
         if any(
@@ -455,7 +556,7 @@ def _actual_shell_root_accesses(path: Path) -> list[dict[str, object]]:
                 rf"{_shell_variable_reference_pattern({alias})}/units(?:[/\"'\s]|$)",
                 expanding_line,
             )
-            for alias in aliases - {"ROOT", "repo_root"}
+            for alias in aliases - root_names
         ):
             violations.append({"line": line_number, "kind": "root-find-variable-units"})
     return violations
@@ -726,6 +827,183 @@ def test_actual_scanner_allows_bookspec_and_book_local_root_joins(tmp_path: Path
     ],
 )
 def test_actual_scanner_preserves_safe_shell_path_controls(
+    tmp_path: Path, source: str
+) -> None:
+    producer = tmp_path / "scripts" / "safe-selected.sh"
+    producer.parent.mkdir(parents=True)
+    producer.write_text(source, encoding="utf-8")
+
+    assert _actual_repository_root_accesses(tmp_path) == {}
+
+
+@pytest.mark.parametrize(
+    ("source", "line"),
+    [
+        ('find "$PWD/units" -name manifest.yaml\n', 1),
+        ('find "${PWD}/units" -name manifest.yaml\n', 1),
+        (
+            (
+                'content_root=$(git "rev-parse" --show-toplevel)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                "content_root=$(git 'rev-parse' '--show-toplevel')\n"
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'content_root=$(git rev-parse --show-toplevel> /dev/null)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'content_root=$("git" \'rev-parse\' "--show-toplevel" > /dev/null)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'content_root=$(git rev-parse --show-toplevel>/dev/null)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'content_root=$(git rev-parse --show-toplevel 2>/dev/null)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'content_root=$(git rev-parse --show-toplevel 2>&1)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'content_root="$(git rev-parse \\\n'
+                '  --show-toplevel)"\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            3,
+        ),
+        (('find "$PWD/uni\\\n' 'ts" -name manifest.yaml\n'), 1),
+        (
+            (
+                'content_root=$(git rev-parse --show-top\\\n'
+                'level)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            3,
+        ),
+        (
+            (
+                'export content_root="$PWD"\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'readonly content_root="${PWD}"\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'local content_root=$(git rev-parse --show-toplevel)\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'declare content_root="$ROOT"\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'typeset content_root="${repo_root}"\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'export project="$PWD" content_root="$project"\n'
+                'find "$content_root/units" -name manifest.yaml\n'
+            ),
+            2,
+        ),
+        (
+            (
+                'readonly project=$(git rev-parse --show-toplevel)\n'
+                'local middle="$project" content_root="${middle}"\n'
+                'find "${content_root}/units" -name manifest.yaml\n'
+            ),
+            3,
+        ),
+    ],
+)
+def test_actual_scanner_rejects_normalized_shell_root_discovery(
+    tmp_path: Path, source: str, line: int
+) -> None:
+    producer = tmp_path / "scripts" / "producer.sh"
+    producer.parent.mkdir(parents=True)
+    producer.write_text(source, encoding="utf-8")
+
+    assert _actual_repository_root_accesses(tmp_path) == {
+        "scripts/producer.sh": [{"line": line, "kind": "root-find-variable-units"}]
+    }
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        'book_root="$PWD_SUFFIX"\nfind "$book_root/units" -name manifest.yaml\n',
+        'book_root="${PWD_SUFFIX}"\nfind "$book_root/units" -name manifest.yaml\n',
+        (
+            'book_root=$(git rev-parse --show-prefix)\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+        (
+            'book_root=$(git status --show-toplevel)\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+        (
+            'book_root=$(echo git rev-parse --show-toplevel)\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+        (
+            'book_root=$(git rev-parse --show-toplevel; echo suffix)\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+        (
+            'export selected="${ROOT_FOR_SELECTED_BOOK}" book_root="$selected"\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+        (
+            'readonly selected="${SELECTED_BOOK_ROOT}"\n'
+            'local middle="$selected" book_root="$middle"\n'
+            'find "$book_root/units" -name manifest.yaml\n'
+        ),
+    ],
+)
+def test_actual_scanner_allows_normalized_shell_near_misses(
     tmp_path: Path, source: str
 ) -> None:
     producer = tmp_path / "scripts" / "safe-selected.sh"
