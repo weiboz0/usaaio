@@ -397,7 +397,7 @@ practice:
   path: practice/p22.ipynb
   solution_path: practice/p22_solution.ipynb
   minutes: 55
-  after_session: 4
+  after_session: 5
   compute:
     policy: cpu
     seed: 20260808

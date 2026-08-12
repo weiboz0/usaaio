@@ -354,7 +354,7 @@ def _render_book2_document(schedule: Book2CourseSchedule) -> str:
         [
             "",
             (
-                "The 255/275/420/325/325/60-minute progression intentionally peaks in "
+                "The 255/275/420/270/380/60-minute progression intentionally peaks in "
                 "derivation-heavy Week 3 and tapers to review instead of applying Book 1's "
                 "450–500-minute semester band."
             ),

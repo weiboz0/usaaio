@@ -41,8 +41,8 @@ BOOK2_WEEK_PROBLEMS = (
         "B2-019-p21",
         "B2-019-p23",
     ),
-    ("B2-019-p11", "B2-019-p17", "B2-019-p18", "B2-019-p22"),
-    ("B2-019-p12", "B2-019-p19", "B2-019-p20", "B2-019-p24"),
+    ("B2-019-p11", "B2-019-p17", "B2-019-p18"),
+    ("B2-019-p12", "B2-019-p19", "B2-019-p20", "B2-019-p22", "B2-019-p24"),
 )
 
 
@@ -548,11 +548,13 @@ def _parse_book2_schedule(
         (30, 90, 135),
         (90, 185),
         (90, 330),
-        (90, 235),
-        (90, 235),
+        (90, 180),
+        (90, 290),
         (60,),
     )
     listed_problem_ids: list[str] = []
+    scheduled_after_sessions: dict[str, int] = {}
+    latest_session = 0
     for index, week in enumerate(weeks[:6]):
         kinds = tuple(allocation.kind for allocation in week.allocations)
         if kinds != expected_kinds[index]:
@@ -569,6 +571,8 @@ def _parse_book2_schedule(
         lesson_rows = [
             allocation for allocation in week.allocations if allocation.kind == "lesson-session"
         ]
+        if len(lesson_rows) == 1 and lesson_rows[0].session is not None:
+            latest_session = lesson_rows[0].session
         if index < 5 and (
             len(lesson_rows) != 1 or lesson_rows[0].session != index + 1
         ):
@@ -585,6 +589,8 @@ def _parse_book2_schedule(
                 )
             elif practice_rows[0].problem_ids is not None:
                 listed_problem_ids.extend(practice_rows[0].problem_ids)
+                for problem_id in practice_rows[0].problem_ids:
+                    scheduled_after_sessions[problem_id] = latest_session
                 expected_ids = list(BOOK2_WEEK_PROBLEMS[index])
                 if practice_rows[0].problem_ids != expected_ids:
                     errors.append(
@@ -634,6 +640,7 @@ def _parse_book2_schedule(
             root,
             manifest_paths,
             listed_problem_ids,
+            scheduled_after_sessions,
             errors,
         )
 
@@ -652,6 +659,7 @@ def _validate_live_book2_manifest(
     root: Path,
     manifest_paths: list[Path],
     scheduled_problem_ids: list[str],
+    scheduled_after_sessions: dict[str, int],
     errors: list[str],
 ) -> frozenset[str]:
     if len(manifest_paths) != 1:
@@ -735,6 +743,17 @@ def _validate_live_book2_manifest(
                 errors.append(
                     f"{problem_id} manifest minutes {row.get('minutes')}; "
                     f"scheduled contract requires {expected_minutes}"
+                )
+            required_session = row.get("after_session")
+            scheduled_session = scheduled_after_sessions.get(problem_id)
+            if (
+                type(required_session) is int
+                and scheduled_session is not None
+                and required_session > scheduled_session
+            ):
+                errors.append(
+                    f"{problem_id} requires session {required_session} but is scheduled "
+                    f"after session {scheduled_session}"
                 )
         else:
             errors.append(f"live Book 2 manifest practice row {row_index} id must be a string")

@@ -58,8 +58,8 @@ weeks:
       - kind: practice
         unit: B2-019-attention-transformers
         chunk: 4
-        minutes: 235
-        problem_ids: [B2-019-p11, B2-019-p17, B2-019-p18, B2-019-p22]
+        minutes: 180
+        problem_ids: [B2-019-p11, B2-019-p17, B2-019-p18]
   - book_week: 5
     global_week: 45
     allocations:
@@ -70,8 +70,8 @@ weeks:
       - kind: practice
         unit: B2-019-attention-transformers
         chunk: 5
-        minutes: 235
-        problem_ids: [B2-019-p12, B2-019-p19, B2-019-p20, B2-019-p24]
+        minutes: 290
+        problem_ids: [B2-019-p12, B2-019-p19, B2-019-p20, B2-019-p22, B2-019-p24]
   - book_week: 6
     global_week: 46
     allocations:

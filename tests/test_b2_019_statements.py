@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import ast
+import hashlib
+import importlib.util
 import json
 import re
 import shutil
@@ -108,7 +110,7 @@ DIFFICULTIES = [
     "intro", "core", "advanced", "core", "core", "core", "advanced", "core",
     "advanced", "core", "advanced", "core", "core", "intro", "advanced", "advanced",
 ]
-AFTER_SESSION = [1, 1, 2, 2, 3, 1, 2, 2, 3, 3, 4, 5, 1, 2, 3, 3, 4, 4, 5, 5, 3, 4, 3, 5]
+AFTER_SESSION = [1, 1, 2, 2, 3, 1, 2, 2, 3, 3, 4, 5, 1, 2, 3, 3, 4, 4, 5, 5, 3, 5, 3, 5]
 DIRECT_TAGS = {
     "matrix-transpose": {2, 6, 7},
     "query-key-value-attention": {1, 2, 6},
@@ -147,6 +149,53 @@ def _code_source(path: Path) -> str:
         for cell in notebook["cells"]
         if cell["cell_type"] == "code"
     )
+
+
+def _qualified_prerequisites_from_header(path: Path) -> set[str]:
+    match = re.search(
+        r"\*\*Qualified Book 1 prerequisites:\*\* (?P<items>[^\n]+)",
+        _source(path),
+    )
+    assert match is not None, path
+    return set(re.findall(r"`(book1:[^`]+)`", match.group("items")))
+
+
+def _embedding_api_violations(source: str) -> list[str]:
+    tree = ast.parse(source)
+    aliases: dict[str, str] = {}
+    violations: list[str] = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                aliases[alias.asname or alias.name] = alias.name
+                if alias.name in {"torch.nn.modules.sparse", "torch.nn.functional"}:
+                    violations.append(f"import {alias.name}")
+        elif isinstance(node, ast.ImportFrom):
+            module = node.module or ""
+            for alias in node.names:
+                qualified = f"{module}.{alias.name}" if module else alias.name
+                aliases[alias.asname or alias.name] = qualified
+                if alias.name == "Embedding" or qualified.endswith(".embedding"):
+                    violations.append(f"import {qualified}")
+
+    def qualified_name(node: ast.AST) -> str | None:
+        if isinstance(node, ast.Name):
+            return aliases.get(node.id, node.id)
+        if isinstance(node, ast.Attribute):
+            owner = qualified_name(node.value)
+            return f"{owner}.{node.attr}" if owner else node.attr
+        return None
+
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        name = qualified_name(node.func)
+        if name and (
+            name in {"torch.nn.Embedding", "torch.nn.functional.embedding"}
+            or name.endswith((".nn.Embedding", ".functional.embedding"))
+        ):
+            violations.append(f"call {name}")
+    return violations
 
 
 def test_b2_019_statement_inventory_is_exact_and_contains_no_solutions() -> None:
@@ -322,6 +371,40 @@ def test_lesson_order_and_introduction_sessions_match_concept_contract() -> None
     assert joined.count("Worked example") >= 2
 
 
+def test_lesson_prerequisite_header_exactly_matches_notebook_metadata() -> None:
+    for relative in LESSONS:
+        path = UNIT / relative
+        notebook = json.loads(path.read_text(encoding="utf-8"))
+        visible = _qualified_prerequisites_from_header(path)
+        metadata = set(notebook["metadata"]["usaaio"]["qualified_prerequisites"])
+        assert visible == metadata, path
+
+
+def test_each_ninety_minute_lesson_has_substantive_progression() -> None:
+    required_anchors = {
+        1: ("$QK^\\top$", "stable softmax", "convex combination"),
+        2: ("padding mask", "causal mask", "row normalization"),
+        3: ("$Q=XW_Q$", "$K=XW_K$", "$V=XW_V$", "$QK^\\top", "$AV$"),
+        4: ("gradient", "cross-entropy", "parameter update"),
+        5: ("encoder self-attention", "decoder causal self-attention", "cross-attention", "mask flow"),
+    }
+    for session, relative in enumerate(LESSONS[1:], start=1):
+        source = _source(UNIT / relative)
+        headings = re.findall(r"^## \d+\. ", source, flags=re.MULTILINE)
+        assert 6 <= len(headings) <= 10, (relative, len(headings))
+        assert source.count("Worked example") >= 2, relative
+        assert source.count("Checkpoint") >= 6, relative
+        for anchor in required_anchors[session]:
+            assert anchor in source, (relative, anchor)
+
+
+def test_p14_targets_post_softmax_normalization_not_causal_independence() -> None:
+    source = _source(UNIT / "practice/p14.ipynb")
+    assert "post-softmax zeroing preserves causal independence" in source
+    assert "breaks row normalization" in source
+    assert "post-softmax mask breaks the claim" not in source
+
+
 def test_session4_executes_a_deterministic_attention_training_example() -> None:
     lesson = UNIT / "lessons/04-attention-module-and-tiny-training.ipynb"
     source = _source(lesson)
@@ -432,19 +515,106 @@ def test_coding_statements_pin_reproducibility_and_api_contracts() -> None:
         assert "embedding-matrices" not in source
 
 
+@pytest.mark.parametrize("number", [9, 17])
+def test_embedding_apis_are_ast_forbidden_and_metadata_stays_independent(
+    number: int,
+) -> None:
+    path = UNIT / f"practice/p{number:02}.ipynb"
+    notebook = json.loads(path.read_text(encoding="utf-8"))
+    assert _embedding_api_violations(_code_source(path)) == []
+    assert "book1:C8-embeddings" not in notebook["metadata"]["usaaio"][
+        "qualified_prerequisites"
+    ]
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        "from torch.nn import Embedding as E\nlayer = E(4, 2)",
+        "import torch.nn as layers\nlayer = layers.Embedding(4, 2)",
+        "from torch.nn.functional import embedding as lookup\nlookup(ids, weight)",
+        "import torch.nn.functional as F\nF.embedding(ids, weight)",
+    ],
+)
+def test_embedding_api_audit_rejects_imports_aliases_and_calls(source: str) -> None:
+    assert _embedding_api_violations(source)
+
+
 def test_generator_is_deterministic_cpu_only_and_uses_no_network(tmp_path: Path) -> None:
     script = UNIT / "scripts/generate_attention_data.py"
     source = script.read_text(encoding="utf-8")
-    ast.parse(source)
+    tree = ast.parse(source)
     assert f"SEED = {SEED}" in source
-    assert "numpy" in source
-    assert not any(token in source for token in ("requests", "urllib", "cuda", "mps"))
+    imported_roots = {
+        alias.name.split(".")[0]
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Import)
+        for alias in node.names
+    } | {
+        (node.module or "").split(".")[0]
+        for node in ast.walk(tree)
+        if isinstance(node, ast.ImportFrom)
+    }
+    assert imported_roots <= {"__future__", "argparse", "io", "pathlib", "zipfile", "numpy"}
+    assert "allow_pickle=False" in source
+    assert not any(token in source for token in ("requests", "urllib", "socket", "cuda", "mps", "subprocess"))
 
     first = tmp_path / "first.npz"
     second = tmp_path / "second.npz"
     subprocess.run([sys.executable, str(script), "--output", str(first)], check=True)
     subprocess.run([sys.executable, str(script), "--output", str(second)], check=True)
     assert first.read_bytes() == second.read_bytes()
+    assert hashlib.sha256(first.read_bytes()).hexdigest() == (
+        "2dc13bb31a8e4c85beb40e593416a490e72a6621186c9a316ba2dec1991caad4"
+    )
+
+    with __import__("numpy").load(first, allow_pickle=False) as generated:
+        assert set(generated.files) == {"q", "k", "v", "one_hot"}
+        expected = {
+            "q": ((2, 3, 4), "float64", "ed407a452f54cf09037e6dd7f308a26d0e1d1e28a48f215dc08127c54062d998"),
+            "k": ((2, 5, 4), "float64", "63ac5d7fd6cf6ed9a118ab2aee682328741a11169b734e65e1608c2f8e46d4d6"),
+            "v": ((2, 5, 6), "float64", "331e1fec9a3e53aa8c15ccd6686162de0694c57118cd707d1c8f1250355d1cf8"),
+            "one_hot": ((6, 4), "float64", "9543374b25a5ae224ee1ebc7168fab20504f36ef6fcc53bfbe051b6801b6cb64"),
+        }
+        np = __import__("numpy")
+        for name, (shape, dtype, digest) in expected.items():
+            value = generated[name]
+            assert value.shape == shape
+            assert value.dtype == np.dtype(dtype)
+            assert np.isfinite(value).all()
+            assert value.dtype.hasobject is False
+            assert hashlib.sha256(value.tobytes()).hexdigest() == digest
+        assert np.array_equal(
+            generated["one_hot"],
+            np.eye(4, dtype=np.float64)[[0, 1, 2, 1, 3, 0]],
+        )
+        np.testing.assert_allclose(
+            generated["q"][[0, -1], [0, -1]],
+            [[-1.13056437, -1.31580832, -0.02180598, 1.89559066],
+             [2.41720520, -2.74744196, 0.40116980, 0.68780243]],
+            atol=1e-8,
+            rtol=0,
+        )
+        np.testing.assert_allclose(
+            generated["k"][[0, -1], [0, -1]],
+            [[0.77040645, -0.27747147, -1.86551073, 0.38635912],
+             [-0.19901891, 0.26995594, -0.72964401, -0.29161591]],
+            atol=1e-8,
+            rtol=0,
+        )
+        np.testing.assert_allclose(
+            generated["v"][[0, -1], [0, -1]],
+            [[-0.02880813, 0.46364361, -0.56044496, 0.39903905, -0.84198820, 0.10226751],
+             [-0.60630631, 0.31154392, -0.39778113, -0.66767981, 1.65415346, -0.23156534]],
+            atol=1e-8,
+            rtol=0,
+        )
+
+    spec = importlib.util.spec_from_file_location("b2_019_generator", script)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    assert set(module.arrays()) == {"q", "k", "v", "one_hot"}
 
 
 def test_unit_standards_names_b2_019_in_double_length_roster() -> None:

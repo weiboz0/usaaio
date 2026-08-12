@@ -94,7 +94,7 @@ def test_registered_book2_schedule_is_exact_six_week_live_ledger() -> None:
     assert [
         sum(allocation["minutes"] for allocation in week["allocations"])
         for week in raw["weeks"]
-    ] == [255, 275, 420, 325, 325, 60]
+    ] == [255, 275, 420, 270, 380, 60]
 
     problem_ids = [
         problem_id
@@ -127,6 +127,7 @@ def test_live_book2_minutes_enter_the_aggregate_baseline() -> None:
     assert aggregate["counts"]["scheduled_minutes"] == 1660
     assert "1,660 minutes" in rendered
     assert "live manifest reconciles every lesson, practice ID, path, and minute" in rendered
+    assert "255/275/420/270/380/60-minute progression" in rendered
 
     documents = render_curriculum_roadmap.render_documents(ROOT)
     for document in documents.values():
@@ -162,6 +163,11 @@ def test_live_book2_schedule_reconciles_manifest_minutes_ids_and_paths() -> None
             lambda manifest: manifest["practice"][0].update(path="practice/missing.ipynb"),
             "missing declared student path practice/missing.ipynb",
             id="manifest-path",
+        ),
+        pytest.param(
+            lambda manifest: manifest["practice"][21].update(after_session=6),
+            "B2-019-p22 requires session 6 but is scheduled after session 5",
+            id="manifest-after-session",
         ),
     ],
 )

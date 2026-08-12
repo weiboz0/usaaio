@@ -147,11 +147,11 @@ The Book 2 schedule totals 1,660 minutes across local weeks 1–6 and display we
 | 1 | 41 | bridge 30; Session 1 90; p01, p02, p06, p13 = 135 |
 | 2 | 42 | Session 2 90; p03, p04, p07, p08, p14 = 185 |
 | 3 | 43 | Session 3 90; p05, p09, p10, p15, p16, p21, p23 = 330 |
-| 4 | 44 | Session 4 90; p11, p17, p18, p22 = 235 |
-| 5 | 45 | Session 5 90; p12, p19, p20, p24 = 235 |
+| 4 | 44 | Session 4 90; p11, p17, p18 = 180 |
+| 5 | 45 | Session 5 90; p12, p19, p20, p22, p24 = 290 |
 | 6 | 46 | review 60; planned future R2 final assessment marker |
 
-The 255/275/420/325/325/60 weekly totals intentionally ramp through the derivation-heavy third week and taper to review; Book 2 policy validates this explicit ledger rather than applying Book 1's 450–500-minute semester band, and the rendered course structure states that rationale.
+The 255/275/420/270/380/60 weekly totals intentionally ramp through the derivation-heavy third week, place the mask-policy scenario after Session 5's complete architecture flow, and taper to review; Book 2 policy validates this explicit ledger rather than applying Book 1's 450–500-minute semester band, and the rendered course structure states that rationale.
 
 ### Teaching surfaces
 
@@ -189,7 +189,7 @@ The 255/275/420/325/325/60 weekly totals intentionally ramp through the derivati
 | p19 | C | integrative | advanced | 65 | encoder recurrence and LayerNorm ordering |
 | p20 | C | scenario | core | 65 | encoder/decoder/cross-attention Q/K/V sources |
 | p21 | C | integrative | core | 65 | exact cost under fixed length/dimension budgets |
-| p22 | C | scenario | intro | 55 | choose and justify mask policy |
+| p22 | C | scenario | intro | 55 | choose and justify mask policy after Session 5 |
 | p23 | C | challenge | advanced | 55 | reconstruct two heads and certify memory budget |
 | p24 | C | challenge | advanced | 55 | repair residual/norm/mask bug |
 
