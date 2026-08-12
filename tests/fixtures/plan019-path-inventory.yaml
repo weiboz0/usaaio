@@ -16,6 +16,7 @@ python_consumers:
   - tools/render_curriculum_roadmap.py
   - scripts/verify-register.py
   - tests/test_answerkey.py
+  - tests/test_attention_mutations.py
   - tests/test_audit_curriculum.py
   - tests/test_b2_019_statements.py
   - tests/test_blueprint.py

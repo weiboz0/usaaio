@@ -300,6 +300,9 @@ while (($#)); do
 done
 mkdir -p "$output_dir"
 output="$output_dir/${source%.*}.pdf"
+if [[ ${FAKE_QUARTO_MODE:-pass} == gitignore && ! -e .gitignore ]]; then
+  printf '/.quarto/\n' > .gitignore
+fi
 if [[ ${FAKE_QUARTO_MODE:-pass} == omit && $source == p01.ipynb ]]; then exit 0; fi
 if [[ ${FAKE_QUARTO_MODE:-pass} == zero && $source == p01.ipynb ]]; then
   : > "$output"
@@ -386,6 +389,32 @@ def test_book2_pdf_build_uses_registered_root_and_enforces_one_output_per_source
     else:
         assert proc.returncode != 0
     assert expected_fragment in output
+
+
+def test_book2_pdf_build_removes_only_new_quarto_gitignores(tmp_path: Path) -> None:
+    repo, bin_dir = _live_noncanonical_book2_pdf_fixture(tmp_path)
+    unit = repo / "advanced/units/B2-019-attention-transformers"
+    existing = unit / ".gitignore"
+    existing.write_text("keep-this-file\n", encoding="utf-8")
+
+    proc = subprocess.run(
+        ["bash", str(ROOT / "scripts/build-pdf.sh"), "--root", str(repo), "--book", "book2"],
+        cwd=repo,
+        env={
+            **os.environ,
+            "PATH": f"{bin_dir}:{os.environ['PATH']}",
+            "FAKE_QUARTO_MODE": "gitignore",
+            "USAAIO_PYTHON": sys.executable,
+        },
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert existing.read_text(encoding="utf-8") == "keep-this-file\n"
+    assert not (unit / "lessons/.gitignore").exists()
+    assert not (unit / "practice/.gitignore").exists()
 
 
 def test_book2_pdf_rejects_student_source_symlink_outside_registered_root(

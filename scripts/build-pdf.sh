@@ -124,7 +124,20 @@ for relative in "${inputs[@]}"; do
   expected_outputs+=("$output")
   mkdir -p "$output_dir"
   echo "rendering: $relative"
+  source_gitignore="$source_dir/.gitignore"
+  source_gitignore_existed=0
+  [[ -e "$source_gitignore" || -L "$source_gitignore" ]] && source_gitignore_existed=1
   (cd "$source_dir" && "$quarto_bin" render "$source_name" --to typst --output-dir "$output_dir" --no-execute)
+  if ((source_gitignore_existed == 0)) && [[ -e "$source_gitignore" || -L "$source_gitignore" ]]; then
+    if [[ -f "$source_gitignore" && ! -L "$source_gitignore" \
+      && $(wc -c < "$source_gitignore") -eq 10 \
+      && $(<"$source_gitignore") == '/.quarto/' ]]; then
+      rm -- "$source_gitignore"
+    else
+      echo "build-pdf: renderer created unexpected .gitignore for $relative" >&2
+      exit 1
+    fi
+  fi
   [[ -e "$output" ]] || { echo "build-pdf: missing PDF output for $relative" >&2; exit 1; }
   [[ -s "$output" ]] || { echo "build-pdf: zero-byte PDF output for $relative" >&2; exit 1; }
 done

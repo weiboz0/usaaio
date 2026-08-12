@@ -529,14 +529,15 @@ def test_concepts_have_manifest_owners_for_live_b2_019():
         for point_id in memberships:
             point = knowledge_points[point_id]
             assert point["destination"] == unit.id
-            assert point["coverage"] == "missing"
-            assert point["shipped_concepts"] == []
+            assert point["coverage"] == "covered"
+            assert point["shipped_concepts"]
             assert all(
-                not evidence["lesson_anchors"]
-                and not evidence["practices"]
+                evidence["lesson_anchors"]
+                and evidence["practices"]
                 and not evidence["assessments"]
                 for evidence in point["evidence_by_modality"].values()
             )
+            assert point["deficits"] == {"modalities_missing": []}
         assert {
             concept: sum(
                 concept in manifest.concepts_taught for manifest in book2_manifests
