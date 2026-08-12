@@ -106,6 +106,10 @@ done
 uv run python -m tools.audit_curriculum --root "$book1_root" --check
 uv run python -m tools.render_curriculum_roadmap --root "$repo_root" --check
 uv run python -m tools.render_course_structure --root "$book1_root" --check
+for book_root in "${BOOK_ROOTS[@]}"; do
+  [[ $book_root == "$book1_root" ]] && continue
+  uv run python -m tools.render_course_structure --root "$book_root" --check
+done
 uv run python -m tools.verify_training_mutations --root "$book1_root"
 uv run python -m tools.verify_classical_mutations --root "$book1_root"
 echo "SKIP attention mutations (plan 019 Task 7)"

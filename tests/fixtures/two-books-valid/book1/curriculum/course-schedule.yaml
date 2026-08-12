@@ -1,0 +1,44 @@
+schedule_version: 1
+calendar: {semester_1_weeks: 16, semester_2_weeks: 24, total_weeks: 40}
+totals: {semester_1: 7200, semester_2: 10800, scheduled: 18000}
+weeks:
+  - {week: 1, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 1, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 1, minutes: 350}]}
+  - {week: 2, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 2, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 2, minutes: 350}]}
+  - {week: 3, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 3, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 3, minutes: 350}]}
+  - {week: 4, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 4, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 4, minutes: 350}]}
+  - {week: 5, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 5, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 5, minutes: 350}]}
+  - {week: 6, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 6, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 6, minutes: 350}]}
+  - {week: 7, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 7, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 7, minutes: 350}]}
+  - {week: 8, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 8, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 8, minutes: 350}]}
+  - {week: 9, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 9, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 9, minutes: 350}]}
+  - {week: 10, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 10, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 10, minutes: 350}]}
+  - {week: 11, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 11, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 11, minutes: 350}]}
+  - {week: 12, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 12, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 12, minutes: 350}]}
+  - {week: 13, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 13, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 13, minutes: 350}]}
+  - {week: 14, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 14, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 14, minutes: 350}]}
+  - {week: 15, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 15, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 15, minutes: 350}]}
+  - {week: 16, semester: 1, allocations: [{kind: lesson-session, unit: F1-fixture, session: 16, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 16, minutes: 350}]}
+  - {week: 17, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 17, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 17, minutes: 350}]}
+  - {week: 18, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 18, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 18, minutes: 350}]}
+  - {week: 19, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 19, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 19, minutes: 350}]}
+  - {week: 20, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 20, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 20, minutes: 350}]}
+  - {week: 21, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 21, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 21, minutes: 350}]}
+  - {week: 22, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 22, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 22, minutes: 350}]}
+  - {week: 23, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 23, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 23, minutes: 350}]}
+  - {week: 24, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 24, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 24, minutes: 350}]}
+  - {week: 25, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 25, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 25, minutes: 350}]}
+  - {week: 26, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 26, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 26, minutes: 350}]}
+  - {week: 27, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 27, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 27, minutes: 350}]}
+  - {week: 28, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 28, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 28, minutes: 350}]}
+  - {week: 29, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 29, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 29, minutes: 350}]}
+  - {week: 30, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 30, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 30, minutes: 350}]}
+  - {week: 31, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 31, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 31, minutes: 350}]}
+  - {week: 32, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 32, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 32, minutes: 350}]}
+  - {week: 33, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 33, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 33, minutes: 350}]}
+  - {week: 34, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 34, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 34, minutes: 350}]}
+  - {week: 35, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 35, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 35, minutes: 350}]}
+  - {week: 36, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 36, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 36, minutes: 350}]}
+  - {week: 37, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 37, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 37, minutes: 350}]}
+  - {week: 38, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 38, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 38, minutes: 350}]}
+  - {week: 39, semester: 2, allocations: [{kind: lesson-session, unit: F1-fixture, session: 39, minutes: 100}, {kind: practice, unit: F1-fixture, chunk: 39, minutes: 350}]}
+  - {week: 40, semester: 2, allocations: [{kind: practice, unit: F1-fixture, chunk: 40, minutes: 200}, {kind: review, unit: F1-fixture, chunk: 1, minutes: 10}, {kind: mock, test: r1-001, minutes: 180}, {kind: debrief, test: r1-001, minutes: 60}]}

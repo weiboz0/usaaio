@@ -28,7 +28,10 @@ SUBCOMMANDS: dict[str, tuple[str, CheckFn | None]] = {
     "prereq-check": ("verify the unit DAG and concept closure", check_prereq),
     "coverage-check": ("verify every taught concept has at least three practice problems", check_coverage),
     "scope-check": ("verify the layered curriculum roadmap contract", check_scope),
-    "schedule-check": ("verify the canonical 40-week allocation", check_schedule),
+    "schedule-check": (
+        "verify the canonical 40-week allocation or selected book policy",
+        check_schedule,
+    ),
     "hygiene-check": ("verify student notebooks contain no solutions or outputs", check_hygiene),
     "layer-boundary-check": (
         "verify the Book 1 / Book 2 ownership and evidence boundary",

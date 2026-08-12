@@ -1,0 +1,10 @@
+unit: F1-fixture
+concepts_taught: [fixture-concept]
+concepts_used: []
+prereq_units: []
+estimated_minutes:
+  lesson: 3900
+  lesson_sessions: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+  practice: 13850
+  review: 10
+practice: []
