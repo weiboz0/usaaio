@@ -107,6 +107,7 @@ done
 [[ -n $book1_root ]] || { echo "FAIL: no registered Book 1 root" >&2; exit 1; }
 [[ -n $book2_root ]] || { echo "FAIL: no registered Book 2 root" >&2; exit 1; }
 uv run python -m tools.audit_curriculum --root "$book1_root" --check
+uv run python -m tools.audit_curriculum --root "$book2_root" --check
 uv run python -m tools.render_curriculum_roadmap --root "$repo_root" --check
 uv run python -m tools.render_course_structure --root "$book1_root" --check
 for book_root in "${BOOK_ROOTS[@]}"; do

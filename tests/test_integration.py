@@ -2053,6 +2053,43 @@ def test_ci_executes_attention_mutations() -> None:
     assert not any("SKIP attention mutations" in line for line in lines)
 
 
+def test_ci_checks_book2_material_inventory_freshness(tmp_path: Path) -> None:
+    lines = _ci_noncomment_lines()
+    assert 'uv run python -m tools.audit_curriculum --root "$book2_root" --check' in lines
+
+    (tmp_path / "books.yaml").write_text((ROOT / "books.yaml").read_text())
+    (tmp_path / "book1").mkdir()
+    copied_book2 = tmp_path / "book2"
+    shutil.copytree(ROOT / "book2", copied_book2)
+    lesson = (
+        copied_book2
+        / "units"
+        / "B2-019-attention-transformers"
+        / "lessons"
+        / "01-query-key-value-and-scaled-dot-product.ipynb"
+    )
+    notebook = json.loads(lesson.read_text())
+    notebook["cells"][0]["source"] = "# Stale inventory heading\n"
+    lesson.write_text(json.dumps(notebook))
+
+    proc = subprocess.run(
+        [
+            str(ROOT / ".venv" / "bin" / "python"),
+            "-m",
+            "tools.audit_curriculum",
+            "--root",
+            str(copied_book2),
+            "--check",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 1
+    assert "ERROR material inventory stale" in proc.stderr
+
+
 def _plan019_roadmap(*, r1_destination: str, r2_destination: str) -> str:
     return yaml.safe_dump(
         {

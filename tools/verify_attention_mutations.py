@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import shutil
 import sys
 import tempfile
@@ -29,6 +30,13 @@ class MutationSpec:
 class MutationResult:
     mutation_id: str
     failure_cell: int
+
+
+@dataclass(frozen=True)
+class FailureObservation:
+    cell: int
+    error_name: str
+    error_value: str
 
 
 class MutationVerificationError(RuntimeError):
@@ -92,7 +100,7 @@ MUTATIONS = [
         target_marker="y = x + attention_output",
         search="y = x + attention_output",
         replacement="y = layer_norm_rows(x + attention_output)",
-        expected_failure_marker="np.testing.assert_allclose(y, x",
+        expected_failure_marker="np.testing.assert_allclose(f[1, 2], EXPECTED_NORMALIZED_ROW",
     ),
 ]
 
@@ -118,7 +126,7 @@ def _require_one_source_match(
 
 def _execute_until_failure(
     notebook: nbformat.NotebookNode, execution_path: Path, timeout: int = 1200
-) -> int | None:
+) -> FailureObservation | None:
     client = NotebookClient(
         notebook,
         timeout=timeout,
@@ -132,13 +140,70 @@ def _execute_until_failure(
             try:
                 client.execute_cell(cell, cell_index, execution_count=None)
             except CellExecutionError:
-                return cell_index
+                errors = [
+                    output
+                    for output in cell.get("outputs", [])
+                    if output.get("output_type") == "error"
+                ]
+                if len(errors) != 1:
+                    raise MutationVerificationError(
+                        f"cell {cell_index} produced {len(errors)} structured errors"
+                    )
+                return FailureObservation(
+                    cell=cell_index,
+                    error_name=str(errors[0].get("ename", "")),
+                    error_value=str(errors[0].get("evalue", "")),
+                )
             except Exception as exc:
                 raise MutationVerificationError(
                     f"kernel execution failed unexpectedly at cell {cell_index}: "
                     f"{type(exc).__name__}: {exc}"
                 ) from exc
     return None
+
+
+def _bind_expected_check(source: str, marker: str, mutation_id: str) -> str:
+    marker_line = source[: source.index(marker)].count("\n") + 1
+    tree = ast.parse(source)
+    statements = [
+        node
+        for node in ast.walk(tree)
+        if isinstance(node, ast.stmt)
+        and node.lineno <= marker_line <= (node.end_lineno or node.lineno)
+    ]
+    innermost = [
+        node
+        for node in statements
+        if not any(
+            other is not node
+            and other.lineno >= node.lineno
+            and (other.end_lineno or other.lineno) <= (node.end_lineno or node.lineno)
+            for other in statements
+        )
+    ]
+    if len(innermost) != 1:
+        raise MutationVerificationError(
+            f"{mutation_id}: expected answer check did not bind to one statement"
+        )
+    statement = innermost[0]
+    lines = source.splitlines(keepends=True)
+    start = statement.lineno - 1
+    end = statement.end_lineno or statement.lineno
+    original = "".join(lines[start:end]).rstrip("\n")
+    if original[: len(original) - len(original.lstrip())]:
+        raise MutationVerificationError(
+            f"{mutation_id}: expected answer check must be a top-level statement"
+        )
+    token = f"PLAN019_EXPECTED_CHECK::{mutation_id}"
+    wrapped = (
+        "class _Plan019ExpectedCheckFailure(AssertionError):\n"
+        "    pass\n"
+        "try:\n"
+        + "\n".join(f"    {line}" for line in original.splitlines())
+        + "\nexcept Exception as _plan019_check_error:\n"
+        f"    raise _Plan019ExpectedCheckFailure({token!r}) from _plan019_check_error\n"
+    )
+    return "".join(lines[:start]) + wrapped + "".join(lines[end:])
 
 
 def run_mutation(root: Path, spec: MutationSpec) -> MutationResult:
@@ -166,6 +231,10 @@ def run_mutation(root: Path, spec: MutationSpec) -> MutationResult:
     )
     source = str(notebook.cells[search_cell].source)
     notebook.cells[search_cell].source = source.replace(spec.search, spec.replacement, 1)
+    expected_source = str(notebook.cells[expected_cell].source)
+    notebook.cells[expected_cell].source = _bind_expected_check(
+        expected_source, spec.expected_failure_marker, spec.id
+    )
 
     with tempfile.TemporaryDirectory(prefix=f"usaaio-{spec.id}-") as temporary:
         copied_context = Path(temporary) / notebook_path.parent.name
@@ -173,15 +242,23 @@ def run_mutation(root: Path, spec: MutationSpec) -> MutationResult:
         mutant_path = copied_context / notebook_path.name
         nbformat.write(notebook, mutant_path)
         mutant = nbformat.read(mutant_path, as_version=4)
-        failure_cell = _execute_until_failure(mutant, copied_context)
+        failure = _execute_until_failure(mutant, copied_context)
 
-    if failure_cell is None:
+    if failure is None:
         raise MutationVerificationError(f"{spec.id}: mutant executed successfully")
-    if failure_cell != expected_cell:
+    if failure.cell != expected_cell:
         raise MutationVerificationError(
-            f"{spec.id}: failed at cell {failure_cell}; expected failure at cell {expected_cell}"
+            f"{spec.id}: failed at cell {failure.cell}; expected failure at cell {expected_cell}"
         )
-    return MutationResult(spec.id, failure_cell)
+    expected_value = f"PLAN019_EXPECTED_CHECK::{spec.id}"
+    if (
+        failure.error_name != "_Plan019ExpectedCheckFailure"
+        or failure.error_value != expected_value
+    ):
+        raise MutationVerificationError(
+            f"{spec.id}: did not fail through the registered answer check"
+        )
+    return MutationResult(spec.id, failure.cell)
 
 
 def run_untouched(root: Path, spec: MutationSpec) -> None:
@@ -195,10 +272,10 @@ def run_untouched(root: Path, spec: MutationSpec) -> None:
     with tempfile.TemporaryDirectory(prefix=f"usaaio-{spec.id}-untouched-") as temporary:
         copied_context = Path(temporary) / notebook_path.parent.name
         shutil.copytree(notebook_path.parent, copied_context)
-        failure_cell = _execute_until_failure(notebook, copied_context)
-    if failure_cell is not None:
+        failure = _execute_until_failure(notebook, copied_context)
+    if failure is not None:
         raise MutationVerificationError(
-            f"{spec.id}: untouched notebook failed at cell {failure_cell}"
+            f"{spec.id}: untouched notebook failed at cell {failure.cell}"
         )
 
 

@@ -45,7 +45,7 @@ EXPECTED_MUTATIONS = [
         "notebook": "units/B2-019-attention-transformers/practice/p24_solution.ipynb",
         "mutation_kind": "reverse-residual-layernorm-order",
         "target_marker": "y = x + attention_output",
-        "expected_failure_marker": "np.testing.assert_allclose(y, x",
+        "expected_failure_marker": "np.testing.assert_allclose(f[1, 2], EXPECTED_NORMALIZED_ROW",
     },
 ]
 
@@ -195,6 +195,31 @@ def test_attention_runner_rejects_failure_before_answer_check(tmp_path: Path) ->
     )
 
     with pytest.raises(module.MutationVerificationError, match="expected failure at cell 1"):
+        module.run_mutation(tmp_path, spec)
+
+
+def test_attention_runner_rejects_unrelated_exception_in_answer_check_cell(
+    tmp_path: Path,
+) -> None:
+    module = _mutation_module()
+    notebook_path = tmp_path / "fixture" / "solution.ipynb"
+    _write_notebook(notebook_path, "value = 1  # MUTATION_TARGET\n")
+    notebook = json.loads(notebook_path.read_text())
+    notebook["cells"][1]["source"] = (
+        "raise RuntimeError('unrelated failure before assertion')\n"
+        "assert value == 1  # ANSWER_CHECK\n"
+    )
+    notebook_path.write_text(json.dumps(notebook))
+    spec = _spec(
+        module,
+        search="value = 1  # MUTATION_TARGET",
+        replacement="value = 2  # MUTATION_TARGET",
+    )
+
+    with pytest.raises(
+        module.MutationVerificationError,
+        match="did not fail through the registered answer check",
+    ):
         module.run_mutation(tmp_path, spec)
 
 
