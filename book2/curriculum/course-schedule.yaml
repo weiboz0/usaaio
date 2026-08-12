@@ -1,6 +1,6 @@
 schedule_version: 1
 book: 2
-status: staged
+status: live
 starts_after_global_week: 40
 total_book_weeks: 6
 total_minutes: 1660

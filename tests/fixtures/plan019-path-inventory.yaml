@@ -17,6 +17,7 @@ python_consumers:
   - scripts/verify-register.py
   - tests/test_answerkey.py
   - tests/test_audit_curriculum.py
+  - tests/test_b2_019_statements.py
   - tests/test_blueprint.py
   - tests/test_book2_schedule.py
   - tests/test_c11_solution_regressions.py
@@ -214,6 +215,7 @@ staged_scope:
     - docs/designs/019-r2-book-architecture.md
     - docs/mocktest-generation.md
     - docs/plans/019-r2-attention-transformers.md
+    - docs/unit-standards.md
   prefixes:
     - book1/
     - book2/

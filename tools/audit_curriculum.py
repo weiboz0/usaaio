@@ -321,8 +321,20 @@ def _unit_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
         manifest_relative = _posix(unit_dir / "manifest.yaml", root)
         if not isinstance(manifest, dict):
             raise InventoryError(f"{manifest_relative}: manifest must be a mapping")
-        for problem in manifest.get("practice") or []:
+        practice_rows = manifest.get("practice") or []
+        declared_solutions = [
+            unit_dir / str(problem.get("solution_path", ""))
+            for problem in practice_rows
+        ]
+        statement_only_book2 = (
+            manifest.get("book") == 2
+            and declared_solutions
+            and not any(path.is_file() for path in declared_solutions)
+        )
+        for problem in practice_rows:
             for field in ("path", "solution_path"):
+                if field == "solution_path" and statement_only_book2:
+                    continue
                 declared = problem.get(field)
                 candidate = _declared_notebook(
                     unit_dir,

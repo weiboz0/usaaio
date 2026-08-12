@@ -469,7 +469,7 @@ def test_plan018_manifests_have_exact_final_counts_and_minutes():
     assert sum(minute_totals.values()) == 18635
 
 
-def test_concepts_have_manifest_owners_except_valid_nonlive_planned_book2_units():
+def test_concepts_have_manifest_owners_for_live_b2_019():
     syllabus = load_syllabus(BOOK1_ROOT)
     book2_syllabus = load_syllabus(BOOK2_ROOT)
     manifests = load_unit_manifests(BOOK1_ROOT)
@@ -498,7 +498,10 @@ def test_concepts_have_manifest_owners_except_valid_nonlive_planned_book2_units(
     assert set(syllabus_owner_counts.values()) == {1}
     assert set(manifest_owner_counts) <= set(syllabus.concepts)
     assert set(manifest_owner_counts.values()) == {1}
-    assert nonlive_book2_units == {"B2-019-attention-transformers"}
+    assert nonlive_book2_units == set()
+    assert [manifest.unit_id for manifest in book2_manifests] == [
+        "B2-019-attention-transformers"
+    ]
     assert book2_syllabus.units["B2-019-attention-transformers"].teaches == list(
         PLAN019_B2_019_CONCEPTS
     )
@@ -539,7 +542,7 @@ def test_concepts_have_manifest_owners_except_valid_nonlive_planned_book2_units(
                 concept in manifest.concepts_taught for manifest in book2_manifests
             )
             for concept in unit.teaches
-        } == {concept: 0 for concept in unit.teaches}
+        } == {concept: 1 for concept in unit.teaches}
 
     assert {concept: syllabus_owner_counts[concept] for concept in PLAN017_NEW_CONCEPTS} == {
         concept: 1 for concept in PLAN017_NEW_CONCEPTS
@@ -712,7 +715,10 @@ def test_plan019_phase1_exact_live_corpus_counts_and_double_length_roster():
         "C12-classical-models",
     }
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
-    assert "Double-length units (F5, F6, C7, C11, C12) use 4–6 sessions." in standards
+    assert (
+        "Double-length units (F5, F6, C7, C11, C12, and B2-019) use 4–6 sessions."
+        in standards
+    )
 
 
 @functools.cache
@@ -1455,7 +1461,10 @@ def test_plan019_phase1_book1_narrative_order_and_book2_dependency_contract():
     assert any(dependency.startswith("seaborn>=") for dependency in project["project"]["dependencies"])
     assert re.search(r'^name = "seaborn"$', (ROOT / "uv.lock").read_text(), re.MULTILINE)
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
-    assert "Double-length units (F5, F6, C7, C11, C12) use 4–6 sessions." in standards
+    assert (
+        "Double-length units (F5, F6, C7, C11, C12, and B2-019) use 4–6 sessions."
+        in standards
+    )
 
 
 def test_plan016_practice_coverage_is_green():

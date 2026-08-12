@@ -73,6 +73,12 @@ def check_coverage(root: str | Path) -> Report:
                     "problems; requires at least 3"
                 )
         unit_dir = manifest.path.parent
+        declared_solutions = [unit_dir / problem.solution_path for problem in manifest.practice]
+        statement_only_book2 = (
+            manifest.book == 2
+            and declared_solutions
+            and not any(path.is_file() for path in declared_solutions)
+        )
         for problem in manifest.practice:
             for kind, relative in (
                 ("practice", problem.path),
@@ -85,6 +91,12 @@ def check_coverage(root: str | Path) -> Report:
                         label=f"{manifest.path}: {kind} {problem.id}",
                     )
                 except ValueError as exc:
+                    if (
+                        kind == "solution"
+                        and statement_only_book2
+                        and "path does not exist" in str(exc)
+                    ):
+                        continue
                     if "path does not exist" in str(exc):
                         errors.append(f"{manifest.path}: missing {kind} path {relative}")
                     else:

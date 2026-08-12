@@ -115,12 +115,24 @@ units:
   - book1:C8-embeddings
   - book1:C11-neural-training
   concept_prerequisites:
-  - book1:softmax
-  - book1:matrix-multiplication
+  - book1:numpy-arrays
   - book1:broadcasting
+  - book1:vectorization
+  - book1:elementwise-ops
+  - book1:aggregation-axis
+  - book1:random-seeding
+  - book1:dot-product
+  - book1:matrix-multiplication
+  - book1:expectation
   - book1:variance
+  - book1:independence
+  - book1:variance-of-sums
   - book1:torch-tensors
   - book1:nn-module
+  - book1:requires-grad
+  - book1:tensor-shape-tracing
+  - book1:softmax
+  - book1:cross-entropy-loss
   - book1:torch-optimizers
   - book1:autograd-training
   teaches:

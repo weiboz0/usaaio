@@ -62,6 +62,11 @@ def _check_bridge(
 
 
 def _check_compute(root: Path, manifest: UnitManifest, errors: list[str]) -> None:
+    unit_dir = manifest.path.parent
+    declared_solutions = [unit_dir / problem.solution_path for problem in manifest.practice]
+    statement_only = declared_solutions and not any(
+        path.is_file() for path in declared_solutions
+    )
     for problem in manifest.practice:
         label = f"{manifest.path}: practice {problem.id}"
         if problem.compute.seed is None:
@@ -76,9 +81,10 @@ def _check_compute(root: Path, manifest: UnitManifest, errors: list[str]) -> Non
                     label=f"{label} solution",
                 )
             except ValueError:
-                errors.append(f"{label} cpu task requires a local solution path")
+                if not statement_only:
+                    errors.append(f"{label} cpu task requires a local solution path")
             else:
-                if not solution.is_file():
+                if not solution.is_file() and not statement_only:
                     errors.append(f"{label} cpu task requires a local solution path")
 
 

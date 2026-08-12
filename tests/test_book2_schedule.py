@@ -75,12 +75,12 @@ def test_schedule_dispatch_uses_explicit_book_policies() -> None:
     )
 
 
-def test_registered_book2_schedule_is_exact_six_week_staged_ledger() -> None:
+def test_registered_book2_schedule_is_exact_six_week_live_ledger() -> None:
     raw = _load_schedule()
 
     assert raw["schedule_version"] == 1
     assert raw["book"] == 2
-    assert raw["status"] == "staged"
+    assert raw["status"] == "live"
     assert raw["starts_after_global_week"] == 40
     assert raw["total_book_weeks"] == 6
     assert raw["total_minutes"] == 1660
@@ -110,28 +110,27 @@ def test_registered_book2_schedule_is_exact_six_week_staged_ledger() -> None:
     report = schedule_checker.check_schedule(BOOK2_ROOT)
     assert report.ok, report.errors
     validated = schedule_checker.load_validated_schedule(BOOK2_ROOT)
-    assert validated.status == "staged"
+    assert validated.status == "live"
     assert [week.week for week in validated.weeks] == list(range(1, 7))
     assert list(validated.global_weeks) == list(range(41, 47))
     assert validated.total_minutes == 1660
-    assert validated.covered_problem_ids == frozenset()
+    assert validated.covered_problem_ids == frozenset(problem_ids)
     inventory = audit_curriculum.build_inventory(BOOK2_ROOT)
-    assert inventory["counts"]["scheduled_minutes"] == 0
-    assert inventory["counts"]["unit_practices"] == 0
+    assert inventory["counts"]["scheduled_minutes"] == 1660
+    assert inventory["counts"]["unit_practices"] == 24
 
 
-def test_staged_book2_minutes_are_not_double_counted_in_aggregate_baseline() -> None:
+def test_live_book2_minutes_enter_the_aggregate_baseline() -> None:
     rendered = render_course_structure.render_document(BOOK2_ROOT)
     aggregate = audit_curriculum.build_inventory(BOOK2_ROOT)
 
-    assert aggregate["counts"]["scheduled_minutes"] == 0
+    assert aggregate["counts"]["scheduled_minutes"] == 1660
     assert "1,660 minutes" in rendered
-    assert "staged schedule grants no live coverage" in rendered
+    assert "live manifest reconciles every lesson, practice ID, path, and minute" in rendered
 
     documents = render_curriculum_roadmap.render_documents(ROOT)
     for document in documents.values():
-        assert "Current scheduled baseline: **18875 minutes / 314.58 hours**." in document
-        assert "Current scheduled baseline: **20535 minutes" not in document
+        assert "Current scheduled baseline: **20535 minutes / 342.25 hours**." in document
         assert "| **Planned-unit subtotal** | **142** | **182** |" in document
     roadmap = documents[Path("docs/curriculum-roadmap.md")]
     assert (
@@ -140,16 +139,48 @@ def test_staged_book2_minutes_are_not_double_counted_in_aggregate_baseline() -> 
     ) in roadmap
 
 
-def test_live_book2_baseline_is_explicitly_deferred_until_task5(tmp_path: Path) -> None:
-    selected = _mutated_root(
-        tmp_path,
-        lambda schedule: schedule.update(status="live"),
-    )
+def test_live_book2_schedule_reconciles_manifest_minutes_ids_and_paths() -> None:
+    report = schedule_checker.check_schedule(BOOK2_ROOT, expected_book_number=2)
+
+    assert report.ok, report.errors
+
+
+@pytest.mark.parametrize(
+    ("mutate", "message"),
+    [
+        pytest.param(
+            lambda manifest: manifest["practice"][0].update(minutes=21),
+            "B2-019-p01 manifest minutes 21; scheduled contract requires 20",
+            id="manifest-minute",
+        ),
+        pytest.param(
+            lambda manifest: manifest["practice"][0].update(id="B2-019-p99"),
+            "live manifest problem IDs must exactly match scheduled problem_ids",
+            id="manifest-id",
+        ),
+        pytest.param(
+            lambda manifest: manifest["practice"][0].update(path="practice/missing.ipynb"),
+            "missing declared student path practice/missing.ipynb",
+            id="manifest-path",
+        ),
+    ],
+)
+def test_live_book2_schedule_rejects_manifest_drift(
+    tmp_path: Path,
+    mutate: Callable[[dict[str, Any]], None],
+    message: str,
+) -> None:
+    selected = tmp_path / "book2"
+    shutil.copytree(BOOK2_ROOT, selected)
+    manifest_path = selected / "units" / "B2-019-attention-transformers" / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    mutate(manifest)
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
 
     report = schedule_checker.check_schedule(selected, expected_book_number=2)
 
     assert not report.ok
-    assert any("live schedule support is deferred until Task 5" in error for error in report.errors)
+    assert any(message in error for error in report.errors), report.errors
 
 
 def test_two_book_schedule_fixture_is_valid_and_isolated(tmp_path: Path) -> None:
@@ -331,9 +362,12 @@ def test_book2_integer_fields_reject_float_and_bool_through_both_apis(
 def test_staged_book2_schedule_rejects_first_live_manifest(tmp_path: Path) -> None:
     selected = tmp_path / "book2"
     shutil.copytree(BOOK2_ROOT, selected)
+    schedule_path = selected / "curriculum/course-schedule.yaml"
+    schedule = yaml.safe_load(schedule_path.read_text(encoding="utf-8"))
+    schedule["status"] = "staged"
+    schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False), encoding="utf-8")
     manifest = selected / "units" / "B2-019-attention-transformers" / "manifest.yaml"
-    manifest.parent.mkdir(parents=True)
-    manifest.write_text("unit: B2-019-attention-transformers\n", encoding="utf-8")
+    assert manifest.is_file()
 
     report = schedule_checker.check_schedule(selected, expected_book_number=2)
 
@@ -344,14 +378,15 @@ def test_staged_book2_schedule_rejects_first_live_manifest(tmp_path: Path) -> No
     )
 
 
-def test_shared_renderer_supports_staged_book2_without_manifest_coverage() -> None:
+def test_shared_renderer_supports_live_book2_manifest_coverage() -> None:
     rendered = render_course_structure.render_document(BOOK2_ROOT)
 
     assert "Book 2 Schedule" in rendered
     assert "local weeks 1–6" in rendered
     assert "display weeks 41–46" in rendered
     assert "1,660 minutes" in rendered
-    assert "staged schedule grants no live coverage" in rendered
+    assert "Status: live." in rendered
+    assert "live manifest reconciles every lesson, practice ID, path, and minute" in rendered
     assert "derivation-heavy Week 3" in rendered
     assert "planned future `r2-*` final assessment follows local Week 6" in rendered
 

@@ -13,10 +13,10 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 981 |
+| Unit notebooks | 1013 |
 | Mock notebooks | 10 |
-| Unit practices | 437 |
-| Total inventoried notebooks | 991 |
+| Unit practices | 461 |
+| Total inventoried notebooks | 1023 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
@@ -26,8 +26,8 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **18635 minutes / 310.58 hours**.
-Current scheduled baseline: **18875 minutes / 314.58 hours**.
+Current manifested baseline: **20265 minutes / 337.75 hours**.
+Current scheduled baseline: **20535 minutes / 342.25 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
@@ -40,7 +40,7 @@ Planned hours are estimates and are not manifested time.
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-Baseline plus planned-unit subtotal: **452.58–492.58 manifested-baseline hours** and **456.58–496.58 scheduled-baseline hours**.
+Baseline plus planned-unit subtotal: **479.75–519.75 manifested-baseline hours** and **484.25–524.25 scheduled-baseline hours**.
 
 The Book 2 `B2-020-language-transformers` 26–32-hour estimate includes completing the `nlp-word-embeddings` model-training bridge; no additional Book 1 C8 correction is pending.
 

@@ -642,16 +642,11 @@ def _write_first_live_registered_book2_fixture(
     book2.mkdir()
     shutil.copy2(BOOK1_ROOT / "syllabus.md", book1 / "syllabus.md")
     book2_syllabus = (BOOK2_ROOT / "syllabus.md").read_text(encoding="utf-8")
-    qualified_concepts = [
-        "book1:softmax",
-        "book1:matrix-multiplication",
-        "book1:broadcasting",
-        "book1:variance",
-        "book1:torch-tensors",
-        "book1:nn-module",
-        "book1:torch-optimizers",
-        "book1:autograd-training",
-    ]
+    qualified_concepts = list(
+        load_syllabus(BOOK2_ROOT)
+        .units["B2-019-attention-transformers"]
+        .concept_prerequisites
+    )
     if replacement is not None:
         book2_syllabus = book2_syllabus.replace(
             "  - book1:softmax\n", f"  - {replacement}\n", 1

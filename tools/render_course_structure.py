@@ -324,16 +324,20 @@ def _render_book2_document(schedule: Book2CourseSchedule) -> str:
     lines = [
         "# Book 2 Schedule",
         "",
-        "Status: staged.",
+        f"Status: {schedule.status}.",
         "",
         (
             "The independent Round 2 schedule runs across local weeks 1–6 and "
             "display weeks 41–46."
         ),
         (
-            f"Its explicit ledger totals {schedule.total_minutes:,} minutes; this staged "
-            "schedule grants no live coverage until Task 5 installs and reconciles a live "
-            "Book 2 manifest."
+            f"Its explicit ledger totals {schedule.total_minutes:,} minutes; "
+            + (
+                "this staged schedule grants no live coverage until a manifest is "
+                "installed and reconciled."
+                if schedule.status == "staged"
+                else "the live manifest reconciles every lesson, practice ID, path, and minute."
+            )
         ),
         "",
         "| Local week | Display week | Allocation | Minutes |",

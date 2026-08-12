@@ -1,16 +1,1117 @@
 inventory_version: 1
 counts:
-  units: 0
+  units: 1
   concepts: 11
-  unit_practices: 0
-  lesson_sessions: 0
-  unit_nonpractice_notebooks: 0
-  unit_notebooks: 0
+  unit_practices: 24
+  lesson_sessions: 6
+  unit_nonpractice_notebooks: 8
+  unit_notebooks: 32
   mocktests: 0
   mock_notebooks: 0
-  manifested_minutes: 0
-  scheduled_minutes: 0
-input_paths: []
-documents: []
-manifests: []
-notebooks: []
+  manifested_minutes: 1630
+  scheduled_minutes: 1660
+input_paths:
+- docs/course-structure.md
+- syllabus.md
+- units/B2-019-attention-transformers/lesson.ipynb
+- units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb
+- units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb
+- units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb
+- units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb
+- units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb
+- units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb
+- units/B2-019-attention-transformers/manifest.yaml
+- units/B2-019-attention-transformers/practice/p01.ipynb
+- units/B2-019-attention-transformers/practice/p02.ipynb
+- units/B2-019-attention-transformers/practice/p03.ipynb
+- units/B2-019-attention-transformers/practice/p04.ipynb
+- units/B2-019-attention-transformers/practice/p05.ipynb
+- units/B2-019-attention-transformers/practice/p06.ipynb
+- units/B2-019-attention-transformers/practice/p07.ipynb
+- units/B2-019-attention-transformers/practice/p08.ipynb
+- units/B2-019-attention-transformers/practice/p09.ipynb
+- units/B2-019-attention-transformers/practice/p10.ipynb
+- units/B2-019-attention-transformers/practice/p11.ipynb
+- units/B2-019-attention-transformers/practice/p12.ipynb
+- units/B2-019-attention-transformers/practice/p13.ipynb
+- units/B2-019-attention-transformers/practice/p14.ipynb
+- units/B2-019-attention-transformers/practice/p15.ipynb
+- units/B2-019-attention-transformers/practice/p16.ipynb
+- units/B2-019-attention-transformers/practice/p17.ipynb
+- units/B2-019-attention-transformers/practice/p18.ipynb
+- units/B2-019-attention-transformers/practice/p19.ipynb
+- units/B2-019-attention-transformers/practice/p20.ipynb
+- units/B2-019-attention-transformers/practice/p21.ipynb
+- units/B2-019-attention-transformers/practice/p22.ipynb
+- units/B2-019-attention-transformers/practice/p23.ipynb
+- units/B2-019-attention-transformers/practice/p24.ipynb
+- units/B2-019-attention-transformers/review.ipynb
+documents:
+- path: docs/course-structure.md
+  kind: document
+  semantic_sha256: b8c3013522c210cc8b54d30e5508e0eb11c381e81abfa11dc1a08ae8fd080523
+manifests:
+- path: syllabus.md
+  kind: canonical-yaml
+  semantic_sha256: 2dcf9da1aa459020bf0df4398fdfe4e2cd0cf0814eb9c5125a5ed5982ada6f51
+- path: units/B2-019-attention-transformers/manifest.yaml
+  kind: yaml
+  semantic_sha256: 942d6babfa81fe619417df716ba9cb3f2e2e3493a31f57c0258aaf4b4f3c3213
+notebooks:
+- path: units/B2-019-attention-transformers/lesson.ipynb
+  kind: notebook
+  semantic_sha256: 5d0e63f49567ec74325de3039566e4dc45b5196ab4a93dd1c5c95cfab2735e35
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/lesson.ipynb :: B2-019 — Attention and Transformer Mechanics > Study route
+      :: cell 1'
+    heading_path:
+    - B2-019 — Attention and Transformer Mechanics
+    - Study route
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  - attention-mask
+  - causal-self-attention
+  - matrix-transpose
+  - multi-head-attention
+  - position-wise-feed-forward
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb
+  kind: notebook
+  semantic_sha256: 843746616852f031c437540d7c19b386c84a4b9b7117fa4daf3c3246b16065a2
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic :: cell
+      1'
+    heading_path:
+    - B2-019 — Book 1 Bridge Diagnostic
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic > 1. NumPy
+      reductions and vectorization :: cell 1'
+    heading_path:
+    - B2-019 — Book 1 Bridge Diagnostic
+    - 1. NumPy reductions and vectorization
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic > 2. dot
+      products and matrix multiplication :: cell 1'
+    heading_path:
+    - B2-019 — Book 1 Bridge Diagnostic
+    - 2. dot products and matrix multiplication
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic > 3. expectation
+      and variance :: cell 1'
+    heading_path:
+    - B2-019 — Book 1 Bridge Diagnostic
+    - 3. expectation and variance
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic > 4. tensor
+      shapes :: cell 1'
+    heading_path:
+    - B2-019 — Book 1 Bridge Diagnostic
+    - 4. tensor shapes
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic > 5. cross-entropy,
+      nn.Module, autograd, and optimizer fluency :: cell 1'
+    heading_path:
+    - B2-019 — Book 1 Bridge Diagnostic
+    - 5. cross-entropy, nn.Module, autograd, and optimizer fluency
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic > Additional
+      qualified remediation routes :: cell 1'
+    heading_path:
+    - B2-019 — Book 1 Bridge Diagnostic
+    - Additional qualified remediation routes
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  - attention-mask
+  - causal-self-attention
+  - matrix-transpose
+  - multi-head-attention
+  - position-wise-feed-forward
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb
+  kind: notebook
+  semantic_sha256: 707b78aaee042d3e2df779783f9594c37e87156e0fd4e2a88a3c806d2f5baded
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
+      1: Query, Key, Value, and Scaled Dot Product :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product'
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
+      1: Query, Key, Value, and Scaled Dot Product > 1. Transpose and shape ledger :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product'
+    - 1. Transpose and shape ledger
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
+      1: Query, Key, Value, and Scaled Dot Product > 1. Transpose and shape ledger :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product'
+    - 1. Transpose and shape ledger
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
+      1: Query, Key, Value, and Scaled Dot Product > 2. Query, key, and value roles :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product'
+    - 2. Query, key, and value roles
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
+      1: Query, Key, Value, and Scaled Dot Product > 2. Query, key, and value roles :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product'
+    - 2. Query, key, and value roles
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
+      1: Query, Key, Value, and Scaled Dot Product > 3. Scale and stable row softmax :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product'
+    - 3. Scale and stable row softmax
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
+      1: Query, Key, Value, and Scaled Dot Product > 3. Scale and stable row softmax :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product'
+    - 3. Scale and stable row softmax
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
+      1: Query, Key, Value, and Scaled Dot Product > 4. Weighted values :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product'
+    - 4. Weighted values
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
+      1: Query, Key, Value, and Scaled Dot Product > 5. Common pitfalls :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product'
+    - 5. Common pitfalls
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  - attention-mask
+  - causal-self-attention
+  - matrix-transpose
+  - multi-head-attention
+  - position-wise-feed-forward
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids: []
+  api_tokens:
+  - np.allclose
+  - np.array
+  - np.exp
+  - np.log
+  - numer.sum
+  - scores.max
+- path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb
+  kind: notebook
+  semantic_sha256: 3882d46da404a248c4a84bca1c00c5ca9a4f87889833a5c018fe0d4b88be7703
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention
+      and Masks :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 2: Self-Attention and Masks'
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention
+      and Masks > 1. Self-attention shape contract :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 2: Self-Attention and Masks'
+    - 1. Self-attention shape contract
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention
+      and Masks > 1. Self-attention shape contract :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 2: Self-Attention and Masks'
+    - 1. Self-attention shape contract
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention
+      and Masks > 2. Additive masks before softmax :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 2: Self-Attention and Masks'
+    - 2. Additive masks before softmax
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention
+      and Masks > 2. Additive masks before softmax :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 2: Self-Attention and Masks'
+    - 2. Additive masks before softmax
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention
+      and Masks > 3. Padding masks :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 2: Self-Attention and Masks'
+    - 3. Padding masks
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention
+      and Masks > 4. Causal masks :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 2: Self-Attention and Masks'
+    - 4. Causal masks
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention
+      and Masks > 5. Mask audit and pitfalls :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 2: Self-Attention and Masks'
+    - 5. Mask audit and pitfalls
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  - attention-mask
+  - causal-self-attention
+  - matrix-transpose
+  - multi-head-attention
+  - position-wise-feed-forward
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids: []
+  api_tokens:
+  - np.allclose
+  - np.array
+  - np.exp
+  - np.log
+  - np.max
+  - np.ones
+  - np.tril
+  - np.where
+  - weights.sum
+- path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb
+  kind: notebook
+  semantic_sha256: 344706264cc9dfd19c04b916c7d1af455bc4c401fb296146fd34b5d123948479
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head
+      Attention, Position, and Cost :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 3: Multi-Head Attention, Position, and Cost'
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head
+      Attention, Position, and Cost > 1. Projection and head dimensions :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 3: Multi-Head Attention, Position, and Cost'
+    - 1. Projection and head dimensions
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head
+      Attention, Position, and Cost > 1. Projection and head dimensions :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 3: Multi-Head Attention, Position, and Cost'
+    - 1. Projection and head dimensions
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head
+      Attention, Position, and Cost > 2. Independent attention and concatenation :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 3: Multi-Head Attention, Position, and Cost'
+    - 2. Independent attention and concatenation
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head
+      Attention, Position, and Cost > 2. Independent attention and concatenation :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 3: Multi-Head Attention, Position, and Cost'
+    - 2. Independent attention and concatenation
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head
+      Attention, Position, and Cost > 3. Sinusoidal positional encoding :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 3: Multi-Head Attention, Position, and Cost'
+    - 3. Sinusoidal positional encoding
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head
+      Attention, Position, and Cost > 4. Exact time and score-memory cost :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 3: Multi-Head Attention, Position, and Cost'
+    - 4. Exact time and score-memory cost
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head
+      Attention, Position, and Cost > 5. Common pitfalls and forward route :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 3: Multi-Head Attention, Position, and Cost'
+    - 5. Common pitfalls and forward route
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  - attention-mask
+  - causal-self-attention
+  - matrix-transpose
+  - multi-head-attention
+  - position-wise-feed-forward
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids: []
+  api_tokens:
+  - heads.transpose
+  - np.arange
+  - np.array_equal
+  - np.cos
+  - np.exp
+  - np.log
+  - np.sin
+  - np.zeros
+- path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb
+  kind: notebook
+  semantic_sha256: aa673b8581cde90fa9aaab7a7d5b5b12b4b2f2dce01e39c8d51de0ed3db001b3
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training > 1. Module contract :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    - 1. Module contract
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training > 1. Module contract :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    - 1. Module contract
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training > 2. Forward pass and mask :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    - 2. Forward pass and mask
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training > 2. Forward pass and mask :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    - 2. Forward pass and mask
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training > 3. Seeded causal prediction task :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    - 3. Seeded causal prediction task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training > 3. Seeded causal prediction task :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    - 3. Seeded causal prediction task
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training > 4. Training loop :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    - 4. Training loop
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training > 5. Common pitfalls :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    - 5. Common pitfalls
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  - attention-mask
+  - causal-self-attention
+  - matrix-transpose
+  - multi-head-attention
+  - position-wise-feed-forward
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids: []
+  api_tokens:
+  - loss.backward
+  - loss.detach
+  - nn.functional.cross_entropy
+  - torch.device
+  - torch.isclose
+  - torch.log
+  - torch.manual_seed
+  - torch.tensor
+  - torch.zeros
+  - x.reshape
+- path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb
+  kind: notebook
+  semantic_sha256: dab130e4fa913744de8263e74c8ddf6e3f678a422bd1fdfc8d14003640b7c666
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session
+      5: Transformer Blocks and Architecture :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 5: Transformer Blocks and Architecture'
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session
+      5: Transformer Blocks and Architecture > 1. Position-wise feed-forward sublayer :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 5: Transformer Blocks and Architecture'
+    - 1. Position-wise feed-forward sublayer
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session
+      5: Transformer Blocks and Architecture > 1. Position-wise feed-forward sublayer :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 5: Transformer Blocks and Architecture'
+    - 1. Position-wise feed-forward sublayer
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session
+      5: Transformer Blocks and Architecture > 2. Pre-norm residual ordering :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 5: Transformer Blocks and Architecture'
+    - 2. Pre-norm residual ordering
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session
+      5: Transformer Blocks and Architecture > 2. Pre-norm residual ordering :: cell 2'
+    heading_path:
+    - 'B2-019 — Session 5: Transformer Blocks and Architecture'
+    - 2. Pre-norm residual ordering
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session
+      5: Transformer Blocks and Architecture > 3. Encoder, decoder, and cross-attention roles :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 5: Transformer Blocks and Architecture'
+    - 3. Encoder, decoder, and cross-attention roles
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session
+      5: Transformer Blocks and Architecture > 4. Architecture trace :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 5: Transformer Blocks and Architecture'
+    - 4. Architecture trace
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session
+      5: Transformer Blocks and Architecture > 5. Common pitfalls and completion :: cell 1'
+    heading_path:
+    - 'B2-019 — Session 5: Transformer Blocks and Architecture'
+    - 5. Common pitfalls and completion
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  - attention-mask
+  - causal-self-attention
+  - matrix-transpose
+  - multi-head-attention
+  - position-wise-feed-forward
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids: []
+  api_tokens:
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - torch.arange
+  - torch.manual_seed
+- path: units/B2-019-attention-transformers/practice/p01.ipynb
+  kind: notebook
+  semantic_sha256: 39190b116c26ef2cf61244d83a7fa6cf893fb242e30f315e8078d9ec4adfc5a1
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p01.ipynb :: B2-019 — Practice p01 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p01
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p01.ipynb :: B2-019 — Practice p01 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p01
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - query-key-value-attention
+  declared_problem_ids:
+  - B2-019-p01
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p02.ipynb
+  kind: notebook
+  semantic_sha256: 06b34d80c439cbdba46cc3d367cf6cc7620181773fedee1ef2ba0d39a1a657c9
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p02.ipynb :: B2-019 — Practice p02 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p02
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p02.ipynb :: B2-019 — Practice p02 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p02
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - matrix-transpose
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p02
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p03.ipynb
+  kind: notebook
+  semantic_sha256: f735369b8a071e053c2a1fd1f510e678622b0975981f940df01e53bd4653c041
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p03.ipynb :: B2-019 — Practice p03 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p03
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p03.ipynb :: B2-019 — Practice p03 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p03
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p03
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p04.ipynb
+  kind: notebook
+  semantic_sha256: 16b2f1d7383223ee8fa9ec9bfdcbafcc03b9a95ba527582d48d9cd433a2d7c1e
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p04.ipynb :: B2-019 — Practice p04 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p04
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p04.ipynb :: B2-019 — Practice p04 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p04
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-mask
+  - causal-self-attention
+  declared_problem_ids:
+  - B2-019-p04
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p05.ipynb
+  kind: notebook
+  semantic_sha256: c38386ca5f936b3dfb92a11057b958c0837727963cc7f7588234b7f633e4f8f1
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p05.ipynb :: B2-019 — Practice p05 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p05
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p05.ipynb :: B2-019 — Practice p05 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p05
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - sinusoidal-positional-encoding
+  declared_problem_ids:
+  - B2-019-p05
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p06.ipynb
+  kind: notebook
+  semantic_sha256: 05670c0f56a51d0128ad355e51290789dc008da2c2614fe1c978f49dd6808fd1
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p06.ipynb :: B2-019 — Practice p06 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p06
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p06.ipynb :: B2-019 — Practice p06 > Task :: cell 2'
+    heading_path:
+    - B2-019 — Practice p06
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p06.ipynb :: B2-019 — Practice p06 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p06
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - matrix-transpose
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p06
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p07.ipynb
+  kind: notebook
+  semantic_sha256: 03b806eef5e8d958456a0e02f7d90547fb462824c90c15882f86556f244ba7ef
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p07.ipynb :: B2-019 — Practice p07 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p07
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p07.ipynb :: B2-019 — Practice p07 > Task :: cell 2'
+    heading_path:
+    - B2-019 — Practice p07
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p07.ipynb :: B2-019 — Practice p07 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p07
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - matrix-transpose
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p07
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p08.ipynb
+  kind: notebook
+  semantic_sha256: a644ed0450f54b081769c3dcd284cdfa4afd3a5b8007fa8145177c652d532fb4
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p08.ipynb :: B2-019 — Practice p08 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p08
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p08.ipynb :: B2-019 — Practice p08 > Task :: cell 2'
+    heading_path:
+    - B2-019 — Practice p08
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p08.ipynb :: B2-019 — Practice p08 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p08
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-mask
+  - causal-self-attention
+  declared_problem_ids:
+  - B2-019-p08
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p09.ipynb
+  kind: notebook
+  semantic_sha256: b7304ba1e06b2d6053cfbccc7246acb6757c48387cd0702edad0ce5718671972
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p09.ipynb :: B2-019 — Practice p09 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p09
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p09.ipynb :: B2-019 — Practice p09 > Task :: cell 2'
+    heading_path:
+    - B2-019 — Practice p09
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p09.ipynb :: B2-019 — Practice p09 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p09
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - sinusoidal-positional-encoding
+  declared_problem_ids:
+  - B2-019-p09
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p10.ipynb
+  kind: notebook
+  semantic_sha256: d1319b7cdca2eefa155b07d062f6ba7ec983933f7dd56f6719a42aa83fd9bf00
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p10.ipynb :: B2-019 — Practice p10 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p10
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p10.ipynb :: B2-019 — Practice p10 > Task :: cell 2'
+    heading_path:
+    - B2-019 — Practice p10
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p10.ipynb :: B2-019 — Practice p10 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p10
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - multi-head-attention
+  declared_problem_ids:
+  - B2-019-p10
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p11.ipynb
+  kind: notebook
+  semantic_sha256: 9fd697d01a3b80fb20cd8a3b30ac03d37b570c549f323a6eaa2f00ce8519f23e
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p11.ipynb :: B2-019 — Practice p11 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p11
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p11.ipynb :: B2-019 — Practice p11 > Task :: cell 2'
+    heading_path:
+    - B2-019 — Practice p11
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p11.ipynb :: B2-019 — Practice p11 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p11
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p11
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p12.ipynb
+  kind: notebook
+  semantic_sha256: 76572e4eed49d642cb66e3f1101213290e2aaf2bb88bc694d7e72ca9d8eaff2c
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p12.ipynb :: B2-019 — Practice p12 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p12
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p12.ipynb :: B2-019 — Practice p12 > Task :: cell 2'
+    heading_path:
+    - B2-019 — Practice p12
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p12.ipynb :: B2-019 — Practice p12 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p12
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - position-wise-feed-forward
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids:
+  - B2-019-p12
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p13.ipynb
+  kind: notebook
+  semantic_sha256: 896d590e73f2d126421c05dee084c70d02c33414bf1c5374b7797ac064bff640
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p13.ipynb :: B2-019 — Practice p13 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p13
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p13.ipynb :: B2-019 — Practice p13 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p13
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p13
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p14.ipynb
+  kind: notebook
+  semantic_sha256: e88a69cfc47522bdb36d48e7c8a1da0fab4afac6c7babb2822a990982bd131d4
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p14.ipynb :: B2-019 — Practice p14 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p14
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p14.ipynb :: B2-019 — Practice p14 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p14
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - causal-self-attention
+  declared_problem_ids:
+  - B2-019-p14
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p15.ipynb
+  kind: notebook
+  semantic_sha256: 91dd7f20ffb8a12ccb3c794dbf3b107fb11497fbf1d139ec82d2b830a1344387
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p15.ipynb :: B2-019 — Practice p15 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p15
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p15.ipynb :: B2-019 — Practice p15 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p15
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - multi-head-attention
+  declared_problem_ids:
+  - B2-019-p15
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p16.ipynb
+  kind: notebook
+  semantic_sha256: 2772752707f8e1e3c98438e61d127f19098c65f7346c5762139883cef4fcf890
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p16.ipynb :: B2-019 — Practice p16 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p16
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p16.ipynb :: B2-019 — Practice p16 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p16
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  declared_problem_ids:
+  - B2-019-p16
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p17.ipynb
+  kind: notebook
+  semantic_sha256: 882186fa35333f0fed0d81c1731d1fe44b802518636684b8f5f055d878f3115b
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p17.ipynb :: B2-019 — Practice p17 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p17
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p17.ipynb :: B2-019 — Practice p17 > Task :: cell 2'
+    heading_path:
+    - B2-019 — Practice p17
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p17.ipynb :: B2-019 — Practice p17 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p17
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - causal-self-attention
+  - sinusoidal-positional-encoding
+  declared_problem_ids:
+  - B2-019-p17
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p18.ipynb
+  kind: notebook
+  semantic_sha256: 861d46b7b02110bb84bb264348748a055ad7f3c2dbd8977cbe549557d76f00fe
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p18.ipynb :: B2-019 — Practice p18 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p18
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p18.ipynb :: B2-019 — Practice p18 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p18
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-mask
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p18
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p19.ipynb
+  kind: notebook
+  semantic_sha256: d690cd078b026a6fc5ce2ef213562f81a30988641a077b7718d7392b0e524a6b
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p19.ipynb :: B2-019 — Practice p19 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p19
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p19.ipynb :: B2-019 — Practice p19 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p19
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - position-wise-feed-forward
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids:
+  - B2-019-p19
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p20.ipynb
+  kind: notebook
+  semantic_sha256: b76439ab83a5486640a29ba6e0f099e9c08f0bf4e59802bd941f667b15f76e6c
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p20.ipynb :: B2-019 — Practice p20 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p20
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p20.ipynb :: B2-019 — Practice p20 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p20
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - transformer-block
+  declared_problem_ids:
+  - B2-019-p20
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p21.ipynb
+  kind: notebook
+  semantic_sha256: 8eb3ecfcc56b03bc1a0d5735c1159eb18653bc156b0a1ddbbd9bf2be71b9a6ca
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p21.ipynb :: B2-019 — Practice p21 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p21
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p21.ipynb :: B2-019 — Practice p21 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p21
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  declared_problem_ids:
+  - B2-019-p21
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p22.ipynb
+  kind: notebook
+  semantic_sha256: 902aef19c9a19f0fce3468be5b45c9cb79bd641f35eb0cf24f732a68479dc872
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p22.ipynb :: B2-019 — Practice p22 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p22
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p22.ipynb :: B2-019 — Practice p22 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p22
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-mask
+  declared_problem_ids:
+  - B2-019-p22
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p23.ipynb
+  kind: notebook
+  semantic_sha256: c3bc6682120ad8baac400cffaaf2765963bb22ac49af167f86c5e6db3bda1b59
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p23.ipynb :: B2-019 — Practice p23 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p23
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p23.ipynb :: B2-019 — Practice p23 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p23
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  - multi-head-attention
+  declared_problem_ids:
+  - B2-019-p23
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p24.ipynb
+  kind: notebook
+  semantic_sha256: cd695c3833c799b744ec30b1b8ce2c7ad7704f25a2bb12cec850602ffc3e85bc
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p24.ipynb :: B2-019 — Practice p24 > Task :: cell 1'
+    heading_path:
+    - B2-019 — Practice p24
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p24.ipynb :: B2-019 — Practice p24 > Your response :: cell 1'
+    heading_path:
+    - B2-019 — Practice p24
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - position-wise-feed-forward
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids:
+  - B2-019-p24
+  api_tokens: []
+- path: units/B2-019-attention-transformers/review.ipynb
+  kind: notebook
+  semantic_sha256: b736cf6f67f4afba9d590cb511f0e0b9059ee6823203d29a0051a6834308163f
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/review.ipynb :: B2-019 — Review and Self-Quiz > Self-quiz :: cell 1'
+    heading_path:
+    - B2-019 — Review and Self-Quiz
+    - Self-quiz
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  - attention-mask
+  - causal-self-attention
+  - matrix-transpose
+  - multi-head-attention
+  - position-wise-feed-forward
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids: []
+  api_tokens: []

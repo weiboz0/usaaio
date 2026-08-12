@@ -389,8 +389,9 @@ def _parse_book2_schedule(
             f"schedule book {raw.get('book')} does not match registered book number "
             f"{expected_book_number}"
         )
-    if raw.get("status") != "staged":
-        errors.append("Book 2 live schedule support is deferred until Task 5")
+    status = raw.get("status")
+    if status not in {"staged", "live"}:
+        errors.append("Book 2 schedule status must be staged or live")
     _exact_integer(
         raw.get("starts_after_global_week"),
         "Book 2 schedule starts_after_global_week",
@@ -622,9 +623,18 @@ def _parse_book2_schedule(
         errors.append(
             f"Book 2 declared total {raw.get('total_minutes')}; actual {actual_total}"
         )
-    if list((root / "units").glob("*/manifest.yaml")):
+    manifest_paths = list((root / "units").glob("*/manifest.yaml"))
+    if status == "staged" and manifest_paths:
         errors.append(
             "staged Book 2 schedule is forbidden once a live manifest exists"
+        )
+    covered_problem_ids: frozenset[str] = frozenset()
+    if status == "live":
+        covered_problem_ids = _validate_live_book2_manifest(
+            root,
+            manifest_paths,
+            listed_problem_ids,
+            errors,
         )
 
     return Book2CourseSchedule(
@@ -632,10 +642,114 @@ def _parse_book2_schedule(
         weeks=weeks,
         declared_week_count=6,
         declared_total_minutes=1660,
-        status="staged",
+        status=str(status),
         global_weeks=tuple(global_weeks),
-        covered_problem_ids=frozenset(),
+        covered_problem_ids=covered_problem_ids,
     )
+
+
+def _validate_live_book2_manifest(
+    root: Path,
+    manifest_paths: list[Path],
+    scheduled_problem_ids: list[str],
+    errors: list[str],
+) -> frozenset[str]:
+    if len(manifest_paths) != 1:
+        errors.append(
+            "live Book 2 schedule requires exactly one unit manifest; "
+            f"found {len(manifest_paths)}"
+        )
+        return frozenset()
+    manifest_path = manifest_paths[0]
+    try:
+        raw = _mapping(_read_yaml(manifest_path), str(manifest_path), errors)
+    except ValueError as exc:
+        errors.append(str(exc))
+        return frozenset()
+    if raw is None:
+        return frozenset()
+    if raw.get("unit") != BOOK2_UNIT:
+        errors.append(f"live Book 2 manifest unit must be {BOOK2_UNIT}")
+    unit_dir = manifest_path.parent
+
+    def require_path(relative: object) -> None:
+        if not isinstance(relative, str) or not relative:
+            errors.append("live Book 2 manifest has an empty declared student path")
+            return
+        candidate = unit_dir / relative
+        try:
+            resolved = candidate.resolve(strict=True)
+        except OSError:
+            errors.append(f"missing declared student path {relative}")
+            return
+        if not resolved.is_relative_to(unit_dir.resolve()) or any(
+            parent.is_symlink()
+            for parent in [candidate, *candidate.parents]
+            if parent.is_relative_to(unit_dir)
+        ):
+            errors.append(f"declared student path escapes or is symlinked: {relative}")
+        elif not resolved.is_file():
+            errors.append(f"missing declared student path {relative}")
+
+    expected_lessons = [
+        "lessons/01-query-key-value-and-scaled-dot-product.ipynb",
+        "lessons/02-self-attention-and-masks.ipynb",
+        "lessons/03-multi-head-position-and-cost.ipynb",
+        "lessons/04-attention-module-and-tiny-training.ipynb",
+        "lessons/05-transformer-blocks-and-architecture.ipynb",
+    ]
+    if raw.get("overview_path") != "lesson.ipynb":
+        errors.append("live Book 2 manifest overview_path must be lesson.ipynb")
+    if raw.get("lesson_paths") != expected_lessons:
+        errors.append("live Book 2 manifest lesson_paths must match sessions 1..5 exactly")
+    if raw.get("review_path") != "review.ipynb":
+        errors.append("live Book 2 manifest review_path must be review.ipynb")
+    bridge = raw.get("bridge_diagnostic")
+    bridge_path = bridge.get("path") if isinstance(bridge, dict) else None
+    if bridge_path != "lessons/00-book1-bridge.ipynb":
+        errors.append(
+            "live Book 2 manifest bridge path must be lessons/00-book1-bridge.ipynb"
+        )
+    for relative in [
+        raw.get("overview_path"),
+        bridge_path,
+        *(raw.get("lesson_paths") if isinstance(raw.get("lesson_paths"), list) else []),
+        raw.get("review_path"),
+    ]:
+        require_path(relative)
+
+    raw_practice = raw.get("practice")
+    if not isinstance(raw_practice, list):
+        errors.append("live Book 2 manifest practice must be a list")
+        return frozenset()
+    manifest_ids: list[str] = []
+    for row_index, row in enumerate(raw_practice):
+        if not isinstance(row, dict):
+            errors.append(f"live Book 2 manifest practice row {row_index} must be a mapping")
+            continue
+        problem_id = row.get("id")
+        if isinstance(problem_id, str):
+            manifest_ids.append(problem_id)
+            expected_minutes = BOOK2_PROBLEM_MINUTES.get(problem_id)
+            if expected_minutes is not None and row.get("minutes") != expected_minutes:
+                errors.append(
+                    f"{problem_id} manifest minutes {row.get('minutes')}; "
+                    f"scheduled contract requires {expected_minutes}"
+                )
+        else:
+            errors.append(f"live Book 2 manifest practice row {row_index} id must be a string")
+        require_path(row.get("path"))
+    ids_match = Counter(manifest_ids) == Counter(scheduled_problem_ids)
+    if not ids_match:
+        errors.append("live manifest problem IDs must exactly match scheduled problem_ids")
+    expected_practice_minutes = sum(BOOK2_PROBLEM_MINUTES.values())
+    estimated = raw.get("estimated_minutes")
+    if not isinstance(estimated, dict) or estimated.get("practice") != expected_practice_minutes:
+        errors.append(
+            "live Book 2 manifest estimated practice minutes must equal scheduled "
+            f"{expected_practice_minutes}"
+        )
+    return frozenset(manifest_ids) if ids_match else frozenset()
 
 
 def _unit_contracts(root: Path) -> dict[str, dict[str, Any]]:

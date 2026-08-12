@@ -1,9 +1,9 @@
 # Book 2 Schedule
 
-Status: staged.
+Status: live.
 
 The independent Round 2 schedule runs across local weeks 1–6 and display weeks 41–46.
-Its explicit ledger totals 1,660 minutes; this staged schedule grants no live coverage until Task 5 installs and reconciles a live Book 2 manifest.
+Its explicit ledger totals 1,660 minutes; the live manifest reconciles every lesson, practice ID, path, and minute.
 
 | Local week | Display week | Allocation | Minutes |
 |---:|---:|---|---:|
