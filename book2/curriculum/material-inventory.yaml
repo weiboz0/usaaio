@@ -80,11 +80,11 @@ manifests:
   semantic_sha256: 2dcf9da1aa459020bf0df4398fdfe4e2cd0cf0814eb9c5125a5ed5982ada6f51
 - path: units/B2-019-attention-transformers/manifest.yaml
   kind: yaml
-  semantic_sha256: 172daa6516e9bf384e1282be19b4c71ae9faaacde7fc4da51d2ce4f20b0eb616
+  semantic_sha256: e6dd52f9851fe91c1f86e8cfc45f0d1c25c7fa78f0524abd9d34322c0b19dd29
 notebooks:
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
-  semantic_sha256: 5d0e63f49567ec74325de3039566e4dc45b5196ab4a93dd1c5c95cfab2735e35
+  semantic_sha256: f87303c40ad22fec645e6c993b503dd159f3f2de0ec2d821322d5033c70ef1b6
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lesson.ipynb :: B2-019 — Attention and Transformer Mechanics > Study route
       :: cell 1'
@@ -110,7 +110,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb
   kind: notebook
-  semantic_sha256: a332ea45bdba86ecdf0ff838591ccea98a3276ec5200caffa20707e65fe59c66
+  semantic_sha256: fa52a123456c524ceecaafc5ee7f6ac2ebfcaa5d6d08f4310f6b36068ebd6c43
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic :: cell
       1'
@@ -153,6 +153,18 @@ notebooks:
     - B2-019 — Book 1 Bridge Diagnostic
     - Additional qualified remediation routes
     cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic > Pinned
+      self-check and feedback :: cell 1'
+    heading_path:
+    - B2-019 — Book 1 Bridge Diagnostic
+    - Pinned self-check and feedback
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic > Pinned
+      self-check and feedback :: cell 2'
+    heading_path:
+    - B2-019 — Book 1 Bridge Diagnostic
+    - Pinned self-check and feedback
+    cell_ordinal: 2
   declared_unit_ids:
   - B2-019-attention-transformers
   declared_concept_ids:
@@ -168,10 +180,17 @@ notebooks:
   - transformer-block
   - transformer-residual-layernorm
   declared_problem_ids: []
-  api_tokens: []
+  api_tokens:
+  - bridge_array.sum
+  - bridge_checks.values
+  - np.arange
+  - np.array
+  - np.mean
+  - np.ones
+  - np.swapaxes
 - path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb
   kind: notebook
-  semantic_sha256: cc938ccfb2acfed83c97aafb506c0a63e894967eac33674dfd80b2480d70d744
+  semantic_sha256: a27ab40e610807a92166af7e2e56aa7475a51eb64f4fb403bdd99a8b0cbcc8ec
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
       1: Query, Key, Value, and Scaled Dot Product :: cell 1'
@@ -401,7 +420,7 @@ notebooks:
   - np.zeros
 - path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb
   kind: notebook
-  semantic_sha256: ba8ce9c41280b0756644ebe7a2180c79f90e233d47f178237b0cc02dba5d1eff
+  semantic_sha256: fb34205afdb06e04ecdd7da0c9fed921968d443ccd66cd712b5e7a6a236d9250
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
       Attention Module and Tiny Training :: cell 1'
@@ -479,6 +498,7 @@ notebooks:
   declared_problem_ids: []
   api_tokens:
   - PINNED_TARGETS.reshape
+  - allowed.any
   - attention_probe_weights.triu
   - k.transpose
   - layer.weight.copy_
@@ -501,12 +521,14 @@ notebooks:
   - self.out
   - torch.allclose
   - torch.arange
+  - torch.broadcast_to
   - torch.cat
   - torch.cos
   - torch.count_nonzero
   - torch.device
   - torch.empty
   - torch.eye
+  - torch.isfinite
   - torch.linalg.vector_norm
   - torch.manual_seed
   - torch.matmul
@@ -517,6 +539,7 @@ notebooks:
   - torch.softmax
   - torch.tensor
   - torch.tril
+  - x.is_floating_point
 - path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb
   kind: notebook
   semantic_sha256: b33743c4b879a90715b072e9cd3667224fa77434333ee132fd1ab57bf606e09d
@@ -659,7 +682,7 @@ notebooks:
   - weights.sum
 - path: units/B2-019-attention-transformers/practice/p02.ipynb
   kind: notebook
-  semantic_sha256: 3a08c688082690a5e848fe4fb1136bb1a0e7d673d08cd5a624c7071e1a8d1dbf
+  semantic_sha256: af2145e1c64bff600828dcb4c7315286fcf9e88e8d214f910b96f85951fe82a9
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p02.ipynb :: B2-019 — Practice p02 > Task :: cell 1'
     heading_path:
@@ -951,7 +974,7 @@ notebooks:
   - np.testing.assert_allclose
 - path: units/B2-019-attention-transformers/practice/p06.ipynb
   kind: notebook
-  semantic_sha256: a079e8411896425ce8bb1b33ffd4ee13216e8d0c32c17565f4dbd2f4e01ed800
+  semantic_sha256: 98f8fb8304cc827f53402553b7447612a74749822f67695a6ed613fb68d48bd8
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p06.ipynb :: B2-019 — Practice p06 > Task :: cell 1'
     heading_path:
@@ -1121,7 +1144,7 @@ notebooks:
   - x.swapaxes
 - path: units/B2-019-attention-transformers/practice/p08.ipynb
   kind: notebook
-  semantic_sha256: 8ae728693510addf39be5efe0695adf25fa57b4ae49784f10a7694315644c57c
+  semantic_sha256: b97a851bf664798b95bb98f29b5edfe770b82c5c103b2a905eb625377d69a676
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p08.ipynb :: B2-019 — Practice p08 > Task :: cell 1'
     heading_path:
@@ -1208,7 +1231,7 @@ notebooks:
   - weights.sum
 - path: units/B2-019-attention-transformers/practice/p09.ipynb
   kind: notebook
-  semantic_sha256: 3888c5f0b6af37c7e15512e690094a6063d29e8cbeab1201409a3647f13799c0
+  semantic_sha256: d5b4da8df4e9489ee1cbde1b8cc06eabbc437662e00b28692a6c9ae20196c2e6
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p09.ipynb :: B2-019 — Practice p09 > Task :: cell 1'
     heading_path:
@@ -1584,7 +1607,7 @@ notebooks:
   - weight.zero_
 - path: units/B2-019-attention-transformers/practice/p13.ipynb
   kind: notebook
-  semantic_sha256: bda3abf441bda381ab3e5c4cf342318a761cbfbdfbaabcc4cfb7b69056091016
+  semantic_sha256: 810d0d9b9a55d8ac84008cbed75a01fc09a22313ab9ef0e107cef52ef7773ae2
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p13.ipynb :: B2-019 — Practice p13 > Task :: cell 1'
     heading_path:
@@ -1605,7 +1628,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p13_solution.ipynb
   kind: notebook
-  semantic_sha256: 7491553b54ad48aa8418273ddd04546e71b9a8808a22af71f6746beb607f9db6
+  semantic_sha256: 3b69fd401c40e70efe8bc7cce94d4f5738b44d7cc5e05f2913811ef7d6f549ca
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p13_solution.ipynb :: B2-019-attention-transformers — Practice p13
       — Solution :: cell 1'
@@ -1645,10 +1668,12 @@ notebooks:
   declared_problem_ids:
   - B2-019-p13
   api_tokens:
+  - np.array
   - np.isclose
   - np.random.default_rng
   - np.sqrt
   - np.sum
+  - np.tile
   - np.var
   - rng.standard_normal
 - path: units/B2-019-attention-transformers/practice/p14.ipynb
@@ -1817,7 +1842,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 92a82ce82cd2f51a9297bef6d8e4f1ec02f4b6ccd14b4041c2d3eb3e44d3fd82
+  semantic_sha256: 749fdd07f4b2071e77ceac24141d03b006930fed9087bb504c794c57954df95d
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p16_solution.ipynb :: B2-019-attention-transformers — Practice p16
       — Solution :: cell 1'
@@ -1859,7 +1884,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: 1a79a408c7b10f8f5ebe2e416ade05a4a9385358bfc5abfeac1c349b2ceeae67
+  semantic_sha256: 590013d26d639a9fb5bbe00df964d9f78a8231bd36c9e018a338bf5be93c19fb
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p17.ipynb :: B2-019 — Practice p17 > Task :: cell 1'
     heading_path:
@@ -1902,7 +1927,7 @@ notebooks:
   - torch.tril
 - path: units/B2-019-attention-transformers/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: 4a049898bb024758342aca7f9496848d9499b47476429ff48234068302543640
+  semantic_sha256: 74f73a28fb662c84dfc26265ee7fbdb279d181df2cda58c3898c13bbcb603d5e
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p17_solution.ipynb :: B2-019-attention-transformers — Practice p17
       — Solution :: cell 1'
@@ -2293,7 +2318,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: 91b64f654bba3282abafca8b0977dbeb4a40fcf3c13730eeff1551781ccfc159
+  semantic_sha256: 88b3cdc05591b4c5de7040bf3aa591e50b45d72889d62ef553e4933f3b55aa75
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p22_solution.ipynb :: B2-019-attention-transformers — Practice p22
       — Solution :: cell 1'

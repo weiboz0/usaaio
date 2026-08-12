@@ -534,9 +534,12 @@ def test_plan019_cutover_real_book1_inventory_and_book2_ownership_are_partitione
 
 def test_plan019_task3_generated_book1_and_aggregate_evidence_is_current() -> None:
     book1_root = REPO_ROOT / "book1"
+    book2_root = REPO_ROOT / "book2"
 
     assert audit.main(["--root", str(book1_root), "--check"]) == 0
+    assert audit.main(["--root", str(book2_root), "--check"]) == 0
     assert render_course_structure.main(["--root", str(book1_root), "--check"]) == 0
+    assert render_course_structure.main(["--root", str(book2_root), "--check"]) == 0
     assert roadmap_renderer.main(["--root", str(REPO_ROOT), "--check"]) == 0
 
 
