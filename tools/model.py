@@ -4,6 +4,7 @@ import json
 import os
 import re
 from dataclasses import dataclass, field
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -139,6 +140,8 @@ class UnitManifest:
     lesson_sessions: list[int] | None = None
     concept_sessions: dict[str, int] | None = None
     solution_policy: str = "required"
+    solution_policy_plan: str | None = None
+    solution_policy_expires: str | None = None
 
 
 @dataclass(frozen=True)
@@ -594,13 +597,41 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
             lesson_sessions=lesson_sessions,
             practice=practice,
         )
-        solution_policy = raw.get("solution_policy", "required")
-        if not isinstance(solution_policy, str) or solution_policy not in {
-            "required",
-            "deferred",
-        }:
+        solution_policy_value = raw.get("solution_policy", "required")
+        solution_policy = "required"
+        solution_policy_plan = None
+        solution_policy_expires = None
+        if isinstance(solution_policy_value, dict):
+            solution_policy = solution_policy_value.get("status")
+            solution_policy_plan = solution_policy_value.get("plan")
+            solution_policy_expires = solution_policy_value.get("expires")
+            try:
+                expiry_date = date.fromisoformat(str(solution_policy_expires))
+            except ValueError:
+                expiry_date = None
+            valid_deferred = (
+                solution_policy == "deferred"
+                and isinstance(solution_policy_plan, str)
+                and re.fullmatch(r"plan-[0-9]{3}", solution_policy_plan) is not None
+                and isinstance(solution_policy_expires, str)
+                and re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", solution_policy_expires)
+                is not None
+                and expiry_date is not None
+                and expiry_date >= datetime.now(UTC).date()
+            )
+            if not valid_deferred:
+                raise ValueError(
+                    f"{path}: deferred solution_policy requires plan-NNN and "
+                    "expires YYYY-MM-DD"
+                )
+        elif not isinstance(solution_policy_value, str):
+            raise ValueError(  # noqa: TRY004 - manifest contract uses ValueError uniformly
+                f"{path}: solution_policy must be 'required' or a deferred mapping"
+            )
+        elif solution_policy_value != "required":
             raise ValueError(
-                f"{path}: solution_policy must be 'required' or 'deferred'"
+                f"{path}: deferred solution_policy requires plan-NNN and "
+                "expires YYYY-MM-DD"
             )
         result.append(
             UnitManifest(
@@ -624,6 +655,8 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
                 lesson_sessions=lesson_sessions,
                 concept_sessions=concept_sessions,
                 solution_policy=solution_policy,
+                solution_policy_plan=solution_policy_plan,
+                solution_policy_expires=solution_policy_expires,
             )
         )
     return result

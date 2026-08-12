@@ -15,7 +15,13 @@ def check_coverage(root: str | Path) -> Report:
     manifests = load_unit_manifests(root)
     vocabulary = set(syllabus.baseline) | set(syllabus.concepts)
     errors: list[str] = []
+    warnings: list[str] = []
     for manifest in manifests:
+        if manifest.solution_policy == "deferred":
+            warnings.append(
+                f"{manifest.path}: solution debt deferred to "
+                f"{manifest.solution_policy_plan} until {manifest.solution_policy_expires}"
+            )
         practice_minutes = [problem.minutes for problem in manifest.practice]
         declared_minutes = [minutes for minutes in practice_minutes if minutes is not None]
         if declared_minutes and len(declared_minutes) != len(practice_minutes):
@@ -105,7 +111,7 @@ def check_coverage(root: str | Path) -> Report:
             for concept in problem.concepts:
                 if concept not in vocabulary:
                     errors.append(f"{manifest.path}: practice {problem.id} unknown concept {concept}")
-    return Report(name="coverage-check", ok=not errors, errors=errors)
+    return Report(name="coverage-check", ok=not errors, errors=errors, warnings=warnings)
 
 
 def _estimated_practice_minutes(manifest_path: Path) -> object:

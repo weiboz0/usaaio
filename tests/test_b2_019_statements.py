@@ -1239,3 +1239,24 @@ def test_required_solution_policy_cannot_be_evaded_by_deleting_all_solutions(tmp
     audit_curriculum.build_inventory(complete)
     assert check_coverage(complete).ok
     assert check_layer_boundary(complete).ok
+
+
+def test_deferred_solution_policy_emits_plan_linked_expiring_debt(tmp_path: Path) -> None:
+    book2 = _copy_registered_statement_repo(tmp_path / "deferred")
+    manifest_path = book2 / "units" / UNIT_ID / "manifest.yaml"
+    raw = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    raw["solution_policy"] = {
+        "status": "deferred",
+        "plan": "plan-020",
+        "expires": "2099-12-31",
+    }
+    manifest_path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+
+    expected = "solution debt deferred to plan-020 until 2099-12-31"
+    coverage = check_coverage(book2)
+    boundary = check_layer_boundary(book2)
+    inventory = audit_curriculum.build_inventory(book2)
+
+    assert coverage.ok and any(expected in warning for warning in coverage.warnings)
+    assert boundary.ok and any(expected in warning for warning in boundary.warnings)
+    assert any(expected in warning for warning in inventory["warnings"])

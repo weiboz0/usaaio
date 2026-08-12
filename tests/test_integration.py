@@ -1561,7 +1561,11 @@ def test_full_pipeline_on_synthetic_test(tmp_path):
         (unit_dir / "practice" / f"p{number:02}.ipynb").write_text(
             '{"cells":[],"metadata":{},"nbformat":4,"nbformat_minor":5}'
         )
-        (unit_dir / "practice" / f"p{number:02}_solution.ipynb").write_text("{}")
+        (unit_dir / "practice" / f"p{number:02}_solution.ipynb").write_text(
+            '{"cells":[{"cell_type":"code","source":"assert True",'
+            '"metadata":{},"outputs":[],"execution_count":null}],'
+            '"metadata":{},"nbformat":4,"nbformat_minor":5}'
+        )
     (unit_dir / "manifest.yaml").write_text(
         """
 unit: F1-scientific-python

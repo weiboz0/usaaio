@@ -229,6 +229,7 @@ def check_layer_boundary(root: str | Path) -> Report:
     except (KeyError, OSError, TypeError, ValueError) as exc:
         return Report(name="layer-boundary-check", ok=False, errors=[str(exc)])
     errors: list[str] = []
+    warnings: list[str] = []
 
     concept_owner = {
         concept: unit for unit in syllabus.units.values() for concept in unit.teaches
@@ -236,6 +237,11 @@ def check_layer_boundary(root: str | Path) -> Report:
     roadmap_points = {point.id: point for point in roadmap.knowledge_points}
 
     for manifest in manifests:
+        if manifest.solution_policy == "deferred":
+            warnings.append(
+                f"{manifest.path}: solution debt deferred to "
+                f"{manifest.solution_policy_plan} until {manifest.solution_policy_expires}"
+            )
         unit = syllabus.units.get(manifest.unit_id)
         if unit is None:
             errors.append(f"{manifest.path}: unknown syllabus unit {manifest.unit_id}")
@@ -315,4 +321,6 @@ def check_layer_boundary(root: str | Path) -> Report:
         _check_compute(root, manifest, errors)
         _check_claims(root, manifest, roadmap_points, errors)
 
-    return Report(name="layer-boundary-check", ok=not errors, errors=errors)
+    return Report(
+        name="layer-boundary-check", ok=not errors, errors=errors, warnings=warnings
+    )

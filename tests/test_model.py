@@ -113,8 +113,59 @@ practice: []
         encoding="utf-8",
     )
 
-    with pytest.raises(ValueError, match="solution_policy must be 'required' or 'deferred'"):
+    with pytest.raises(ValueError, match="solution_policy must be 'required' or a deferred mapping"):
         load_unit_manifests(tmp_path)
+
+
+@pytest.mark.parametrize(
+    "policy",
+    [
+        "deferred",
+        "{status: deferred, plan: plan-020}",
+        "{status: deferred, expires: '2099-12-31'}",
+        "{status: deferred, plan: issue-20, expires: '2099-12-31'}",
+        "{status: deferred, plan: plan-020, expires: tomorrow}",
+    ],
+)
+def test_deferred_solution_policy_requires_plan_and_expiry(tmp_path, policy):
+    unit_dir = tmp_path / "units" / "F1-scientific-python"
+    unit_dir.mkdir(parents=True)
+    (unit_dir / "manifest.yaml").write_text(
+        f"""
+unit: F1-scientific-python
+solution_policy: {policy}
+concepts_taught: []
+concepts_used: []
+prereq_units: []
+practice: []
+""",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="deferred solution_policy requires"):
+        load_unit_manifests(tmp_path)
+
+
+def test_deferred_solution_policy_parses_plan_linked_expiring_debt(tmp_path):
+    unit_dir = tmp_path / "units" / "F1-scientific-python"
+    unit_dir.mkdir(parents=True)
+    (unit_dir / "manifest.yaml").write_text(
+        """
+unit: F1-scientific-python
+solution_policy: {status: deferred, plan: plan-020, expires: '2099-12-31'}
+concepts_taught: []
+concepts_used: []
+prereq_units: []
+practice: []
+""",
+        encoding="utf-8",
+    )
+
+    manifest = load_unit_manifests(tmp_path)[0]
+
+    assert manifest.solution_policy == "deferred"
+    assert manifest.solution_policy_plan == "plan-020"
+    assert manifest.solution_policy_expires == "2099-12-31"
 
 
 def test_unit_manifest_roundtrip(tmp_path):

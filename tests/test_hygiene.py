@@ -70,4 +70,37 @@ def test_hygiene_vacuous_without_notebooks(tmp_path):
             "execution_count": 1,
         },
     )
+    assert not check_hygiene(tmp_path).ok
+
+
+def test_hygiene_rejects_solution_notebook_without_executable_assert(tmp_path):
+    write_nb(
+        tmp_path / "units" / "U1" / "practice" / "p01_solution.ipynb",
+        {
+            "cell_type": "code",
+            "source": "answer = 42",
+            "metadata": {},
+            "outputs": [],
+            "execution_count": None,
+        },
+    )
+
+    report = check_hygiene(tmp_path)
+
+    assert not report.ok
+    assert any("solution notebook has no executable assert" in error for error in report.errors)
+
+
+def test_hygiene_accepts_solution_notebook_with_assert(tmp_path):
+    write_nb(
+        tmp_path / "mocktests" / "r1-001" / "solutions" / "p01.ipynb",
+        {
+            "cell_type": "code",
+            "source": "answer = 42\nassert answer == 42",
+            "metadata": {},
+            "outputs": [],
+            "execution_count": None,
+        },
+    )
+
     assert check_hygiene(tmp_path).ok

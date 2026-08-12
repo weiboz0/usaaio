@@ -328,7 +328,8 @@ def _unit_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
         ]
         statement_only_book2 = (
             manifest.get("book") == 2
-            and manifest.get("solution_policy", "required") == "deferred"
+            and isinstance(manifest.get("solution_policy"), dict)
+            and manifest["solution_policy"].get("status") == "deferred"
             and declared_solutions
             and not any(path.is_file() for path in declared_solutions)
         )
@@ -552,6 +553,14 @@ def build_inventory(
     documents = [_document_record(course_path, "docs/course-structure.md")]
 
     parsed_unit_manifests = [_load_yaml(path, _posix(path, root)) for path in unit_manifests]
+    warnings: list[str] = []
+    for path, manifest in zip(unit_manifests, parsed_unit_manifests, strict=True):
+        policy = manifest.get("solution_policy", "required")
+        if isinstance(policy, dict) and policy.get("status") == "deferred":
+            warnings.append(
+                f"{path}: solution debt deferred to {policy.get('plan')} "
+                f"until {policy.get('expires')}"
+            )
     lesson_minutes = sum(sum(item["estimated_minutes"].get("lesson_sessions") or []) for item in parsed_unit_manifests)
     practice_minutes = sum(int(item["estimated_minutes"].get("practice", 0)) for item in parsed_unit_manifests)
     review_minutes = sum(int(item["estimated_minutes"].get("review", 0)) for item in parsed_unit_manifests)
@@ -585,7 +594,7 @@ def build_inventory(
     all_input_paths = sorted(
         [item["path"] for item in manifests + notebooks + documents], key=str.encode
     )
-    return {
+    inventory = {
         "inventory_version": 1,
         "counts": counts,
         "input_paths": all_input_paths,
@@ -593,6 +602,9 @@ def build_inventory(
         "manifests": manifests,
         "notebooks": notebooks,
     }
+    if warnings:
+        inventory["warnings"] = warnings
+    return inventory
 
 
 def render_inventory(inventory: dict[str, Any]) -> str:
