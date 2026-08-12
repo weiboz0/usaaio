@@ -709,8 +709,145 @@ The earlier `[deepseek]` round reviewed the superseded shared-root plan and prov
 
 ## Content Review
 
-Not started.
+### Review 1 — self (2026-08-12)
+
+- **Verdict**: Approved after fixes.
+- Blind solve: p01–p24 matched the committed solutions on options, formulas, shapes,
+  masks, complexity counts, training trace, and residual ordering.
+- `[self][FIXED]` Task 6 answer checks did not initially reject plausible wrong
+  implementations for p03, p07–p10, p15, and p24.
+  Commit `deed1cf` added independent numeric probes and executable mutant tests.
+- `[self][FIXED]` p14 originally claimed that post-softmax zeroing preserved causal
+  independence.
+  Commit `deed1cf` corrected the statement, lesson, and solution with the forbidden-score
+  denominator counterexample.
+- `[self][FIXED]` Task 7's first mutation harness accepted an unrelated exception earlier
+  in the registered answer-check cell and CI omitted Book 2 inventory freshness.
+  Commit `03e7cf9` bound exact assertions through the AST and added the Book 2 freshness
+  route.
+- `[self][FIXED]` final verification exposed stale Task 7 ownership expectations and
+  Quarto-created source-tree ignore files.
+  Commit `21773dc` corrected the tests and made PDF builds remove only newly-created exact
+  `/.quarto/` ignore files.
+
+### Review 1 — sol (2026-08-12)
+
+- **Verdict**: Approved after fixes.
+- Blind solve: 24/24 matched, including the p17 loss trace and predictions and the p21/p23
+  exact arithmetic.
+- `[sol][FIXED]` `load_unit_manifests()` followed symlinked leaf unit directories and then
+  a symlinked enclosing `units/` directory.
+  Commits `aae2c73` and `b90a7eb` reject both escapes while preserving ordinary local
+  directories.
+- `[sol][FIXED]` p13 did not state the cross-coordinate independence needed for
+  `Var(q dot k)=d_k`.
+  Commit `aae2c73` states mutual independence and teaches a shared-Rademacher correlated
+  counterexample.
+- `[sol][FIXED]` the 24 solution notebooks lacked stable cell IDs.
+  Commit `aae2c73` added IDs without changing source semantics or outputs.
+- Residual rerun: enclosing symlink rejected, leaf symlink rejected, valid directory
+  loaded; 4 focused tests passed.
+
+### Review 1 — fable (2026-08-12)
+
+- **Verdict**: Approved with nits after fixes.
+- Blind solve: 24/24 substantive agreement; no answer-key, provenance, tolerance, or
+  accessibility defect remained.
+- `[fable][FIXED]` statements under-pinned the sinusoidal convention and mean loss,
+  several answer checks were weak, the bridge lacked executable feedback, and Lesson 04's
+  exemplar did not match its validation prose.
+  Commit `aae2c73` closed those content findings and added the F5 remediation route.
+- `[fable][FIXED]` solution completeness could be inferred vacuously from filesystem
+  absence.
+  Commit `aae2c73` added explicit required/deferred solution policy enforcement.
+- `[fable][FIXED]` the Book 2 material inventory became stale after those repairs.
+  Commit `abd8163` regenerated it and added a Book 2 freshness regression.
+- `[fable][FIXED]` p09 did not independently pin sinusoidal row 2.
+  Commit `068282d` added the literal oracle and a zero-row mutant.
+- `[fable][FIXED]` deferred solution debt was silent and generic solution notebooks could
+  lose every executable assertion.
+  Commit `fc28a92` requires plan-linked, non-expired deferrals with visible warnings and
+  adds generic assertion hygiene for unit and mock solutions.
+- `[fable][WONTFIX]` Nice-to-have wording and pedagogy notes remain for p07, p10, p21,
+  p22, Lesson 04, and the inventory's lesson-session naming.
+  They do not change an answer, prerequisite, schedule, evidence claim, or enforced gate
+  and are deferred to later editorial maintenance.
+
+### Review 1 — glm (2026-08-12)
+
+- **Verdict**: Approved.
+- Focused residual gate at `fc28a92` independently reran the full suite (`1084 passed`),
+  70 enforcement tests, both inventory checks, hygiene, and the PR-aware pre-merge guard.
+- `[glm][FIXED]` verified that the p09 row-2 mutant fails its real assertion; Book 2
+  inventory and renderers are current; required solutions cannot be deleted; deferred
+  debt is schema-valid and visible; invalid or assert-free solution notebooks fail; and
+  enclosing and leaf unit symlinks are rejected.
+- No blocker or open finding remained.
+
+Consensus: `[self]` APPROVE, `[sol]` APPROVE, `[fable]` APPROVE WITH NITS, and
+`[glm]` APPROVE.
+All Must Fix and Should Fix findings are `[FIXED]`; no `[OPEN]` item remains.
 
 ## Post-execution report
 
-Not started.
+### Shipped structure and content
+
+- Created registry-driven, independently complete `book1/` and `book2/` roots and removed
+  legacy root content discovery.
+- Preserved the Book 1 curriculum at 19 units, 149 concepts, 437 practices, 69 lesson
+  sessions, 40 weeks, and the `r1-001` assessment namespace.
+- Added B2-019 with 32 student-facing notebooks: one overview, one Book 1 bridge, five
+  lessons, one review, and 24 practices.
+- Added 24 separately authored solution notebooks; every solution executes top-to-bottom,
+  carries fixed probes/tolerances, and ends with executable answer assertions.
+- Promoted exactly seven Round 2 knowledge points to covered and left later Book 2 targets
+  missing or partial.
+- Added five permanent attention mutations, exact coverage evidence, a six-week Book 2
+  schedule, Book 2 inventory/course rendering, and selected-book PDF builds.
+
+### Key execution commits
+
+- `32676aa` — atomic split into complete book roots.
+- `699f248` — Book 1 equivalence evidence.
+- `a3537fb` through `48c9dbe` — shared, book-parameterized schedule implementation.
+- `feb8c0c` through `ea7e150` — B2-019 lessons, statements, and authoring enforcement.
+- `c0103a4` and `a92374b` — blind solutions and finite-output certification.
+- `deed1cf` — strengthened answer checks and corrected p14.
+- `3e486bc` and `03e7cf9` — coverage evidence and hardened mutation gate.
+- `21773dc` — final two-book verification repairs and clean PDF build behavior.
+- `aae2c73` through `fc28a92` — content-gate correctness, isolation, inventory, oracle,
+  and deferred-debt repairs.
+
+### Verification evidence
+
+- Final pytest: `1084 passed`; ten warnings came from deliberately minimal legacy test
+  fixtures missing notebook cell IDs, not shipped notebooks.
+- Focused final content tests: 134 B2-019 statement/mutation tests passed.
+- All 24 B2-019 solution notebooks executed fresh in numeric order; the bridge, overview,
+  five lessons, and review also executed during independent review.
+- Mutation gates: training 5/5, classical 5/5, and attention 5/5 killed with untouched
+  attention corpus 5/5 passing.
+- PDF contract: Book 1 discovered and produced 10/10 nonzero PDFs; Book 2 discovered and
+  produced exactly 32/32 nonzero student-facing PDFs, with no source-tree build artifacts.
+- Book 1 and Book 2 inventory checks, both course-structure renderers, the aggregate
+  roadmap, registry/import, prerequisite, coverage, scope, schedule, hygiene, layer,
+  tolerance, blueprint, Ruff, and diff checks passed.
+- Final `scripts/pre-merge-guard.sh --pr` passed; protected cached and worktree diffs were
+  empty and the complete Plan 019 range was accepted.
+- Raw references remained ignored and book-local; no raw paper, secret, credential, token,
+  or student data was staged.
+
+### Explicit waiver
+
+Per the user's direct instruction, `scripts/ci-local.sh`,
+`scripts/verify-clean-checkout.sh`, and their bulk Book 1 notebook-execution component were
+not rerun for Task 8 and are recorded as **WAIVED**, not as executed evidence.
+The user directed the run to treat local CI as passed.
+All separable checks listed above were run independently; the clean-checkout wrapper was
+not invoked because it necessarily invokes the waived full local-CI script.
+
+### Final status
+
+The four-way content gate reached consensus with no open finding.
+The branch was clean at `fc28a92` before this report, and is ready for its report commit,
+PR creation, final PR-aware guard, and squash merge.
