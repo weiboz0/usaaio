@@ -76,6 +76,28 @@ practice: []
         load_unit_manifests(tmp_path / "book")
 
 
+def test_load_unit_manifests_rejects_symlinked_units_directory(tmp_path):
+    outside_units = tmp_path / "outside-units"
+    unit_dir = outside_units / "escaped-unit"
+    unit_dir.mkdir(parents=True)
+    (unit_dir / "manifest.yaml").write_text(
+        """
+unit: escaped-unit
+concepts_taught: []
+concepts_used: []
+prereq_units: []
+practice: []
+""",
+        encoding="utf-8",
+    )
+    book = tmp_path / "book"
+    book.mkdir()
+    (book / "units").symlink_to(outside_units, target_is_directory=True)
+
+    with pytest.raises(ValueError, match="unit directory must be a local real directory"):
+        load_unit_manifests(book)
+
+
 def test_unit_manifest_rejects_non_string_solution_policy(tmp_path):
     unit_dir = tmp_path / "units" / "F1-scientific-python"
     unit_dir.mkdir(parents=True)

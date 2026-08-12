@@ -523,7 +523,12 @@ def _lesson_sessions(raw: dict[str, Any], path: Path) -> list[int] | None:
 
 def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
     root = Path(root)
-    manifests = sorted(root.glob("units/*/manifest.yaml"))
+    units_root = root / "units"
+    if units_root.is_symlink():
+        raise ValueError(
+            f"{units_root}: unit directory must be a local real directory"
+        )
+    manifests = sorted(units_root.glob("*/manifest.yaml"))
     syllabus_path = root / "syllabus.md"
     syllabus_units = load_syllabus(root).units if syllabus_path.is_file() else {}
     result: list[UnitManifest] = []
@@ -534,7 +539,7 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
                 f"{path}: unit directory must be a local real directory"
             )
         try:
-            unit_dir.resolve(strict=True).relative_to((root / "units").resolve(strict=True))
+            unit_dir.resolve(strict=True).relative_to(units_root.resolve(strict=True))
         except (OSError, ValueError) as exc:
             raise ValueError(
                 f"{path}: unit directory must be a local real directory"
