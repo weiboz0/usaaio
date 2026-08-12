@@ -1257,7 +1257,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p09_solution.ipynb
   kind: notebook
-  semantic_sha256: e358defe2a4510348a8d80f3d2b3ab0182cd5829ed4348c6621c69ee5129ae9a
+  semantic_sha256: 55fc26c0ce251a9e369e2f35035cb12bbb8eea34d2bf548c25119a5e91a7166c
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p09_solution.ipynb :: B2-019-attention-transformers — Practice p09
       — Solution :: cell 1'

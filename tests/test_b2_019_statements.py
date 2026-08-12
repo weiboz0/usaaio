@@ -764,6 +764,11 @@ def test_final_review_solution_checks_pin_values_and_forbidden_key_columns() -> 
             id="p09-base-100",
         ),
         pytest.param(
+            9,
+            (("    return table", "    table[2] = 0.0\n    return table"),),
+            id="p09-zero-row-two",
+        ),
+        pytest.param(
             10,
             (
                 (
