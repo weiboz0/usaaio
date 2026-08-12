@@ -96,6 +96,18 @@ def _positive_integer(value: object, label: str, errors: list[str]) -> int | Non
     return value
 
 
+def _exact_integer(
+    value: object, label: str, expected: int, errors: list[str]
+) -> int | None:
+    if type(value) is not int:
+        errors.append(f"{label} must be an integer")
+        return None
+    if value != expected:
+        errors.append(f"{label} must be integer {expected}")
+        return None
+    return value
+
+
 def _mapping(value: object, label: str, errors: list[str]) -> dict[str, Any] | None:
     if not isinstance(value, dict):
         errors.append(f"{label} must be a mapping")
@@ -300,26 +312,46 @@ def _parse_book2_schedule(
         errors.append("Book 2 schedule book must be integer 2")
     if raw.get("status") != "staged":
         errors.append("Book 2 schedule status must be staged until Task 5")
-    if raw.get("starts_after_global_week") != 40:
-        errors.append("Book 2 schedule starts_after_global_week must be integer 40")
-    if raw.get("total_book_weeks") != 6:
-        errors.append("Book 2 schedule total_book_weeks must be integer 6")
-    if raw.get("total_minutes") != 1660:
-        errors.append("Book 2 schedule total_minutes must be integer 1660")
+    _exact_integer(
+        raw.get("starts_after_global_week"),
+        "Book 2 schedule starts_after_global_week",
+        40,
+        errors,
+    )
+    _exact_integer(
+        raw.get("total_book_weeks"),
+        "Book 2 schedule total_book_weeks",
+        6,
+        errors,
+    )
+    _exact_integer(
+        raw.get("total_minutes"),
+        "Book 2 schedule total_minutes",
+        1660,
+        errors,
+    )
 
     marker = raw.get("final_assessment")
-    expected_marker = {
-        "kind": "future-r2-mock",
-        "status": "planned",
-        "after_book_week": 6,
-    }
-    if marker != expected_marker:
-        if isinstance(marker, dict) and marker.get("after_book_week") != 6:
+    if isinstance(marker, dict):
+        marker_week = marker.get("after_book_week")
+        if type(marker_week) is not int:
+            errors.append(
+                "Book 2 final_assessment.after_book_week must be an integer"
+            )
+            marker_week = None
+        elif marker_week != 6:
             errors.append("planned final assessment marker must follow book week 6")
-        else:
+        marker_without_week = {
+            key: value for key, value in marker.items() if key != "after_book_week"
+        }
+        if marker_without_week != {"kind": "future-r2-mock", "status": "planned"}:
             errors.append(
                 "Book 2 schedule requires the planned future-r2-mock final assessment marker"
             )
+    else:
+        errors.append(
+            "Book 2 schedule requires the planned future-r2-mock final assessment marker"
+        )
 
     raw_weeks = raw.get("weeks")
     if not isinstance(raw_weeks, list):

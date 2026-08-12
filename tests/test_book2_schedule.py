@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import shutil
 from collections.abc import Callable
@@ -17,6 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 BOOK1_ROOT = ROOT / "book1"
 BOOK2_ROOT = ROOT / "book2"
 FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "two-books-valid"
+BOOK1_SCHEDULE_SHA256 = "6c1f4f6eeb518930e5772ef0f14d8bba18be1f191114c91edfae52ef8811eb4d"
+BOOK1_STRUCTURE_SHA256 = "75518825359dd1e0ed3501c0301fbdfb1fc685d6944465f924f1f88c0d25e642"
 
 
 def _load_schedule(root: Path = BOOK2_ROOT) -> dict[str, Any]:
@@ -38,6 +41,19 @@ def _mutated_report(
         yaml.safe_dump(schedule, sort_keys=False), encoding="utf-8"
     )
     return schedule_checker.check_schedule(selected)
+
+
+def _mutated_root(
+    tmp_path: Path, mutate: Callable[[dict[str, Any]], None]
+) -> Path:
+    selected = tmp_path / "book2"
+    shutil.copytree(BOOK2_ROOT, selected)
+    schedule = _load_schedule(selected)
+    mutate(schedule)
+    (selected / "curriculum" / "course-schedule.yaml").write_text(
+        yaml.safe_dump(schedule, sort_keys=False), encoding="utf-8"
+    )
+    return selected
 
 
 def test_parallel_book2_schedule_and_renderer_modules_remain_forbidden() -> None:
@@ -185,6 +201,61 @@ def test_staged_book2_schedule_rejects_contract_mutations(
     assert any(message in error for error in report.errors), report.errors
 
 
+@pytest.mark.parametrize(
+    ("field", "value", "message"),
+    [
+        pytest.param(
+            "starts_after_global_week", 40.0,
+            "starts_after_global_week must be an integer", id="offset-float",
+        ),
+        pytest.param(
+            "starts_after_global_week", True,
+            "starts_after_global_week must be an integer", id="offset-bool",
+        ),
+        pytest.param(
+            "total_book_weeks", 6.0,
+            "total_book_weeks must be an integer", id="weeks-float",
+        ),
+        pytest.param(
+            "total_book_weeks", True,
+            "total_book_weeks must be an integer", id="weeks-bool",
+        ),
+        pytest.param(
+            "total_minutes", 1660.0,
+            "total_minutes must be an integer", id="total-float",
+        ),
+        pytest.param(
+            "total_minutes", True,
+            "total_minutes must be an integer", id="total-bool",
+        ),
+        pytest.param(
+            "final_assessment.after_book_week", 6.0,
+            "final_assessment.after_book_week must be an integer", id="marker-float",
+        ),
+        pytest.param(
+            "final_assessment.after_book_week", True,
+            "final_assessment.after_book_week must be an integer", id="marker-bool",
+        ),
+    ],
+)
+def test_book2_integer_fields_reject_float_and_bool_through_both_apis(
+    tmp_path: Path, field: str, value: object, message: str
+) -> None:
+    def mutate(schedule: dict[str, Any]) -> None:
+        if field == "final_assessment.after_book_week":
+            schedule["final_assessment"]["after_book_week"] = value
+        else:
+            schedule[field] = value
+
+    selected = _mutated_root(tmp_path, mutate)
+
+    report = schedule_checker.check_schedule(selected)
+    assert not report.ok
+    assert any(message in error for error in report.errors), report.errors
+    with pytest.raises(ValueError, match=message):
+        schedule_checker.load_validated_schedule(selected)
+
+
 def test_staged_book2_schedule_rejects_first_live_manifest(tmp_path: Path) -> None:
     selected = tmp_path / "book2"
     shutil.copytree(BOOK2_ROOT, selected)
@@ -213,15 +284,26 @@ def test_shared_renderer_supports_staged_book2_without_manifest_coverage() -> No
     assert "planned future `r2-*` final assessment follows local Week 6" in rendered
 
 
-def test_book1_schedule_bytes_and_rendering_are_unchanged() -> None:
-    schedule_bytes = (
-        BOOK1_ROOT / "curriculum" / "course-schedule.yaml"
-    ).read_bytes()
-    rendered = render_course_structure.render_document(BOOK1_ROOT)
+def test_book1_bytes_remain_pinned_while_valid_book2_fixture_renders(
+    tmp_path: Path,
+) -> None:
+    schedule_path = BOOK1_ROOT / "curriculum" / "course-schedule.yaml"
+    structure_path = BOOK1_ROOT / "docs" / "course-structure.md"
+    schedule_bytes = schedule_path.read_bytes()
+    structure_bytes = structure_path.read_bytes()
 
-    assert schedule_bytes == (
-        BOOK1_ROOT / "curriculum" / "course-schedule.yaml"
-    ).read_bytes()
-    assert rendered == (
-        BOOK1_ROOT / "docs" / "course-structure.md"
-    ).read_text(encoding="utf-8")
+    assert hashlib.sha256(schedule_bytes).hexdigest() == BOOK1_SCHEDULE_SHA256
+    assert hashlib.sha256(structure_bytes).hexdigest() == BOOK1_STRUCTURE_SHA256
+    assert render_course_structure.render_document(BOOK1_ROOT).encode() == structure_bytes
+
+    fixture = tmp_path / "repo"
+    shutil.copytree(FIXTURE_ROOT, fixture)
+    assert schedule_checker.check_schedule(fixture / "book2").ok
+    assert "Book 2 Schedule" in render_course_structure.render_document(BOOK2_ROOT)
+
+    assert hashlib.sha256(schedule_path.read_bytes()).hexdigest() == BOOK1_SCHEDULE_SHA256
+    assert hashlib.sha256(structure_path.read_bytes()).hexdigest() == BOOK1_STRUCTURE_SHA256
+
+    mutated = bytearray(schedule_bytes)
+    mutated[0] ^= 1
+    assert hashlib.sha256(mutated).hexdigest() != BOOK1_SCHEDULE_SHA256
