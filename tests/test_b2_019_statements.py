@@ -189,14 +189,19 @@ def _embedding_api_violations(source: str) -> list[str]:
             return {f"{owner}.{node.attr}" for owner in qualified_names(node.value)}
         return set()
 
-    assignments = [node for node in ast.walk(tree) if isinstance(node, ast.Assign)]
+    assignments: list[tuple[list[ast.expr], ast.expr]] = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            assignments.append((node.targets, node.value))
+        elif isinstance(node, ast.AnnAssign) and node.value is not None:
+            assignments.append(([node.target], node.value))
     for _ in range(len(assignments) + 1):
         changed = False
-        for node in assignments:
-            values = qualified_names(node.value)
+        for targets, value in assignments:
+            values = qualified_names(value)
             if not values:
                 continue
-            for target in node.targets:
+            for target in targets:
                 if isinstance(target, ast.Name):
                     before = len(aliases.get(target.id, set()))
                     aliases.setdefault(target.id, set()).update(values)
@@ -205,6 +210,12 @@ def _embedding_api_violations(source: str) -> list[str]:
             break
 
     for node in ast.walk(tree):
+        if (
+            isinstance(node, (ast.Name, ast.Attribute))
+            and isinstance(node.ctx, ast.Load)
+        ):
+            for name in sorted(qualified_names(node) & forbidden):
+                violations.append(f"reference {name}")
         if not isinstance(node, ast.Call):
             continue
         names = qualified_names(node.func)
@@ -257,20 +268,31 @@ def _generator_source_violations(source: str) -> list[str]:
             return {f"{owner}.{node.attr}" for owner in qualified_names(node.value)}
         return set()
 
-    assignments = [node for node in ast.walk(tree) if isinstance(node, ast.Assign)]
+    assignments: list[tuple[list[ast.expr], ast.expr]] = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            assignments.append((node.targets, node.value))
+        elif isinstance(node, ast.AnnAssign) and node.value is not None:
+            assignments.append(([node.target], node.value))
     for _ in range(len(assignments) + 1):
         changed = False
-        for node in assignments:
-            values = qualified_names(node.value)
+        for targets, value in assignments:
+            values = qualified_names(value)
             if not values:
                 continue
-            for target in node.targets:
+            for target in targets:
                 if isinstance(target, ast.Name):
                     before = len(aliases.get(target.id, set()))
                     aliases.setdefault(target.id, set()).update(values)
                     changed |= len(aliases[target.id]) != before
         if not changed:
             break
+
+    dangerous_builtins = {"__import__", "exec", "eval", "compile", "open"}
+    dangerous_calls = dangerous_builtins | {
+        "importlib.import_module",
+        *(f"__builtins__.{name}" for name in dangerous_builtins),
+    }
 
     for node in ast.walk(tree):
         if not isinstance(node, ast.Call):
@@ -288,8 +310,20 @@ def _generator_source_violations(source: str) -> list[str]:
                 and allow_pickle[0].value is False
             ):
                 violations.append("numpy.load requires literal allow_pickle=False")
-        for name in sorted(names & {"__import__", "importlib.import_module", "eval", "exec"}):
+        for name in sorted(names & dangerous_calls):
             violations.append(f"dynamic execution {name}")
+        if (
+            "getattr" in names
+            and len(node.args) >= 2
+            and isinstance(node.args[1], ast.Constant)
+            and isinstance(node.args[1].value, str)
+        ):
+            dynamic_names = {
+                f"{owner}.{node.args[1].value}"
+                for owner in qualified_names(node.args[0])
+            }
+            for name in sorted(dynamic_names & dangerous_calls):
+                violations.append(f"dynamic execution {name}")
         for name in sorted(names):
             if name.split(".")[0] in forbidden_roots:
                 violations.append(f"forbidden call {name}")
@@ -656,6 +690,31 @@ def test_embedding_api_audit_rejects_imports_aliases_and_calls(source: str) -> N
 @pytest.mark.parametrize(
     "source",
     [
+        "import torch.nn as nn\nE: object = nn.Embedding\nE(4, 2)",
+        (
+            "import torch.nn.functional as F\n"
+            "lookup: object = F.embedding\nlookup(ids, weight)"
+        ),
+        "import torch.nn as nn\nE = nn.Embedding",
+        "import torch.nn.functional as F\nlookup = F.embedding",
+        "import torch.nn as nn\nnn.Embedding",
+        "import torch.nn.functional as F\nF.embedding",
+        "import torch.nn as nn\nE = nn.Embedding\nLayer = E\nFinal = Layer",
+        (
+            "import torch.nn.functional as F\n"
+            "lookup: object = F.embedding\nnext_lookup = lookup\nfinal_lookup = next_lookup"
+        ),
+    ],
+)
+def test_embedding_api_audit_rejects_bindings_references_and_annassign(
+    source: str,
+) -> None:
+    assert _embedding_api_violations(source)
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
         "import torch.nn as nn\nlayer = nn.EmbeddingBag(4, 2)",
         "import torch.nn.functional as F\nF.embedding_bag(ids, weight)",
         "def embedding_loss(x):\n    return x",
@@ -668,6 +727,13 @@ def test_embedding_api_audit_rejects_imports_aliases_and_calls(source: str) -> N
         "from project import embedding\nembedding(ids, weight)",
         "class Namespace:\n    pass\nobj = Namespace()\nobj.Embedding = lambda: None\nobj.Embedding()",
         "embedding_projection = lambda x: x\nembedding_projection(ids)",
+        "import torch.nn as nn\nE: object = nn.EmbeddingBag\nE(4, 2)",
+        (
+            "import torch.nn.functional as F\n"
+            "lookup: object = F.embedding_bag\nlookup(ids, weight)"
+        ),
+        "import torch.nn as nn\nnear = nn.EmbeddingBag",
+        "import torch.nn.functional as F\nnear = F.embedding_bag",
     ],
 )
 def test_embedding_api_audit_allows_safe_near_names(source: str) -> None:
@@ -715,6 +781,45 @@ def test_generator_source_audit_rejects_unsafe_ast_constructs(source: str) -> No
 @pytest.mark.parametrize(
     "source",
     [
+        (
+            "import numpy as np\nloader: object = np.load\n"
+            "loader('data.npy', allow_pickle=True)"
+        ),
+        "import numpy as np\nloader: object = np.load\nloader('data.npy')",
+        (
+            "import numpy as np\nloader: object = np.load\nflag = False\n"
+            "loader('data.npy', allow_pickle=flag)"
+        ),
+        "loader: object = __import__\nloader('os')",
+        "__builtins__.__import__('os')",
+        "__builtins__.exec('value = 1')",
+        "__builtins__.eval('1 + 1')",
+        "__builtins__.compile('1 + 1', '<test>', 'eval')",
+        "__builtins__.open('data.txt')",
+        "getattr(__builtins__, '__import__')('os')",
+        "getattr(__builtins__, 'exec')('value = 1')",
+        "getattr(__builtins__, 'eval')('1 + 1')",
+        "getattr(__builtins__, 'compile')('1 + 1', '<test>', 'eval')",
+        "getattr(__builtins__, 'open')('data.txt')",
+        (
+            "builtins_alias = __builtins__\ndanger = builtins_alias.open\n"
+            "next_danger = danger\nnext_danger('data.txt')"
+        ),
+        (
+            "builtins_alias: object = __builtins__\nresolve = getattr\n"
+            "next_resolve = resolve\nnext_resolve(builtins_alias, 'eval')('1 + 1')"
+        ),
+    ],
+)
+def test_generator_source_audit_rejects_annassign_and_dynamic_builtins(
+    source: str,
+) -> None:
+    assert _generator_source_violations(source)
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
         "import numpy as np\nnp.load('data.npy', allow_pickle=False)",
         "import numpy\nnumpy.load('data.npy', allow_pickle=False)",
         "from numpy import load as loader\nloader('data.npy', allow_pickle=False)",
@@ -725,6 +830,10 @@ def test_generator_source_audit_rejects_unsafe_ast_constructs(source: str) -> No
         "def evaluate(value):\n    return value",
         "class Embedding:\n    pass",
         "import argparse\nparser = argparse.ArgumentParser()",
+        "__builtins__.open_file('data.txt')",
+        "getattr(__builtins__, 'open_file')('data.txt')",
+        "builtins_alias = __builtins__\nnear = builtins_alias.evaluate\nnear('1 + 1')",
+        "class Safe:\n    pass\nsafe = Safe()\nsafe.open('data.txt')",
     ],
 )
 def test_generator_source_audit_allows_safe_near_names(source: str) -> None:
