@@ -98,12 +98,13 @@ for c in prereq-check scope-check schedule-check; do
 done
 
 step "7/9 generated Book 1 evidence and mutation checks"
-echo "SKIP generated Book 1 evidence freshness (plan 019 Task 3)"
 book1_root=
 for index in "${!BOOK_IDS[@]}"; do
   [[ ${BOOK_NUMBERS[$index]} == 1 ]] && book1_root=${BOOK_ROOTS[$index]}
 done
 [[ -n $book1_root ]] || { echo "FAIL: no registered Book 1 root" >&2; exit 1; }
+uv run python -m tools.audit_curriculum --root "$book1_root" --check
+uv run python -m tools.render_curriculum_roadmap --root "$repo_root" --check
 uv run python -m tools.render_course_structure --root "$book1_root" --check
 uv run python -m tools.verify_training_mutations --root "$book1_root"
 uv run python -m tools.verify_classical_mutations --root "$book1_root"

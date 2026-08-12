@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import functools
+import hashlib
 import json
 import os
 import re
@@ -713,6 +715,247 @@ def test_plan019_phase1_exact_live_corpus_counts_and_double_length_roster():
     assert "Double-length units (F5, F6, C7, C11, C12) use 4–6 sessions." in standards
 
 
+@functools.cache
+def _plan019_pinned_commit_available() -> bool:
+    return subprocess.run(
+        ["git", "cat-file", "-e", "4cc3894^{commit}"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    ).returncode == 0
+
+
+def _plan019_pinned_paths() -> tuple[list[str], dict[str, set[int]]]:
+    if _plan019_pinned_commit_available():
+        tracked = subprocess.run(
+            [
+                "git",
+                "ls-tree",
+                "-r",
+                "--name-only",
+                "4cc3894",
+                "--",
+                "units",
+                "mocktests",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        candidates = tracked.stdout.splitlines()
+    else:
+        candidates = sorted(
+            path.relative_to(BOOK1_ROOT).as_posix()
+            for tree in (BOOK1_ROOT / "units", BOOK1_ROOT / "mocktests")
+            for path in tree.rglob("*")
+            if path.is_file()
+        )
+    paths = [
+        path
+        for path in candidates
+        if path.endswith((".ipynb", "manifest.yaml"))
+    ]
+    inventory = yaml.safe_load(
+        (ROOT / "tests/fixtures/plan019-path-inventory.yaml").read_text(encoding="utf-8")
+    )
+    changed_cells = {
+        row["path"]: set(row["cells"])
+        for row in inventory["notebook_pyproject_discovery"]
+    }
+    for row in inventory["special_notebook_consumers"]:
+        changed_cells.setdefault(row["path"], set()).update(row["cells"])
+    return paths, changed_cells
+
+
+def _plan019_pinned_blob(path: str) -> bytes | None:
+    if not _plan019_pinned_commit_available():
+        return None
+    proc = subprocess.run(
+        ["git", "show", f"4cc3894:{path}"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    return proc.stdout if proc.returncode == 0 else None
+
+
+def _plan019_digest(value: object) -> str:
+    encoded = json.dumps(
+        value,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def test_plan019_task3_every_book1_manifest_and_notebook_matches_pinned_cutover() -> None:
+    paths, changed_cells = _plan019_pinned_paths()
+    notebooks = [path for path in paths if path.endswith(".ipynb")]
+    manifests = [path for path in paths if path.endswith("manifest.yaml")]
+
+    assert len(notebooks) == 991
+    assert len(manifests) == 20
+    assert len(changed_cells) == 67
+    assert _plan019_digest(paths) == (
+        "76c9236aa561f1bb9c45cd88f3562047fa8e2a5aaec4f18010e43ed81a34e2ec"
+    )
+    assert len({row["path"] for row in yaml.safe_load(
+        (ROOT / "tests/fixtures/plan019-path-inventory.yaml").read_text(encoding="utf-8")
+    )["notebook_pyproject_discovery"]}) == 64
+
+    manifest_records: list[list[str]] = []
+    unchanged_records: list[list[str]] = []
+    changed_structures: list[list[object]] = []
+    changed_sources: list[list[object]] = []
+    for path in manifests:
+        current_bytes = (BOOK1_ROOT / path).read_bytes()
+        manifest_records.append([path, hashlib.sha256(current_bytes).hexdigest()])
+        pinned_bytes = _plan019_pinned_blob(path)
+        if pinned_bytes is not None:
+            assert current_bytes == pinned_bytes, path
+
+    observed_changed: set[str] = set()
+    for path in notebooks:
+        before_bytes = _plan019_pinned_blob(path)
+        after_bytes = (BOOK1_ROOT / path).read_bytes()
+        if path not in changed_cells:
+            unchanged_records.append([path, hashlib.sha256(after_bytes).hexdigest()])
+            if before_bytes is not None:
+                assert after_bytes == before_bytes, path
+            continue
+
+        observed_changed.add(path)
+        after = json.loads(after_bytes)
+        structure = {key: value for key, value in after.items() if key != "cells"}
+        structure["cells"] = []
+        for index, cell in enumerate(after["cells"]):
+            if index in changed_cells[path]:
+                structure["cells"].append(
+                    {key: value for key, value in cell.items() if key != "source"}
+                )
+                changed_sources.append([path, index, cell["source"]])
+            else:
+                structure["cells"].append(cell)
+        changed_structures.append([path, structure])
+        if before_bytes is None:
+            for index in changed_cells[path]:
+                new_source = "".join(after["cells"][index]["source"])
+                assert "USAAIO_BOOK_ROOT" in new_source or "book_root" in new_source.lower()
+                assert "pyproject.toml" not in new_source
+            continue
+
+        before = json.loads(before_bytes)
+        expected_cells = changed_cells[path]
+        assert {key: value for key, value in before.items() if key != "cells"} == {
+            key: value for key, value in after.items() if key != "cells"
+        }, path
+        assert len(before["cells"]) == len(after["cells"])
+        actual_cells = {
+            index
+            for index, (old_cell, new_cell) in enumerate(
+                zip(before["cells"], after["cells"], strict=True)
+            )
+            if old_cell != new_cell
+        }
+        assert actual_cells == expected_cells, path
+        for index, (old_cell, new_cell) in enumerate(
+            zip(before["cells"], after["cells"], strict=True)
+        ):
+            if index not in expected_cells:
+                assert new_cell == old_cell, (path, index)
+                continue
+            old_without_source = {key: value for key, value in old_cell.items() if key != "source"}
+            new_without_source = {key: value for key, value in new_cell.items() if key != "source"}
+            assert new_without_source == old_without_source, (path, index)
+            new_source = "".join(new_cell["source"])
+            assert "USAAIO_BOOK_ROOT" in new_source or "book_root" in new_source.lower()
+            assert "pyproject.toml" not in new_source
+
+    assert observed_changed == set(changed_cells)
+    assert _plan019_digest(manifest_records) == (
+        "75bc145bacd5bacd1c7ec0f62ac966357c314d6cafaf865a51fc1587d42a1c63"
+    )
+    assert _plan019_digest(unchanged_records) == (
+        "0d8749d8fbe48bb37a0dc696a4343779da91d59dad4fbfb619d066856e7b7b5c"
+    )
+    assert _plan019_digest(changed_structures) == (
+        "46ba55a9dd7c657719edca781d6f6035de6dfd01116e9fd9881f62b3a715b73d"
+    )
+    assert _plan019_digest(changed_sources) == (
+        "dd129b119cd491ea083c53b16613a6f1467fec0275639052071bcb9480d24014"
+    )
+
+
+def test_plan019_task3_book1_pdf_sources_match_the_pinned_r1_set() -> None:
+    proc = subprocess.run(
+        ["bash", "scripts/build-pdf.sh", "--book", "book1", "--list-inputs"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    current = tuple(
+        path.removeprefix("book1/") for path in proc.stdout.splitlines() if path.strip()
+    )
+    if _plan019_pinned_commit_available():
+        pinned = tuple(
+            path
+            for path in subprocess.run(
+                [
+                    "git",
+                    "ls-tree",
+                    "-r",
+                    "--name-only",
+                    "4cc3894",
+                    "--",
+                    "mocktests/r1-001",
+                ],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout.splitlines()
+            if path == "mocktests/r1-001/test.md"
+            or (path.startswith("mocktests/r1-001/theory/") and path.endswith(".md"))
+            or (path.startswith("mocktests/r1-001/problems/") and path.endswith(".ipynb"))
+        )
+    else:
+        pinned = current
+
+    assert len(current) == 10
+    assert current == pinned
+    assert hashlib.sha256("\n".join(current).encode()).hexdigest() == (
+        "b07a045f699ba6df93ad4429ae29926b99ade1083ecab005638f478aa614e6e4"
+    )
+
+
+def test_plan019_task3_r1_mock_solution_executes_from_book1_cwd(tmp_path: Path) -> None:
+    output = tmp_path / "p09-executed.ipynb"
+    env = {**os.environ, "USAAIO_BOOK_ROOT": str(BOOK1_ROOT)}
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "jupyter",
+            "execute",
+            "mocktests/r1-001/solutions/p09_solution.ipynb",
+            "--output",
+            str(output),
+        ],
+        cwd=BOOK1_ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert output.is_file() and output.stat().st_size > 0
+
+
 def test_plan017_c7_manifest_is_double_length_and_preserves_capstone_contracts():
     syllabus = _canonical_syllabus_yaml()
     syllabus_units = {unit["id"]: unit for unit in syllabus["units"]}
@@ -1370,7 +1613,8 @@ def test_scope_cli_is_registered_and_loader_errors_are_blocking(tmp_path):
 def test_ci_local_wires_both_mutation_runners_and_generated_document_checks():
     script = (ROOT / "scripts" / "ci-local.sh").read_text()
 
-    assert "SKIP generated Book 1 evidence freshness (plan 019 Task 3)" in script
+    assert 'python -m tools.audit_curriculum --root "$book1_root" --check' in script
+    assert 'python -m tools.render_curriculum_roadmap --root "$repo_root" --check' in script
     assert 'usaaio-tools --book "$book" "$c"' in script
     assert "scope-check" in script
     assert 'python -m tools.render_course_structure --root "$book1_root" --check' in script
@@ -1386,6 +1630,14 @@ def test_pre_merge_guard_runs_embedded_yaml_with_uv_python():
 
     assert "uv run python -" in script
     assert "python3 -" not in script
+
+
+def test_pre_merge_guard_pins_current_scope_inventory_digest():
+    script = (ROOT / "scripts" / "pre-merge-guard.sh").read_text()
+    inventory = (ROOT / "tests/fixtures/plan019-path-inventory.yaml").read_bytes()
+    digest = hashlib.sha256(inventory).hexdigest()
+
+    assert digest in script
 
 
 def test_pre_merge_guard_rejects_staged_protected_path(tmp_path: Path) -> None:

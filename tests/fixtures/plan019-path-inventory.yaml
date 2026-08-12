@@ -209,6 +209,7 @@ staged_scope:
     - docs/architecture/decisions.md
     - docs/curriculum-architecture.md
     - docs/curriculum-roadmap.md
+    - docs/audits/015-coverage-audit.md
     - docs/designs/000-project-design.md
     - docs/designs/019-r2-book-architecture.md
     - docs/mocktest-generation.md

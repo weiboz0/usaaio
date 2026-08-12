@@ -6,6 +6,8 @@ import pytest
 import yaml
 
 from tools import audit_curriculum as audit
+from tools import render_course_structure
+from tools import render_curriculum_roadmap as roadmap_renderer
 from tools.checks.schedule import load_validated_schedule
 from tools.model import load_syllabus
 
@@ -521,6 +523,56 @@ def test_plan019_cutover_real_book1_inventory_and_book2_ownership_are_partitione
         for row in inventory[section]
     }
     assert not any(path.startswith("units/B2-") for path in material_paths)
+
+
+def test_plan019_task3_generated_book1_and_aggregate_evidence_is_current() -> None:
+    book1_root = REPO_ROOT / "book1"
+
+    assert audit.main(["--root", str(book1_root), "--check"]) == 0
+    assert render_course_structure.main(["--root", str(book1_root), "--check"]) == 0
+    assert roadmap_renderer.main(["--root", str(REPO_ROOT), "--check"]) == 0
+
+
+def test_plan019_task3_aggregate_renderer_reads_registered_books_in_dependency_order() -> None:
+    rendered = roadmap_renderer.render_documents(REPO_ROOT)
+    audit_document = rendered[Path("docs/audits/015-coverage-audit.md")]
+    roadmap_document = rendered[Path("docs/curriculum-roadmap.md")]
+
+    for document in rendered.values():
+        assert "`book1/syllabus.md` and `book2/syllabus.md`" in document
+        assert "registered in dependency order by `books.yaml`" in document
+        assert "not a third source of truth" in document
+        assert document.index("book1") < document.index("book2")
+
+    assert "- **Book:** book1" in audit_document
+    assert "- **Book:** book2" in audit_document
+    assert "- **Destination:** book1:C10-competition-craft" in audit_document
+    assert "- **Destination:** book2:B2-019-attention-transformers" in audit_document
+    assert "| Book | Knowledge point |" in roadmap_document
+    assert "| book1 |" in roadmap_document
+    assert "| book2 |" in roadmap_document
+    assert roadmap_document.index("| book1 |") < roadmap_document.index("| book2 |")
+
+
+def test_plan019_task3_ci_enforces_generated_evidence_without_a_skip() -> None:
+    script = (REPO_ROOT / "scripts" / "ci-local.sh").read_text(encoding="utf-8")
+
+    assert "SKIP generated Book 1 evidence freshness" not in script
+    assert 'python -m tools.audit_curriculum --root "$book1_root" --check' in script
+    assert 'python -m tools.render_curriculum_roadmap --root "$repo_root" --check' in script
+
+
+def test_plan019_task3_scope_allows_both_shared_generated_outputs() -> None:
+    inventory = yaml.safe_load(
+        (REPO_ROOT / "tests/fixtures/plan019-path-inventory.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    assert {
+        "docs/audits/015-coverage-audit.md",
+        "docs/curriculum-roadmap.md",
+    } <= set(inventory["staged_scope"]["exact_files"])
 
 
 def _install_canonical_schedule_fixture(
