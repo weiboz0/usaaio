@@ -66,7 +66,7 @@ def _check_compute(root: Path, manifest: UnitManifest, errors: list[str]) -> Non
     declared_solutions = [unit_dir / problem.solution_path for problem in manifest.practice]
     statement_only = declared_solutions and not any(
         path.is_file() for path in declared_solutions
-    )
+    ) and manifest.solution_policy == "deferred"
     for problem in manifest.practice:
         label = f"{manifest.path}: practice {problem.id}"
         if problem.compute.seed is None:

@@ -315,4 +315,4 @@ def test_attention_manifest_adds_only_the_exact_seven_evidence_claims() -> None:
             ensure_ascii=False,
         ).encode()
     ).hexdigest()
-    assert unchanged_digest == "dbedc0d6de5222ec845fcf5055da29c403a0171b30bfc738f517e3ea5a14e5bc"
+    assert unchanged_digest == "f6eb6f6b69a075dab6c590878d5af9fd1e3d94d94b4d7c718231419701aeba39"

@@ -328,6 +328,7 @@ def _unit_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
         ]
         statement_only_book2 = (
             manifest.get("book") == 2
+            and manifest.get("solution_policy", "required") == "deferred"
             and declared_solutions
             and not any(path.is_file() for path in declared_solutions)
         )

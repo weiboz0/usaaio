@@ -55,6 +55,46 @@ def test_missing_dirs_yield_empty_lists(tmp_path):
     assert load_mock_manifests(tmp_path) == []
 
 
+def test_load_unit_manifests_rejects_external_unit_directory_symlink(tmp_path):
+    outside = tmp_path / "outside" / "escaped-unit"
+    outside.mkdir(parents=True)
+    (outside / "manifest.yaml").write_text(
+        """
+unit: escaped-unit
+concepts_taught: []
+concepts_used: []
+prereq_units: []
+practice: []
+""",
+        encoding="utf-8",
+    )
+    units = tmp_path / "book" / "units"
+    units.mkdir(parents=True)
+    (units / "escaped-unit").symlink_to(outside, target_is_directory=True)
+
+    with pytest.raises(ValueError, match="unit directory must be a local real directory"):
+        load_unit_manifests(tmp_path / "book")
+
+
+def test_unit_manifest_rejects_non_string_solution_policy(tmp_path):
+    unit_dir = tmp_path / "units" / "F1-scientific-python"
+    unit_dir.mkdir(parents=True)
+    (unit_dir / "manifest.yaml").write_text(
+        """
+unit: F1-scientific-python
+solution_policy: [required]
+concepts_taught: []
+concepts_used: []
+prereq_units: []
+practice: []
+""",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="solution_policy must be 'required' or 'deferred'"):
+        load_unit_manifests(tmp_path)
+
+
 def test_unit_manifest_roundtrip(tmp_path):
     unit_dir = tmp_path / "units" / "F1-scientific-python"
     unit_dir.mkdir(parents=True)

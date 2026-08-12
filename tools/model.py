@@ -138,6 +138,7 @@ class UnitManifest:
     coverage_claims: list[CoverageClaim] = field(default_factory=list)
     lesson_sessions: list[int] | None = None
     concept_sessions: dict[str, int] | None = None
+    solution_policy: str = "required"
 
 
 @dataclass(frozen=True)
@@ -527,6 +528,17 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
     syllabus_units = load_syllabus(root).units if syllabus_path.is_file() else {}
     result: list[UnitManifest] = []
     for path in manifests:
+        unit_dir = path.parent
+        if unit_dir.is_symlink() or path.is_symlink():
+            raise ValueError(
+                f"{path}: unit directory must be a local real directory"
+            )
+        try:
+            unit_dir.resolve(strict=True).relative_to((root / "units").resolve(strict=True))
+        except (OSError, ValueError) as exc:
+            raise ValueError(
+                f"{path}: unit directory must be a local real directory"
+            ) from exc
         raw = _read_manifest(path)
         unit_id = str(raw["unit"])
         syllabus_unit = syllabus_units.get(unit_id)
@@ -577,6 +589,14 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
             lesson_sessions=lesson_sessions,
             practice=practice,
         )
+        solution_policy = raw.get("solution_policy", "required")
+        if not isinstance(solution_policy, str) or solution_policy not in {
+            "required",
+            "deferred",
+        }:
+            raise ValueError(
+                f"{path}: solution_policy must be 'required' or 'deferred'"
+            )
         result.append(
             UnitManifest(
                 unit_id=unit_id,
@@ -598,6 +618,7 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
                 coverage_claims=coverage_claims,
                 lesson_sessions=lesson_sessions,
                 concept_sessions=concept_sessions,
+                solution_policy=solution_policy,
             )
         )
     return result

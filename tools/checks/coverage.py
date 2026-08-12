@@ -76,6 +76,7 @@ def check_coverage(root: str | Path) -> Report:
         declared_solutions = [unit_dir / problem.solution_path for problem in manifest.practice]
         statement_only_book2 = (
             manifest.book == 2
+            and manifest.solution_policy == "deferred"
             and declared_solutions
             and not any(path.is_file() for path in declared_solutions)
         )

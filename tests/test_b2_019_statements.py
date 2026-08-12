@@ -8,9 +8,11 @@ import re
 import shutil
 import subprocess
 import sys
+import warnings
 from collections import Counter
 from pathlib import Path
 
+import nbformat
 import pytest
 import yaml
 
@@ -417,18 +419,21 @@ def test_task6_solutions_preserve_source_isolation_and_answer_register() -> None
         assert solution["cells"][-2]["source"].strip() == "### Answer check"
         assert solution["cells"][-1]["cell_type"] == "code"
         assert "assert " in solution["cells"][-1]["source"]
+        expected_prerequisites = [
+            "book1:F1-scientific-python",
+            "book1:F3-matrices",
+            "book1:C6-pytorch",
+            "book1:C11-neural-training",
+        ]
+        if number == 13:
+            expected_prerequisites.insert(2, "book1:F5-probability")
         assert solution["metadata"]["usaaio"] == {
             "book": 2,
             "layer": "Round 2 extension",
             "unit": UNIT_ID,
             "surface": f"practice/p{number:02}_solution.ipynb",
             "compute": {"policy": "cpu", "seed": SEED},
-            "qualified_prerequisites": [
-                "book1:F1-scientific-python",
-                "book1:F3-matrices",
-                "book1:C6-pytorch",
-                "book1:C11-neural-training",
-            ],
+            "qualified_prerequisites": expected_prerequisites,
         }
         for marker in (
             "Round 2 extension",
@@ -441,6 +446,7 @@ def test_task6_solutions_preserve_source_isolation_and_answer_register() -> None
         ):
             assert marker in solution_source, (number, marker)
         for cell in solution["cells"]:
+            assert re.fullmatch(r"[A-Za-z0-9_-]{1,64}", cell["id"])
             assert cell.get("execution_count") is None
             assert cell.get("outputs") in (None, [])
 
@@ -455,6 +461,16 @@ def test_task6_solutions_preserve_source_isolation_and_answer_register() -> None
     assert "losses = np.asarray(loss_values" in _code_source(
         UNIT / "practice/p17_solution.ipynb"
     )
+
+
+def test_solution_notebooks_have_valid_ids_without_nbformat_missing_id_warnings() -> None:
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        for number in range(1, 25):
+            path = UNIT / f"practice/p{number:02}_solution.ipynb"
+            notebook = nbformat.read(path, as_version=4)
+            nbformat.validate(notebook)
+    assert not [warning for warning in caught if "MissingIDFieldWarning" in str(warning.category)]
 
 
 def test_task6_real_solution_set_is_all_or_none(tmp_path: Path) -> None:
@@ -483,6 +499,7 @@ def test_b2_019_manifest_pins_identity_imports_minutes_and_paths() -> None:
         2, 2, "round-2-extension", "extension"
     )
     assert raw["length"] == syllabus.units[UNIT_ID].length == "double"
+    assert raw["solution_policy"] == manifest.solution_policy == "required"
     assert raw["concepts_taught"] == OWNED_CONCEPTS
     assert raw["concepts_used"] == raw["concept_prerequisites"] == QUALIFIED_CONCEPTS
     assert raw["prereq_units"] == syllabus.units[UNIT_ID].prereqs == LOCAL_PREREQ_UNITS
@@ -577,9 +594,9 @@ def test_every_relative_remediation_link_resolves_from_its_notebook() -> None:
             assert target.is_file(), (path, raw_target, target)
             assert target.is_relative_to(BOOK1_ROOT.resolve()), (path, target)
 
-    assert len(remediation_links) == 237
-    assert sum(path.parent == UNIT for path, _, _ in remediation_links) == 8
-    assert sum(path.parent != UNIT for path, _, _ in remediation_links) == 229
+    assert len(remediation_links) == 241
+    assert sum(path.parent == UNIT for path, _, _ in remediation_links) == 9
+    assert sum(path.parent != UNIT for path, _, _ in remediation_links) == 232
 
 
 def test_bridge_diagnoses_every_import_and_links_every_remediation_unit() -> None:
@@ -600,6 +617,11 @@ def test_bridge_diagnoses_every_import_and_links_every_remediation_unit() -> Non
         "optimizer",
     ):
         assert phrase in source
+
+    namespace: dict[str, object] = {}
+    exec(compile(_code_source(UNIT / LESSONS[0]), LESSONS[0], "exec"), namespace)  # noqa: S102
+    assert namespace["bridge_all_checks_pass"] is True
+    assert namespace["bridge_feedback"] == "ready for B2-019"
 
 
 def test_lesson_order_and_introduction_sessions_match_concept_contract() -> None:
@@ -663,6 +685,50 @@ def test_p14_identifies_post_softmax_future_key_denominator_leakage() -> None:
     assert "breaks row normalization" in source
     assert "[0,0]" in source and "[0,10]" in source
     assert "[1,0]" in source and "[2,999]" in source
+
+
+def test_final_review_statement_contracts_are_explicit_and_falsifiable() -> None:
+    p02 = _source(UNIT / "practice/p02.ipynb")
+    assert "before simplifying" not in p02
+
+    p06 = _source(UNIT / "practice/p06.ipynb")
+    assert "math path" in p06 and "Validation APIs" in p06
+
+    p08 = _source(UNIT / "practice/p08.ipynb")
+    assert "`-np.inf` for forbidden" in p08 and "`0.0` for allowed" in p08
+
+    p09 = _source(UNIT / "practice/p09.ipynb")
+    assert "10000" in p09 and "2i/width" in p09
+
+    p13 = _source(UNIT / "practice/p13.ipynb")
+    assert "mutually independent" in p13
+    assert "coordinate products" in p13
+    assert "correlated counterexample" in p13
+    assert "book1:F5-probability" in p13
+
+    p17 = _source(UNIT / "practice/p17.ipynb")
+    assert "mean cross-entropy" in p17
+    assert 'reduction="mean"' in _code_source(UNIT / "practice/p17_solution.ipynb")
+
+
+def test_final_review_solution_checks_pin_values_and_forbidden_key_columns() -> None:
+    p16 = _code_source(UNIT / "practice/p16_solution.ipynb")
+    for assertion in (
+        "assert qkv_projection_multiplies == 4320",
+        "assert output_projection_multiplies == 1440",
+        "assert score_product_multiplies == 600",
+        "assert weighted_value_multiplies == 600",
+        "assert total_multiplies == 6960",
+        "assert score_scalars == 150",
+    ):
+        assert assertion in p16
+
+    p22 = _code_source(UNIT / "practice/p22_solution.ipynb")
+    assert "False" in p22
+    assert "decoder_broadcast[:, :, :, 3]" in p22
+    namespace = _execute_solution_with_replacements(22)
+    assert not namespace["target_valid"][1, 3]
+    assert not namespace["decoder_broadcast"][1, :, :, 3].any()
 
 
 @pytest.mark.parametrize(
@@ -750,7 +816,7 @@ def test_session4_executes_a_deterministic_attention_training_example() -> None:
 
     for marker in (
         "class CausalSelfAttention(nn.Module)",
-        "def forward(self, x)",
+        "def forward(self, x, allowed)",
         "class TinyCausalPredictor(nn.Module)",
         "optimizer.step()",
         "parameter_delta",
@@ -773,6 +839,10 @@ def test_session4_executes_a_deterministic_attention_training_example() -> None:
     assert torch.count_nonzero(
         namespace["attention_probe_weights"].triu(diagonal=1)
     ).item() == 0
+    with pytest.raises(ValueError, match="floating"):
+        namespace["attention_probe"](namespace["PROBE_INPUT"].to(torch.int64), namespace["PINNED_ALLOWED"][:3, :3])
+    with pytest.raises(ValueError, match="allowed key"):
+        namespace["attention_probe"](namespace["PROBE_INPUT"], torch.zeros(3, 3, dtype=torch.bool))
     assert len(namespace["loss_trace"]) == 30
     assert namespace["loss_trace"][-1] < namespace["loss_trace"][0]
     assert namespace["parameter_delta"] > 0
@@ -1139,11 +1209,15 @@ def _install_solution_placeholders(book2: Path, count: int) -> None:
         )
 
 
-def test_task6_solution_paths_follow_exact_all_or_none_phase_rule(tmp_path: Path) -> None:
+def test_required_solution_policy_cannot_be_evaded_by_deleting_all_solutions(tmp_path: Path) -> None:
     zero = _copy_registered_statement_repo(tmp_path / "zero")
-    audit_curriculum.build_inventory(zero)
-    assert check_coverage(zero).ok
-    assert check_layer_boundary(zero).ok
+    with pytest.raises(audit_curriculum.InventoryError, match="declared notebook is missing"):
+        audit_curriculum.build_inventory(zero)
+    assert any("missing solution path" in error for error in check_coverage(zero).errors)
+    assert any(
+        "cpu task requires a local solution path" in error
+        for error in check_layer_boundary(zero).errors
+    )
 
     partial = _copy_registered_statement_repo(tmp_path / "partial")
     _install_solution_placeholders(partial, 1)
