@@ -139,6 +139,8 @@ def main(argv: list[str] | None = None) -> int:
                 continue
             if args.command in {"answerkey-check", "overlap-scan"}:
                 report = check(book.root, book_number=book.number)
+            elif args.command == "schedule-check":
+                report = check(book.root, book_spec=book)
             else:
                 report = check(book.root)
             if len(selected) > 1:

@@ -9,6 +9,7 @@ from typing import Any
 
 import yaml
 
+from tools.books import BookSpec, load_book_catalog
 from tools.model import (
     CourseSchedule,
     Report,
@@ -69,21 +70,91 @@ class Book1SchedulePolicy:
 class Book2SchedulePolicy:
     """Validate Book 2's local/global staged schedule contract."""
 
+    def __init__(self, expected_book_number: int = 2) -> None:
+        self.expected_book_number = expected_book_number
+
     def load(
         self, root: Path, errors: list[str], *, enforce_calendar: bool = True
     ) -> Book2CourseSchedule | None:
         del enforce_calendar
-        return _parse_book2_schedule(root, errors)
+        return _parse_book2_schedule(
+            root,
+            errors,
+            expected_book_number=self.expected_book_number,
+        )
 
 
-def schedule_policy(root: str | Path):
-    """Dispatch to a book policy from the selected root's schedule schema."""
+def _registered_book(root: Path) -> BookSpec | None:
+    for parent in root.parents:
+        if not (parent / "books.yaml").is_file():
+            continue
+        catalog = load_book_catalog(parent)
+        matches = [book for book in catalog.books if book.root == root]
+        if len(matches) != 1:
+            raise ValueError(f"selected root {root} is not uniquely registered in {parent}")
+        return matches[0]
+    return None
 
-    root = Path(root).resolve()
-    raw = _read_yaml(root / "curriculum" / "course-schedule.yaml")
-    if isinstance(raw, dict) and ("book" in raw or "status" in raw):
-        return Book2SchedulePolicy()
-    return Book1SchedulePolicy()
+
+def _selected_book_identity(
+    root: Path,
+    *,
+    book_spec: BookSpec | None,
+    expected_book_number: int | None,
+) -> tuple[int, str | None]:
+    if book_spec is not None and book_spec.root != root:
+        raise ValueError(
+            f"BookSpec root {book_spec.root} does not match selected root {root}"
+        )
+    registered = _registered_book(root)
+    if registered is not None:
+        if book_spec is not None and book_spec != registered:
+            raise ValueError(f"BookSpec for {book_spec.id} does not match books.yaml")
+        if (
+            expected_book_number is not None
+            and expected_book_number != registered.number
+        ):
+            raise ValueError(
+                f"expected book number {expected_book_number}; registered number is "
+                f"{registered.number}"
+            )
+        return registered.number, registered.id
+    if book_spec is not None:
+        return book_spec.number, book_spec.id
+    if type(expected_book_number) is not int or expected_book_number <= 0:
+        raise ValueError(
+            "unregistered schedule roots require expected_book_number or BookSpec"
+        )
+    return expected_book_number, None
+
+
+def schedule_policy(
+    root: str | Path,
+    *,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
+):
+    """Dispatch from trusted registry identity, never mutable schedule shape."""
+
+    selected_root = Path(root).resolve()
+    number, book_id = _selected_book_identity(
+        selected_root,
+        book_spec=book_spec,
+        expected_book_number=expected_book_number,
+    )
+    if (book_id is None and number == 1) or (book_id == "book1" and number == 1):
+        return Book1SchedulePolicy()
+    if (book_id is None and number == 2) or book_id == "book2":
+        return Book2SchedulePolicy(expected_book_number=number)
+    raise ValueError(f"registered book number {number} has no schedule policy")
+
+
+def scheduled_baseline_minutes(schedule: CourseSchedule) -> int:
+    """Return only minutes backed by live content for reporting baselines."""
+
+    if isinstance(schedule, Book2CourseSchedule) and schedule.status == "staged":
+        return 0
+    return schedule.total_minutes
 
 
 def _positive_integer(value: object, label: str, errors: list[str]) -> int | None:
@@ -284,7 +355,10 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
 
 
 def _parse_book2_schedule(
-    root: Path, errors: list[str]
+    root: Path,
+    errors: list[str],
+    *,
+    expected_book_number: int,
 ) -> Book2CourseSchedule | None:
     path = root / "curriculum" / "course-schedule.yaml"
     raw = _mapping(_read_yaml(path), "course-schedule.yaml", errors)
@@ -308,10 +382,15 @@ def _parse_book2_schedule(
         )
     if raw.get("schedule_version") != 1 or type(raw.get("schedule_version")) is not int:
         errors.append("schedule_version must be integer 1")
-    if raw.get("book") != 2 or type(raw.get("book")) is not int:
-        errors.append("Book 2 schedule book must be integer 2")
+    if type(raw.get("book")) is not int:
+        errors.append("Book 2 schedule book must be an integer")
+    elif raw.get("book") != expected_book_number:
+        errors.append(
+            f"schedule book {raw.get('book')} does not match registered book number "
+            f"{expected_book_number}"
+        )
     if raw.get("status") != "staged":
-        errors.append("Book 2 schedule status must be staged until Task 5")
+        errors.append("Book 2 live schedule support is deferred until Task 5")
     _exact_integer(
         raw.get("starts_after_global_week"),
         "Book 2 schedule starts_after_global_week",
@@ -898,22 +977,39 @@ def _validate(
         errors.append("mock and debrief must be the final scheduled events")
 
 
-def check_schedule(root: str | Path) -> Report:
+def check_schedule(
+    root: str | Path,
+    *,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
+) -> Report:
     root = Path(root).resolve()
     errors: list[str] = []
     try:
-        schedule_policy(root).load(root, errors)
+        schedule_policy(
+            root,
+            book_spec=book_spec,
+            expected_book_number=expected_book_number,
+        ).load(root, errors)
     except (KeyError, OSError, TypeError, ValueError, yaml.YAMLError) as exc:
         errors.append(f"course-schedule.yaml: {exc}")
     return Report(name="schedule-check", ok=not errors, errors=errors)
 
 
 def load_validated_schedule(
-    root: str | Path, *, enforce_calendar: bool = True
+    root: str | Path,
+    *,
+    enforce_calendar: bool = True,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
 ) -> CourseSchedule:
     root = Path(root).resolve()
     errors: list[str] = []
-    schedule = schedule_policy(root).load(
+    schedule = schedule_policy(
+        root,
+        book_spec=book_spec,
+        expected_book_number=expected_book_number,
+    ).load(
         root, errors, enforce_calendar=enforce_calendar
     )
     if schedule is None or errors:

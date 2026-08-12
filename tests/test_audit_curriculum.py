@@ -18,7 +18,11 @@ REPO_ROOT = Path(__file__).parents[1]
 
 
 def _fixture_schedule_loader(root: str | Path):
-    return load_validated_schedule(root, enforce_calendar=False)
+    return load_validated_schedule(
+        root,
+        enforce_calendar=False,
+        expected_book_number=1,
+    )
 
 
 def _build_fixture_inventory(root: Path) -> dict:
@@ -746,7 +750,7 @@ def test_inventory_production_consumer_requires_the_full_canonical_schedule(
     _install_canonical_schedule_fixture(tmp_path)
 
     with pytest.raises(audit.InventoryError, match="missing week 2"):
-        audit.build_inventory(tmp_path)
+        audit.build_inventory(tmp_path, expected_book_number=1)
 
 
 def test_inventory_rejects_invalid_canonical_schedule_instead_of_summing_yaml(

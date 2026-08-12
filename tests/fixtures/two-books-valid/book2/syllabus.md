@@ -15,5 +15,6 @@ units:
     layer: round-2-extension
     round: 2
     prereqs: []
+    concept_prerequisites: []
     teaches: [attention]
 ```

@@ -1561,7 +1561,7 @@ def test_roadmap_production_consumer_requires_the_full_canonical_schedule(
     _base_contract(tmp_path)
 
     with pytest.raises(ValueError, match="course-schedule.yaml"):
-        renderer.render_documents(tmp_path)
+        renderer.render_documents(tmp_path, expected_book_number=1)
 
 
 def test_renderer_recomputes_real_plan018_baseline() -> None:
@@ -1795,7 +1795,7 @@ def test_renderer_recomputes_the_design019_book2_planned_delta() -> None:
         assert "C8" in document
         assert "so this is not a complete roadmap total" not in document
         assert "**142–182 manifested-baseline hours**" in document
-        assert "**169.67–209.67 scheduled-baseline hours**" in document
+        assert "**142–182 scheduled-baseline hours**" in document
         assert "Total roadmap delta" not in document
 
 

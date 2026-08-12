@@ -10,9 +10,10 @@ from typing import Any
 import pytest
 import yaml
 
-from tools import audit_curriculum, render_course_structure
-from tools.books import load_book_catalog, validate_book_root
+from tools import audit_curriculum, render_course_structure, render_curriculum_roadmap
+from tools.books import BookSpec, load_book_catalog, validate_book_root
 from tools.checks import schedule as schedule_checker
+from tools.model import load_syllabus
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOK1_ROOT = ROOT / "book1"
@@ -40,7 +41,7 @@ def _mutated_report(
     (selected / "curriculum" / "course-schedule.yaml").write_text(
         yaml.safe_dump(schedule, sort_keys=False), encoding="utf-8"
     )
-    return schedule_checker.check_schedule(selected)
+    return schedule_checker.check_schedule(selected, expected_book_number=2)
 
 
 def _mutated_root(
@@ -115,8 +116,40 @@ def test_registered_book2_schedule_is_exact_six_week_staged_ledger() -> None:
     assert validated.total_minutes == 1660
     assert validated.covered_problem_ids == frozenset()
     inventory = audit_curriculum.build_inventory(BOOK2_ROOT)
-    assert inventory["counts"]["scheduled_minutes"] == 1660
+    assert inventory["counts"]["scheduled_minutes"] == 0
     assert inventory["counts"]["unit_practices"] == 0
+
+
+def test_staged_book2_minutes_are_not_double_counted_in_aggregate_baseline() -> None:
+    rendered = render_course_structure.render_document(BOOK2_ROOT)
+    aggregate = audit_curriculum.build_inventory(BOOK2_ROOT)
+
+    assert aggregate["counts"]["scheduled_minutes"] == 0
+    assert "1,660 minutes" in rendered
+    assert "staged schedule grants no live coverage" in rendered
+
+    documents = render_curriculum_roadmap.render_documents(ROOT)
+    for document in documents.values():
+        assert "Current scheduled baseline: **18875 minutes / 314.58 hours**." in document
+        assert "Current scheduled baseline: **20535 minutes" not in document
+        assert "| **Planned-unit subtotal** | **142** | **182** |" in document
+    roadmap = documents[Path("docs/curriculum-roadmap.md")]
+    assert (
+        "| book2 | book2:B2-019-attention-transformers | Attention and Transformer "
+        "Mechanics | round-2-extension | 22–28 |"
+    ) in roadmap
+
+
+def test_live_book2_baseline_is_explicitly_deferred_until_task5(tmp_path: Path) -> None:
+    selected = _mutated_root(
+        tmp_path,
+        lambda schedule: schedule.update(status="live"),
+    )
+
+    report = schedule_checker.check_schedule(selected, expected_book_number=2)
+
+    assert not report.ok
+    assert any("live schedule support is deferred until Task 5" in error for error in report.errors)
 
 
 def test_two_book_schedule_fixture_is_valid_and_isolated(tmp_path: Path) -> None:
@@ -124,20 +157,59 @@ def test_two_book_schedule_fixture_is_valid_and_isolated(tmp_path: Path) -> None
     shutil.copytree(FIXTURE_ROOT, fixture)
     catalog = load_book_catalog(fixture)
 
-    book1_report = schedule_checker.check_schedule(fixture / "book1")
-    book2_report = schedule_checker.check_schedule(fixture / "book2")
+    book1, book2 = catalog.books
+    book1_report = schedule_checker.check_schedule(book1.root, book_spec=book1)
+    book2_report = schedule_checker.check_schedule(book2.root, book_spec=book2)
 
     assert all(validate_book_root(book) == [] for book in catalog.books)
     assert book1_report.ok, book1_report.errors
     assert book2_report.ok, book2_report.errors
+    assert len(load_syllabus(book1.root).concepts) == 1
+    assert len(load_syllabus(book2.root).concepts) == 1
     assert isinstance(
-        schedule_checker.schedule_policy(fixture / "book1"),
+        schedule_checker.schedule_policy(book1.root, book_spec=book1),
         schedule_checker.Book1SchedulePolicy,
     )
     assert isinstance(
-        schedule_checker.schedule_policy(fixture / "book2"),
+        schedule_checker.schedule_policy(book2.root, book_spec=book2),
         schedule_checker.Book2SchedulePolicy,
     )
+
+
+def test_schedule_dispatch_rejects_registry_number_schedule_mismatch(
+    tmp_path: Path,
+) -> None:
+    fixture = tmp_path / "repo"
+    shutil.copytree(FIXTURE_ROOT, fixture)
+    registry_path = fixture / "books.yaml"
+    registry = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
+    registry["books"][1]["number"] = 3
+    registry_path.write_text(yaml.safe_dump(registry, sort_keys=False), encoding="utf-8")
+    book2 = load_book_catalog(fixture).by_id("book2")
+
+    report = schedule_checker.check_schedule(book2.root, book_spec=book2)
+
+    assert not report.ok
+    assert any(
+        "schedule book 2 does not match registered book number 3" in error
+        for error in report.errors
+    )
+
+
+def test_unregistered_direct_schedule_api_requires_explicit_identity(
+    tmp_path: Path,
+) -> None:
+    selected = tmp_path / "advanced"
+    shutil.copytree(BOOK2_ROOT, selected)
+
+    with pytest.raises(ValueError, match="expected_book_number or BookSpec"):
+        schedule_checker.schedule_policy(selected)
+    assert schedule_checker.check_schedule(selected, expected_book_number=2).ok
+
+    mismatched = BookSpec(id="book2", number=2, root=selected.parent, depends_on=())
+    report = schedule_checker.check_schedule(selected, book_spec=mismatched)
+    assert not report.ok
+    assert any("does not match selected root" in error for error in report.errors)
 
 
 @pytest.mark.parametrize(
@@ -249,11 +321,11 @@ def test_book2_integer_fields_reject_float_and_bool_through_both_apis(
 
     selected = _mutated_root(tmp_path, mutate)
 
-    report = schedule_checker.check_schedule(selected)
+    report = schedule_checker.check_schedule(selected, expected_book_number=2)
     assert not report.ok
     assert any(message in error for error in report.errors), report.errors
     with pytest.raises(ValueError, match=message):
-        schedule_checker.load_validated_schedule(selected)
+        schedule_checker.load_validated_schedule(selected, expected_book_number=2)
 
 
 def test_staged_book2_schedule_rejects_first_live_manifest(tmp_path: Path) -> None:
@@ -263,7 +335,7 @@ def test_staged_book2_schedule_rejects_first_live_manifest(tmp_path: Path) -> No
     manifest.parent.mkdir(parents=True)
     manifest.write_text("unit: B2-019-attention-transformers\n", encoding="utf-8")
 
-    report = schedule_checker.check_schedule(selected)
+    report = schedule_checker.check_schedule(selected, expected_book_number=2)
 
     assert not report.ok
     assert any(
@@ -298,8 +370,16 @@ def test_book1_bytes_remain_pinned_while_valid_book2_fixture_renders(
 
     fixture = tmp_path / "repo"
     shutil.copytree(FIXTURE_ROOT, fixture)
-    assert schedule_checker.check_schedule(fixture / "book2").ok
-    assert "Book 2 Schedule" in render_course_structure.render_document(BOOK2_ROOT)
+    fixture_catalog = load_book_catalog(fixture)
+    fixture_book2 = fixture_catalog.by_id("book2")
+    assert schedule_checker.check_schedule(
+        fixture_book2.root, book_spec=fixture_book2
+    ).ok
+    fixture_rendered = render_course_structure.render_document(
+        fixture_book2.root, book_spec=fixture_book2
+    )
+    assert "Book 2 Schedule" in fixture_rendered
+    assert str(BOOK2_ROOT) not in fixture_rendered
 
     assert hashlib.sha256(schedule_path.read_bytes()).hexdigest() == BOOK1_SCHEDULE_SHA256
     assert hashlib.sha256(structure_path.read_bytes()).hexdigest() == BOOK1_STRUCTURE_SHA256

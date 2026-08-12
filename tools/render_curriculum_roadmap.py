@@ -14,8 +14,8 @@ from typing import Any
 
 import yaml
 
-from tools.books import load_book_catalog
-from tools.checks.schedule import load_validated_schedule
+from tools.books import BookSpec, load_book_catalog
+from tools.checks.schedule import load_validated_schedule, scheduled_baseline_minutes
 from tools.checks.scope import LAYERS, MINIMUM_QUALIFYING_PRACTICES, check_scope
 from tools.model import CourseSchedule, KnowledgePoint, Roadmap, load_roadmap
 
@@ -109,6 +109,8 @@ def current_time_baseline(
     root: str | Path,
     *,
     _schedule_loader: ScheduleLoader = load_validated_schedule,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
 ) -> TimeBaseline:
     root = Path(root).resolve()
     manifested = 0
@@ -120,7 +122,15 @@ def current_time_baseline(
         manifested += sum(_number(value) for value in estimates.get("lesson_sessions") or [])
         manifested += _number(estimates.get("practice"))
         manifested += _number(estimates.get("review"))
-    scheduled = _schedule_loader(root).total_minutes
+    if _schedule_loader is load_validated_schedule:
+        schedule = _schedule_loader(
+            root,
+            book_spec=book_spec,
+            expected_book_number=expected_book_number,
+        )
+    else:
+        schedule = _schedule_loader(root)
+    scheduled = scheduled_baseline_minutes(schedule)
     return TimeBaseline(
         manifested_minutes=manifested,
         scheduled_minutes=scheduled,
@@ -678,7 +688,11 @@ def _registered_inputs(
         roadmap = load_roadmap(book.root)
         inventory = _yaml(book.root / "curriculum" / "material-inventory.yaml")
         topics = _yaml(book.root / "curriculum" / "official-topics.yaml")
-        baseline = current_time_baseline(book.root, _schedule_loader=_schedule_loader)
+        baseline = current_time_baseline(
+            book.root,
+            _schedule_loader=_schedule_loader,
+            book_spec=book,
+        )
         for point in roadmap.knowledge_points:
             if point.id in point_owners:
                 raise ValueError(
@@ -779,6 +793,8 @@ def render_documents(
     root: str | Path,
     *,
     _schedule_loader: ScheduleLoader = load_validated_schedule,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
 ) -> dict[Path, str]:
     root = Path(root).resolve()
     if (root / "books.yaml").is_file():
@@ -811,7 +827,12 @@ def render_documents(
     roadmap = load_roadmap(root)
     inventory = _yaml(root / "curriculum" / "material-inventory.yaml")
     topics = _yaml(root / "curriculum" / "official-topics.yaml")
-    baseline = current_time_baseline(root, _schedule_loader=_schedule_loader)
+    baseline = current_time_baseline(
+        root,
+        _schedule_loader=_schedule_loader,
+        book_spec=book_spec,
+        expected_book_number=expected_book_number,
+    )
     return {
         AUDIT_PATH: _render_audit(roadmap, inventory, baseline, topics),
         ROADMAP_PATH: _render_roadmap(roadmap, baseline, topics),

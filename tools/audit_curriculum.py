@@ -23,7 +23,8 @@ from typing import Any
 
 import yaml
 
-from tools.checks.schedule import load_validated_schedule
+from tools.books import BookSpec
+from tools.checks.schedule import load_validated_schedule, scheduled_baseline_minutes
 from tools.model import CourseSchedule
 
 INVENTORY_PATH = Path("curriculum/material-inventory.yaml")
@@ -508,6 +509,8 @@ def build_inventory(
     root: str | Path,
     *,
     _schedule_loader: ScheduleLoader = load_validated_schedule,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
 ) -> dict[str, Any]:
     root = Path(root).resolve()
     _validate_input_file(root / "syllabus.md", root, "syllabus.md", "syllabus")
@@ -541,7 +544,14 @@ def build_inventory(
     review_minutes = sum(int(item["estimated_minutes"].get("review", 0)) for item in parsed_unit_manifests)
     manifested_minutes = lesson_minutes + practice_minutes + review_minutes
     try:
-        schedule = _schedule_loader(root)
+        if _schedule_loader is load_validated_schedule:
+            schedule = _schedule_loader(
+                root,
+                book_spec=book_spec,
+                expected_book_number=expected_book_number,
+            )
+        else:
+            schedule = _schedule_loader(root)
     except ValueError as exc:
         raise InventoryError(str(exc)) from exc
 
@@ -557,7 +567,7 @@ def build_inventory(
         "mocktests": len(mock_manifests),
         "mock_notebooks": len(mock_notebook_paths),
         "manifested_minutes": manifested_minutes,
-        "scheduled_minutes": schedule.total_minutes,
+        "scheduled_minutes": scheduled_baseline_minutes(schedule),
     }
     all_input_paths = sorted(
         [item["path"] for item in manifests + notebooks + documents], key=str.encode

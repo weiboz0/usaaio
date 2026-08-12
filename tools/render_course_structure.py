@@ -11,6 +11,7 @@ from pathlib import Path
 
 import yaml
 
+from tools.books import BookSpec
 from tools.checks.schedule import Book2CourseSchedule, load_validated_schedule
 from tools.model import CourseSchedule, load_syllabus
 
@@ -416,9 +417,19 @@ def _validated_region_patterns(document: str) -> dict[str, re.Pattern[str]]:
     return patterns
 
 
-def render_document(root: str | Path, *, bootstrap: bool = False) -> str:
+def render_document(
+    root: str | Path,
+    *,
+    bootstrap: bool = False,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
+) -> str:
     root = Path(root).resolve()
-    schedule = load_validated_schedule(root)
+    schedule = load_validated_schedule(
+        root,
+        book_spec=book_spec,
+        expected_book_number=expected_book_number,
+    )
     if isinstance(schedule, Book2CourseSchedule):
         return _render_book2_document(schedule)
     manifests = _manifest_contracts(root)
@@ -473,12 +484,17 @@ def _atomic_write(path: Path, content: str) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=".")
+    parser.add_argument("--book-number", type=int)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args(argv)
     root = Path(args.root).resolve()
     path = root / DOCUMENT
     try:
-        rendered = render_document(root, bootstrap=not args.check)
+        rendered = render_document(
+            root,
+            bootstrap=not args.check,
+            expected_book_number=args.book_number,
+        )
         if args.check:
             if path.read_text(encoding="utf-8") != rendered:
                 print(f"STALE {DOCUMENT}", file=sys.stderr)
