@@ -162,39 +162,137 @@ def _qualified_prerequisites_from_header(path: Path) -> set[str]:
 
 def _embedding_api_violations(source: str) -> list[str]:
     tree = ast.parse(source)
-    aliases: dict[str, str] = {}
+    aliases: dict[str, set[str]] = {}
     violations: list[str] = []
+    forbidden = {
+        "torch.nn.Embedding",
+        "torch.nn.modules.sparse.Embedding",
+        "torch.nn.functional.embedding",
+    }
+
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
-                aliases[alias.asname or alias.name] = alias.name
-                if alias.name in {"torch.nn.modules.sparse", "torch.nn.functional"}:
-                    violations.append(f"import {alias.name}")
+                aliases.setdefault(alias.asname or alias.name, set()).add(alias.name)
         elif isinstance(node, ast.ImportFrom):
             module = node.module or ""
             for alias in node.names:
                 qualified = f"{module}.{alias.name}" if module else alias.name
-                aliases[alias.asname or alias.name] = qualified
-                if alias.name == "Embedding" or qualified.endswith(".embedding"):
+                aliases.setdefault(alias.asname or alias.name, set()).add(qualified)
+                if qualified in forbidden:
                     violations.append(f"import {qualified}")
 
-    def qualified_name(node: ast.AST) -> str | None:
+    def qualified_names(node: ast.AST) -> set[str]:
         if isinstance(node, ast.Name):
-            return aliases.get(node.id, node.id)
+            return aliases.get(node.id, {node.id})
         if isinstance(node, ast.Attribute):
-            owner = qualified_name(node.value)
-            return f"{owner}.{node.attr}" if owner else node.attr
-        return None
+            return {f"{owner}.{node.attr}" for owner in qualified_names(node.value)}
+        return set()
+
+    assignments = [node for node in ast.walk(tree) if isinstance(node, ast.Assign)]
+    for _ in range(len(assignments) + 1):
+        changed = False
+        for node in assignments:
+            values = qualified_names(node.value)
+            if not values:
+                continue
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    before = len(aliases.get(target.id, set()))
+                    aliases.setdefault(target.id, set()).update(values)
+                    changed |= len(aliases[target.id]) != before
+        if not changed:
+            break
 
     for node in ast.walk(tree):
         if not isinstance(node, ast.Call):
             continue
-        name = qualified_name(node.func)
-        if name and (
-            name in {"torch.nn.Embedding", "torch.nn.functional.embedding"}
-            or name.endswith((".nn.Embedding", ".functional.embedding"))
-        ):
+        names = qualified_names(node.func)
+        for name in sorted(names & forbidden):
             violations.append(f"call {name}")
+        if (
+            "getattr" in names
+            and len(node.args) >= 2
+            and isinstance(node.args[1], ast.Constant)
+            and isinstance(node.args[1].value, str)
+        ):
+            dynamic_names = {
+                f"{owner}.{node.args[1].value}"
+                for owner in qualified_names(node.args[0])
+            }
+            for dynamic_name in sorted(dynamic_names & forbidden):
+                violations.append(f"dynamic call {dynamic_name}")
+    return violations
+
+
+def _generator_source_violations(source: str) -> list[str]:
+    tree = ast.parse(source)
+    violations: list[str] = []
+    aliases: dict[str, set[str]] = {}
+    allowed_import_roots = {"__future__", "argparse", "io", "zipfile", "numpy"}
+    forbidden_roots = {
+        "os", "subprocess", "pathlib", "requests", "urllib", "socket", "http", "ftplib"
+    }
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                aliases.setdefault(alias.asname or alias.name, set()).add(alias.name)
+                root = alias.name.split(".")[0]
+                if root not in allowed_import_roots:
+                    violations.append(f"import {alias.name}")
+        elif isinstance(node, ast.ImportFrom):
+            module = node.module or ""
+            root = module.split(".")[0]
+            if root not in allowed_import_roots:
+                violations.append(f"import {module}")
+            for alias in node.names:
+                qualified = f"{module}.{alias.name}" if module else alias.name
+                aliases.setdefault(alias.asname or alias.name, set()).add(qualified)
+
+    def qualified_names(node: ast.AST) -> set[str]:
+        if isinstance(node, ast.Name):
+            return aliases.get(node.id, {node.id})
+        if isinstance(node, ast.Attribute):
+            return {f"{owner}.{node.attr}" for owner in qualified_names(node.value)}
+        return set()
+
+    assignments = [node for node in ast.walk(tree) if isinstance(node, ast.Assign)]
+    for _ in range(len(assignments) + 1):
+        changed = False
+        for node in assignments:
+            values = qualified_names(node.value)
+            if not values:
+                continue
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    before = len(aliases.get(target.id, set()))
+                    aliases.setdefault(target.id, set()).update(values)
+                    changed |= len(aliases[target.id]) != before
+        if not changed:
+            break
+
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        names = qualified_names(node.func)
+        if "numpy.load" in names:
+            allow_pickle = [
+                keyword.value
+                for keyword in node.keywords
+                if keyword.arg == "allow_pickle"
+            ]
+            if not (
+                len(allow_pickle) == 1
+                and isinstance(allow_pickle[0], ast.Constant)
+                and allow_pickle[0].value is False
+            ):
+                violations.append("numpy.load requires literal allow_pickle=False")
+        for name in sorted(names & {"__import__", "importlib.import_module", "eval", "exec"}):
+            violations.append(f"dynamic execution {name}")
+        for name in sorted(names):
+            if name.split(".")[0] in forbidden_roots:
+                violations.append(f"forbidden call {name}")
     return violations
 
 
@@ -534,30 +632,110 @@ def test_embedding_apis_are_ast_forbidden_and_metadata_stays_independent(
         "import torch.nn as layers\nlayer = layers.Embedding(4, 2)",
         "from torch.nn.functional import embedding as lookup\nlookup(ids, weight)",
         "import torch.nn.functional as F\nF.embedding(ids, weight)",
+        "import torch.nn as nn\nE = nn.Embedding\nE(4, 2)",
+        "import torch.nn as nn\nE = nn.Embedding\nLayer = E\nLayer(4, 2)",
+        "import torch\nF = torch.nn.functional\nF.embedding(ids, weight)",
+        "from torch import nn as layers\nE = layers.Embedding\nE(4, 2)",
+        "from torch.nn import functional as F\nF.embedding(ids, weight)",
+        "import torch as framework\nE = framework.nn.Embedding\nE(4, 2)",
+        "import torch.nn.modules.sparse as sparse\nsparse.Embedding(4, 2)",
+        "from torch.nn.modules.sparse import Embedding as E\nE(4, 2)",
+        "import torch.nn as nn\ngetattr(nn, 'Embedding')(4, 2)",
+        "import torch.nn.functional as F\ngetattr(F, 'embedding')(ids, weight)",
+        "import torch\ngetattr(torch.nn, 'Embedding')(4, 2)",
+        "import torch\ngetattr(torch.nn.functional, 'embedding')(ids, weight)",
+        "import torch.nn as nn\nresolve = getattr\nresolve(nn, 'Embedding')(4, 2)",
+        "import torch.nn.functional as F\nlookup = F.embedding\nlookup(ids, weight)",
+        "import torch.nn as nn\nE = nn.Embedding\nE = int\nE(4, 2)",
     ],
 )
 def test_embedding_api_audit_rejects_imports_aliases_and_calls(source: str) -> None:
     assert _embedding_api_violations(source)
 
 
+@pytest.mark.parametrize(
+    "source",
+    [
+        "import torch.nn as nn\nlayer = nn.EmbeddingBag(4, 2)",
+        "import torch.nn.functional as F\nF.embedding_bag(ids, weight)",
+        "def embedding_loss(x):\n    return x",
+        "class Embedding:\n    pass\nlayer = Embedding()",
+        "import torch.nn as nn\ngetattr(nn, 'EmbeddingBag')(4, 2)",
+        "import torch.nn.functional as F\ngetattr(F, 'embedding_bag')(ids, weight)",
+        "message = 'nn.Embedding and F.embedding are forbidden'",
+        "# nn.Embedding(4, 2)\nvalue = 1",
+        "from custom_layers import Embedding\nlayer = Embedding()",
+        "from project import embedding\nembedding(ids, weight)",
+        "class Namespace:\n    pass\nobj = Namespace()\nobj.Embedding = lambda: None\nobj.Embedding()",
+        "embedding_projection = lambda x: x\nembedding_projection(ids)",
+    ],
+)
+def test_embedding_api_audit_allows_safe_near_names(source: str) -> None:
+    assert _embedding_api_violations(source) == []
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        "import numpy as np\nnp.load('data.npy')",
+        "import numpy as np\nnp.load('data.npy', allow_pickle=True)",
+        "import numpy as np\nflag = False\nnp.load('data.npy', allow_pickle=flag)",
+        "import numpy as np\nnp.load('data.npy', allow_pickle=bool(0))",
+        "import numpy\nnumpy.load('data.npy')",
+        "from numpy import load as loader\nloader('data.npy', allow_pickle=True)",
+        "import numpy as np\nloader = np.load\nloader('data.npy')",
+        "import numpy as np\nloader = np.load\nloader = print\nloader('data.npy')",
+        "import numpy as np\nnp.load('data.npy', None, False)",
+        (
+            "import numpy as np\n"
+            "np.load('data.npy', allow_pickle=True)  # allow_pickle=False\n"
+            "__import__('os')"
+        ),
+        "__import__('os')",
+        "loader = __import__\nloader('os')",
+        "import importlib\nimportlib.import_module('os')",
+        "from importlib import import_module as load_module\nload_module('os')",
+        "eval('1 + 1')",
+        "exec('value = 1')",
+        "import os\nos.system('true')",
+        "import subprocess\nsubprocess.run(['true'])",
+        "from pathlib import Path\nPath('data').read_bytes()",
+        "import requests\nrequests.get('https://example.com')",
+        "import urllib.request\nurllib.request.urlopen('https://example.com')",
+        "import socket\nsocket.create_connection(('example.com', 80))",
+        "os.system('true')",
+        "subprocess.run(['true'])",
+        "pathlib.Path('data')",
+    ],
+)
+def test_generator_source_audit_rejects_unsafe_ast_constructs(source: str) -> None:
+    assert _generator_source_violations(source)
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        "import numpy as np\nnp.load('data.npy', allow_pickle=False)",
+        "import numpy\nnumpy.load('data.npy', allow_pickle=False)",
+        "from numpy import load as loader\nloader('data.npy', allow_pickle=False)",
+        "import numpy as np\nloader = np.load\nloader('data.npy', allow_pickle=False)",
+        "# requests subprocess pathlib socket allow_pickle=True\nvalue = 1",
+        "message = 'requests urllib socket subprocess pathlib'",
+        "socket_count = 0\nsubprocess_label = 'safe'",
+        "def evaluate(value):\n    return value",
+        "class Embedding:\n    pass",
+        "import argparse\nparser = argparse.ArgumentParser()",
+    ],
+)
+def test_generator_source_audit_allows_safe_near_names(source: str) -> None:
+    assert _generator_source_violations(source) == []
+
+
 def test_generator_is_deterministic_cpu_only_and_uses_no_network(tmp_path: Path) -> None:
     script = UNIT / "scripts/generate_attention_data.py"
     source = script.read_text(encoding="utf-8")
-    tree = ast.parse(source)
     assert f"SEED = {SEED}" in source
-    imported_roots = {
-        alias.name.split(".")[0]
-        for node in ast.walk(tree)
-        if isinstance(node, ast.Import)
-        for alias in node.names
-    } | {
-        (node.module or "").split(".")[0]
-        for node in ast.walk(tree)
-        if isinstance(node, ast.ImportFrom)
-    }
-    assert imported_roots <= {"__future__", "argparse", "io", "pathlib", "zipfile", "numpy"}
-    assert "allow_pickle=False" in source
-    assert not any(token in source for token in ("requests", "urllib", "socket", "cuda", "mps", "subprocess"))
+    assert _generator_source_violations(source) == []
 
     first = tmp_path / "first.npz"
     second = tmp_path / "second.npz"

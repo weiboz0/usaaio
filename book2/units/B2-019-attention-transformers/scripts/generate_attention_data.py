@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import io
 import zipfile
-from pathlib import Path
 
 import numpy as np
 
@@ -22,8 +21,7 @@ def arrays() -> dict[str, np.ndarray]:
     }
 
 
-def write_deterministic_npz(output: Path) -> None:
-    output.parent.mkdir(parents=True, exist_ok=True)
+def write_deterministic_npz(output: str) -> None:
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_STORED) as archive:
         for name, value in sorted(arrays().items()):
             buffer = io.BytesIO()
@@ -36,7 +34,7 @@ def write_deterministic_npz(output: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--output", required=True)
     args = parser.parse_args()
     write_deterministic_npz(args.output)
     return 0
