@@ -151,6 +151,38 @@ def _code_source(path: Path) -> str:
     )
 
 
+def _execute_solution_with_replacements(
+    number: int,
+    replacements: tuple[tuple[str, str], ...] = (),
+) -> dict[str, object]:
+    path = UNIT / f"practice/p{number:02}_solution.ipynb"
+    notebook = json.loads(path.read_text(encoding="utf-8"))
+    namespace: dict[str, object] = {}
+    remaining = list(replacements)
+
+    for cell_index, cell in enumerate(notebook["cells"]):
+        if cell["cell_type"] != "code":
+            continue
+        source = (
+            "".join(cell.get("source", []))
+            if isinstance(cell.get("source", ""), list)
+            else str(cell.get("source", ""))
+        )
+        for old, new in tuple(remaining):
+            count = source.count(old)
+            if count:
+                assert count == 1, (number, old, count)
+                source = source.replace(old, new)
+                remaining.remove((old, new))
+        exec(  # noqa: S102 - execute actual notebook cells and their answer checks
+            compile(source, f"p{number:02}_solution.ipynb:cell-{cell_index}", "exec"),
+            namespace,
+        )
+
+    assert not remaining, (number, remaining)
+    return namespace
+
+
 def _qualified_prerequisites_from_header(path: Path) -> set[str]:
     match = re.search(
         r"\*\*Qualified Book 1 prerequisites:\*\* (?P<items>[^\n]+)",
@@ -624,11 +656,90 @@ def test_each_ninety_minute_lesson_has_substantive_progression() -> None:
             assert anchor in source, (relative, anchor)
 
 
-def test_p14_targets_post_softmax_normalization_not_causal_independence() -> None:
+def test_p14_identifies_post_softmax_future_key_denominator_leakage() -> None:
     source = _source(UNIT / "practice/p14.ipynb")
-    assert "post-softmax zeroing preserves causal independence" in source
+    assert "post-softmax zeroing breaks causal independence" in source
+    assert "forbidden future key scores" in source
     assert "breaks row normalization" in source
-    assert "post-softmax mask breaks the claim" not in source
+    assert "[0,0]" in source and "[0,10]" in source
+    assert "[1,0]" in source and "[2,999]" in source
+
+
+@pytest.mark.parametrize(
+    ("number", "replacements"),
+    [
+        pytest.param(
+            3,
+            (("np.sqrt(X.shape[-1])", "np.sqrt(X.shape[-2])"),),
+            id="p03-scale-by-sequence-length",
+        ),
+        pytest.param(
+            7,
+            ((
+                "weights = numerators / np.sum(numerators, axis=-1, keepdims=True)",
+                "weights = np.full_like(numerators, 1.0 / x.shape[1])",
+            ),),
+            id="p07-uniform-weights-and-output",
+        ),
+        pytest.param(
+            8,
+            ((
+                "    output = weights @ v",
+                (
+                    "    weights[1] = np.array([0.75, 0.25, 0.0], "
+                    "dtype=np.float64)\n    output = weights @ v"
+                ),
+            ),),
+            id="p08-arbitrary-later-causal-row",
+        ),
+        pytest.param(
+            9,
+            (("np.log(10000.0)", "np.log(100.0)"),),
+            id="p09-base-100",
+        ),
+        pytest.param(
+            10,
+            (
+                (
+                    "return x.reshape(b, n, h, d // h).transpose(0, 2, 1, 3)",
+                    "return x.reshape(b, n, d // h, h).transpose(0, 3, 1, 2)",
+                ),
+                (
+                    "return heads.transpose(0, 2, 1, 3).reshape(b, n, h * d_h)",
+                    "return heads.transpose(0, 2, 3, 1).reshape(b, n, h * d_h)",
+                ),
+            ),
+            id="p10-interleaved-head-features",
+        ),
+        pytest.param(
+            15,
+            ((
+                "concatenated = head_values.transpose(0, 2, 1, 3).reshape(B, N, D)",
+                "concatenated = head_values.reshape(B, N, D)",
+            ),),
+            id="p15-omit-concat-transpose",
+        ),
+        pytest.param(
+            24,
+            (("a = layer_norm_rows(x)", "a = x"),),
+            id="p24-skip-first-pre-norm",
+        ),
+    ],
+)
+def test_task6_answer_checks_reject_quality_review_mutants(
+    number: int,
+    replacements: tuple[tuple[str, str], ...],
+) -> None:
+    with pytest.raises(AssertionError):
+        _execute_solution_with_replacements(number, replacements)
+
+
+def test_p14_solution_executes_both_post_and_pre_softmax_counterexamples() -> None:
+    namespace = _execute_solution_with_replacements(14)
+    assert namespace["postmasked_output_before"] == pytest.approx(1.0)
+    assert namespace["postmasked_output_after"] == pytest.approx(9.079573740486879e-05)
+    assert namespace["premasked_output_before"] == pytest.approx(2.0)
+    assert namespace["premasked_output_after"] == pytest.approx(2.0)
 
 
 def test_session4_executes_a_deterministic_attention_training_example() -> None:
