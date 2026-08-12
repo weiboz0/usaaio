@@ -237,8 +237,34 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
                 "",
             ]
         )
-    c8 = points.get("nlp-word-embeddings")
-    if c8 is not None and c8.coverage != "covered":
+    embedding_point = points.get("nlp-word-embeddings")
+    embedding_unit = next(
+        (
+            unit
+            for unit in roadmap.planned_units
+            if unit.id == "B2-020-language-transformers"
+            and "nlp-word-embeddings" in unit.knowledge_points
+        ),
+        None,
+    )
+    if (
+        embedding_point is not None
+        and embedding_point.coverage != "covered"
+        and embedding_unit is not None
+    ):
+        lines.extend(
+            [
+                (
+                    f"The Book 2 `{embedding_unit.id}` "
+                    f"{_format_number(embedding_unit.estimated_hours.minimum)}–"
+                    f"{_format_number(embedding_unit.estimated_hours.maximum)}-hour estimate "
+                    "includes completing the `nlp-word-embeddings` model-training bridge; "
+                    "no additional Book 1 C8 correction is pending."
+                ),
+                "",
+            ]
+        )
+    elif embedding_point is not None and embedding_point.coverage != "covered":
         lines.extend(
             [
                 "The unestimated C8 `nlp-word-embeddings` model-training correction remains pending.",
@@ -295,6 +321,15 @@ def _append_non_required_candidates(lines: list[str], topics: dict) -> None:
         ),
         key=lambda row: str(row.get("id", "")).encode("utf-8"),
     )
+    show_owners = any(row.get("book") is not None for row in candidates)
+    if show_owners:
+        header = "| Book | Candidate | Related category | Decision | Source refs |"
+        separator = "|---|---|---|---|---|"
+        empty = "| — | — | — | — | — |"
+    else:
+        header = "| Candidate | Related category | Decision | Source refs |"
+        separator = "|---|---|---|---|"
+        empty = "| — | — | — | — |"
     lines.extend(
         [
             "## Non-required candidates",
@@ -304,23 +339,27 @@ def _append_non_required_candidates(lines: list[str], topics: dict) -> None:
                 "coverage unless a future source or consumer promotes them."
             ),
             "",
-            "| Candidate | Related category | Decision | Source refs |",
-            "|---|---|---|---|",
+            header,
+            separator,
         ]
     )
     if not candidates:
-        lines.append("| — | — | — | — |")
+        lines.append(empty)
     for row in candidates:
+        owner = row.get("book")
+        values = (
+            _qualified(str(owner), str(row.get("id"))) if owner is not None else row.get("id"),
+            row.get("related_category"),
+            "optional; not an atomic audit target",
+            _joined([str(value) for value in row.get("source_refs") or []]),
+        )
+        if show_owners:
+            values = (owner, *values)
         lines.append(
             "| "
             + " | ".join(
                 _cell(value)
-                for value in (
-                    row.get("id"),
-                    row.get("related_category"),
-                    "optional; not an atomic audit target",
-                    _joined([str(value) for value in row.get("source_refs") or []]),
-                )
+                for value in values
             )
             + " |"
         )
@@ -696,6 +735,7 @@ def _registered_inputs(
         "non_required_candidates": [],
     }
     target_owners: dict[str, str] = {}
+    candidate_owners: dict[str, str] = {}
     for (book_id, _), topics in zip(roadmaps, topic_contracts, strict=True):
         for target in topics.get("atomic_targets") or []:
             target_id = str(target["id"])
@@ -706,9 +746,17 @@ def _registered_inputs(
                 )
             target_owners[target_id] = book_id
             combined_topics["atomic_targets"].append(target)
-        combined_topics["non_required_candidates"].extend(
-            topics.get("non_required_candidates") or []
-        )
+        for candidate in topics.get("non_required_candidates") or []:
+            candidate_id = str(candidate["id"])
+            if candidate_id in candidate_owners:
+                raise ValueError(
+                    f"aggregate non-required candidate {candidate_id!r} is owned by both "
+                    f"{candidate_owners[candidate_id]} and {book_id}"
+                )
+            candidate_owners[candidate_id] = book_id
+            combined_topics["non_required_candidates"].append(
+                {**candidate, "book": book_id}
+            )
     if set(target_owners) != set(point_owners):
         raise ValueError("aggregate official topics and roadmap knowledge points differ")
 

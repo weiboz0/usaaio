@@ -1,6 +1,9 @@
 import base64
 import json
+import re
+import shutil
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 import yaml
@@ -551,15 +554,107 @@ def test_plan019_task3_aggregate_renderer_reads_registered_books_in_dependency_o
     assert "| Book | Knowledge point |" in roadmap_document
     assert "| book1 |" in roadmap_document
     assert "| book2 |" in roadmap_document
-    assert roadmap_document.index("| book1 |") < roadmap_document.index("| book2 |")
+    audit_rows = [
+        (match.group("point"), match.group("book"))
+        for match in re.finditer(
+            r"^### (?P<point>[^\n]+)\n\n- \*\*Book:\*\* (?P<book>book[12])$",
+            audit_document,
+            re.MULTILINE,
+        )
+    ]
+    assert audit_rows
+    assert [book for _, book in audit_rows] == sorted(
+        (book for _, book in audit_rows), key={"book1": 0, "book2": 1}.__getitem__
+    )
+
+
+def test_plan019_task3_aggregate_renderer_assigns_embedding_completion_to_b2_020() -> None:
+    rendered = roadmap_renderer.render_documents(REPO_ROOT)
+    book2_root = roadmap_renderer.load_book_catalog(REPO_ROOT).by_id("book2").root
+    planned = {
+        unit.id: unit for unit in roadmap_renderer.load_roadmap(book2_root).planned_units
+    }
+    owner = planned["B2-020-language-transformers"]
+
+    assert "nlp-word-embeddings" in owner.knowledge_points
+    assert (owner.estimated_hours.minimum, owner.estimated_hours.maximum) == (26, 32)
+
+    for document in rendered.values():
+        assert "unestimated C8" not in document
+        assert (
+            "The Book 2 `B2-020-language-transformers` 26–32-hour estimate includes "
+            "completing the `nlp-word-embeddings` model-training bridge; no additional "
+            "Book 1 C8 correction is pending."
+        ) in document
+
+
+def test_plan019_task3_aggregate_non_required_candidates_keep_book_ownership() -> None:
+    rendered = roadmap_renderer.render_documents(REPO_ROOT)
+
+    for document in rendered.values():
+        assert "| Book | Candidate | Related category | Decision | Source refs |" in document
+        assert "| book1 | book1:importance-sampling | probability-statistics |" in document
+        assert "| book1 | book1:student-t-test | probability-statistics |" in document
+
+
+def test_plan019_task3_aggregate_rejects_cross_book_candidate_id_collisions(
+    tmp_path: Path,
+) -> None:
+    tmp_path.joinpath("books.yaml").write_bytes((REPO_ROOT / "books.yaml").read_bytes())
+    registered_roots = {
+        book.id: book.root
+        for book in roadmap_renderer.load_book_catalog(REPO_ROOT).books
+    }
+    for book in ("book1", "book2"):
+        curriculum = tmp_path / book / "curriculum"
+        curriculum.mkdir(parents=True)
+        for name in ("coverage-map.yaml", "official-topics.yaml"):
+            shutil.copyfile(registered_roots[book] / "curriculum" / name, curriculum / name)
+        (curriculum / "material-inventory.yaml").write_text("counts: {}\n")
+
+    book2_topics_path = tmp_path / "book2/curriculum/official-topics.yaml"
+    book2_topics = yaml.safe_load(book2_topics_path.read_text())
+    book2_topics["non_required_candidates"] = [
+        {
+            "id": "importance-sampling",
+            "related_category": "probability-statistics",
+            "source_refs": ["collision-probe"],
+            "requirement": "optional",
+            "audit_target": False,
+        }
+    ]
+    book2_topics_path.write_text(yaml.safe_dump(book2_topics, sort_keys=False))
+
+    with pytest.raises(
+        ValueError,
+        match=(
+            "aggregate non-required candidate 'importance-sampling' is owned by both "
+            "book1 and book2"
+        ),
+    ):
+        roadmap_renderer.render_documents(
+            tmp_path,
+            _schedule_loader=lambda _root: SimpleNamespace(total_minutes=0),
+        )
 
 
 def test_plan019_task3_ci_enforces_generated_evidence_without_a_skip() -> None:
-    script = (REPO_ROOT / "scripts" / "ci-local.sh").read_text(encoding="utf-8")
+    commands = [
+        line.strip()
+        for line in (REPO_ROOT / "scripts" / "ci-local.sh").read_text(
+            encoding="utf-8"
+        ).splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
 
-    assert "SKIP generated Book 1 evidence freshness" not in script
-    assert 'python -m tools.audit_curriculum --root "$book1_root" --check' in script
-    assert 'python -m tools.render_curriculum_roadmap --root "$repo_root" --check' in script
+    assert not any("SKIP generated Book 1 evidence freshness" in line for line in commands)
+    audit_command = 'uv run python -m tools.audit_curriculum --root "$book1_root" --check'
+    aggregate_command = (
+        'uv run python -m tools.render_curriculum_roadmap --root "$repo_root" --check'
+    )
+    assert commands.count(audit_command) == 1
+    assert commands.count(aggregate_command) == 1
+    assert commands.index(audit_command) < commands.index(aggregate_command)
 
 
 def test_plan019_task3_scope_allows_both_shared_generated_outputs() -> None:

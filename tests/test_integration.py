@@ -1611,18 +1611,25 @@ def test_scope_cli_is_registered_and_loader_errors_are_blocking(tmp_path):
 
 
 def test_ci_local_wires_both_mutation_runners_and_generated_document_checks():
-    script = (ROOT / "scripts" / "ci-local.sh").read_text()
+    lines = _ci_noncomment_lines()
 
-    assert 'python -m tools.audit_curriculum --root "$book1_root" --check' in script
-    assert 'python -m tools.render_curriculum_roadmap --root "$repo_root" --check' in script
-    assert 'usaaio-tools --book "$book" "$c"' in script
-    assert "scope-check" in script
-    assert 'python -m tools.render_course_structure --root "$book1_root" --check' in script
-    training = 'python -m tools.verify_training_mutations --root "$book1_root"'
-    classical = 'python -m tools.verify_classical_mutations --root "$book1_root"'
-    assert training in script
-    assert classical in script
-    assert script.index(training) < script.index(classical)
+    audit = 'uv run python -m tools.audit_curriculum --root "$book1_root" --check'
+    aggregate = (
+        'uv run python -m tools.render_curriculum_roadmap --root "$repo_root" --check'
+    )
+    structure = (
+        'uv run python -m tools.render_course_structure --root "$book1_root" --check'
+    )
+    training = 'uv run python -m tools.verify_training_mutations --root "$book1_root"'
+    classical = 'uv run python -m tools.verify_classical_mutations --root "$book1_root"'
+    for command in (audit, aggregate, structure, training, classical):
+        assert lines.count(command) == 1
+    assert lines.index(audit) < lines.index(aggregate) < lines.index(structure)
+    assert lines.index(structure) < lines.index(training) < lines.index(classical)
+    assert any(
+        line.startswith('uv run usaaio-tools --book "$book" "$c"') for line in lines
+    )
+    assert any("scope-check" in line for line in lines)
 
 
 def test_pre_merge_guard_runs_embedded_yaml_with_uv_python():

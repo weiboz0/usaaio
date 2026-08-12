@@ -42,16 +42,16 @@ This range is a renderer-owned editorial estimate, not a field in the canonical 
 
 Baseline plus planned-unit subtotal: **452.58–492.58 manifested-baseline hours** and **456.58–496.58 scheduled-baseline hours**.
 
-The unestimated C8 `nlp-word-embeddings` model-training correction remains pending.
+The Book 2 `B2-020-language-transformers` 26–32-hour estimate includes completing the `nlp-word-embeddings` model-training bridge; no additional Book 1 C8 correction is pending.
 
 ## Non-required candidates
 
 These topics were adjudicated explicitly but remain outside atomic required coverage unless a future source or consumer promotes them.
 
-| Candidate | Related category | Decision | Source refs |
-|---|---|---|---|
-| importance-sampling | probability-statistics | optional; not an atomic audit target | plan-015-preliminary-decisions |
-| student-t-test | probability-statistics | optional; not an atomic audit target | plan-015-preliminary-decisions |
+| Book | Candidate | Related category | Decision | Source refs |
+|---|---|---|---|---|
+| book1 | book1:importance-sampling | probability-statistics | optional; not an atomic audit target | plan-015-preliminary-decisions |
+| book1 | book1:student-t-test | probability-statistics | optional; not an atomic audit target | plan-015-preliminary-decisions |
 
 ## Atomic-target audit
 
