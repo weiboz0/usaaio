@@ -10,8 +10,10 @@ import pytest
 import yaml
 
 from tools import render_course_structure as course_renderer
+from tools.model import load_unit_manifests
 
 ROOT = Path(__file__).parents[1]
+BOOK1_ROOT = ROOT / "book1"
 
 
 def _schedule_checker():
@@ -205,7 +207,7 @@ def _check_after(root: Path, mutate: Callable[[dict[str, Any]], None]):
     schedule = _build_schedule_fixture(root)
     mutate(schedule)
     _write_yaml(root / "curriculum" / "course-schedule.yaml", schedule)
-    return _schedule_checker().check_schedule(root)
+    return _schedule_checker().check_schedule(root, expected_book_number=1)
 
 
 def _set_unit_minutes(
@@ -429,7 +431,7 @@ def test_schedule_checker_accepts_a_fully_allocated_prerequisite_valid_fixture(
 ) -> None:
     _build_schedule_fixture(tmp_path)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert report.ok, report.errors
 
@@ -439,7 +441,7 @@ def test_schedule_checker_derives_semester_boundary_from_declared_calendar(
 ) -> None:
     _build_schedule_fixture(tmp_path, semester_1_weeks=15)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert report.ok, report.errors
 
@@ -451,7 +453,7 @@ def test_schedule_checker_rejects_calendar_total_that_disagrees_with_semesters(
     schedule["calendar"]["total_weeks"] = 36
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any(
@@ -465,7 +467,7 @@ def test_schedule_checker_rejects_week_beyond_declared_calendar(tmp_path: Path) 
     schedule["weeks"].append({"week": 36, "semester": 2, "allocations": []})
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any("unexpected week 36" in error for error in report.errors), report.errors
@@ -479,7 +481,7 @@ def test_schedule_checker_rejects_reordered_week_rows(tmp_path: Path) -> None:
     )
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any(
@@ -497,7 +499,7 @@ def test_schedule_checker_rejects_a_nonterminal_final_assessment_week(
     del final_allocations[-2:]
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any(
@@ -522,7 +524,7 @@ def test_schedule_checker_rejects_a_regular_week_without_instruction(
     )
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any(
@@ -558,7 +560,7 @@ def test_schedule_checker_rejects_more_than_three_lesson_sessions_in_a_week(
     )
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any(
@@ -598,7 +600,7 @@ def test_schedule_checker_rejects_more_than_two_weeks_between_unit_sessions(
     )
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any(
@@ -645,7 +647,7 @@ def test_schedule_checker_rejects_reversed_numbered_sessions(
     )
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any(
@@ -663,7 +665,7 @@ def test_schedule_checker_requires_review_to_be_the_unit_final_allocation(
     allocations[1], allocations[2] = allocations[2], allocations[1]
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any(
@@ -679,7 +681,9 @@ def test_course_renderer_preserves_all_bytes_outside_generated_regions(
     before = _write_region_document(tmp_path)
     outside_before = _outside_generated(before)
 
-    assert course_renderer.main(["--root", str(tmp_path)]) == 0
+    assert course_renderer.main(
+        ["--root", str(tmp_path), "--book-number", "1"]
+    ) == 0
 
     after = (tmp_path / "docs" / "course-structure.md").read_text()
     assert _outside_generated(after) == outside_before
@@ -695,7 +699,13 @@ def test_course_renderer_rejects_a_duplicate_complete_sentinel_pair(
     (tmp_path / "docs" / "course-structure.md").write_text(
         document + "\n" + duplicate + "\n"
     )
-    args = ["--root", str(tmp_path), *(["--check"] if check else [])]
+    args = [
+        "--root",
+        str(tmp_path),
+        "--book-number",
+        "1",
+        *(["--check"] if check else []),
+    ]
 
     assert course_renderer.main(args) == 1
 
@@ -713,7 +723,9 @@ def test_course_renderer_rejects_missing_or_malformed_sentinels(
         document = document.replace("<!-- END GENERATED: weekly-table -->", "")
     (tmp_path / "docs" / "course-structure.md").write_text(document)
 
-    assert course_renderer.main(["--root", str(tmp_path), "--check"]) == 1
+    assert course_renderer.main(
+        ["--root", str(tmp_path), "--book-number", "1", "--check"]
+    ) == 1
 
 
 def test_schedule_checker_accepts_consecutive_multiweek_practice_chunks(
@@ -728,7 +740,7 @@ def test_schedule_checker_accepts_consecutive_multiweek_practice_chunks(
     )
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert report.ok, report.errors
 
@@ -750,7 +762,7 @@ def test_schedule_checker_rejects_duplicate_or_gapped_practice_chunks(
     )
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any(message in error for error in report.errors), report.errors
@@ -761,7 +773,7 @@ def test_schedule_checker_accepts_exact_problem_id_partition_minutes_and_order(
 ) -> None:
     _install_problem_id_schedule_contract(tmp_path)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert report.ok, report.errors
 
@@ -811,7 +823,7 @@ def test_schedule_checker_rejects_invalid_problem_id_contracts(
     mutation(schedule)
     _write_yaml(tmp_path / "curriculum" / "course-schedule.yaml", schedule)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert not report.ok
     assert any(
@@ -825,7 +837,7 @@ def test_schedule_checker_derives_week_40_as_the_unique_final_assessment_week(
 ) -> None:
     _build_schedule_fixture(tmp_path, week_count=40)
 
-    report = _schedule_checker().check_schedule(tmp_path)
+    report = _schedule_checker().check_schedule(tmp_path, expected_book_number=1)
 
     assert report.ok, report.errors
 
@@ -836,7 +848,7 @@ def test_course_renderer_derives_40_week_16_plus_24_calendar_and_final_milestone
     _build_schedule_fixture(tmp_path, week_count=40)
     _write_region_document(tmp_path)
 
-    rendered = course_renderer.render_document(tmp_path)
+    rendered = course_renderer.render_document(tmp_path, expected_book_number=1)
 
     assert "runs for 40 weeks in two semesters: 16 weeks followed by 24 weeks" in rendered
     assert "Semester 2 is Weeks 17–40" in rendered
@@ -851,7 +863,7 @@ def test_course_renderer_places_semester_close_at_declared_boundary(
     _build_schedule_fixture(tmp_path, semester_1_weeks=15)
     _write_region_document(tmp_path)
 
-    rendered = course_renderer.render_document(tmp_path)
+    rendered = course_renderer.render_document(tmp_path, expected_book_number=1)
     week_15 = next(line for line in rendered.splitlines() if line.startswith("| 15 |"))
     week_16 = next(line for line in rendered.splitlines() if line.startswith("| 16 |"))
 
@@ -876,17 +888,17 @@ def _rendered_first_instruction_pairs(document: str) -> list[tuple[str, int]]:
 
 
 def test_real_schedule_has_exact_plan018_calendar_and_complete_allocation() -> None:
-    report = _schedule_checker().check_schedule(ROOT)
+    report = _schedule_checker().check_schedule(BOOK1_ROOT)
     assert report.ok, report.errors
 
-    schedule = yaml.safe_load((ROOT / "curriculum" / "course-schedule.yaml").read_text())
+    schedule = yaml.safe_load((BOOK1_ROOT / "curriculum" / "course-schedule.yaml").read_text())
     weeks = schedule["weeks"]
     assert schedule["calendar"] == {
         "semester_1_weeks": 16,
         "semester_2_weeks": 24,
         "total_weeks": 40,
     }
-    validated = _schedule_checker().load_validated_schedule(ROOT)
+    validated = _schedule_checker().load_validated_schedule(BOOK1_ROOT)
     assert validated.semester_week_counts == (16, 24)
     assert validated.declared_week_count == 40
     assert len(weeks) == 40
@@ -968,7 +980,7 @@ def test_real_schedule_has_exact_plan018_calendar_and_complete_allocation() -> N
 
 
 def test_real_c12_schedule_has_exact_problem_ids_minutes_and_partition() -> None:
-    schedule = yaml.safe_load((ROOT / "curriculum" / "course-schedule.yaml").read_text())
+    schedule = yaml.safe_load((BOOK1_ROOT / "curriculum" / "course-schedule.yaml").read_text())
     expected = {
         34: (["C12-p06", "C12-p14"], 100),
         35: (["C12-p01", "C12-p07", "C12-p08", "C12-p22", "C12-p26"], 225),
@@ -1002,7 +1014,7 @@ def test_real_c12_schedule_has_exact_problem_ids_minutes_and_partition() -> None
 
 def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
     manifest = yaml.safe_load(
-        (ROOT / "units" / "C11-neural-training" / "manifest.yaml").read_text()
+        (BOOK1_ROOT / "units" / "C11-neural-training" / "manifest.yaml").read_text()
     )
     concepts_added_by_session = [
         {"softmax", "cross-entropy-loss"},
@@ -1025,7 +1037,7 @@ def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
     assert capacities == [250, 375, 520, 740, 1040]
 
     schedule = yaml.safe_load(
-        (ROOT / "curriculum" / "course-schedule.yaml").read_text()
+        (BOOK1_ROOT / "curriculum" / "course-schedule.yaml").read_text()
     )
     delivered_sessions = 0
     scheduled_practice = 0
@@ -1048,7 +1060,7 @@ def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
 
 def test_f7_instruction_precedes_high_volume_practice() -> None:
     schedule = yaml.safe_load(
-        (ROOT / "curriculum" / "course-schedule.yaml").read_text()
+        (BOOK1_ROOT / "curriculum" / "course-schedule.yaml").read_text()
     )
     rows = [
         (week["week"], allocation)
@@ -1080,7 +1092,7 @@ def test_f7_instruction_precedes_high_volume_practice() -> None:
 
 
 def test_course_structure_states_interleaving_and_prerequisite_order_contract() -> None:
-    document = course_renderer.render_document(ROOT)
+    document = course_renderer.render_document(BOOK1_ROOT)
 
     assert "independent units may interleave" in document
     assert (
@@ -1096,7 +1108,7 @@ def test_course_structure_states_interleaving_and_prerequisite_order_contract() 
 
 
 def test_rendered_first_instruction_region_exactly_matches_the_schedule_source() -> None:
-    schedule = yaml.safe_load((ROOT / "curriculum" / "course-schedule.yaml").read_text())
+    schedule = yaml.safe_load((BOOK1_ROOT / "curriculum" / "course-schedule.yaml").read_text())
     first_week: dict[str, int] = {}
     for week in schedule["weeks"]:
         for allocation in week["allocations"]:
@@ -1104,7 +1116,7 @@ def test_rendered_first_instruction_region_exactly_matches_the_schedule_source()
                 first_week.setdefault(allocation["unit"], week["week"])
     expected = list(first_week.items())
 
-    document = course_renderer.render_document(ROOT)
+    document = course_renderer.render_document(BOOK1_ROOT)
     actual = _rendered_first_instruction_pairs(document)
 
     assert actual == expected
@@ -1112,3 +1124,99 @@ def test_rendered_first_instruction_region_exactly_matches_the_schedule_source()
     assert positions["C5-neural-networks"] < positions["C6-pytorch"]
     assert positions["C6-pytorch"] < positions["C11-neural-training"]
     assert positions["C11-neural-training"] < positions["C7-cnn-transfer"]
+
+
+def test_book2_sidecar_creation_cannot_rewrite_checked_in_book1_schedule(
+    tmp_path: Path,
+) -> None:
+    _build_schedule_fixture(tmp_path)
+    source = tmp_path / "curriculum" / "course-schedule.yaml"
+    before = source.read_bytes()
+    book1_manifests_before = load_unit_manifests(tmp_path)
+    _write_yaml(
+        tmp_path / "curriculum" / "book2-schedule.yaml",
+        {
+            "schedule_version": 1,
+            "book": 2,
+            "starts_after_global_week": 40,
+            "total_book_weeks": 6,
+            "final_assessment": {
+                "kind": "future-r2-mock",
+                "status": "planned",
+                "after_book_week": 6,
+            },
+            "weeks": [],
+        },
+    )
+    _write_yaml(
+        tmp_path / "units" / "B2-019-attention-transformers" / "manifest.yaml",
+        {
+            "unit": "B2-019-attention-transformers",
+            "book": 2,
+            "round": 2,
+            "layer": "round-2-extension",
+            "track": "extension",
+            "concepts_taught": ["attention"],
+            "concepts_used": ["softmax"],
+            "concept_prerequisites": ["softmax"],
+            "prereq_units": ["U35"],
+            "bridge_diagnostic": {
+                "path": "lessons/00-book1-bridge.ipynb",
+                "minutes": 30,
+                "referenced_concepts": ["softmax"],
+            },
+            "coverage_claims": [],
+            "practice": [],
+        },
+    )
+
+    parsed_book2 = next(
+        manifest
+        for manifest in load_unit_manifests(tmp_path)
+        if manifest.unit_id == "B2-019-attention-transformers"
+    )
+
+    assert parsed_book2.concepts_taught == ["attention"]
+    assert parsed_book2.prereq_units == ["U35"]
+    assert {manifest.unit_id for manifest in book1_manifests_before} == {
+        manifest.unit_id
+        for manifest in load_unit_manifests(tmp_path)
+        if not manifest.unit_id.startswith("B2-")
+    }
+    assert source.read_bytes() == before
+
+
+def test_schedule_checker_is_bound_to_the_selected_bookspec_root(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _write_yaml(
+        repo / "books.yaml",
+        {
+            "books_version": 1,
+            "books": [
+                {"id": "book1", "number": 1, "root": "book1", "depends_on": []}
+            ],
+        },
+    )
+    book_root = repo / "book1"
+    book_root.mkdir()
+    _build_schedule_fixture(book_root)
+    try:
+        books = importlib.import_module("tools.books")
+    except ModuleNotFoundError as exc:
+        if exc.name != "tools.books":
+            raise
+        pytest.fail("tools.books is the missing Plan 019 registry producer")
+    book = books.load_book_catalog(repo).by_id("book1")
+
+    selected = _schedule_checker().check_schedule(book.root)
+
+    assert selected.ok, selected.errors
+    try:
+        unselected = _schedule_checker().check_schedule(repo)
+    except (FileNotFoundError, ValueError):
+        pass
+    else:
+        assert not unselected.ok

@@ -9,14 +9,38 @@ from tools.model import load_blueprint
 DIFFICULTY_DRAW = {"intro": 0.23, "core": 0.45, "advanced": 0.32}
 
 
-def scaffold_mocktest(root: str | Path, test_id: str, generated_date: str) -> Path:
+def scaffold_mocktest(
+    root: str | Path,
+    test_id: str,
+    generated_date: str,
+    *,
+    book_number: int | None = None,
+) -> Path:
     root = Path(root)
-    match = re.fullmatch(r"r1-(\d{3})", test_id)
+    blueprint = load_blueprint(root)
+    if blueprint.raw.get("status") == "planned":
+        raise ValueError("mock-test blueprint is planned; scaffolding is not available")
+    declared_book = blueprint.raw.get("book")
+    if book_number is None:
+        book_number = declared_book if type(declared_book) is int else 1
+    if type(book_number) is not int or book_number <= 0:
+        raise ValueError("book_number must be a positive integer")
+    if type(declared_book) is int and declared_book != book_number:
+        raise ValueError(
+            f"blueprint declares book {declared_book}, not selected book {book_number}"
+        )
+    assessment_prefix = f"r{book_number}-"
+    declared_prefix = blueprint.raw.get("assessment_prefix")
+    if declared_prefix is not None and declared_prefix != assessment_prefix:
+        raise ValueError(
+            f"blueprint assessment_prefix must be {assessment_prefix!r}, "
+            f"got {declared_prefix!r}"
+        )
+    match = re.fullmatch(rf"{re.escape(assessment_prefix)}(\d{{3}})", test_id)
     if match is None:
-        raise ValueError("test id must match r1-NNN")
+        raise ValueError(f"test id must match r{book_number}-NNN")
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", generated_date):
         raise ValueError("--date must use YYYY-MM-DD")
-    blueprint = load_blueprint(root)
     test_dir = root / "mocktests" / test_id
     if test_dir.exists():
         raise FileExistsError(f"{test_dir} already exists")

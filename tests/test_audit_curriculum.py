@@ -1,18 +1,28 @@
 import base64
 import json
+import re
+import shutil
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 import yaml
 
 from tools import audit_curriculum as audit
+from tools import render_course_structure
+from tools import render_curriculum_roadmap as roadmap_renderer
 from tools.checks.schedule import load_validated_schedule
+from tools.model import load_syllabus
 
 REPO_ROOT = Path(__file__).parents[1]
 
 
 def _fixture_schedule_loader(root: str | Path):
-    return load_validated_schedule(root, enforce_calendar=False)
+    return load_validated_schedule(
+        root,
+        enforce_calendar=False,
+        expected_book_number=1,
+    )
 
 
 def _build_fixture_inventory(root: Path) -> dict:
@@ -491,8 +501,14 @@ def test_check_mode_catches_missing_and_stale_inventory_then_passes(tmp_path: Pa
     assert "stale" in capsys.readouterr().err
 
 
-def test_plan018_real_repository_inventory_has_exact_final_counts() -> None:
-    counts = audit.build_inventory(REPO_ROOT)["counts"]
+def test_plan019_cutover_real_book1_inventory_and_book2_ownership_are_partitioned() -> None:
+    book1_root = REPO_ROOT / "book1"
+    book2_root = REPO_ROOT / "book2"
+    inventory = audit.build_inventory(book1_root)
+    counts = inventory["counts"]
+    syllabus = load_syllabus(book1_root)
+    book2_syllabus = load_syllabus(book2_root)
+    book2_concepts = set(book2_syllabus.concepts)
 
     assert counts == {
         "units": 19,
@@ -506,6 +522,159 @@ def test_plan018_real_repository_inventory_has_exact_final_counts() -> None:
         "manifested_minutes": 18_635,
         "scheduled_minutes": 18_875,
     }
+    assert len(book2_concepts) == 11
+    assert set(syllabus.concepts).isdisjoint(book2_concepts)
+    material_paths = {
+        row["path"]
+        for section in ("manifests", "notebooks")
+        for row in inventory[section]
+    }
+    assert not any(path.startswith("units/B2-") for path in material_paths)
+
+
+def test_plan019_task3_generated_book1_and_aggregate_evidence_is_current() -> None:
+    book1_root = REPO_ROOT / "book1"
+    book2_root = REPO_ROOT / "book2"
+
+    assert audit.main(["--root", str(book1_root), "--check"]) == 0
+    assert audit.main(["--root", str(book2_root), "--check"]) == 0
+    assert render_course_structure.main(["--root", str(book1_root), "--check"]) == 0
+    assert render_course_structure.main(["--root", str(book2_root), "--check"]) == 0
+    assert roadmap_renderer.main(["--root", str(REPO_ROOT), "--check"]) == 0
+
+
+def test_plan019_task3_aggregate_renderer_reads_registered_books_in_dependency_order() -> None:
+    rendered = roadmap_renderer.render_documents(REPO_ROOT)
+    audit_document = rendered[Path("docs/audits/015-coverage-audit.md")]
+    roadmap_document = rendered[Path("docs/curriculum-roadmap.md")]
+
+    for document in rendered.values():
+        assert "`book1/syllabus.md` and `book2/syllabus.md`" in document
+        assert "registered in dependency order by `books.yaml`" in document
+        assert "not a third source of truth" in document
+        assert document.index("book1") < document.index("book2")
+
+    assert "- **Book:** book1" in audit_document
+    assert "- **Book:** book2" in audit_document
+    assert "- **Destination:** book1:C10-competition-craft" in audit_document
+    assert "- **Destination:** book2:B2-019-attention-transformers" in audit_document
+    assert "| Book | Knowledge point |" in roadmap_document
+    assert "| book1 |" in roadmap_document
+    assert "| book2 |" in roadmap_document
+    audit_rows = [
+        (match.group("point"), match.group("book"))
+        for match in re.finditer(
+            r"^### (?P<point>[^\n]+)\n\n- \*\*Book:\*\* (?P<book>book[12])$",
+            audit_document,
+            re.MULTILINE,
+        )
+    ]
+    assert audit_rows
+    assert [book for _, book in audit_rows] == sorted(
+        (book for _, book in audit_rows), key={"book1": 0, "book2": 1}.__getitem__
+    )
+
+
+def test_plan019_task3_aggregate_renderer_assigns_embedding_completion_to_b2_020() -> None:
+    rendered = roadmap_renderer.render_documents(REPO_ROOT)
+    book2_root = roadmap_renderer.load_book_catalog(REPO_ROOT).by_id("book2").root
+    planned = {
+        unit.id: unit for unit in roadmap_renderer.load_roadmap(book2_root).planned_units
+    }
+    owner = planned["B2-020-language-transformers"]
+
+    assert "nlp-word-embeddings" in owner.knowledge_points
+    assert (owner.estimated_hours.minimum, owner.estimated_hours.maximum) == (26, 32)
+
+    for document in rendered.values():
+        assert "unestimated C8" not in document
+        assert (
+            "The Book 2 `B2-020-language-transformers` 26–32-hour estimate includes "
+            "completing the `nlp-word-embeddings` model-training bridge; no additional "
+            "Book 1 C8 correction is pending."
+        ) in document
+
+
+def test_plan019_task3_aggregate_non_required_candidates_keep_book_ownership() -> None:
+    rendered = roadmap_renderer.render_documents(REPO_ROOT)
+
+    for document in rendered.values():
+        assert "| Book | Candidate | Related category | Decision | Source refs |" in document
+        assert "| book1 | book1:importance-sampling | probability-statistics |" in document
+        assert "| book1 | book1:student-t-test | probability-statistics |" in document
+
+
+def test_plan019_task3_aggregate_rejects_cross_book_candidate_id_collisions(
+    tmp_path: Path,
+) -> None:
+    tmp_path.joinpath("books.yaml").write_bytes((REPO_ROOT / "books.yaml").read_bytes())
+    registered_roots = {
+        book.id: book.root
+        for book in roadmap_renderer.load_book_catalog(REPO_ROOT).books
+    }
+    for book in ("book1", "book2"):
+        curriculum = tmp_path / book / "curriculum"
+        curriculum.mkdir(parents=True)
+        for name in ("coverage-map.yaml", "official-topics.yaml"):
+            shutil.copyfile(registered_roots[book] / "curriculum" / name, curriculum / name)
+        (curriculum / "material-inventory.yaml").write_text("counts: {}\n")
+
+    book2_topics_path = tmp_path / "book2/curriculum/official-topics.yaml"
+    book2_topics = yaml.safe_load(book2_topics_path.read_text())
+    book2_topics["non_required_candidates"] = [
+        {
+            "id": "importance-sampling",
+            "related_category": "probability-statistics",
+            "source_refs": ["collision-probe"],
+            "requirement": "optional",
+            "audit_target": False,
+        }
+    ]
+    book2_topics_path.write_text(yaml.safe_dump(book2_topics, sort_keys=False))
+
+    with pytest.raises(
+        ValueError,
+        match=(
+            "aggregate non-required candidate 'importance-sampling' is owned by both "
+            "book1 and book2"
+        ),
+    ):
+        roadmap_renderer.render_documents(
+            tmp_path,
+            _schedule_loader=lambda _root: SimpleNamespace(total_minutes=0),
+        )
+
+
+def test_plan019_task3_ci_enforces_generated_evidence_without_a_skip() -> None:
+    commands = [
+        line.strip()
+        for line in (REPO_ROOT / "scripts" / "ci-local.sh").read_text(
+            encoding="utf-8"
+        ).splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+
+    assert not any("SKIP generated Book 1 evidence freshness" in line for line in commands)
+    audit_command = 'uv run python -m tools.audit_curriculum --root "$book1_root" --check'
+    aggregate_command = (
+        'uv run python -m tools.render_curriculum_roadmap --root "$repo_root" --check'
+    )
+    assert commands.count(audit_command) == 1
+    assert commands.count(aggregate_command) == 1
+    assert commands.index(audit_command) < commands.index(aggregate_command)
+
+
+def test_plan019_task3_scope_allows_both_shared_generated_outputs() -> None:
+    inventory = yaml.safe_load(
+        (REPO_ROOT / "tests/fixtures/plan019-path-inventory.yaml").read_text(
+            encoding="utf-8"
+        )
+    )
+
+    assert {
+        "docs/audits/015-coverage-audit.md",
+        "docs/curriculum-roadmap.md",
+    } <= set(inventory["staged_scope"]["exact_files"])
 
 
 def _install_canonical_schedule_fixture(
@@ -584,7 +753,7 @@ def test_inventory_production_consumer_requires_the_full_canonical_schedule(
     _install_canonical_schedule_fixture(tmp_path)
 
     with pytest.raises(audit.InventoryError, match="missing week 2"):
-        audit.build_inventory(tmp_path)
+        audit.build_inventory(tmp_path, expected_book_number=1)
 
 
 def test_inventory_rejects_invalid_canonical_schedule_instead_of_summing_yaml(

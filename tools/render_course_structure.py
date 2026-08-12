@@ -11,7 +11,8 @@ from pathlib import Path
 
 import yaml
 
-from tools.checks.schedule import load_validated_schedule
+from tools.books import BookSpec
+from tools.checks.schedule import Book2CourseSchedule, load_validated_schedule
 from tools.model import CourseSchedule, load_syllabus
 
 DOCUMENT = Path("docs/course-structure.md")
@@ -295,6 +296,75 @@ def _first_instruction(schedule: CourseSchedule) -> str:
     return "\n".join(lines)
 
 
+def _book2_allocation_description(week) -> str:
+    parts: list[str] = []
+    for allocation in week.allocations:
+        if allocation.kind == "bridge-diagnostic":
+            parts.append(f"Book 1 bridge diagnostic ({allocation.minutes} minutes)")
+        elif allocation.kind == "lesson-session":
+            parts.append(
+                f"Session {allocation.session} ({allocation.minutes} minutes)"
+            )
+        elif allocation.kind == "practice":
+            problem_ids = ", ".join(allocation.problem_ids or [])
+            parts.append(
+                f"practice chunk {allocation.chunk}: {problem_ids} "
+                f"({allocation.minutes} minutes)"
+            )
+        elif allocation.kind == "review":
+            parts.append(f"review ({allocation.minutes} minutes)")
+    return "; ".join(parts)
+
+
+def _render_book2_document(schedule: Book2CourseSchedule) -> str:
+    weekly_totals = [
+        sum(allocation.minutes for allocation in week.allocations)
+        for week in schedule.weeks
+    ]
+    lines = [
+        "# Book 2 Schedule",
+        "",
+        f"Status: {schedule.status}.",
+        "",
+        (
+            "The independent Round 2 schedule runs across local weeks 1–6 and "
+            "display weeks 41–46."
+        ),
+        (
+            f"Its explicit ledger totals {schedule.total_minutes:,} minutes; "
+            + (
+                "this staged schedule grants no live coverage until a manifest is "
+                "installed and reconciled."
+                if schedule.status == "staged"
+                else "the live manifest reconciles every lesson, practice ID, path, and minute."
+            )
+        ),
+        "",
+        "| Local week | Display week | Allocation | Minutes |",
+        "|---:|---:|---|---:|",
+    ]
+    for week, global_week, total in zip(
+        schedule.weeks, schedule.global_weeks, weekly_totals
+    ):
+        lines.append(
+            f"| {week.week} | {global_week} | "
+            f"{_book2_allocation_description(week)} | {total} |"
+        )
+    lines.extend(
+        [
+            "",
+            (
+                "The 255/275/420/270/380/60-minute progression intentionally peaks in "
+                "derivation-heavy Week 3 and tapers to review instead of applying Book 1's "
+                "450–500-minute semester band."
+            ),
+            "The planned future `r2-*` final assessment follows local Week 6.",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
 def _region(name: str, content: str) -> str:
     return (
         f"<!-- BEGIN GENERATED: {name} -->\n{content.rstrip()}\n"
@@ -351,9 +421,21 @@ def _validated_region_patterns(document: str) -> dict[str, re.Pattern[str]]:
     return patterns
 
 
-def render_document(root: str | Path, *, bootstrap: bool = False) -> str:
+def render_document(
+    root: str | Path,
+    *,
+    bootstrap: bool = False,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
+) -> str:
     root = Path(root).resolve()
-    schedule = load_validated_schedule(root)
+    schedule = load_validated_schedule(
+        root,
+        book_spec=book_spec,
+        expected_book_number=expected_book_number,
+    )
+    if isinstance(schedule, Book2CourseSchedule):
+        return _render_book2_document(schedule)
     manifests = _manifest_contracts(root)
     syllabus = load_syllabus(root)
     path = root / DOCUMENT
@@ -406,12 +488,17 @@ def _atomic_write(path: Path, content: str) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", default=".")
+    parser.add_argument("--book-number", type=int)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args(argv)
     root = Path(args.root).resolve()
     path = root / DOCUMENT
     try:
-        rendered = render_document(root, bootstrap=not args.check)
+        rendered = render_document(
+            root,
+            bootstrap=not args.check,
+            expected_book_number=args.book_number,
+        )
         if args.check:
             if path.read_text(encoding="utf-8") != rendered:
                 print(f"STALE {DOCUMENT}", file=sys.stderr)

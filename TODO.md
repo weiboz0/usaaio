@@ -19,12 +19,13 @@
 - [x] 016 — R1 foundation, workflow, and mathematical completion (delivery branch ready)
 - [x] 017 — R1 neural-training completion (delivery branch ready)
 - [x] 018 — R1 classical-model breadth (follows Plan 017; user-authorized unavailable-Opus waiver)
+- [ ] 019 — atomic two-book roots and the first Round 2 attention unit
 
 ## Deferred, with a named owner plan still to be written
 
 - [ ] **Execute the remaining Plan 015 content tranches.** The canonical owner/order now lives in
-      `curriculum/coverage-map.yaml` and `docs/curriculum-roadmap.md`: R1 neural training,
-      R1 classical breadth, R2 transformers/NLP, R2 vision/generative,
+      the registered book-local `curriculum/coverage-map.yaml` files and the shared
+      `docs/curriculum-roadmap.md`: R2 transformers/NLP, R2 vision/generative,
       then the R2 GPU capstone. Softmax/cross-entropy are owned by
       `P015-R1-NEURAL-TRAINING`; future work must update the shipped syllabus and roadmap
       atomically rather than maintaining a second gap list here.
@@ -45,7 +46,7 @@
       shipping as a near-isomorph of F6-p17 — same unit, eight problems apart — by human
       reading alone, after the plan's own corpus duty had checked the mock and the external
       corpus and skipped the unit's own neighbours. A problem-vs-problem pass over
-      `units/*/practice/` and `mocktests/` would have caught it mechanically.
+      each selected book's `units/*/practice/` and `mocktests/` would have caught it mechanically.
 - [ ] **Strip stale stored outputs from the 15 solutions that carry them.** 328 of 343 store
       none — that is the convention. The 15 that do (C3-p13 and
       C9-p05..p18) will silently go stale the moment their source is edited, which is exactly how
@@ -55,4 +56,4 @@
       `scripts/verify-register.py` — which the gate leaned on heavily and which was edited in
       four rounds — is unlinted. Plan 014 found and fixed a SIM102 there by running ruff wider
       by hand; nothing in CI would have caught it.
-- [ ] r1-002 / r1-003 via the blueprint's arc rotation (indices 1 and 2).
+- [ ] `book1/mocktests/r1-002` / `r1-003` via the Book 1 blueprint's arc rotation.

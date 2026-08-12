@@ -1,0 +1,11 @@
+books_version: 1
+books:
+- id: book1
+  number: 1
+  root: book1
+  depends_on: []
+- id: book2
+  number: 2
+  root: book2
+  depends_on:
+  - book1

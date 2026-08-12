@@ -1,7 +1,7 @@
 # Project Instructions
 
-USAAIO Prep. Mock tests and self-contained teaching materials for the USA AI Olympiad
-(Round 1 first), for the author's own student(s).
+USAAIO Prep. Mock tests and self-contained teaching materials for both rounds of the
+USA AI Olympiad, for the author's own student(s).
 Content-as-code: notebooks are the source of truth, PDFs are built artifacts,
 and correctness is enforced by executable verification.
 Full design: `docs/designs/000-project-design.md`.
@@ -40,10 +40,13 @@ gates, autopilot through merge) tailored for content development.
 ## Project Structure
 
 See `docs/designs/000-project-design.md §1` for the full tree. Top level:
-`units/` (teaching, one dir per syllabus unit), `mocktests/` (blueprint + one dir per test),
-`reference/` (past-test corpus — raw papers GITIGNORED, only derived analysis committed),
+`books.yaml` registers two independently complete roots: `book1/` for Round 1 and
+`book2/` for Round 2. Each book owns its `syllabus.md`, `curriculum/`, `units/`,
+`mocktests/`, `reference/`, and learner-facing `docs/`; raw papers remain GITIGNORED,
+and Book 2 imports Book 1 prerequisites only through qualified registry contracts.
 `tools/` (Python verification package), `scripts/` (ci-local, pre-merge-guard),
-`docs/` (lifecycle), `syllabus.md` (topic taxonomy + Calc AB baseline allowlist, from plan 003).
+and top-level `docs/` (shared lifecycle, design, plan, and aggregate reporting).
+Content commands require `--book <id>` or an explicitly supported `--all` route.
 
 ## Content Conventions
 

@@ -6,6 +6,9 @@ from pathlib import Path
 
 import pytest
 
+ROOT = Path(__file__).resolve().parents[1]
+BOOK1_ROOT = ROOT / "book1"
+
 EXPECTED_MUTATIONS = [
     {
         "id": "c11-p16-delay-zero-grad",
@@ -120,7 +123,7 @@ def test_permanent_registry_has_the_exact_five_real_notebook_mutations() -> None
 
 def test_each_real_mutation_source_contract_resolves_exactly_once() -> None:
     module = _mutation_module()
-    root = Path(__file__).resolve().parents[1]
+    root = BOOK1_ROOT
 
     for mutation in module.MUTATIONS:
         assert mutation.target_marker in mutation.search

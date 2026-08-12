@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from dataclasses import dataclass, field
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +18,10 @@ class Unit:
     title: str
     prereqs: list[str]
     teaches: list[str]
+    book: int = 1
+    layer: str = "round-1-core"
+    round: int = 1
+    concept_prerequisites: list[str] = field(default_factory=list)
     length: str | None = None
 
 
@@ -61,6 +67,12 @@ class Blueprint:
 
 
 @dataclass(frozen=True)
+class ComputePolicy:
+    policy: str
+    seed: int | None
+
+
+@dataclass(frozen=True)
 class PracticeProblem:
     id: str
     concepts: list[str]
@@ -68,6 +80,46 @@ class PracticeProblem:
     solution_path: str
     minutes: int | None = None
     after_session: int | None = None
+    compute: ComputePolicy = field(
+        default_factory=lambda: ComputePolicy(policy="cpu", seed=None)
+    )
+
+
+@dataclass(frozen=True)
+class BridgeDiagnostic:
+    path: str
+    minutes: int
+    referenced_concepts: list[str]
+
+
+@dataclass(frozen=True)
+class EvidenceAnchor:
+    path: str
+    heading: str
+    cell_ordinal: int
+    role: str
+
+
+@dataclass(frozen=True)
+class EvidenceReference:
+    id: str
+    role: str
+
+
+@dataclass(frozen=True)
+class ModalityEvidence:
+    lesson_anchors: list[EvidenceAnchor]
+    practices: list[EvidenceReference]
+    assessments: list[EvidenceReference]
+
+
+@dataclass(frozen=True)
+class CoverageClaim:
+    knowledge_point: str
+    first_session: int
+    modalities: list[str]
+    evidence_concepts: list[str]
+    evidence_by_modality: dict[str, ModalityEvidence]
 
 
 @dataclass
@@ -78,8 +130,18 @@ class UnitManifest:
     prereq_units: list[str]
     practice: list[PracticeProblem]
     path: Path
+    book: int = 1
+    layer: str = "round-1-core"
+    round: int = 1
+    track: str = "core"
+    concept_prerequisites: list[str] = field(default_factory=list)
+    bridge_diagnostic: BridgeDiagnostic | None = None
+    coverage_claims: list[CoverageClaim] = field(default_factory=list)
     lesson_sessions: list[int] | None = None
     concept_sessions: dict[str, int] | None = None
+    solution_policy: str = "required"
+    solution_policy_plan: str | None = None
+    solution_policy_expires: str | None = None
 
 
 @dataclass(frozen=True)
@@ -165,27 +227,6 @@ class Report:
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     skipped: str | None = None
-
-
-@dataclass(frozen=True)
-class EvidenceAnchor:
-    path: str
-    heading: str
-    cell_ordinal: int
-    role: str
-
-
-@dataclass(frozen=True)
-class EvidenceReference:
-    id: str
-    role: str
-
-
-@dataclass(frozen=True)
-class ModalityEvidence:
-    lesson_anchors: list[EvidenceAnchor]
-    practices: list[EvidenceReference]
-    assessments: list[EvidenceReference]
 
 
 @dataclass(frozen=True)
@@ -329,22 +370,124 @@ def _canonical_yaml(markdown: str) -> str:
     return match.group(1)
 
 
+def _validated_content_path(root: str | Path, relative: str) -> Path:
+    normalized_root = Path(os.path.abspath(root))
+    if (
+        normalized_root.is_symlink()
+        or normalized_root.resolve(strict=False) != normalized_root
+    ):
+        raise ValueError(
+            f"{normalized_root}: content root is symlinked or noncanonical"
+        )
+    path = normalized_root / relative
+    current = normalized_root
+    for part in Path(relative).parts:
+        current /= part
+        if current.is_symlink():
+            raise ValueError(f"{path}: content path contains a symlink")
+    if not path.resolve(strict=False).is_relative_to(normalized_root):
+        raise ValueError(f"{path}: content path escapes its canonical root")
+    return path
+
+
+def load_syllabus_contract(root: str | Path) -> dict[str, Any]:
+    """Return the persisted canonical syllabus mapping for one content root."""
+    path = _validated_content_path(root, "syllabus.md")
+    raw = _parse_yaml(_canonical_yaml(path.read_text(encoding="utf-8")))
+    if not isinstance(raw, dict):
+        raise ValueError(  # noqa: TRY004
+            f"{path}: canonical syllabus must be a mapping"
+        )
+    return raw
+
+
+def _string_list(value: object, *, field_name: str, path: Path) -> list[str]:
+    if not isinstance(value, list) or any(not isinstance(item, str) for item in value):
+        raise ValueError(f"{path}: {field_name} must be a list of strings")
+    return list(value)
+
+
+def _positive_int(value: object, *, field_name: str, path: Path) -> int:
+    if type(value) is not int or value <= 0:
+        raise ValueError(f"{path}: {field_name} must be a positive integer")
+    return value
+
+
+def _unit_contract(
+    raw: dict[str, Any],
+    *,
+    path: Path,
+    default_track: str,
+) -> tuple[int, str, int, str]:
+    unit_id = str(raw.get("id", raw.get("unit", "")))
+    is_book2 = unit_id.startswith("B2-") or raw.get("book") == 2
+    required = ("book", "layer", "round", "track")
+    if is_book2:
+        missing = [field_name for field_name in required if field_name not in raw]
+        if missing:
+            raise ValueError(
+                f"{path}: Book 2 record {unit_id} missing required field(s) {missing}"
+            )
+    track = raw.get("track", default_track)
+    if not isinstance(track, str) or not track:
+        raise ValueError(f"{path}: track must be a nonempty string")
+    book = raw.get("book", 1)
+    round_number = raw.get("round", 1)
+    layer = raw.get(
+        "layer", "shared-foundation" if track == "foundation" else "round-1-core"
+    )
+    if type(book) is not int or book not in {1, 2}:
+        raise ValueError(f"{path}: book must be integer 1 or 2")
+    if type(round_number) is not int or round_number not in {1, 2}:
+        raise ValueError(f"{path}: round must be integer 1 or 2")
+    if not isinstance(layer, str) or not layer:
+        raise ValueError(f"{path}: layer must be a nonempty string")
+    if unit_id.startswith("B2-") and (
+        book,
+        round_number,
+        layer,
+        track,
+    ) != (2, 2, "round-2-extension", "extension"):
+        raise ValueError(
+            f"{path}: B2-* records must declare the canonical Book 2 tuple "
+            "(book=2, round=2, layer=round-2-extension, track=extension)"
+        )
+    return book, layer, round_number, track
+
+
 def load_syllabus(root: str | Path) -> Syllabus:
     root = Path(root)
-    raw = _parse_yaml(_canonical_yaml((root / "syllabus.md").read_text()))
+    path = root / "syllabus.md"
+    raw = load_syllabus_contract(root)
     baseline = {item for values in raw["baseline"].values() for item in values}
     concepts = {entry["id"]: entry["cluster"] for entry in raw["concepts"]}
-    units = {
-        entry["id"]: Unit(
-            id=entry["id"],
-            track=entry["track"],
-            title=entry["title"],
-            prereqs=list(entry.get("prereqs", [])),
-            teaches=list(entry.get("teaches", [])),
+    units: dict[str, Unit] = {}
+    for entry in raw["units"]:
+        unit_id = str(entry["id"])
+        book, layer, round_number, track = _unit_contract(
+            entry, path=path, default_track=str(entry.get("track", ""))
+        )
+        if (unit_id.startswith("B2-") or book == 2) and "concept_prerequisites" not in entry:
+            raise ValueError(
+                f"{path}: Book 2 record {unit_id} missing required field "
+                "concept_prerequisites"
+            )
+        units[unit_id] = Unit(
+            id=unit_id,
+            track=track,
+            title=str(entry["title"]),
+            prereqs=_string_list(entry.get("prereqs", []), field_name="prereqs", path=path),
+            teaches=_string_list(entry.get("teaches", []), field_name="teaches", path=path),
+            book=book,
+            layer=layer,
+            round=round_number,
+            concept_prerequisites=_string_list(
+                entry.get("concept_prerequisites", []),
+                field_name="concept_prerequisites",
+                path=path,
+            ),
             length=entry.get("length"),
         )
-        for entry in raw["units"]
-    }
     return Syllabus(baseline=baseline, clusters=set(raw["clusters"]), concepts=concepts, units=units)
 
 
@@ -382,16 +525,71 @@ def _lesson_sessions(raw: dict[str, Any], path: Path) -> list[int] | None:
 
 
 def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
-    manifests = sorted(Path(root).glob("units/*/manifest.yaml"))
+    root = Path(root)
+    units_root = root / "units"
+    if units_root.is_symlink():
+        raise ValueError(
+            f"{units_root}: unit directory must be a local real directory"
+        )
+    manifests = sorted(units_root.glob("*/manifest.yaml"))
+    syllabus_path = root / "syllabus.md"
+    syllabus_units = load_syllabus(root).units if syllabus_path.is_file() else {}
     result: list[UnitManifest] = []
     for path in manifests:
+        unit_dir = path.parent
+        if unit_dir.is_symlink() or path.is_symlink():
+            raise ValueError(
+                f"{path}: unit directory must be a local real directory"
+            )
+        try:
+            unit_dir.resolve(strict=True).relative_to(units_root.resolve(strict=True))
+        except (OSError, ValueError) as exc:
+            raise ValueError(
+                f"{path}: unit directory must be a local real directory"
+            ) from exc
         raw = _read_manifest(path)
+        unit_id = str(raw["unit"])
+        syllabus_unit = syllabus_units.get(unit_id)
+        default_track = syllabus_unit.track if syllabus_unit is not None else (
+            "foundation" if unit_id.startswith("F") else "core"
+        )
+        book, layer, round_number, track = _unit_contract(
+            raw, path=path, default_track=default_track
+        )
+        is_book2 = unit_id.startswith("B2-") or book == 2
+        if is_book2:
+            required = (
+                "concept_prerequisites",
+                "bridge_diagnostic",
+                "coverage_claims",
+            )
+            missing = [field_name for field_name in required if field_name not in raw]
+            if missing:
+                if "bridge_diagnostic" in missing:
+                    raise ValueError(
+                        f"{path}: bridge_diagnostic is required for Book 2"
+                    )
+                raise ValueError(
+                    f"{path}: Book 2 manifest missing required field(s) {missing}"
+                )
+        default_concept_prerequisites = (
+            syllabus_unit.concept_prerequisites if syllabus_unit is not None else []
+        )
+        concept_prerequisites = _string_list(
+            raw.get("concept_prerequisites", default_concept_prerequisites),
+            field_name="concept_prerequisites",
+            path=path,
+        )
+        bridge_diagnostic = _bridge_diagnostic(raw, path)
+        coverage_claims = _coverage_claims(raw, path)
         lesson_sessions = _lesson_sessions(raw, path)
         practice = [
-            _practice_problem(item, index, path)
+            _practice_problem(item, index, path, book=book)
             for index, item in enumerate(raw.get("practice") or [])
         ]
-        concepts_taught = list(raw.get("concepts_taught", []))
+        concepts_taught = _string_list(
+            raw.get("concepts_taught", []), field_name="concepts_taught", path=path
+        )
         concept_sessions = _concept_sessions(
             raw,
             path,
@@ -399,22 +597,147 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
             lesson_sessions=lesson_sessions,
             practice=practice,
         )
+        solution_policy_value = raw.get("solution_policy", "required")
+        solution_policy = "required"
+        solution_policy_plan = None
+        solution_policy_expires = None
+        if isinstance(solution_policy_value, dict):
+            solution_policy = solution_policy_value.get("status")
+            solution_policy_plan = solution_policy_value.get("plan")
+            solution_policy_expires = solution_policy_value.get("expires")
+            try:
+                expiry_date = date.fromisoformat(str(solution_policy_expires))
+            except ValueError:
+                expiry_date = None
+            valid_deferred = (
+                solution_policy == "deferred"
+                and isinstance(solution_policy_plan, str)
+                and re.fullmatch(r"plan-[0-9]{3}", solution_policy_plan) is not None
+                and isinstance(solution_policy_expires, str)
+                and re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", solution_policy_expires)
+                is not None
+                and expiry_date is not None
+                and expiry_date >= datetime.now(UTC).date()
+            )
+            if not valid_deferred:
+                raise ValueError(
+                    f"{path}: deferred solution_policy requires plan-NNN and "
+                    "expires YYYY-MM-DD"
+                )
+        elif not isinstance(solution_policy_value, str):
+            raise ValueError(  # noqa: TRY004 - manifest contract uses ValueError uniformly
+                f"{path}: solution_policy must be 'required' or a deferred mapping"
+            )
+        elif solution_policy_value != "required":
+            raise ValueError(
+                f"{path}: deferred solution_policy requires plan-NNN and "
+                "expires YYYY-MM-DD"
+            )
         result.append(
             UnitManifest(
-                unit_id=raw["unit"],
+                unit_id=unit_id,
                 concepts_taught=concepts_taught,
-                concepts_used=list(raw.get("concepts_used", [])),
-                prereq_units=list(raw.get("prereq_units", [])),
+                concepts_used=_string_list(
+                    raw.get("concepts_used", []), field_name="concepts_used", path=path
+                ),
+                prereq_units=_string_list(
+                    raw.get("prereq_units", []), field_name="prereq_units", path=path
+                ),
                 practice=practice,
                 path=path,
+                book=book,
+                layer=layer,
+                round=round_number,
+                track=track,
+                concept_prerequisites=concept_prerequisites,
+                bridge_diagnostic=bridge_diagnostic,
+                coverage_claims=coverage_claims,
                 lesson_sessions=lesson_sessions,
                 concept_sessions=concept_sessions,
+                solution_policy=solution_policy,
+                solution_policy_plan=solution_policy_plan,
+                solution_policy_expires=solution_policy_expires,
             )
         )
     return result
 
 
-def _practice_problem(item: dict[str, Any], index: int, path: Path) -> PracticeProblem:
+def _bridge_diagnostic(
+    raw: dict[str, Any], path: Path
+) -> BridgeDiagnostic | None:
+    value = raw.get("bridge_diagnostic")
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise ValueError(  # noqa: TRY004
+            f"{path}: bridge_diagnostic must be a mapping"
+        )
+    diagnostic_path = value.get("path")
+    if not isinstance(diagnostic_path, str) or not diagnostic_path:
+        raise ValueError(f"{path}: bridge_diagnostic.path must be a nonempty string")
+    return BridgeDiagnostic(
+        path=diagnostic_path,
+        minutes=_positive_int(
+            value.get("minutes"), field_name="bridge_diagnostic.minutes", path=path
+        ),
+        referenced_concepts=_string_list(
+            value.get("referenced_concepts", []),
+            field_name="bridge_diagnostic.referenced_concepts",
+            path=path,
+        ),
+    )
+
+
+def _coverage_claims(raw: dict[str, Any], path: Path) -> list[CoverageClaim]:
+    value = raw.get("coverage_claims", [])
+    if not isinstance(value, list):
+        raise ValueError(f"{path}: coverage_claims must be a list")  # noqa: TRY004
+    claims: list[CoverageClaim] = []
+    for index, item in enumerate(value):
+        if not isinstance(item, dict):
+            raise ValueError(  # noqa: TRY004
+                f"{path}: coverage_claims row {index} must be a mapping"
+            )
+        point = item.get("knowledge_point")
+        if not isinstance(point, str) or not point:
+            raise ValueError(
+                f"{path}: coverage_claims row {index} knowledge_point must be nonempty"
+            )
+        evidence = item.get("evidence_by_modality", {})
+        if not isinstance(evidence, dict):
+            raise ValueError(  # noqa: TRY004
+                f"{path}: coverage_claims row {index} evidence_by_modality must be a mapping"
+            )
+        claims.append(
+            CoverageClaim(
+                knowledge_point=point,
+                first_session=_positive_int(
+                    item.get("first_session"),
+                    field_name=f"coverage_claims row {index} first_session",
+                    path=path,
+                ),
+                modalities=_string_list(
+                    item.get("modalities", []),
+                    field_name=f"coverage_claims row {index} modalities",
+                    path=path,
+                ),
+                evidence_concepts=_string_list(
+                    item.get("evidence_concepts", []),
+                    field_name=f"coverage_claims row {index} evidence_concepts",
+                    path=path,
+                ),
+                evidence_by_modality={
+                    str(modality): _modality_evidence(modality_evidence or {})
+                    for modality, modality_evidence in evidence.items()
+                },
+            )
+        )
+    return claims
+
+
+def _practice_problem(
+    item: dict[str, Any], index: int, path: Path, *, book: int
+) -> PracticeProblem:
     minutes = item.get("minutes")
     if "minutes" in item and (type(minutes) is not int or minutes <= 0):
         raise ValueError(f"{path}: practice row {index} minutes must be a positive integer")
@@ -425,13 +748,37 @@ def _practice_problem(item: dict[str, Any], index: int, path: Path) -> PracticeP
         raise ValueError(
             f"{path}: practice row {index} after_session must be a positive integer"
         )
+    compute_value = item.get("compute")
+    if book == 2 and compute_value is None:
+        raise ValueError(f"{path}: practice row {index} compute is required for Book 2")
+    if compute_value is None:
+        compute = ComputePolicy(policy="cpu", seed=None)
+    else:
+        if not isinstance(compute_value, dict):
+            raise ValueError(f"{path}: practice row {index} compute must be a mapping")
+        policy = compute_value.get("policy")
+        if not isinstance(policy, str) or not policy:
+            raise ValueError(f"{path}: practice row {index} compute.policy is required")
+        seed = compute_value.get("seed")
+        if seed is not None and type(seed) is not int:
+            raise ValueError(f"{path}: practice row {index} compute.seed must be an integer")
+        compute = ComputePolicy(policy=policy, seed=seed)
+    problem_path = item.get("path")
+    solution_path = item.get("solution_path")
+    if not isinstance(problem_path, str) or not problem_path:
+        raise ValueError(f"{path}: practice row {index} path must be nonempty")
+    if not isinstance(solution_path, str) or not solution_path:
+        raise ValueError(f"{path}: practice row {index} solution_path must be nonempty")
     return PracticeProblem(
-        id=item["id"],
-        concepts=list(item.get("concepts", [])),
-        path=item["path"],
-        solution_path=item["solution_path"],
+        id=str(item["id"]),
+        concepts=_string_list(
+            item.get("concepts", []), field_name=f"practice row {index} concepts", path=path
+        ),
+        path=problem_path,
+        solution_path=solution_path,
         minutes=minutes,
         after_session=after_session,
+        compute=compute,
     )
 
 
@@ -511,9 +858,60 @@ def _problem_from(item: dict[str, Any]) -> ManifestProblem:
     )
 
 
-def load_mock_manifests(root: str | Path) -> list[MockManifest]:
+def _mock_manifest_path_is_unsafe(book_root: Path, manifest_path: Path) -> bool:
+    absolute_root = book_root.absolute()
+    absolute_manifest = manifest_path.absolute()
+    if absolute_root.is_symlink() or absolute_root.resolve(strict=False) != absolute_root:
+        return True
+    try:
+        relative = absolute_manifest.relative_to(absolute_root)
+    except ValueError:
+        return True
+    current = absolute_root
+    for part in relative.parts:
+        current /= part
+        if current.is_symlink():
+            return True
+    return not absolute_manifest.resolve(strict=False).is_relative_to(absolute_root)
+
+
+def load_mock_manifests(
+    root: str | Path, *, book_number: int | None = None
+) -> list[MockManifest]:
+    if book_number is not None and (type(book_number) is not int or book_number <= 0):
+        raise ValueError("book_number must be a positive integer")
+    mocktests_root = Path(root) / "mocktests"
+    if _mock_manifest_path_is_unsafe(Path(root), mocktests_root):
+        raise ValueError(
+            f"{mocktests_root}: mocktests directory contains a symlink or resolves "
+            "outside selected book root"
+        )
+    if book_number is None:
+        # Keep the pre-cutover public behavior until CLI dispatch supplies BookSpec.number.
+        manifests = sorted(mocktests_root.glob("r1-*/manifest.yaml"))
+    else:
+        manifests = sorted(mocktests_root.glob("r*-*/manifest.yaml"))
+    unsafe = [path for path in manifests if _mock_manifest_path_is_unsafe(Path(root), path)]
+    if unsafe:
+        names = ", ".join(str(path) for path in unsafe)
+        raise ValueError(
+            f"{mocktests_root}: mock manifest path contains a symlink or resolves "
+            f"outside selected book root: {names}"
+        )
+    if book_number is not None:
+        wrong_round = [
+            path
+            for path in manifests
+            if not path.parent.name.startswith(f"r{book_number}-")
+        ]
+        if wrong_round:
+            names = ", ".join(path.parent.name for path in wrong_round)
+            raise ValueError(
+                f"{mocktests_root}: book {book_number} assessments must use "
+                f"r{book_number}-* directories; found {names}"
+            )
     result: list[MockManifest] = []
-    for path in sorted(Path(root).glob("mocktests/r1-*/manifest.yaml")):
+    for path in manifests:
         raw = _read_manifest(path)
         problems = []
         for index, item in enumerate(raw.get("problems") or []):

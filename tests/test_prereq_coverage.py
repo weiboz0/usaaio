@@ -1,13 +1,22 @@
+import shutil
 from pathlib import Path
 from posixpath import normpath
 
+import pytest
 import yaml
 
 from tools.checks.coverage import check_coverage
 from tools.checks.prereq import check_prereq
-from tools.model import load_syllabus, load_unit_manifests
+from tools.model import load_mock_manifests, load_syllabus, load_unit_manifests
 
 ROOT = Path(__file__).resolve().parents[1]
+BOOK1_ROOT = ROOT / "book1"
+BOOK2_ROOT = ROOT / "book2"
+
+
+def _write_yaml(path: Path, value: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(yaml.safe_dump(value, sort_keys=False), encoding="utf-8")
 
 
 def write_syllabus(
@@ -93,7 +102,7 @@ practice:
 
 
 def test_prereq_pass_on_real_syllabus():
-    report = check_prereq(ROOT)
+    report = check_prereq(BOOK1_ROOT)
     assert report.ok
     assert report.errors == []
 
@@ -234,6 +243,21 @@ def test_coverage_missing_practice_file(tmp_path):
     report = check_coverage(tmp_path)
     assert not report.ok
     assert any("missing practice path" in error for error in report.errors)
+
+
+def test_coverage_rejects_symlinked_practice_outside_selected_book(tmp_path):
+    write_syllabus(tmp_path)
+    write_unit(tmp_path)
+    outside = tmp_path.parent / "outside.ipynb"
+    outside.write_text("{}\n", encoding="utf-8")
+    practice = tmp_path / "units" / "U2" / "practice" / "p01.ipynb"
+    practice.unlink()
+    practice.symlink_to(outside)
+
+    report = check_coverage(tmp_path)
+
+    assert not report.ok
+    assert any("symlink component is forbidden" in error for error in report.errors)
 
 
 def test_coverage_requires_three_tagged_problems_per_taught_concept(tmp_path):
@@ -493,14 +517,14 @@ def test_double_length_coverage_accepts_compliant_unit(tmp_path):
 
 
 def test_double_length_coverage_real_f6_passes():
-    syllabus = load_syllabus(ROOT)
+    syllabus = load_syllabus(BOOK1_ROOT)
     assert "F6-svd-spectral" in syllabus.units
     unit = syllabus.units["F6-svd-spectral"]
     assert unit.length == "double"
 
     matching_manifests = [
         manifest
-        for manifest in load_unit_manifests(ROOT)
+        for manifest in load_unit_manifests(BOOK1_ROOT)
         if manifest.unit_id == "F6-svd-spectral"
     ]
     assert len(matching_manifests) == 1
@@ -511,7 +535,7 @@ def test_double_length_coverage_real_f6_passes():
     assert 24 <= len({problem.id for problem in manifest.practice}) <= 30
     assert 24 <= len({normpath(problem.path) for problem in manifest.practice}) <= 30
 
-    report = check_coverage(ROOT)
+    report = check_coverage(BOOK1_ROOT)
 
     assert not any("double-length unit F6-svd-spectral" in error for error in report.errors)
 
@@ -570,3 +594,131 @@ def test_normal_length_c7_overflow_behavior_is_unchanged(tmp_path):
 
     assert report.ok
     assert not any("double-length unit C7-cnn-transfer" in error for error in report.errors)
+
+
+def test_planned_book2_root_preserves_existing_r1_manifests_and_r1_namespace(
+    tmp_path: Path,
+) -> None:
+    book1 = tmp_path / "book1"
+    book2 = tmp_path / "book2"
+    book1.mkdir()
+    book2.mkdir()
+    shutil.copy2(BOOK1_ROOT / "syllabus.md", book1 / "syllabus.md")
+    shutil.copy2(BOOK2_ROOT / "syllabus.md", book2 / "syllabus.md")
+    for source in sorted(BOOK1_ROOT.glob("units/*/manifest.yaml")):
+        destination = book1 / source.relative_to(BOOK1_ROOT)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, destination)
+    r1_source = BOOK1_ROOT / "mocktests" / "r1-001" / "manifest.yaml"
+    r1_destination = book1 / "mocktests" / "r1-001" / "manifest.yaml"
+    r1_destination.parent.mkdir(parents=True)
+    shutil.copy2(r1_source, r1_destination)
+    before = {
+        path.relative_to(book1).as_posix(): path.read_bytes()
+        for path in sorted(book1.glob("units/*/manifest.yaml"))
+    }
+    namespace_before = [manifest.test for manifest in load_mock_manifests(book1)]
+    before_report = check_prereq(book1)
+    assert before_report.ok, before_report.errors
+    after = {
+        path.relative_to(book1).as_posix(): path.read_bytes()
+        for path in sorted(book1.glob("units/*/manifest.yaml"))
+    }
+    namespace_after = [manifest.test for manifest in load_mock_manifests(book1)]
+
+    assert load_unit_manifests(book2) == []
+    assert load_mock_manifests(book2) == []
+    assert after == before
+    assert namespace_before == namespace_after == ["r1-001"]
+
+
+def _write_first_live_registered_book2_fixture(
+    tmp_path: Path, *, replacement: str | None = None
+) -> Path:
+    repo = tmp_path / "repo"
+    book1 = repo / "book1"
+    book2 = repo / "book2"
+    book1.mkdir(parents=True)
+    book2.mkdir()
+    shutil.copy2(BOOK1_ROOT / "syllabus.md", book1 / "syllabus.md")
+    book2_syllabus = (BOOK2_ROOT / "syllabus.md").read_text(encoding="utf-8")
+    qualified_concepts = list(
+        load_syllabus(BOOK2_ROOT)
+        .units["B2-019-attention-transformers"]
+        .concept_prerequisites
+    )
+    if replacement is not None:
+        book2_syllabus = book2_syllabus.replace(
+            "  - book1:softmax\n", f"  - {replacement}\n", 1
+        )
+        qualified_concepts[0] = replacement
+    (book2 / "syllabus.md").write_text(book2_syllabus, encoding="utf-8")
+    _write_yaml(
+        repo / "books.yaml",
+        {
+            "books_version": 1,
+            "books": [
+                {"id": "book1", "number": 1, "root": "book1", "depends_on": []},
+                {
+                    "id": "book2",
+                    "number": 2,
+                    "root": "book2",
+                    "depends_on": ["book1"],
+                },
+            ],
+        },
+    )
+    unit = load_syllabus(book2).units["B2-019-attention-transformers"]
+    _write_yaml(
+        book2 / "units" / unit.id / "manifest.yaml",
+        {
+            "unit": unit.id,
+            "book": 2,
+            "layer": "round-2-extension",
+            "round": 2,
+            "track": "extension",
+            "concepts_taught": unit.teaches,
+            "concepts_used": qualified_concepts,
+            "concept_prerequisites": qualified_concepts,
+            "prereq_units": unit.prereqs,
+            "bridge_diagnostic": {
+                "path": "lessons/00-book1-bridge.ipynb",
+                "minutes": 30,
+                "referenced_concepts": qualified_concepts,
+            },
+            "coverage_claims": [],
+            "practice": [],
+        },
+    )
+    return book2
+
+
+def test_first_live_registered_book2_manifest_has_qualified_prereq_closure(
+    tmp_path: Path,
+) -> None:
+    book2 = _write_first_live_registered_book2_fixture(tmp_path)
+
+    report = check_prereq(book2)
+
+    assert report.ok, report.errors
+
+
+@pytest.mark.parametrize(
+    "replacement",
+    [
+        pytest.param("softmax", id="unqualified-foreign-concept"),
+        pytest.param("book9:softmax", id="wrong-owner-concept"),
+        pytest.param("book1:relu", id="nonallowlisted-concept"),
+    ],
+)
+def test_first_live_registered_book2_rejects_invalid_imported_concept_identity(
+    tmp_path: Path, replacement: str
+) -> None:
+    book2 = _write_first_live_registered_book2_fixture(
+        tmp_path, replacement=replacement
+    )
+
+    report = check_prereq(book2)
+
+    assert not report.ok
+    assert any(replacement in error for error in report.errors), report.errors

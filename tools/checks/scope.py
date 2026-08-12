@@ -245,7 +245,7 @@ def _check_sources(raw: dict[str, Any], errors: list[str]) -> set[str]:
         )
         if review_after is not None and today > review_after:
             errors.append(
-                "curriculum/sources.yaml: source "
+                "curriculum/source-manifest.yaml: source "
                 f"{source_id} passed review_after {review_after}; open a source-refresh change "
                 "that repeats Task 1 and re-adjudicates affected rows"
             )
@@ -701,6 +701,8 @@ def _check_planned_units(
     planned = {str(row.get("id", "")): row for row in rows}
     all_units = existing_units | set(planned)
     for unit_id, row in planned.items():
+        if unit_id.startswith("P015-R2-"):
+            errors.append("legacy P015-R2 planned-unit rows are forbidden")
         layer = str(row.get("layer", ""))
         if layer not in known_layers:
             errors.append(f"planned unit {unit_id}: unknown layer {layer}")
@@ -817,7 +819,11 @@ def _check_point_evidence(
             if key not in inventory_anchors:
                 errors.append(f"knowledge point {point_id}/{modality}: unknown lesson anchor {key}")
                 continue
-            parts = Path(key[0]).parts
+            qualified_owner = ""
+            lesson_path = key[0]
+            if ":" in lesson_path:
+                qualified_owner, lesson_path = lesson_path.split(":", 1)
+            parts = Path(lesson_path).parts
             is_lesson_session = (
                 len(parts) == 4
                 and parts[0] == "units"
@@ -830,7 +836,7 @@ def _check_point_evidence(
                     "is not a unit lesson-session notebook"
                 )
                 continue
-            unit_id = parts[1]
+            unit_id = f"{qualified_owner}:{parts[1]}" if qualified_owner else parts[1]
             if not (unit_teaches.get(unit_id, set()) & shipped):
                 errors.append(
                     f"knowledge point {point_id}/{modality}: lesson {key[0]} "
@@ -923,12 +929,20 @@ def _check_roadmap(
     inventory: dict[str, Any],
     errors: list[str],
     warnings: list[str],
+    *,
+    catalog=None,
+    book=None,
 ) -> None:
     roadmap_version = raw.get("roadmap_version")
     if type(roadmap_version) is not int or roadmap_version != 1:
         errors.append(f"unsupported roadmap_version {roadmap_version!r}; expected integer 1")
-    if raw.get("layers") != LAYERS:
-        errors.append(f"layers must exactly equal {LAYERS}")
+    expected_layers = ["round-2-extension"] if book is not None and book.number == 2 else (
+        [layer for layer in LAYERS if layer != "round-2-extension"]
+        if book is not None
+        else LAYERS
+    )
+    if raw.get("layers") != expected_layers:
+        errors.append(f"layers must exactly equal {expected_layers}")
     expected_keys = {"roadmap_version", "layers", "planned_units", "knowledge_points"}
     if set(raw) != expected_keys:
         errors.append(
@@ -950,6 +964,128 @@ def _check_roadmap(
     unit_teaches = {unit_id: set(unit.teaches) for unit_id, unit in syllabus.units.items()}
     inventory_anchors, inventory_problem_ids = _inventory_indexes(inventory)
     all_problem_ids = inventory_problem_ids | _mock_problem_ids(root)
+    imported_point_ids: set[str] = set()
+    known_foreign_point_ids: set[str] = set()
+    active_foreign_point_ids: set[str] = set()
+    imported_units: set[str] = set()
+    if catalog is not None and book is not None and book.depends_on:
+        from tools.books import (
+            load_book_evidence_imports,
+            load_book_imports,
+            resolve_qualified_import,
+        )
+
+        prerequisite_imports = load_book_imports(book)
+        evidence_imports = load_book_evidence_imports(book)
+        imported_point_ids.update(
+            f"{prerequisite_imports.source_book}:{concept}"
+            for concept in prerequisite_imports.concepts
+        )
+        for owner_id in book.depends_on:
+            owner = catalog.by_id(owner_id)
+            owner_roadmap = _yaml(owner.root / "curriculum" / "coverage-map.yaml")
+            owner_points = {
+                str(row["id"]): row
+                for row in owner_roadmap.get("knowledge_points", [])
+                if isinstance(row, dict) and isinstance(row.get("id"), str)
+            }
+            known_foreign_point_ids.update(
+                f"{owner_id}:{point_id}" for point_id in owner_points
+            )
+            active_units = {
+                unit_id for unit_id in existing_units
+                if unit_id in {str(row.get("id", "")) for row in raw["planned_units"]}
+            }
+            active_points = {
+                str(row.get("id", ""))
+                for row in raw["knowledge_points"]
+                if str(row.get("destination", "")) in active_units
+            }
+            active_unit_prereq_concepts = {
+                concept.split(":", 1)[-1]
+                for unit_id in active_units
+                for concept in syllabus.units[unit_id].concept_prerequisites
+            }
+            for point in raw["knowledge_points"]:
+                if str(point.get("id", "")) not in active_points:
+                    continue
+                for dependency in _strings(point.get("depends_on")):
+                    if not dependency.startswith(f"{owner_id}:"):
+                        continue
+                    local_point = dependency.split(":", 1)[1]
+                    owner_point = owner_points.get(local_point)
+                    if owner_point is None:
+                        errors.append(
+                            f"knowledge point {point['id']}: unknown dependency {dependency}"
+                        )
+                        continue
+                    destination = str(owner_point.get("destination", ""))
+                    shipped = set(_strings(owner_point.get("shipped_concepts")))
+                    relevant = shipped & active_unit_prereq_concepts
+                    if owner_point.get("coverage") != "covered":
+                        errors.append(f"active import {dependency}: owner row is not covered")
+                        continue
+                    if destination not in prerequisite_imports.units:
+                        errors.append(
+                            f"active import {dependency}: destination {destination!r} "
+                            "is not in imports.units"
+                        )
+                        continue
+                    missing_relevant = relevant - set(prerequisite_imports.concepts)
+                    if missing_relevant:
+                        errors.append(
+                            f"active import {dependency}: relevant shipped concepts are not "
+                            f"in imports.concepts: {sorted(missing_relevant)}"
+                        )
+                        continue
+                    try:
+                        resolve_qualified_import(catalog, book, f"{owner_id}:{destination}")
+                        for concept in relevant:
+                            resolve_qualified_import(catalog, book, f"{owner_id}:{concept}")
+                    except ValueError as exc:
+                        errors.append(str(exc))
+                        continue
+                    active_foreign_point_ids.add(dependency)
+            owner_syllabus = load_syllabus(owner.root)
+            imported_units.update(f"{owner_id}:{unit_id}" for unit_id in owner_syllabus.units)
+            owner_inventory = _yaml(owner.root / "curriculum" / "material-inventory.yaml")
+            owner_anchors, owner_inventory_problems = _inventory_indexes(owner_inventory)
+            inventory_anchors.update(
+                (f"{owner_id}:{path}", heading, ordinal)
+                for path, heading, ordinal in owner_anchors
+                if path in evidence_imports.lesson_paths
+            )
+            owner_manifests = load_unit_manifests(owner.root)
+            for manifest in owner_manifests:
+                unit_teaches[f"{owner_id}:{manifest.unit_id}"] = {
+                    f"{owner_id}:{concept}" for concept in manifest.concepts_taught
+                }
+                for practice in manifest.practice:
+                    if practice.id in evidence_imports.practices:
+                        practice_tags[f"{owner_id}:{practice.id}"] = {
+                            f"{owner_id}:{concept}" for concept in practice.concepts
+                        }
+            all_problem_ids.update(
+                f"{owner_id}:{problem_id}"
+                for problem_id in owner_inventory_problems
+                if problem_id in evidence_imports.assessments
+            )
+        for category in (
+            evidence_imports.concepts,
+            evidence_imports.lesson_paths,
+            evidence_imports.practices,
+            evidence_imports.assessments,
+        ):
+            for identity in category:
+                qualified = f"{evidence_imports.source_book}:{identity}"
+                try:
+                    resolve_qualified_import(catalog, book, qualified)
+                except ValueError as exc:
+                    errors.append(str(exc))
+        shipped_concepts.update(
+            f"{evidence_imports.source_book}:{concept}"
+            for concept in evidence_imports.concepts
+        )
 
     point_rows = raw["knowledge_points"]
     point_ids = [str(row.get("id", "")) for row in point_rows]
@@ -965,8 +1101,8 @@ def _check_roadmap(
     planned_rows = raw["planned_units"]
     planned = _check_planned_units(
         planned_rows,
-        set(LAYERS),
-        existing_units,
+        set(expected_layers),
+        existing_units | imported_units,
         set(points),
         shipped_concepts,
         errors,
@@ -1015,34 +1151,81 @@ def _check_roadmap(
             if concept not in shipped_concepts:
                 errors.append(f"knowledge point {point_id}: unknown shipped concept {concept}")
         for dependency in dependency_graph[point_id]:
-            if dependency not in points and dependency not in shipped_concepts:
+            if dependency in points or dependency in shipped_concepts:
+                continue
+            if ":" not in dependency and book is not None and book.number == 2:
+                errors.append(
+                    f"knowledge point {point_id}: Book 1 dependency {dependency} must be qualified"
+                )
+            elif (
+                dependency in known_foreign_point_ids
+                and str(point.get("destination", "")) not in existing_units
+            ):
+                # Qualified future-plan dependencies stay named but are not usable by
+                # currently active content until that plan expands persisted imports.
+                continue
+            elif dependency not in imported_point_ids | active_foreign_point_ids:
                 errors.append(f"knowledge point {point_id}: unknown dependency {dependency}")
         destination_value = point.get("destination")
         destination = str(destination_value) if destination_value is not None else None
-        if destination is not None and destination not in existing_units | set(planned):
+        if destination is not None and destination not in existing_units | set(planned) | imported_units:
             errors.append(f"knowledge point {point_id}: unknown destination {destination}")
         if coverage in {"partial", "missing"} and not destination:
             errors.append(f"{coverage} {point_id} requires a destination")
-        if disposition in {"keep", "extend-existing-unit"} and destination not in existing_units:
-            errors.append(
-                f"knowledge point {point_id}: {disposition} requires an existing-unit destination"
-            )
-        if disposition in {"new-unit", "defer-optional"} and (
-            destination not in planned or destination not in planned_owners.get(point_id, [])
-        ):
-            errors.append(
-                f"knowledge point {point_id}: {disposition} requires a planned-unit "
-                "destination owner"
-            )
+        embedding_bridge = point_id == "nlp-word-embeddings"
+        if embedding_bridge:
+            if not (
+                coverage == "partial"
+                and disposition == "extend-existing-unit"
+                and destination == ("book1:C8-embeddings" if book is not None else "C8-embeddings")
+            ):
+                errors.append(
+                    "nlp-word-embeddings must retain destination C8-embeddings, "
+                    "partial coverage, and extend-existing-unit disposition"
+                )
+            if planned_owners.get(point_id, []) != ["B2-020-language-transformers"]:
+                errors.append(
+                    "nlp-word-embeddings must belong to the "
+                    "B2-020-language-transformers planned-unit membership row"
+                )
+        elif point_id == "nlp-tokenization" and book is not None and book.number == 2:
+            if not (
+                coverage == "covered"
+                and disposition == "keep"
+                and destination == "book1:C8-embeddings"
+            ):
+                errors.append(
+                    "nlp-tokenization must retain covered Book 1 C8 destination and keep disposition"
+                )
+        else:
+            if (
+                disposition in {"keep", "extend-existing-unit"}
+                and destination not in existing_units
+            ):
+                errors.append(
+                    f"knowledge point {point_id}: {disposition} requires an "
+                    "existing-unit destination"
+                )
+            if disposition in {"new-unit", "defer-optional"} and (
+                destination not in planned
+                or destination not in planned_owners.get(point_id, [])
+            ):
+                errors.append(
+                    f"knowledge point {point_id}: {disposition} requires a planned-unit "
+                    "destination owner"
+                )
 
-        owners = list(planned_owners.get(point_id, []))
-        if disposition in {"keep", "extend-existing-unit"} and destination in existing_units:
-            owners.append(str(destination))
-        if len(owners) != 1 or destination not in owners:
-            errors.append(
-                f"knowledge point {point_id} must have exactly one destination owner; "
-                f"destination={destination!r}, owners={sorted(owners)}"
-            )
+            owners = list(planned_owners.get(point_id, []))
+            if (
+                disposition in {"keep", "extend-existing-unit"}
+                and destination in existing_units
+            ):
+                owners.append(str(destination))
+            if len(owners) != 1 or destination not in owners:
+                errors.append(
+                    f"knowledge point {point_id} must have exactly one destination owner; "
+                    f"destination={destination!r}, owners={sorted(owners)}"
+                )
 
         if target is None:
             continue
@@ -1081,12 +1264,29 @@ def check_scope(root: str | Path) -> Report:
     root = Path(root).resolve()
     errors: list[str] = []
     warnings: list[str] = []
-    sources = _yaml(root / "curriculum" / "sources.yaml")
+    sources = _yaml(root / "curriculum" / "source-manifest.yaml")
     topics = _yaml(root / "curriculum" / "official-topics.yaml")
     inventory = _yaml(root / "curriculum" / "material-inventory.yaml")
     roadmap = _yaml(root / "curriculum" / "coverage-map.yaml")
     known_sources = _check_sources(sources, errors)
     _, targets = _check_topics(topics, known_sources, errors)
-    _check_roadmap(root, roadmap, targets, known_sources, inventory, errors, warnings)
-    _check_reconciliation(root, errors)
+    catalog = None
+    book = None
+    if (root.parent / "books.yaml").is_file():
+        from tools.books import load_book_catalog
+
+        catalog = load_book_catalog(root.parent)
+        book = next((candidate for candidate in catalog.books if candidate.root == root), None)
+    _check_roadmap(
+        root,
+        roadmap,
+        targets,
+        known_sources,
+        inventory,
+        errors,
+        warnings,
+        catalog=catalog,
+        book=book,
+    )
+    _check_reconciliation(catalog.repo_root if catalog is not None else root, errors)
     return Report(name="scope-check", ok=not errors, errors=errors, warnings=warnings)

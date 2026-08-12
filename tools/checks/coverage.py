@@ -5,6 +5,7 @@ from posixpath import normpath
 
 import yaml
 
+from tools.books import resolve_contained_path
 from tools.model import Report, load_syllabus, load_unit_manifests
 
 
@@ -14,7 +15,13 @@ def check_coverage(root: str | Path) -> Report:
     manifests = load_unit_manifests(root)
     vocabulary = set(syllabus.baseline) | set(syllabus.concepts)
     errors: list[str] = []
+    warnings: list[str] = []
     for manifest in manifests:
+        if manifest.solution_policy == "deferred":
+            warnings.append(
+                f"{manifest.path}: solution debt deferred to "
+                f"{manifest.solution_policy_plan} until {manifest.solution_policy_expires}"
+            )
         practice_minutes = [problem.minutes for problem in manifest.practice]
         declared_minutes = [minutes for minutes in practice_minutes if minutes is not None]
         if declared_minutes and len(declared_minutes) != len(practice_minutes):
@@ -72,15 +79,39 @@ def check_coverage(root: str | Path) -> Report:
                     "problems; requires at least 3"
                 )
         unit_dir = manifest.path.parent
+        declared_solutions = [unit_dir / problem.solution_path for problem in manifest.practice]
+        statement_only_book2 = (
+            manifest.book == 2
+            and manifest.solution_policy == "deferred"
+            and declared_solutions
+            and not any(path.is_file() for path in declared_solutions)
+        )
         for problem in manifest.practice:
-            if not (unit_dir / problem.path).exists():
-                errors.append(f"{manifest.path}: missing practice path {problem.path}")
-            if not (unit_dir / problem.solution_path).exists():
-                errors.append(f"{manifest.path}: missing solution path {problem.solution_path}")
+            for kind, relative in (
+                ("practice", problem.path),
+                ("solution", problem.solution_path),
+            ):
+                try:
+                    resolve_contained_path(
+                        root,
+                        unit_dir.relative_to(root) / relative,
+                        label=f"{manifest.path}: {kind} {problem.id}",
+                    )
+                except ValueError as exc:
+                    if (
+                        kind == "solution"
+                        and statement_only_book2
+                        and "path does not exist" in str(exc)
+                    ):
+                        continue
+                    if "path does not exist" in str(exc):
+                        errors.append(f"{manifest.path}: missing {kind} path {relative}")
+                    else:
+                        errors.append(str(exc))
             for concept in problem.concepts:
                 if concept not in vocabulary:
                     errors.append(f"{manifest.path}: practice {problem.id} unknown concept {concept}")
-    return Report(name="coverage-check", ok=not errors, errors=errors)
+    return Report(name="coverage-check", ok=not errors, errors=errors, warnings=warnings)
 
 
 def _estimated_practice_minutes(manifest_path: Path) -> object:

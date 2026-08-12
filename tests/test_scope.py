@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import importlib
 import os
 import re
+import shutil
 from collections.abc import Callable
 from pathlib import Path
 from types import SimpleNamespace
@@ -13,9 +15,50 @@ import yaml
 from tools import model
 from tools import render_curriculum_roadmap as renderer
 from tools.checks import scope as scope_checker
+from tools.checks.prereq import taught_closure
 from tools.checks.scope import check_scope
 
 ROOT = Path(__file__).parents[1]
+BOOK1_ROOT = ROOT / "book1"
+BOOK2_ROOT = ROOT / "book2"
+
+BOOK1_OWNED_R2_DEPENDENCIES = {
+    "attention-mechanism-foundations": ["linear-algebra-foundations", "softmax"],
+    "attention-from-scratch": ["pytorch-autograd-and-optimizer-training"],
+    "transformer-architecture-foundations": ["multilayer-perceptron-model"],
+    "vision-transformers": ["convolutional-neural-network-basics"],
+    "nlp-tokenization": ["python-programming"],
+    "nlp-word-embeddings": ["linear-algebra-foundations"],
+    "nlp-fine-tuning": ["pytorch-autograd-and-optimizer-training"],
+    "object-detection": ["convolutional-neural-network-basics"],
+    "unet": ["convolutional-neural-network-basics"],
+    "autoencoder": ["fully-connected-network-from-scratch", "loss-functions"],
+    "generative-adversarial-network": [
+        "fully-connected-network-from-scratch",
+        "convolutional-neural-network-basics",
+    ],
+    "multivariate-gaussian": [
+        "probability-and-statistics-foundations",
+        "eigenvalues-and-eigenvectors",
+    ],
+    "gaussian-reparameterization": ["pytorch-autograd-and-optimizer-training"],
+    "kl-divergence": ["conditional-probability", "expectation"],
+    "gpu-colab-l4-workflow": [
+        "colab-coding-submission",
+        "pytorch-autograd-and-optimizer-training",
+    ],
+    "semi-supervised-pseudo-labeling": [
+        "convolutional-neural-network-basics",
+        "k-means-clustering",
+    ],
+    "scientific-ml-inverse-problems": [
+        "end-to-end-model-selection",
+        "pytorch-autograd-and-optimizer-training",
+    ],
+    "open-ended-experiment-design": ["end-to-end-model-selection"],
+    "open-ended-model-evaluation": ["hidden-test-model-evaluation"],
+    "mixture-parameter-regression": ["linear-regression"],
+}
 
 PLAN017_CLOSURE = {
     "softmax": (
@@ -442,7 +485,7 @@ units:
             }
         ],
     }
-    _write_yaml(root / "curriculum" / "sources.yaml", sources)
+    _write_yaml(root / "curriculum" / "source-manifest.yaml", sources)
     _write_yaml(root / "curriculum" / "official-topics.yaml", topics)
     _write_yaml(root / "curriculum" / "material-inventory.yaml", inventory)
     _write_yaml(root / "curriculum" / "coverage-map.yaml", roadmap)
@@ -468,7 +511,7 @@ def _report_after(root: Path, mutate: Callable[[dict[str, Any]], None]):
     contract = _base_contract(root)
     mutate(contract)
     for name, filename in (
-        ("sources", "sources.yaml"),
+        ("sources", "source-manifest.yaml"),
         ("topics", "official-topics.yaml"),
         ("inventory", "material-inventory.yaml"),
         ("roadmap", "coverage-map.yaml"),
@@ -1121,16 +1164,16 @@ def _add_pending_c7_training_point(data: dict[str, Any]) -> None:
     )
 
 
-def _add_pending_neural_tranche(data: dict[str, Any]) -> None:
+def _add_pending_attention_tranche(data: dict[str, Any]) -> None:
     data["roadmap"]["planned_units"].append(
         {
-            "id": "P015-R1-NEURAL-TRAINING",
-            "title": "Round 1 neural-training completion",
-            "layer": "round-1-core",
+            "id": "B2-019-attention-transformers",
+            "title": "Attention and Transformer Mechanics",
+            "layer": "round-2-extension",
             "prerequisites": [],
             "knowledge_points": [],
-            "provisional_concepts": ["future-neural-training"],
-            "estimated_hours": {"min": 30, "max": 44},
+            "provisional_concepts": ["future-attention-transformers"],
+            "estimated_hours": {"min": 28, "max": 38},
             "schedule_action": "extend",
         }
     )
@@ -1518,21 +1561,21 @@ def test_roadmap_production_consumer_requires_the_full_canonical_schedule(
     _base_contract(tmp_path)
 
     with pytest.raises(ValueError, match="course-schedule.yaml"):
-        renderer.render_documents(tmp_path)
+        renderer.render_documents(tmp_path, expected_book_number=1)
 
 
 def test_renderer_recomputes_real_plan018_baseline() -> None:
-    baseline = renderer.current_time_baseline(ROOT)
+    baseline = renderer.current_time_baseline(BOOK1_ROOT)
 
     assert baseline.manifested_minutes == 18635
     assert baseline.scheduled_minutes == 18875
 
 
 def test_plan017_closure_has_exact_destinations_additions_and_primary_practices() -> None:
-    report = check_scope(ROOT)
+    report = check_scope(BOOK1_ROOT)
     assert report.ok, report.errors
 
-    roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
+    roadmap = yaml.safe_load((BOOK1_ROOT / "curriculum" / "coverage-map.yaml").read_text())
     points = {point["id"]: point for point in roadmap["knowledge_points"]}
 
     for point_id, (destination, shipped_concepts, primary_by_modality) in PLAN017_CLOSURE.items():
@@ -1551,7 +1594,7 @@ def test_plan017_closure_has_exact_destinations_additions_and_primary_practices(
 
 
 def test_plan018_classical_rows_are_shipped_with_exact_direct_evidence() -> None:
-    report = check_scope(ROOT)
+    report = check_scope(BOOK1_ROOT)
     assert report.ok, report.errors
     assert not [
         warning
@@ -1559,7 +1602,7 @@ def test_plan018_classical_rows_are_shipped_with_exact_direct_evidence() -> None
         if any(point_id in warning for point_id in PLAN018_CLASSICAL_CLOSURE)
     ]
 
-    roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
+    roadmap = yaml.safe_load((BOOK1_ROOT / "curriculum" / "coverage-map.yaml").read_text())
     points = {point["id"]: point for point in roadmap["knowledge_points"]}
     planned = {unit["id"]: unit for unit in roadmap["planned_units"]}
 
@@ -1581,9 +1624,13 @@ def test_plan018_classical_rows_are_shipped_with_exact_direct_evidence() -> None
             assert evidence["assessments"] == []
 
     assert "P015-R1-CLASSICAL-BREADTH" not in planned
-    capstone_prereqs = planned["P015-R2-CAPSTONE"]["prerequisites"]
+    book2_roadmap = yaml.safe_load(
+        (BOOK2_ROOT / "curriculum" / "coverage-map.yaml").read_text()
+    )
+    book2_planned = {unit["id"]: unit for unit in book2_roadmap["planned_units"]}
+    capstone_prereqs = book2_planned["B2-024-gpu-scientific-ml-capstone"]["prerequisites"]
     assert "P015-R1-CLASSICAL-BREADTH" not in capstone_prereqs
-    assert "C12-classical-models" in capstone_prereqs
+    assert "book1:C12-classical-models" in capstone_prereqs
 
     remaining_round1 = {
         point["id"]
@@ -1594,7 +1641,7 @@ def test_plan018_classical_rows_are_shipped_with_exact_direct_evidence() -> None
 
 
 def test_every_covered_real_roadmap_row_uses_keep_disposition() -> None:
-    roadmap = model.load_roadmap(Path(__file__).parents[1])
+    roadmap = model.load_roadmap(BOOK1_ROOT)
 
     covered = [point for point in roadmap.knowledge_points if point.coverage == "covered"]
     assert covered
@@ -1602,12 +1649,11 @@ def test_every_covered_real_roadmap_row_uses_keep_disposition() -> None:
 
 
 def test_completed_plan017_neural_extensions_are_not_rendered_as_pending() -> None:
-    rendered = renderer.render_documents(ROOT)
+    rendered = renderer.render_documents(BOOK1_ROOT)
 
     for document in rendered.values():
         assert "C7 CNN training" not in document
         assert "C6 and C8 are not yet estimated" not in document
-        assert "C8" in document
 
 
 def test_c7_extension_returns_only_when_cnn_training_owner_is_pending(
@@ -1625,19 +1671,36 @@ def test_c7_extension_returns_only_when_cnn_training_owner_is_pending(
     assert all("C7 CNN training" in document for document in with_pending_owner.values())
 
 
-def test_neural_tranche_returns_only_when_its_planned_unit_is_restored(
+def test_attention_tranche_returns_only_when_its_planned_unit_is_restored(
     tmp_path: Path,
 ) -> None:
     contract = _base_contract(tmp_path)
     without_planned_unit = _render_fixture_documents(tmp_path)
-    title = "Round 1 neural-training completion"
+    title = "Attention and Transformer Mechanics"
     assert all(title not in document for document in without_planned_unit.values())
 
-    _add_pending_neural_tranche(contract)
+    _add_pending_attention_tranche(contract)
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
     with_planned_unit = _render_fixture_documents(tmp_path)
 
     assert all(title in document for document in with_planned_unit.values())
+
+
+def test_attention_tranche_uses_the_canonical_planned_unit_title(tmp_path: Path) -> None:
+    contract = _base_contract(tmp_path)
+    _add_pending_attention_tranche(contract)
+    canonical_title = "Renamed Attention Foundations"
+    contract["roadmap"]["planned_units"][0]["title"] = canonical_title
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
+
+    rendered = _render_fixture_documents(tmp_path)
+
+    for document in rendered.values():
+        tranche_queue = document[
+            document.index("## Dependency-ordered content tranche queue") :
+        ]
+        assert canonical_title in tranche_queue
+        assert "Attention and Transformer Mechanics" not in tranche_queue
 
 
 def test_unestimated_c8_clause_remains_but_estimated_extension_section_is_suppressed(
@@ -1717,11 +1780,11 @@ def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: 
         assert "**8.75–10.75 scheduled-baseline hours**" in document
 
 
-def test_plan018_renderer_recomputes_the_round2_only_planned_delta() -> None:
-    rendered = renderer.render_documents(Path(__file__).parents[1])
+def test_renderer_recomputes_the_design019_book2_planned_delta() -> None:
+    rendered = renderer.render_documents(BOOK2_ROOT)
 
     for document in rendered.values():
-        assert "| **Planned-unit subtotal** | **126** | **192** |" in document
+        assert "| **Planned-unit subtotal** | **142** | **182** |" in document
         assert (
             "This range is a renderer-owned editorial estimate, not a field in the canonical coverage map."
             in document
@@ -1731,24 +1794,37 @@ def test_plan018_renderer_recomputes_the_round2_only_planned_delta() -> None:
         assert "C6 and C8 are not yet estimated" not in document
         assert "C8" in document
         assert "so this is not a complete roadmap total" not in document
-        assert "**436.58–502.58 manifested-baseline hours**" in document
-        assert "**440.58–506.58 scheduled-baseline hours**" in document
-        assert "student-t-test" in document
-        assert "importance-sampling" in document
+        assert "**169.17–209.17 manifested-baseline hours**" in document
+        assert "**169.67–209.67 scheduled-baseline hours**" in document
         assert "Total roadmap delta" not in document
 
 
-def test_both_documents_end_with_exact_post_plan018_tranche_queue() -> None:
-    rendered = renderer.render_documents(ROOT)
+def test_both_documents_render_exact_design019_book2_plan_order() -> None:
+    rendered = renderer.render_documents(BOOK2_ROOT)
 
-    titles = [
-        "Round 2 transformers and NLP",
-        "Round 2 advanced vision and generative modeling",
-        "Round 2 open-ended/GPU capstone",
+    unit_ids = [
+        "B2-019-attention-transformers",
+        "B2-020-language-transformers",
+        "B2-021-cross-modal-transformers-vision",
+        "B2-022-probabilistic-latent-models",
+        "B2-023-generative-models-diffusion",
+        "B2-024-gpu-scientific-ml-capstone",
     ]
+    planned_by_id = {
+        unit.id: unit for unit in model.load_roadmap(BOOK2_ROOT).planned_units
+    }
+    tranche_titles = [planned_by_id[unit_id].title for unit_id in unit_ids]
+    roadmap = rendered[Path("docs/curriculum-roadmap.md")]
+    planned_units = roadmap[roadmap.index("## Planned units") :]
+    offsets = [planned_units.index(unit_id) for unit_id in unit_ids]
+    assert offsets == sorted(offsets)
     for document in rendered.values():
-        offsets = [document.index(title) for title in titles]
-        assert offsets == sorted(offsets)
+        tranche_queue = document[
+            document.index("## Dependency-ordered content tranche queue") :
+        ]
+        tranche_offsets = [tranche_queue.index(title) for title in tranche_titles]
+        assert tranche_offsets == sorted(tranche_offsets)
+        assert all(tranche_queue.count(title) == 1 for title in tranche_titles)
         assert document.rstrip().endswith(
             "Each tranche updates the shipped syllabus and roadmap atomically."
         )
@@ -1907,3 +1983,679 @@ def test_scope_pass_implies_roadmap_loader_and_renderer_accept_contract(tmp_path
         Path("docs/audits/015-coverage-audit.md"),
         Path("docs/curriculum-roadmap.md"),
     }
+
+
+BOOK2_ROADMAP_MEMBERSHIP = {
+    "B2-019-attention-transformers": [
+        "attention-mechanism-foundations",
+        "self-attention",
+        "multi-head-attention",
+        "positional-encoding",
+        "attention-complexity-analysis",
+        "attention-from-scratch",
+        "transformer-architecture-foundations",
+    ],
+    "B2-020-language-transformers": [
+        "nlp-word-embeddings",
+        "nlp-transformers",
+        "nlp-pretraining",
+        "nlp-fine-tuning",
+        "transformer-nlp-applications",
+    ],
+    "B2-021-cross-modal-transformers-vision": [
+        "vision-transformers",
+        "graph-neural-network-transformer-applications",
+        "object-detection",
+        "unet",
+    ],
+    "B2-022-probabilistic-latent-models": [
+        "multivariate-gaussian",
+        "gaussian-reparameterization",
+        "kl-divergence",
+        "autoencoder",
+        "variational-autoencoder",
+    ],
+    "B2-023-generative-models-diffusion": [
+        "generative-adversarial-network",
+        "denoising-diffusion-probabilistic-models",
+        "stable-diffusion",
+    ],
+    "B2-024-gpu-scientific-ml-capstone": [
+        "gpu-colab-l4-workflow",
+        "semi-supervised-pseudo-labeling",
+        "scientific-ml-inverse-problems",
+        "mixture-parameter-regression",
+        "open-ended-experiment-design",
+        "open-ended-model-evaluation",
+    ],
+}
+
+
+def _add_c8_embeddings_fixture(root: Path, contract: dict[str, Any]) -> None:
+    syllabus_path = root / "syllabus.md"
+    syllabus = syllabus_path.read_text()
+    syllabus = syllabus.replace(
+        "  - {id: c2, cluster: foundation}\n",
+        "  - {id: c2, cluster: foundation}\n"
+        "  - {id: c8-embedding, cluster: foundation}\n",
+    ).replace(
+        "  - id: U2-unrelated\n"
+        "    track: foundation\n"
+        "    title: Unrelated\n"
+        "    prereqs: []\n"
+        "    teaches: [c2]\n",
+        "  - id: U2-unrelated\n"
+        "    track: foundation\n"
+        "    title: Unrelated\n"
+        "    prereqs: []\n"
+        "    teaches: [c2]\n"
+        "  - id: C8-embeddings\n"
+        "    track: core\n"
+        "    title: Embeddings\n"
+        "    prereqs: []\n"
+        "    teaches: [c8-embedding]\n",
+    )
+    syllabus_path.write_text(syllabus)
+    _write_yaml(
+        root / "units" / "C8-embeddings" / "manifest.yaml",
+        {
+            "unit": "C8-embeddings",
+            "concepts_taught": ["c8-embedding"],
+            "concepts_used": [],
+            "prereq_units": [],
+            "estimated_minutes": {
+                "lesson_sessions": [60],
+                "practice": 120,
+                "review": 30,
+            },
+            "practice": [
+                {
+                    "id": f"C8-embeddings-p{number}",
+                    "concepts": ["c8-embedding"],
+                    "path": f"practice/p{number}.ipynb",
+                    "solution_path": f"practice/p{number}_solution.ipynb",
+                }
+                for number in range(1, 4)
+            ],
+        },
+    )
+    notebooks = contract["inventory"]["notebooks"]
+    notebooks.append(
+        {
+            "path": "units/C8-embeddings/lessons/01-lesson.ipynb",
+            "anchors": [{"heading_path": ["Lesson"], "cell_ordinal": 1}],
+            "declared_unit_ids": ["C8-embeddings"],
+            "declared_concept_ids": ["c8-embedding"],
+            "declared_problem_ids": [],
+        }
+    )
+    notebooks.extend(
+        {
+            "path": f"units/C8-embeddings/practice/p{number}.ipynb",
+            "anchors": [{"heading_path": ["Practice"], "cell_ordinal": 1}],
+            "declared_unit_ids": ["C8-embeddings"],
+            "declared_concept_ids": ["c8-embedding"],
+            "declared_problem_ids": [f"C8-embeddings-p{number}"],
+        }
+        for number in range(1, 4)
+    )
+
+
+def _write_book2_roadmap_fixture(root: Path) -> dict[str, Any]:
+    contract = _base_contract(root)
+    _add_c8_embeddings_fixture(root, contract)
+    topics = contract["topics"]
+    roadmap = contract["roadmap"]
+    topics["categories"].append(
+        {
+            "id": "round2-only",
+            "parent": None,
+            "kind": "official",
+            "source_refs": ["source-1"],
+            "required_for": ["round-2"],
+        }
+    )
+    for points in BOOK2_ROADMAP_MEMBERSHIP.values():
+        for point in points:
+            modalities = ["theory", "model-training"] if point == "nlp-word-embeddings" else ["theory"]
+            topics["atomic_targets"].append(
+                {
+                    "id": point,
+                    "parent": "round2-only",
+                    "source_refs": ["source-1"],
+                    "required_for": ["round-2"],
+                    "modalities": modalities,
+                }
+            )
+    roadmap["planned_units"] = [
+        {
+            "id": unit_id,
+            "title": unit_id,
+            "layer": "round-2-extension",
+            "prerequisites": [],
+            "knowledge_points": list(points),
+            "provisional_concepts": [f"{unit_id}-concept"],
+            "estimated_hours": {"min": 1, "max": 1},
+            "schedule_action": "extend",
+        }
+        for unit_id, points in BOOK2_ROADMAP_MEMBERSHIP.items()
+    ]
+    for unit_id, points in BOOK2_ROADMAP_MEMBERSHIP.items():
+        for point in points:
+            row = {
+                "id": point,
+                "layer": "round-2-extension",
+                "requirement": "required",
+                "coverage": "missing",
+                "source_refs": ["source-1"],
+                "depends_on": [],
+                "shipped_concepts": [],
+                "evidence_by_modality": {},
+                "disposition": "new-unit",
+                "destination": unit_id,
+                "deficits": {"modalities_missing": ["theory"]},
+                "rationale": "Book 2 fixture gap.",
+                "consequence": "Book 2 fixture consequence.",
+            }
+            if point == "nlp-word-embeddings":
+                row.update(
+                    coverage="partial",
+                    shipped_concepts=["c8-embedding"],
+                    evidence_by_modality={
+                        "theory": {
+                            "lesson_anchors": [
+                                {
+                                    "path": "units/C8-embeddings/lessons/01-lesson.ipynb",
+                                    "heading": "Lesson",
+                                    "cell_ordinal": 1,
+                                    "role": "primary",
+                                }
+                            ],
+                            "practices": [
+                                {"id": f"C8-embeddings-p{number}", "role": "primary"}
+                                for number in range(1, 4)
+                            ],
+                            "assessments": [],
+                        }
+                    },
+                    disposition="extend-existing-unit",
+                    destination="C8-embeddings",
+                    deficits={"modalities_missing": ["model-training"]},
+                )
+            roadmap["knowledge_points"].append(row)
+    for name, filename in (
+        ("sources", "source-manifest.yaml"),
+        ("topics", "official-topics.yaml"),
+        ("inventory", "material-inventory.yaml"),
+        ("roadmap", "coverage-map.yaml"),
+    ):
+        _write_yaml(root / "curriculum" / filename, contract[name])
+    return contract
+
+
+def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets(
+    tmp_path: Path,
+) -> None:
+    _write_book2_roadmap_fixture(tmp_path)
+
+    loaded = model.load_roadmap(tmp_path)
+    report = check_scope(tmp_path)
+
+    planned = {unit.id: unit.knowledge_points for unit in loaded.planned_units}
+    assert planned == BOOK2_ROADMAP_MEMBERSHIP
+    assert len({point for points in planned.values() for point in points}) == 30
+    assert all(not unit_id.startswith("P015-R2-") for unit_id in planned)
+    embedding = next(point for point in loaded.knowledge_points if point.id == "nlp-word-embeddings")
+    assert (embedding.coverage, embedding.destination) == ("partial", "C8-embeddings")
+    assert report.ok, report.errors
+
+
+@pytest.mark.parametrize(
+    ("mutate", "fragment"),
+    [
+        (
+            lambda contract: contract["roadmap"]["planned_units"][1]["knowledge_points"].append(
+                "attention-mechanism-foundations"
+            ),
+            "knowledge point attention-mechanism-foundations must have exactly one destination owner",
+        ),
+        (
+            lambda contract: contract["roadmap"]["planned_units"][0].update(
+                id="P015-R2-TRANSFORMERS-NLP"
+            ),
+            "legacy P015-R2 planned-unit rows are forbidden",
+        ),
+        (
+            lambda contract: next(
+                row
+                for row in contract["roadmap"]["knowledge_points"]
+                if row["id"] == "nlp-word-embeddings"
+            ).update(destination="B2-020-language-transformers", disposition="new-unit"),
+            "nlp-word-embeddings must retain destination C8-embeddings",
+        ),
+    ],
+)
+def test_book2_roadmap_partition_mutations_fail_scope_check(
+    tmp_path: Path,
+    mutate: Callable[[dict[str, Any]], None],
+    fragment: str,
+) -> None:
+    contract = _write_book2_roadmap_fixture(tmp_path)
+    mutate(contract)
+    _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
+
+    report = check_scope(tmp_path)
+
+    assert not report.ok
+    assert any(fragment in error for error in report.errors), report.errors
+
+
+def _scope_books_module():
+    try:
+        return importlib.import_module("tools.books")
+    except ModuleNotFoundError as exc:
+        if exc.name != "tools.books":
+            raise
+        pytest.fail("tools.books is the missing Plan 019 registry producer")
+
+
+def _copy_two_book_scope_repo(destination: Path) -> tuple[Path, Path]:
+    books_path = ROOT / "books.yaml"
+    assert books_path.is_file(), "books.yaml is the missing atomic-cutover producer"
+    shutil.copy2(books_path, destination / "books.yaml")
+    for book_id in ("book1", "book2"):
+        source = ROOT / book_id
+        assert source.is_dir(), f"{book_id}/ is the missing atomic-cutover root"
+        shutil.copytree(source, destination / book_id, ignore=shutil.ignore_patterns("build"))
+    return destination / "book1", destination / "book2"
+
+
+def _book2_roadmap(book2: Path) -> dict[str, Any]:
+    return yaml.safe_load(
+        (book2 / "curriculum" / "coverage-map.yaml").read_text(encoding="utf-8")
+    )
+
+
+def _bridge_rows(roadmap: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = {
+        row["id"]: row
+        for row in roadmap["knowledge_points"]
+        if row["id"] in {"nlp-tokenization", "nlp-word-embeddings"}
+    }
+    assert set(rows) == {"nlp-tokenization", "nlp-word-embeddings"}
+    return [rows["nlp-tokenization"], rows["nlp-word-embeddings"]]
+
+
+_C8_LESSON = "book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb"
+_C8_BRIDGE_CANONICAL: dict[str, dict[str, Any]] = {
+    "nlp-tokenization": {
+        "shipped_concepts": ["book1:tokenization"],
+        "evidence_by_modality": {
+            modality: {
+                "lesson_anchors": [
+                    {
+                        "path": _C8_LESSON,
+                        "heading": "C8-embeddings — Session 1: Tokens and Embeddings > 1. From Text to Tokens",
+                        "cell_ordinal": 1,
+                        "role": "primary",
+                    }
+                ],
+                "practices": [
+                    {"id": f"book1:C8-p{number:02d}", "role": "primary"}
+                    for number in (1, 6, 15)
+                ],
+                "assessments": [
+                    {"id": f"book1:r1-001-p05-{number}", "role": "primary"}
+                    for number in (1, 2)
+                ],
+            }
+            for modality in ("theory", "implementation")
+        },
+    },
+    "nlp-word-embeddings": {
+        "shipped_concepts": [
+            "book1:word-embeddings",
+            "book1:gensim-usage",
+            "book1:embedding-matrices",
+        ],
+        "evidence_by_modality": {
+            "theory": {
+                "lesson_anchors": [
+                    {
+                        "path": _C8_LESSON,
+                        "heading": "C8-embeddings — Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors",
+                        "cell_ordinal": 1,
+                        "role": "primary",
+                    }
+                ],
+                "practices": [
+                    {"id": f"book1:C8-p{number:02d}", "role": "primary"}
+                    for number in (2, 12, 17)
+                ],
+                "assessments": [{"id": "book1:r1-001-p05-3", "role": "primary"}],
+            },
+            "implementation": {
+                "lesson_anchors": [
+                    {
+                        "path": _C8_LESSON,
+                        "heading": "C8-embeddings — Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors",
+                        "cell_ordinal": 1,
+                        "role": "primary",
+                    }
+                ],
+                "practices": [
+                    {"id": f"book1:C8-p{number:02d}", "role": "primary"}
+                    for number in (5, 13, 17)
+                ],
+                "assessments": [
+                    {"id": f"book1:r1-001-p05-{number}", "role": "primary"}
+                    for number in (3, 4)
+                ],
+            },
+            "model-training": {"lesson_anchors": [], "practices": [], "assessments": []},
+        },
+    },
+}
+
+
+def _assert_canonical_c8_bridge(rows: list[dict[str, Any]]) -> None:
+    actual = {
+        row["id"]: {
+            "shipped_concepts": row["shipped_concepts"],
+            "evidence_by_modality": row["evidence_by_modality"],
+        }
+        for row in rows
+    }
+    assert actual == _C8_BRIDGE_CANONICAL
+    for row in actual.values():
+        assert len(row["shipped_concepts"]) == len(set(row["shipped_concepts"]))
+        for evidence in row["evidence_by_modality"].values():
+            for field, key in (
+                ("lesson_anchors", "path"),
+                ("practices", "id"),
+                ("assessments", "id"),
+            ):
+                values = [item[key] for item in evidence[field]]
+                assert len(values) == len(set(values)), (field, values)
+
+
+def test_two_c8_bridge_rows_resolve_exact_qualified_evidence_allowlist() -> None:
+    books = _scope_books_module()
+    catalog = books.load_book_catalog(ROOT)
+    book2 = catalog.by_id("book2")
+    rows = _bridge_rows(_book2_roadmap(book2.root))
+
+    _assert_canonical_c8_bridge(rows)
+    evidence = books.load_book_evidence_imports(book2)
+    assert set(evidence.concepts) == {
+        value.removeprefix("book1:")
+        for row in rows
+        for value in row["shipped_concepts"]
+    }
+    assert set(evidence.lesson_paths) == {
+        anchor["path"].removeprefix("book1:")
+        for row in rows
+        for modality in row["evidence_by_modality"].values()
+        for anchor in modality["lesson_anchors"]
+    }
+    assert set(evidence.practices) == {
+        practice["id"].removeprefix("book1:")
+        for row in rows
+        for modality in row["evidence_by_modality"].values()
+        for practice in modality["practices"]
+    }
+    assert set(evidence.assessments) == {
+        assessment["id"].removeprefix("book1:")
+        for row in rows
+        for modality in row["evidence_by_modality"].values()
+        for assessment in modality["assessments"]
+    }
+    report = check_scope(book2.root)
+    assert report.ok, report.errors
+
+
+@pytest.mark.parametrize("mutation", ["swap-rows", "move-modality", "duplicate"])
+def test_c8_bridge_rejects_noncanonical_row_modality_and_duplicate_evidence(
+    tmp_path: Path, mutation: str
+) -> None:
+    _, book2 = _copy_two_book_scope_repo(tmp_path)
+    roadmap = _book2_roadmap(book2)
+    tokenization, embeddings = _bridge_rows(roadmap)
+    if mutation == "swap-rows":
+        tokenization["evidence_by_modality"]["theory"], embeddings["evidence_by_modality"][
+            "theory"
+        ] = (
+            embeddings["evidence_by_modality"]["theory"],
+            tokenization["evidence_by_modality"]["theory"],
+        )
+    elif mutation == "move-modality":
+        evidence = tokenization["evidence_by_modality"]
+        evidence["implementation"]["practices"] = evidence["theory"]["practices"]
+        evidence["theory"]["practices"] = []
+    else:
+        practices = embeddings["evidence_by_modality"]["implementation"]["practices"]
+        practices.append(dict(practices[0]))
+    _write_yaml(book2 / "curriculum" / "coverage-map.yaml", roadmap)
+
+    with pytest.raises(AssertionError):
+        _assert_canonical_c8_bridge(_bridge_rows(roadmap))
+    report = check_scope(book2)
+    assert not report.ok, mutation
+
+
+def _replace_first_qualified_bridge_value(
+    rows: list[dict[str, Any]], kind: str, transform: Callable[[str], str]
+) -> None:
+    if kind == "concept":
+        rows[0]["shipped_concepts"][0] = transform(rows[0]["shipped_concepts"][0])
+        return
+    field = {"lesson": "lesson_anchors", "practice": "practices", "assessment": "assessments"}[
+        kind
+    ]
+    key = "path" if kind == "lesson" else "id"
+    for row in rows:
+        for evidence in row["evidence_by_modality"].values():
+            if evidence.get(field):
+                evidence[field][0][key] = transform(evidence[field][0][key])
+                return
+    raise AssertionError(f"no {kind} evidence in C8 bridge fixture")
+
+
+def _reown_tokenization_in_book2(book2: Path) -> None:
+    path = book2 / "syllabus.md"
+    text = path.read_text(encoding="utf-8")
+    match = re.search(
+        r"(<!-- syllabus-canonical -->\s*```yaml\n)(.*?)(\n```)", text, re.DOTALL
+    )
+    assert match is not None
+    raw = yaml.safe_load(match.group(2))
+    cluster = raw["concepts"][0]["cluster"]
+    raw["concepts"].append({"id": "tokenization", "cluster": cluster})
+    unit = next(row for row in raw["units"] if row["id"] == "B2-019-attention-transformers")
+    unit["teaches"].append("tokenization")
+    replacement = match.group(1) + yaml.safe_dump(raw, sort_keys=False).rstrip() + match.group(3)
+    path.write_text(text[: match.start()] + replacement + text[match.end() :], encoding="utf-8")
+
+
+@pytest.mark.parametrize(
+    ("kind", "mutation"),
+    [
+        pytest.param("concept", "unqualified", id="unqualified-concept"),
+        pytest.param("lesson", "unqualified", id="unqualified-lesson"),
+        pytest.param("practice", "unqualified", id="unqualified-practice"),
+        pytest.param("assessment", "unqualified", id="unqualified-assessment"),
+        pytest.param("concept", "wrong-owner", id="wrong-owner"),
+        pytest.param("practice", "missing", id="missing"),
+        pytest.param("concept", "reowned", id="book2-reowned"),
+    ],
+)
+def test_c8_bridge_qualified_evidence_mutations_fail_independently(
+    tmp_path: Path, kind: str, mutation: str
+) -> None:
+    _, book2 = _copy_two_book_scope_repo(tmp_path)
+    roadmap = _book2_roadmap(book2)
+    rows = _bridge_rows(roadmap)
+    if mutation == "unqualified":
+        _replace_first_qualified_bridge_value(rows, kind, lambda value: value.removeprefix("book1:"))
+    elif mutation == "wrong-owner":
+        _replace_first_qualified_bridge_value(
+            rows, kind, lambda value: value.replace("book1:", "book2:", 1)
+        )
+    elif mutation == "missing":
+        _replace_first_qualified_bridge_value(rows, kind, lambda _value: "book1:missing")
+    else:
+        _reown_tokenization_in_book2(book2)
+    _write_yaml(book2 / "curriculum" / "coverage-map.yaml", roadmap)
+
+    report = check_scope(book2)
+
+    assert not report.ok, mutation
+
+
+def test_every_r2_book1_dependency_edge_is_qualified() -> None:
+    catalog = _scope_books_module().load_book_catalog(ROOT)
+    book2 = catalog.by_id("book2")
+    rows = {row["id"]: row for row in _book2_roadmap(book2.root)["knowledge_points"]}
+
+    for point, expected_dependencies in BOOK1_OWNED_R2_DEPENDENCIES.items():
+        dependencies = rows[point]["depends_on"]
+        for dependency in expected_dependencies:
+            assert f"book1:{dependency}" in dependencies, (point, dependencies)
+            assert dependency not in dependencies, (point, dependencies)
+
+
+def test_active_book2_roadmap_dependency_requires_persisted_import_destination(
+    tmp_path: Path,
+) -> None:
+    _, book2 = _copy_two_book_scope_repo(tmp_path)
+    roadmap = _book2_roadmap(book2)
+    point = next(
+        row for row in roadmap["knowledge_points"]
+        if row["id"] == "attention-mechanism-foundations"
+    )
+    point["depends_on"][0] = "book1:colab-markdown-solution-authoring"
+    _write_yaml(book2 / "curriculum/coverage-map.yaml", roadmap)
+
+    report = check_scope(book2)
+
+    assert not report.ok
+    assert any(
+        "active import book1:colab-markdown-solution-authoring" in error
+        and "imports.units" in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_future_book2_foreign_dependencies_remain_deferred_not_active_imports() -> None:
+    report = check_scope(BOOK2_ROOT)
+
+    assert report.ok, report.errors
+    assert not any("active import book1:colab-coding-submission" in error for error in report.errors)
+
+
+def test_unqualified_mutation_of_every_r2_book1_edge_fails_scope_check(
+    tmp_path: Path,
+) -> None:
+    _, book2 = _copy_two_book_scope_repo(tmp_path)
+    roadmap = _book2_roadmap(book2)
+    rows = {row["id"]: row for row in roadmap["knowledge_points"]}
+    for point, dependencies in BOOK1_OWNED_R2_DEPENDENCIES.items():
+        rows[point]["depends_on"] = [
+            value.removeprefix("book1:")
+            if value in {f"book1:{dependency}" for dependency in dependencies}
+            else value
+            for value in rows[point]["depends_on"]
+        ]
+    _write_yaml(book2 / "curriculum" / "coverage-map.yaml", roadmap)
+
+    report = check_scope(book2)
+
+    assert not report.ok
+    for point in BOOK1_OWNED_R2_DEPENDENCIES:
+        assert any(point in error and "qualified" in error for error in report.errors), report.errors
+
+
+def test_imported_taught_closure_is_limited_to_persisted_book1_allowlists() -> None:
+    books = _scope_books_module()
+    catalog = books.load_book_catalog(ROOT)
+    book1 = catalog.by_id("book1")
+    book2 = catalog.by_id("book2")
+    imports = books.load_book_imports(book2)
+    evidence = books.load_book_evidence_imports(book2)
+    book2_syllabus = model.load_syllabus(book2.root)
+    book1_syllabus = model.load_syllabus(book1.root)
+
+    closure = taught_closure(
+        book2_syllabus,
+        [f"book1:{unit}" for unit in imports.units],
+        catalog=catalog,
+        book=book2,
+    )
+
+    book2_owned = set(book2_syllabus.concepts)
+    book2_owned_units = set(book2_syllabus.units)
+    assert book2_owned.isdisjoint(imports.concepts)
+    assert book2_owned_units.isdisjoint(imports.units)
+    qualified_imports = {f"book1:{concept}" for concept in imports.concepts}
+    qualified_evidence = {f"book1:{concept}" for concept in evidence.concepts}
+    assert qualified_imports <= closure
+    assert set(imports.concepts).isdisjoint(closure)
+    assert qualified_evidence.isdisjoint(closure)
+    assert closure & set(book1_syllabus.concepts) == set()
+
+
+def test_imported_taught_closure_authorized_subset_is_exact() -> None:
+    books = _scope_books_module()
+    catalog = books.load_book_catalog(ROOT)
+    book1 = catalog.by_id("book1")
+    book2 = catalog.by_id("book2")
+    imports = books.load_book_imports(book2)
+    book1_syllabus = model.load_syllabus(book1.root)
+    book2_syllabus = model.load_syllabus(book2.root)
+    requested = "F1-scientific-python"
+    expected = set(book1_syllabus.units[requested].teaches) & set(imports.concepts)
+
+    closure = taught_closure(
+        book2_syllabus,
+        [f"book1:{requested}"],
+        catalog=catalog,
+        book=book2,
+    )
+
+    assert closure & set(book1_syllabus.concepts) == set()
+    assert closure & {f"book1:{concept}" for concept in book1_syllabus.concepts} == {
+        f"book1:{concept}" for concept in expected
+    }
+    assert expected == {
+        "numpy-arrays",
+        "broadcasting",
+        "vectorization",
+        "elementwise-ops",
+        "aggregation-axis",
+        "random-seeding",
+    }
+
+
+@pytest.mark.parametrize(
+    ("requested", "message"),
+    [
+        pytest.param("book1:C5-neural-networks", "allowlist", id="nonallowlisted-unit"),
+        pytest.param("F1-scientific-python", "qualified", id="unqualified-unit"),
+        pytest.param("book2:F1-scientific-python", "owner", id="wrong-owner-unit"),
+    ],
+)
+def test_imported_taught_closure_rejects_unauthorized_unit_requests(
+    requested: str, message: str
+) -> None:
+    books = _scope_books_module()
+    catalog = books.load_book_catalog(ROOT)
+    book2 = catalog.by_id("book2")
+    syllabus = model.load_syllabus(book2.root)
+
+    with pytest.raises(ValueError, match=message):
+        taught_closure(
+            syllabus,
+            [requested],
+            catalog=catalog,
+            book=book2,
+        )

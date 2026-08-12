@@ -23,7 +23,8 @@ from typing import Any
 
 import yaml
 
-from tools.checks.schedule import load_validated_schedule
+from tools.books import BookSpec
+from tools.checks.schedule import load_validated_schedule, scheduled_baseline_minutes
 from tools.model import CourseSchedule
 
 INVENTORY_PATH = Path("curriculum/material-inventory.yaml")
@@ -320,8 +321,22 @@ def _unit_notebooks(root: Path, manifest_paths: list[Path]) -> list[dict[str, An
         manifest_relative = _posix(unit_dir / "manifest.yaml", root)
         if not isinstance(manifest, dict):
             raise InventoryError(f"{manifest_relative}: manifest must be a mapping")
-        for problem in manifest.get("practice") or []:
+        practice_rows = manifest.get("practice") or []
+        declared_solutions = [
+            unit_dir / str(problem.get("solution_path", ""))
+            for problem in practice_rows
+        ]
+        statement_only_book2 = (
+            manifest.get("book") == 2
+            and isinstance(manifest.get("solution_policy"), dict)
+            and manifest["solution_policy"].get("status") == "deferred"
+            and declared_solutions
+            and not any(path.is_file() for path in declared_solutions)
+        )
+        for problem in practice_rows:
             for field in ("path", "solution_path"):
+                if field == "solution_path" and statement_only_book2:
+                    continue
                 declared = problem.get(field)
                 candidate = _declared_notebook(
                     unit_dir,
@@ -508,6 +523,8 @@ def build_inventory(
     root: str | Path,
     *,
     _schedule_loader: ScheduleLoader = load_validated_schedule,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
 ) -> dict[str, Any]:
     root = Path(root).resolve()
     _validate_input_file(root / "syllabus.md", root, "syllabus.md", "syllabus")
@@ -536,12 +553,27 @@ def build_inventory(
     documents = [_document_record(course_path, "docs/course-structure.md")]
 
     parsed_unit_manifests = [_load_yaml(path, _posix(path, root)) for path in unit_manifests]
+    warnings: list[str] = []
+    for path, manifest in zip(unit_manifests, parsed_unit_manifests, strict=True):
+        policy = manifest.get("solution_policy", "required")
+        if isinstance(policy, dict) and policy.get("status") == "deferred":
+            warnings.append(
+                f"{path}: solution debt deferred to {policy.get('plan')} "
+                f"until {policy.get('expires')}"
+            )
     lesson_minutes = sum(sum(item["estimated_minutes"].get("lesson_sessions") or []) for item in parsed_unit_manifests)
     practice_minutes = sum(int(item["estimated_minutes"].get("practice", 0)) for item in parsed_unit_manifests)
     review_minutes = sum(int(item["estimated_minutes"].get("review", 0)) for item in parsed_unit_manifests)
     manifested_minutes = lesson_minutes + practice_minutes + review_minutes
     try:
-        schedule = _schedule_loader(root)
+        if _schedule_loader is load_validated_schedule:
+            schedule = _schedule_loader(
+                root,
+                book_spec=book_spec,
+                expected_book_number=expected_book_number,
+            )
+        else:
+            schedule = _schedule_loader(root)
     except ValueError as exc:
         raise InventoryError(str(exc)) from exc
 
@@ -557,12 +589,12 @@ def build_inventory(
         "mocktests": len(mock_manifests),
         "mock_notebooks": len(mock_notebook_paths),
         "manifested_minutes": manifested_minutes,
-        "scheduled_minutes": schedule.total_minutes,
+        "scheduled_minutes": scheduled_baseline_minutes(schedule),
     }
     all_input_paths = sorted(
         [item["path"] for item in manifests + notebooks + documents], key=str.encode
     )
-    return {
+    inventory = {
         "inventory_version": 1,
         "counts": counts,
         "input_paths": all_input_paths,
@@ -570,6 +602,9 @@ def build_inventory(
         "manifests": manifests,
         "notebooks": notebooks,
     }
+    if warnings:
+        inventory["warnings"] = warnings
+    return inventory
 
 
 def render_inventory(inventory: dict[str, Any]) -> str:

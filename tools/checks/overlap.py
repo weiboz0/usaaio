@@ -208,7 +208,9 @@ def _statement_file_text(path: Path) -> str:
     return path.read_text(errors="ignore")
 
 
-def check_overlap(root: str | Path) -> Report:
+def check_overlap(
+    root: str | Path, *, book_number: int | None = None
+) -> Report:
     root = Path(root)
     corpus, summary_corpus, skipped, corpus_failures = _corpus(root)
     if skipped:
@@ -232,7 +234,7 @@ def check_overlap(root: str | Path) -> Report:
     errors: list[str] = []
     warnings: list[str] = list(corpus_failures)
     statement_paths: set[Path] = set()
-    for manifest in load_mock_manifests(root):
+    for manifest in load_mock_manifests(root, book_number=book_number):
         for problem in manifest.problems:
             spec_text, statement_text, text_warnings = _problem_texts(
                 root, manifest.path, problem

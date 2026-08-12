@@ -10,10 +10,12 @@ import tempfile
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import yaml
 
-from tools.checks.schedule import load_validated_schedule
+from tools.books import BookSpec, load_book_catalog
+from tools.checks.schedule import load_validated_schedule, scheduled_baseline_minutes
 from tools.checks.scope import LAYERS, MINIMUM_QUALIFYING_PRACTICES, check_scope
 from tools.model import CourseSchedule, KnowledgePoint, Roadmap, load_roadmap
 
@@ -26,45 +28,39 @@ ScheduleLoader = Callable[[str | Path], CourseSchedule]
 
 TRANCHE_QUEUE = (
     (
-        "P015-R1-NEURAL-TRAINING",
-        "Round 1 neural-training completion",
+        "B2-019-attention-transformers",
         (
-            "Softmax, cross-entropy, manual backpropagation, a fully connected network from "
-            "scratch, then complete C6 model training through PyTorch autograd/optimizers, "
-            "explicit BatchNorm/dropout ownership, and C7 CNN training. Forward propagation "
-            "is already a shipped prerequisite, not a new gap."
+            "Query-key-value attention, scaled dot products, masks, multi-head attention, "
+            "positional encoding, complexity, from-scratch training, and Transformer blocks."
         ),
     ),
     (
-        "P015-R1-CLASSICAL-BREADTH",
-        "Round 1 classical-model breadth",
+        "B2-020-language-transformers",
         (
-            "Logistic regression, SVM, decision trees, ensembles, and k-means, with "
-            "comparison and implementation exercises."
+            "Complete word-embedding model training, then add NLP Transformers, pretraining, "
+            "fine-tuning, and language applications."
         ),
     ),
     (
-        "P015-R2-TRANSFORMERS-NLP",
-        "Round 2 transformers and NLP",
+        "B2-021-cross-modal-transformers-vision",
         (
-            "Self/multi-head attention, positional encoding, transformer architecture and "
-            "complexity, from-scratch attention, LayerNorm/residual/feed-forward block "
-            "structure, C8 word-embedding training, NLP applications, pre-training, and "
-            "fine-tuning, followed by vision-transformer and graph-neural-network "
-            "applications."
+            "Vision-transformer and graph-neural-network applications, object detection, "
+            "and UNet."
         ),
     ),
     (
-        "P015-R2-VISION-GEN",
-        "Round 2 advanced vision and generative modeling",
+        "B2-022-probabilistic-latent-models",
         (
-            "Object detection, UNet, autoencoders/VAE, GAN, DDPM, and Stable Diffusion, after "
-            "multivariate Gaussian, reparameterization, and KL prerequisites."
+            "Multivariate Gaussian foundations, reparameterization, KL divergence, "
+            "autoencoders, and variational autoencoders."
         ),
     ),
     (
-        "P015-R2-CAPSTONE",
-        "Round 2 open-ended/GPU capstone",
+        "B2-023-generative-models-diffusion",
+        "GAN, denoising diffusion, and Stable Diffusion after the latent-model prerequisites.",
+    ),
+    (
+        "B2-024-gpu-scientific-ml-capstone",
         (
             "Semi-supervised/pseudo-label image learning, inverse problems, mixture-parameter "
             "estimation, experiment design, reproducibility, GPU workflow, and model evaluation."
@@ -113,6 +109,8 @@ def current_time_baseline(
     root: str | Path,
     *,
     _schedule_loader: ScheduleLoader = load_validated_schedule,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
 ) -> TimeBaseline:
     root = Path(root).resolve()
     manifested = 0
@@ -124,7 +122,15 @@ def current_time_baseline(
         manifested += sum(_number(value) for value in estimates.get("lesson_sessions") or [])
         manifested += _number(estimates.get("practice"))
         manifested += _number(estimates.get("review"))
-    scheduled = _schedule_loader(root).total_minutes
+    if _schedule_loader is load_validated_schedule:
+        schedule = _schedule_loader(
+            root,
+            book_spec=book_spec,
+            expected_book_number=expected_book_number,
+        )
+    else:
+        schedule = _schedule_loader(root)
+    scheduled = scheduled_baseline_minutes(schedule)
     return TimeBaseline(
         manifested_minutes=manifested,
         scheduled_minutes=scheduled,
@@ -241,8 +247,34 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
                 "",
             ]
         )
-    c8 = points.get("nlp-word-embeddings")
-    if c8 is not None and c8.coverage != "covered":
+    embedding_point = points.get("nlp-word-embeddings")
+    embedding_unit = next(
+        (
+            unit
+            for unit in roadmap.planned_units
+            if unit.id == "B2-020-language-transformers"
+            and "nlp-word-embeddings" in unit.knowledge_points
+        ),
+        None,
+    )
+    if (
+        embedding_point is not None
+        and embedding_point.coverage != "covered"
+        and embedding_unit is not None
+    ):
+        lines.extend(
+            [
+                (
+                    f"The Book 2 `{embedding_unit.id}` "
+                    f"{_format_number(embedding_unit.estimated_hours.minimum)}–"
+                    f"{_format_number(embedding_unit.estimated_hours.maximum)}-hour estimate "
+                    "includes completing the `nlp-word-embeddings` model-training bridge; "
+                    "no additional Book 1 C8 correction is pending."
+                ),
+                "",
+            ]
+        )
+    elif embedding_point is not None and embedding_point.coverage != "covered":
         lines.extend(
             [
                 "The unestimated C8 `nlp-word-embeddings` model-training correction remains pending.",
@@ -254,23 +286,29 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
 
 def _append_tranche_queue(lines: list[str], roadmap: Roadmap) -> None:
     lines.extend(["## Dependency-ordered content tranche queue", ""])
-    planned = {unit.id for unit in roadmap.planned_units}
+    planned = {unit.id: unit for unit in roadmap.planned_units}
     visible = [row for row in TRANCHE_QUEUE if row[0] in planned]
-    for number, (_, title, description) in enumerate(visible, start=1):
-        lines.extend([f"{number}. **{title}:** {description}", ""])
+    for number, (unit_id, description) in enumerate(visible, start=1):
+        lines.extend([f"{number}. **{planned[unit_id].title}:** {description}", ""])
     lines.append("Each tranche updates the shipped syllabus and roadmap atomically.")
 
 
-def _evidence_lines(point: KnowledgePoint) -> list[str]:
+def _qualified(owner: str | None, value: str | None) -> str | None:
+    if value is None or owner is None or ":" in value:
+        return value
+    return f"{owner}:{value}"
+
+
+def _evidence_lines(point: KnowledgePoint, *, owner: str | None = None) -> list[str]:
     lines: list[str] = []
     for modality in sorted(point.evidence_by_modality, key=str.encode):
         evidence = point.evidence_by_modality[modality]
         lessons = [
-            f"{anchor.path} :: {anchor.heading} :: cell {anchor.cell_ordinal}"
+            f"{_qualified(owner, anchor.path)} :: {anchor.heading} :: cell {anchor.cell_ordinal}"
             for anchor in evidence.lesson_anchors
         ]
-        practices = [item.id for item in evidence.practices]
-        assessments = [item.id for item in evidence.assessments]
+        practices = [_qualified(owner, item.id) for item in evidence.practices]
+        assessments = [_qualified(owner, item.id) for item in evidence.assessments]
         lines.extend(
             [
                 f"- **{modality} lessons:** {_joined(sorted(lessons, key=str.encode))}",
@@ -293,6 +331,15 @@ def _append_non_required_candidates(lines: list[str], topics: dict) -> None:
         ),
         key=lambda row: str(row.get("id", "")).encode("utf-8"),
     )
+    show_owners = any(row.get("book") is not None for row in candidates)
+    if show_owners:
+        header = "| Book | Candidate | Related category | Decision | Source refs |"
+        separator = "|---|---|---|---|---|"
+        empty = "| — | — | — | — | — |"
+    else:
+        header = "| Candidate | Related category | Decision | Source refs |"
+        separator = "|---|---|---|---|"
+        empty = "| — | — | — | — |"
     lines.extend(
         [
             "## Non-required candidates",
@@ -302,23 +349,27 @@ def _append_non_required_candidates(lines: list[str], topics: dict) -> None:
                 "coverage unless a future source or consumer promotes them."
             ),
             "",
-            "| Candidate | Related category | Decision | Source refs |",
-            "|---|---|---|---|",
+            header,
+            separator,
         ]
     )
     if not candidates:
-        lines.append("| — | — | — | — |")
+        lines.append(empty)
     for row in candidates:
+        owner = row.get("book")
+        values = (
+            _qualified(str(owner), str(row.get("id"))) if owner is not None else row.get("id"),
+            row.get("related_category"),
+            "optional; not an atomic audit target",
+            _joined([str(value) for value in row.get("source_refs") or []]),
+        )
+        if show_owners:
+            values = (owner, *values)
         lines.append(
             "| "
             + " | ".join(
                 _cell(value)
-                for value in (
-                    row.get("id"),
-                    row.get("related_category"),
-                    "optional; not an atomic audit target",
-                    _joined([str(value) for value in row.get("source_refs") or []]),
-                )
+                for value in values
             )
             + " |"
         )
@@ -326,21 +377,48 @@ def _append_non_required_candidates(lines: list[str], topics: dict) -> None:
 
 
 def _render_audit(
-    roadmap: Roadmap, inventory: dict, baseline: TimeBaseline, topics: dict
+    roadmap: Roadmap,
+    inventory: dict,
+    baseline: TimeBaseline,
+    topics: dict,
+    *,
+    point_owners: dict[str, str] | None = None,
+    owner_order: dict[str, int] | None = None,
 ) -> str:
     counts = inventory.get("counts") or {}
-    points = sorted(roadmap.knowledge_points, key=lambda item: item.id.encode("utf-8"))
+    point_owners = point_owners or {}
+    owner_order = owner_order or {}
+    points = sorted(
+        roadmap.knowledge_points,
+        key=lambda item: (
+            owner_order.get(point_owners.get(item.id, ""), 0),
+            item.id.encode("utf-8"),
+        ),
+    )
     requirement_counts = {name: 0 for name in ("required", "bridge", "optional")}
     coverage_counts = {name: 0 for name in ("covered", "partial", "missing")}
     for point in points:
         requirement_counts[point.requirement] = requirement_counts.get(point.requirement, 0) + 1
         coverage_counts[point.coverage] = coverage_counts.get(point.coverage, 0) + 1
+    if point_owners:
+        introduction = [
+            "The shipped-content contracts live in `book1/syllabus.md` and `book2/syllabus.md`,",
+            "registered in dependency order by `books.yaml`.",
+            "This aggregate report renders the book-local adjudications in",
+            "`book1/curriculum/coverage-map.yaml` and `book2/curriculum/coverage-map.yaml`",
+            "against their book-local deterministic evidence inventories.",
+            "This report is not a third source of truth.",
+        ]
+    else:
+        introduction = [
+            "This report renders the adjudication in `curriculum/coverage-map.yaml` against the",
+            "deterministic evidence inventory in `curriculum/material-inventory.yaml`.",
+        ]
     lines = [
         "<!-- GENERATED by tools/render_curriculum_roadmap.py; do not edit. -->",
         "# Plan 015 coverage audit",
         "",
-        "This report renders the adjudication in `curriculum/coverage-map.yaml` against the",
-        "deterministic evidence inventory in `curriculum/material-inventory.yaml`.",
+        *introduction,
         "Assessment ids are reported separately and never satisfy the unit-practice rule.",
         "",
         "## Corpus and status totals",
@@ -366,16 +444,18 @@ def _render_audit(
     _append_non_required_candidates(lines, topics)
     lines.extend(["## Atomic-target audit", ""])
     for point in points:
+        owner = point_owners.get(point.id)
         lines.extend(
             [
                 f"### {point.id}",
                 "",
+                *( [f"- **Book:** {owner}"] if owner is not None else [] ),
                 f"- **Layer:** {point.layer}",
                 f"- **Requirement:** {point.requirement}",
                 f"- **Coverage:** {point.coverage}",
-                f"- **Destination:** {point.destination or '—'}",
-                f"- **Dependencies:** {_joined(point.depends_on)}",
-                f"- **Shipped concepts:** {_joined(point.shipped_concepts)}",
+                f"- **Destination:** {_qualified(owner, point.destination) or '—'}",
+                f"- **Dependencies:** {_joined([_qualified(owner, value) or value for value in point.depends_on])}",
+                f"- **Shipped concepts:** {_joined([_qualified(owner, value) or value for value in point.shipped_concepts])}",
                 f"- **Modalities missing:** {_joined(point.modalities_missing)}",
                 f"- **Practice shortfall:** {_practice_shortfall(point)}",
                 f"- **Rationale:** {point.rationale}",
@@ -383,10 +463,10 @@ def _render_audit(
                 "",
             ]
         )
-        lines.extend(_evidence_lines(point))
+        lines.extend(_evidence_lines(point, owner=owner))
         practices = sorted(
             {
-                item.id
+                _qualified(owner, item.id) or item.id
                 for evidence in point.evidence_by_modality.values()
                 for item in evidence.practices
             },
@@ -394,7 +474,7 @@ def _render_audit(
         )
         assessments = sorted(
             {
-                item.id
+                _qualified(owner, item.id) or item.id
                 for evidence in point.evidence_by_modality.values()
                 for item in evidence.assessments
             },
@@ -421,15 +501,33 @@ def _required_rounds(topics: dict) -> dict[str, set[str]]:
 
 
 def _render_roadmap(
-    roadmap: Roadmap, baseline: TimeBaseline, topics: dict
+    roadmap: Roadmap,
+    baseline: TimeBaseline,
+    topics: dict,
+    *,
+    point_owners: dict[str, str] | None = None,
+    unit_owners: dict[str, str] | None = None,
 ) -> str:
+    show_owners = point_owners is not None
+    point_owners = point_owners or {}
+    unit_owners = unit_owners or {}
     rounds = _required_rounds(topics)
+    if point_owners:
+        introduction = [
+            "The shipped-content contracts live in `book1/syllabus.md` and `book2/syllabus.md`,",
+            "registered in dependency order by `books.yaml`.",
+            "This aggregate roadmap records acknowledged shipped and planned curriculum state; it is not a third source of truth.",
+        ]
+    else:
+        introduction = [
+            "The shipped-content contract remains in `syllabus.md`.",
+            "This roadmap records acknowledged shipped and planned curriculum state.",
+        ]
     lines = [
         "<!-- GENERATED by tools/render_curriculum_roadmap.py; do not edit. -->",
         "# Curriculum roadmap",
         "",
-        "The shipped-content contract remains in `syllabus.md`.",
-        "This roadmap records acknowledged shipped and planned curriculum state.",
+        *introduction,
         "",
         "## Exit paths",
         "",
@@ -460,12 +558,26 @@ def _render_roadmap(
     _append_non_required_candidates(lines, topics)
     lines.extend(["## Layered knowledge points", ""])
     for layer in LAYERS:
+        if show_owners:
+            header = (
+                "| Book | Knowledge point | Requirement | Coverage | Modalities missing | "
+                "Practice shortfall | Destination | Dependencies |"
+            )
+            separator = "|---|---|---|---|---|---:|---|---|"
+            empty = "| — | — | — | — | — | — | — | — |"
+        else:
+            header = (
+                "| Knowledge point | Requirement | Coverage | Modalities missing | "
+                "Practice shortfall | Destination | Dependencies |"
+            )
+            separator = "|---|---|---|---|---:|---|---|"
+            empty = "| — | — | — | — | — | — | — |"
         lines.extend(
             [
                 f"### {layer}",
                 "",
-                "| Knowledge point | Requirement | Coverage | Modalities missing | Practice shortfall | Destination | Dependencies |",
-                "|---|---|---|---|---:|---|---|",
+                header,
+                separator,
             ]
         )
         points = sorted(
@@ -473,69 +585,254 @@ def _render_roadmap(
             key=lambda item: item.id.encode("utf-8"),
         )
         if not points:
-            lines.append("| — | — | — | — | — | — | — |")
+            lines.append(empty)
         for point in points:
+            owner = point_owners.get(point.id)
+            values = (
+                point.id,
+                point.requirement,
+                point.coverage,
+                _joined(point.modalities_missing),
+                _practice_shortfall(point),
+                _qualified(owner, point.destination),
+                _joined(
+                    [_qualified(owner, value) or value for value in point.depends_on]
+                ),
+            )
+            if show_owners:
+                values = (owner, *values)
             lines.append(
                 "| "
                 + " | ".join(
                     _cell(value)
-                    for value in (
-                        point.id,
-                        point.requirement,
-                        point.coverage,
-                        _joined(point.modalities_missing),
-                        _practice_shortfall(point),
-                        point.destination,
-                        _joined(point.depends_on),
-                    )
+                    for value in values
                 )
                 + " |"
             )
         lines.append("")
+    if show_owners:
+        planned_header = (
+            "| Book | Unit | Title | Layer | Hours | Schedule action | Prerequisites | "
+            "Owns | Provisional concepts |"
+        )
+        planned_separator = "|---|---|---|---|---:|---|---|---|---|"
+        planned_empty = "| — | — | — | — | — | — | — | — | — |"
+    else:
+        planned_header = (
+            "| Unit | Title | Layer | Hours | Schedule action | Prerequisites | Owns | "
+            "Provisional concepts |"
+        )
+        planned_separator = "|---|---|---|---:|---|---|---|---|"
+        planned_empty = "| — | — | — | — | — | — | — | — |"
     lines.extend(
         [
             "## Planned units",
             "",
-            "| Unit | Title | Layer | Hours | Schedule action | Prerequisites | Owns | Provisional concepts |",
-            "|---|---|---|---:|---|---|---|---|",
+            planned_header,
+            planned_separator,
         ]
     )
     for unit in sorted(roadmap.planned_units, key=lambda item: item.id.encode("utf-8")):
+        owner = unit_owners.get(unit.id)
         hours = f"{unit.estimated_hours.minimum:g}–{unit.estimated_hours.maximum:g}"
+        values = (
+            _qualified(owner, unit.id),
+            unit.title,
+            unit.layer,
+            hours,
+            unit.schedule_action,
+            _joined([_qualified(owner, value) or value for value in unit.prerequisites]),
+            _joined([_qualified(owner, value) or value for value in unit.knowledge_points]),
+            _joined([_qualified(owner, value) or value for value in unit.provisional_concepts]),
+        )
+        if show_owners:
+            values = (owner, *values)
         lines.append(
             "| "
             + " | ".join(
                 _cell(value)
-                for value in (
-                    unit.id,
-                    unit.title,
-                    unit.layer,
-                    hours,
-                    unit.schedule_action,
-                    _joined(unit.prerequisites),
-                    _joined(unit.knowledge_points),
-                    _joined(unit.provisional_concepts),
-                )
+                for value in values
             )
             + " |"
         )
     if not roadmap.planned_units:
-        lines.append("| — | — | — | — | — | — | — | — |")
+        lines.append(planned_empty)
     lines.append("")
     _append_tranche_queue(lines, roadmap)
     return "\n".join(lines).rstrip() + "\n"
+
+
+def _registered_inputs(
+    repo_root: Path,
+    *,
+    _schedule_loader: ScheduleLoader,
+) -> tuple[
+    Roadmap,
+    dict[str, Any],
+    TimeBaseline,
+    dict[str, Any],
+    dict[str, str],
+    dict[str, str],
+    dict[str, int],
+]:
+    catalog = load_book_catalog(repo_root)
+    roadmaps: list[tuple[str, Roadmap]] = []
+    inventories: list[dict[str, Any]] = []
+    topic_contracts: list[dict[str, Any]] = []
+    baselines: list[TimeBaseline] = []
+    point_owners: dict[str, str] = {}
+    unit_owners: dict[str, str] = {}
+    owner_order = {book.id: index for index, book in enumerate(catalog.books)}
+
+    for book in catalog.books:
+        roadmap = load_roadmap(book.root)
+        inventory = _yaml(book.root / "curriculum" / "material-inventory.yaml")
+        topics = _yaml(book.root / "curriculum" / "official-topics.yaml")
+        baseline = current_time_baseline(
+            book.root,
+            _schedule_loader=_schedule_loader,
+            book_spec=book,
+        )
+        for point in roadmap.knowledge_points:
+            if point.id in point_owners:
+                raise ValueError(
+                    f"aggregate knowledge point {point.id!r} is owned by both "
+                    f"{point_owners[point.id]} and {book.id}"
+                )
+            point_owners[point.id] = book.id
+        for unit in roadmap.planned_units:
+            if unit.id in unit_owners:
+                raise ValueError(
+                    f"aggregate planned unit {unit.id!r} is owned by both "
+                    f"{unit_owners[unit.id]} and {book.id}"
+                )
+            unit_owners[unit.id] = book.id
+        roadmaps.append((book.id, roadmap))
+        inventories.append(inventory)
+        topic_contracts.append(topics)
+        baselines.append(baseline)
+
+    versions = {roadmap.roadmap_version for _, roadmap in roadmaps}
+    if versions != {1}:
+        raise ValueError(f"aggregate roadmap versions must all be 1, found {sorted(versions)}")
+    combined_layers = [
+        layer
+        for layer in LAYERS
+        if any(layer in roadmap.layers for _, roadmap in roadmaps)
+    ]
+    combined_roadmap = Roadmap(
+        roadmap_version=1,
+        layers=combined_layers,
+        planned_units=[unit for _, roadmap in roadmaps for unit in roadmap.planned_units],
+        knowledge_points=[
+            point for _, roadmap in roadmaps for point in roadmap.knowledge_points
+        ],
+    )
+
+    count_keys = sorted(
+        {
+            key
+            for inventory in inventories
+            for key in (inventory.get("counts") or {})
+        },
+        key=str.encode,
+    )
+    combined_inventory = {
+        "counts": {
+            key: sum(int((inventory.get("counts") or {}).get(key, 0)) for inventory in inventories)
+            for key in count_keys
+        }
+    }
+
+    combined_topics: dict[str, Any] = {
+        "atomic_targets": [],
+        "non_required_candidates": [],
+    }
+    target_owners: dict[str, str] = {}
+    candidate_owners: dict[str, str] = {}
+    for (book_id, _), topics in zip(roadmaps, topic_contracts, strict=True):
+        for target in topics.get("atomic_targets") or []:
+            target_id = str(target["id"])
+            if target_id in target_owners:
+                raise ValueError(
+                    f"aggregate official topic {target_id!r} is owned by both "
+                    f"{target_owners[target_id]} and {book_id}"
+                )
+            target_owners[target_id] = book_id
+            combined_topics["atomic_targets"].append(target)
+        for candidate in topics.get("non_required_candidates") or []:
+            candidate_id = str(candidate["id"])
+            if candidate_id in candidate_owners:
+                raise ValueError(
+                    f"aggregate non-required candidate {candidate_id!r} is owned by both "
+                    f"{candidate_owners[candidate_id]} and {book_id}"
+                )
+            candidate_owners[candidate_id] = book_id
+            combined_topics["non_required_candidates"].append(
+                {**candidate, "book": book_id}
+            )
+    if set(target_owners) != set(point_owners):
+        raise ValueError("aggregate official topics and roadmap knowledge points differ")
+
+    combined_baseline = TimeBaseline(
+        manifested_minutes=sum(item.manifested_minutes for item in baselines),
+        scheduled_minutes=sum(item.scheduled_minutes for item in baselines),
+    )
+    return (
+        combined_roadmap,
+        combined_inventory,
+        combined_baseline,
+        combined_topics,
+        point_owners,
+        unit_owners,
+        owner_order,
+    )
 
 
 def render_documents(
     root: str | Path,
     *,
     _schedule_loader: ScheduleLoader = load_validated_schedule,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
 ) -> dict[Path, str]:
     root = Path(root).resolve()
+    if (root / "books.yaml").is_file():
+        (
+            roadmap,
+            inventory,
+            baseline,
+            topics,
+            point_owners,
+            unit_owners,
+            owner_order,
+        ) = _registered_inputs(root, _schedule_loader=_schedule_loader)
+        return {
+            AUDIT_PATH: _render_audit(
+                roadmap,
+                inventory,
+                baseline,
+                topics,
+                point_owners=point_owners,
+                owner_order=owner_order,
+            ),
+            ROADMAP_PATH: _render_roadmap(
+                roadmap,
+                baseline,
+                topics,
+                point_owners=point_owners,
+                unit_owners=unit_owners,
+            ),
+        }
     roadmap = load_roadmap(root)
     inventory = _yaml(root / "curriculum" / "material-inventory.yaml")
     topics = _yaml(root / "curriculum" / "official-topics.yaml")
-    baseline = current_time_baseline(root, _schedule_loader=_schedule_loader)
+    baseline = current_time_baseline(
+        root,
+        _schedule_loader=_schedule_loader,
+        book_spec=book_spec,
+        expected_book_number=expected_book_number,
+    )
     return {
         AUDIT_PATH: _render_audit(roadmap, inventory, baseline, topics),
         ROADMAP_PATH: _render_roadmap(roadmap, baseline, topics),
@@ -585,12 +882,22 @@ def main(
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args(argv)
     root = Path(args.root).resolve()
-    report = check_scope(root)
-    if report.errors:
-        for error in report.errors:
-            print(f"ERROR scope-check: {error}", file=sys.stderr)
+    try:
+        roots = (
+            [book.root for book in load_book_catalog(root).books]
+            if (root / "books.yaml").is_file()
+            else [root]
+        )
+        for selected_root in roots:
+            report = check_scope(selected_root)
+            if report.errors:
+                for error in report.errors:
+                    print(f"ERROR scope-check [{selected_root.name}]: {error}", file=sys.stderr)
+                return 1
+        rendered = render_documents(root, _schedule_loader=_schedule_loader)
+    except (OSError, TypeError, ValueError, KeyError) as exc:
+        print(f"ERROR renderer: {exc}", file=sys.stderr)
         return 1
-    rendered = render_documents(root, _schedule_loader=_schedule_loader)
     stale: list[str] = []
     outputs: list[tuple[Path, Path, str]] = []
     try:

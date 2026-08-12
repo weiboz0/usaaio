@@ -1,0 +1,229 @@
+inventory_version: 1
+layout: pre-plan019-atomic-cutover
+generation:
+  python: AST string leaves participating in Path, joinpath, glob, rglob, or / joins
+  notebooks: code cells containing top-level pyproject.toml discovery
+python_consumers:
+  - tools/books.py
+  - tools/audit_curriculum.py
+  - tools/checks/hygiene.py
+  - tools/checks/new_mocktest.py
+  - tools/checks/overlap.py
+  - tools/checks/schedule.py
+  - tools/checks/scope.py
+  - tools/model.py
+  - tools/render_course_structure.py
+  - tools/render_curriculum_roadmap.py
+  - scripts/verify-register.py
+  - tests/test_answerkey.py
+  - tests/test_attention_mutations.py
+  - tests/test_audit_curriculum.py
+  - tests/test_b2_019_statements.py
+  - tests/test_blueprint.py
+  - tests/test_book2_schedule.py
+  - tests/test_c11_solution_regressions.py
+  - tests/test_c12_solution_regressions.py
+  - tests/test_c12_statement_contracts.py
+  - tests/test_hygiene.py
+  - tests/test_integration.py
+  - tests/test_layer_boundary.py
+  - tests/test_model.py
+  - tests/test_new_mocktest.py
+  - tests/test_overlap.py
+  - tests/test_prereq_coverage.py
+  - tests/test_schedule.py
+  - tests/test_scope.py
+  - tests/test_tolerance.py
+  - tests/test_verify_register.py
+shell_consumers:
+  - scripts/build-pdf.sh
+  - scripts/ci-local.sh
+  - scripts/fetch-reference.sh
+  - scripts/pre-merge-guard.sh
+task0_contract_tests:
+  - tests/test_books.py
+  - tests/test_book_isolation.py
+  - tests/test_clean_checkout.py
+  - tests/test_reference_migration.py
+repository_root_violations:
+  scripts/ci-local.sh:
+    - {line: 20, kind: root-find-units}
+    - {line: 20, kind: root-find-units-mocktests}
+    - {line: 49, kind: root-find-units}
+  scripts/pre-merge-guard.sh:
+    - {line: 52, kind: root-for-units-mocktests}
+  scripts/verify-register.py:
+    - {line: 118, kind: repo-root-path-join}
+    - {line: 167, kind: repo-root-path-join}
+    - {line: 271, kind: repo-root-path-join}
+    - {line: 274, kind: repo-root-path-join}
+  tests/test_blueprint.py:
+    - {line: 15, kind: repo-root-path-join}
+    - {line: 16, kind: repo-root-path-join}
+    - {line: 17, kind: repo-root-path-join}
+    - {line: 251, kind: repo-root-path-join}
+    - {line: 252, kind: repo-root-path-join}
+  tests/test_book2_schedule.py:
+    - {line: 306, kind: repo-root-path-join}
+    - {line: 307, kind: repo-root-path-join}
+    - {line: 308, kind: repo-root-path-join}
+    - {line: 312, kind: repo-root-path-join}
+  tests/test_c11_solution_regressions.py:
+    - {line: 10, kind: repo-root-path-join}
+  tests/test_c12_solution_regressions.py:
+    - {line: 11, kind: repo-root-path-join}
+  tests/test_c12_statement_contracts.py:
+    - {line: 9, kind: repo-root-path-join}
+    - {line: 178, kind: repo-root-path-join}
+    - {line: 194, kind: repo-root-path-join}
+    - {line: 206, kind: repo-root-path-join}
+  tests/test_integration.py:
+    - {line: 338, kind: repo-root-path-join}
+    - {line: 349, kind: repo-root-path-join}
+    - {line: 358, kind: repo-root-path-join}
+    - {line: 378, kind: repo-root-path-join}
+    - {line: 379, kind: repo-root-path-join}
+    - {line: 383, kind: repo-root-path-join}
+    - {line: 448, kind: repo-root-path-join}
+    - {line: 767, kind: repo-root-path-join}
+    - {line: 962, kind: repo-root-path-join}
+    - {line: 972, kind: repo-root-path-join}
+    - {line: 1048, kind: repo-root-path-join}
+    - {line: 1191, kind: unselected-checker-root}
+    - {line: 1200, kind: unselected-checker-root}
+    - {line: 1201, kind: unselected-checker-root}
+    - {line: 1202, kind: unselected-checker-root}
+    - {line: 1203, kind: unselected-checker-root}
+  tests/test_new_mocktest.py:
+    - {line: 14, kind: repo-root-path-join}
+    - {line: 15, kind: repo-root-path-join}
+  tests/test_prereq_coverage.py:
+    - {line: 97, kind: unselected-checker-root}
+    - {line: 515, kind: unselected-checker-root}
+    - {line: 579, kind: repo-root-path-join}
+    - {line: 584, kind: repo-root-path-join}
+  tests/test_schedule.py:
+    - {line: 880, kind: unselected-checker-root}
+    - {line: 883, kind: repo-root-path-join}
+    - {line: 972, kind: repo-root-path-join}
+    - {line: 1006, kind: repo-root-path-join}
+    - {line: 1029, kind: repo-root-path-join}
+    - {line: 1052, kind: repo-root-path-join}
+    - {line: 1100, kind: repo-root-path-join}
+  tests/test_scope.py:
+    - {line: 1573, kind: unselected-checker-root}
+    - {line: 1576, kind: repo-root-path-join}
+    - {line: 1595, kind: unselected-checker-root}
+    - {line: 1603, kind: repo-root-path-join}
+special_notebook_consumers:
+  - path: units/C4-classical-ml-practice/lessons/01-pandas-and-data-loading.ipynb
+    cells: [22]
+    classification: pandas-data-repository-fallback
+  - path: mocktests/r1-001/problems/p09.ipynb
+    cells: [3]
+    classification: non-pyproject-relative-data-fallback
+  - path: mocktests/r1-001/solutions/p09_solution.ipynb
+    cells: [2, 14]
+    classification: non-pyproject-relative-data-and-generator-fallback
+split_token_python_consumers:
+  - tests/test_c11_solution_regressions.py
+  - tests/test_c12_solution_regressions.py
+  - tests/test_c12_statement_contracts.py
+token_path_exception:
+  old_path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+  new_path: book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+  path_resolution_cells: [1]
+  path_resolution_source_sha256: c41afcaea3d06f3089e9aa446d3865e8d67a7fca3cb9d2e16b35ef0b755ffb45
+notebook_pyproject_discovery:
+  - {path: mocktests/r1-001/problems/p05.ipynb, cells: [1]}
+  - {path: mocktests/r1-001/problems/p07.ipynb, cells: [1]}
+  - {path: mocktests/r1-001/solutions/p05_solution.ipynb, cells: [1]}
+  - {path: mocktests/r1-001/solutions/p07_solution.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/lessons/02-resnet-reading.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/lessons/03-truncation-and-transfer.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p08.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p08_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p09.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p09_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p11.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p11_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p12.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p12_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p14.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p14_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p15.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p15_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p16.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p16_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p17.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p17_solution.ipynb, cells: [2]}
+  - {path: units/C7-cnn-transfer/practice/p19.ipynb, cells: [1]}
+  - {path: units/C7-cnn-transfer/practice/p19_solution.ipynb, cells: [2]}
+  - {path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/lessons/02-matrices-and-similarity.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/lessons/03-neighbors-and-retrieval.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p05.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p05_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p07.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p07_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p08.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p08_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p09.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p09_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p10.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p10_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p11.ipynb, cells: [2]}
+  - {path: units/C8-embeddings/practice/p11_solution.ipynb, cells: [2]}
+  - {path: units/C8-embeddings/practice/p12.ipynb, cells: [2]}
+  - {path: units/C8-embeddings/practice/p12_solution.ipynb, cells: [2]}
+  - {path: units/C8-embeddings/practice/p13.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p13_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p14.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p14_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p16.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p16_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p17.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p17_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p18.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p18_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p19.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p19_solution.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p20.ipynb, cells: [1]}
+  - {path: units/C8-embeddings/practice/p20_solution.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/lessons/03-truncated-svd-practice.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p07.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p07_solution.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p09.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p09_solution.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p12.ipynb, cells: [2]}
+  - {path: units/C9-dimensionality-reduction/practice/p12_solution.ipynb, cells: [2]}
+  - {path: units/C9-dimensionality-reduction/practice/p14.ipynb, cells: [1]}
+  - {path: units/C9-dimensionality-reduction/practice/p14_solution.ipynb, cells: [1]}
+staged_scope:
+  exact_files:
+    - books.yaml
+    - .gitignore
+    - AGENTS.md
+    - TODO.md
+    - syllabus.md
+    - docs/course-structure.md
+    - docs/README.md
+    - docs/architecture/decisions.md
+    - docs/curriculum-architecture.md
+    - docs/curriculum-roadmap.md
+    - docs/audits/015-coverage-audit.md
+    - docs/designs/000-project-design.md
+    - docs/designs/019-r2-book-architecture.md
+    - docs/mocktest-generation.md
+    - docs/plans/019-r2-attention-transformers.md
+    - docs/unit-standards.md
+  prefixes:
+    - book1/
+    - book2/
+    - curriculum/
+    - units/
+    - mocktests/
+    - reference/
+    - tools/
+    - scripts/
+    - tests/

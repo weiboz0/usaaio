@@ -1,0 +1,853 @@
+# Plan 019 — Atomic Two-Book Cutover and Attention Foundations
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` to implement this plan task-by-task, with specification and code-quality review after every task.
+
+**Goal:** Atomically migrate the existing Round 1 course into a complete `book1/` root, establish a complete and independently verifiable `book2/` root, and ship `book2/units/B2-019-attention-transformers`.
+
+**Architecture:** A strict top-level `books.yaml` registry is the only discovery entry point.
+Each book owns its syllabus, curriculum, units, mock tests, references, learner documentation, and build outputs; shared tools accept an explicit book or validate all registered books.
+Book 2 imports qualified Book 1 prerequisites without duplicating ownership.
+
+**Tech Stack:** Python 3.12, dataclasses, PyYAML, pytest, Jupyter notebooks, NumPy, PyTorch, Ruff, shell CI, and Git history-preserving moves.
+
+---
+
+## Branch, baseline, and amendment state
+
+- Branch: `feature/plan-019-attention-transformers`.
+- Main baseline: `9c57116bd648534b20833d5e421c9256b85322fd`, Design 019 / PR #21.
+- Architecture amendment: `88806b7`, approved by the user on 2026-08-10.
+- Current Book 1 baseline: 19 units, 149 Book 1 concepts, 437 unit practices, one `r1-001` mock, and 40 weeks.
+- Book 2 target baseline: 30 missing or partial required or bridge Round 2 knowledge points.
+- Pre-amendment commits through `4cc3894` implemented a shared-root model and are quarantined WIP.
+  Execution refactors them into the approved two-root architecture; their earlier review verdicts do not satisfy this plan gate.
+- No filesystem migration or Phase 2 implementation resumes until the amended four-way plan gate closes.
+
+## Final canonical tree
+
+```text
+books.yaml
+book1/
+  syllabus.md
+  curriculum/{course-schedule,coverage-map,material-inventory,official-topics,source-manifest}.yaml
+  units/
+  mocktests/{blueprint.yaml,r1-001/}
+  reference/
+  docs/course-structure.md
+  build/
+book2/
+  syllabus.md
+  curriculum/{course-schedule,coverage-map,material-inventory,official-topics,source-manifest}.yaml
+  units/B2-019-attention-transformers/
+  mocktests/blueprint.yaml
+  reference/
+  docs/course-structure.md
+  build/
+tools/
+scripts/
+docs/{architecture,audits,designs,plans,reviews}/
+```
+
+Root-level `syllabus.md`, `curriculum/`, `units/`, `mocktests/`, and `reference/` are forbidden after the cutover.
+There are no compatibility symlinks, fallback reads, copied source trees, or dual writes.
+
+## Canonical registry and API
+
+Create `tools/books.py` with these public contracts:
+
+```python
+@dataclass(frozen=True)
+class BookSpec:
+    id: str
+    number: int
+    root: Path
+    depends_on: tuple[str, ...]
+
+@dataclass(frozen=True)
+class BookImports:
+    source_book: str
+    units: tuple[str, ...]
+    concepts: tuple[str, ...]
+
+@dataclass(frozen=True)
+class BookEvidenceImports:
+    source_book: str
+    concepts: tuple[str, ...]
+    lesson_paths: tuple[str, ...]
+    practices: tuple[str, ...]
+    assessments: tuple[str, ...]
+
+@dataclass(frozen=True)
+class BookCatalog:
+    repo_root: Path
+    books: tuple[BookSpec, ...]
+
+    def by_id(self, book_id: str) -> BookSpec: ...
+
+def load_book_catalog(repo_root: str | Path) -> BookCatalog: ...
+def validate_book_root(book: BookSpec) -> list[str]: ...
+def load_book_imports(book: BookSpec) -> BookImports: ...
+def load_book_evidence_imports(book: BookSpec) -> BookEvidenceImports: ...
+def resolve_qualified_import(catalog: BookCatalog, importer: BookSpec, identity: str) -> Path: ...
+```
+
+`load_book_catalog()` accepts exactly `books_version` and `books` and validates only registry structure: duplicate IDs/numbers/roots, unknown or cyclic dependencies, absolute or escaping roots, symlinks, undeclared `book*/` roots, and forbidden legacy roots.
+It does not inspect the contents of an unselected sibling book.
+`validate_book_root()` validates the selected book's required tracked files: `syllabus.md`, the five named curriculum YAML files, `mocktests/blueprint.yaml`, and `docs/course-structure.md`.
+`units/` and `reference/` are required tracked directories, seeded with `.gitkeep` when empty; `build/` is generated, ignored, and may be absent before a build.
+`load_book_imports()` and `load_book_evidence_imports()` read separate persisted syllabus blocks; `books.yaml` authorizes the source-book dependency edge while those blocks independently authorize exact prerequisite symbols and exact cross-book evidence.
+Existing domain loaders receive one `BookSpec.root`; they never search the repository root or an unselected sibling book.
+CLI keeps `--root` as the repository containing `books.yaml`, requires exactly one of `--book` or `--all`, resolves the selection before dispatch, and passes `BookSpec.root` to each domain check.
+`--book book1` validates only Book 1 content; `--book book2` additionally loads only its declared Book 1 imports; `--all` validates every book in dependency order.
+
+## Book ownership and cross-book imports
+
+`book1/syllabus.md` owns exactly the existing 149 concepts and 19 units.
+`book2/syllabus.md` initially owns exactly these eleven concepts and `B2-019-attention-transformers`:
+
+```text
+matrix-transpose
+query-key-value-attention
+scaled-dot-product-attention
+attention-mask
+causal-self-attention
+multi-head-attention
+sinusoidal-positional-encoding
+attention-complexity
+transformer-residual-layernorm
+position-wise-feed-forward
+transformer-block
+```
+
+Book 2 declares prerequisite imports from `book1` for units `[F1-scientific-python, F2-vectors, F3-matrices, F5-probability, C6-pytorch, C7-cnn-transfer, C8-embeddings, C11-neural-training]` and concepts `[numpy-arrays, broadcasting, vectorization, elementwise-ops, aggregation-axis, random-seeding, dot-product, matrix-multiplication, expectation, variance, independence, variance-of-sums, torch-tensors, nn-module, requires-grad, tensor-shape-tracing, softmax, cross-entropy-loss, torch-optimizers, autograd-training]`.
+The same syllabus block separately persists an exact `evidence_imports` allowlist for the two C8 bridge rows: concepts `[tokenization, word-embeddings, gensim-usage, embedding-matrices]`, the single C8 lesson anchor named in those rows, practices `[C8-p01, C8-p02, C8-p05, C8-p06, C8-p12, C8-p13, C8-p15, C8-p17]`, and assessments `[r1-001-p05-1, r1-001-p05-2, r1-001-p05-3, r1-001-p05-4]`.
+Evidence imports authorize validation only; they never enter a Book 2 manifest's `concepts_used`, prerequisite closure, or ownership.
+At the registry boundary, diagnostics use qualified identities such as `book1:C6-pytorch` and `book1:softmax`.
+Within a book, existing local IDs remain unchanged.
+
+## Book 2 program and B2-019 content contract
+
+The six planned Book 2 units remain:
+
+1. `B2-019-attention-transformers` — Attention and Transformer Mechanics.
+2. `B2-020-language-transformers` — Language Transformers.
+3. `B2-021-cross-modal-transformers-vision` — Cross-modal Transformers and Advanced Vision.
+4. `B2-022-probabilistic-latent-models` — Probabilistic Latent Models.
+5. `B2-023-generative-models-diffusion` — Generative Models and Diffusion.
+6. `B2-024-gpu-scientific-ml-capstone` — GPU Scientific Modeling Capstone.
+
+All 30 Round 2 targets occur in exactly one planned-unit membership.
+The partial `nlp-word-embeddings` row remains an explicit cross-book bridge to `book1:C8-embeddings` until Plan 020 supplies model-training evidence.
+
+B2-019 contains a 30-minute Book 1 bridge diagnostic, five 90-minute lessons, 24 practices totalling 1,120 minutes, and a 60-minute review.
+The Book 2 schedule totals 1,660 minutes across local weeks 1–6 and display weeks 41–46.
+
+| Book week | Global week | Allocation |
+|---:|---:|---|
+| 1 | 41 | bridge 30; Session 1 90; p01, p02, p06, p13 = 135 |
+| 2 | 42 | Session 2 90; p03, p04, p07, p08, p14 = 185 |
+| 3 | 43 | Session 3 90; p05, p09, p10, p15, p16, p21, p23 = 330 |
+| 4 | 44 | Session 4 90; p11, p17, p18 = 180 |
+| 5 | 45 | Session 5 90; p12, p19, p20, p22, p24 = 290 |
+| 6 | 46 | review 60; planned future R2 final assessment marker |
+
+The 255/275/420/270/380/60 weekly totals intentionally ramp through the derivation-heavy third week, place the mask-policy scenario after Session 5's complete architecture flow, and taper to review; Book 2 policy validates this explicit ledger rather than applying Book 1's 450–500-minute semester band, and the rendered course structure states that rationale.
+
+### Teaching surfaces
+
+| Session | Book-local path | Required surface |
+|---:|---|---|
+| 0 | `lessons/00-book1-bridge.ipynb` | diagnose imported softmax, matrix, broadcasting, tensor, and autograd prerequisites without re-owning them |
+| 1 | `lessons/01-query-key-value-and-scaled-dot-product.ipynb` | matrix transpose, Q/K/V, scale, stable row softmax, weighted values |
+| 2 | `lessons/02-self-attention-and-masks.ipynb` | sequence shapes, padding masks, causal masks before softmax |
+| 3 | `lessons/03-multi-head-position-and-cost.ipynb` | head projections/concat, sinusoidal position, exact time and score-memory cost |
+| 4 | `lessons/04-attention-module-and-tiny-training.ipynb` | tested PyTorch attention module and seeded causal cross-entropy training task |
+| 5 | `lessons/05-transformer-blocks-and-architecture.ipynb` | pre-norm residual block, feed-forward sublayer, encoder/decoder roles |
+
+### Exact practice ledger
+
+| ID | Set | Type | Difficulty | Minutes | Primary contract |
+|---|---|---|---|---:|---|
+| p01 | A | MC | intro | 20 | identify Q/K/V roles and a valid attention row |
+| p02 | A | MC normal form | intro | 20 | exact scaled score and softmax weight |
+| p03 | A | MC | core | 20 | scaled self-attention with Q=K=V, output shape, interaction |
+| p04 | A | MC | intro | 20 | causal versus padding masks before softmax |
+| p05 | A | MC | core | 20 | positional encoding and permutation equivariance |
+| p06 | B | constrained coding | intro | 50 | stable NumPy scaled-dot-product attention |
+| p07 | B | constrained coding | intro | 50 | batched scaled self-attention transpose contract |
+| p08 | B | constrained coding | core | 50 | additive causal mask with forbidden weights zero |
+| p09 | B | constrained coding | intro | 50 | sinusoidal table plus pinned embedding probes |
+| p10 | B | constrained coding | core | 50 | derive then implement head split/concatenation |
+| p11 | B | constrained coding | advanced | 50 | PyTorch attention module with scale and mask |
+| p12 | B | constrained coding | core | 50 | pre-norm residual/feed-forward block |
+| p13 | B | proof | core | 45 | variance control by division by sqrt(d_k) |
+| p14 | B | proof | core | 45 | causal dependence only on positions at or before i |
+| p15 | B | proof | advanced | 45 | multi-head projection and concatenation dimensions |
+| p16 | B | proof | core | 45 | score time and memory scaling in n, d, h |
+| p17 | C | integrative | advanced | 65 | seeded causal predictor with positional input and cross-entropy loss |
+| p18 | C | integrative | core | 65 | from-scratch attention mask audit |
+| p19 | C | integrative | advanced | 65 | encoder recurrence and LayerNorm ordering |
+| p20 | C | scenario | core | 65 | encoder/decoder/cross-attention Q/K/V sources |
+| p21 | C | integrative | core | 65 | exact cost under fixed length/dimension budgets |
+| p22 | C | scenario | intro | 55 | choose and justify mask policy after Session 5 |
+| p23 | C | challenge | advanced | 55 | reconstruct two heads and certify memory budget |
+| p24 | C | challenge | advanced | 55 | repair residual/norm/mask bug |
+
+Set A is p01-p05, Set B is p06-p16, and Set C is p17-p24.
+The difficulty count is exactly 7 intro, 11 core, and 6 advanced practices (29.2%, 45.8%, and 25.0%).
+The type mix is 5 MC, 7 constrained coding, 4 proof, 4 integrative, 2 scenario, and 2 challenge practices.
+
+Every coding statement pins shapes, dtypes, seed `20260808`, allowed and banned APIs, fixed probes, and explicit `atol` and `rtol`.
+Student notebooks contain no solutions or executed output.
+Every solution executes top-to-bottom and ends in `### Answer check` assertions.
+
+### Coverage evidence
+
+| Knowledge point | Modalities | Direct practices |
+|---|---|---|
+| attention-mechanism-foundations | theory, derivation, implementation | p01, p02, p13, p06 |
+| self-attention | theory, derivation, implementation | p03, p14, p07, p08 |
+| multi-head-attention | theory, derivation, implementation | p10, p23, p15 |
+| positional-encoding | theory, implementation | p05, p09, p17 |
+| attention-complexity-analysis | theory, derivation | p21, p16, p23 |
+| attention-from-scratch | theory, implementation, model-training | p18, p11, p17 |
+| transformer-architecture-foundations | theory, derivation, implementation | p20, p19, p12, p24 |
+
+Each modality has a primary lesson anchor and at least one primary practice.
+Each covered knowledge point has at least three distinct qualifying practices.
+Every Book 2-owned concept has at least three direct practice tags.
+
+| Owned concept | Required direct practice tags |
+|---|---|
+| matrix-transpose | p02, p06, p07 |
+| query-key-value-attention | p01, p02, p06 |
+| scaled-dot-product-attention | p02, p03, p06, p07, p11, p13, p18 |
+| attention-mask | p04, p08, p18, p22 |
+| causal-self-attention | p04, p08, p14, p17 |
+| multi-head-attention | p10, p15, p23 |
+| sinusoidal-positional-encoding | p05, p09, p17 |
+| attention-complexity | p16, p21, p23 |
+| transformer-residual-layernorm | p12, p19, p24 |
+| position-wise-feed-forward | p12, p19, p24 |
+| transformer-block | p12, p19, p20, p24 |
+
+## Permanent verification requirements
+
+1. Registry mutations reject missing, duplicate, cyclic, escaping, symlinked, or undeclared book roots.
+2. Legacy-path mutations reject any root-level content tree or fallback load.
+3. Book-local discovery proves a Book 1 command succeeds unchanged when Book 2 content is missing or corrupt, while a Book 2 command reads only its selected root plus its exact declared Book 1 imports.
+4. Cross-book import mutations reject unqualified, undeclared, later-layer, cyclic, or ownership-changing references.
+5. A `git archive HEAD` verifier covers notebook execution, generated documents, nonzero PDF outputs, references, mock tests, ignore rules, and pre-merge collision discovery without untracked legacy artifacts.
+6. Layer-boundary mutations preserve all prior Book 1/Round 2 ownership, evidence, compute, and coverage checks.
+7. Schedule mutations cover local/global numbering, exact reconciliation, stale final marker, and cross-book leakage.
+8. Five answer-affecting mutations remove scaling, mask after softmax, concatenate the wrong head axis, omit positional addition, and reverse residual/LayerNorm order.
+9. The PR guard detects old versus new layout, translates pre-cutover Book 1 paths, R2 references, and combined curriculum rows into their post-cutover book namespaces before collision checks, and rejects any untranslatable legacy addition.
+
+## Execution ownership
+
+- Orchestration, migration mapping, generated evidence, and reports: active Codex session.
+- Tooling and tests: fresh GPT-5.6-sol implementation sessions.
+- Lesson content and all 24 statements: fresh GPT-5.6-sol session.
+- All 24 solutions: separate fresh GPT-5.6-sol session that receives only final statements.
+- Plan gate after the 2026-08-09 cutoff: `[self]`, `[sol]`, `[glm]`, `[fable]`.
+- Content gate uses the same post-cutoff roster.
+
+## Out of scope
+
+- Rewriting pedagogical content inside existing Book 1 notebooks.
+- Changing existing Book 1 IDs, answers, schedules, or CPU policy.
+- Compatibility symlinks, duplicate roots, fallback reads, or dual writes.
+- Plans 020–024 content, an R2 mock, Student's t-test, importance sampling, raw contest text, student data, opaque weights, or external required downloads.
+- Changes to review rosters or lifecycle policy in `docs/development-workflow.md` or `docs/content-review-gate.md`.
+
+The user explicitly authorized the structure-only updates to `AGENTS.md` and `docs/architecture/decisions.md` on 2026-08-10 after the first amended-plan gate identified their old root layout as a blocker.
+
+## Task 0 — Pin the atomic filesystem contract in failing tests
+
+The practice and coverage tables use `pNN` only as readable shorthand for canonical manifest IDs `B2-019-pNN`.
+
+**Files:**
+
+- Create: `tests/test_books.py`
+- Create: `tests/test_book_isolation.py`
+- Create: `tests/test_clean_checkout.py`
+- Create: `tests/test_reference_migration.py`
+- Create: `tests/fixtures/plan019-path-inventory.yaml`
+- Modify: `tests/test_integration.py`
+- Modify: `tests/test_model.py`
+- Modify: `tests/test_schedule.py`
+- Modify: `tests/test_scope.py`
+
+- [ ] Write `test_catalog_rejects_legacy_root_and_escaping_book_roots` with a minimal two-book temporary repository.
+- [ ] Write a mutation matrix for duplicate IDs/numbers/roots, dependency cycles, symlink roots, undeclared `book3/`, and missing required files.
+- [ ] Write `test_book1_results_are_byte_identical_after_valid_book2_fixture` across syllabus, schedule, inventory, renderer, answer key, and PDF input discovery.
+- [ ] Write `test_book1_selection_does_not_validate_missing_or_corrupt_book2_content` and the converse dependency-scoped Book 2 import test.
+- [ ] Write `test_cross_book_import_requires_registry_dependency_and_qualified_owner`.
+- [ ] Write qualified coverage-evidence tests for the two C8 bridge rows: valid Book 1 concept/lesson/practice/assessment references pass; unqualified, wrong-owner, missing, or Book 2-reowned variants fail independently.
+- [ ] Write qualified `depends_on` tests for every R2 row with a Book 1-owned dependency edge and imported-unit closure tests proving `taught_closure` resolves only allowlisted Book 1 units/concepts without copying them into Book 2.
+- [ ] Write clean-checkout producer-to-consumer assertions for every path moved in Task 2, including fresh execution of all Book 1 and Book 2 solution notebooks inside the archive.
+- [ ] Write shell/static mutations that reject repository-root `find units`, `for dir in units mocktests`, repository-root `Path("syllabus.md")`, and any checker invoked without a selected `BookSpec.root`; do not use a zero-match literal search that would also reject valid book-local `root / "units"` joins.
+- [ ] Commit an exact consumer-inventory fixture generated from Python AST path joins plus notebook source cells; it must include split-token joins such as `ROOT / "units"`, explicitly cover `test_c11_solution_regressions.py`, `test_c12_solution_regressions.py`, and `test_c12_statement_contracts.py`, and pin all 64 baseline notebooks whose code cells perform top-level `pyproject.toml` discovery.
+  The migration fails if a newly discovered consumer is not classified.
+- [ ] Write PR-union fixtures for old-layout and post-cutover `origin/main`, including a colliding new `units/C13-*`, noncolliding old Book 1 content, R1 and R2 coverage-row mutations inside the old combined map, and an untranslatable legacy addition.
+- [ ] Write staged-scope/secret fixtures proving unrelated `notes.md` aborts before staging, new token/secret paths fail, and the exact pre-existing C8 tokenization notebook is the sole provenance-based exception: its rename plus its inventoried path-resolution code-cell rewrite passes only when every other cell is byte-identical to the merge base.
+- [ ] Write local-reference migration fixtures for mixed tracked/ignored R1 and R2 corpora, shared cache, outlines, unexpected entries, reruns, and proof that raw files remain ignored.
+  Separately assert the derived-analysis split: Book 1 keeps only R1 source rows and pre-R2 sections, while Book 2 keeps only R2 source rows and the complete `## Round 2 shape and topics` section onward.
+- [ ] Run:
+
+```bash
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache uv run pytest -q \
+  tests/test_books.py tests/test_book_isolation.py tests/test_clean_checkout.py \
+  tests/test_reference_migration.py tests/test_integration.py \
+  tests/test_model.py tests/test_schedule.py tests/test_scope.py
+```
+
+Expected: existing Book 1 tests pass; new registry and isolation tests fail only because `books.yaml`, `tools/books.py`, and migrated roots do not exist.
+
+- [ ] Commit:
+
+```bash
+git add tests/test_books.py tests/test_book_isolation.py tests/test_integration.py \
+  tests/test_clean_checkout.py tests/test_reference_migration.py tests/test_model.py \
+  tests/test_schedule.py tests/test_scope.py tests/fixtures/plan019-path-inventory.yaml
+git commit -m "test: pin atomic two-book roots"
+```
+
+## Task 1 — Implement the registry API against isolated fixtures
+
+**Files:**
+
+- Create: `tools/books.py`
+- Modify: `tools/model.py`
+- Modify: `tools/cli.py`
+- Test: `tests/test_books.py`
+- Test: `tests/test_book_isolation.py`
+
+- [ ] Implement `BookSpec`, `BookCatalog`, and `load_book_catalog()` exactly as specified above.
+- [ ] Implement `BookImports`, `BookEvidenceImports`, selected-root validation, exact persisted prerequisite/evidence allowlists, and qualified import resolution as separate APIs; dependency edges alone never authorize arbitrary symbols or evidence.
+- [ ] Keep current repository consumers on their existing root during this preparatory commit; only temporary fixture roots exercise the new registry API.
+- [ ] Implement strict dependency ordering, root containment, symlink rejection, undeclared-book rejection, and legacy-root detection in catalog loading; keep selected content validation separately callable.
+- [ ] Implement and unit-test a reusable mutually exclusive `--book` / `--all` parser helper while preserving `--root` as the repository root; do not attach it to the live parser or switch dispatch until Task 2.
+- [ ] Run registry and isolation fixtures and confirm every named mutation fails for its intended diagnostic.
+- [ ] Run the existing Book 1 model and CLI suites to prove this preparatory API changes no live behavior.
+- [ ] Commit:
+
+```bash
+git add tools/books.py tools/model.py tools/cli.py tests/test_books.py tests/test_book_isolation.py
+git commit -m "feat: add strict book registry API"
+```
+
+## Task 2 — Atomically move both books and cut over every consumer
+
+No commit is allowed between the first live `git mv` and the final green verification in this task.
+If any consumer cannot be migrated, stop with the uncommitted move set intact and resolve the plan before committing.
+Do not use reset, checkout, clean, or deletion as rollback; the last committed revision is the recovery anchor, and work resumes by repairing the preserved move set.
+
+**Files:**
+
+- Create: `books.yaml`
+- Create: `book2/syllabus.md`
+- Create: `book2/curriculum/{course-schedule,coverage-map,material-inventory,official-topics,source-manifest}.yaml`
+- Create: `book2/units/.gitkeep`
+- Create: `book2/reference/.gitkeep`
+- Create: `book2/mocktests/blueprint.yaml`
+- Create: `book2/docs/course-structure.md`
+- Create: `scripts/migrate-reference-layout.sh`
+- Create: `scripts/verify-clean-checkout.sh`
+- Create: `scripts/verify-staged-scope.py`
+- Modify: `.gitignore`
+- Move: `syllabus.md` → `book1/syllabus.md`
+- Modify after move: `book1/syllabus.md`
+- Move: four same-named curriculum YAML files → `book1/curriculum/`
+- Move and rename: `curriculum/sources.yaml` → `book1/curriculum/source-manifest.yaml`
+- Move: `units/` → `book1/units/`
+- Move: `mocktests/` → `book1/mocktests/`
+- Move: `docs/course-structure.md` → `book1/docs/course-structure.md`
+- Move and split: `reference/analysis.md` → book-local Round 1 and Round 2 derived analyses
+- Modify: `AGENTS.md`
+- Modify: `docs/architecture/decisions.md`
+- Modify: `docs/designs/000-project-design.md`
+- Modify: `docs/README.md`
+- Modify: `docs/curriculum-architecture.md`
+- Modify: `docs/curriculum-roadmap.md`
+- Modify: `docs/mocktest-generation.md`
+- Modify: `TODO.md`
+- Modify: `tools/model.py`
+- Modify: `tools/cli.py`
+- Modify: `tools/checks/answerkey.py`
+- Modify: `tools/checks/blueprint.py`
+- Modify: `tools/checks/coverage.py`
+- Modify: `tools/checks/hygiene.py`
+- Modify: `tools/checks/layer_boundary.py`
+- Modify: `tools/checks/new_mocktest.py`
+- Modify: `tools/checks/overlap.py`
+- Modify: `tools/checks/prereq.py`
+- Modify: `tools/checks/schedule.py`
+- Modify: `tools/checks/scope.py`
+- Modify: `tools/checks/tolerance.py`
+- Modify: `tools/audit_curriculum.py`
+- Modify: `tools/render_course_structure.py`
+- Modify: `tools/render_curriculum_roadmap.py`
+- Modify: `tools/verify_training_mutations.py`
+- Modify: `tools/verify_classical_mutations.py`
+- Modify: all 64 baseline Book 1 notebooks containing top-level `pyproject.toml`/repository-root discovery, only in their path-resolution cells
+- Modify: `scripts/build-pdf.sh`
+- Modify: `scripts/fetch-reference.sh`
+- Modify: `scripts/verify-register.py`
+- Modify: `scripts/ci-local.sh`
+- Modify: `scripts/pre-merge-guard.sh`
+- Modify: every existing `tests/test_*.py` path consumer, discovered by AST/string-token inventory rather than a slash-only regex
+- Modify: `tests/test_book2_schedule.py`
+- Modify: `tests/test_layer_boundary.py`
+
+- [ ] Build on the committed WIP through `4cc3894`; do not revert it.
+  Rewrite or delete every superseded shared-root expectation explicitly, including the existing `tests/test_book2_schedule.py` imports of nonexistent parallel Book 2 modules.
+- [ ] Before the first move, run `verify-staged-scope.py --preflight` against the committed path inventory and abort if `git status --porcelain` contains any nonignored path outside this plan's exact files/prefixes.
+  After staging, run the same verifier in `--cached` mode and abort on any unexpected path; benign unrelated files are never added to the atomic commit.
+- [ ] In Task 2, reduce that pre-amendment schedule file to green tests for the registered, empty `status: planned` Book 2 skeleton.
+  Task 4 then adds the six-week staged/live policy cases as new failing tests before implementing them; no skip or missing-module sentinel is permitted.
+- [ ] Use `git mv` for every tracked source and generated artifact so history remains traceable.
+- [ ] Before moving `reference/`, run the migration script in dry-run mode.
+  It accepts only `.gitkeep`, `analysis.md`, `r1-*`, `r2-*`, `cache/`, and `outlines-*`; it refuses unknown entries, moves ignored `r1-*`, the shared cache, and the existing Round 1 outlines under Book 1, moves ignored `r2-*` under Book 2, leaves no root `reference/`, and never stages raw files.
+- [ ] Split tracked `analysis.md` semantically, not by file copy: Book 1 retains the methodology, only the `r1-2026`/`r1-2025` source rows, and all R1 sections before `## Round 2 shape and topics`; Book 2 receives the methodology, only the R2 source rows, and that Round 2 heading through end-of-file.
+  Fail if either output contains the other round's source IDs or round-specific section headings.
+- [ ] Translate every existing `.gitignore` rule, including Book 1/Book 2 build and raw-reference rules, all C10 generated CSVs, and R1 mock held-out/student/solution artifacts.
+  Add `git check-ignore` assertions for every protected generated path under its new book root and prove the corresponding source files are not accidentally ignored.
+- [ ] Create the exact two-record `books.yaml` registry.
+- [ ] Partition the committed WIP syllabus explicitly: remove the eleven attention concepts and `B2-019-attention-transformers` row from moved `book1/syllabus.md`, preserve its 149 concepts and 19 units, and write those eleven concepts, B2-019 with `length: double`, and the persisted prerequisite/evidence import allowlists only to `book2/syllabus.md`.
+- [ ] Partition coverage, topic, and renamed source-manifest contracts deterministically: shared-foundation and Round 1 exit rows into Book 1, Round 2 exit rows into Book 2, and only referenced source metadata into each book.
+- [ ] Preserve `nlp-word-embeddings` as a partial Book 2 bridge whose destination is `book1:C8-embeddings`.
+- [ ] Preserve covered `nlp-tokenization` as a Book 2 exit row with qualified evidence owned by `book1:C8-embeddings`; neither bridge re-owns Book 1 concepts.
+- [ ] Encode those two cross-book evidence rows with qualified concepts (`book1:<concept>`), lesson paths (`book1:units/...`), practice IDs (`book1:C8-*`), assessment IDs (`book1:r1-001-*`), and destination `book1:C8-embeddings`.
+  Name `shipped_concepts` explicitly in this qualification rule.
+  Scope validation requires each symbol in the exact persisted `evidence_imports` allowlist and resolves it against the named owner book; it does not add evidence to a Book 2 manifest's prerequisite allowlist or ownership set.
+- [ ] Qualify every Book 2 `depends_on` edge whose owner is Book 1 as `book1:<knowledge-point>`.
+  Scope validation resolves it through the dependency edge and rejects unqualified, missing, later-layer, or wrong-owner dependencies.
+- [ ] Create an empty Book 2 inventory and a planned assessment blueprint with exactly `blueprint_version: 1`, `book: 2`, `target: round-2`, `status: planned`, `assessment_prefix: r2-`, and qualified `derived_from` metadata.
+  Planned blueprint mode is valid only while no `r2-*` manifest exists, grants no conformance credit, and must be replaced by Plan 024 before an R2 assessment becomes live.
+- [ ] Create the six-unit roadmap with no B2 material rows or coverage credit.
+- [ ] Create `book2/curriculum/course-schedule.yaml` with `schedule_version: 1`, `book: 2`, `status: planned`, and an empty `weeks` list accepted only while Book 2 has no live manifest; Task 4 replaces it before the B2 manifest becomes live.
+- [ ] Change every loader entry point to accept a registered `BookSpec.root`; remove repository-root and sibling-book fallback discovery.
+- [ ] Teach prerequisite closure to resolve qualified, exact imported units and their taught concepts through the selected book's persisted prerequisite allowlists; local closure never raises on or silently accepts a foreign unit.
+- [ ] Rename every `sources.yaml` consumer and fixture to `source-manifest.yaml`, including scope checks, integration tests, diagnostics, and syllabus/document prose.
+- [ ] Make mock discovery derive `r{BookSpec.number}-*` and reject wrong-round assessment directories instead of hard-coding `r1-*`.
+- [ ] Add CLI selection before subcommands:
+
+```text
+usaaio-tools --book book1 schedule-check
+usaaio-tools --book book2 schedule-check
+usaaio-tools --all prereq-check
+```
+
+- [ ] Attach the parser helper so live commands now require exactly one of `--book` or `--all`; keep `--root` as the repository root and reject using `--all` for commands without aggregate semantics.
+
+- [ ] Define `--all` as registry-order iteration with book-qualified diagnostics and a nonzero exit when any book fails.
+- [ ] Set notebook execution CWD to the selected book root and inject `USAAIO_BOOK_ROOT`.
+  Mechanically rewrite every inventoried Book 1 notebook path-resolution cell that walks to top-level `pyproject.toml`; resolve the environment value first and otherwise walk upward only to the nearest directory containing book-local `syllabus.md` and `curriculum/`.
+  Preserve every non-path cell byte-for-byte and prohibit repository-root cache/content fallbacks.
+- [ ] Make Book 1 schedule, mock, PDF, overlap, inventory, and renderer consumers enumerate only `book1/`.
+- [ ] Make Book 2 consumers enumerate only `book2/` and resolve Book 1 imports through `books.yaml`.
+- [ ] Parameterize `scripts/build-pdf.sh` by selected book and write only beneath that book's `build/`.
+  Book 1 retains its existing mock source set; Book 2 discovers exactly each live unit's top-level `lesson.ipynb` overview, `lessons/*.ipynb`, top-level `review.ipynb`, and statement-only `practice/p[0-9][0-9].ipynb`.
+  It excludes `*_solution.ipynb` and must fail, not pass vacuously, when a live unit yields zero sources or outputs.
+- [ ] Update the pre-merge guard to detect layout per ref using `git cat-file -e <ref>:books.yaml`.
+  For a pre-cutover ref, normalize `units`, `mocktests`, syllabus, and R1 references into Book 1, R2 references into Book 2, and split combined curriculum rows schema-wise by layer/round/qualified destination before computing the prospective merge union; for a post-cutover ref, do no translation.
+  Detect translated unit/mock/R1-row/R2-row collisions, allow the known baseline migration, and reject any new or untranslatable legacy addition.
+- [ ] Make the guard reject new or content-modified staged `.gh-token`, `.env*`, `*token*`, `*secret*`, `*credential*`, raw-paper, student-data, and translated generated-grading-artifact paths before the atomic commit.
+  The sole token-name exception is the exact pre-existing curricular path `book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb`, listed in the committed path inventory.
+  It may differ from the merge-base blob only by the repository-to-book rename and the inventoried path-resolution code-cell rewrite; the verifier must compare notebook cells and require every other cell to remain byte-identical.
+  Any other changed cell or any new token-named path remains a hard stop.
+- [ ] Update CI to run registry validation, each book independently, cross-book imports, aggregate reports, and legacy-path rejection.
+- [ ] Invoke existing training/classical mutation tools with `--book book1` (or selected `book1/` root), and invoke the attention mutation tool with `--book book2`; no mutation command receives repository root as a content root.
+- [ ] Apply the user-authorized structure-only governance migration: make `AGENTS.md`, `docs/architecture/decisions.md`, Design 000, the docs index, curriculum architecture, roadmap prose, `docs/mocktest-generation.md`, and live TODO paths name `books.yaml`, mandatory book selection, and the two complete book roots.
+  Do not change reviewer rosters, lifecycle policy, or unrelated decisions.
+- [ ] Replace Design 000's statement that unit lessons carry no PDF obligation with the two-book policy: Book 1 retains its mock-test PDFs, while every live Book 2 unit requires a book-local student-facing PDF collection; B2-019 must produce exactly the 32 sources and outputs specified above.
+- [ ] Assert root legacy paths are absent, are not symlinks, and cannot be recreated without failing CI.
+- [ ] Inventory path literals as a review aid, then rely on Task 0's structural/static and runtime mutations to distinguish invalid repository-root access from valid book-local joins:
+
+```bash
+rg -n '(^|["'"'` ])(units|curriculum|mocktests|reference)/|Path\("syllabus\.md"\)' \
+  tools scripts tests .gitignore
+```
+
+Expected: every match is either a selected book-root join, a translated pre-cutover guard fixture, or an intentional negative mutation; no repository-root content access remains.
+
+- [ ] Run the complete existing pytest suite, all Book 1 CLI checks, registry/import checks, generated-document freshness, PDF build, and both CLI smoke routes.
+- [ ] Commit:
+
+```bash
+git status --short
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache \
+  uv run python scripts/verify-staged-scope.py --preflight tests/fixtures/plan019-path-inventory.yaml
+git add -A
+git diff --cached --name-only
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache \
+  uv run python scripts/verify-staged-scope.py --cached tests/fixtures/plan019-path-inventory.yaml
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache \
+  bash scripts/pre-merge-guard.sh
+git commit -m "refactor: split curriculum into complete book roots"
+```
+
+The staged-name inspection and guard must show no secret/token/credential path, raw paper, student data, generated C10 grading artifact, or legacy root before the commit runs.
+
+## Task 3 — Rebuild generated Book 1 evidence and prove clean-checkout equivalence
+
+**Files:**
+
+- Modify: `book1/curriculum/material-inventory.yaml`
+- Modify: `book1/docs/course-structure.md`
+- Modify: `docs/audits/015-coverage-audit.md`
+- Modify: shared aggregate roadmap/report outputs
+- Test: `tests/test_audit_curriculum.py`
+- Test: `tests/test_integration.py`
+
+- [ ] Regenerate Book 1 inventory and learner documents from `book1/` only.
+- [ ] Generate the shared curriculum roadmap by reading both registered books in dependency order; preserve book-qualified ownership and never treat the aggregate output as a third source of truth.
+- [ ] Assert the same 19 units, 149 concepts, 437 practices, 69 lesson sessions, 40 schedule weeks, and `r1-001` assessment namespace.
+- [ ] Compare every Book 1 manifest and notebook blob under `4cc3894:units/` and `4cc3894:mocktests/` with its Book 1 destination.
+  For inventoried root-discovery notebooks, compare every non-path cell byte-for-byte and prove each changed cell differs only by replacing top-level `pyproject.toml` discovery with selected-book-root resolution; all other notebook and manifest blobs remain identical.
+- [ ] Execute the existing R1 mock solution from Book 1 CWD so its unchanged `mocktests/r1-001/...` local path resolves within the selected root.
+- [ ] Build Book 1 PDFs and assert the same source notebook set and output count.
+- [ ] Run Book 1 solution execution, answer-key, hygiene, prerequisite, coverage, schedule, overlap, PDF, and renderer checks.
+- [ ] Commit:
+
+```bash
+git add book1/curriculum book1/docs docs/audits tests
+git commit -m "test: prove Book 1 cutover equivalence"
+```
+
+## Task 4 — Implement the book-parameterized schedule route
+
+**Files:**
+
+- Create: `tests/fixtures/two-books-valid/`
+- Modify: `tools/checks/schedule.py`
+- Modify: `tools/render_course_structure.py`
+- Modify: `tools/cli.py`
+- Modify: `scripts/ci-local.sh`
+- Modify: `tests/test_book2_schedule.py`
+- Test: `tests/test_schedule.py`
+
+- [ ] Replace the pre-amendment test's imports of `tools.checks.book2_schedule` and `tools.render_book2_structure`; those modules remain forbidden.
+- [ ] Keep one parser, reconciliation engine, dispatcher, and renderer module, with explicit `Book1SchedulePolicy` and `Book2SchedulePolicy` validators behind the shared API.
+  Book 1 policy preserves its 40-week semesters, 450–500 minute rule, and mock/debrief ending; Book 2 policy supports local/global numbering, `bridge-diagnostic`, 6-week staging, and a planned future-assessment marker.
+- [ ] Install the exact six-week schedule as `status: staged` before the manifest exists.
+  In staged state, validate schema, local/global sequence, allowed kinds, explicit allocation minutes, the 1,660-minute ledger, uniqueness, and final marker, but grant no coverage and reject staged schedules once any live Book 2 manifest exists.
+- [ ] Task 5 changes the schedule atomically to `status: live`; live mode requires full manifest path/ID/minute reconciliation and rejects missing content.
+- [ ] Validate local weeks 1–6, display weeks 41–46, all 1,660 minutes, every practice exactly once, and the planned final marker after local week 6.
+- [ ] Mutate local/global numbering, allocation minutes, duplicate/omitted practice IDs, stale final marker, unknown kinds, and cross-book unit references.
+- [ ] Assert Book 1 schedule bytes and rendered output are unchanged by a valid Book 2 fixture.
+- [ ] Run:
+
+```bash
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache uv run pytest -q \
+  tests/test_book2_schedule.py tests/test_schedule.py tests/test_book_isolation.py
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache \
+  uv run usaaio-tools --book book2 schedule-check
+```
+
+- [ ] Commit:
+
+```bash
+git add tools scripts tests book2/curriculum book2/docs
+git commit -m "feat: add independent Book 2 schedule"
+```
+
+## Task 5 — Author B2-019 statements and teaching surfaces
+
+**Files:**
+
+- Create: `book2/units/B2-019-attention-transformers/manifest.yaml`
+- Create: `book2/units/B2-019-attention-transformers/lesson.ipynb`
+- Create: `book2/units/B2-019-attention-transformers/review.ipynb`
+- Create: six notebooks under `book2/units/B2-019-attention-transformers/lessons/`
+- Create: `practice/p01.ipynb` through `practice/p24.ipynb`
+- Create: `book2/units/B2-019-attention-transformers/scripts/generate_attention_data.py`
+- Modify: `book2/curriculum/course-schedule.yaml`
+- Modify: `docs/unit-standards.md`
+
+- [ ] The statement author creates the bridge, five lessons, overview, review, generator, and all 24 final student statements without solution outlines.
+- [ ] Declare `length: double` in both Book 2 syllabus and manifest, and add B2-019 to the double-length roster in `docs/unit-standards.md`; five 90-minute sessions and 24 practices must satisfy both enforced bands.
+- [ ] Every path and identifier matches the content and evidence tables above.
+- [ ] The bridge diagnoses the complete imported prerequisite allowlist in coherent groups and links every failure to its qualified Book 1 owner/remediation unit, including NumPy reductions/vectorization, dot products, variance, tensor shapes, cross-entropy, `nn.Module`, autograd, and optimizer fluency.
+- [ ] Create the manifest only after all declared statement-side paths exist.
+- [ ] In the same commit that makes the manifest live, change the schedule from `staged` to `live` and require exact manifest reconciliation for all 24 practice IDs and minutes.
+- [ ] Record `compute.policy: cpu`, seed `20260808`, exact minutes, sessions, imports, concept tags, and solution paths.
+- [ ] Every overview, bridge/lesson, practice, review, and later solution visibly states `Round 2 extension`, the applicable qualified Book 1 prerequisites/remediation link, and `compute.policy: cpu`; hygiene tests inspect every student and solution notebook plus rendered PDF source metadata.
+- [ ] Constrain p09/p17 to pinned numeric/one-hot inputs and the prerequisite allowlist; B2-019 may use Book 1 embedding evidence for roadmap continuity but must not consume `nn.Embedding`, `embedding-matrices`, or another C8 concept as a teaching prerequisite.
+- [ ] Run hygiene, manifest, import, coverage-tag, time-budget, and lesson-order checks without executing student notebooks.
+- [ ] Commit:
+
+```bash
+git add book2/units/B2-019-attention-transformers book2/curriculum/course-schedule.yaml \
+  book2/syllabus.md docs/unit-standards.md
+git commit -m "feat: teach attention and Transformer mechanics"
+```
+
+## Task 6 — Blind-solve all 24 practices
+
+**Files:**
+
+- Create: `book2/units/B2-019-attention-transformers/practice/p01_solution.ipynb` through `p24_solution.ipynb`
+
+- [ ] Dispatch a separate fresh Sol session with only the committed statements and no author outline.
+- [ ] Require fixed probes, explicit tolerances, pinned variables, and a final `### Answer check` in every solution.
+- [ ] Preserve the required learner-visible `Round 2 extension`, qualified prerequisite, and CPU-policy header in every solution without copying statement solution outlines.
+- [ ] Execute all solutions fresh in numeric ID order `p01` through `p24`.
+- [ ] Run statement/solution source isolation and answer-register checks.
+- [ ] Commit:
+
+```bash
+git add book2/units/B2-019-attention-transformers/practice/*_solution.ipynb
+git commit -m "feat: add independently solved attention practices"
+```
+
+## Task 7 — Close Book 2 coverage and answer-affecting mutations
+
+**Files:**
+
+- Create: `tools/verify_attention_mutations.py`
+- Create: `tests/test_attention_mutations.py`
+- Modify: `book2/curriculum/coverage-map.yaml`
+- Modify: `book2/curriculum/material-inventory.yaml`
+- Modify: `book2/docs/course-structure.md`
+- Modify: shared aggregate audit outputs
+- Modify: `scripts/ci-local.sh`
+
+- [ ] Promote exactly the seven B2-019 rows to covered and leave all later targets missing or partial.
+- [ ] Attach exact lesson anchors, modalities, practices, shipped concepts, and evidence concepts from the tables above.
+- [ ] Regenerate Book 2 inventory, structure, and aggregate reports only after the complete manifest is valid.
+- [ ] Implement the five source/cell mutations named in Permanent verification.
+- [ ] Prove every mutation fails its intended answer check while the untouched corpus passes.
+- [ ] Commit:
+
+```bash
+git add tools scripts tests book2/curriculum book2/docs docs/audits
+git commit -m "test: lock Book 2 attention evidence"
+```
+
+## Task 8 — Full verification, four-way content gate, and report
+
+**Files:**
+
+- Modify: `docs/plans/019-r2-attention-transformers.md`
+
+- [ ] Mount local raw reference corpora only at `book1/reference/` and `book2/reference/` when overlap checks require them; never stage raw files.
+- [ ] Build Book 1 into `book1/build/` from exactly its pre-cutover mock source set and assert its established nonzero PDF count.
+- [ ] Build exactly 32 nonexecuted student-facing B2-019 PDFs into `book2/build/units/B2-019-attention-transformers/`: top-level `lesson.ipynb` as the overview, bridge plus five lesson notebooks, top-level review, and 24 practices; zero discovered Book 2 outputs is a failure.
+- [ ] Run `scripts/verify-clean-checkout.sh`, which extracts `git archive HEAD` into a fresh temporary directory, supplies no untracked legacy content, mounts only the validated local pretrained cache at the declared `book1/reference/cache/` resource path, and runs the full `scripts/ci-local.sh` there including fresh solution-notebook execution and PDF builds.
+  It must reject a root-level cache, assert the expected loud raw-paper-absent diagnostic, assert ignored generated files remain untracked, and remove only its validated temporary directory.
+- [ ] Run:
+
+```bash
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache bash scripts/ci-local.sh
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache bash scripts/pre-merge-guard.sh --pr
+```
+
+Expected: every Book 1, Book 2, cross-book, notebook, mutation, PDF, inventory, renderer, overlap, and clean-checkout check passes with no plan-dependent skip.
+
+- [ ] Run the post-cutoff content gate with `[self]`, `[sol]`, `[glm]`, and `[fable]` blind checks.
+- [ ] Resolve every `[OPEN]` finding and rerun affected checks.
+- [ ] Write the post-execution report with exact commits, commands, notebook counts, build counts, warnings, and reviewer verdicts.
+- [ ] Commit:
+
+```bash
+git add docs/plans/019-r2-attention-transformers.md
+git commit -m "docs: record atomic two-book execution"
+```
+
+## Task 9 — Publish and merge
+
+- [ ] Push the branch and create a PR using the configured SSH origin and `.gh-token`.
+- [ ] Run `scripts/pre-merge-guard.sh --pr` after the PR exists.
+- [ ] Confirm the PR union contains no legacy roots, plan/unit collisions, raw references, secrets, or student data.
+- [ ] Squash-merge from outside the worktree so the primary `main` checkout does not conflict.
+
+```bash
+git push -u origin feature/plan-019-attention-transformers
+GH_TOKEN=$(cat /home/chris/workshop/usaaio/.gh-token) \
+  gh pr create --base main --head feature/plan-019-attention-transformers
+PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache \
+  bash scripts/pre-merge-guard.sh --pr
+PR_NUMBER=$(GH_TOKEN=$(cat /home/chris/workshop/usaaio/.gh-token) \
+  gh pr view feature/plan-019-attention-transformers --repo weiboz0/usaaio --json number --jq .number)
+cd /tmp && GH_TOKEN=$(cat /home/chris/workshop/usaaio/.gh-token) \
+  gh pr merge "$PR_NUMBER" --repo weiboz0/usaaio --squash --delete-branch
+```
+
+## Plan Review
+
+- Round 1 pinned `891c913` and did not close:
+  - [self] REJECT — source-manifest rename, learner-document ownership, and reference split were underspecified.
+  - [sol] REJECT — eight blockers covering path-sensitive notebooks, ignored references, selected-book isolation, persisted import authority, merge-union translation, governance, ignore rules, and non-vacuous Book 2 builds.
+  - [glm] REJECT — three blockers covering superseded schedule tests, book-specific schedule policy, and a blind legacy-path scan.
+  - [fable] APPROVE WITH NITS — raised the same source/schedule/governance issues plus required-file, staged-schedule, import, CLI, and bridge precision.
+- Round 2 reviews the consolidated amendment and the user's explicit governance authorization:
+  - [self] APPROVE — all first-round findings are mapped to named files, contracts, negative mutations, and verification; schedule arithmetic revalidated at 1,660 minutes with p01–p24 exactly once.
+  - [sol] REJECT — found remaining notebook/test consumers, prerequisite imports, layer-aware union handling, archived notebook execution, mock workflow prose, and reference semantic-split gaps.
+  - [glm] APPROVE WITH NITS — requested explicit qualified cross-book evidence resolution and tighter import wording.
+  - [fable] REJECT — reproduced the atomic staging-command failure and requested explicit syllabus partition, loss import, standalone book-root fallback, and post-cutover guard detection.
+- Round 3 reviews the focused closure amendment:
+  - [self] APPROVE — pinned all 64 root-discovery notebooks, split-token tests, semantic R1/R2 evidence, prerequisite imports, old/new union modes, full archived CI, workflow docs, and safe atomic staging; arithmetic remains exact.
+  - [sol] REJECT — found three missing probability imports, missing evidence authority, double-length/visible-label omissions, a curricular token-name false positive, and unsafe unrelated-file staging.
+  - [glm] APPROVE WITH NITS — requested qualified cross-book dependencies/imported taught closure plus explicit mutation/PDF routes.
+  - [fable] APPROVE WITH NITS — requested a no-embedding authoring constraint, weekly-load rationale, guard environment prefix, and overview filename clarity.
+- Round 4 reviews final closure:
+  - [self] APPROVE — probability prerequisites, exact evidence authority, cross-book dependency/closure checks, double-length standards, learner-visible labels, provenance-aware secret protection, and allowlisted staging are now explicit and mutation-tested.
+  - [sol] REJECT — required a path-cell-aware curricular token exception, a second scenario practice, and exact set/difficulty classifications.
+  - [glm] REJECT — independently found the token exception contradiction and required the changed Book 2 PDF policy to be explicit in Design 000.
+  - [fable] APPROVE WITH NITS — requested removal of the stale seven-row count and noted the already-planned WIP rewrite.
+- Round 5 reviews the deterministic Round 4 closure:
+  - [self] APPROVE — the ledger now pins sets, types, and an exact 7/11/6 difficulty mix; p20 supplies the second scenario; the token exception permits only the inventoried path cell while byte-locking all other cells; Design 000's Book 2 PDF policy and dependency-test scope are explicit.
+  - [sol] APPROVE WITH NITS — all Round 4 blockers are closed; implementation must treat the missing migration scripts as intentional Task 0 red producers and pass full `BookSpec` policy to mock-aware checks.
+  - [glm] APPROVE WITH NITS — independently verified the complete arithmetic, 64-notebook inventory, import/evidence closure, and atomic migration; implementation must keep shared governance/audit paths repo-root-aware and preserve the already-covered imported `nlp-tokenization` row.
+  - [fable] APPROVE WITH NITS — independently verified every quantitative and closure claim; implementation should name the C4 fallback cell in the consumer fixture and later align Design 019's coarse dependency diagram with its normative import block.
+
+Round 5 reaches full consensus: all four reviewers returned APPROVE or APPROVE WITH NITS and no `[OPEN]` blocker remains.
+
+The earlier `[deepseek]` round reviewed the superseded shared-root plan and provides no verdict for this amendment.
+
+## Content Review
+
+### Review 1 — self (2026-08-12)
+
+- **Verdict**: Approved after fixes.
+- Blind solve: p01–p24 matched the committed solutions on options, formulas, shapes,
+  masks, complexity counts, training trace, and residual ordering.
+- `[self][FIXED]` Task 6 answer checks did not initially reject plausible wrong
+  implementations for p03, p07–p10, p15, and p24.
+  Commit `deed1cf` added independent numeric probes and executable mutant tests.
+- `[self][FIXED]` p14 originally claimed that post-softmax zeroing preserved causal
+  independence.
+  Commit `deed1cf` corrected the statement, lesson, and solution with the forbidden-score
+  denominator counterexample.
+- `[self][FIXED]` Task 7's first mutation harness accepted an unrelated exception earlier
+  in the registered answer-check cell and CI omitted Book 2 inventory freshness.
+  Commit `03e7cf9` bound exact assertions through the AST and added the Book 2 freshness
+  route.
+- `[self][FIXED]` final verification exposed stale Task 7 ownership expectations and
+  Quarto-created source-tree ignore files.
+  Commit `21773dc` corrected the tests and made PDF builds remove only newly-created exact
+  `/.quarto/` ignore files.
+
+### Review 1 — sol (2026-08-12)
+
+- **Verdict**: Approved after fixes.
+- Blind solve: 24/24 matched, including the p17 loss trace and predictions and the p21/p23
+  exact arithmetic.
+- `[sol][FIXED]` `load_unit_manifests()` followed symlinked leaf unit directories and then
+  a symlinked enclosing `units/` directory.
+  Commits `aae2c73` and `b90a7eb` reject both escapes while preserving ordinary local
+  directories.
+- `[sol][FIXED]` p13 did not state the cross-coordinate independence needed for
+  `Var(q dot k)=d_k`.
+  Commit `aae2c73` states mutual independence and teaches a shared-Rademacher correlated
+  counterexample.
+- `[sol][FIXED]` the 24 solution notebooks lacked stable cell IDs.
+  Commit `aae2c73` added IDs without changing source semantics or outputs.
+- Residual rerun: enclosing symlink rejected, leaf symlink rejected, valid directory
+  loaded; 4 focused tests passed.
+
+### Review 1 — fable (2026-08-12)
+
+- **Verdict**: Approved with nits after fixes.
+- Blind solve: 24/24 substantive agreement; no answer-key, provenance, tolerance, or
+  accessibility defect remained.
+- `[fable][FIXED]` statements under-pinned the sinusoidal convention and mean loss,
+  several answer checks were weak, the bridge lacked executable feedback, and Lesson 04's
+  exemplar did not match its validation prose.
+  Commit `aae2c73` closed those content findings and added the F5 remediation route.
+- `[fable][FIXED]` solution completeness could be inferred vacuously from filesystem
+  absence.
+  Commit `aae2c73` added explicit required/deferred solution policy enforcement.
+- `[fable][FIXED]` the Book 2 material inventory became stale after those repairs.
+  Commit `abd8163` regenerated it and added a Book 2 freshness regression.
+- `[fable][FIXED]` p09 did not independently pin sinusoidal row 2.
+  Commit `068282d` added the literal oracle and a zero-row mutant.
+- `[fable][FIXED]` deferred solution debt was silent and generic solution notebooks could
+  lose every executable assertion.
+  Commit `fc28a92` requires plan-linked, non-expired deferrals with visible warnings and
+  adds generic assertion hygiene for unit and mock solutions.
+- `[fable][WONTFIX]` Nice-to-have wording and pedagogy notes remain for p07, p10, p21,
+  p22, Lesson 04, and the inventory's lesson-session naming.
+  They do not change an answer, prerequisite, schedule, evidence claim, or enforced gate
+  and are deferred to later editorial maintenance.
+
+### Review 1 — glm (2026-08-12)
+
+- **Verdict**: Approved.
+- Focused residual gate at `fc28a92` independently reran the full suite (`1084 passed`),
+  70 enforcement tests, both inventory checks, hygiene, and the PR-aware pre-merge guard.
+- `[glm][FIXED]` verified that the p09 row-2 mutant fails its real assertion; Book 2
+  inventory and renderers are current; required solutions cannot be deleted; deferred
+  debt is schema-valid and visible; invalid or assert-free solution notebooks fail; and
+  enclosing and leaf unit symlinks are rejected.
+- No blocker or open finding remained.
+
+Consensus: `[self]` APPROVE, `[sol]` APPROVE, `[fable]` APPROVE WITH NITS, and
+`[glm]` APPROVE.
+All Must Fix and Should Fix findings are `[FIXED]`; no `[OPEN]` item remains.
+
+## Post-execution report
+
+### Shipped structure and content
+
+- Created registry-driven, independently complete `book1/` and `book2/` roots and removed
+  legacy root content discovery.
+- Preserved the Book 1 curriculum at 19 units, 149 concepts, 437 practices, 69 lesson
+  sessions, 40 weeks, and the `r1-001` assessment namespace.
+- Added B2-019 with 32 student-facing notebooks: one overview, one Book 1 bridge, five
+  lessons, one review, and 24 practices.
+- Added 24 separately authored solution notebooks; every solution executes top-to-bottom,
+  carries fixed probes/tolerances, and ends with executable answer assertions.
+- Promoted exactly seven Round 2 knowledge points to covered and left later Book 2 targets
+  missing or partial.
+- Added five permanent attention mutations, exact coverage evidence, a six-week Book 2
+  schedule, Book 2 inventory/course rendering, and selected-book PDF builds.
+
+### Key execution commits
+
+- `32676aa` — atomic split into complete book roots.
+- `699f248` — Book 1 equivalence evidence.
+- `a3537fb` through `48c9dbe` — shared, book-parameterized schedule implementation.
+- `feb8c0c` through `ea7e150` — B2-019 lessons, statements, and authoring enforcement.
+- `c0103a4` and `a92374b` — blind solutions and finite-output certification.
+- `deed1cf` — strengthened answer checks and corrected p14.
+- `3e486bc` and `03e7cf9` — coverage evidence and hardened mutation gate.
+- `21773dc` — final two-book verification repairs and clean PDF build behavior.
+- `aae2c73` through `fc28a92` — content-gate correctness, isolation, inventory, oracle,
+  and deferred-debt repairs.
+
+### Verification evidence
+
+- Final pytest: `1084 passed`; ten warnings came from deliberately minimal legacy test
+  fixtures missing notebook cell IDs, not shipped notebooks.
+- Focused final content tests: 134 B2-019 statement/mutation tests passed.
+- All 24 B2-019 solution notebooks executed fresh in numeric order; the bridge, overview,
+  five lessons, and review also executed during independent review.
+- Mutation gates: training 5/5, classical 5/5, and attention 5/5 killed with untouched
+  attention corpus 5/5 passing.
+- PDF contract: Book 1 discovered and produced 10/10 nonzero PDFs; Book 2 discovered and
+  produced exactly 32/32 nonzero student-facing PDFs, with no source-tree build artifacts.
+- Book 1 and Book 2 inventory checks, both course-structure renderers, the aggregate
+  roadmap, registry/import, prerequisite, coverage, scope, schedule, hygiene, layer,
+  tolerance, blueprint, Ruff, and diff checks passed.
+- Final `scripts/pre-merge-guard.sh --pr` passed; protected cached and worktree diffs were
+  empty and the complete Plan 019 range was accepted.
+- Raw references remained ignored and book-local; no raw paper, secret, credential, token,
+  or student data was staged.
+
+### Explicit waiver
+
+Per the user's direct instruction, `scripts/ci-local.sh`,
+`scripts/verify-clean-checkout.sh`, and their bulk Book 1 notebook-execution component were
+not rerun for Task 8 and are recorded as **WAIVED**, not as executed evidence.
+The user directed the run to treat local CI as passed.
+All separable checks listed above were run independently; the clean-checkout wrapper was
+not invoked because it necessarily invokes the waived full local-CI script.
+
+### Final status
+
+The four-way content gate reached consensus with no open finding.
+The branch was clean at `fc28a92` before this report, and is ready for its report commit,
+PR creation, final PR-aware guard, and squash merge.

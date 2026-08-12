@@ -1,0 +1,1232 @@
+roadmap_version: 1
+layers:
+- round-2-extension
+planned_units:
+- id: B2-019-attention-transformers
+  title: Attention and Transformer Mechanics
+  layer: round-2-extension
+  prerequisites:
+  - book1:C6-pytorch
+  - book1:C7-cnn-transfer
+  - book1:C8-embeddings
+  - book1:C11-neural-training
+  knowledge_points:
+  - attention-mechanism-foundations
+  - self-attention
+  - multi-head-attention
+  - positional-encoding
+  - attention-complexity-analysis
+  - attention-from-scratch
+  - transformer-architecture-foundations
+  provisional_concepts: []
+  estimated_hours:
+    min: 22
+    max: 28
+  schedule_action: extend
+- id: B2-020-language-transformers
+  title: Language Transformers
+  layer: round-2-extension
+  prerequisites:
+  - B2-019-attention-transformers
+  knowledge_points:
+  - nlp-word-embeddings
+  - nlp-transformers
+  - nlp-pretraining
+  - nlp-fine-tuning
+  - transformer-nlp-applications
+  provisional_concepts: []
+  estimated_hours:
+    min: 26
+    max: 32
+  schedule_action: extend
+- id: B2-021-cross-modal-transformers-vision
+  title: Cross-modal Transformers and Advanced Vision
+  layer: round-2-extension
+  prerequisites:
+  - B2-020-language-transformers
+  knowledge_points:
+  - vision-transformers
+  - graph-neural-network-transformer-applications
+  - object-detection
+  - unet
+  provisional_concepts: []
+  estimated_hours:
+    min: 22
+    max: 28
+  schedule_action: extend
+- id: B2-022-probabilistic-latent-models
+  title: Probabilistic Latent Models
+  layer: round-2-extension
+  prerequisites:
+  - book1:F4-multivar-calculus
+  - book1:F5-probability
+  - book1:F6-svd-spectral
+  - book1:C7-cnn-transfer
+  - book1:C11-neural-training
+  knowledge_points:
+  - multivariate-gaussian
+  - gaussian-reparameterization
+  - kl-divergence
+  - autoencoder
+  - variational-autoencoder
+  provisional_concepts: []
+  estimated_hours:
+    min: 22
+    max: 28
+  schedule_action: extend
+- id: B2-023-generative-models-diffusion
+  title: Generative Models and Diffusion
+  layer: round-2-extension
+  prerequisites:
+  - B2-020-language-transformers
+  - B2-021-cross-modal-transformers-vision
+  - B2-022-probabilistic-latent-models
+  knowledge_points:
+  - generative-adversarial-network
+  - denoising-diffusion-probabilistic-models
+  - stable-diffusion
+  provisional_concepts: []
+  estimated_hours:
+    min: 20
+    max: 26
+  schedule_action: extend
+- id: B2-024-gpu-scientific-ml-capstone
+  title: GPU Scientific Modeling Capstone
+  layer: round-2-extension
+  prerequisites:
+  - book1:C10-competition-craft
+  - book1:C12-classical-models
+  - B2-020-language-transformers
+  - B2-021-cross-modal-transformers-vision
+  - B2-022-probabilistic-latent-models
+  - B2-023-generative-models-diffusion
+  knowledge_points:
+  - gpu-colab-l4-workflow
+  - semi-supervised-pseudo-labeling
+  - scientific-ml-inverse-problems
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - mixture-parameter-regression
+  provisional_concepts: []
+  estimated_hours:
+    min: 30
+    max: 40
+  schedule_action: extend
+knowledge_points:
+- id: attention-mechanism-foundations
+  layer: round-2-extension
+  requirement: required
+  coverage: covered
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - book1:linear-algebra-foundations
+  - book1:softmax
+  shipped_concepts:
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb, heading: "B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 2. Query, key, and value roles", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p01, role: primary}
+      assessments: []
+    derivation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb, heading: "B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 3. Scale and stable row softmax", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p02, role: primary}
+      - {id: B2-019-p13, role: primary}
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb, heading: "B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 4. Weighted values", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p06, role: primary}
+      assessments: []
+  disposition: new-unit
+  destination: B2-019-attention-transformers
+  deficits:
+    modalities_missing: []
+  rationale: The shipped lesson and practices derive and implement query-key-value attention with stable scaled scores.
+  consequence: Students have the complete prerequisite computation for later transformer topics.
+- id: self-attention
+  layer: round-2-extension
+  requirement: required
+  coverage: covered
+  source_refs:
+  - official-syllabus-2026-08-06
+  - r2-2026-index-local
+  depends_on:
+  - attention-mechanism-foundations
+  shipped_concepts:
+  - scaled-dot-product-attention
+  - causal-self-attention
+  - attention-mask
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb, heading: "B2-019 — Session 2: Self-Attention and Masks > 1. Self-attention shape contract", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p03, role: primary}
+      assessments: []
+    derivation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb, heading: "B2-019 — Session 2: Self-Attention and Masks > 4. Causal masks", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p14, role: primary}
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb, heading: "B2-019 — Session 2: Self-Attention and Masks > 2. Additive masks before softmax", cell_ordinal: 2, role: primary}
+      practices:
+      - {id: B2-019-p07, role: primary}
+      - {id: B2-019-p08, role: primary}
+      assessments: []
+  disposition: new-unit
+  destination: B2-019-attention-transformers
+  deficits:
+    modalities_missing: []
+  rationale: The shipped sequence derives self-attention dependence and implements padding and causal masking before softmax.
+  consequence: Students can model and audit within-sequence interactions without future leakage.
+- id: multi-head-attention
+  layer: round-2-extension
+  requirement: required
+  coverage: covered
+  source_refs:
+  - official-syllabus-2026-08-06
+  - r2-2026-index-local
+  depends_on:
+  - self-attention
+  shipped_concepts:
+  - multi-head-attention
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 1. Projection and head dimensions", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p15, role: primary}
+      assessments: []
+    derivation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 1. Projection and head dimensions", cell_ordinal: 2, role: primary}
+      practices:
+      - {id: B2-019-p23, role: primary}
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 3. Independent heads and concatenation", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p10, role: primary}
+      assessments: []
+  disposition: new-unit
+  destination: B2-019-attention-transformers
+  deficits:
+    modalities_missing: []
+  rationale: The shipped sequence traces projections, head dimensions, independent computation, and exact concatenation.
+  consequence: Students can derive and implement the multi-head shape contract.
+- id: positional-encoding
+  layer: round-2-extension
+  requirement: required
+  coverage: covered
+  source_refs:
+  - reference-analysis-2026-08-03
+  - r2-2026-index-local
+  - plan-015-preliminary-decisions
+  depends_on:
+  - self-attention
+  shipped_concepts:
+  - sinusoidal-positional-encoding
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 4. Sinusoidal positional encoding", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p05, role: primary}
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 4. Sinusoidal positional encoding", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p09, role: primary}
+      - {id: B2-019-p17, role: primary}
+      assessments: []
+  disposition: new-unit
+  destination: B2-019-attention-transformers
+  deficits:
+    modalities_missing: []
+  rationale: The shipped sequence explains permutation equivariance and implements sinusoidal position before attention.
+  consequence: Students can explain and construct the positional signal used by attention models.
+- id: attention-complexity-analysis
+  layer: round-2-extension
+  requirement: required
+  coverage: covered
+  source_refs:
+  - reference-analysis-2026-08-03
+  - r2-2026-index-local
+  depends_on:
+  - self-attention
+  shipped_concepts:
+  - attention-complexity
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 5. Exact time and score-memory cost", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p21, role: primary}
+      assessments: []
+    derivation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 5. Exact time and score-memory cost", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p16, role: primary}
+      - {id: B2-019-p23, role: primary}
+      assessments: []
+  disposition: new-unit
+  destination: B2-019-attention-transformers
+  deficits:
+    modalities_missing: []
+  rationale: The shipped sequence derives exact projection, score, weighted-value, and materialized score-memory costs.
+  consequence: Students can reason about attention time and memory under changing sequence budgets.
+- id: attention-from-scratch
+  layer: round-2-extension
+  requirement: required
+  coverage: covered
+  source_refs:
+  - official-syllabus-2026-08-06
+  - r2-2026-index-local
+  - plan-015-preliminary-decisions
+  depends_on:
+  - multi-head-attention
+  - positional-encoding
+  - book1:pytorch-autograd-and-optimizer-training
+  shipped_concepts:
+  - scaled-dot-product-attention
+  - causal-self-attention
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb, heading: "B2-019 — Session 4: Attention Module and Tiny Training > 1. Module contract", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p18, role: primary}
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb, heading: "B2-019 — Session 4: Attention Module and Tiny Training > 2. Forward pass and mask", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p11, role: primary}
+      assessments: []
+    model-training:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb, heading: "B2-019 — Session 4: Attention Module and Tiny Training > 4. Training loop", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p17, role: primary}
+      assessments: []
+  disposition: new-unit
+  destination: B2-019-attention-transformers
+  deficits:
+    modalities_missing: []
+  rationale: The shipped sequence implements an attention module and trains a seeded causal predictor end to end.
+  consequence: Students meet the official from-scratch attention expectation with executable evidence.
+- id: transformer-architecture-foundations
+  layer: round-2-extension
+  requirement: required
+  coverage: covered
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - attention-from-scratch
+  - book1:multilayer-perceptron-model
+  shipped_concepts:
+  - transformer-block
+  - transformer-residual-layernorm
+  - position-wise-feed-forward
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb, heading: "B2-019 — Session 5: Transformer Blocks and Architecture > 5. Cross-attention role and dimensions", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p20, role: primary}
+      assessments: []
+    derivation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb, heading: "B2-019 — Session 5: Transformer Blocks and Architecture > 2. Pre-norm residual ordering", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p19, role: primary}
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb, heading: "B2-019 — Session 5: Transformer Blocks and Architecture > 7. Architecture trace", cell_ordinal: 1, role: primary}
+      practices:
+      - {id: B2-019-p12, role: primary}
+      - {id: B2-019-p24, role: primary}
+      assessments: []
+  disposition: new-unit
+  destination: B2-019-attention-transformers
+  deficits:
+    modalities_missing: []
+  rationale: The shipped sequence traces encoder, decoder, residual, LayerNorm, and feed-forward block ordering.
+  consequence: Students can derive and implement the standard transformer architecture foundation.
+- id: transformer-nlp-applications
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - transformer-architecture-foundations
+  - nlp-tokenization
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-020-language-transformers
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+  rationale: Existing NLP uses fixed GloVe retrieval, not transformer applications.
+  consequence: Students cannot apply transformers to NLP tasks.
+- id: vision-transformers
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - transformer-architecture-foundations
+  - book1:convolutional-neural-network-basics
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-021-cross-modal-transformers-vision
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+  rationale: No image patching, class token, ViT implementation, or training exists.
+  consequence: The official vision-transformer application is missing.
+- id: graph-neural-network-transformer-applications
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - transformer-architecture-foundations
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-021-cross-modal-transformers-vision
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+  rationale: No graph representation, message passing, graph attention, or training exists.
+  consequence: The official graph-transformer application is absent.
+- id: nlp-tokenization
+  layer: round-2-extension
+  requirement: required
+  coverage: covered
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - book1:python-programming
+  shipped_concepts:
+  - book1:tokenization
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - path: book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+        heading: "C8-embeddings \u2014 Session 1: Tokens and Embeddings > 1. From Text to Tokens"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: book1:C8-p01
+        role: primary
+      - id: book1:C8-p06
+        role: primary
+      - id: book1:C8-p15
+        role: primary
+      assessments:
+      - id: book1:r1-001-p05-1
+        role: primary
+      - id: book1:r1-001-p05-2
+        role: primary
+    implementation:
+      assessments:
+      - id: book1:r1-001-p05-1
+        role: primary
+      - id: book1:r1-001-p05-2
+        role: primary
+      lesson_anchors:
+      - cell_ordinal: 1
+        heading: "C8-embeddings \u2014 Session 1: Tokens and Embeddings > 1. From Text to Tokens"
+        path: book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+        role: primary
+      practices:
+      - id: book1:C8-p01
+        role: primary
+      - id: book1:C8-p06
+        role: primary
+      - id: book1:C8-p15
+        role: primary
+  disposition: keep
+  destination: book1:C8-embeddings
+  deficits:
+    modalities_missing: []
+  rationale: The shipped R1 embedding unit honestly teaches and practices tokenization.
+  consequence: Round 2 must reuse C8 rather than duplicate tokenization.
+- id: nlp-word-embeddings
+  layer: round-2-extension
+  requirement: required
+  coverage: partial
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - nlp-tokenization
+  - book1:linear-algebra-foundations
+  shipped_concepts:
+  - book1:word-embeddings
+  - book1:gensim-usage
+  - book1:embedding-matrices
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - path: book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+        heading: "C8-embeddings \u2014 Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: book1:C8-p02
+        role: primary
+      - id: book1:C8-p12
+        role: primary
+      - id: book1:C8-p17
+        role: primary
+      assessments:
+      - id: book1:r1-001-p05-3
+        role: primary
+    implementation:
+      lesson_anchors:
+      - path: book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+        heading: "C8-embeddings \u2014 Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: book1:C8-p05
+        role: primary
+      - id: book1:C8-p13
+        role: primary
+      - id: book1:C8-p17
+        role: primary
+      assessments:
+      - id: book1:r1-001-p05-3
+        role: primary
+      - id: book1:r1-001-p05-4
+        role: primary
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: extend-existing-unit
+  destination: book1:C8-embeddings
+  deficits:
+    modalities_missing:
+    - model-training
+  rationale: Students load and use fixed GloVe vectors but never train embeddings.
+  consequence: Embedding use is strong while embedding model training remains absent.
+- id: nlp-transformers
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - transformer-architecture-foundations
+  - nlp-tokenization
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-020-language-transformers
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+  rationale: No NLP transformer exists.
+  consequence: The central modern NLP family is missing.
+- id: nlp-pretraining
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - nlp-transformers
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-020-language-transformers
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+  rationale: Loading pretrained GloVe or ResNet is not teaching or executing a pretraining objective.
+  consequence: Students cannot reason about or run pretraining.
+- id: nlp-fine-tuning
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - nlp-pretraining
+  - book1:pytorch-autograd-and-optimizer-training
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-020-language-transformers
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+  rationale: C7 discusses hypothetical transfer adjustment but performs no NLP fine-tuning.
+  consequence: Students cannot adapt pretrained NLP models.
+- id: object-detection
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - book1:convolutional-neural-network-basics
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-021-cross-modal-transformers-vision
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+  rationale: Existing CNN work has no boxes, localization loss, detector, or training.
+  consequence: Object detection is absent.
+- id: unet
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - book1:convolutional-neural-network-basics
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-021-cross-modal-transformers-vision
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+  rationale: No encoder-decoder, skip concatenation, segmentation, or UNet training exists.
+  consequence: UNet and its diffusion prerequisite role are absent.
+- id: autoencoder
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - book1:fully-connected-network-from-scratch
+  - book1:loss-functions
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-022-probabilistic-latent-models
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+  rationale: Dimensionality reduction is PCA and SVD only; no learned encoder-decoder exists.
+  consequence: Autoencoder and VAE prerequisites are missing.
+- id: variational-autoencoder
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - autoencoder
+  - multivariate-gaussian
+  - gaussian-reparameterization
+  - kl-divergence
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    derivation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-022-probabilistic-latent-models
+  deficits:
+    modalities_missing:
+    - theory
+    - derivation
+    - implementation
+    - model-training
+  rationale: No latent probabilistic model, ELBO, reparameterized encoder, or VAE training exists.
+  consequence: The official VAE family is wholly absent.
+- id: generative-adversarial-network
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - book1:fully-connected-network-from-scratch
+  - book1:convolutional-neural-network-basics
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    derivation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-023-generative-models-diffusion
+  deficits:
+    modalities_missing:
+    - theory
+    - derivation
+    - implementation
+    - model-training
+  rationale: No generator-discriminator game, objective, implementation, or training exists.
+  consequence: GAN coverage is absent.
+- id: denoising-diffusion-probabilistic-models
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  - r2-2026-index-local
+  depends_on:
+  - unet
+  - multivariate-gaussian
+  - gaussian-reparameterization
+  - kl-divergence
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    derivation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-023-generative-models-diffusion
+  deficits:
+    modalities_missing:
+    - theory
+    - derivation
+    - implementation
+    - model-training
+  rationale: No forward noising, reverse denoising, schedule, noise objective, or DDPM training exists.
+  consequence: Diffusion-model theory and practice are absent.
+- id: stable-diffusion
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-syllabus-2026-08-06
+  depends_on:
+  - denoising-diffusion-probabilistic-models
+  - variational-autoencoder
+  - transformer-nlp-applications
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-023-generative-models-diffusion
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+  rationale: No latent diffusion, text conditioning, pipeline use, or training exists.
+  consequence: Stable Diffusion is absent.
+- id: multivariate-gaussian
+  layer: round-2-extension
+  requirement: bridge
+  coverage: missing
+  source_refs:
+  - reference-analysis-2026-08-03
+  - r2-2026-index-local
+  - plan-015-preliminary-decisions
+  depends_on:
+  - book1:probability-and-statistics-foundations
+  - book1:eigenvalues-and-eigenvectors
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    derivation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-022-probabilistic-latent-models
+  deficits:
+    modalities_missing:
+    - theory
+    - derivation
+    - implementation
+  rationale: F5 teaches scalar Gaussians and generic covariance but never a Gaussian vector or covariance-matrix density.
+  consequence: VAE and diffusion prerequisites are not closed.
+- id: gaussian-reparameterization
+  layer: round-2-extension
+  requirement: bridge
+  coverage: missing
+  source_refs:
+  - reference-analysis-2026-08-03
+  - r2-2026-index-local
+  - plan-015-preliminary-decisions
+  depends_on:
+  - multivariate-gaussian
+  - book1:pytorch-autograd-and-optimizer-training
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    derivation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-022-probabilistic-latent-models
+  deficits:
+    modalities_missing:
+    - theory
+    - derivation
+    - implementation
+  rationale: No location-scale reparameterization or differentiable latent sampling exists.
+  consequence: Gradient-based latent-variable training is blocked.
+- id: kl-divergence
+  layer: round-2-extension
+  requirement: bridge
+  coverage: missing
+  source_refs:
+  - reference-analysis-2026-08-03
+  - r2-2026-index-local
+  - plan-015-preliminary-decisions
+  depends_on:
+  - book1:conditional-probability
+  - book1:expectation
+  - multivariate-gaussian
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    derivation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-022-probabilistic-latent-models
+  deficits:
+    modalities_missing:
+    - theory
+    - derivation
+    - implementation
+  rationale: No entropy, distributional cross-entropy, KL definition, Gaussian KL derivation, or implementation exists.
+  consequence: VAE and diffusion objectives lack a prerequisite.
+- id: gpu-colab-l4-workflow
+  layer: round-2-extension
+  requirement: required
+  coverage: missing
+  source_refs:
+  - official-round-policy-2027-2026-08-06
+  depends_on:
+  - book1:colab-coding-submission
+  - book1:pytorch-autograd-and-optimizer-training
+  shipped_concepts: []
+  evidence_by_modality:
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    competition-workflow:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-024-gpu-scientific-ml-capstone
+  deficits:
+    modalities_missing:
+    - implementation
+    - model-training
+    - competition-workflow
+  rationale: The only device teaching says the course is CPU-only; no Colab L4, device movement, memory handling, or GPU training is practiced.
+  consequence: Students cannot execute the official R2 GPU workflow.
+- id: semi-supervised-pseudo-labeling
+  layer: round-2-extension
+  requirement: bridge
+  coverage: missing
+  source_refs:
+  - reference-analysis-2026-08-03
+  - r2-2026-index-local
+  - r2-2026-rationale-local
+  - plan-015-preliminary-decisions
+  depends_on:
+  - book1:convolutional-neural-network-basics
+  - book1:k-means-clustering
+  - open-ended-experiment-design
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    competition-workflow:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-024-gpu-scientific-ml-capstone
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+    - competition-workflow
+  rationale: No limited-label learning, pseudo-label selection, clustering-assisted labeling, or leakage-safe validation workflow exists.
+  consequence: The observed R2 semi-supervised image-modeling capability is missing.
+- id: scientific-ml-inverse-problems
+  layer: round-2-extension
+  requirement: bridge
+  coverage: missing
+  source_refs:
+  - reference-analysis-2026-08-03
+  - r2-2026-index-local
+  - r2-2026-rationale-local
+  - plan-015-preliminary-decisions
+  depends_on:
+  - book1:end-to-end-model-selection
+  - book1:pytorch-autograd-and-optimizer-training
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    competition-workflow:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-024-gpu-scientific-ml-capstone
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+    - competition-workflow
+  rationale: No inverse-problem formulation, observation operator, learned inversion, or competition workflow exists.
+  consequence: An observed R2 scientific-modeling capability is missing.
+- id: open-ended-experiment-design
+  layer: round-2-extension
+  requirement: bridge
+  coverage: missing
+  source_refs:
+  - reference-analysis-2026-08-03
+  - r2-2026-index-local
+  - r2-2026-rationale-local
+  - plan-015-preliminary-decisions
+  depends_on:
+  - book1:end-to-end-model-selection
+  - gpu-colab-l4-workflow
+  shipped_concepts: []
+  evidence_by_modality:
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    competition-workflow:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-024-gpu-scientific-ml-capstone
+  deficits:
+    modalities_missing:
+    - model-training
+    - competition-workflow
+  rationale: C10's bounded kNN campaign is useful prerequisite practice but not open-ended architecture or experiment design.
+  consequence: Students cannot plan a broad R2 modeling investigation.
+- id: open-ended-model-evaluation
+  layer: round-2-extension
+  requirement: bridge
+  coverage: missing
+  source_refs:
+  - reference-analysis-2026-08-03
+  - r2-2026-index-local
+  - r2-2026-rationale-local
+  - plan-015-preliminary-decisions
+  depends_on:
+  - open-ended-experiment-design
+  - book1:hidden-test-model-evaluation
+  shipped_concepts: []
+  evidence_by_modality:
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    competition-workflow:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-024-gpu-scientific-ml-capstone
+  deficits:
+    modalities_missing:
+    - model-training
+    - competition-workflow
+  rationale: Existing evaluation is a pinned R1 tabular protocol without scientific diagnostics, ablations, robustness, or family comparison.
+  consequence: Students cannot defend open-ended R2 model choices.
+- id: mixture-parameter-regression
+  layer: round-2-extension
+  requirement: bridge
+  coverage: missing
+  source_refs:
+  - reference-analysis-2026-08-03
+  - r2-2026-index-local
+  - r2-2026-rationale-local
+  - plan-015-preliminary-decisions
+  depends_on:
+  - multivariate-gaussian
+  - book1:linear-regression
+  - open-ended-experiment-design
+  shipped_concepts: []
+  evidence_by_modality:
+    theory:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    implementation:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    model-training:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+    competition-workflow:
+      lesson_anchors: []
+      practices: []
+      assessments: []
+  disposition: new-unit
+  destination: B2-024-gpu-scientific-ml-capstone
+  deficits:
+    modalities_missing:
+    - theory
+    - implementation
+    - model-training
+    - competition-workflow
+  rationale: No mixture-function process, parameter identifiability, regression model, or evaluation workflow exists.
+  consequence: An observed R2 parameter-estimation capability is missing.

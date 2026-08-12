@@ -1,4 +1,5 @@
 import json
+import shutil
 from pathlib import Path
 
 import nbformat
@@ -6,6 +7,39 @@ import pytest
 
 from tools.checks.tolerance import check_tolerance
 from tools.cli import main
+
+
+def _registered_fixture(content_root: Path) -> Path:
+    repo = content_root / "repo"
+    book = repo / "book1"
+    book.mkdir(parents=True)
+    for tree in ("units", "mocktests"):
+        source = content_root / tree
+        if source.exists():
+            shutil.copytree(source, book / tree)
+    (repo / "books.yaml").write_text(
+        "books_version: 1\n"
+        "books:\n"
+        "  - {id: book1, number: 1, root: book1, depends_on: []}\n",
+        encoding="utf-8",
+    )
+    for relative in (
+        "syllabus.md",
+        "curriculum/course-schedule.yaml",
+        "curriculum/coverage-map.yaml",
+        "curriculum/material-inventory.yaml",
+        "curriculum/official-topics.yaml",
+        "curriculum/source-manifest.yaml",
+        "mocktests/blueprint.yaml",
+        "docs/course-structure.md",
+        "units/.gitkeep",
+        "reference/.gitkeep",
+    ):
+        path = book / relative
+        if not path.exists():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("{}\n" if path.suffix == ".yaml" else "fixture\n")
+    return repo
 
 
 def write_notebook(root: Path, relative_path: str, source: str) -> Path:
@@ -169,7 +203,8 @@ def test_tolerance_parse_failure_maps_to_exit_1(tmp_path, capsys):
     path.parent.mkdir(parents=True)
     path.write_text("not a notebook")
 
-    assert main(["--root", str(tmp_path), "tolerance-check"]) == 1
+    repo = _registered_fixture(tmp_path)
+    assert main(["--root", str(repo), "--book", "book1", "tolerance-check"]) == 1
     assert "cannot read notebook" in capsys.readouterr().err
 
 
@@ -180,7 +215,8 @@ def test_tolerance_code_syntax_error_maps_to_exit_1(tmp_path, capsys):
         "if True print('missing colon')",
     )
 
-    assert main(["--root", str(tmp_path), "tolerance-check"]) == 1
+    repo = _registered_fixture(tmp_path)
+    assert main(["--root", str(repo), "--book", "book1", "tolerance-check"]) == 1
     assert "cannot parse code" in capsys.readouterr().err
 
 
@@ -191,7 +227,8 @@ def test_tolerance_positional_tolerances_map_to_exit_1(tmp_path, capsys):
         "np.allclose(left, right, 1e-9, 0)",
     )
 
-    assert main(["--root", str(tmp_path), "tolerance-check"]) == 1
+    repo = _registered_fixture(tmp_path)
+    assert main(["--root", str(repo), "--book", "book1", "tolerance-check"]) == 1
     assert "missing atol, rtol" in capsys.readouterr().err
 
 
@@ -204,12 +241,14 @@ def test_tolerance_schema_validation_failure_maps_to_exit_1(tmp_path, capsys):
         '"metadata":{},"nbformat":4,"nbformat_minor":5}'
     )
 
-    assert main(["--root", str(tmp_path), "tolerance-check"]) == 1
+    repo = _registered_fixture(tmp_path)
+    assert main(["--root", str(repo), "--book", "book1", "tolerance-check"]) == 1
     assert "invalid notebook" in capsys.readouterr().err
 
 
 def test_tolerance_zero_notebooks_maps_to_exit_3(tmp_path, capsys):
-    assert main(["--root", str(tmp_path), "tolerance-check"]) == 3
+    repo = _registered_fixture(tmp_path)
+    assert main(["--root", str(repo), "--book", "book1", "tolerance-check"]) == 3
     assert "SKIP tolerance-check" in capsys.readouterr().out
 
 

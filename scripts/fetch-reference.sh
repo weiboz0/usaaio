@@ -1,11 +1,56 @@
 #!/usr/bin/env bash
-# Re-downloads the public past-test corpus into reference/ (gitignored, local-only).
+# Re-downloads the public past-test corpus into a selected book's reference root
+# (gitignored, local-only).
 # Sources: https://www.usaaio.org/past-problems (public Google Drive links).
 # 2025 R1/R2 live in forum threads and are NOT auto-fetched:
 #   https://forum.beaver-edge.ai/c/ai-olympiads/usa-north-america-ai-olympiad/8
 #   https://forum.beaver-edge.ai/c/ai-olympiads/2025-usa-na-aio-round-2/9
 set -euo pipefail
-cd "$(dirname "$0")/.."
+script_repo_root=$(cd "$(dirname "$0")/.." && pwd)
+repo_root=$script_repo_root
+
+usage() {
+  echo "usage: scripts/fetch-reference.sh [--root REPO] (--book BOOK_ID|--all)" >&2
+}
+
+selection=""
+while (($#)); do
+  case "$1" in
+    --root) repo_root=$2; shift 2 ;;
+    --book) [[ -z $selection ]] || { usage; exit 2; }; selection=$2; shift 2 ;;
+    --all) [[ -z $selection ]] || { usage; exit 2; }; selection=all; shift ;;
+    *) usage; exit 2 ;;
+  esac
+done
+[[ -n $selection ]] || { usage; exit 2; }
+repo_root=$(cd "$repo_root" && pwd)
+python_bin=${USAAIO_PYTHON:-python3}
+if ! registry_records=$(PYTHONPATH="$script_repo_root${PYTHONPATH:+:$PYTHONPATH}" \
+  "$python_bin" - "$repo_root" "$selection" <<'PY'
+import sys
+from tools.books import load_book_catalog
+
+catalog = load_book_catalog(sys.argv[1])
+books = catalog.books if sys.argv[2] == "all" else (catalog.by_id(sys.argv[2]),)
+for book in books:
+    print(f"{book.id}\t{book.number}\t{book.root}")
+PY
+); then
+  echo "fetch-reference: unknown or invalid registered book selection $selection" >&2
+  exit 1
+fi
+
+require_contained_destination() { # require_contained_destination <book-root> <dest>
+  PYTHONPATH="$script_repo_root${PYTHONPATH:+:$PYTHONPATH}" \
+    "$python_bin" - "$1" "$2" <<'PY'
+import sys
+from tools.books import resolve_contained_path
+
+resolve_contained_path(
+    sys.argv[1], sys.argv[2], label="fetch-reference destination", must_exist=False
+)
+PY
+}
 
 try_download() {  # try_download <url> <dest>
   curl -fsSL --retry 3 --max-time 120 "$1" -o "$2"
@@ -42,9 +87,30 @@ fetch() {  # fetch <drive-file-id> <dest-path>
   echo "fetched: $dest ($(file -b "$dest"))"
 }
 
-fetch "11z6HzS92y5f6OdeBf7GUtb7PBgF7_RlC" "reference/r1-2026/paper.pdf"
-fetch "1YXa62A14vF69ccAQjdWITwTCaCOoyscN" "reference/r2-2026/day1.pdf"
-fetch "1pp3PYo8f-M9HIvEs9VVKwCJAzIL-nmg4" "reference/r2-2026/day2.pdf"
-fetch "1C-2ewSPxNUX6dLL-oxE4FzhJBtjoOIo7" "reference/r2-2026/rationale.pdf"
+while IFS=$'\t' read -r selected_id book_number book_root; do
+  [[ -n $selected_id ]] || continue
+  if [[ $book_number == 1 ]]; then
+    require_contained_destination "$book_root" "$book_root/reference/r1-2026/paper.pdf"
+    require_contained_destination "$book_root" "$book_root/reference/r1-2026/paper.pdf.tmp"
+    fetch "11z6HzS92y5f6OdeBf7GUtb7PBgF7_RlC" \
+      "$book_root/reference/r1-2026/paper.pdf"
+  elif [[ $book_number == 2 ]]; then
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/day1.pdf"
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/day2.pdf"
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/rationale.pdf"
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/day1.pdf.tmp"
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/day2.pdf.tmp"
+    require_contained_destination "$book_root" "$book_root/reference/r2-2026/rationale.pdf.tmp"
+    fetch "1YXa62A14vF69ccAQjdWITwTCaCOoyscN" \
+      "$book_root/reference/r2-2026/day1.pdf"
+    fetch "1pp3PYo8f-M9HIvEs9VVKwCJAzIL-nmg4" \
+      "$book_root/reference/r2-2026/day2.pdf"
+    fetch "1C-2ewSPxNUX6dLL-oxE4FzhJBtjoOIo7" \
+      "$book_root/reference/r2-2026/rationale.pdf"
+  else
+    echo "fetch-reference: unsupported book number $book_number for $selected_id" >&2
+    exit 1
+  fi
+done <<<"$registry_records"
 
 echo "corpus complete"

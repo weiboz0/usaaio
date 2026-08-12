@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from collections import Counter
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 import yaml
 
+from tools.books import BookSpec, load_book_catalog
 from tools.model import (
     CourseSchedule,
     Report,
@@ -18,6 +20,141 @@ from tools.model import (
 )
 
 KINDS = {"lesson-session", "practice", "review", "mock", "debrief"}
+BOOK2_KINDS = {"bridge-diagnostic", "lesson-session", "practice", "review"}
+BOOK2_UNIT = "B2-019-attention-transformers"
+BOOK2_PROBLEM_MINUTES = {
+    **{f"B2-019-p{number:02}": 20 for number in range(1, 6)},
+    **{f"B2-019-p{number:02}": 50 for number in range(6, 13)},
+    **{f"B2-019-p{number:02}": 45 for number in range(13, 17)},
+    **{f"B2-019-p{number:02}": 65 for number in range(17, 22)},
+    **{f"B2-019-p{number:02}": 55 for number in range(22, 25)},
+}
+BOOK2_WEEK_PROBLEMS = (
+    ("B2-019-p01", "B2-019-p02", "B2-019-p06", "B2-019-p13"),
+    ("B2-019-p03", "B2-019-p04", "B2-019-p07", "B2-019-p08", "B2-019-p14"),
+    (
+        "B2-019-p05",
+        "B2-019-p09",
+        "B2-019-p10",
+        "B2-019-p15",
+        "B2-019-p16",
+        "B2-019-p21",
+        "B2-019-p23",
+    ),
+    ("B2-019-p11", "B2-019-p17", "B2-019-p18"),
+    ("B2-019-p12", "B2-019-p19", "B2-019-p20", "B2-019-p22", "B2-019-p24"),
+)
+
+
+@dataclass(frozen=True)
+class Book2CourseSchedule(CourseSchedule):
+    """Validated Book 2 schedule metadata without changing Book 1's model/repr."""
+
+    status: str = "staged"
+    global_weeks: tuple[int, ...] = ()
+    covered_problem_ids: frozenset[str] = frozenset()
+
+
+class Book1SchedulePolicy:
+    """Validate the unchanged 40-week, two-semester Book 1 contract."""
+
+    def load(
+        self, root: Path, errors: list[str], *, enforce_calendar: bool = True
+    ) -> CourseSchedule | None:
+        schedule = _parse_schedule(root, errors)
+        if schedule is not None:
+            _validate(root, schedule, errors, enforce_calendar=enforce_calendar)
+        return schedule
+
+
+class Book2SchedulePolicy:
+    """Validate Book 2's local/global staged schedule contract."""
+
+    def __init__(self, expected_book_number: int = 2) -> None:
+        self.expected_book_number = expected_book_number
+
+    def load(
+        self, root: Path, errors: list[str], *, enforce_calendar: bool = True
+    ) -> Book2CourseSchedule | None:
+        del enforce_calendar
+        return _parse_book2_schedule(
+            root,
+            errors,
+            expected_book_number=self.expected_book_number,
+        )
+
+
+def _registered_book(root: Path) -> BookSpec | None:
+    for parent in root.parents:
+        if not (parent / "books.yaml").is_file():
+            continue
+        catalog = load_book_catalog(parent)
+        matches = [book for book in catalog.books if book.root == root]
+        if len(matches) != 1:
+            raise ValueError(f"selected root {root} is not uniquely registered in {parent}")
+        return matches[0]
+    return None
+
+
+def _selected_book_identity(
+    root: Path,
+    *,
+    book_spec: BookSpec | None,
+    expected_book_number: int | None,
+) -> tuple[int, str | None]:
+    if book_spec is not None and book_spec.root != root:
+        raise ValueError(
+            f"BookSpec root {book_spec.root} does not match selected root {root}"
+        )
+    registered = _registered_book(root)
+    if registered is not None:
+        if book_spec is not None and book_spec != registered:
+            raise ValueError(f"BookSpec for {book_spec.id} does not match books.yaml")
+        if (
+            expected_book_number is not None
+            and expected_book_number != registered.number
+        ):
+            raise ValueError(
+                f"expected book number {expected_book_number}; registered number is "
+                f"{registered.number}"
+            )
+        return registered.number, registered.id
+    if book_spec is not None:
+        return book_spec.number, book_spec.id
+    if type(expected_book_number) is not int or expected_book_number <= 0:
+        raise ValueError(
+            "unregistered schedule roots require expected_book_number or BookSpec"
+        )
+    return expected_book_number, None
+
+
+def schedule_policy(
+    root: str | Path,
+    *,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
+):
+    """Dispatch from trusted registry identity, never mutable schedule shape."""
+
+    selected_root = Path(root).resolve()
+    number, book_id = _selected_book_identity(
+        selected_root,
+        book_spec=book_spec,
+        expected_book_number=expected_book_number,
+    )
+    if (book_id is None and number == 1) or (book_id == "book1" and number == 1):
+        return Book1SchedulePolicy()
+    if (book_id is None and number == 2) or book_id == "book2":
+        return Book2SchedulePolicy(expected_book_number=number)
+    raise ValueError(f"registered book number {number} has no schedule policy")
+
+
+def scheduled_baseline_minutes(schedule: CourseSchedule) -> int:
+    """Return only minutes backed by live content for reporting baselines."""
+
+    if isinstance(schedule, Book2CourseSchedule) and schedule.status == "staged":
+        return 0
+    return schedule.total_minutes
 
 
 def _positive_integer(value: object, label: str, errors: list[str]) -> int | None:
@@ -26,6 +163,18 @@ def _positive_integer(value: object, label: str, errors: list[str]) -> int | Non
         return None
     if value <= 0:
         errors.append(f"{label} must be positive")
+        return None
+    return value
+
+
+def _exact_integer(
+    value: object, label: str, expected: int, errors: list[str]
+) -> int | None:
+    if type(value) is not int:
+        errors.append(f"{label} must be an integer")
+        return None
+    if value != expected:
+        errors.append(f"{label} must be integer {expected}")
         return None
     return value
 
@@ -203,6 +352,423 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
         semester_minutes=semester_minutes,
         declared_total_minutes=declared_total,
     )
+
+
+def _parse_book2_schedule(
+    root: Path,
+    errors: list[str],
+    *,
+    expected_book_number: int,
+) -> Book2CourseSchedule | None:
+    path = root / "curriculum" / "course-schedule.yaml"
+    raw = _mapping(_read_yaml(path), "course-schedule.yaml", errors)
+    if raw is None:
+        return None
+    expected_top_level = {
+        "schedule_version",
+        "book",
+        "status",
+        "starts_after_global_week",
+        "total_book_weeks",
+        "total_minutes",
+        "final_assessment",
+        "weeks",
+    }
+    if set(raw) != expected_top_level:
+        errors.append(
+            "staged Book 2 schedule keys must be book, final_assessment, "
+            "schedule_version, starts_after_global_week, status, total_book_weeks, "
+            "total_minutes, and weeks"
+        )
+    if raw.get("schedule_version") != 1 or type(raw.get("schedule_version")) is not int:
+        errors.append("schedule_version must be integer 1")
+    if type(raw.get("book")) is not int:
+        errors.append("Book 2 schedule book must be an integer")
+    elif raw.get("book") != expected_book_number:
+        errors.append(
+            f"schedule book {raw.get('book')} does not match registered book number "
+            f"{expected_book_number}"
+        )
+    status = raw.get("status")
+    if status not in {"staged", "live"}:
+        errors.append("Book 2 schedule status must be staged or live")
+    _exact_integer(
+        raw.get("starts_after_global_week"),
+        "Book 2 schedule starts_after_global_week",
+        40,
+        errors,
+    )
+    _exact_integer(
+        raw.get("total_book_weeks"),
+        "Book 2 schedule total_book_weeks",
+        6,
+        errors,
+    )
+    _exact_integer(
+        raw.get("total_minutes"),
+        "Book 2 schedule total_minutes",
+        1660,
+        errors,
+    )
+
+    marker = raw.get("final_assessment")
+    if isinstance(marker, dict):
+        marker_week = marker.get("after_book_week")
+        if type(marker_week) is not int:
+            errors.append(
+                "Book 2 final_assessment.after_book_week must be an integer"
+            )
+            marker_week = None
+        elif marker_week != 6:
+            errors.append("planned final assessment marker must follow book week 6")
+        marker_without_week = {
+            key: value for key, value in marker.items() if key != "after_book_week"
+        }
+        if marker_without_week != {"kind": "future-r2-mock", "status": "planned"}:
+            errors.append(
+                "Book 2 schedule requires the planned future-r2-mock final assessment marker"
+            )
+    else:
+        errors.append(
+            "Book 2 schedule requires the planned future-r2-mock final assessment marker"
+        )
+
+    raw_weeks = raw.get("weeks")
+    if not isinstance(raw_weeks, list):
+        errors.append("course-schedule.yaml weeks must be a list")
+        return None
+
+    local_weeks: list[int] = []
+    global_weeks: list[int] = []
+    weeks: list[ScheduleWeek] = []
+    for row_index, value in enumerate(raw_weeks):
+        row = _mapping(value, f"Book 2 week row {row_index}", errors)
+        if row is None:
+            continue
+        if set(row) != {"book_week", "global_week", "allocations"}:
+            errors.append(
+                f"Book 2 week row {row_index} keys must be allocations, book_week, and global_week"
+            )
+        book_week = _positive_integer(
+            row.get("book_week"), f"Book 2 week row {row_index} book_week", errors
+        )
+        global_week = _positive_integer(
+            row.get("global_week"), f"Book 2 week row {row_index} global_week", errors
+        )
+        if book_week is not None:
+            local_weeks.append(book_week)
+        if global_week is not None:
+            global_weeks.append(global_week)
+        raw_allocations = row.get("allocations")
+        if not isinstance(raw_allocations, list):
+            errors.append(
+                f"Book 2 week {book_week or row_index + 1} allocations must be a list"
+            )
+            continue
+        allocations: list[ScheduleAllocation] = []
+        for allocation_index, value in enumerate(raw_allocations):
+            label = (
+                f"Book 2 week {book_week or row_index + 1} allocation "
+                f"{allocation_index}"
+            )
+            allocation = _mapping(value, label, errors)
+            if allocation is None:
+                continue
+            kind = allocation.get("kind")
+            if kind not in BOOK2_KINDS:
+                errors.append(f"{label} has unknown Book 2 allocation kind {kind}")
+                continue
+            expected_keys = {
+                "bridge-diagnostic": {"kind", "unit", "minutes"},
+                "lesson-session": {"kind", "unit", "session", "minutes"},
+                "practice": {"kind", "unit", "chunk", "minutes", "problem_ids"},
+                "review": {"kind", "unit", "chunk", "minutes"},
+            }[str(kind)]
+            if set(allocation) != expected_keys:
+                errors.append(f"{label} keys must exactly equal {sorted(expected_keys)}")
+            minutes = _positive_integer(
+                allocation.get("minutes"), f"{label} minutes", errors
+            )
+            unit = allocation.get("unit")
+            if not isinstance(unit, str) or not unit:
+                errors.append(f"{label} unit must be a nonempty string")
+                unit = None
+            elif ":" in unit:
+                errors.append(f"cross-book unit reference {unit} is forbidden in Book 2 schedule")
+            elif unit != BOOK2_UNIT:
+                errors.append(f"unknown Book 2 unit {unit}")
+            session = None
+            chunk = None
+            problem_ids = None
+            if kind == "lesson-session":
+                session = _positive_integer(
+                    allocation.get("session"), f"{label} session", errors
+                )
+            elif kind in {"practice", "review"}:
+                chunk = _positive_integer(
+                    allocation.get("chunk"), f"{label} chunk", errors
+                )
+            if kind == "practice":
+                candidate_ids = allocation.get("problem_ids")
+                if not isinstance(candidate_ids, list) or not all(
+                    isinstance(problem_id, str) and problem_id
+                    for problem_id in candidate_ids
+                ):
+                    errors.append(f"{label} problem_ids must be a list of nonempty strings")
+                else:
+                    problem_ids = list(candidate_ids)
+            if minutes is not None:
+                allocations.append(
+                    ScheduleAllocation(
+                        kind=str(kind),
+                        minutes=minutes,
+                        unit=unit if isinstance(unit, str) else None,
+                        session=session,
+                        chunk=chunk,
+                        problem_ids=problem_ids,
+                    )
+                )
+        if book_week is not None:
+            weeks.append(ScheduleWeek(book_week, 1, allocations))
+
+    if local_weeks != list(range(1, 7)):
+        errors.append("Book 2 book_week rows must be ordered consecutively 1..6")
+    if global_weeks != list(range(41, 47)):
+        errors.append("Book 2 global_week rows must be 41..46 in order")
+
+    expected_kinds = (
+        ("bridge-diagnostic", "lesson-session", "practice"),
+        ("lesson-session", "practice"),
+        ("lesson-session", "practice"),
+        ("lesson-session", "practice"),
+        ("lesson-session", "practice"),
+        ("review",),
+    )
+    expected_minutes = (
+        (30, 90, 135),
+        (90, 185),
+        (90, 330),
+        (90, 180),
+        (90, 290),
+        (60,),
+    )
+    listed_problem_ids: list[str] = []
+    scheduled_after_sessions: dict[str, int] = {}
+    latest_session = 0
+    for index, week in enumerate(weeks[:6]):
+        kinds = tuple(allocation.kind for allocation in week.allocations)
+        if kinds != expected_kinds[index]:
+            errors.append(
+                f"Book 2 week {index + 1} allocation kinds {kinds}; "
+                f"expected {expected_kinds[index]}"
+            )
+        for allocation, minutes in zip(week.allocations, expected_minutes[index]):
+            if allocation.minutes != minutes:
+                errors.append(
+                    f"Book 2 week {index + 1} {allocation.kind} allocation minutes "
+                    f"{allocation.minutes}; expected {minutes}"
+                )
+        lesson_rows = [
+            allocation for allocation in week.allocations if allocation.kind == "lesson-session"
+        ]
+        if len(lesson_rows) == 1 and lesson_rows[0].session is not None:
+            latest_session = lesson_rows[0].session
+        if index < 5 and (
+            len(lesson_rows) != 1 or lesson_rows[0].session != index + 1
+        ):
+            errors.append(
+                f"Book 2 week {index + 1} must contain lesson session {index + 1} exactly once"
+            )
+        practice_rows = [
+            allocation for allocation in week.allocations if allocation.kind == "practice"
+        ]
+        if index < 5:
+            if len(practice_rows) != 1 or practice_rows[0].chunk != index + 1:
+                errors.append(
+                    f"Book 2 week {index + 1} must contain practice chunk {index + 1} exactly once"
+                )
+            elif practice_rows[0].problem_ids is not None:
+                listed_problem_ids.extend(practice_rows[0].problem_ids)
+                for problem_id in practice_rows[0].problem_ids:
+                    scheduled_after_sessions[problem_id] = latest_session
+                expected_ids = list(BOOK2_WEEK_PROBLEMS[index])
+                if practice_rows[0].problem_ids != expected_ids:
+                    errors.append(
+                        f"Book 2 practice chunk {index + 1} problem_ids must be {expected_ids}"
+                    )
+                known_minutes = [
+                    BOOK2_PROBLEM_MINUTES[problem_id]
+                    for problem_id in practice_rows[0].problem_ids
+                    if problem_id in BOOK2_PROBLEM_MINUTES
+                ]
+                if len(known_minutes) == len(practice_rows[0].problem_ids):
+                    actual_problem_minutes = sum(known_minutes)
+                    if actual_problem_minutes != practice_rows[0].minutes:
+                        errors.append(
+                            f"Book 2 practice chunk {index + 1} problem minutes "
+                            f"{actual_problem_minutes}; allocation minutes "
+                            f"{practice_rows[0].minutes}"
+                        )
+
+    counts = Counter(listed_problem_ids)
+    for problem_id in BOOK2_PROBLEM_MINUTES:
+        if counts[problem_id] != 1:
+            errors.append(
+                f"{problem_id} must appear exactly once in staged problem_ids; "
+                f"found {counts[problem_id]}"
+            )
+    for problem_id in sorted(set(listed_problem_ids) - set(BOOK2_PROBLEM_MINUTES)):
+        errors.append(f"unknown staged Book 2 problem ID {problem_id}")
+
+    actual_total = sum(
+        allocation.minutes for week in weeks for allocation in week.allocations
+    )
+    if actual_total != 1660:
+        errors.append(f"Book 2 scheduled total {actual_total}; expected 1660")
+    if raw.get("total_minutes") != actual_total:
+        errors.append(
+            f"Book 2 declared total {raw.get('total_minutes')}; actual {actual_total}"
+        )
+    manifest_paths = list((root / "units").glob("*/manifest.yaml"))
+    if status == "staged" and manifest_paths:
+        errors.append(
+            "staged Book 2 schedule is forbidden once a live manifest exists"
+        )
+    covered_problem_ids: frozenset[str] = frozenset()
+    if status == "live":
+        covered_problem_ids = _validate_live_book2_manifest(
+            root,
+            manifest_paths,
+            listed_problem_ids,
+            scheduled_after_sessions,
+            errors,
+        )
+
+    return Book2CourseSchedule(
+        schedule_version=1,
+        weeks=weeks,
+        declared_week_count=6,
+        declared_total_minutes=1660,
+        status=str(status),
+        global_weeks=tuple(global_weeks),
+        covered_problem_ids=covered_problem_ids,
+    )
+
+
+def _validate_live_book2_manifest(
+    root: Path,
+    manifest_paths: list[Path],
+    scheduled_problem_ids: list[str],
+    scheduled_after_sessions: dict[str, int],
+    errors: list[str],
+) -> frozenset[str]:
+    if len(manifest_paths) != 1:
+        errors.append(
+            "live Book 2 schedule requires exactly one unit manifest; "
+            f"found {len(manifest_paths)}"
+        )
+        return frozenset()
+    manifest_path = manifest_paths[0]
+    try:
+        raw = _mapping(_read_yaml(manifest_path), str(manifest_path), errors)
+    except ValueError as exc:
+        errors.append(str(exc))
+        return frozenset()
+    if raw is None:
+        return frozenset()
+    if raw.get("unit") != BOOK2_UNIT:
+        errors.append(f"live Book 2 manifest unit must be {BOOK2_UNIT}")
+    unit_dir = manifest_path.parent
+
+    def require_path(relative: object) -> None:
+        if not isinstance(relative, str) or not relative:
+            errors.append("live Book 2 manifest has an empty declared student path")
+            return
+        candidate = unit_dir / relative
+        try:
+            resolved = candidate.resolve(strict=True)
+        except OSError:
+            errors.append(f"missing declared student path {relative}")
+            return
+        if not resolved.is_relative_to(unit_dir.resolve()) or any(
+            parent.is_symlink()
+            for parent in [candidate, *candidate.parents]
+            if parent.is_relative_to(unit_dir)
+        ):
+            errors.append(f"declared student path escapes or is symlinked: {relative}")
+        elif not resolved.is_file():
+            errors.append(f"missing declared student path {relative}")
+
+    expected_lessons = [
+        "lessons/01-query-key-value-and-scaled-dot-product.ipynb",
+        "lessons/02-self-attention-and-masks.ipynb",
+        "lessons/03-multi-head-position-and-cost.ipynb",
+        "lessons/04-attention-module-and-tiny-training.ipynb",
+        "lessons/05-transformer-blocks-and-architecture.ipynb",
+    ]
+    if raw.get("overview_path") != "lesson.ipynb":
+        errors.append("live Book 2 manifest overview_path must be lesson.ipynb")
+    if raw.get("lesson_paths") != expected_lessons:
+        errors.append("live Book 2 manifest lesson_paths must match sessions 1..5 exactly")
+    if raw.get("review_path") != "review.ipynb":
+        errors.append("live Book 2 manifest review_path must be review.ipynb")
+    bridge = raw.get("bridge_diagnostic")
+    bridge_path = bridge.get("path") if isinstance(bridge, dict) else None
+    if bridge_path != "lessons/00-book1-bridge.ipynb":
+        errors.append(
+            "live Book 2 manifest bridge path must be lessons/00-book1-bridge.ipynb"
+        )
+    for relative in [
+        raw.get("overview_path"),
+        bridge_path,
+        *(raw.get("lesson_paths") if isinstance(raw.get("lesson_paths"), list) else []),
+        raw.get("review_path"),
+    ]:
+        require_path(relative)
+
+    raw_practice = raw.get("practice")
+    if not isinstance(raw_practice, list):
+        errors.append("live Book 2 manifest practice must be a list")
+        return frozenset()
+    manifest_ids: list[str] = []
+    for row_index, row in enumerate(raw_practice):
+        if not isinstance(row, dict):
+            errors.append(f"live Book 2 manifest practice row {row_index} must be a mapping")
+            continue
+        problem_id = row.get("id")
+        if isinstance(problem_id, str):
+            manifest_ids.append(problem_id)
+            expected_minutes = BOOK2_PROBLEM_MINUTES.get(problem_id)
+            if expected_minutes is not None and row.get("minutes") != expected_minutes:
+                errors.append(
+                    f"{problem_id} manifest minutes {row.get('minutes')}; "
+                    f"scheduled contract requires {expected_minutes}"
+                )
+            required_session = row.get("after_session")
+            scheduled_session = scheduled_after_sessions.get(problem_id)
+            if (
+                type(required_session) is int
+                and scheduled_session is not None
+                and required_session > scheduled_session
+            ):
+                errors.append(
+                    f"{problem_id} requires session {required_session} but is scheduled "
+                    f"after session {scheduled_session}"
+                )
+        else:
+            errors.append(f"live Book 2 manifest practice row {row_index} id must be a string")
+        require_path(row.get("path"))
+    ids_match = Counter(manifest_ids) == Counter(scheduled_problem_ids)
+    if not ids_match:
+        errors.append("live manifest problem IDs must exactly match scheduled problem_ids")
+    expected_practice_minutes = sum(BOOK2_PROBLEM_MINUTES.values())
+    estimated = raw.get("estimated_minutes")
+    if not isinstance(estimated, dict) or estimated.get("practice") != expected_practice_minutes:
+        errors.append(
+            "live Book 2 manifest estimated practice minutes must equal scheduled "
+            f"{expected_practice_minutes}"
+        )
+    return frozenset(manifest_ids) if ids_match else frozenset()
 
 
 def _unit_contracts(root: Path) -> dict[str, dict[str, Any]]:
@@ -544,26 +1110,41 @@ def _validate(
         errors.append("mock and debrief must be the final scheduled events")
 
 
-def check_schedule(root: str | Path) -> Report:
+def check_schedule(
+    root: str | Path,
+    *,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
+) -> Report:
     root = Path(root).resolve()
     errors: list[str] = []
     try:
-        schedule = _parse_schedule(root, errors)
-        if schedule is not None:
-            _validate(root, schedule, errors)
+        schedule_policy(
+            root,
+            book_spec=book_spec,
+            expected_book_number=expected_book_number,
+        ).load(root, errors)
     except (KeyError, OSError, TypeError, ValueError, yaml.YAMLError) as exc:
         errors.append(f"course-schedule.yaml: {exc}")
     return Report(name="schedule-check", ok=not errors, errors=errors)
 
 
 def load_validated_schedule(
-    root: str | Path, *, enforce_calendar: bool = True
+    root: str | Path,
+    *,
+    enforce_calendar: bool = True,
+    book_spec: BookSpec | None = None,
+    expected_book_number: int | None = None,
 ) -> CourseSchedule:
     root = Path(root).resolve()
     errors: list[str] = []
-    schedule = _parse_schedule(root, errors)
-    if schedule is not None:
-        _validate(root, schedule, errors, enforce_calendar=enforce_calendar)
+    schedule = schedule_policy(
+        root,
+        book_spec=book_spec,
+        expected_book_number=expected_book_number,
+    ).load(
+        root, errors, enforce_calendar=enforce_calendar
+    )
     if schedule is None or errors:
         raise ValueError("course-schedule.yaml: " + "; ".join(errors))
     return schedule

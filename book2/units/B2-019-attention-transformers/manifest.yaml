@@ -1,0 +1,565 @@
+unit: B2-019-attention-transformers
+book: 2
+layer: round-2-extension
+round: 2
+track: extension
+length: double
+solution_policy: required
+concepts_taught:
+- matrix-transpose
+- query-key-value-attention
+- scaled-dot-product-attention
+- attention-mask
+- causal-self-attention
+- multi-head-attention
+- sinusoidal-positional-encoding
+- attention-complexity
+- transformer-residual-layernorm
+- position-wise-feed-forward
+- transformer-block
+concepts_used: &id001
+- book1:numpy-arrays
+- book1:broadcasting
+- book1:vectorization
+- book1:elementwise-ops
+- book1:aggregation-axis
+- book1:random-seeding
+- book1:dot-product
+- book1:matrix-multiplication
+- book1:expectation
+- book1:variance
+- book1:independence
+- book1:variance-of-sums
+- book1:torch-tensors
+- book1:nn-module
+- book1:requires-grad
+- book1:tensor-shape-tracing
+- book1:softmax
+- book1:cross-entropy-loss
+- book1:torch-optimizers
+- book1:autograd-training
+concept_prerequisites: *id001
+prereq_units:
+- book1:C6-pytorch
+- book1:C7-cnn-transfer
+- book1:C8-embeddings
+- book1:C11-neural-training
+bridge_diagnostic:
+  path: lessons/00-book1-bridge.ipynb
+  minutes: 30
+  referenced_concepts: *id001
+overview_path: lesson.ipynb
+lesson_paths:
+- lessons/01-query-key-value-and-scaled-dot-product.ipynb
+- lessons/02-self-attention-and-masks.ipynb
+- lessons/03-multi-head-position-and-cost.ipynb
+- lessons/04-attention-module-and-tiny-training.ipynb
+- lessons/05-transformer-blocks-and-architecture.ipynb
+review_path: review.ipynb
+generator_path: scripts/generate_attention_data.py
+estimated_minutes:
+  lesson: 450
+  lesson_sessions:
+  - 90
+  - 90
+  - 90
+  - 90
+  - 90
+  practice: 1120
+  review: 60
+concept_sessions:
+  matrix-transpose: 1
+  query-key-value-attention: 1
+  scaled-dot-product-attention: 1
+  attention-mask: 2
+  causal-self-attention: 2
+  multi-head-attention: 3
+  sinusoidal-positional-encoding: 3
+  attention-complexity: 3
+  transformer-residual-layernorm: 5
+  position-wise-feed-forward: 5
+  transformer-block: 5
+coverage_claims:
+- knowledge_point: attention-mechanism-foundations
+  first_session: 1
+  modalities: [theory, derivation, implementation]
+  evidence_concepts: [query-key-value-attention, scaled-dot-product-attention]
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb, heading: "B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 2. Query, key, and value roles", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p01, role: primary}]
+      assessments: []
+    derivation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb, heading: "B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 3. Scale and stable row softmax", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p02, role: primary}, {id: B2-019-p13, role: primary}]
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb, heading: "B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 4. Weighted values", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p06, role: primary}]
+      assessments: []
+- knowledge_point: self-attention
+  first_session: 2
+  modalities: [theory, derivation, implementation]
+  evidence_concepts: [scaled-dot-product-attention, causal-self-attention, attention-mask]
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb, heading: "B2-019 — Session 2: Self-Attention and Masks > 1. Self-attention shape contract", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p03, role: primary}]
+      assessments: []
+    derivation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb, heading: "B2-019 — Session 2: Self-Attention and Masks > 4. Causal masks", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p14, role: primary}]
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb, heading: "B2-019 — Session 2: Self-Attention and Masks > 2. Additive masks before softmax", cell_ordinal: 2, role: primary}
+      practices: [{id: B2-019-p07, role: primary}, {id: B2-019-p08, role: primary}]
+      assessments: []
+- knowledge_point: multi-head-attention
+  first_session: 3
+  modalities: [theory, derivation, implementation]
+  evidence_concepts: [multi-head-attention]
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 1. Projection and head dimensions", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p15, role: primary}]
+      assessments: []
+    derivation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 1. Projection and head dimensions", cell_ordinal: 2, role: primary}
+      practices: [{id: B2-019-p23, role: primary}]
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 3. Independent heads and concatenation", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p10, role: primary}]
+      assessments: []
+- knowledge_point: positional-encoding
+  first_session: 3
+  modalities: [theory, implementation]
+  evidence_concepts: [sinusoidal-positional-encoding]
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 4. Sinusoidal positional encoding", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p05, role: primary}]
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 4. Sinusoidal positional encoding", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p09, role: primary}, {id: B2-019-p17, role: primary}]
+      assessments: []
+- knowledge_point: attention-complexity-analysis
+  first_session: 3
+  modalities: [theory, derivation]
+  evidence_concepts: [attention-complexity]
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 5. Exact time and score-memory cost", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p21, role: primary}]
+      assessments: []
+    derivation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 5. Exact time and score-memory cost", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p16, role: primary}, {id: B2-019-p23, role: primary}]
+      assessments: []
+- knowledge_point: attention-from-scratch
+  first_session: 4
+  modalities: [theory, implementation, model-training]
+  evidence_concepts: [scaled-dot-product-attention, causal-self-attention]
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb, heading: "B2-019 — Session 4: Attention Module and Tiny Training > 1. Module contract", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p18, role: primary}]
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb, heading: "B2-019 — Session 4: Attention Module and Tiny Training > 2. Forward pass and mask", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p11, role: primary}]
+      assessments: []
+    model-training:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb, heading: "B2-019 — Session 4: Attention Module and Tiny Training > 4. Training loop", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p17, role: primary}]
+      assessments: []
+- knowledge_point: transformer-architecture-foundations
+  first_session: 5
+  modalities: [theory, derivation, implementation]
+  evidence_concepts: [transformer-block, transformer-residual-layernorm, position-wise-feed-forward]
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb, heading: "B2-019 — Session 5: Transformer Blocks and Architecture > 5. Cross-attention role and dimensions", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p20, role: primary}]
+      assessments: []
+    derivation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb, heading: "B2-019 — Session 5: Transformer Blocks and Architecture > 2. Pre-norm residual ordering", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p19, role: primary}]
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - {path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb, heading: "B2-019 — Session 5: Transformer Blocks and Architecture > 7. Architecture trace", cell_ordinal: 1, role: primary}
+      practices: [{id: B2-019-p12, role: primary}, {id: B2-019-p24, role: primary}]
+      assessments: []
+practice:
+- id: B2-019-p01
+  set: A
+  type: mc
+  difficulty: intro
+  provenance: original
+  concepts:
+  - query-key-value-attention
+  path: practice/p01.ipynb
+  solution_path: practice/p01_solution.ipynb
+  minutes: 20
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p02
+  set: A
+  type: mc-normal-form
+  difficulty: intro
+  provenance: original
+  concepts:
+  - matrix-transpose
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  path: practice/p02.ipynb
+  solution_path: practice/p02_solution.ipynb
+  minutes: 20
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p03
+  set: A
+  type: mc
+  difficulty: core
+  provenance: original
+  concepts:
+  - scaled-dot-product-attention
+  path: practice/p03.ipynb
+  solution_path: practice/p03_solution.ipynb
+  minutes: 20
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p04
+  set: A
+  type: mc
+  difficulty: intro
+  provenance: original
+  concepts:
+  - attention-mask
+  - causal-self-attention
+  path: practice/p04.ipynb
+  solution_path: practice/p04_solution.ipynb
+  minutes: 20
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p05
+  set: A
+  type: mc
+  difficulty: core
+  provenance: original
+  concepts:
+  - sinusoidal-positional-encoding
+  path: practice/p05.ipynb
+  solution_path: practice/p05_solution.ipynb
+  minutes: 20
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p06
+  set: B
+  type: constrained-coding
+  difficulty: intro
+  provenance: original
+  concepts:
+  - matrix-transpose
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  path: practice/p06.ipynb
+  solution_path: practice/p06_solution.ipynb
+  minutes: 50
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p07
+  set: B
+  type: constrained-coding
+  difficulty: intro
+  provenance: original
+  concepts:
+  - matrix-transpose
+  - scaled-dot-product-attention
+  path: practice/p07.ipynb
+  solution_path: practice/p07_solution.ipynb
+  minutes: 50
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p08
+  set: B
+  type: constrained-coding
+  difficulty: core
+  provenance: original
+  concepts:
+  - attention-mask
+  - causal-self-attention
+  path: practice/p08.ipynb
+  solution_path: practice/p08_solution.ipynb
+  minutes: 50
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p09
+  set: B
+  type: constrained-coding
+  difficulty: intro
+  provenance: original
+  concepts:
+  - sinusoidal-positional-encoding
+  path: practice/p09.ipynb
+  solution_path: practice/p09_solution.ipynb
+  minutes: 50
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p10
+  set: B
+  type: constrained-coding
+  difficulty: core
+  provenance: original
+  concepts:
+  - multi-head-attention
+  path: practice/p10.ipynb
+  solution_path: practice/p10_solution.ipynb
+  minutes: 50
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p11
+  set: B
+  type: constrained-coding
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - scaled-dot-product-attention
+  path: practice/p11.ipynb
+  solution_path: practice/p11_solution.ipynb
+  minutes: 50
+  after_session: 4
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p12
+  set: B
+  type: constrained-coding
+  difficulty: core
+  provenance: original
+  concepts:
+  - transformer-residual-layernorm
+  - position-wise-feed-forward
+  - transformer-block
+  path: practice/p12.ipynb
+  solution_path: practice/p12_solution.ipynb
+  minutes: 50
+  after_session: 5
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p13
+  set: B
+  type: proof
+  difficulty: core
+  provenance: original
+  concepts:
+  - scaled-dot-product-attention
+  path: practice/p13.ipynb
+  solution_path: practice/p13_solution.ipynb
+  minutes: 45
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p14
+  set: B
+  type: proof
+  difficulty: core
+  provenance: original
+  concepts:
+  - causal-self-attention
+  path: practice/p14.ipynb
+  solution_path: practice/p14_solution.ipynb
+  minutes: 45
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p15
+  set: B
+  type: proof
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - multi-head-attention
+  path: practice/p15.ipynb
+  solution_path: practice/p15_solution.ipynb
+  minutes: 45
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p16
+  set: B
+  type: proof
+  difficulty: core
+  provenance: original
+  concepts:
+  - attention-complexity
+  path: practice/p16.ipynb
+  solution_path: practice/p16_solution.ipynb
+  minutes: 45
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p17
+  set: C
+  type: integrative
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - causal-self-attention
+  - sinusoidal-positional-encoding
+  path: practice/p17.ipynb
+  solution_path: practice/p17_solution.ipynb
+  minutes: 65
+  after_session: 4
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p18
+  set: C
+  type: integrative
+  difficulty: core
+  provenance: original
+  concepts:
+  - scaled-dot-product-attention
+  - attention-mask
+  path: practice/p18.ipynb
+  solution_path: practice/p18_solution.ipynb
+  minutes: 65
+  after_session: 4
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p19
+  set: C
+  type: integrative
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - transformer-residual-layernorm
+  - position-wise-feed-forward
+  - transformer-block
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb
+  minutes: 65
+  after_session: 5
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p20
+  set: C
+  type: scenario
+  difficulty: core
+  provenance: original
+  concepts:
+  - transformer-block
+  path: practice/p20.ipynb
+  solution_path: practice/p20_solution.ipynb
+  minutes: 65
+  after_session: 5
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p21
+  set: C
+  type: integrative
+  difficulty: core
+  provenance: original
+  concepts:
+  - attention-complexity
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+  minutes: 65
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p22
+  set: C
+  type: scenario
+  difficulty: intro
+  provenance: original
+  concepts:
+  - attention-mask
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb
+  minutes: 55
+  after_session: 5
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p23
+  set: C
+  type: challenge
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - multi-head-attention
+  - attention-complexity
+  path: practice/p23.ipynb
+  solution_path: practice/p23_solution.ipynb
+  minutes: 55
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260808
+- id: B2-019-p24
+  set: C
+  type: challenge
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - transformer-residual-layernorm
+  - position-wise-feed-forward
+  - transformer-block
+  path: practice/p24.ipynb
+  solution_path: practice/p24_solution.ipynb
+  minutes: 55
+  after_session: 5
+  compute:
+    policy: cpu
+    seed: 20260808

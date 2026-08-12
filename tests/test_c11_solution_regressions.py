@@ -7,7 +7,8 @@ import pytest
 import torch
 
 ROOT = Path(__file__).resolve().parents[1]
-PRACTICE = ROOT / "units" / "C11-neural-training" / "practice"
+BOOK1_ROOT = ROOT / "book1"
+PRACTICE = BOOK1_ROOT / "units" / "C11-neural-training" / "practice"
 
 
 def _source(cell: dict[str, object]) -> str:

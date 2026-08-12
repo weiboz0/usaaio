@@ -1,34 +1,36 @@
 # Curriculum Architecture
 
-USAAIO should use **one layered curriculum graph with two exit gates**, not separate Round 1
-and Round 2 copies of the teaching materials.
+USAAIO uses **two separately complete book roots linked by qualified imports**.
+The split follows the student's two-stage progression without copying shared prerequisites.
 
 ```text
-shared/reusable nodes --+
-                        +-> dependency-closed Round 1 core -> R1 exit assessment
-                        |                                  |
-                        +----------------------------------+-> Round 2 extension
-                                                              -> R2 capstone / GPU practice
+books.yaml
+├── book1/  complete Round 1 course → r1-* assessments
+└── book2/  complete Round 2 course → r2-* assessments
+      └── qualified prerequisite and evidence imports from book1/
 ```
 
-The shared graph keeps probability, linear algebra, calculus, scientific Python, model
-evaluation, and PyTorch fundamentals authoritative in one place. Round 2 units consume those
-nodes and add attention, transformers, advanced vision, generative modeling, and open-ended
-GPU work. They do not create a second version of the same prerequisites.
+Book 1 keeps probability, linear algebra, calculus, scientific Python, model evaluation,
+and PyTorch fundamentals authoritative in one place.
+Book 2 declares Book 1 as a prerequisite book, consumes only its persisted import allowlists,
+and adds attention, transformers, advanced vision, generative modeling, and open-ended GPU work.
+It does not create a second version of the same prerequisites.
 Layer labels describe reuse and exit scope, not a promise that every shared node is taught
-before every Round 1 core node; the explicit dependency DAG determines teaching order. A
-Round-2-extension topic may already be shipped early in the current course, as with C8
-tokenization and word embeddings. Exit membership always comes from official `required_for`,
-not from the unit's calendar position.
+before every Round 1 core node; each book's explicit dependency DAG determines teaching order.
+An official Round 2 target may already be covered by qualified Book 1 evidence, as with C8
+tokenization and word embeddings, without transferring its concept ownership to Book 2.
+Exit membership always comes from official `required_for`, not from calendar position.
 
 ## Contracts and exits
 
-`syllabus.md` is the shipped-content contract: its concepts and units exist now and must obey
-prerequisite and practice gates. `curriculum/coverage-map.yaml` is the planning contract: it
-records every official or observed atomic target as covered, partial, or missing and assigns
-each gap exactly one destination. `docs/curriculum-roadmap.md` and the coverage audit are
-generated views of that map, except for the four plainly labelled renderer-owned editorial
-hour estimates whose schema promotion remains future work.
+`books.yaml` is the registry contract.
+Within each registered root, `syllabus.md` is the shipped-content contract and
+`curriculum/coverage-map.yaml` is the planning contract.
+Book-local checks never scan a sibling root.
+Book 2 resolves Book 1 units, concepts, and evidence only through its exact qualified
+`imports` and `evidence_imports` syllabus blocks.
+`docs/curriculum-roadmap.md` and the coverage audit are shared generated views over the
+registered books; they are never a third source of truth.
 
 The Round 1 exit includes every target officially required for Round 1, whether it belongs to
 shared foundation or Round 1 core. Passing a single indexed paper is not the definition of
@@ -55,7 +57,7 @@ targets and GPU execution policy, then the observed integration capabilities.
   inverse problems and mixture-parameter regression, because the indexed paper assesses each
   as an integrative capability.
 - Past-paper-only targets promoted to required status carry an explicit acceptance marker in
-  `curriculum/official-topics.yaml`: repeated R1 integration or an integral role in the indexed
+  the owning book's `curriculum/official-topics.yaml`: repeated R1 integration or an integral role in the indexed
   R2 attention arc. Single-paper integration families remain labelled as bridges.
 - Importance sampling is not an official or observed requirement and has no current consumer.
   It remains optional until a probabilistic-modeling unit needs proposal distributions and

@@ -6,7 +6,8 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
-PRACTICE = ROOT / "units" / "C12-classical-models" / "practice"
+BOOK1_ROOT = ROOT / "book1"
+PRACTICE = BOOK1_ROOT / "units" / "C12-classical-models" / "practice"
 
 
 def _source(number: int) -> str:
@@ -175,7 +176,7 @@ def test_required_top_level_submission_variables_are_literal_assignments() -> No
 
 
 def test_session1_teaches_the_complete_p06_validation_policy_executably() -> None:
-    path = ROOT / "units" / "C12-classical-models" / "lessons" / "01-logistic-regression.ipynb"
+    path = BOOK1_ROOT / "units" / "C12-classical-models" / "lessons" / "01-logistic-regression.ipynb"
     notebook = json.loads(path.read_text())
     source = "\n".join(str(cell.get("source", "")) for cell in notebook["cells"])
     for marker in (
@@ -191,7 +192,7 @@ def test_session1_teaches_the_complete_p06_validation_policy_executably() -> Non
 
 
 def test_session3_teaches_alpha_box_cases_and_limits() -> None:
-    path = ROOT / "units" / "C12-classical-models" / "lessons" / "03-kernel-svm-and-dual-intuition.ipynb"
+    path = BOOK1_ROOT / "units" / "C12-classical-models" / "lessons" / "03-kernel-svm-and-dual-intuition.ipynb"
     notebook = json.loads(path.read_text())
     source = "\n".join(str(cell.get("source", "")) for cell in notebook["cells"])
     for marker in (
@@ -203,7 +204,7 @@ def test_session3_teaches_alpha_box_cases_and_limits() -> None:
 
 def test_session2_defines_support_vectors_by_dual_state_with_equality_caveat() -> None:
     path = (
-        ROOT
+        BOOK1_ROOT
         / "units"
         / "C12-classical-models"
         / "lessons"

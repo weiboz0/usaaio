@@ -12,22 +12,60 @@ def transitive_prereqs(syllabus: Syllabus, unit_id: str) -> set[str]:
         for prereq in syllabus.units[uid].prereqs:
             if prereq not in seen:
                 seen.add(prereq)
-                visit(prereq)
+                if prereq in syllabus.units:
+                    visit(prereq)
 
     visit(unit_id)
     return seen
 
 
-def taught_closure(syllabus: Syllabus, unit_ids: list[str]) -> set[str]:
+def taught_closure(
+    syllabus: Syllabus,
+    unit_ids: list[str],
+    *,
+    catalog=None,
+    book=None,
+) -> set[str]:
     closure_units = set(unit_ids)
+    imported_concepts: set[str] = set()
     for unit_id in unit_ids:
+        if ":" in unit_id:
+            if catalog is None or book is None:
+                raise ValueError(f"qualified prerequisite {unit_id!r} requires a book catalog")
+            owner_id, local_id = unit_id.split(":", 1)
+            if owner_id == book.id:
+                raise ValueError(f"qualified prerequisite {unit_id!r} names the wrong owner")
+            from tools.books import load_book_imports, resolve_qualified_import
+
+            resolve_qualified_import(catalog, book, unit_id)
+            imports = load_book_imports(book)
+            if local_id not in imports.units:
+                raise ValueError(f"qualified prerequisite {unit_id!r} is outside the allowlist")
+            owner = catalog.by_id(owner_id)
+            owner_syllabus = load_syllabus(owner.root)
+            owner_units = {local_id, *transitive_prereqs(owner_syllabus, local_id)}
+            taught = {
+                concept
+                for owner_unit in owner_units
+                for concept in owner_syllabus.units[owner_unit].teaches
+            }
+            imported_concepts.update(
+                f"{owner_id}:{concept}" for concept in taught & set(imports.concepts)
+            )
+            continue
         if unit_id in syllabus.units:
             closure_units |= transitive_prereqs(syllabus, unit_id)
+        elif catalog is not None and book is not None:
+            from tools.books import load_book_imports
+
+            imports = load_book_imports(book)
+            if unit_id in imports.units:
+                raise ValueError(f"imported prerequisite {unit_id!r} must be qualified")
     concepts = set(syllabus.baseline)
     for unit_id in closure_units:
         if unit_id in syllabus.units:
             concepts.update(syllabus.units[unit_id].teaches)
-    return concepts
+    return concepts | imported_concepts
 
 
 def _cycle_errors(syllabus: Syllabus) -> list[str]:
@@ -54,17 +92,31 @@ def _cycle_errors(syllabus: Syllabus) -> list[str]:
 
 
 def check_prereq(root: str | Path) -> Report:
-    syllabus = load_syllabus(root)
-    units = load_unit_manifests(root)
-    mocks = load_mock_manifests(root)
+    selected_root = Path(root).resolve()
+    syllabus = load_syllabus(selected_root)
+    units = load_unit_manifests(selected_root)
+    catalog = None
+    book = None
+    registry = selected_root.parent / "books.yaml"
+    if registry.is_file():
+        from tools.books import load_book_catalog
+
+        catalog = load_book_catalog(selected_root.parent)
+        book = next((candidate for candidate in catalog.books if candidate.root == selected_root), None)
+    mocks = load_mock_manifests(selected_root, book_number=book.number if book else None)
     errors: list[str] = []
 
     errors.extend(_cycle_errors(syllabus))
     taught: list[str] = []
     for unit in syllabus.units.values():
         for prereq in unit.prereqs:
-            if prereq not in syllabus.units:
+            if prereq not in syllabus.units and ":" not in prereq:
                 errors.append(f"{unit.id}: unknown prereq unit {prereq}")
+            elif ":" in prereq:
+                try:
+                    taught_closure(syllabus, [prereq], catalog=catalog, book=book)
+                except ValueError as exc:
+                    errors.append(f"{unit.id}: {exc}")
         taught.extend(unit.teaches)
         for concept in unit.teaches:
             if concept not in syllabus.concepts:
@@ -90,7 +142,23 @@ def check_prereq(root: str | Path) -> Report:
             errors.append(f"{manifest.path}: concepts_taught drift from syllabus")
         if set(manifest.prereq_units) != set(unit.prereqs):
             errors.append(f"{manifest.path}: prereq_units drift from syllabus")
-        allowed = taught_closure(syllabus, list(unit.prereqs))
+        if manifest.concept_prerequisites != unit.concept_prerequisites:
+            errors.append(
+                f"{manifest.path}: concept_prerequisites drift from syllabus"
+            )
+        if manifest.book == 2 and manifest.concept_prerequisites != manifest.concepts_used:
+            errors.append(
+                f"{manifest.path}: concept_prerequisites must exactly equal concepts_used"
+            )
+        allowed = taught_closure(
+            syllabus, list(unit.prereqs), catalog=catalog, book=book
+        )
+        for concept in manifest.concept_prerequisites:
+            if concept not in allowed:
+                errors.append(
+                    f"{manifest.path}: concept prerequisite {concept} is outside the "
+                    "prereq-unit taught closure"
+                )
         for concept in manifest.concepts_used:
             if concept not in allowed:
                 errors.append(f"{manifest.path}: uses untaught concept {concept}")
@@ -119,7 +187,12 @@ def check_prereq(root: str | Path) -> Report:
             for unit in problem.units:
                 if unit not in shipped_units:
                     errors.append(f"{mock.path}: {problem.id} unit {unit} has no shipped manifest")
-            allowed = taught_closure(syllabus, [unit for unit in problem.units if unit in syllabus.units])
+            allowed = taught_closure(
+                syllabus,
+                [unit for unit in problem.units if unit in syllabus.units],
+                catalog=catalog,
+                book=book,
+            )
             for concept in problem.concepts:
                 if concept not in allowed:
                     errors.append(f"{mock.path}: {problem.id} tests untaught concept {concept}")

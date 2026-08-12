@@ -1,14 +1,18 @@
 from __future__ import annotations
 
+import functools
+import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tomllib
 from collections import Counter
 from pathlib import Path
 
+import pytest
 import yaml
 
 from tools.checks.blueprint import check_blueprint
@@ -20,6 +24,8 @@ from tools.checks.prereq import check_prereq
 from tools.model import load_syllabus, load_unit_manifests
 
 ROOT = Path(__file__).resolve().parents[1]
+BOOK1_ROOT = ROOT / "book1"
+BOOK2_ROOT = ROOT / "book2"
 
 NEW_CONCEPT_CLUSTERS = {
     "seaborn-programming": "python-scientific",
@@ -100,6 +106,20 @@ PLAN017_NEW_CONCEPTS = {
     "dropout",
     "cnn-training",
 }
+
+PLAN019_B2_019_CONCEPTS = (
+    "matrix-transpose",
+    "query-key-value-attention",
+    "scaled-dot-product-attention",
+    "attention-mask",
+    "causal-self-attention",
+    "multi-head-attention",
+    "sinusoidal-positional-encoding",
+    "attention-complexity",
+    "transformer-residual-layernorm",
+    "position-wise-feed-forward",
+    "transformer-block",
+)
 
 PLAN017_C11_CONCEPTS_USED = [
     "numpy-arrays",
@@ -319,18 +339,18 @@ PLAN018_C12_CONCEPT_COVERAGE = {
 
 
 def _manifest(unit_id: str) -> dict[str, object]:
-    return yaml.safe_load((ROOT / "units" / unit_id / "manifest.yaml").read_text())
+    return yaml.safe_load((BOOK1_ROOT / "units" / unit_id / "manifest.yaml").read_text())
 
 
 def _notebook_cell_source(relative_path: str, cell_id: str) -> str:
-    notebook = json.loads((ROOT / relative_path).read_text())
+    notebook = json.loads((BOOK1_ROOT / relative_path).read_text())
     cell = next(cell for cell in notebook["cells"] if cell.get("id") == cell_id)
     source = cell.get("source", "")
     return "".join(source) if isinstance(source, list) else source
 
 
 def _canonical_syllabus_yaml() -> dict[str, object]:
-    text = (ROOT / "syllabus.md").read_text()
+    text = (BOOK1_ROOT / "syllabus.md").read_text()
     fenced = re.search(
         r"<!-- syllabus-canonical -->\s*```yaml\n(.*?)\n```", text, re.DOTALL
     )
@@ -339,7 +359,7 @@ def _canonical_syllabus_yaml() -> dict[str, object]:
 
 
 def _syllabus_narrative() -> str:
-    text = (ROOT / "syllabus.md").read_text()
+    text = (BOOK1_ROOT / "syllabus.md").read_text()
     canonical_end = re.search(
         r"<!-- syllabus-canonical -->\s*```yaml\n.*?\n```", text, re.DOTALL
     )
@@ -357,14 +377,37 @@ def _narrative_section(narrative: str, heading: str) -> str:
     return match.group(1)
 
 
-def seed_repo(root: Path) -> None:
-    (root / "mocktests").mkdir(parents=True)
-    (root / "mocktests" / "blueprint.yaml").write_text((ROOT / "mocktests" / "blueprint.yaml").read_text())
-    (root / "syllabus.md").write_text((ROOT / "syllabus.md").read_text())
+def seed_repo(root: Path, *, registered: bool = False) -> Path:
+    content_root = root / "book1" if registered else root
+    (content_root / "mocktests").mkdir(parents=True)
+    (content_root / "mocktests" / "blueprint.yaml").write_text(
+        (BOOK1_ROOT / "mocktests" / "blueprint.yaml").read_text()
+    )
+    (content_root / "syllabus.md").write_text((BOOK1_ROOT / "syllabus.md").read_text())
+    if registered:
+        (root / "books.yaml").write_text(
+            "books_version: 1\n"
+            "books:\n"
+            "  - {id: book1, number: 1, root: book1, depends_on: []}\n"
+        )
+        for relative in (
+            "curriculum/course-schedule.yaml",
+            "curriculum/coverage-map.yaml",
+            "curriculum/material-inventory.yaml",
+            "curriculum/official-topics.yaml",
+            "curriculum/source-manifest.yaml",
+            "docs/course-structure.md",
+            "units/.gitkeep",
+            "reference/.gitkeep",
+        ):
+            path = content_root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("{}\n" if path.suffix == ".yaml" else "fixture\n")
+    return content_root
 
 
 def test_plan016_c9_changed_markdown_has_no_decoded_tex_control_characters():
-    unit = ROOT / "units" / "C9-dimensionality-reduction"
+    unit = BOOK1_ROOT / "units" / "C9-dimensionality-reduction"
     forbidden = {"\t", "\f", "\r"}
     failures = []
     for relative in C9_PLAN016_CHANGED_NOTEBOOKS:
@@ -380,7 +423,7 @@ def test_plan016_c9_changed_markdown_has_no_decoded_tex_control_characters():
 
 
 def test_plan016_new_concepts_have_exact_clusters_and_single_owners():
-    syllabus = load_syllabus(ROOT)
+    syllabus = load_syllabus(BOOK1_ROOT)
 
     assert len(NEW_CONCEPT_CLUSTERS) == 21
     assert {concept: syllabus.concepts.get(concept) for concept in NEW_CONCEPT_CLUSTERS} == (
@@ -392,7 +435,7 @@ def test_plan016_new_concepts_have_exact_clusters_and_single_owners():
     )
     manifest_owner_counts = Counter(
         concept
-        for manifest in load_unit_manifests(ROOT)
+        for manifest in load_unit_manifests(BOOK1_ROOT)
         for concept in manifest.concepts_taught
     )
     assert {concept: syllabus_owner_counts[concept] for concept in NEW_CONCEPT_CLUSTERS} == {
@@ -411,7 +454,7 @@ def test_plan018_manifests_have_exact_final_counts_and_minutes():
         assert (minutes["lesson"], minutes["practice"], minutes["review"]) == minute_totals
         assert len(manifest["practice"]) == practice_count
 
-    manifests = load_unit_manifests(ROOT)
+    manifests = load_unit_manifests(BOOK1_ROOT)
     assert len(manifests) == 19
     assert sum(len(manifest.practice) for manifest in manifests) == 437
     assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 69
@@ -426,19 +469,82 @@ def test_plan018_manifests_have_exact_final_counts_and_minutes():
     assert sum(minute_totals.values()) == 18635
 
 
-def test_plan018_all_concepts_have_single_syllabus_and_manifest_owners():
-    syllabus = load_syllabus(ROOT)
+def test_concepts_have_manifest_owners_for_live_b2_019():
+    syllabus = load_syllabus(BOOK1_ROOT)
+    book2_syllabus = load_syllabus(BOOK2_ROOT)
+    manifests = load_unit_manifests(BOOK1_ROOT)
+    book2_manifests = load_unit_manifests(BOOK2_ROOT)
+    roadmap = yaml.safe_load((BOOK2_ROOT / "curriculum" / "coverage-map.yaml").read_text())
     syllabus_owner_counts = Counter(
         concept for unit in syllabus.units.values() for concept in unit.teaches
     )
     manifest_owner_counts = Counter(
         concept
-        for manifest in load_unit_manifests(ROOT)
+        for manifest in manifests
         for concept in manifest.concepts_taught
     )
+    manifest_owner_units = {
+        concept: manifest.unit_id
+        for manifest in manifests
+        for concept in manifest.concepts_taught
+    }
+    planned_units = {row["id"]: row for row in roadmap["planned_units"]}
+    knowledge_points = {row["id"]: row for row in roadmap["knowledge_points"]}
+    nonlive_book2_units = set(book2_syllabus.units) - {
+        manifest.unit_id for manifest in book2_manifests
+    }
 
-    assert set(syllabus.concepts) == set(syllabus_owner_counts) == set(manifest_owner_counts)
-    assert len(syllabus.concepts) == 149
+    assert set(syllabus.concepts) == set(syllabus_owner_counts)
+    assert set(syllabus_owner_counts.values()) == {1}
+    assert set(manifest_owner_counts) <= set(syllabus.concepts)
+    assert set(manifest_owner_counts.values()) == {1}
+    assert nonlive_book2_units == set()
+    assert [manifest.unit_id for manifest in book2_manifests] == [
+        "B2-019-attention-transformers"
+    ]
+    assert book2_syllabus.units["B2-019-attention-transformers"].teaches == list(
+        PLAN019_B2_019_CONCEPTS
+    )
+    assert set(book2_syllabus.concepts) == set(PLAN019_B2_019_CONCEPTS)
+    assert (
+        set(planned_units) - {"B2-019-attention-transformers"}
+    ).isdisjoint(book2_syllabus.units)
+
+    for unit in syllabus.units.values():
+        manifest_counts = {
+            concept: manifest_owner_counts[concept] for concept in unit.teaches
+        }
+        assert manifest_counts == {concept: 1 for concept in unit.teaches}
+        assert {
+            concept: manifest_owner_units[concept] for concept in unit.teaches
+        } == {concept: unit.id for concept in unit.teaches}
+
+    for unit in book2_syllabus.units.values():
+        assert re.fullmatch(r"B2-[0-9]{3}-.+", unit.id)
+        planned = planned_units[unit.id]
+        assert planned["layer"] == "round-2-extension"
+        memberships = planned["knowledge_points"]
+        assert memberships
+        assert len(memberships) == len(set(memberships))
+        for point_id in memberships:
+            point = knowledge_points[point_id]
+            assert point["destination"] == unit.id
+            assert point["coverage"] == "covered"
+            assert point["shipped_concepts"]
+            assert all(
+                evidence["lesson_anchors"]
+                and evidence["practices"]
+                and not evidence["assessments"]
+                for evidence in point["evidence_by_modality"].values()
+            )
+            assert point["deficits"] == {"modalities_missing": []}
+        assert {
+            concept: sum(
+                concept in manifest.concepts_taught for manifest in book2_manifests
+            )
+            for concept in unit.teaches
+        } == {concept: 1 for concept in unit.teaches}
+
     assert {concept: syllabus_owner_counts[concept] for concept in PLAN017_NEW_CONCEPTS} == {
         concept: 1 for concept in PLAN017_NEW_CONCEPTS
     }
@@ -578,12 +684,15 @@ def test_plan018_c12_manifest_is_the_exact_double_length_contract():
         ] == [f"C12-p{number:02}" for number in problem_numbers]
 
 
-def test_plan018_exact_final_corpus_counts_and_double_length_roster():
-    manifests = load_unit_manifests(ROOT)
-    syllabus = load_syllabus(ROOT)
+def test_plan019_phase1_exact_live_corpus_counts_and_double_length_roster():
+    manifests = load_unit_manifests(BOOK1_ROOT)
+    syllabus = load_syllabus(BOOK1_ROOT)
+    book2_syllabus = load_syllabus(BOOK2_ROOT)
 
     assert len(manifests) == 19
     assert len(syllabus.concepts) == 149
+    assert len(book2_syllabus.concepts) == 11
+    assert set(syllabus.concepts).isdisjoint(book2_syllabus.concepts)
     assert sum(len(manifest.practice) for manifest in manifests) == 437
     assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 69
     minute_total = sum(
@@ -607,7 +716,251 @@ def test_plan018_exact_final_corpus_counts_and_double_length_roster():
         "C12-classical-models",
     }
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
-    assert "Double-length units (F5, F6, C7, C11, C12) use 4–6 sessions." in standards
+    assert (
+        "Double-length units (F5, F6, C7, C11, C12, and B2-019) use 4–6 sessions."
+        in standards
+    )
+
+
+@functools.cache
+def _plan019_pinned_commit_available() -> bool:
+    return subprocess.run(
+        ["git", "cat-file", "-e", "4cc3894^{commit}"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    ).returncode == 0
+
+
+def _plan019_pinned_paths() -> tuple[list[str], dict[str, set[int]]]:
+    if _plan019_pinned_commit_available():
+        tracked = subprocess.run(
+            [
+                "git",
+                "ls-tree",
+                "-r",
+                "--name-only",
+                "4cc3894",
+                "--",
+                "units",
+                "mocktests",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        candidates = tracked.stdout.splitlines()
+    else:
+        candidates = sorted(
+            path.relative_to(BOOK1_ROOT).as_posix()
+            for tree in (BOOK1_ROOT / "units", BOOK1_ROOT / "mocktests")
+            for path in tree.rglob("*")
+            if path.is_file()
+        )
+    paths = [
+        path
+        for path in candidates
+        if path.endswith((".ipynb", "manifest.yaml"))
+    ]
+    inventory = yaml.safe_load(
+        (ROOT / "tests/fixtures/plan019-path-inventory.yaml").read_text(encoding="utf-8")
+    )
+    changed_cells = {
+        row["path"]: set(row["cells"])
+        for row in inventory["notebook_pyproject_discovery"]
+    }
+    for row in inventory["special_notebook_consumers"]:
+        changed_cells.setdefault(row["path"], set()).update(row["cells"])
+    return paths, changed_cells
+
+
+def _plan019_pinned_blob(path: str) -> bytes | None:
+    if not _plan019_pinned_commit_available():
+        return None
+    proc = subprocess.run(
+        ["git", "show", f"4cc3894:{path}"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    return proc.stdout if proc.returncode == 0 else None
+
+
+def _plan019_digest(value: object) -> str:
+    encoded = json.dumps(
+        value,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def test_plan019_task3_every_book1_manifest_and_notebook_matches_pinned_cutover() -> None:
+    paths, changed_cells = _plan019_pinned_paths()
+    notebooks = [path for path in paths if path.endswith(".ipynb")]
+    manifests = [path for path in paths if path.endswith("manifest.yaml")]
+
+    assert len(notebooks) == 991
+    assert len(manifests) == 20
+    assert len(changed_cells) == 67
+    assert _plan019_digest(paths) == (
+        "76c9236aa561f1bb9c45cd88f3562047fa8e2a5aaec4f18010e43ed81a34e2ec"
+    )
+    assert len({row["path"] for row in yaml.safe_load(
+        (ROOT / "tests/fixtures/plan019-path-inventory.yaml").read_text(encoding="utf-8")
+    )["notebook_pyproject_discovery"]}) == 64
+
+    manifest_records: list[list[str]] = []
+    unchanged_records: list[list[str]] = []
+    changed_structures: list[list[object]] = []
+    changed_sources: list[list[object]] = []
+    for path in manifests:
+        current_bytes = (BOOK1_ROOT / path).read_bytes()
+        manifest_records.append([path, hashlib.sha256(current_bytes).hexdigest()])
+        pinned_bytes = _plan019_pinned_blob(path)
+        if pinned_bytes is not None:
+            assert current_bytes == pinned_bytes, path
+
+    observed_changed: set[str] = set()
+    for path in notebooks:
+        before_bytes = _plan019_pinned_blob(path)
+        after_bytes = (BOOK1_ROOT / path).read_bytes()
+        if path not in changed_cells:
+            unchanged_records.append([path, hashlib.sha256(after_bytes).hexdigest()])
+            if before_bytes is not None:
+                assert after_bytes == before_bytes, path
+            continue
+
+        observed_changed.add(path)
+        after = json.loads(after_bytes)
+        structure = {key: value for key, value in after.items() if key != "cells"}
+        structure["cells"] = []
+        for index, cell in enumerate(after["cells"]):
+            if index in changed_cells[path]:
+                structure["cells"].append(
+                    {key: value for key, value in cell.items() if key != "source"}
+                )
+                changed_sources.append([path, index, cell["source"]])
+            else:
+                structure["cells"].append(cell)
+        changed_structures.append([path, structure])
+        if before_bytes is None:
+            for index in changed_cells[path]:
+                new_source = "".join(after["cells"][index]["source"])
+                assert "USAAIO_BOOK_ROOT" in new_source or "book_root" in new_source.lower()
+                assert "pyproject.toml" not in new_source
+            continue
+
+        before = json.loads(before_bytes)
+        expected_cells = changed_cells[path]
+        assert {key: value for key, value in before.items() if key != "cells"} == {
+            key: value for key, value in after.items() if key != "cells"
+        }, path
+        assert len(before["cells"]) == len(after["cells"])
+        actual_cells = {
+            index
+            for index, (old_cell, new_cell) in enumerate(
+                zip(before["cells"], after["cells"], strict=True)
+            )
+            if old_cell != new_cell
+        }
+        assert actual_cells == expected_cells, path
+        for index, (old_cell, new_cell) in enumerate(
+            zip(before["cells"], after["cells"], strict=True)
+        ):
+            if index not in expected_cells:
+                assert new_cell == old_cell, (path, index)
+                continue
+            old_without_source = {key: value for key, value in old_cell.items() if key != "source"}
+            new_without_source = {key: value for key, value in new_cell.items() if key != "source"}
+            assert new_without_source == old_without_source, (path, index)
+            new_source = "".join(new_cell["source"])
+            assert "USAAIO_BOOK_ROOT" in new_source or "book_root" in new_source.lower()
+            assert "pyproject.toml" not in new_source
+
+    assert observed_changed == set(changed_cells)
+    assert _plan019_digest(manifest_records) == (
+        "75bc145bacd5bacd1c7ec0f62ac966357c314d6cafaf865a51fc1587d42a1c63"
+    )
+    assert _plan019_digest(unchanged_records) == (
+        "0d8749d8fbe48bb37a0dc696a4343779da91d59dad4fbfb619d066856e7b7b5c"
+    )
+    assert _plan019_digest(changed_structures) == (
+        "46ba55a9dd7c657719edca781d6f6035de6dfd01116e9fd9881f62b3a715b73d"
+    )
+    assert _plan019_digest(changed_sources) == (
+        "dd129b119cd491ea083c53b16613a6f1467fec0275639052071bcb9480d24014"
+    )
+
+
+def test_plan019_task3_book1_pdf_sources_match_the_pinned_r1_set() -> None:
+    proc = subprocess.run(
+        ["bash", "scripts/build-pdf.sh", "--book", "book1", "--list-inputs"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    current = tuple(
+        path.removeprefix("book1/") for path in proc.stdout.splitlines() if path.strip()
+    )
+    if _plan019_pinned_commit_available():
+        pinned = tuple(
+            path
+            for path in subprocess.run(
+                [
+                    "git",
+                    "ls-tree",
+                    "-r",
+                    "--name-only",
+                    "4cc3894",
+                    "--",
+                    "mocktests/r1-001",
+                ],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout.splitlines()
+            if path == "mocktests/r1-001/test.md"
+            or (path.startswith("mocktests/r1-001/theory/") and path.endswith(".md"))
+            or (path.startswith("mocktests/r1-001/problems/") and path.endswith(".ipynb"))
+        )
+    else:
+        pinned = current
+
+    assert len(current) == 10
+    assert current == pinned
+    assert hashlib.sha256("\n".join(current).encode()).hexdigest() == (
+        "b07a045f699ba6df93ad4429ae29926b99ade1083ecab005638f478aa614e6e4"
+    )
+
+
+def test_plan019_task3_r1_mock_solution_executes_from_book1_cwd(tmp_path: Path) -> None:
+    output = tmp_path / "p09-executed.ipynb"
+    env = {**os.environ, "USAAIO_BOOK_ROOT": str(BOOK1_ROOT)}
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "jupyter",
+            "execute",
+            "mocktests/r1-001/solutions/p09_solution.ipynb",
+            "--output",
+            str(output),
+        ],
+        cwd=BOOK1_ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert output.is_file() and output.stat().st_size > 0
 
 
 def test_plan017_c7_manifest_is_double_length_and_preserves_capstone_contracts():
@@ -686,7 +1039,7 @@ def test_plan017_c11_lessons_cover_lambda_rng_and_optimizer_state_contracts():
     assert "$lambda/2$" not in lesson_03
     assert "$lambda W$" not in lesson_03
 
-    lesson_04_path = ROOT / "units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb"
+    lesson_04_path = BOOK1_ROOT / "units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb"
     lesson_04 = json.loads(lesson_04_path.read_text())
     cell_sources = {
         cell.get("id"): (
@@ -881,7 +1234,7 @@ def test_plan016_existing_unit_register_extensions_are_exact():
 
 
 def test_plan016_f1_register_rows_are_under_truthful_set_comments():
-    text = (ROOT / "units" / "F1-scientific-python" / "manifest.yaml").read_text()
+    text = (BOOK1_ROOT / "units" / "F1-scientific-python" / "manifest.yaml").read_text()
     set_a, after_a = text.split("# --- Set B: exam register ---", 1)
     set_b, set_c = after_a.split("# --- Set C: integration + challenge ---", 1)
 
@@ -891,7 +1244,7 @@ def test_plan016_f1_register_rows_are_under_truthful_set_comments():
 
 
 def test_f1_seaborn_array_only_boundary():
-    unit_dir = ROOT / "units" / "F1-scientific-python"
+    unit_dir = BOOK1_ROOT / "units" / "F1-scientific-python"
     actual_files = {
         path.relative_to(unit_dir) for path in (unit_dir / "lessons").glob("*.ipynb")
     }
@@ -918,7 +1271,7 @@ def test_f1_seaborn_array_only_boundary():
 
 
 def test_plan016_f7_manifest_has_exact_foundation_contract_and_register():
-    syllabus = load_syllabus(ROOT)
+    syllabus = load_syllabus(BOOK1_ROOT)
     unit = syllabus.units["F7-kernels-convex-optimization"]
     assert unit.track == "foundation"
     assert unit.prereqs == [
@@ -967,13 +1320,19 @@ def test_plan016_f7_manifest_has_exact_foundation_contract_and_register():
 
 
 def test_plan018_coverage_map_preserves_prior_rows_and_retires_classical_placeholder():
-    roadmap = yaml.safe_load((ROOT / "curriculum" / "coverage-map.yaml").read_text())
+    roadmap = yaml.safe_load((BOOK1_ROOT / "curriculum" / "coverage-map.yaml").read_text())
     planned = {unit["id"]: unit for unit in roadmap["planned_units"]}
     points = {point["id"]: point for point in roadmap["knowledge_points"]}
 
     assert "P015-R1-MATH-KERNEL-OPT" not in planned
     assert "P015-R1-CLASSICAL-BREADTH" not in planned
-    assert "C12-classical-models" in planned["P015-R2-CAPSTONE"]["prerequisites"]
+    book2_roadmap = yaml.safe_load(
+        (BOOK2_ROOT / "curriculum" / "coverage-map.yaml").read_text()
+    )
+    book2_planned = {unit["id"]: unit for unit in book2_roadmap["planned_units"]}
+    assert "book1:C12-classical-models" in book2_planned[
+        "B2-024-gpu-scientific-ml-capstone"
+    ]["prerequisites"]
     assert points["seaborn-programming"]["depends_on"] == [
         "numpy-programming",
         "matplotlib-pyplot-programming",
@@ -1010,9 +1369,10 @@ def test_plan018_coverage_map_preserves_prior_rows_and_retires_classical_placeho
         assert point["deficits"] == {"modalities_missing": []}
 
 
-def test_plan018_syllabus_narrative_order_and_dependency_contract():
+def test_plan019_phase1_book1_narrative_order_and_book2_dependency_contract():
     syllabus = _canonical_syllabus_yaml()
     units = {unit["id"]: unit for unit in syllabus["units"]}
+    book1_units = dict(units)
     assert units["F5-probability"]["length"] == "double"
     assert units["F6-svd-spectral"]["length"] == "double"
     assert units["C7-cnn-transfer"]["length"] == "double"
@@ -1047,7 +1407,7 @@ def test_plan018_syllabus_narrative_order_and_dependency_contract():
     )
     order = re.search(r"^F1 → .* → C12$", order_section, re.MULTILINE)
     assert order is not None
-    by_short_id = {unit_id.split("-", 1)[0]: unit_id for unit_id in units}
+    by_short_id = {unit_id.split("-", 1)[0]: unit_id for unit_id in book1_units}
     ordered_unit_ids = [by_short_id[short_id] for short_id in order.group(0).split(" → ")]
     expected_order = [
         "F1-scientific-python",
@@ -1071,23 +1431,45 @@ def test_plan018_syllabus_narrative_order_and_dependency_contract():
         "C12-classical-models",
     ]
     assert ordered_unit_ids == expected_order
-    assert set(ordered_unit_ids) == set(units)
+    assert set(ordered_unit_ids) == set(book1_units)
     assert len(ordered_unit_ids) == len(set(ordered_unit_ids)) == 19
     positions = {unit_id: index for index, unit_id in enumerate(ordered_unit_ids)}
     for unit_id in ordered_unit_ids:
         assert all(
-            positions[prereq] < positions[unit_id] for prereq in units[unit_id]["prereqs"]
+            positions[prereq] < positions[unit_id]
+            for prereq in book1_units[unit_id]["prereqs"]
         )
+    book2 = load_syllabus(BOOK2_ROOT).units["B2-019-attention-transformers"]
+    assert (
+        book2.book,
+        book2.round,
+        book2.layer,
+        book2.track,
+    ) == (2, 2, "round-2-extension", "extension")
+    assert book2.prereqs == [
+        "book1:C6-pytorch",
+        "book1:C7-cnn-transfer",
+        "book1:C8-embeddings",
+        "book1:C11-neural-training",
+    ]
+    book2_position = len(ordered_unit_ids)
+    assert all(
+        positions[prereq.removeprefix("book1:")] < book2_position
+        for prereq in book2.prereqs
+    )
 
     project = tomllib.loads((ROOT / "pyproject.toml").read_text())
     assert any(dependency.startswith("seaborn>=") for dependency in project["project"]["dependencies"])
     assert re.search(r'^name = "seaborn"$', (ROOT / "uv.lock").read_text(), re.MULTILINE)
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
-    assert "Double-length units (F5, F6, C7, C11, C12) use 4–6 sessions." in standards
+    assert (
+        "Double-length units (F5, F6, C7, C11, C12, and B2-019) use 4–6 sessions."
+        in standards
+    )
 
 
 def test_plan016_practice_coverage_is_green():
-    report = check_coverage(ROOT)
+    report = check_coverage(BOOK1_ROOT)
 
     assert report.ok
     assert report.warnings == []
@@ -1096,10 +1478,10 @@ def test_plan016_practice_coverage_is_green():
 
 def test_ci_checks_other_than_plan016_pending_coverage_are_green():
     reports = [
-        check_prereq(ROOT),
-        check_hygiene(ROOT),
-        check_blueprint(ROOT),
-        check_overlap(ROOT),
+        check_prereq(BOOK1_ROOT),
+        check_hygiene(BOOK1_ROOT),
+        check_blueprint(BOOK1_ROOT),
+        check_overlap(BOOK1_ROOT),
     ]
     for report in reports:
         assert not report.errors
@@ -1109,17 +1491,26 @@ def test_ci_checks_other_than_plan016_pending_coverage_are_green():
 
 
 def test_cli_exit_codes(tmp_path):
-    seed_repo(tmp_path)
+    seed_repo(tmp_path, registered=True)
     ok = subprocess.run(
-        [sys.executable, "-m", "tools.cli", "--root", str(tmp_path), "prereq-check"],
+        [
+            sys.executable,
+            "-m",
+            "tools.cli",
+            "--root",
+            str(tmp_path),
+            "--book",
+            "book1",
+            "prereq-check",
+        ],
         capture_output=True,
         text=True,
         check=False,
     )
     assert ok.returncode == 0
     fail_root = tmp_path / "fail"
-    seed_repo(fail_root)
-    manifest = fail_root / "mocktests" / "r1-001"
+    fail_book = seed_repo(fail_root, registered=True)
+    manifest = fail_book / "mocktests" / "r1-001"
     manifest.mkdir(parents=True)
     manifest.joinpath("manifest.yaml").write_text(
         """
@@ -1144,17 +1535,17 @@ problems:
 """
     )
     fail = subprocess.run(
-        [sys.executable, "-m", "tools.cli", "--root", str(fail_root), "prereq-check"],
+        [sys.executable, "-m", "tools.cli", "--root", str(fail_root), "--book", "book1", "prereq-check"],
         capture_output=True,
         text=True,
         check=False,
     )
     assert fail.returncode == 1
     skip_root = tmp_path / "skip"
-    seed_repo(skip_root)
-    scaffold_mocktest(skip_root, "r1-001", "2026-08-15")
+    skip_book = seed_repo(skip_root, registered=True)
+    scaffold_mocktest(skip_book, "r1-001", "2026-08-15")
     skipped = subprocess.run(
-        [sys.executable, "-m", "tools.cli", "--root", str(skip_root), "blueprint-check"],
+        [sys.executable, "-m", "tools.cli", "--root", str(skip_root), "--book", "book1", "blueprint-check"],
         capture_output=True,
         text=True,
         check=False,
@@ -1170,7 +1561,11 @@ def test_full_pipeline_on_synthetic_test(tmp_path):
         (unit_dir / "practice" / f"p{number:02}.ipynb").write_text(
             '{"cells":[],"metadata":{},"nbformat":4,"nbformat_minor":5}'
         )
-        (unit_dir / "practice" / f"p{number:02}_solution.ipynb").write_text("{}")
+        (unit_dir / "practice" / f"p{number:02}_solution.ipynb").write_text(
+            '{"cells":[{"cell_type":"code","source":"assert True",'
+            '"metadata":{},"outputs":[],"execution_count":null}],'
+            '"metadata":{},"nbformat":4,"nbformat_minor":5}'
+        )
     (unit_dir / "manifest.yaml").write_text(
         """
 unit: F1-scientific-python
@@ -1202,10 +1597,10 @@ practice:
 
 
 def test_ci_flags_draft_manifest_loudly(tmp_path):
-    seed_repo(tmp_path)
-    scaffold_mocktest(tmp_path, "r1-001", "2026-08-15")
+    book = seed_repo(tmp_path, registered=True)
+    scaffold_mocktest(book, "r1-001", "2026-08-15")
     proc = subprocess.run(
-        [sys.executable, "-m", "tools.cli", "--root", str(tmp_path), "blueprint-check"],
+        [sys.executable, "-m", "tools.cli", "--root", str(tmp_path), "--book", "book1", "blueprint-check"],
         capture_output=True,
         text=True,
         check=False,
@@ -1215,32 +1610,40 @@ def test_ci_flags_draft_manifest_loudly(tmp_path):
 
 
 def test_scope_cli_is_registered_and_loader_errors_are_blocking(tmp_path):
-    seed_repo(tmp_path)
+    seed_repo(tmp_path, registered=True)
 
     proc = subprocess.run(
-        [sys.executable, "-m", "tools.cli", "--root", str(tmp_path), "scope-check"],
+        [sys.executable, "-m", "tools.cli", "--root", str(tmp_path), "--book", "book1", "scope-check"],
         capture_output=True,
         text=True,
         check=False,
     )
 
     assert proc.returncode == 1
-    assert "curriculum/sources.yaml" in proc.stderr
+    assert "source_schema_version" in proc.stderr
     assert "invalid choice" not in proc.stderr
 
 
 def test_ci_local_wires_both_mutation_runners_and_generated_document_checks():
-    script = (ROOT / "scripts" / "ci-local.sh").read_text()
+    lines = _ci_noncomment_lines()
 
-    assert "python -m tools.audit_curriculum --check" in script
-    assert 'usaaio-tools "$c"' in script
-    assert "scope-check" in script
-    assert "python -m tools.render_curriculum_roadmap --check" in script
-    training = "python -m tools.verify_training_mutations --root ."
-    classical = "python -m tools.verify_classical_mutations --root ."
-    assert training in script
-    assert classical in script
-    assert script.index(training) < script.index(classical)
+    audit = 'uv run python -m tools.audit_curriculum --root "$book1_root" --check'
+    aggregate = (
+        'uv run python -m tools.render_curriculum_roadmap --root "$repo_root" --check'
+    )
+    structure = (
+        'uv run python -m tools.render_course_structure --root "$book1_root" --check'
+    )
+    training = 'uv run python -m tools.verify_training_mutations --root "$book1_root"'
+    classical = 'uv run python -m tools.verify_classical_mutations --root "$book1_root"'
+    for command in (audit, aggregate, structure, training, classical):
+        assert lines.count(command) == 1
+    assert lines.index(audit) < lines.index(aggregate) < lines.index(structure)
+    assert lines.index(structure) < lines.index(training) < lines.index(classical)
+    assert any(
+        line.startswith('uv run usaaio-tools --book "$book" "$c"') for line in lines
+    )
+    assert any("scope-check" in line for line in lines)
 
 
 def test_pre_merge_guard_runs_embedded_yaml_with_uv_python():
@@ -1248,6 +1651,187 @@ def test_pre_merge_guard_runs_embedded_yaml_with_uv_python():
 
     assert "uv run python -" in script
     assert "python3 -" not in script
+
+
+def test_pre_merge_guard_pins_current_scope_inventory_digest():
+    script = (ROOT / "scripts" / "pre-merge-guard.sh").read_text()
+    inventory = (ROOT / "tests/fixtures/plan019-path-inventory.yaml").read_bytes()
+    digest = hashlib.sha256(inventory).hexdigest()
+
+    assert digest in script
+
+
+def test_pre_merge_guard_rejects_staged_protected_path(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    for relative in (
+        "scripts/pre-merge-guard.sh",
+        "scripts/verify-staged-scope.py",
+        "tests/fixtures/plan019-path-inventory.yaml",
+    ):
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / relative).read_bytes())
+    (repo / "scripts/pre-merge-guard.sh").chmod(0o755)
+    (repo / "scripts/verify-staged-scope.py").chmod(0o755)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+    protected = repo / "tests/.env.production"
+    protected.write_text("SECRET=bad\n", encoding="utf-8")
+    _git(repo, "add", "-f", "tests/.env.production")
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode != 0
+    assert "protected env path" in proc.stdout + proc.stderr
+
+
+@pytest.mark.parametrize(
+    ("mutation", "targets"),
+    [
+        pytest.param("delete", ("scripts/verify-staged-scope.py",), id="delete-verifier"),
+        pytest.param(
+            "delete",
+            ("tests/fixtures/plan019-path-inventory.yaml",),
+            id="delete-inventory",
+        ),
+        pytest.param(
+            "delete",
+            (
+                "scripts/verify-staged-scope.py",
+                "tests/fixtures/plan019-path-inventory.yaml",
+            ),
+            id="delete-both",
+        ),
+        pytest.param("replace", ("scripts/verify-staged-scope.py",), id="replace-verifier"),
+        pytest.param(
+            "replace",
+            ("tests/fixtures/plan019-path-inventory.yaml",),
+            id="replace-inventory",
+        ),
+        pytest.param("symlink", ("scripts/verify-staged-scope.py",), id="symlink-verifier"),
+        pytest.param(
+            "symlink",
+            ("tests/fixtures/plan019-path-inventory.yaml",),
+            id="symlink-inventory",
+        ),
+    ],
+)
+def test_pre_merge_guard_fails_closed_when_enforcement_file_is_mutated(
+    tmp_path: Path, mutation: str, targets: tuple[str, ...]
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    for relative in (
+        "scripts/pre-merge-guard.sh",
+        "scripts/verify-staged-scope.py",
+        "tests/fixtures/plan019-path-inventory.yaml",
+    ):
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / relative).read_bytes())
+    (repo / "scripts/pre-merge-guard.sh").chmod(0o755)
+    (repo / "scripts/verify-staged-scope.py").chmod(0o755)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+
+    for relative in targets:
+        target = repo / relative
+        target.unlink()
+        if mutation == "replace":
+            target.write_text("replacement\n", encoding="utf-8")
+        elif mutation == "symlink":
+            peer = repo / "enforcement-copy"
+            peer.write_bytes((ROOT / relative).read_bytes())
+            target.symlink_to(peer)
+    protected = repo / "tests/.env.production"
+    protected.write_text("SECRET=bad\n", encoding="utf-8")
+    _git(repo, "add", "-A", "-f")
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode != 0
+    diagnostic = proc.stdout + proc.stderr
+    assert "enforcement file" in diagnostic.lower()
+    assert any(relative in diagnostic for relative in targets)
+
+
+@pytest.mark.parametrize(
+    ("mutation", "relative"),
+    [
+        pytest.param("delete", "scripts/verify-staged-scope.py", id="index-delete"),
+        pytest.param(
+            "replace",
+            "tests/fixtures/plan019-path-inventory.yaml",
+            id="index-replace",
+        ),
+        pytest.param("symlink", "scripts/verify-staged-scope.py", id="index-symlink"),
+    ],
+)
+def test_pre_merge_guard_rejects_index_only_enforcement_mutation(
+    tmp_path: Path, mutation: str, relative: str
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    _install_pre_merge_enforcement(repo)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+
+    target = repo / relative
+    original = target.read_bytes()
+    protected = repo / "tests/.env.production"
+    protected.write_text("SECRET=bad\n", encoding="utf-8")
+    _git(repo, "add", "-f", "tests/.env.production")
+    if mutation == "delete":
+        _git(repo, "rm", "--cached", relative)
+    else:
+        target.unlink()
+        if mutation == "replace":
+            target.write_text("replacement\n", encoding="utf-8")
+        else:
+            peer = repo / "enforcement-copy"
+            peer.write_bytes(original)
+            target.symlink_to(peer)
+        _git(repo, "add", relative)
+        target.unlink()
+    target.write_bytes(original)
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode != 0
+    diagnostic = proc.stdout + proc.stderr
+    assert "enforcement file" in diagnostic.lower()
+    assert relative in diagnostic
 
 
 def _git(cwd: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -1317,6 +1901,19 @@ def test_pre_merge_guard_pr_mode_fails_when_origin_main_is_unavailable(tmp_path:
     assert "unverified" in proc.stderr
 
 
+def _install_pre_merge_enforcement(repo: Path) -> None:
+    for relative in (
+        "scripts/pre-merge-guard.sh",
+        "scripts/verify-staged-scope.py",
+        "tests/fixtures/plan019-path-inventory.yaml",
+    ):
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / relative).read_bytes())
+    (repo / "scripts/pre-merge-guard.sh").chmod(0o755)
+    (repo / "scripts/verify-staged-scope.py").chmod(0o755)
+
+
 def test_pre_merge_guard_rejects_parallel_roadmap_ownership_collisions(tmp_path):
     repo = tmp_path / "repo"
     remote = tmp_path / "remote.git"
@@ -1325,10 +1922,7 @@ def test_pre_merge_guard_rejects_parallel_roadmap_ownership_collisions(tmp_path)
     _git(repo, "init", "-b", "main")
     _git(repo, "config", "user.email", "test@example.com")
     _git(repo, "config", "user.name", "Test")
-    script = repo / "scripts" / "pre-merge-guard.sh"
-    script.parent.mkdir()
-    script.write_bytes((ROOT / "scripts" / "pre-merge-guard.sh").read_bytes())
-    script.chmod(0o755)
+    _install_pre_merge_enforcement(repo)
     coverage = repo / "curriculum" / "coverage-map.yaml"
     coverage.parent.mkdir()
     coverage.write_text(_roadmap(None, None))
@@ -1362,3 +1956,353 @@ def test_pre_merge_guard_rejects_parallel_roadmap_ownership_collisions(tmp_path)
     assert proc.returncode == 1
     assert "roadmap knowledge-point ownership collision: topic-a" in proc.stdout
     assert "roadmap planned-unit ownership collision: P-collision" in proc.stdout
+
+
+def test_pre_merge_guard_rejects_b2_unit_id_collision_legacy_regex_misses(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    _install_pre_merge_enforcement(repo)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "enforcement base")
+    for name in ("B2-019-attention", "B2-019-collision"):
+        directory = repo / "units" / name
+        directory.mkdir(parents=True)
+        directory.joinpath("manifest.yaml").write_text(f"unit: {name}\n")
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 1
+    assert "duplicate book1/units number(s): B2-019" in proc.stdout
+
+
+def _ci_noncomment_lines() -> list[str]:
+    return [
+        line.strip()
+        for line in (ROOT / "scripts" / "ci-local.sh").read_text().splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+
+
+def test_ci_executes_book2_boundary_before_derived_and_preserves_r1_checks() -> None:
+    lines = _ci_noncomment_lines()
+    checks = next(line for line in lines if line.startswith("for c in prereq-check"))
+
+    assert "layer-boundary-check" in checks
+    assert 'uv run python -m tools.render_course_structure --root "$book1_root" --check' in lines
+    assert 'bash scripts/build-pdf.sh --book "$book" || { rc=$?; [[ $rc -eq 3 ]] || exit "$rc"; }' in lines
+    assert "prereq-check" in checks
+    assert "coverage-check" in checks
+    assert "blueprint-check" in checks
+    assert 'find "$book_root/units" "$book_root/mocktests" -type f \\' in lines
+
+
+def test_ci_registry_probe_reports_noncanonical_roots_without_id_fallback(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    (repo / "round1").mkdir(parents=True)
+    (repo / "advanced").mkdir()
+    (repo / "books.yaml").write_text(
+        "books_version: 1\nbooks:\n"
+        "  - {id: book1, number: 1, root: round1, depends_on: []}\n"
+        "  - {id: book2, number: 2, root: advanced, depends_on: [book1]}\n",
+        encoding="utf-8",
+    )
+
+    proc = subprocess.run(
+        [
+            "bash", str(ROOT / "scripts/ci-local.sh"), "--root", str(repo),
+            "--registry-probe",
+        ],
+        cwd=ROOT,
+        env={**os.environ, "PATH": f"{Path.home() / '.local/bin'}:{os.environ['PATH']}"},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert proc.stdout.splitlines() == [
+        f"book1\t1\t{repo / 'round1'}",
+        f"book2\t2\t{repo / 'advanced'}",
+    ]
+    script = (ROOT / "scripts/ci-local.sh").read_text(encoding="utf-8")
+    assert "$PWD/$book" not in script
+    assert "--root book1" not in script
+
+
+def test_ci_executes_book2_schedule_check() -> None:
+    lines = _ci_noncomment_lines()
+    checks = next(line for line in lines if line.startswith("for c in prereq-check"))
+    assert "schedule-check" in checks
+    assert any(
+        line.startswith('uv run usaaio-tools --book "$book" "$c"') for line in lines
+    )
+
+
+def test_ci_executes_attention_mutations() -> None:
+    lines = _ci_noncomment_lines()
+    assert "uv run python -m tools.verify_attention_mutations --root \"$book2_root\"" in lines
+    assert not any("SKIP attention mutations" in line for line in lines)
+
+
+def test_ci_checks_book2_material_inventory_freshness(tmp_path: Path) -> None:
+    lines = _ci_noncomment_lines()
+    assert 'uv run python -m tools.audit_curriculum --root "$book2_root" --check' in lines
+
+    (tmp_path / "books.yaml").write_text((ROOT / "books.yaml").read_text())
+    (tmp_path / "book1").mkdir()
+    copied_book2 = tmp_path / "book2"
+    shutil.copytree(ROOT / "book2", copied_book2)
+    lesson = (
+        copied_book2
+        / "units"
+        / "B2-019-attention-transformers"
+        / "lessons"
+        / "01-query-key-value-and-scaled-dot-product.ipynb"
+    )
+    notebook = json.loads(lesson.read_text())
+    notebook["cells"][0]["source"] = "# Stale inventory heading\n"
+    lesson.write_text(json.dumps(notebook))
+
+    proc = subprocess.run(
+        [
+            str(ROOT / ".venv" / "bin" / "python"),
+            "-m",
+            "tools.audit_curriculum",
+            "--root",
+            str(copied_book2),
+            "--check",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 1
+    assert "ERROR material inventory stale" in proc.stderr
+
+
+def _plan019_roadmap(*, r1_destination: str, r2_destination: str) -> str:
+    return yaml.safe_dump(
+        {
+            "roadmap_version": 1,
+            "layers": ["round-1-core", "round-2-extension"],
+            "planned_units": [],
+            "knowledge_points": [
+                {
+                    "id": "r1-topic",
+                    "layer": "round-1-core",
+                    "destination": r1_destination,
+                },
+                {
+                    "id": "r2-topic",
+                    "layer": "round-2-extension",
+                    "destination": r2_destination,
+                },
+            ],
+        },
+        sort_keys=False,
+    )
+
+
+def _install_plan019_guard(repo: Path) -> None:
+    _install_pre_merge_enforcement(repo)
+
+
+def _write_legacy_layout(repo: Path) -> None:
+    (repo / "units" / "C1-base").mkdir(parents=True, exist_ok=True)
+    (repo / "units" / "C1-base" / "manifest.yaml").write_text("unit: C1-base\n")
+    coverage = repo / "curriculum" / "coverage-map.yaml"
+    coverage.parent.mkdir(parents=True, exist_ok=True)
+    coverage.write_text(_plan019_roadmap(r1_destination="C1-base", r2_destination="B2-019"))
+    (repo / "syllabus.md").write_text("legacy\n")
+
+
+def _cut_over_fixture(repo: Path) -> None:
+    for legacy in ("units", "curriculum"):
+        shutil.rmtree(repo / legacy)
+    (repo / "syllabus.md").unlink()
+    (repo / "books.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "books_version": 1,
+                "books": [
+                    {"id": "book1", "number": 1, "root": "book1", "depends_on": []},
+                    {
+                        "id": "book2",
+                        "number": 2,
+                        "root": "book2",
+                        "depends_on": ["book1"],
+                    },
+                ],
+            },
+            sort_keys=False,
+        )
+    )
+    for book in ("book1", "book2"):
+        (repo / book / "units").mkdir(parents=True, exist_ok=True)
+        (repo / book / "curriculum").mkdir(parents=True, exist_ok=True)
+    (repo / "book1/curriculum/coverage-map.yaml").write_text(
+        _plan019_roadmap(r1_destination="C1-base", r2_destination="B2-019")
+    )
+    (repo / "book2/curriculum/coverage-map.yaml").write_text(
+        _plan019_roadmap(r1_destination="C1-base", r2_destination="B2-019")
+    )
+
+
+def _legacy_union_fixture(tmp_path: Path) -> tuple[Path, Path]:
+    repo = tmp_path / "repo"
+    remote = tmp_path / "remote.git"
+    other = tmp_path / "other"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    _install_plan019_guard(repo)
+    _write_legacy_layout(repo)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "legacy base")
+    _git(tmp_path, "init", "--bare", str(remote))
+    _git(repo, "remote", "add", "origin", str(remote))
+    _git(repo, "push", "-u", "origin", "main")
+    _git(repo, "checkout", "-b", "feature")
+    _cut_over_fixture(repo)
+    _git(tmp_path, "clone", "-b", "main", str(remote), str(other))
+    _git(other, "config", "user.email", "test@example.com")
+    _git(other, "config", "user.name", "Test")
+    return repo, other
+
+
+def _push_parallel_main(other: Path) -> None:
+    _git(other, "add", ".")
+    _git(other, "commit", "-m", "parallel main")
+    _git(other, "push", "origin", "main")
+
+
+def _run_plan019_guard(repo: Path, tmp_path: Path) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh", "--pr"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def test_pre_merge_guard_translates_legacy_unit_collision_into_book1(
+    tmp_path: Path,
+) -> None:
+    repo, other = _legacy_union_fixture(tmp_path)
+    (repo / "book1/units/C13-feature").mkdir(parents=True)
+    (repo / "book1/units/C13-feature/manifest.yaml").write_text("unit: C13-feature\n")
+    (other / "units/C13-main").mkdir(parents=True)
+    (other / "units/C13-main/manifest.yaml").write_text("unit: C13-main\n")
+    _push_parallel_main(other)
+
+    proc = _run_plan019_guard(repo, tmp_path)
+
+    assert proc.returncode == 1
+    assert "C13" in proc.stdout + proc.stderr
+    assert "book1" in proc.stdout + proc.stderr
+
+
+def test_pre_merge_guard_allows_noncolliding_legacy_book1_addition(
+    tmp_path: Path,
+) -> None:
+    repo, other = _legacy_union_fixture(tmp_path)
+    (repo / "book1/units/C14-feature").mkdir(parents=True)
+    (repo / "book1/units/C14-feature/manifest.yaml").write_text("unit: C14-feature\n")
+    (other / "units/C13-main").mkdir(parents=True)
+    (other / "units/C13-main/manifest.yaml").write_text("unit: C13-main\n")
+    _push_parallel_main(other)
+
+    proc = _run_plan019_guard(repo, tmp_path)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+@pytest.mark.parametrize("layer", ["r1", "r2"])
+def test_pre_merge_guard_translates_combined_legacy_coverage_row_collisions(
+    tmp_path: Path, layer: str
+) -> None:
+    repo, other = _legacy_union_fixture(tmp_path)
+    relative = f"book{1 if layer == 'r1' else 2}/curriculum/coverage-map.yaml"
+    feature_path = repo / relative
+    feature_path.write_text(
+        _plan019_roadmap(
+            r1_destination="C13-feature" if layer == "r1" else "C1-base",
+            r2_destination="B2-020-feature" if layer == "r2" else "B2-019",
+        )
+    )
+    (other / "curriculum/coverage-map.yaml").write_text(
+        _plan019_roadmap(
+            r1_destination="C13-main" if layer == "r1" else "C1-base",
+            r2_destination="B2-020-main" if layer == "r2" else "B2-019",
+        )
+    )
+    _push_parallel_main(other)
+
+    proc = _run_plan019_guard(repo, tmp_path)
+
+    assert proc.returncode == 1
+    assert f"{layer}-topic" in proc.stdout + proc.stderr
+
+
+def test_pre_merge_guard_rejects_untranslatable_legacy_addition(tmp_path: Path) -> None:
+    repo, other = _legacy_union_fixture(tmp_path)
+    (other / "curriculum/unclassified-new-contract.yaml").write_text("new: true\n")
+    _push_parallel_main(other)
+
+    proc = _run_plan019_guard(repo, tmp_path)
+
+    assert proc.returncode == 1
+    assert "untranslatable" in (proc.stdout + proc.stderr).lower()
+    assert "unclassified-new-contract.yaml" in proc.stdout + proc.stderr
+
+
+def test_pre_merge_guard_handles_post_cutover_origin_main_without_translation(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo-post"
+    remote = tmp_path / "remote-post.git"
+    other = tmp_path / "other-post"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    _install_plan019_guard(repo)
+    _write_legacy_layout(repo)
+    _cut_over_fixture(repo)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "post-cutover base")
+    _git(tmp_path, "init", "--bare", str(remote))
+    _git(repo, "remote", "add", "origin", str(remote))
+    _git(repo, "push", "-u", "origin", "main")
+    _git(repo, "checkout", "-b", "feature")
+    _git(tmp_path, "clone", "-b", "main", str(remote), str(other))
+    _git(other, "config", "user.email", "test@example.com")
+    _git(other, "config", "user.name", "Test")
+    (repo / "book1/units/C13-feature").mkdir(parents=True)
+    (repo / "book1/units/C13-feature/manifest.yaml").write_text("unit: C13-feature\n")
+    (other / "book1/units/C13-main").mkdir(parents=True)
+    (other / "book1/units/C13-main/manifest.yaml").write_text("unit: C13-main\n")
+    _push_parallel_main(other)
+
+    proc = _run_plan019_guard(repo, tmp_path)
+
+    assert proc.returncode == 1
+    assert "C13" in proc.stdout + proc.stderr

@@ -163,7 +163,28 @@ def check_blueprint(root: str | Path) -> Report:
     root = Path(root)
     blueprint = load_blueprint(root)
     syllabus = load_syllabus(root)
-    manifests = load_mock_manifests(root)
+    book_number = blueprint.raw.get("book")
+    manifests = load_mock_manifests(
+        root, book_number=book_number if type(book_number) is int else None
+    )
+    if blueprint.raw.get("status") == "planned":
+        expected = {
+            "blueprint_version": 1,
+            "book": 2,
+            "target": "round-2",
+            "status": "planned",
+            "assessment_prefix": "r2-",
+            "derived_from": [
+                "book2:reference/analysis.md",
+                "book2:curriculum/official-topics.yaml",
+            ],
+        }
+        errors = [] if blueprint.raw == expected else [
+            "planned Book 2 blueprint must match the exact version-1 skeleton"
+        ]
+        if manifests:
+            errors.append("planned Book 2 blueprint is forbidden once an r2-* manifest exists")
+        return Report(name="blueprint-check", ok=not errors, errors=errors)
     warnings = [
         f"DRAFT manifest skipped by blueprint final gate: {manifest.path}"
         for manifest in manifests
