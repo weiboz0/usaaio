@@ -5,7 +5,7 @@ counts:
   unit_practices: 24
   lesson_sessions: 6
   unit_nonpractice_notebooks: 8
-  unit_notebooks: 32
+  unit_notebooks: 56
   mocktests: 0
   mock_notebooks: 0
   manifested_minutes: 1630
@@ -22,29 +22,53 @@ input_paths:
 - units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb
 - units/B2-019-attention-transformers/manifest.yaml
 - units/B2-019-attention-transformers/practice/p01.ipynb
+- units/B2-019-attention-transformers/practice/p01_solution.ipynb
 - units/B2-019-attention-transformers/practice/p02.ipynb
+- units/B2-019-attention-transformers/practice/p02_solution.ipynb
 - units/B2-019-attention-transformers/practice/p03.ipynb
+- units/B2-019-attention-transformers/practice/p03_solution.ipynb
 - units/B2-019-attention-transformers/practice/p04.ipynb
+- units/B2-019-attention-transformers/practice/p04_solution.ipynb
 - units/B2-019-attention-transformers/practice/p05.ipynb
+- units/B2-019-attention-transformers/practice/p05_solution.ipynb
 - units/B2-019-attention-transformers/practice/p06.ipynb
+- units/B2-019-attention-transformers/practice/p06_solution.ipynb
 - units/B2-019-attention-transformers/practice/p07.ipynb
+- units/B2-019-attention-transformers/practice/p07_solution.ipynb
 - units/B2-019-attention-transformers/practice/p08.ipynb
+- units/B2-019-attention-transformers/practice/p08_solution.ipynb
 - units/B2-019-attention-transformers/practice/p09.ipynb
+- units/B2-019-attention-transformers/practice/p09_solution.ipynb
 - units/B2-019-attention-transformers/practice/p10.ipynb
+- units/B2-019-attention-transformers/practice/p10_solution.ipynb
 - units/B2-019-attention-transformers/practice/p11.ipynb
+- units/B2-019-attention-transformers/practice/p11_solution.ipynb
 - units/B2-019-attention-transformers/practice/p12.ipynb
+- units/B2-019-attention-transformers/practice/p12_solution.ipynb
 - units/B2-019-attention-transformers/practice/p13.ipynb
+- units/B2-019-attention-transformers/practice/p13_solution.ipynb
 - units/B2-019-attention-transformers/practice/p14.ipynb
+- units/B2-019-attention-transformers/practice/p14_solution.ipynb
 - units/B2-019-attention-transformers/practice/p15.ipynb
+- units/B2-019-attention-transformers/practice/p15_solution.ipynb
 - units/B2-019-attention-transformers/practice/p16.ipynb
+- units/B2-019-attention-transformers/practice/p16_solution.ipynb
 - units/B2-019-attention-transformers/practice/p17.ipynb
+- units/B2-019-attention-transformers/practice/p17_solution.ipynb
 - units/B2-019-attention-transformers/practice/p18.ipynb
+- units/B2-019-attention-transformers/practice/p18_solution.ipynb
 - units/B2-019-attention-transformers/practice/p19.ipynb
+- units/B2-019-attention-transformers/practice/p19_solution.ipynb
 - units/B2-019-attention-transformers/practice/p20.ipynb
+- units/B2-019-attention-transformers/practice/p20_solution.ipynb
 - units/B2-019-attention-transformers/practice/p21.ipynb
+- units/B2-019-attention-transformers/practice/p21_solution.ipynb
 - units/B2-019-attention-transformers/practice/p22.ipynb
+- units/B2-019-attention-transformers/practice/p22_solution.ipynb
 - units/B2-019-attention-transformers/practice/p23.ipynb
+- units/B2-019-attention-transformers/practice/p23_solution.ipynb
 - units/B2-019-attention-transformers/practice/p24.ipynb
+- units/B2-019-attention-transformers/practice/p24_solution.ipynb
 - units/B2-019-attention-transformers/review.ipynb
 documents:
 - path: docs/course-structure.md
@@ -56,7 +80,7 @@ manifests:
   semantic_sha256: 2dcf9da1aa459020bf0df4398fdfe4e2cd0cf0814eb9c5125a5ed5982ada6f51
 - path: units/B2-019-attention-transformers/manifest.yaml
   kind: yaml
-  semantic_sha256: 641740fb8f19293d0207dd864aeeabf3f4c7ab3a4ce087264288b116b2ce4726
+  semantic_sha256: 172daa6516e9bf384e1282be19b4c71ae9faaacde7fc4da51d2ce4f20b0eb616
 notebooks:
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
@@ -226,7 +250,7 @@ notebooks:
   - scores.max
 - path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb
   kind: notebook
-  semantic_sha256: 4ebe47d9df51cfb5140f0e212470fa73c871243b751470f863225ca841fada46
+  semantic_sha256: efeb04412168c7e48c6846501dc43ee35ff7a9bd0f6d845281373549633d0269
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention
       and Masks :: cell 1'
@@ -586,6 +610,53 @@ notebooks:
   declared_problem_ids:
   - B2-019-p01
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p01_solution.ipynb
+  kind: notebook
+  semantic_sha256: f9e21576321567f5ad0ad6e07eb0534c34f85a7b8f5d7ecec817321c6feafda3
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p01_solution.ipynb :: B2-019-attention-transformers — Practice p01
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p01 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p01_solution.ipynb :: B2-019-attention-transformers — Practice p01
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p01 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p01_solution.ipynb :: B2-019-attention-transformers — Practice p01
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p01 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p01_solution.ipynb :: B2-019-attention-transformers — Practice p01
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p01 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p01_solution.ipynb :: B2-019-attention-transformers — Practice p01
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p01 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - query-key-value-attention
+  declared_problem_ids:
+  - B2-019-p01
+  api_tokens:
+  - np.all
+  - np.array
+  - np.isclose
+  - np.testing.assert_allclose
+  - weights.sum
 - path: units/B2-019-attention-transformers/practice/p02.ipynb
   kind: notebook
   semantic_sha256: 3a08c688082690a5e848fe4fb1136bb1a0e7d673d08cd5a624c7071e1a8d1dbf
@@ -609,6 +680,54 @@ notebooks:
   declared_problem_ids:
   - B2-019-p02
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p02_solution.ipynb
+  kind: notebook
+  semantic_sha256: 395241aba2d3aef053e51c57e979183fc6e49f5ba9f1331b91cc43feb7b8fe44
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p02_solution.ipynb :: B2-019-attention-transformers — Practice p02
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p02 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p02_solution.ipynb :: B2-019-attention-transformers — Practice p02
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p02 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p02_solution.ipynb :: B2-019-attention-transformers — Practice p02
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p02 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p02_solution.ipynb :: B2-019-attention-transformers — Practice p02
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p02 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p02_solution.ipynb :: B2-019-attention-transformers — Practice p02
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p02 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - matrix-transpose
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p02
+  api_tokens:
+  - math.exp
+  - math.sqrt
+  - np.array
+  - np.isclose
 - path: units/B2-019-attention-transformers/practice/p03.ipynb
   kind: notebook
   semantic_sha256: 7d1a559f799ad206a669fff669cbb3e9c51485a09244de82ade45f836a04ca55
@@ -630,6 +749,58 @@ notebooks:
   declared_problem_ids:
   - B2-019-p03
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p03_solution.ipynb
+  kind: notebook
+  semantic_sha256: fcbb75fb385871da2eceee1ce6da7f71e596d4fa1d7e27db0603fa18ec408843
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p03_solution.ipynb :: B2-019-attention-transformers — Practice p03
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p03 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p03_solution.ipynb :: B2-019-attention-transformers — Practice p03
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p03 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p03_solution.ipynb :: B2-019-attention-transformers — Practice p03
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p03 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p03_solution.ipynb :: B2-019-attention-transformers — Practice p03
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p03 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p03_solution.ipynb :: B2-019-attention-transformers — Practice p03
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p03 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p03
+  api_tokens:
+  - X.swapaxes
+  - np.arange
+  - np.exp
+  - np.isclose
+  - np.max
+  - np.ones
+  - np.sqrt
+  - np.sum
+  - np.testing.assert_allclose
+  - weights.sum
 - path: units/B2-019-attention-transformers/practice/p04.ipynb
   kind: notebook
   semantic_sha256: 1f6793ed5b0f280597630f30e6457f0d29143cb47ee3437c802e37448e40ba88
@@ -652,6 +823,61 @@ notebooks:
   declared_problem_ids:
   - B2-019-p04
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p04_solution.ipynb
+  kind: notebook
+  semantic_sha256: 2c2a4371c7ed3e1983a27950dc8da1313257a772df9d5e9e7ba86d85286e2ca6
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p04_solution.ipynb :: B2-019-attention-transformers — Practice p04
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p04 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p04_solution.ipynb :: B2-019-attention-transformers — Practice p04
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p04 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p04_solution.ipynb :: B2-019-attention-transformers — Practice p04
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p04 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p04_solution.ipynb :: B2-019-attention-transformers — Practice p04
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p04 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p04_solution.ipynb :: B2-019-attention-transformers — Practice p04
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p04 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-mask
+  - causal-self-attention
+  declared_problem_ids:
+  - B2-019-p04
+  api_tokens:
+  - np.array
+  - np.array_equal
+  - np.count_nonzero
+  - np.exp
+  - np.max
+  - np.ones
+  - np.sum
+  - np.testing.assert_allclose
+  - np.tril
+  - np.where
+  - np.zeros
+  - weights.sum
 - path: units/B2-019-attention-transformers/practice/p05.ipynb
   kind: notebook
   semantic_sha256: e6e00cc864c97d17012c6a7db5282a687c41f2b7febdf89cc988ac911a375953
@@ -673,6 +899,56 @@ notebooks:
   declared_problem_ids:
   - B2-019-p05
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p05_solution.ipynb
+  kind: notebook
+  semantic_sha256: ef40fed29a90f2948e4c4d81f2d60fefdd7dd3b010a7ea91f8d431edc4c37e55
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p05_solution.ipynb :: B2-019-attention-transformers — Practice p05
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p05 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p05_solution.ipynb :: B2-019-attention-transformers — Practice p05
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p05 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p05_solution.ipynb :: B2-019-attention-transformers — Practice p05
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p05 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p05_solution.ipynb :: B2-019-attention-transformers — Practice p05
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p05 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p05_solution.ipynb :: B2-019-attention-transformers — Practice p05
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p05 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - sinusoidal-positional-encoding
+  declared_problem_ids:
+  - B2-019-p05
+  api_tokens:
+  - np.allclose
+  - np.arange
+  - np.array
+  - np.cos
+  - np.empty
+  - np.ones
+  - np.sin
+  - np.testing.assert_allclose
 - path: units/B2-019-attention-transformers/practice/p06.ipynb
   kind: notebook
   semantic_sha256: a079e8411896425ce8bb1b33ffd4ee13216e8d0c32c17565f4dbd2f4e01ed800
@@ -701,6 +977,64 @@ notebooks:
   declared_problem_ids:
   - B2-019-p06
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p06_solution.ipynb
+  kind: notebook
+  semantic_sha256: 6562c5806f518f64467c9293b560f70b07b45a447678a2ac20c6ce90f16255f3
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p06_solution.ipynb :: B2-019-attention-transformers — Practice p06
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p06 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p06_solution.ipynb :: B2-019-attention-transformers — Practice p06
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p06 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p06_solution.ipynb :: B2-019-attention-transformers — Practice p06
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p06 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p06_solution.ipynb :: B2-019-attention-transformers — Practice p06
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p06 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p06_solution.ipynb :: B2-019-attention-transformers — Practice p06
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p06 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - matrix-transpose
+  - query-key-value-attention
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p06
+  api_tokens:
+  - k.astype
+  - np.all
+  - np.array
+  - np.asarray
+  - np.exp
+  - np.isfinite
+  - np.max
+  - np.ones
+  - np.sqrt
+  - np.sum
+  - np.testing.assert_allclose
+  - q.astype
+  - v.astype
+  - weights.sum
 - path: units/B2-019-attention-transformers/practice/p07.ipynb
   kind: notebook
   semantic_sha256: c4038f06bb8cfd790cd794ad6236e7dbd1f966f90f6a0fc49b2978adf9577576
@@ -728,6 +1062,63 @@ notebooks:
   declared_problem_ids:
   - B2-019-p07
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p07_solution.ipynb
+  kind: notebook
+  semantic_sha256: 0ad90fcd900ce8fd721fc3ce76c1177c0cc7c7dbac009abe4ab96c3319703e29
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p07_solution.ipynb :: B2-019-attention-transformers — Practice p07
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p07 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p07_solution.ipynb :: B2-019-attention-transformers — Practice p07
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p07 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p07_solution.ipynb :: B2-019-attention-transformers — Practice p07
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p07 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p07_solution.ipynb :: B2-019-attention-transformers — Practice p07
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p07 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p07_solution.ipynb :: B2-019-attention-transformers — Practice p07
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p07 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - matrix-transpose
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p07
+  api_tokens:
+  - np.all
+  - np.arange
+  - np.array
+  - np.dot
+  - np.exp
+  - np.isclose
+  - np.isfinite
+  - np.max
+  - np.ones
+  - np.sqrt
+  - np.sum
+  - np.testing.assert_allclose
+  - weights.sum
+  - x.swapaxes
 - path: units/B2-019-attention-transformers/practice/p08.ipynb
   kind: notebook
   semantic_sha256: 8ae728693510addf39be5efe0695adf25fa57b4ae49784f10a7694315644c57c
@@ -755,6 +1146,66 @@ notebooks:
   declared_problem_ids:
   - B2-019-p08
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p08_solution.ipynb
+  kind: notebook
+  semantic_sha256: c9d639c967d24d898fafad41884f0adb6adeb420c051be0fc27d192563e85ced
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p08_solution.ipynb :: B2-019-attention-transformers — Practice p08
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p08 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p08_solution.ipynb :: B2-019-attention-transformers — Practice p08
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p08 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p08_solution.ipynb :: B2-019-attention-transformers — Practice p08
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p08 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p08_solution.ipynb :: B2-019-attention-transformers — Practice p08
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p08 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p08_solution.ipynb :: B2-019-attention-transformers — Practice p08
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p08 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-mask
+  - causal-self-attention
+  declared_problem_ids:
+  - B2-019-p08
+  api_tokens:
+  - np.all
+  - np.arange
+  - np.array
+  - np.asarray
+  - np.count_nonzero
+  - np.exp
+  - np.eye
+  - np.isfinite
+  - np.max
+  - np.ones
+  - np.sqrt
+  - np.sum
+  - np.testing.assert_allclose
+  - np.tril
+  - np.triu
+  - np.where
+  - weights.sum
 - path: units/B2-019-attention-transformers/practice/p09.ipynb
   kind: notebook
   semantic_sha256: 3888c5f0b6af37c7e15512e690094a6063d29e8cbeab1201409a3647f13799c0
@@ -781,6 +1232,58 @@ notebooks:
   declared_problem_ids:
   - B2-019-p09
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p09_solution.ipynb
+  kind: notebook
+  semantic_sha256: e358defe2a4510348a8d80f3d2b3ab0182cd5829ed4348c6621c69ee5129ae9a
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p09_solution.ipynb :: B2-019-attention-transformers — Practice p09
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p09 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p09_solution.ipynb :: B2-019-attention-transformers — Practice p09
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p09 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p09_solution.ipynb :: B2-019-attention-transformers — Practice p09
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p09 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p09_solution.ipynb :: B2-019-attention-transformers — Practice p09
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p09 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p09_solution.ipynb :: B2-019-attention-transformers — Practice p09
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p09 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - sinusoidal-positional-encoding
+  declared_problem_ids:
+  - B2-019-p09
+  api_tokens:
+  - np.allclose
+  - np.arange
+  - np.array
+  - np.cos
+  - np.empty
+  - np.exp
+  - np.eye
+  - np.log
+  - np.sin
+  - np.testing.assert_allclose
 - path: units/B2-019-attention-transformers/practice/p10.ipynb
   kind: notebook
   semantic_sha256: deeadd5e4cd2fd02052420f38ed91cf2c16f1df50d65f5467775e8842b91d404
@@ -807,6 +1310,53 @@ notebooks:
   declared_problem_ids:
   - B2-019-p10
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p10_solution.ipynb
+  kind: notebook
+  semantic_sha256: eb242c0f0de2273028583123672b6d2a6e7d4ea4f76df0d46c044796d4305d33
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p10_solution.ipynb :: B2-019-attention-transformers — Practice p10
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p10 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p10_solution.ipynb :: B2-019-attention-transformers — Practice p10
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p10 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p10_solution.ipynb :: B2-019-attention-transformers — Practice p10
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p10 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p10_solution.ipynb :: B2-019-attention-transformers — Practice p10
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p10 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p10_solution.ipynb :: B2-019-attention-transformers — Practice p10
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p10 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - multi-head-attention
+  declared_problem_ids:
+  - B2-019-p10
+  api_tokens:
+  - heads.transpose
+  - np.arange
+  - np.array
+  - np.testing.assert_allclose
+  - x.reshape
 - path: units/B2-019-attention-transformers/practice/p11.ipynb
   kind: notebook
   semantic_sha256: 5f9afe80f11263b03ec044911f532088aacb540bbf789b49c3b81a8584e19e72
@@ -849,6 +1399,72 @@ notebooks:
   - q.numpy
   - torch.manual_seed
   - torch.tensor
+  - v.numpy
+- path: units/B2-019-attention-transformers/practice/p11_solution.ipynb
+  kind: notebook
+  semantic_sha256: cb5ef1a3cac5c844f8f8e2b9bf0806118d9e71eb1fdfb5f85d180c6cb6674f2e
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p11_solution.ipynb :: B2-019-attention-transformers — Practice p11
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p11 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p11_solution.ipynb :: B2-019-attention-transformers — Practice p11
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p11 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p11_solution.ipynb :: B2-019-attention-transformers — Practice p11
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p11 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p11_solution.ipynb :: B2-019-attention-transformers — Practice p11
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p11 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p11_solution.ipynb :: B2-019-attention-transformers — Practice p11
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p11 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p11
+  api_tokens:
+  - allowed.clone
+  - allowed.numpy
+  - k.clone
+  - k.numpy
+  - k.transpose
+  - math.sqrt
+  - np.exp
+  - np.max
+  - np.sum
+  - np.swapaxes
+  - np.where
+  - q.clone
+  - q.numpy
+  - scores.masked_fill
+  - torch.allclose
+  - torch.any
+  - torch.broadcast_to
+  - torch.equal
+  - torch.manual_seed
+  - torch.matmul
+  - torch.softmax
+  - torch.tensor
+  - v.clone
   - v.numpy
 - path: units/B2-019-attention-transformers/practice/p12.ipynb
   kind: notebook
@@ -895,6 +1511,77 @@ notebooks:
   - torch.tensor
   - torch.tril
   - weight.copy_
+- path: units/B2-019-attention-transformers/practice/p12_solution.ipynb
+  kind: notebook
+  semantic_sha256: 07a649cbb655f37946c17516e9072fd8e0402424f1fb6ced68e177f7ca2cd6b8
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p12_solution.ipynb :: B2-019-attention-transformers — Practice p12
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p12 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p12_solution.ipynb :: B2-019-attention-transformers — Practice p12
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p12 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p12_solution.ipynb :: B2-019-attention-transformers — Practice p12
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p12 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p12_solution.ipynb :: B2-019-attention-transformers — Practice p12
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p12 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p12_solution.ipynb :: B2-019-attention-transformers — Practice p12
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p12 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - position-wise-feed-forward
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids:
+  - B2-019-p12
+  api_tokens:
+  - bias.copy_
+  - bias.zero_
+  - block.attention
+  - block.attention.projection.weight.copy_
+  - block.attention.projection.weight.zero_
+  - block.ffn
+  - block.norm1
+  - block.norm2
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - self.attention
+  - self.ffn
+  - self.norm1
+  - self.norm2
+  - self.projection
+  - torch.allclose
+  - torch.arange
+  - torch.linspace
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.ones
+  - torch.tensor
+  - torch.tril
+  - weight.copy_
+  - weight.zero_
 - path: units/B2-019-attention-transformers/practice/p13.ipynb
   kind: notebook
   semantic_sha256: bda3abf441bda381ab3e5c4cf342318a761cbfbdfbaabcc4cfb7b69056091016
@@ -916,9 +1603,57 @@ notebooks:
   declared_problem_ids:
   - B2-019-p13
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p13_solution.ipynb
+  kind: notebook
+  semantic_sha256: 7491553b54ad48aa8418273ddd04546e71b9a8808a22af71f6746beb607f9db6
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p13_solution.ipynb :: B2-019-attention-transformers — Practice p13
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p13 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p13_solution.ipynb :: B2-019-attention-transformers — Practice p13
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p13 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p13_solution.ipynb :: B2-019-attention-transformers — Practice p13
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p13 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p13_solution.ipynb :: B2-019-attention-transformers — Practice p13
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p13 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p13_solution.ipynb :: B2-019-attention-transformers — Practice p13
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p13 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p13
+  api_tokens:
+  - np.isclose
+  - np.random.default_rng
+  - np.sqrt
+  - np.sum
+  - np.var
+  - rng.standard_normal
 - path: units/B2-019-attention-transformers/practice/p14.ipynb
   kind: notebook
-  semantic_sha256: 6a5078af383b830192ccb8b45e8822ea624ea83aa34ee5f7455b07f2de511c14
+  semantic_sha256: 603e995989c55f8d4ad18ddd5cfd305e8b4077b17023b4f2b022ebcb676f4ed6
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p14.ipynb :: B2-019 — Practice p14 > Task :: cell 1'
     heading_path:
@@ -937,6 +1672,56 @@ notebooks:
   declared_problem_ids:
   - B2-019-p14
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p14_solution.ipynb
+  kind: notebook
+  semantic_sha256: 94617bf1ff3947f4846b23b6e323d9515dfc8f823ac5c9390db1c36981d8bae3
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p14_solution.ipynb :: B2-019-attention-transformers — Practice p14
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p14 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p14_solution.ipynb :: B2-019-attention-transformers — Practice p14
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p14 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p14_solution.ipynb :: B2-019-attention-transformers — Practice p14
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p14 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p14_solution.ipynb :: B2-019-attention-transformers — Practice p14
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p14 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p14_solution.ipynb :: B2-019-attention-transformers — Practice p14
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p14 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - causal-self-attention
+  declared_problem_ids:
+  - B2-019-p14
+  api_tokens:
+  - allowed.astype
+  - np.array
+  - np.exp
+  - np.isclose
+  - np.max
+  - np.sum
+  - np.testing.assert_allclose
+  - np.where
 - path: units/B2-019-attention-transformers/practice/p15.ipynb
   kind: notebook
   semantic_sha256: dc154fe52aa181debc61cf54612508552aadfd3401eaa79d5d9badce50cca31f
@@ -958,6 +1743,57 @@ notebooks:
   declared_problem_ids:
   - B2-019-p15
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p15_solution.ipynb
+  kind: notebook
+  semantic_sha256: 3d845223f432d45ed778e4280a5ab85c09df910fc0ea48e91fa79644dbb0bd5c
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p15_solution.ipynb :: B2-019-attention-transformers — Practice p15
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p15 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p15_solution.ipynb :: B2-019-attention-transformers — Practice p15
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p15 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p15_solution.ipynb :: B2-019-attention-transformers — Practice p15
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p15 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p15_solution.ipynb :: B2-019-attention-transformers — Practice p15
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p15 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p15_solution.ipynb :: B2-019-attention-transformers — Practice p15
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p15 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - multi-head-attention
+  declared_problem_ids:
+  - B2-019-p15
+  api_tokens:
+  - K.reshape
+  - Kh.transpose
+  - Q.reshape
+  - V.reshape
+  - head_values.transpose
+  - np.arange
+  - np.array
+  - np.eye
+  - np.testing.assert_allclose
 - path: units/B2-019-attention-transformers/practice/p16.ipynb
   kind: notebook
   semantic_sha256: 3db61a49e77cb2c467958bd9203a84fb7ed4c53198253f60e41be5f509d37a75
@@ -972,6 +1808,48 @@ notebooks:
     - B2-019 — Practice p16
     - Your response
     cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  declared_problem_ids:
+  - B2-019-p16
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p16_solution.ipynb
+  kind: notebook
+  semantic_sha256: 92a82ce82cd2f51a9297bef6d8e4f1ec02f4b6ccd14b4041c2d3eb3e44d3fd82
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p16_solution.ipynb :: B2-019-attention-transformers — Practice p16
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p16 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p16_solution.ipynb :: B2-019-attention-transformers — Practice p16
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p16 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p16_solution.ipynb :: B2-019-attention-transformers — Practice p16
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p16 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p16_solution.ipynb :: B2-019-attention-transformers — Practice p16
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p16 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p16_solution.ipynb :: B2-019-attention-transformers — Practice p16
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p16 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
   declared_unit_ids:
   - B2-019-attention-transformers
   declared_concept_ids:
@@ -1022,6 +1900,87 @@ notebooks:
   - torch.ones
   - torch.tensor
   - torch.tril
+- path: units/B2-019-attention-transformers/practice/p17_solution.ipynb
+  kind: notebook
+  semantic_sha256: 4a049898bb024758342aca7f9496848d9499b47476429ff48234068302543640
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p17_solution.ipynb :: B2-019-attention-transformers — Practice p17
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p17 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p17_solution.ipynb :: B2-019-attention-transformers — Practice p17
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p17 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p17_solution.ipynb :: B2-019-attention-transformers — Practice p17
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p17 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p17_solution.ipynb :: B2-019-attention-transformers — Practice p17
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p17 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p17_solution.ipynb :: B2-019-attention-transformers — Practice p17
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p17 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - causal-self-attention
+  - sinusoidal-positional-encoding
+  declared_problem_ids:
+  - B2-019-p17
+  api_tokens:
+  - k.transpose
+  - logits.reshape
+  - logits_after.argmax
+  - loss.backward
+  - loss.detach
+  - loss_values.append
+  - math.sqrt
+  - model.named_parameters
+  - model.parameters
+  - nn.Linear
+  - nn.functional.cross_entropy
+  - np.arange
+  - np.array
+  - np.asarray
+  - np.cos
+  - np.empty
+  - np.eye
+  - np.random.seed
+  - np.sin
+  - np.testing.assert_allclose
+  - optimizer.step
+  - optimizer.zero_grad
+  - parameter.copy_
+  - scores.masked_fill
+  - self.head
+  - self.out
+  - targets.reshape
+  - torch.allclose
+  - torch.equal
+  - torch.manual_seed
+  - torch.matmul
+  - torch.no_grad
+  - torch.ones
+  - torch.optim.Adam
+  - torch.softmax
+  - torch.stack
+  - torch.tensor
+  - torch.tril
 - path: units/B2-019-attention-transformers/practice/p18.ipynb
   kind: notebook
   semantic_sha256: dd995ebd9c6ac982b98056e8033227781fc855226091db9e8ef4d32ee3c1964c
@@ -1044,6 +2003,63 @@ notebooks:
   declared_problem_ids:
   - B2-019-p18
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p18_solution.ipynb
+  kind: notebook
+  semantic_sha256: fc76e09afc6650b44452b9b9e502166a6ecee5f25b21e48a2ff5ad8b1f123702
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p18_solution.ipynb :: B2-019-attention-transformers — Practice p18
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p18 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p18_solution.ipynb :: B2-019-attention-transformers — Practice p18
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p18 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p18_solution.ipynb :: B2-019-attention-transformers — Practice p18
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p18 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p18_solution.ipynb :: B2-019-attention-transformers — Practice p18
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p18 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p18_solution.ipynb :: B2-019-attention-transformers — Practice p18
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p18 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-mask
+  - scaled-dot-product-attention
+  declared_problem_ids:
+  - B2-019-p18
+  api_tokens:
+  - np.all
+  - np.allclose
+  - np.array
+  - np.count_nonzero
+  - np.exp
+  - np.isclose
+  - np.isfinite
+  - np.max
+  - np.sqrt
+  - np.sum
+  - np.testing.assert_allclose
+  - np.where
+  - postmasked_weights.sum
+  - premasked_weights.sum
 - path: units/B2-019-attention-transformers/practice/p19.ipynb
   kind: notebook
   semantic_sha256: 166a2d0bb7c7f079c67be67564a09d63dce5916df464d940776acb09533b5791
@@ -1067,6 +2083,66 @@ notebooks:
   declared_problem_ids:
   - B2-019-p19
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p19_solution.ipynb
+  kind: notebook
+  semantic_sha256: d1534940a2ccfdfd5a211c33c01c090285f824c3b756830a65ee5277318de02c
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p19_solution.ipynb :: B2-019-attention-transformers — Practice p19
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p19 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p19_solution.ipynb :: B2-019-attention-transformers — Practice p19
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p19 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p19_solution.ipynb :: B2-019-attention-transformers — Practice p19
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p19 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p19_solution.ipynb :: B2-019-attention-transformers — Practice p19
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p19 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p19_solution.ipynb :: B2-019-attention-transformers — Practice p19
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p19 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - position-wise-feed-forward
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids:
+  - B2-019-p19
+  api_tokens:
+  - attention.weight.zero_
+  - bias.zero_
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - torch.allclose
+  - torch.arange
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.ones_like
+  - weight.zero_
+  - x.detach
+  - x.grad.clone
+  - x.requires_grad_
+  - z.sum
 - path: units/B2-019-attention-transformers/practice/p20.ipynb
   kind: notebook
   semantic_sha256: 8c91c5fc477396aee4300e02e9e610c1c6848d17e5e68041c2130352369c0473
@@ -1081,6 +2157,48 @@ notebooks:
     - B2-019 — Practice p20
     - Your response
     cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - transformer-block
+  declared_problem_ids:
+  - B2-019-p20
+  api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p20_solution.ipynb
+  kind: notebook
+  semantic_sha256: 764de0512c3053044017a5f0f10097d756ff8ce0a701dd3d2ff5666fbc9c13e2
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p20_solution.ipynb :: B2-019-attention-transformers — Practice p20
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p20 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p20_solution.ipynb :: B2-019-attention-transformers — Practice p20
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p20 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p20_solution.ipynb :: B2-019-attention-transformers — Practice p20
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p20 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p20_solution.ipynb :: B2-019-attention-transformers — Practice p20
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p20 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p20_solution.ipynb :: B2-019-attention-transformers — Practice p20
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p20 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
   declared_unit_ids:
   - B2-019-attention-transformers
   declared_concept_ids:
@@ -1109,6 +2227,49 @@ notebooks:
   declared_problem_ids:
   - B2-019-p21
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p21_solution.ipynb
+  kind: notebook
+  semantic_sha256: d642680a5ac2b872e863d33cf6aa2e381af97c7d747d71c59c5d7241eff3800b
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p21_solution.ipynb :: B2-019-attention-transformers — Practice p21
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p21 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p21_solution.ipynb :: B2-019-attention-transformers — Practice p21
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p21 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p21_solution.ipynb :: B2-019-attention-transformers — Practice p21
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p21 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p21_solution.ipynb :: B2-019-attention-transformers — Practice p21
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p21 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p21_solution.ipynb :: B2-019-attention-transformers — Practice p21
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p21 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  declared_problem_ids:
+  - B2-019-p21
+  api_tokens:
+  - configurations.items
 - path: units/B2-019-attention-transformers/practice/p22.ipynb
   kind: notebook
   semantic_sha256: 9c1f8ce2aff41fabfa92e0b38734b8e4848e7b8d3f278fb1a4c2e213e7cbb867
@@ -1130,6 +2291,54 @@ notebooks:
   declared_problem_ids:
   - B2-019-p22
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p22_solution.ipynb
+  kind: notebook
+  semantic_sha256: 91b64f654bba3282abafca8b0977dbeb4a40fcf3c13730eeff1551781ccfc159
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p22_solution.ipynb :: B2-019-attention-transformers — Practice p22
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p22 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p22_solution.ipynb :: B2-019-attention-transformers — Practice p22
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p22 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p22_solution.ipynb :: B2-019-attention-transformers — Practice p22
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p22 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p22_solution.ipynb :: B2-019-attention-transformers — Practice p22
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p22 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p22_solution.ipynb :: B2-019-attention-transformers — Practice p22
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p22 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-mask
+  declared_problem_ids:
+  - B2-019-p22
+  api_tokens:
+  - np.all
+  - np.any
+  - np.array
+  - np.broadcast_to
+  - np.ones
+  - np.tril
 - path: units/B2-019-attention-transformers/practice/p23.ipynb
   kind: notebook
   semantic_sha256: 1804315374508867bfe7c50ead11f8bfe716e4090ee8696b20616e66ac1f4f5a
@@ -1159,6 +2368,53 @@ notebooks:
   api_tokens:
   - np.array
   - np.stack
+- path: units/B2-019-attention-transformers/practice/p23_solution.ipynb
+  kind: notebook
+  semantic_sha256: 19b71c0cdbb4d47a793da7099ec8861d2c258b2f930fbb2db90360b0f9c02d52
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p23_solution.ipynb :: B2-019-attention-transformers — Practice p23
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p23 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p23_solution.ipynb :: B2-019-attention-transformers — Practice p23
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p23 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p23_solution.ipynb :: B2-019-attention-transformers — Practice p23
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p23 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p23_solution.ipynb :: B2-019-attention-transformers — Practice p23
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p23 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p23_solution.ipynb :: B2-019-attention-transformers — Practice p23
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p23 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - attention-complexity
+  - multi-head-attention
+  declared_problem_ids:
+  - B2-019-p23
+  api_tokens:
+  - heads.transpose
+  - np.array
+  - np.stack
+  - np.testing.assert_allclose
 - path: units/B2-019-attention-transformers/practice/p24.ipynb
   kind: notebook
   semantic_sha256: cc38f793ee528ecea71767ad288e4f3b5ac0e8da697df8fa7b1a9637cb997577
@@ -1182,6 +2438,66 @@ notebooks:
   declared_problem_ids:
   - B2-019-p24
   api_tokens: []
+- path: units/B2-019-attention-transformers/practice/p24_solution.ipynb
+  kind: notebook
+  semantic_sha256: 6f6186c1405727f3e1b6cb827c4fd1ff82c896200d8fb25f411cd1e79af806ec
+  anchors:
+  - anchor: 'units/B2-019-attention-transformers/practice/p24_solution.ipynb :: B2-019-attention-transformers — Practice p24
+      — Solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p24 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p24_solution.ipynb :: B2-019-attention-transformers — Practice p24
+      — Solution > Independent solution :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p24 — Solution
+    - Independent solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p24_solution.ipynb :: B2-019-attention-transformers — Practice p24
+      — Solution > Independent solution :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p24 — Solution
+    - Independent solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-019-attention-transformers/practice/p24_solution.ipynb :: B2-019-attention-transformers — Practice p24
+      — Solution > Independent solution > Answer check :: cell 1'
+    heading_path:
+    - B2-019-attention-transformers — Practice p24 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/practice/p24_solution.ipynb :: B2-019-attention-transformers — Practice p24
+      — Solution > Independent solution > Answer check :: cell 2'
+    heading_path:
+    - B2-019-attention-transformers — Practice p24 — Solution
+    - Independent solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  declared_concept_ids:
+  - position-wise-feed-forward
+  - transformer-block
+  - transformer-residual-layernorm
+  declared_problem_ids:
+  - B2-019-p24
+  api_tokens:
+  - np.allclose
+  - np.arange
+  - np.array
+  - np.count_nonzero
+  - np.exp
+  - np.max
+  - np.mean
+  - np.ones
+  - np.sqrt
+  - np.sum
+  - np.testing.assert_allclose
+  - np.tril
+  - np.where
+  - np.zeros
+  - np.zeros_like
+  - weights.sum
 - path: units/B2-019-attention-transformers/review.ipynb
   kind: notebook
   semantic_sha256: b736cf6f67f4afba9d590cb511f0e0b9059ee6823203d29a0051a6834308163f

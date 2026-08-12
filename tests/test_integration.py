@@ -2048,7 +2048,9 @@ def test_ci_executes_book2_schedule_check() -> None:
 
 
 def test_ci_executes_attention_mutations() -> None:
-    assert "echo \"SKIP attention mutations (plan 019 Task 7)\"" in _ci_noncomment_lines()
+    lines = _ci_noncomment_lines()
+    assert "uv run python -m tools.verify_attention_mutations --root \"$book2_root\"" in lines
+    assert not any("SKIP attention mutations" in line for line in lines)
 
 
 def _plan019_roadmap(*, r1_destination: str, r2_destination: str) -> str:

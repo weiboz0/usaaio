@@ -13,7 +13,7 @@ This aggregate roadmap records acknowledged shipped and planned curriculum state
 
 ### Round 2 exit
 
-92 required/bridge atomic targets; 30 acknowledged gaps.
+92 required/bridge atomic targets; 23 acknowledged gaps.
 
 ## Time baseline and planned deltas
 
@@ -121,9 +121,9 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 
 | Book | Knowledge point | Requirement | Coverage | Modalities missing | Practice shortfall | Destination | Dependencies |
 |---|---|---|---|---|---:|---|---|
-| book2 | attention-complexity-analysis | required | missing | derivation, theory | 3 | book2:B2-019-attention-transformers | book2:self-attention |
-| book2 | attention-from-scratch | required | missing | implementation, model-training, theory | 3 | book2:B2-019-attention-transformers | book1:pytorch-autograd-and-optimizer-training, book2:multi-head-attention, book2:positional-encoding |
-| book2 | attention-mechanism-foundations | required | missing | derivation, implementation, theory | 3 | book2:B2-019-attention-transformers | book1:linear-algebra-foundations, book1:softmax |
+| book2 | attention-complexity-analysis | required | covered | — | 0 | book2:B2-019-attention-transformers | book2:self-attention |
+| book2 | attention-from-scratch | required | covered | — | 0 | book2:B2-019-attention-transformers | book1:pytorch-autograd-and-optimizer-training, book2:multi-head-attention, book2:positional-encoding |
+| book2 | attention-mechanism-foundations | required | covered | — | 0 | book2:B2-019-attention-transformers | book1:linear-algebra-foundations, book1:softmax |
 | book2 | autoencoder | required | missing | implementation, model-training, theory | 3 | book2:B2-022-probabilistic-latent-models | book1:fully-connected-network-from-scratch, book1:loss-functions |
 | book2 | denoising-diffusion-probabilistic-models | required | missing | derivation, implementation, model-training, theory | 3 | book2:B2-023-generative-models-diffusion | book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian, book2:unet |
 | book2 | gaussian-reparameterization | bridge | missing | derivation, implementation, theory | 3 | book2:B2-022-probabilistic-latent-models | book1:pytorch-autograd-and-optimizer-training, book2:multivariate-gaussian |
@@ -132,7 +132,7 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | book2 | graph-neural-network-transformer-applications | required | missing | implementation, model-training, theory | 3 | book2:B2-021-cross-modal-transformers-vision | book2:transformer-architecture-foundations |
 | book2 | kl-divergence | bridge | missing | derivation, implementation, theory | 3 | book2:B2-022-probabilistic-latent-models | book1:conditional-probability, book1:expectation, book2:multivariate-gaussian |
 | book2 | mixture-parameter-regression | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | book2:B2-024-gpu-scientific-ml-capstone | book1:linear-regression, book2:multivariate-gaussian, book2:open-ended-experiment-design |
-| book2 | multi-head-attention | required | missing | derivation, implementation, theory | 3 | book2:B2-019-attention-transformers | book2:self-attention |
+| book2 | multi-head-attention | required | covered | — | 0 | book2:B2-019-attention-transformers | book2:self-attention |
 | book2 | multivariate-gaussian | bridge | missing | derivation, implementation, theory | 3 | book2:B2-022-probabilistic-latent-models | book1:eigenvalues-and-eigenvectors, book1:probability-and-statistics-foundations |
 | book2 | nlp-fine-tuning | required | missing | implementation, model-training, theory | 3 | book2:B2-020-language-transformers | book1:pytorch-autograd-and-optimizer-training, book2:nlp-pretraining |
 | book2 | nlp-pretraining | required | missing | implementation, model-training, theory | 3 | book2:B2-020-language-transformers | book2:nlp-transformers |
@@ -142,12 +142,12 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | book2 | object-detection | required | missing | implementation, model-training, theory | 3 | book2:B2-021-cross-modal-transformers-vision | book1:convolutional-neural-network-basics |
 | book2 | open-ended-experiment-design | bridge | missing | competition-workflow, model-training | 3 | book2:B2-024-gpu-scientific-ml-capstone | book1:end-to-end-model-selection, book2:gpu-colab-l4-workflow |
 | book2 | open-ended-model-evaluation | bridge | missing | competition-workflow, model-training | 3 | book2:B2-024-gpu-scientific-ml-capstone | book1:hidden-test-model-evaluation, book2:open-ended-experiment-design |
-| book2 | positional-encoding | required | missing | implementation, theory | 3 | book2:B2-019-attention-transformers | book2:self-attention |
+| book2 | positional-encoding | required | covered | — | 0 | book2:B2-019-attention-transformers | book2:self-attention |
 | book2 | scientific-ml-inverse-problems | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | book2:B2-024-gpu-scientific-ml-capstone | book1:end-to-end-model-selection, book1:pytorch-autograd-and-optimizer-training |
-| book2 | self-attention | required | missing | derivation, implementation, theory | 3 | book2:B2-019-attention-transformers | book2:attention-mechanism-foundations |
+| book2 | self-attention | required | covered | — | 0 | book2:B2-019-attention-transformers | book2:attention-mechanism-foundations |
 | book2 | semi-supervised-pseudo-labeling | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | book2:B2-024-gpu-scientific-ml-capstone | book1:convolutional-neural-network-basics, book1:k-means-clustering, book2:open-ended-experiment-design |
 | book2 | stable-diffusion | required | missing | implementation, model-training, theory | 3 | book2:B2-023-generative-models-diffusion | book2:denoising-diffusion-probabilistic-models, book2:transformer-nlp-applications, book2:variational-autoencoder |
-| book2 | transformer-architecture-foundations | required | missing | derivation, implementation, theory | 3 | book2:B2-019-attention-transformers | book1:multilayer-perceptron-model, book2:attention-from-scratch |
+| book2 | transformer-architecture-foundations | required | covered | — | 0 | book2:B2-019-attention-transformers | book1:multilayer-perceptron-model, book2:attention-from-scratch |
 | book2 | transformer-nlp-applications | required | missing | implementation, model-training, theory | 3 | book2:B2-020-language-transformers | book2:nlp-tokenization, book2:transformer-architecture-foundations |
 | book2 | unet | required | missing | implementation, model-training, theory | 3 | book2:B2-021-cross-modal-transformers-vision | book1:convolutional-neural-network-basics |
 | book2 | variational-autoencoder | required | missing | derivation, implementation, model-training, theory | 3 | book2:B2-022-probabilistic-latent-models | book2:autoencoder, book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian |

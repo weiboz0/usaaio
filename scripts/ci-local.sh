@@ -99,10 +99,13 @@ done
 
 step "7/9 generated Book 1 evidence and mutation checks"
 book1_root=
+book2_root=
 for index in "${!BOOK_IDS[@]}"; do
   [[ ${BOOK_NUMBERS[$index]} == 1 ]] && book1_root=${BOOK_ROOTS[$index]}
+  [[ ${BOOK_NUMBERS[$index]} == 2 ]] && book2_root=${BOOK_ROOTS[$index]}
 done
 [[ -n $book1_root ]] || { echo "FAIL: no registered Book 1 root" >&2; exit 1; }
+[[ -n $book2_root ]] || { echo "FAIL: no registered Book 2 root" >&2; exit 1; }
 uv run python -m tools.audit_curriculum --root "$book1_root" --check
 uv run python -m tools.render_curriculum_roadmap --root "$repo_root" --check
 uv run python -m tools.render_course_structure --root "$book1_root" --check
@@ -112,7 +115,7 @@ for book_root in "${BOOK_ROOTS[@]}"; do
 done
 uv run python -m tools.verify_training_mutations --root "$book1_root"
 uv run python -m tools.verify_classical_mutations --root "$book1_root"
-echo "SKIP attention mutations (plan 019 Task 7)"
+uv run python -m tools.verify_attention_mutations --root "$book2_root"
 
 step "8/9 PDF build"
 for book in "${BOOK_IDS[@]}"; do

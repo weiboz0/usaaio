@@ -13,15 +13,15 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 1013 |
+| Unit notebooks | 1037 |
 | Mock notebooks | 10 |
 | Unit practices | 461 |
-| Total inventoried notebooks | 1023 |
+| Total inventoried notebooks | 1047 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
-| Coverage: covered | 62 |
-| Coverage: missing | 29 |
+| Coverage: covered | 69 |
+| Coverage: missing | 22 |
 | Coverage: partial | 1 |
 
 ## Time baseline and planned deltas
@@ -1645,23 +1645,23 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-019-attention-transformers
 - **Dependencies:** book2:self-attention
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No sequence-length memory or time analysis exists.
-- **Consequence:** Students cannot reason about standard versus linear attention costs.
+- **Shipped concepts:** book2:attention-complexity
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped sequence derives exact projection, score, weighted-value, and materialized score-memory costs.
+- **Consequence:** Students can reason about attention time and memory under changing sequence budgets.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 5. Exact time and score-memory cost :: cell 1
+- **derivation practices:** book2:B2-019-p16, book2:B2-019-p23
 - **derivation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 5. Exact time and score-memory cost :: cell 1
+- **theory practices:** book2:B2-019-p21
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-019-p16, book2:B2-019-p21, book2:B2-019-p23
 
 Assessments: —
 
@@ -1670,26 +1670,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-019-attention-transformers
 - **Dependencies:** book1:pytorch-autograd-and-optimizer-training, book2:multi-head-attention, book2:positional-encoding
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No attention module or trained attention model exists.
-- **Consequence:** The official from-scratch attention expectation is wholly unmet.
+- **Shipped concepts:** book2:causal-self-attention, book2:scaled-dot-product-attention
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped sequence implements an attention module and trains a seeded causal predictor end to end.
+- **Consequence:** Students meet the official from-scratch attention expectation with executable evidence.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4: Attention Module and Tiny Training > 2. Forward pass and mask :: cell 1
+- **implementation practices:** book2:B2-019-p11
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4: Attention Module and Tiny Training > 4. Training loop :: cell 1
+- **model-training practices:** book2:B2-019-p17
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4: Attention Module and Tiny Training > 1. Module contract :: cell 1
+- **theory practices:** book2:B2-019-p18
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-019-p11, book2:B2-019-p17, book2:B2-019-p18
 
 Assessments: —
 
@@ -1698,26 +1698,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-019-attention-transformers
 - **Dependencies:** book1:linear-algebra-foundations, book1:softmax
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No query-key-value, score, weighting, or attention computation exists.
-- **Consequence:** Every transformer topic lacks its first prerequisite.
+- **Shipped concepts:** book2:query-key-value-attention, book2:scaled-dot-product-attention
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped lesson and practices derive and implement query-key-value attention with stable scaled scores.
+- **Consequence:** Students have the complete prerequisite computation for later transformer topics.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 3. Scale and stable row softmax :: cell 1
+- **derivation practices:** book2:B2-019-p02, book2:B2-019-p13
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 4. Weighted values :: cell 1
+- **implementation practices:** book2:B2-019-p06
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 2. Query, key, and value roles :: cell 1
+- **theory practices:** book2:B2-019-p01
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-019-p01, book2:B2-019-p02, book2:B2-019-p06, book2:B2-019-p13
 
 Assessments: —
 
@@ -1959,26 +1959,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-019-attention-transformers
 - **Dependencies:** book2:self-attention
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No head splitting, projections, concatenation, or implementation exists.
-- **Consequence:** Multi-head transformer blocks cannot be understood or built.
+- **Shipped concepts:** book2:multi-head-attention
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped sequence traces projections, head dimensions, independent computation, and exact concatenation.
+- **Consequence:** Students can derive and implement the multi-head shape contract.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 1. Projection and head dimensions :: cell 2
+- **derivation practices:** book2:B2-019-p23
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 3. Independent heads and concatenation :: cell 1
+- **implementation practices:** book2:B2-019-p10
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 1. Projection and head dimensions :: cell 1
+- **theory practices:** book2:B2-019-p15
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-019-p10, book2:B2-019-p15, book2:B2-019-p23
 
 Assessments: —
 
@@ -2230,23 +2230,23 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-019-attention-transformers
 - **Dependencies:** book2:self-attention
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No positional signal or encoding implementation exists.
-- **Consequence:** Students cannot explain how order enters attention models.
+- **Shipped concepts:** book2:sinusoidal-positional-encoding
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped sequence explains permutation equivariance and implements sinusoidal position before attention.
+- **Consequence:** Students can explain and construct the positional signal used by attention models.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 4. Sinusoidal positional encoding :: cell 1
+- **implementation practices:** book2:B2-019-p09, book2:B2-019-p17
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 4. Sinusoidal positional encoding :: cell 1
+- **theory practices:** book2:B2-019-p05
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-019-p05, book2:B2-019-p09, book2:B2-019-p17
 
 Assessments: —
 
@@ -2286,26 +2286,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-019-attention-transformers
 - **Dependencies:** book2:attention-mechanism-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No sequence self-attention exists.
-- **Consequence:** Students cannot model within-sequence interactions.
+- **Shipped concepts:** book2:attention-mask, book2:causal-self-attention, book2:scaled-dot-product-attention
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped sequence derives self-attention dependence and implements padding and causal masking before softmax.
+- **Consequence:** Students can model and audit within-sequence interactions without future leakage.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention and Masks > 4. Causal masks :: cell 1
+- **derivation practices:** book2:B2-019-p14
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention and Masks > 2. Additive masks before softmax :: cell 2
+- **implementation practices:** book2:B2-019-p07, book2:B2-019-p08
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention and Masks > 1. Self-attention shape contract :: cell 1
+- **theory practices:** book2:B2-019-p03
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-019-p03, book2:B2-019-p07, book2:B2-019-p08, book2:B2-019-p14
 
 Assessments: —
 
@@ -2373,26 +2373,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-019-attention-transformers
 - **Dependencies:** book1:multilayer-perceptron-model, book2:attention-from-scratch
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** Transformer occurrences refer only to sklearn transformers; no attention-residual-LayerNorm-feed-forward block architecture exists.
-- **Consequence:** The standard transformer block and its normalization/residual system are absent.
+- **Shipped concepts:** book2:position-wise-feed-forward, book2:transformer-block, book2:transformer-residual-layernorm
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** The shipped sequence traces encoder, decoder, residual, LayerNorm, and feed-forward block ordering.
+- **Consequence:** Students can derive and implement the standard transformer architecture foundation.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session 5: Transformer Blocks and Architecture > 2. Pre-norm residual ordering :: cell 1
+- **derivation practices:** book2:B2-019-p19
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session 5: Transformer Blocks and Architecture > 7. Architecture trace :: cell 1
+- **implementation practices:** book2:B2-019-p12, book2:B2-019-p24
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session 5: Transformer Blocks and Architecture > 5. Cross-attention role and dimensions :: cell 1
+- **theory practices:** book2:B2-019-p20
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-019-p12, book2:B2-019-p19, book2:B2-019-p20, book2:B2-019-p24
 
 Assessments: —
 
