@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -137,6 +138,17 @@ def _source(path: Path) -> str:
     )
 
 
+def _code_source(path: Path) -> str:
+    notebook = json.loads(path.read_text(encoding="utf-8"))
+    return "\n\n".join(
+        "".join(cell.get("source", []))
+        if isinstance(cell.get("source", ""), list)
+        else str(cell.get("source", ""))
+        for cell in notebook["cells"]
+        if cell["cell_type"] == "code"
+    )
+
+
 def test_b2_019_statement_inventory_is_exact_and_contains_no_solutions() -> None:
     expected = {
         "lesson.ipynb",
@@ -243,6 +255,26 @@ def test_every_student_surface_is_clean_and_visibly_scoped() -> None:
             assert cell.get("outputs") in (None, [])
 
 
+def test_every_relative_remediation_link_resolves_from_its_notebook() -> None:
+    link_pattern = re.compile(r"\[[^]]+\]\(([^)#]+)(?:#[^)]*)?\)")
+    remediation_links = []
+
+    for path in sorted(UNIT.rglob("*.ipynb")):
+        source = _source(path)
+        for raw_target in link_pattern.findall(source):
+            if "book1/units/" not in raw_target:
+                continue
+            assert raw_target.startswith("."), (path, raw_target)
+            target = (path.parent / raw_target).resolve()
+            remediation_links.append((path, raw_target, target))
+            assert target.is_file(), (path, raw_target, target)
+            assert target.is_relative_to(BOOK1_ROOT.resolve()), (path, target)
+
+    assert len(remediation_links) == 141
+    assert sum(path.parent == UNIT for path, _, _ in remediation_links) == 8
+    assert sum(path.parent != UNIT for path, _, _ in remediation_links) == 133
+
+
 def test_bridge_diagnoses_every_import_and_links_every_remediation_unit() -> None:
     source = _source(UNIT / LESSONS[0])
     for concept in QUALIFIED_CONCEPTS:
@@ -288,6 +320,93 @@ def test_lesson_order_and_introduction_sessions_match_concept_contract() -> None
     for heading in ("Common pitfalls", "Exam connections", "Going deeper"):
         assert heading in joined
     assert joined.count("Worked example") >= 2
+
+
+def test_session4_executes_a_deterministic_attention_training_example() -> None:
+    lesson = UNIT / "lessons/04-attention-module-and-tiny-training.ipynb"
+    source = _source(lesson)
+    code = _code_source(lesson)
+    namespace: dict[str, object] = {}
+
+    for marker in (
+        "class CausalSelfAttention(nn.Module)",
+        "def forward(self, x)",
+        "class TinyCausalPredictor(nn.Module)",
+        "optimizer.step()",
+        "parameter_delta",
+        "loss_trace",
+        "first_probe",
+        "last_probe",
+    ):
+        assert marker in source
+
+    exec(compile(code, lesson.as_posix(), "exec"), namespace)  # noqa: S102
+
+    torch = pytest.importorskip("torch")
+    assert namespace["DEVICE"].type == "cpu"
+    assert namespace["PINNED_INPUTS"].shape == (1, 5, 4)
+    assert namespace["PINNED_TARGETS"].shape == (1, 5)
+    assert namespace["PINNED_ALLOWED"].shape == (5, 5)
+    assert torch.equal(namespace["PINNED_ALLOWED"], torch.tril(namespace["PINNED_ALLOWED"]))
+    assert namespace["attention_probe_output"].shape == (1, 3, 4)
+    assert namespace["attention_probe_weights"].shape == (1, 3, 3)
+    assert torch.count_nonzero(
+        namespace["attention_probe_weights"].triu(diagonal=1)
+    ).item() == 0
+    assert len(namespace["loss_trace"]) == 30
+    assert namespace["loss_trace"][-1] < namespace["loss_trace"][0]
+    assert namespace["parameter_delta"] > 0
+    assert namespace["first_probe"].shape == (4,)
+    assert namespace["last_probe"].shape == (4,)
+    assert namespace["first_probe"].tolist() == pytest.approx(
+        namespace["EXPECTED_FIRST_PROBE"], abs=1e-10, rel=1e-10
+    )
+    assert namespace["last_probe"].tolist() == pytest.approx(
+        namespace["EXPECTED_LAST_PROBE"], abs=1e-10, rel=1e-10
+    )
+
+
+@pytest.mark.parametrize("number", [11, 12, 17, 23])
+def test_underspecified_practice_setup_cells_are_instantiable(number: int) -> None:
+    path = UNIT / f"practice/p{number:02}.ipynb"
+    source = _source(path)
+    namespace: dict[str, object] = {}
+
+    exec(  # noqa: S102
+        compile(_code_source(path), path.as_posix(), "exec"), namespace
+    )
+
+    if number == 11:
+        assert namespace["q"].shape == (1, 2, 2)
+        assert namespace["k"].shape == namespace["v"].shape == (1, 3, 2)
+        assert namespace["allowed"].shape == (1, 2, 3)
+        assert namespace["expected_weights"].shape == (1, 2, 3)
+        assert namespace["expected_output"].shape == (1, 2, 2)
+        assert "reject_allowed" in namespace
+    elif number == 12:
+        assert namespace["x"].shape == (2, 3, 4)
+        assert namespace["allowed"].shape == (2, 3, 3)
+        assert namespace["ATTENTION_WEIGHT"].shape == (4, 4)
+        assert namespace["FFN_WEIGHT_1"].shape == (8, 4)
+        assert namespace["FFN_BIAS_1"].shape == (8,)
+        assert namespace["FFN_WEIGHT_2"].shape == (4, 8)
+        assert namespace["FFN_BIAS_2"].shape == (4,)
+        assert "class SuppliedAttention(nn.Module)" in source
+    elif number == 17:
+        assert namespace["inputs"].shape == (1, 5, 4)
+        assert namespace["targets"].shape == (1, 5)
+        assert namespace["allowed"].shape == (5, 5)
+        assert set(namespace["INITIAL_PARAMETERS"]) == {
+            "q.weight", "k.weight", "v.weight", "out.weight",
+            "head.weight", "head.bias",
+        }
+        assert "nn.Embedding" not in source
+        assert "embedding-matrices" not in source
+        assert "logits_before" in source and "logits_after" in source
+    else:
+        assert namespace["H0"].shape == namespace["H1"].shape == (3, 2)
+        assert namespace["heads"].shape == (2, 3, 2)
+        assert namespace["BUDGET"] == 20
 
 
 def test_coding_statements_pin_reproducibility_and_api_contracts() -> None:
