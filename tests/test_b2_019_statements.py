@@ -330,12 +330,13 @@ def _generator_source_violations(source: str) -> list[str]:
     return violations
 
 
-def test_b2_019_statement_inventory_is_exact_and_contains_no_solutions() -> None:
+def test_b2_019_notebook_inventory_is_exact_after_task6() -> None:
     expected = {
         "lesson.ipynb",
         "review.ipynb",
         *LESSONS,
         *(f"practice/p{number:02}.ipynb" for number in range(1, 25)),
+        *(f"practice/p{number:02}_solution.ipynb" for number in range(1, 25)),
     }
     actual = {
         path.relative_to(UNIT).as_posix()
@@ -343,8 +344,101 @@ def test_b2_019_statement_inventory_is_exact_and_contains_no_solutions() -> None
     }
 
     assert actual == expected
-    assert len(actual) == 32
-    assert not any("solution" in path for path in actual)
+    assert len(actual) == 56
+    assert sum("_solution.ipynb" in path for path in actual) == 24
+
+
+def test_task6_solutions_preserve_source_isolation_and_answer_register() -> None:
+    answer_register = {
+        1: 'ANSWER = "B"',
+        2: 'ANSWER = "A"',
+        3: 'ANSWER = "B"',
+        4: 'ANSWER = "B"',
+        5: 'ANSWER = "C"',
+    }
+    implementation_register = {
+        6: "def scaled_dot_product_attention_np(q, k, v)",
+        7: "def batched_self_attention_np(x)",
+        8: "def causal_attention_np(q, k, v)",
+        9: "def sinusoidal_table(length, width)",
+        10: "def split_heads(x, h)",
+        11: "class ScaledMaskedAttention(nn.Module)",
+        12: "class PreNormBlock(nn.Module)",
+        17: "class CausalPredictor(nn.Module)",
+    }
+    raw = _raw_manifest()
+
+    for number, problem in enumerate(raw["practice"], start=1):
+        statement_path = UNIT / problem["path"]
+        solution_path = UNIT / problem["solution_path"]
+        solution = json.loads(solution_path.read_text(encoding="utf-8"))
+        statement_source = _source(statement_path)
+        solution_source = _source(solution_path)
+        code = _code_source(solution_path)
+
+        assert solution_path.name == f"p{number:02}_solution.ipynb"
+        assert solution_source != statement_source
+        assert "## Your response" in statement_source
+        assert "## Your response" not in solution_source
+        assert "# Write your implementation here." not in solution_source
+        assert solution["cells"][-2]["cell_type"] == "markdown"
+        assert solution["cells"][-2]["source"].strip() == "### Answer check"
+        assert solution["cells"][-1]["cell_type"] == "code"
+        assert "assert " in solution["cells"][-1]["source"]
+        assert solution["metadata"]["usaaio"] == {
+            "book": 2,
+            "layer": "Round 2 extension",
+            "unit": UNIT_ID,
+            "surface": f"practice/p{number:02}_solution.ipynb",
+            "compute": {"policy": "cpu", "seed": SEED},
+            "qualified_prerequisites": [
+                "book1:F1-scientific-python",
+                "book1:F3-matrices",
+                "book1:C6-pytorch",
+                "book1:C11-neural-training",
+            ],
+        }
+        for marker in (
+            "Round 2 extension",
+            "compute.policy: cpu",
+            "Qualified Book 1 prerequisites:",
+            "Remediation:",
+            "SEED = 20260808",
+            "ATOL =",
+            "RTOL =",
+        ):
+            assert marker in solution_source, (number, marker)
+        for cell in solution["cells"]:
+            assert cell.get("execution_count") is None
+            assert cell.get("outputs") in (None, [])
+
+        if number in answer_register:
+            assert answer_register[number] in code
+        if number in implementation_register:
+            assert implementation_register[number] in code
+
+    assert "NORMAL_FORM = (1, 1)" in _code_source(UNIT / "practice/p02_solution.ipynb")
+    assert "logits_before" in _code_source(UNIT / "practice/p17_solution.ipynb")
+    assert "logits_after" in _code_source(UNIT / "practice/p17_solution.ipynb")
+    assert "losses = np.asarray(loss_values" in _code_source(
+        UNIT / "practice/p17_solution.ipynb"
+    )
+
+
+def test_task6_real_solution_set_is_all_or_none(tmp_path: Path) -> None:
+    book2 = _copy_registered_statement_repo(tmp_path, include_solutions=True)
+    missing = (
+        book2 / "units" / UNIT_ID / "practice" / "p24_solution.ipynb"
+    )
+    missing.unlink()
+
+    with pytest.raises(audit_curriculum.InventoryError, match="declared notebook is missing"):
+        audit_curriculum.build_inventory(book2)
+    assert any("missing solution path" in error for error in check_coverage(book2).errors)
+    assert any(
+        "cpu task requires a local solution path" in error
+        for error in check_layer_boundary(book2).errors
+    )
 
 
 def test_b2_019_manifest_pins_identity_imports_minutes_and_paths() -> None:
@@ -451,9 +545,9 @@ def test_every_relative_remediation_link_resolves_from_its_notebook() -> None:
             assert target.is_file(), (path, raw_target, target)
             assert target.is_relative_to(BOOK1_ROOT.resolve()), (path, target)
 
-    assert len(remediation_links) == 141
+    assert len(remediation_links) == 237
     assert sum(path.parent == UNIT for path, _, _ in remediation_links) == 8
-    assert sum(path.parent != UNIT for path, _, _ in remediation_links) == 133
+    assert sum(path.parent != UNIT for path, _, _ in remediation_links) == 229
 
 
 def test_bridge_diagnoses_every_import_and_links_every_remediation_unit() -> None:
@@ -910,13 +1004,18 @@ def test_unit_standards_names_b2_019_in_double_length_roster() -> None:
     assert "F5, F6, C7, C11, C12, and B2-019" in standards
 
 
-def _copy_registered_statement_repo(tmp_path: Path) -> Path:
+def _copy_registered_statement_repo(
+    tmp_path: Path, *, include_solutions: bool = False
+) -> Path:
     repo = tmp_path / "repo"
     repo.mkdir(parents=True)
     shutil.copy2(ROOT / "books.yaml", repo / "books.yaml")
     (repo / "book1").mkdir()
     shutil.copy2(BOOK1_ROOT / "syllabus.md", repo / "book1/syllabus.md")
     shutil.copytree(BOOK2_ROOT, repo / "book2")
+    if not include_solutions:
+        for path in (repo / "book2").glob("units/*/practice/*_solution.ipynb"):
+            path.unlink()
     return repo / "book2"
 
 
