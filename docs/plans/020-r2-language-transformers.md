@@ -194,14 +194,18 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 
 - Modify: `book2/syllabus.md`
 - Modify: `docs/unit-standards.md`
+- Modify: `tests/test_b2_019_statements.py`
+- Modify: `tests/test_integration.py`
 - Test: new assertions in `tests/test_b2_020_statements.py`
 
 - [ ] Add the `language-transformers` cluster, the eight owned concepts, and B2-020's exact unit/prerequisite/concept-prerequisite contract to Book 2's canonical syllabus.
 - [ ] Pin the five direct qualified Book 1 prerequisite units listed above and add a focused prereq-check fixture proving each of the ten declared Book 1 concepts is admitted only through those explicit units.
-- [ ] Make B2-020 double-length in both syllabus and manifest contract and extend the standards roster without altering the recorded C7 non-conformance history.
+- [ ] Make B2-020 double-length in both syllabus and manifest contract and extend the standards roster to the exact text `F5, F6, C7, C11, C12, B2-019, and B2-020`, without altering the recorded C7 non-conformance history.
+  Update the three existing pinned roster assertions in `tests/test_b2_019_statements.py` and `tests/test_integration.py` rather than leaving them to fail, and add a regression assertion that both B2 unit IDs occur in the roster.
 - [ ] Confirm `mc-normal-form` remains the existing standards-defined MC subtype; no new checker type is introduced.
 - [ ] Register the ownership and prerequisite contract only; leave each B2-020 coverage row missing/partial until Task 3 has created the referenced statement paths and manifest.
-- [ ] Add a focused fixture demonstrating that the declared B2-020 syllabus unit without a manifest is checker-valid until Task 3 atomically publishes its manifest and coverage evidence.
+  In that partial registration, transfer `nlp-word-embeddings` from `destination: book1:C8-embeddings` / `disposition: extend-existing-unit` to `destination: B2-020-language-transformers` / `disposition: new-unit`, retain only its declared Book 1 inputs as qualified prerequisites, and reserve the new B2-owned `trainable-token-embeddings` concept for its future evidence claim.
+- [ ] Add a focused fixture demonstrating only the named planned `B2-020-language-transformers` syllabus unit (not arbitrary manifest-less units) is checker-valid until Task 3 atomically publishes its manifest and coverage evidence.
 - [ ] Do not render inventory, Book 2 course structure, or aggregate evidence in this task; Task 3 owns their first valid regeneration.
 - [ ] Commit: `docs: register language Transformer coverage`.
 
@@ -228,12 +232,16 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 - [ ] Create the overview, five lessons, review, generator, and all 24 final student statements to the ledger; no solutions, executed outputs, external corpus, hidden state, or pretrained checkpoint may enter a student notebook.
 - [ ] Pin `compute.policy: cpu`, fixed seed `20260812`, every session/practice minute, all source/solution paths, exact prerequisite lists, and concept tags.
 - [ ] Have `scripts/generate_language_data.py` run the Session-3 seeded causal/MLM pretraining contract from fixed seed `20260812`, certify literal initial and final losses, and deterministically render the trained state into tracked, human-readable `data/tiny_encoder_checkpoint.py` with vocabulary, split IDs, trained encoder weights, objective/loss trace, and semantic hash.
+  The generator must pin the verification envelope to the locked CPU `torch 2.13.0+cpu`, `torch.use_deterministic_algorithms(True)`, single intra/inter-op thread, and every Python/NumPy/Torch seed.
+  Define the versioned semantic hash as SHA-256 over canonical JSON containing vocabulary/splits/architecture/objective plus every trained parameter rounded to six decimal places in sorted name/index order; it intentionally excludes raw float bytes.
   p19 executes both pretraining objectives and certifies their losses; p20/p21 may load only this committed trained source checkpoint.
-  Tests must regenerate it, compare its semantic hash and loss trace, and reject an initial/random-weight checkpoint before fine-tuning.
+  Tests must regenerate it, require per-parameter and loss-trace `allclose(atol=1e-6, rtol=1e-6)` plus the canonical semantic-hash match, and reject an initial/random-weight checkpoint before fine-tuning.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
 - [ ] Give each of the five mutation-relevant statements its declared `MUTATION_TARGET` bind point and source-interface identifier without exposing an answer; assert the actual solution later contains exactly that marker and a separately named oracle assertion.
 - [ ] In the same commit that creates the manifest, append the exact B2-020 weeks 7–12/global weeks 47–52 ledger above and its post-week-12 final-assessment marker.
   Then promote exactly the five named coverage rows with literal lesson anchors and evidence IDs, and regenerate/check the inventory, Book 2 course structure, roadmap, and audit from the now-valid paths.
+  For `nlp-word-embeddings`, replace the inherited C8 anchors, Book 1 practice/assessment evidence, and Book 1 `shipped_concepts` with B2-020 Session 1–3 anchors, the named B2 practices in the ledger, and `shipped_concepts: [trainable-token-embeddings]`; set `coverage: covered`, `deficits.modalities_missing: []`, and retain `destination: B2-020-language-transformers`.
+  The statement test must assert this exact destination/disposition/covered-state transformation and reject any remaining `book1:C8-embeddings` evidence in the B2-020 claim, so the layer-boundary claim cannot be satisfied by Book 1 evidence.
 - [ ] Test hygiene, lesson order, manifest paths, source isolation, CPU label, imported-concept boundary, time arithmetic, and coverage tags without executing student notebooks.
 - [ ] Commit: `feat: teach language Transformer statements`.
 
