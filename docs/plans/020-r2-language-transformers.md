@@ -175,8 +175,8 @@ The runner uses the delimiters plus the function AST range, applies the followin
 | `embedding-update` | `update_embedding_table(table, contexts, targets, learning_rate) -> table` | return an unchanged copy of `table` |
 | `target-shift` | `shift_targets(tokens) -> (inputs, targets)` | return `(tokens[:-1], tokens[:-1])` |
 | `mlm-mask` | `apply_mlm_mask(tokens, mask_index, mask_token) -> masked_tokens` | return an unchanged copy of `tokens` |
-| `frozen-stage` | `configure_finetune_parameters(encoder, classifier) -> None` | set every encoder parameter's `requires_grad` to `True` |
-| `evaluation-indices` | `evaluation_indices(train_indices, test_indices) -> eval_indices` | return `test_indices` plus the declared `leaked_train_index` |
+| `frozen-stage` | `configure_frozen_stage_optimizer(encoder, classifier, learning_rate) -> optimizer` | return a `torch.optim.SGD` optimizer over `list(encoder.parameters()) + list(classifier.parameters())` at `learning_rate` rather than the required classifier-only parameter set |
+| `evaluation-indices` | `evaluation_indices(train_indices, test_indices, leaked_train_index) -> list[int]` | return `list(test_indices) + [leaked_train_index]` rather than the required test-only list |
 
 The parser tests every malformed-marker case and every replacement's function/signature mismatch.
 It AST-wraps that exact assertion so an `AssertionError` becomes the fixed `PLAN020_EXPECTED_CHECK::<id>` failure token, executes the whole notebook in order with `NotebookClient(allow_errors=True)`, inspects each cell output, and accepts the mutant only if that token arises from the named assertion; an earlier error before the named oracle is a strict runner failure, is recorded, and does not substitute for the named oracle.
