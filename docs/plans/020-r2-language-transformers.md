@@ -21,7 +21,8 @@ It has a 30-minute bridge diagnostic, five 90-minute lessons, 24 practices total
 It occupies Book 2 local weeks 7–12 and global weeks 47–52.
 
 Its prerequisite-unit list is exactly `[B2-019-attention-transformers]`.
-Its manifest `concepts_used` and `concept_prerequisites` are exactly the B2-019 concepts actually consumed by the teaching surface: `attention-mask`, `causal-self-attention`, `sinusoidal-positional-encoding`, and `transformer-block`.
+Its manifest `concepts_used` and `concept_prerequisites` are exactly the concepts actually consumed by the teaching surface: B2-019's `attention-mask`, `causal-self-attention`, `sinusoidal-positional-encoding`, and `transformer-block`; plus Book 1's `book1:random-seeding`, `book1:matrix-multiplication`, `book1:torch-tensors`, `book1:nn-module`, `book1:requires-grad`, `book1:tensor-shape-tracing`, `book1:softmax`, `book1:cross-entropy-loss`, `book1:torch-optimizers`, and `book1:autograd-training`.
+Those qualified Book 1 concepts are already authorized by B2-019's transitive prerequisite closure; B2-020 records the exact used subset rather than treating that closure as an implicit permission.
 The bridge may link `book1:C8-embeddings` for remediation, but must never relabel the Book 1 evidence-import concepts as B2-020-owned or add them to the manifest closure.
 
 The unit depends on `B2-019-attention-transformers`.
@@ -77,23 +78,36 @@ Every independently authored solution ends with `### Answer check` and executabl
 | p08 | B | constrained-coding | core | 50 | build causal-LM inputs, targets, and logits with exact sequence axes |
 | p09 | B | constrained-coding | advanced | 50 | integrate a B2-019 causal Transformer block into a tiny language model |
 | p10 | B | constrained-coding | core | 50 | mean token cross-entropy with explicit padding/loss mask contract |
-| p11 | B | constrained-coding | core | 50 | construct a masked-token corruption objective without observing the original token |
+| p11 | B | constrained-coding | intro | 50 | construct a masked-token corruption objective without observing the original token |
 | p12 | B | constrained-coding | intro | 50 | attach a sequence-classification head and audit frozen/trainable parameters |
 | p13 | B | proof | core | 45 | derive why only selected one-hot embedding rows receive direct lookup gradient |
 | p14 | B | proof | core | 45 | prove a causal-logit at position i cannot depend on a future token under the mask contract |
-| p15 | B | proof | advanced | 45 | derive token-level negative log likelihood as a maximum-likelihood objective |
+| p15 | B | proof | core | 45 | derive token-level negative log likelihood as a maximum-likelihood objective |
 | p16 | B | proof | core | 45 | show the true token leaks when it remains visible in a masked-token input |
 | p17 | C | integrative | advanced | 65 | train and audit the seeded embedding bridge, including loss and nearest-neighbor change certificates |
 | p18 | C | integrative | advanced | 65 | train a tiny causal Transformer LM and validate shifted predictions and held-out loss |
-| p19 | C | integrative | core | 65 | compare causal and masked pretraining traces and select an objective for a stated deployment task |
+| p19 | C | scenario | core | 65 | compare causal and masked pretraining traces and select an objective for a stated deployment task |
 | p20 | C | integrative | advanced | 65 | fine-tune the committed tiny encoder/checkpoint on a synthetic intent-classification task |
 | p21 | C | integrative | core | 65 | run a freeze-then-unfreeze protocol and certify which parameter groups changed |
 | p22 | C | scenario | intro | 55 | select a Transformer NLP task formulation, head, loss, and evaluation metric |
 | p23 | C | challenge | advanced | 55 | reconstruct a language-model forward/loss shape trace and repair an off-by-one target error |
 | p24 | C | challenge | advanced | 55 | identify and repair pretraining/fine-tuning leakage or frozen-head failure from a concrete training log |
 
-The ledger is exactly 7 intro, 11 core, and 6 advanced practices; 5 MC, 7 constrained coding, 4 proof, 4 integrative, 2 scenario, and 2 challenge practices.
+The ledger is exactly 7 intro, 11 core, and 6 advanced practices; 5 MC (where `mc-normal-form` is a scored MC subtype), 7 constrained coding, 4 proof, 4 integrative, 2 scenario, and 2 challenge practices.
 Set A is p01–p05, Set B is p06–p16, and Set C is p17–p24.
+
+### Owned-concept practice map
+
+| Owned concept | Direct practices |
+|---|---|
+| `embedding-model-training` | p01, p07, p13, p17 |
+| `learned-token-embedding` | p02, p03, p06, p17 |
+| `language-transformer` | p04, p08, p09, p18, p23 |
+| `causal-language-modeling` | p04, p08, p14, p18, p23 |
+| `masked-language-modeling` | p05, p11, p16, p19 |
+| `nlp-pretraining-objectives` | p05, p15, p16, p19, p24 |
+| `nlp-fine-tuning-protocol` | p12, p20, p21, p24 |
+| `transformer-nlp-task-design` | p19, p20, p22, p24 |
 
 ### Exact six-week schedule ledger
 
@@ -101,13 +115,13 @@ Set A is p01–p05, Set B is p06–p16, and Set C is p17–p24.
 |---:|---:|---|---:|
 | 7 | 47 | bridge 30; Session 1 90; p01, p02, p06, p13 | 255 |
 | 8 | 48 | Session 2 90; p03, p04, p07, p08, p14 | 275 |
-| 9 | 49 | Session 3 90; p05, p09, p10, p15, p16, p21, p23 | 420 |
-| 10 | 50 | Session 4 90; p11, p17, p18 | 270 |
+| 9 | 49 | Session 3 90; p05, p09, p10, p15, p16, p17, p23 | 420 |
+| 10 | 50 | Session 4 90; p11, p18, p21 | 270 |
 | 11 | 51 | Session 5 90; p12, p19, p20, p22, p24 | 380 |
 | 12 | 52 | review 60; future R2 final-assessment marker | 60 |
 
 The Book 2 schedule becomes 12 local weeks, 3,320 total scheduled minutes, and a final-assessment marker after Book week 12.
-The repeated 255/275/420/270/380/60 progression is intentional: it front-loads a runnable embedding model, peaks during objective/derivation work, and reserves the final week for retrieval practice and review.
+The 255/275/420/270/380/60 progression matches B2-019's proven six-week cadence: it front-loads a runnable embedding model, peaks during objective/derivation work, and reserves the final week for retrieval practice and review.
 
 ### Required coverage evidence
 
@@ -141,11 +155,11 @@ Tests must first demonstrate rejection of a second manifest by the legacy single
 Create `tools/verify_language_transformer_mutations.py` and `tests/test_language_transformer_mutations.py` using the same fail-closed source-match and wrapped-real-answer-check pattern as Plan 019.
 The untouched corpus must pass all five mutations; each altered solution must fail its named answer assertion:
 
-1. p07 — replace context-to-target embedding training with a no-update table;
-2. p08/p18 — use unshifted target tokens in the causal-LM loss;
-3. p11 — leave the masked true token visible to the encoder;
-4. p20/p21 — freeze the task head or update the encoder during the declared frozen stage;
-5. p24 — evaluate a held-out row that was included in pretraining/fine-tuning training data.
+1. `practice/p07_solution.ipynb` — replace the exact context-to-target optimizer-update statement with a no-update table;
+2. `practice/p18_solution.ipynb` — replace the exact shifted-target assignment (`targets = token_ids[:, 1:]`) with the unshifted input tokens;
+3. `practice/p11_solution.ipynb` — replace the exact masked-position assignment with the original true token;
+4. `practice/p21_solution.ipynb` — replace the exact frozen-stage encoder parameter policy so it updates during the declared frozen stage;
+5. `practice/p24_solution.ipynb` — replace the exact held-out membership assertion so a training row is evaluated as held out.
 
 The mutation runner must reject zero/multiple source matches, an expected-check marker outside one top-level assertion, a mutant that executes without failure, and a failure in the wrong check.
 
@@ -157,14 +171,12 @@ The mutation runner must reject zero/multiple source matches, an expected-check 
 
 - Modify: `tools/checks/schedule.py`
 - Modify: `tests/test_book2_schedule.py`
-- Modify: `book2/curriculum/course-schedule.yaml`
-- Modify: `book2/docs/course-structure.md` (generated)
-- Modify: `book2/curriculum/material-inventory.yaml` (generated)
-- Modify: `docs/curriculum-roadmap.md` and `docs/audits/015-coverage-audit.md` (generated)
 
 - [ ] Write focused failing tests for the two-live-manifest ledger and all named negative mutations above.
 - [ ] Replace only the B2-019 singleton assumptions with the generic per-manifest ledger contract; do not change Book 1 scheduling semantics or allow unregistered units.
-- [ ] Preserve B2-019 byte-level allocation semantics, then append B2-020 local weeks 7–12/global weeks 47–52 with its bridge, sessions, p01–p24 chunks, review, exact 1,660 minutes, and final-assessment marker after week 12.
+- [ ] Preserve the live B2-019 schedule byte-level allocation semantics and the live six-week/1,660-minute ledger.
+  Do not append B2-020 to the live schedule until Task 3 creates its manifest and every declared statement-side path.
+  Use copied two-manifest fixtures to prove the generic validator before any second live manifest exists.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py`.
 - [ ] Commit: `test: generalize Book 2 schedule ledger`.
 
@@ -173,17 +185,13 @@ The mutation runner must reject zero/multiple source matches, an expected-check 
 **Files:**
 
 - Modify: `book2/syllabus.md`
-- Modify: `book2/curriculum/coverage-map.yaml`
-- Modify: `book2/curriculum/material-inventory.yaml` (generated)
-- Modify: `book2/docs/course-structure.md` (generated)
-- Modify: `docs/curriculum-roadmap.md` and `docs/audits/015-coverage-audit.md` (generated)
 - Modify: `docs/unit-standards.md`
 - Test: new assertions in `tests/test_b2_020_statements.py`
 
 - [ ] Add the `language-transformers` cluster, the eight owned concepts, and B2-020's exact unit/prerequisite/concept-prerequisite contract to Book 2's canonical syllabus.
 - [ ] Make B2-020 double-length in both syllabus and manifest contract and extend the standards roster without altering the recorded C7 non-conformance history.
-- [ ] Add exact lesson anchors, modalities, evidence concepts, and direct practice IDs for only the five rows named above; preserve every later row's missing/partial status.
-- [ ] Render and check inventory, Book 2 course structure, and aggregate roadmap freshness only after valid statement paths and manifest exist.
+- [ ] Register the ownership and prerequisite contract only; leave each B2-020 coverage row missing/partial until Task 3 has created the referenced statement paths and manifest.
+- [ ] Do not render inventory, Book 2 course structure, or aggregate evidence in this task; Task 3 owns their first valid regeneration.
 - [ ] Commit: `docs: register language Transformer coverage`.
 
 ### Task 3 — Author the statement-side teaching corpus
@@ -196,13 +204,20 @@ The mutation runner must reject zero/multiple source matches, an expected-check 
 - Create: `book2/units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb` through `lessons/05-language-task-design-and-audit.ipynb`
 - Create: `book2/units/B2-020-language-transformers/practice/p01.ipynb` through `p24.ipynb`
 - Create: `book2/units/B2-020-language-transformers/scripts/generate_language_data.py`
+- Modify: `book2/curriculum/course-schedule.yaml`
+- Modify: `book2/curriculum/coverage-map.yaml`
+- Modify: `book2/curriculum/material-inventory.yaml` (generated)
+- Modify: `book2/docs/course-structure.md` (generated)
+- Modify: `docs/curriculum-roadmap.md` and `docs/audits/015-coverage-audit.md` (generated)
 - Test: `tests/test_b2_020_statements.py`
 
-- [ ] Dispatch a fresh GPT-5.6-sol statement-authoring session the approved Plan 020 scope, but no solution outlines.
+- [ ] Dispatch a fresh GPT-5.6-sol statement-authoring session with the approved Plan 020 scope, but no solution outlines.
 - [ ] Require a bridge diagnostic that distinguishes imported fixed-vector/token-index remediation from B2-019's attention/causal-mask prerequisite and supplies qualified remediation links.
 - [ ] Create the overview, five lessons, review, generator, and all 24 final student statements to the ledger; no solutions, executed outputs, external corpus, hidden state, or pretrained checkpoint may enter a student notebook.
 - [ ] Pin `compute.policy: cpu`, fixed seed `20260812`, every session/practice minute, all source/solution paths, exact prerequisite lists, and concept tags.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
+- [ ] In the same commit that creates the manifest, append the exact B2-020 weeks 7–12/global weeks 47–52 ledger above and its post-week-12 final-assessment marker.
+  Then promote exactly the five named coverage rows with literal lesson anchors and evidence IDs, and regenerate/check the inventory, Book 2 course structure, roadmap, and audit from the now-valid paths.
 - [ ] Test hygiene, lesson order, manifest paths, source isolation, CPU label, imported-concept boundary, time arithmetic, and coverage tags without executing student notebooks.
 - [ ] Commit: `feat: teach language Transformer statements`.
 
@@ -273,6 +288,33 @@ PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache bash scripts/pre-mer
 - No `[OPEN]` blocker remains from self-review.
 
 Pending independent reviews: `[sol]`, `[glm]`, and `[fable]`.
+
+### Review 1 — sol (2026-08-12)
+
+- **Verdict**: REJECT.
+- `[sol][FIXED]` p21 was allocated after Session 3 despite practicing the Session 4 fine-tuning protocol.
+  The ledger now swaps p17 and p21, preserving every weekly total while placing p21 after Session 4.
+- `[sol][FIXED]` the difficulty/type totals were inconsistent with the ledger and had only one scenario.
+  p11 is intro, p15 is core, p19 is scenario, and the checked summary is now 7/11/6 and 5/7/4/4/2/2.
+- `[sol][FIXED]` B2-020 had omitted qualified Book 1 prerequisites it directly consumes.
+  The plan now pins the exact imported concept subset through B2-019's transitive closure.
+- `[sol][FIXED]` two mutation entries named alternative targets.
+  The mutation contract now gives each of five mutations one notebook and one source statement.
+
+### Review 1 — fable (2026-08-12)
+
+- **Verdict**: REJECT.
+- `[fable][FIXED]` confirmed the same ledger arithmetic and p21 teaching-order defects as Sol.
+- `[fable][FIXED]` Task 1 would have made a live B2-020 schedule before its manifest existed.
+  It now validates only copied two-manifest fixtures; Task 3 atomically creates the live manifest, paths, schedule ledger, coverage evidence, and generated artifacts.
+- `[fable][FIXED]` the per-owned-concept three-practice claim was not auditable.
+  The owned-concept practice map now names every qualifying practice.
+- `[fable][FIXED]` Task 2's generated-artifact file list contradicted its own path-existence guard.
+  Regeneration now occurs only in Task 3 after statement paths exist.
+- `[fable][FIXED]` the plan now specifies that `mc-normal-form` rolls up as the fifth MC and removes the ambiguous "repeated" schedule wording.
+
+The first GLM runtime completed but its ephemeral output was unavailable after the wrapper session closed.
+The amended commit starts a fresh independent GLM review rather than treating that inaccessible result as a verdict.
 
 ## Content Review
 
