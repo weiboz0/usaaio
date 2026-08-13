@@ -194,8 +194,10 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 
 - Modify: `book2/syllabus.md`
 - Modify: `docs/unit-standards.md`
+- Modify: `tools/checks/scope.py`
 - Modify: `tests/test_b2_019_statements.py`
 - Modify: `tests/test_integration.py`
+- Modify: `tests/test_scope.py`
 - Test: new assertions in `tests/test_b2_020_statements.py`
 
 - [ ] Add the `language-transformers` cluster, the eight owned concepts, and B2-020's exact unit/prerequisite/concept-prerequisite contract to Book 2's canonical syllabus.
@@ -205,6 +207,8 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 - [ ] Confirm `mc-normal-form` remains the existing standards-defined MC subtype; no new checker type is introduced.
 - [ ] Register the ownership and prerequisite contract only; leave each B2-020 coverage row missing/partial until Task 3 has created the referenced statement paths and manifest.
   In that partial registration, transfer `nlp-word-embeddings` from `destination: book1:C8-embeddings` / `disposition: extend-existing-unit` to `destination: B2-020-language-transformers` / `disposition: new-unit`, retain only its declared Book 1 inputs as qualified prerequisites, and reserve the new B2-owned `trainable-token-embeddings` concept for its future evidence claim.
+- [ ] Replace the legacy `scope-check` special case for `nlp-word-embeddings` in `tools/checks/scope.py` with its B2-020 ownership contract: destination `B2-020-language-transformers`, disposition `new-unit`, and coverage limited to the lifecycle states `partial` (Task 2) or `covered` (Task 3).
+  Add `tests/test_scope.py` fixtures that accept each named lifecycle state and reject the former Book 1 C8 destination/`extend-existing-unit` state after this plan.
 - [ ] Add a focused fixture demonstrating only the named planned `B2-020-language-transformers` syllabus unit (not arbitrary manifest-less units) is checker-valid until Task 3 atomically publishes its manifest and coverage evidence.
 - [ ] Do not render inventory, Book 2 course structure, or aggregate evidence in this task; Task 3 owns their first valid regeneration.
 - [ ] Commit: `docs: register language Transformer coverage`.
