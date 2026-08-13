@@ -144,7 +144,7 @@ The coverage map promotes exactly these five rows to covered and leaves B2-021 t
 Plan 019 deliberately hard-coded its first live unit in `tools/checks/schedule.py`.
 Before B2-020 is live, replace that bootstrap contract with a data-driven Book 2 ledger:
 
-- enumerate every `units/*` entry under the selected Book 2 root and reject any symlinked unit directory or manifest before ledger discovery; every regular unit directory must contain exactly one regular, contained `manifest.yaml`, and a missing, extra, or nonregular manifest is a hard error rather than an invisible directory;
+- enumerate every `units/*` entry under the selected Book 2 root and reject any symlinked unit directory or manifest before ledger discovery; every regular unit directory must contain exactly one regular, contained `manifest.yaml`, and a missing, extra, or nonregular manifest is a hard error rather than an invisible directory; any non-directory entry directly under `units/` is likewise a hard error;
 - require each remaining regular manifest to declare the one Book 2 bridge diagnostic required by Design 019, all declared lesson sessions, every practice ID exactly once, and exactly one review allocation;
 - reconcile allocated minutes and `after_session` against each manifest rather than module-level B2-019 constants;
 - require every live manifest path to pass `tools.books.resolve_contained_path()` realpath containment, then be regular and present;
@@ -212,6 +212,8 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 - Modify: `docs/unit-standards.md`
 - Modify: `tools/model.py`
 - Modify: `tools/audit_curriculum.py`
+- Modify: `scripts/ci-local.sh`
+- Create: `scripts/verify-historical-deferred-policy.sh`
 - Modify: `tools/checks/scope.py`
 - Modify: `tests/test_b2_019_statements.py`
 - Modify: `tests/test_integration.py`
@@ -245,6 +247,8 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 - Create: `book2/units/B2-020-language-transformers/practice/p01.ipynb` through `p24.ipynb`
 - Create: `book2/units/B2-020-language-transformers/scripts/generate_language_data.py`
 - Create: `book2/units/B2-020-language-transformers/data/tiny_encoder_checkpoint.py` (generated, tracked source)
+- Create: `book2/units/B2-020-language-transformers/data/language_fixture.py` (literal student-facing synthetic data)
+- Create: `book2/units/B2-020-language-transformers/data/tiny_encoder_state.py` (student-facing trained state only)
 - Create: `tools/verify_b2_020_solution_timeouts.py`
 - Modify: `book2/curriculum/course-schedule.yaml`
 - Modify: `book2/curriculum/coverage-map.yaml`
@@ -259,18 +263,24 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 - [ ] Pin `compute.policy: cpu`, fixed seed `20260812`, every session/practice minute, all source/solution paths, exact prerequisite lists, and concept tags.
   Because this is statement-only publication, set the B2-020 manifest's policy exactly to `{status: deferred, plan: plan-020, expires: 2026-08-31}`; the shared parser must compare that date to the current UTC date and hard-fail once expired, so this intentionally temporary intermediate commit is not green after the deadline.
   Its focused tests must freeze the clock on each side of the expiry and prove inventory/coverage/layer-boundary accept only the unexpired named temporary debt and surface its expiry rather than treating absent solutions as valid generally.
-  The parser supports `USAAIO_HISTORICAL_VERIFY=1` plus a required ISO `USAAIO_AS_OF_DATE` only for archived-commit verification; ordinary CI cannot override the current UTC date.
+  `scripts/ci-local.sh` must reject `USAAIO_HISTORICAL_VERIFY` and `USAAIO_AS_OF_DATE` if present, before any check runs.
+  The only historical path is the new explicit `scripts/verify-historical-deferred-policy.sh <archived-commit> <ISO-date>` command, which extracts that commit to a temporary archive and invokes the parser with the two variables solely in that subprocess; ordinary CI cannot override the current UTC date.
+  Test an expired deferred fixture proves injected variables cannot make normal local CI green while the explicit archived command is accepted.
   If work has not reached the required-policy transition by that date, a separately reviewed follow-up plan must explicitly amend the expiry before any continuation; it is never silently extended.
 - [ ] Have `scripts/generate_language_data.py` run the Session-3 seeded causal/MLM pretraining contract from fixed seed `20260812`, certify literal initial and final losses, and render the trained state into tracked, human-readable `data/tiny_encoder_checkpoint.py` with vocabulary, split IDs, trained encoder weights, objective/loss trace, and semantic hash.
   Pin the authoring envelope to the lockfile-resolved CPU torch build, deterministic algorithms, single intra/inter-op thread, and every Python/NumPy/Torch seed; do not assert a Linux-only `+cpu` local-version tag.
   Define the versioned semantic hash as SHA-256 over canonical JSON containing vocabulary/splits/architecture/objective plus every committed trained parameter rounded to six decimal places in sorted name/index order; it intentionally excludes raw float bytes.
   Standard CI verifies the committed checkpoint's self-consistent canonical JSON/hash and trained functional contract (both losses improve and fixed held-out probes beat the literal initial-state baseline by named margins), but does **not** regenerate-and-hash-compare 80-epoch weights across CPU architectures.
-  The checkpoint module must export schema version `1`, `TOKEN_TO_ID`, `TRAIN_SPLIT_IDS`, exact `CAUSAL_HELDOUT_IDS` and `MLM_HELDOUT_IDS`, `INITIAL_LOSSES`, `FINAL_LOSSES`, and `PROBE_EXPECTED_TOP1_IDS`.
-  Its test reconstructs the literal initialized width-8 architecture from seed `20260812`, validates every checkpoint parameter name/shape/dtype (`float32`) against that architecture, checks checkpoint initial/final losses match recomputation within `atol=1e-4, rtol=1e-4`, and requires each trained held-out objective loss to be no more than `0.80 *` its literal initial loss and each named probe's top-1 ID to match the pinned expected ID.
-  These fixed data IDs, 20-percent margins, API fields, and canonical JSON schema/version are mandatory, so a self-hashed random or arbitrary parameter set cannot pass merely by changing its own metadata.
+  The author/CI-only `tiny_encoder_checkpoint.py` must export schema version `1`, `TOKEN_TO_ID`, `TRAIN_SPLIT_IDS`, exact `CAUSAL_HELDOUT_IDS` and `MLM_HELDOUT_IDS`, `INITIAL_LOSSES`, `FINAL_LOSSES`, `PROBE_EXPECTED_TOP1_IDS`, and the measured `MIN_ABSOLUTE_LOSS_IMPROVEMENTS`.
+  After the first deterministic Task-3 generator run, record those literal measured loss/probe values and margins with at least 2× observed numerical headroom, then freeze them in the tracked module and its test; no guessed pre-authoring threshold is accepted.
+  Its test reconstructs the literal initialized width-8 architecture from seed `20260812`, validates every checkpoint parameter name/shape/dtype (`float32`) against that architecture, recomputes losses within the frozen tolerances, requires each final loss to beat the corresponding initial loss by its frozen minimum absolute improvement, and requires each named probe's top-1 ID to match the pinned expected ID.
+  The generated student-facing `tiny_encoder_state.py` contains only architecture/state tensors and state hash—never losses, probes, targets, or training trace—and is the sole state source p20/p21 may load.
+  These fixed data IDs, measured margins, API fields, and canonical JSON schema/version are mandatory, so a self-hashed random or arbitrary parameter set cannot pass merely by changing its own metadata.
   A separate explicit local `--refresh-checkpoint` generator command is the record-once maintenance path; it reports canonical deltas and requires an intentional committed source update when a supported toolchain changes.
-  p19 recomputes both pretraining-objective losses and the probe predictions from the loaded checkpoint, then uses the exported constants only as assertion targets; it may not display or merely copy them as its certification.
-  p20/p21 may load only this committed trained source checkpoint.
+  `data/language_fixture.py` contains only the fixed literal vocabulary, token-ID sequences, masks, splits, and labels needed by students, never author training code, answers, loss targets, or generated weights.
+  The generator alone creates `tiny_encoder_checkpoint.py` and `tiny_encoder_state.py`.
+  p19 independently reruns both specified bounded seeded causal and MLM 80-epoch training traces from the literal fixture, asserts each trace improves from its own initial loss, and recomputes its own held-out probes; it does not load either checkpoint/state artifact or copy their constants.
+  p20/p21 may load only `tiny_encoder_state.py` as the committed trained source state.
   Tests reject an initial/random-weight checkpoint before fine-tuning through the functional contract as well as hash consistency.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
 - [ ] Give each of the five mutation-relevant statements its declared `MUTATION_TARGET` bind point and source-interface identifier without exposing an answer; assert the actual solution later contains exactly that marker and a separately named oracle assertion.
@@ -297,7 +307,8 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 - Modify: `tools/model.py`
 - Test: `tests/test_b2_020_statements.py`
 
-- [ ] Implement and run `scripts/prepare_b2_020_blind_solve_input.py` to build an auditable, **procedurally isolated** blind-solve handoff at the committed Task-3 revision: create a temporary directory from `git archive <task3-commit>` containing **only** the 24 student practice notebooks, unit `lesson.ipynb`/`review.ipynb`, `lessons/`, `manifest.yaml`, `scripts/generate_language_data.py`, and `data/tiny_encoder_checkpoint.py`.
+- [ ] Implement and run `scripts/prepare_b2_020_blind_solve_input.py` to build an auditable, **procedurally isolated** blind-solve handoff at the committed Task-3 revision: create a temporary directory from `git archive <task3-commit>` containing **only** the 24 student practice notebooks, unit `lesson.ipynb`/`review.ipynb`, `lessons/`, `manifest.yaml`, `data/language_fixture.py`, and `data/tiny_encoder_state.py`.
+  The author-only `scripts/generate_language_data.py` is explicitly excluded because it contains the authoring training design.
   Emit a sorted allowlist with SHA-256 for each input and the exact source commit; verify the directory contains no plan, author notes, solution notebook, or unrelated repository file.
   Dispatch a separate fresh GPT-5.6-sol solution session in that directory with only this allowlist, never the author outline, statement-session context, solution notebooks, or a solution design.
   Its sole allowed outputs are exactly `out/practice/p01_solution.ipynb` through `p24_solution.ipynb` and `out/BLIND_OUTPUTS.sha256`; the output manifest lists those 24 relative paths in lexical order with SHA-256, and no other output file is accepted.
@@ -307,7 +318,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 - [ ] Require each solution to preserve the learner-visible header, use the seeded literal data, state every answer, and end with a non-vacuous `### Answer check` plus exact numeric/shape/training assertions.
 - [ ] After all 24 solutions exist, atomically replace B2-020's deferred policy with `solution_policy: required`; test that every declared solution path exists and that any retained deferred policy (rejected by the shared manifest parser as soon as one solution exists) or deleted solution fails inventory, coverage, and layer-boundary checks.
 - [ ] Execute p01–p24 in numeric order through `tools/verify_b2_020_solution_timeouts.py`, each on its own fresh kernel with a 20-second wall-clock timeout, and invoke that same harness from the Book 2 notebook-execution step of `scripts/ci-local.sh` for the B2-020 solutions rather than the unbounded Jupyter CLI route.
-  During incremental Task 4 authoring, run only this explicit-notebook-list harness and no manifest-aware verifier until all 24 solutions and the required-policy flip are committed atomically.
+  While the blind solver constructs its complete 24-notebook output set in the isolated directory, run only this explicit-notebook-list harness and no manifest-aware verifier; the branch receives all 24 only through the atomic verified import and required-policy flip.
   Measure each completed solution on the verification host and require the maximum to be at most 10 seconds, documenting those timings in the post-execution report as twofold headroom under the 20-second production limit.
   Prove the answer register, source isolation, student hygiene, required-solution policy, and timeout harness pass.
 - [ ] Commit: `feat: add independently solved language practices`.
@@ -434,7 +445,7 @@ The next review round evaluates this consolidated amendment and is the first rou
 - `[sol][FIXED]` `book1:tensor-shape-tracing` is owned by C7 rather than the four initially listed direct imports.
   The exact prerequisite list now includes `book1:C7-cnn-transfer`; an executable closure fixture covers all ten Book 1 concepts.
 - `[sol][FIXED]` the former checkpoint contract could serialize initial random weights and still call downstream work fine-tuning.
-  Session 3/p19 now execute pretraining, certify initial/final losses, and generate the tracked trained checkpoint consumed by p20/p21.
+  Review 3 required Session 3/p19 to execute and certify pretraining rather than replay a checkpoint; the final Task-3 contract keeps that independent p19 trace while the generator, not p19, emits the separate trained-state artifact consumed by p20/p21.
 - `[sol][FIXED]` CPU runtime limits and B2-019 completion-before-B2-020 start now have named timeout/completion tests.
 
 ### Review 3 — fable (2026-08-12)
