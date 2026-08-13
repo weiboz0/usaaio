@@ -20,9 +20,9 @@ B2-020 is a 26–32-hour, double-length Round 2 extension unit.
 It has a 30-minute bridge diagnostic, five 90-minute lessons, 24 practices totaling 1,120 minutes, and a 60-minute review: 1,660 minutes / 27.67 hours of scheduled study time.
 It occupies Book 2 local weeks 7–12 and global weeks 47–52.
 
-Its prerequisite-unit list is exactly `[B2-019-attention-transformers]`.
+Its prerequisite-unit list is exactly `[book1:F1-scientific-python, book1:F3-matrices, book1:C6-pytorch, book1:C11-neural-training, B2-019-attention-transformers]`.
 Its manifest `concepts_used` and `concept_prerequisites` are exactly the concepts actually consumed by the teaching surface: B2-019's `attention-mask`, `causal-self-attention`, `sinusoidal-positional-encoding`, and `transformer-block`; plus Book 1's `book1:random-seeding`, `book1:matrix-multiplication`, `book1:torch-tensors`, `book1:nn-module`, `book1:requires-grad`, `book1:tensor-shape-tracing`, `book1:softmax`, `book1:cross-entropy-loss`, `book1:torch-optimizers`, and `book1:autograd-training`.
-Those qualified Book 1 concepts are already authorized by B2-019's transitive prerequisite closure; B2-020 records the exact used subset rather than treating that closure as an implicit permission.
+The four direct qualified Book 1 units are required because the current checker does not propagate qualified imports through an unqualified same-book prerequisite; they put every declared Book 1 concept in the checked closure rather than relying on an implicit transitive permission.
 The bridge may link `book1:C8-embeddings` for remediation, but must never relabel the Book 1 evidence-import concepts as B2-020-owned or add them to the manifest closure.
 
 The unit depends on `B2-019-attention-transformers`.
@@ -30,6 +30,7 @@ It reuses Book 1 C8 only as a qualified remediation reference for token-to-index
 It must not re-teach tokenization, GloVe loading, or fixed-vector similarity.
 All corpora, labels, vocabulary maps, seeds, expected probes, and checkpoints are small, explicit, synthetic, CPU-only, and committed as source-generation code or literal notebook data.
 No internet model hub, external dataset, opaque checkpoint, tokenizer library, or hidden pretrained parameter is in scope.
+Every CPU training task uses vocabulary size at most 12, sequence length at most 8, one Transformer block with model width at most 8, at most two heads, and at most 80 fixed optimization epochs; a fresh solution notebook must finish within 20 seconds and a mutated notebook within 120 seconds.
 
 ### Owned concepts
 
@@ -52,12 +53,13 @@ It therefore supplies the missing `model-training` evidence for `nlp-word-embedd
 | Session | File | Required teaching surface |
 |---:|---|---|
 | 1 | `01-train-token-embeddings.ipynb` | one-hot lookup, embedding table shapes, context-to-target objective, cross-entropy gradient flow, seeded embedding training, and fixed versus learned-vector boundary |
-| 2 | `02-causal-transformer-language-model.ipynb` | token/position inputs, causal attention reuse from B2-019, shift-right labels, logits and token loss shapes, and tiny causal LM training |
+| 2 | `02-causal-transformer-language-model.ipynb` | token inputs plus B2-019's sinusoidal positional table, causal attention reuse from B2-019, shift-right labels, logits and token loss shapes, and tiny causal LM training |
 | 3 | `03-pretraining-objectives.ipynb` | causal next-token versus masked-token objectives, corruption/masking protocol, leakage counterexamples, objective selection, and reproducible pretraining traces |
 | 4 | `04-fine-tune-a-language-transformer.ipynb` | attach a task head, checkpoint/state boundary, frozen versus trainable parameters, supervised classification fine-tuning, and held-out evaluation |
 | 5 | `05-language-task-design-and-audit.ipynb` | classify, tag, generate, and retrieve task framing; architecture/loss/metric choice; data-split and leakage audit; complete end-to-end application trace |
 
-Each session contains 6–10 substantive sections, at least two checkpoints per section with collected answers, two worked examples across the unit, a common-pitfalls surface, an exam-connections surface, and a forward-only going-deeper surface.
+Each session contains 6–10 substantive sections, at least two checkpoints per section with collected answers, a common-pitfalls surface, an exam-connections surface, and a forward-only going-deeper surface.
+Session 1 contains the first fully worked example (one-hot lookup through context-to-target cross-entropy and one embedding-gradient update), and Session 4 contains the second (one frozen-encoder classification step and the parameter-change audit).
 Every overview, bridge, lesson, review, practice, and solution visibly states `Round 2 extension`, `compute.policy: cpu`, and the qualified remediation links that it actually uses.
 
 ### Exact practice ledger
@@ -103,7 +105,7 @@ Set A is p01–p05, Set B is p06–p16, and Set C is p17–p24.
 | `embedding-model-training` | p01, p07, p13, p17 |
 | `learned-token-embedding` | p02, p03, p06, p17 |
 | `language-transformer` | p04, p08, p09, p18, p23 |
-| `causal-language-modeling` | p04, p08, p14, p18, p23 |
+| `causal-language-modeling` | p04, p08, p10, p14, p18, p23 |
 | `masked-language-modeling` | p05, p11, p16, p19 |
 | `nlp-pretraining-objectives` | p05, p15, p16, p19, p24 |
 | `nlp-fine-tuning-protocol` | p12, p20, p21, p24 |
@@ -116,8 +118,8 @@ Set A is p01–p05, Set B is p06–p16, and Set C is p17–p24.
 | 7 | 47 | bridge 30; Session 1 90; p01, p02, p06, p13 | 255 |
 | 8 | 48 | Session 2 90; p03, p04, p07, p08, p14 | 275 |
 | 9 | 49 | Session 3 90; p05, p09, p10, p15, p16, p17, p23 | 420 |
-| 10 | 50 | Session 4 90; p11, p18, p21 | 270 |
-| 11 | 51 | Session 5 90; p12, p19, p20, p22, p24 | 380 |
+| 10 | 50 | Session 4 90; p12, p18, p21 | 270 |
+| 11 | 51 | Session 5 90; p11, p19, p20, p22, p24 | 380 |
 | 12 | 52 | review 60; future R2 final-assessment marker | 60 |
 
 The Book 2 schedule becomes 12 local weeks, 3,320 total scheduled minutes, and a final-assessment marker after Book week 12.
@@ -128,7 +130,7 @@ The 255/275/420/270/380/60 progression matches B2-019's proven six-week cadence:
 | Knowledge point | Modalities | Direct practice evidence |
 |---|---|---|
 | `nlp-word-embeddings` | theory, implementation, model-training | p01, p02, p03, p06, p07, p13, p17 |
-| `nlp-transformers` | theory, implementation, model-training | p04, p08, p09, p14, p18, p23 |
+| `nlp-transformers` | theory, implementation, model-training | p04, p08, p09, p10, p14, p18, p23 |
 | `nlp-pretraining` | theory, implementation, model-training | p05, p11, p15, p16, p19, p24 |
 | `nlp-fine-tuning` | theory, implementation, model-training | p12, p20, p21, p24 |
 | `transformer-nlp-applications` | theory, implementation, model-training | p09, p18, p20, p22, p23 |
@@ -141,10 +143,10 @@ The coverage map promotes exactly these five rows to covered and leaves B2-021 t
 Plan 019 deliberately hard-coded its first live unit in `tools/checks/schedule.py`.
 Before B2-020 is live, replace that bootstrap contract with a data-driven Book 2 ledger:
 
-- discover every non-symlinked `units/*/manifest.yaml` under the selected Book 2 root;
-- require its manifest `unit` to have exactly one bridge, all declared lesson sessions, every practice ID exactly once, and exactly one review allocation;
+- enumerate every `units/*` entry under the selected Book 2 root and reject any symlinked unit directory or manifest before ledger discovery;
+- require each remaining regular manifest to declare the one Book 2 bridge diagnostic required by Design 019, all declared lesson sessions, every practice ID exactly once, and exactly one review allocation;
 - reconcile allocated minutes and `after_session` against each manifest rather than module-level B2-019 constants;
-- require every live manifest path to be contained, regular, and present;
+- require every live manifest path to pass `tools.books.resolve_contained_path()` realpath containment, then be regular and present;
 - derive Book 2 total weeks/minutes, `covered_problem_ids`, course-structure wording, and audit counts from the ledger;
 - retain Plan 019's accepted six-week/1,660-minute ledger unchanged and prove that B2-020 adds its separate six-week/1,660-minute ledger without reordering or weakening it.
 
@@ -159,9 +161,12 @@ The untouched corpus must pass all five mutations; each altered solution must fa
 2. `practice/p18_solution.ipynb` — replace the exact shifted-target assignment (`targets = token_ids[:, 1:]`) with the unshifted input tokens;
 3. `practice/p11_solution.ipynb` — replace the exact masked-position assignment with the original true token;
 4. `practice/p21_solution.ipynb` — replace the exact frozen-stage encoder parameter policy so it updates during the declared frozen stage;
-5. `practice/p24_solution.ipynb` — replace the exact held-out membership assertion so a training row is evaluated as held out.
+5. `practice/p24_solution.ipynb` — replace the exact evaluation-index construction so it includes one named training row; a separate end-of-notebook disjointness assertion must detect that leaked split.
 
-The mutation runner must reject zero/multiple source matches, an expected-check marker outside one top-level assertion, a mutant that executes without failure, and a failure in the wrong check.
+Each mutation-relevant student statement declares a non-solution `# MUTATION_TARGET:<id>` bind-point comment plus the required identifier/function signature.
+That is a code-interface contract, not a solution outline; the blind solver sees it only in the committed statement.
+The runner requires exactly one bind point, uses AST to bind one named top-level expected assertion, wraps that assertion in a mutation-specific exception token, executes cells in order, and accepts the mutant only when the first failure is that token in that exact assertion cell.
+It rejects zero/multiple source matches, a target outside the declared source statement, an expected-check marker outside one top-level assertion, a mutant that executes without failure, and a failure in the wrong check.
 
 ## Implementation tasks
 
@@ -174,6 +179,7 @@ The mutation runner must reject zero/multiple source matches, an expected-check 
 
 - [ ] Write focused failing tests for the two-live-manifest ledger and all named negative mutations above.
 - [ ] Replace only the B2-019 singleton assumptions with the generic per-manifest ledger contract; do not change Book 1 scheduling semantics or allow unregistered units.
+- [ ] Test that a unit-directory symlink and a manifest symlink are each hard failures, rather than silently disappearing from the live ledger, and that traversal is rejected through `resolve_contained_path()` realpath resolution.
 - [ ] Preserve the live B2-019 schedule byte-level allocation semantics and the live six-week/1,660-minute ledger.
   Do not append B2-020 to the live schedule until Task 3 creates its manifest and every declared statement-side path.
   Use copied two-manifest fixtures to prove the generic validator before any second live manifest exists.
@@ -189,7 +195,9 @@ The mutation runner must reject zero/multiple source matches, an expected-check 
 - Test: new assertions in `tests/test_b2_020_statements.py`
 
 - [ ] Add the `language-transformers` cluster, the eight owned concepts, and B2-020's exact unit/prerequisite/concept-prerequisite contract to Book 2's canonical syllabus.
+- [ ] Pin the four direct qualified Book 1 prerequisite units listed above and add a focused prereq-check fixture proving every ten declared Book 1 concepts is admitted only through those explicit units.
 - [ ] Make B2-020 double-length in both syllabus and manifest contract and extend the standards roster without altering the recorded C7 non-conformance history.
+- [ ] Confirm `mc-normal-form` remains the existing standards-defined MC subtype; no new checker type is introduced.
 - [ ] Register the ownership and prerequisite contract only; leave each B2-020 coverage row missing/partial until Task 3 has created the referenced statement paths and manifest.
 - [ ] Do not render inventory, Book 2 course structure, or aggregate evidence in this task; Task 3 owns their first valid regeneration.
 - [ ] Commit: `docs: register language Transformer coverage`.
@@ -204,6 +212,7 @@ The mutation runner must reject zero/multiple source matches, an expected-check 
 - Create: `book2/units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb` through `lessons/05-language-task-design-and-audit.ipynb`
 - Create: `book2/units/B2-020-language-transformers/practice/p01.ipynb` through `p24.ipynb`
 - Create: `book2/units/B2-020-language-transformers/scripts/generate_language_data.py`
+- Create: `book2/units/B2-020-language-transformers/data/tiny_encoder_checkpoint.py` (generated, tracked source)
 - Modify: `book2/curriculum/course-schedule.yaml`
 - Modify: `book2/curriculum/coverage-map.yaml`
 - Modify: `book2/curriculum/material-inventory.yaml` (generated)
@@ -215,7 +224,10 @@ The mutation runner must reject zero/multiple source matches, an expected-check 
 - [ ] Require a bridge diagnostic that distinguishes imported fixed-vector/token-index remediation from B2-019's attention/causal-mask prerequisite and supplies qualified remediation links.
 - [ ] Create the overview, five lessons, review, generator, and all 24 final student statements to the ledger; no solutions, executed outputs, external corpus, hidden state, or pretrained checkpoint may enter a student notebook.
 - [ ] Pin `compute.policy: cpu`, fixed seed `20260812`, every session/practice minute, all source/solution paths, exact prerequisite lists, and concept tags.
+- [ ] Have `scripts/generate_language_data.py` deterministically render the tracked, human-readable `data/tiny_encoder_checkpoint.py` from fixed seed `20260812`; it declares literal encoder weights, vocabulary, split IDs, and a semantic hash.
+  p20/p21 may load only that committed source checkpoint, and tests must regenerate it and compare its semantic hash before fine-tuning.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
+- [ ] Give each of the five mutation-relevant statements its declared `MUTATION_TARGET` bind point and source-interface identifier without exposing an answer; assert the actual solution later contains exactly that marker and a separately named oracle assertion.
 - [ ] In the same commit that creates the manifest, append the exact B2-020 weeks 7–12/global weeks 47–52 ledger above and its post-week-12 final-assessment marker.
   Then promote exactly the five named coverage rows with literal lesson anchors and evidence IDs, and regenerate/check the inventory, Book 2 course structure, roadmap, and audit from the now-valid paths.
 - [ ] Test hygiene, lesson order, manifest paths, source isolation, CPU label, imported-concept boundary, time arithmetic, and coverage tags without executing student notebooks.
@@ -229,7 +241,7 @@ The mutation runner must reject zero/multiple source matches, an expected-check 
 
 - [ ] Dispatch a separate fresh GPT-5.6-sol solution session with only committed student statements and the manifest, never the author outline or statement session context.
 - [ ] Require each solution to preserve the learner-visible header, use the seeded literal data, state every answer, and end with a non-vacuous `### Answer check` plus exact numeric/shape/training assertions.
-- [ ] Execute p01–p24 in numeric order on a fresh kernel and prove the answer register, source isolation, student hygiene, and required-solution policy pass.
+- [ ] Execute p01–p24 in numeric order, each on its own fresh kernel, and prove the answer register, source isolation, student hygiene, and required-solution policy pass.
 - [ ] Commit: `feat: add independently solved language practices`.
 
 ### Task 5 — Lock coverage and language-model failure modes
@@ -315,6 +327,32 @@ Pending independent reviews: `[sol]`, `[glm]`, and `[fable]`.
 
 The first GLM runtime completed but its ephemeral output was unavailable after the wrapper session closed.
 The amended commit starts a fresh independent GLM review rather than treating that inaccessible result as a verdict.
+
+### Review 2 — sol (2026-08-12)
+
+- **Verdict**: REJECT.
+- `[sol][FIXED]` the checker does not propagate Book 1 qualified imports through unqualified B2-019.
+  B2-020 now directly names `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C6-pytorch`, and `book1:C11-neural-training`, with a focused closure fixture required before content ships.
+- `[sol][FIXED]` p24 targeted its oracle rather than a solution behavior.
+  It now mutates the evaluation-index construction and requires a distinct end-of-notebook split-disjointness oracle.
+
+### Review 2 — fable (2026-08-12)
+
+- **Verdict**: REJECT.
+- `[fable][FIXED]` p20/p21 now use a named, tracked, human-readable tiny encoder checkpoint rendered from a fixed seed and semantic-hash checked; no opaque weight file is allowed.
+- `[fable][FIXED]` Book 2 unit and manifest symlinks are explicit hard failures, not silently omitted discovery entries.
+- `[fable][FIXED]` p12 now follows Session 4 in week 10, while p11 moves to week 11 without changing any minute total.
+- `[fable][FIXED]` Task 4 requires a fresh kernel per solution notebook.
+
+### Review 2 — glm (2026-08-12)
+
+- **Verdict**: REJECT.
+- `[glm][FIXED]` p10 was orphaned from both the owned-concept and knowledge-point evidence maps.
+  It is now direct causal-language-modeling and NLP-Transformer implementation evidence.
+- `[glm][FIXED]` the mutation contract now binds a unique declared source marker and a distinct named AST-wrapped oracle, and accepts only the matching first failure.
+- `[glm][FIXED]` B2-019 sinusoidal position reuse, direct Book 1 closure, bridge-policy authority, realpath containment, existing `mc-normal-form` status, training budgets, and the two located worked examples are explicit.
+
+The next review round evaluates this consolidated amendment and is the first round eligible for four-way consensus.
 
 ## Content Review
 
