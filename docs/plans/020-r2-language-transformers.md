@@ -289,8 +289,9 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   The generator alone creates `tiny_encoder_checkpoint.py` and `tiny_encoder_state.py`.
   The p19 student statement itself teaches and pins the complete preceding 40-update causal-then-40-update MLM protocol, including architecture/masks/AdamW/update order; this is necessary learner-visible training content, not an answer outline.
   p19 independently reruns that exact protocol from the literal fixture, asserts each phase improves from its own phase-initial loss, and recomputes both final-state held-out objective losses/probes; it does not load either checkpoint/state artifact or copy their constants.
-  The statement/import test rejects `p19_solution.ipynb` if source references `tiny_encoder_state`, `tiny_encoder_checkpoint`, or either artifact's import path.
-  p20/p21 may load only `tiny_encoder_state.py` as the committed trained source state.
+  The statement/import test rejects `p19_solution.ipynb` if source references `tiny_encoder_state`, `tiny_encoder_checkpoint`, or either artifact's import path, and execution runs p19 in a temporary copy containing only its notebook and `data/language_fixture.py` with the state/checkpoint paths absent; a dynamic-import/path-load bypass fixture must fail.
+  p20/p21 must load `tiny_encoder_state.py` as their sole pre-finetuning encoder state, reconstruct its canonical state hash before the first fine-tuning update, and assert equality to the exported literal hash.
+  Their tests replace the loader with a random/fresh or no-load encoder and require the provenance assertion to fail before fine-tuning.
   Tests reject an initial/random-weight checkpoint before fine-tuning through the functional contract as well as hash consistency.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
 - [ ] Give each of the five mutation-relevant statements its declared `MUTATION_TARGET` bind point and source-interface identifier without exposing an answer; assert the actual solution later contains exactly that marker and a separately named oracle assertion.
