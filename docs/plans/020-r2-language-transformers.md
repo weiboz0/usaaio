@@ -167,7 +167,7 @@ The untouched corpus must pass all five mutations; each altered solution must fa
 Each mutation-relevant student statement declares the semantic hook's required function name, input/output contract, and a non-solution `# MUTATION_TARGET:<id>` comment at the hook body.
 The blind solver may use any equivalent implementation within that hook; it does not need to reproduce a literal source line or algorithmic outline.
 The runner locates exactly one comment-delimited hook span, applies that mutation to the span rather than matching a prescribed solution line, and uses AST to bind one named top-level expected assertion.
-It executes the whole notebook in order and accepts the mutant only if that named assertion fails with its mutation-specific exception token; earlier unrelated failures are recorded but do not substitute for the named oracle.
+It executes the whole notebook in order with `NotebookClient(allow_errors=True)`, inspects each cell output, and accepts the mutant only if that named assertion fails with its mutation-specific exception token; an earlier error before the named oracle is a strict runner failure, is recorded, and does not substitute for the named oracle.
 It rejects zero/multiple hook spans, a target outside the declared hook, an expected-check marker outside one top-level assertion, a mutant that executes without the named oracle failing, and a named assertion that still passes.
 
 ## Implementation tasks
@@ -232,7 +232,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 - Create: `book2/units/B2-020-language-transformers/practice/p01.ipynb` through `p24.ipynb`
 - Create: `book2/units/B2-020-language-transformers/scripts/generate_language_data.py`
 - Create: `book2/units/B2-020-language-transformers/data/tiny_encoder_checkpoint.py` (generated, tracked source)
-- Create: `tools/verify_book2_solution_timeouts.py`
+- Create: `tools/verify_b2_020_solution_timeouts.py`
 - Modify: `book2/curriculum/course-schedule.yaml`
 - Modify: `book2/curriculum/coverage-map.yaml`
 - Modify: `book2/curriculum/material-inventory.yaml` (generated)
@@ -246,11 +246,14 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 - [ ] Pin `compute.policy: cpu`, fixed seed `20260812`, every session/practice minute, all source/solution paths, exact prerequisite lists, and concept tags.
   Because this is statement-only publication, set the B2-020 manifest's policy exactly to `{status: deferred, plan: plan-020, expires: 2026-08-31}`; the shared parser must compare that date to the current UTC date and hard-fail once expired, so this intentionally temporary intermediate commit is not green after the deadline.
   Its focused tests must freeze the clock on each side of the expiry and prove inventory/coverage/layer-boundary accept only the unexpired named temporary debt and surface its expiry rather than treating absent solutions as valid generally.
-- [ ] Have `scripts/generate_language_data.py` run the Session-3 seeded causal/MLM pretraining contract from fixed seed `20260812`, certify literal initial and final losses, and deterministically render the trained state into tracked, human-readable `data/tiny_encoder_checkpoint.py` with vocabulary, split IDs, trained encoder weights, objective/loss trace, and semantic hash.
-  The generator must pin the verification envelope to the locked CPU `torch 2.13.0+cpu`, `torch.use_deterministic_algorithms(True)`, single intra/inter-op thread, and every Python/NumPy/Torch seed.
-  Define the versioned semantic hash as SHA-256 over canonical JSON containing vocabulary/splits/architecture/objective plus every trained parameter rounded to six decimal places in sorted name/index order; it intentionally excludes raw float bytes.
+  If work has not reached the required-policy transition by that date, a separately reviewed follow-up plan must explicitly amend the expiry before any continuation; it is never silently extended.
+- [ ] Have `scripts/generate_language_data.py` run the Session-3 seeded causal/MLM pretraining contract from fixed seed `20260812`, certify literal initial and final losses, and render the trained state into tracked, human-readable `data/tiny_encoder_checkpoint.py` with vocabulary, split IDs, trained encoder weights, objective/loss trace, and semantic hash.
+  Pin the authoring envelope to the lockfile-resolved CPU torch build, deterministic algorithms, single intra/inter-op thread, and every Python/NumPy/Torch seed; do not assert a Linux-only `+cpu` local-version tag.
+  Define the versioned semantic hash as SHA-256 over canonical JSON containing vocabulary/splits/architecture/objective plus every committed trained parameter rounded to six decimal places in sorted name/index order; it intentionally excludes raw float bytes.
+  Standard CI verifies the committed checkpoint's self-consistent canonical JSON/hash and trained functional contract (both losses improve and fixed held-out probes beat the literal initial-state baseline by named margins), but does **not** regenerate-and-hash-compare 80-epoch weights across CPU architectures.
+  A separate explicit local `--refresh-checkpoint` generator command is the record-once maintenance path; it reports canonical deltas and requires an intentional committed source update when a supported toolchain changes.
   p19 executes both pretraining objectives and certifies their losses; p20/p21 may load only this committed trained source checkpoint.
-  Tests must regenerate it, compare the same six-decimal canonical parameter/loss-trace JSON that the semantic hash covers (rather than an incompatible raw-float `allclose`), and reject an initial/random-weight checkpoint before fine-tuning.
+  Tests reject an initial/random-weight checkpoint before fine-tuning through the functional contract as well as hash consistency.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
 - [ ] Give each of the five mutation-relevant statements its declared `MUTATION_TARGET` bind point and source-interface identifier without exposing an answer; assert the actual solution later contains exactly that marker and a separately named oracle assertion.
 - [ ] In the same commit that creates the manifest, append the exact B2-020 weeks 7–12/global weeks 47–52 ledger above and its post-week-12 final-assessment marker.
@@ -258,7 +261,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
   For `nlp-word-embeddings`, replace the inherited C8 anchors, Book 1 practice/assessment evidence, and Book 1 `shipped_concepts` with B2-020 Session 1–3 anchors, the named B2 practices in the ledger, and `shipped_concepts: [learned-token-embedding]`; set `coverage: covered`, `deficits.modalities_missing: []`, and retain `destination: B2-020-language-transformers`.
   The statement test must assert this exact destination/disposition/covered-state transformation and reject any remaining `book1:C8-embeddings` evidence in the B2-020 claim, so the layer-boundary claim cannot be satisfied by Book 1 evidence.
 - [ ] Test hygiene, lesson order, manifest paths, source isolation, CPU label, imported-concept boundary, time arithmetic, and coverage tags without executing student notebooks.
-- [ ] Implement `tools/verify_book2_solution_timeouts.py` as the common fresh-kernel execution harness: it takes an explicit notebook list, executes only Book 2 solution notebooks through `NotebookClient`, enforces a process-level 20-second wall-clock deadline per notebook in addition to a cell timeout, and emits a failing notebook/elapsed-time diagnostic.
+- [ ] Implement `tools/verify_b2_020_solution_timeouts.py` as the fresh-kernel execution harness for B2-020: it takes an explicit notebook list, executes only B2-020 solution notebooks through `NotebookClient`, enforces a process-level 20-second wall-clock deadline per notebook in addition to a cell timeout, and emits a failing notebook/elapsed-time diagnostic.
   Expose a test-only injected deadline; test a synthetic sleeping notebook with a 1-second injected deadline without waiting for a production-length sleep, and separately assert the production constant is 20 seconds.
   Do not rely on a Jupyter CLI default timeout.
 - [ ] Commit: `feat: teach language Transformer statements`.
@@ -273,10 +276,12 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 - Modify: `tools/model.py`
 - Test: `tests/test_b2_020_statements.py`
 
-- [ ] Dispatch a separate fresh GPT-5.6-sol solution session with only committed student statements and the manifest, never the author outline or statement session context.
+- [ ] Dispatch a separate fresh GPT-5.6-sol solution session with only the committed student statements, manifest, and the non-solution deterministic support files `scripts/generate_language_data.py` and `data/tiny_encoder_checkpoint.py`; never provide the author outline, statement-session context, solution notebooks, or a solution design.
 - [ ] Require each solution to preserve the learner-visible header, use the seeded literal data, state every answer, and end with a non-vacuous `### Answer check` plus exact numeric/shape/training assertions.
 - [ ] After all 24 solutions exist, atomically replace B2-020's deferred policy with `solution_policy: required`; test that every declared solution path exists and that any retained deferred policy (rejected by the shared manifest parser as soon as one solution exists) or deleted solution fails inventory, coverage, and layer-boundary checks.
-- [ ] Execute p01–p24 in numeric order through `tools/verify_book2_solution_timeouts.py`, each on its own fresh kernel with a 20-second wall-clock timeout, and invoke that same harness from the Book 2 notebook-execution step of `scripts/ci-local.sh` for the B2-020 solutions rather than the unbounded Jupyter CLI route.
+- [ ] Execute p01–p24 in numeric order through `tools/verify_b2_020_solution_timeouts.py`, each on its own fresh kernel with a 20-second wall-clock timeout, and invoke that same harness from the Book 2 notebook-execution step of `scripts/ci-local.sh` for the B2-020 solutions rather than the unbounded Jupyter CLI route.
+  During incremental Task 4 authoring, run only this explicit-notebook-list harness and no manifest-aware verifier until all 24 solutions and the required-policy flip are committed atomically.
+  Measure each completed solution on the verification host and require the maximum to be at most 10 seconds, documenting those timings in the post-execution report as twofold headroom under the 20-second production limit.
   Prove the answer register, source isolation, student hygiene, required-solution policy, and timeout harness pass.
 - [ ] Commit: `feat: add independently solved language practices`.
 
