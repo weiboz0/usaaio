@@ -144,12 +144,12 @@ The coverage map promotes exactly these five rows to covered and leaves B2-021 t
 Plan 019 deliberately hard-coded its first live unit in `tools/checks/schedule.py`.
 Before B2-020 is live, replace that bootstrap contract with a data-driven Book 2 ledger:
 
-- enumerate every `units/*` entry under the selected Book 2 root and reject any symlinked unit directory or manifest before ledger discovery;
+- enumerate every `units/*` entry under the selected Book 2 root and reject any symlinked unit directory or manifest before ledger discovery; every regular unit directory must contain exactly one regular, contained `manifest.yaml`, and a missing, extra, or nonregular manifest is a hard error rather than an invisible directory;
 - require each remaining regular manifest to declare the one Book 2 bridge diagnostic required by Design 019, all declared lesson sessions, every practice ID exactly once, and exactly one review allocation;
 - reconcile allocated minutes and `after_session` against each manifest rather than module-level B2-019 constants;
 - require every live manifest path to pass `tools.books.resolve_contained_path()` realpath containment, then be regular and present;
 - derive Book 2 total weeks/minutes, `covered_problem_ids`, course-structure wording, and audit counts from the ledger;
-- retain Plan 019's accepted six-week/1,660-minute ledger unchanged and prove that B2-020 adds its separate six-week/1,660-minute ledger without reordering or weakening it.
+- retain Plan 019's accepted six-week/1,660-minute ledger unchanged and prove that B2-020 adds its separate six-week/1,660-minute ledger without reordering or weakening it; every B2-020 allocation (bridge, lesson, practice, review, or final marker) begins strictly after B2-019's final-review allocation.
 
 Tests must first demonstrate rejection of a second manifest by the legacy singleton validator, then demonstrate the generic validator accepting both valid unit ledgers and rejecting: a duplicate problem across units, a missing B2-020 lesson allocation, a mismatched practice minute, an after-session violation, an escaped/symlinked path, a stale total, an attempt to mutate B2-019's pre-existing ledger, and a B2-020 bridge/session allocation before B2-019's final review has completed.
 
@@ -192,7 +192,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 - Modify: `tools/render_course_structure.py`
 - Modify: `tests/test_book2_schedule.py`
 
-- [ ] Write focused failing tests for the two-live-manifest ledger and all named negative mutations above.
+- [ ] Write focused failing tests for the two-live-manifest ledger and all named negative mutations above, including a regular B2 unit directory without `manifest.yaml`, extra/nonregular manifests, and early B2-020 practice/review allocations as well as early bridge/lesson allocations.
 - [ ] Replace only the B2-019 singleton assumptions with the generic per-manifest ledger contract; do not change Book 1 scheduling semantics or allow unregistered units.
 - [ ] Replace the Book 2 renderer's hard-coded local/display week range, six-number cadence prose, and Week-6 final-assessment marker with values derived from the validated ledger: first/last local and global weeks, rendered weekly totals, and the final ledger week.
   Add a copied two-manifest regression test proving the generated Book 2 schedule describes weeks 1–12 / 41–52, both six-week cadence sequences, and the final assessment after Week 12 while preserving the one-unit B2-019 output semantics.
