@@ -164,7 +164,8 @@ The untouched corpus must pass all five mutations; each altered solution must fa
 4. `practice/p21_solution.ipynb` — mutate the explicitly marked frozen-stage parameter-policy hook so the encoder updates during the frozen stage;
 5. `practice/p24_solution.ipynb` — mutate the explicitly marked evaluation-index hook so it includes one named training row; a separate end-of-notebook disjointness assertion must detect that leaked split.
 
-Each mutation-relevant student statement declares the semantic hook's required function name, input/output contract, and a non-solution `# MUTATION_TARGET:<id>` comment at the hook body.
+Each mutation-relevant student statement declares the semantic hook's required function name, input/output contract, and the non-solution marker contract below: `# MUTATION_TARGET:<id>:BEGIN`/`END` at the hook body and exactly one top-level `# EXPECTED_CHECK:<id>` immediately preceding the mutation-specific `assert` in the solution's final Answer check.
+It instructs the solver to provide that assertion without supplying a target numeric answer, solution approach, or test expression.
 The blind solver may use any equivalent implementation within that hook; it does not need to reproduce a literal source line or algorithmic outline.
 Each required hook is delimited exactly by `# MUTATION_TARGET:<id>:BEGIN` and `# MUTATION_TARGET:<id>:END`, each at the same indentation within the named function body; zero, multiple, reversed, nested, or cross-function markers are hard failures.
 The runner uses the delimiters plus the function AST range, applies the following fixed body replacement rather than matching a prescribed solution line, and uses AST to bind one named top-level expected assertion:
@@ -178,8 +179,8 @@ The runner uses the delimiters plus the function AST range, applies the followin
 | `evaluation-indices` | `evaluation_indices(train_indices, test_indices) -> eval_indices` | return `test_indices` plus the declared `leaked_train_index` |
 
 The parser tests every malformed-marker case and every replacement's function/signature mismatch.
-It executes the whole notebook in order with `NotebookClient(allow_errors=True)`, inspects each cell output, and accepts the mutant only if that named assertion fails with its mutation-specific exception token; an earlier error before the named oracle is a strict runner failure, is recorded, and does not substitute for the named oracle.
-It rejects zero/multiple hook spans, a target outside the declared hook, an expected-check marker outside one top-level assertion, a mutant that executes without the named oracle failing, and a named assertion that still passes.
+It AST-wraps that exact assertion so an `AssertionError` becomes the fixed `PLAN020_EXPECTED_CHECK::<id>` failure token, executes the whole notebook in order with `NotebookClient(allow_errors=True)`, inspects each cell output, and accepts the mutant only if that token arises from the named assertion; an earlier error before the named oracle is a strict runner failure, is recorded, and does not substitute for the named oracle.
+It rejects zero/multiple hook spans, a target outside the declared hook, a missing/duplicate/wrong-ID/non-top-level expected-check marker, an expected-check marker outside one assertion, a mutant that executes without the named oracle failing, and a named assertion that still passes.
 
 ## Implementation tasks
 
