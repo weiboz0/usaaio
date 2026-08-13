@@ -257,7 +257,22 @@ PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache bash scripts/pre-mer
 
 ## Plan Review
 
-Pending four-way review: `[self]`, `[sol]`, `[glm]`, and `[fable]`.
+### Review 1 — self (2026-08-12)
+
+- **Verdict**: APPROVE.
+- The unit closes exactly the five B2-020 rows, including the previously partial
+  word-embedding row's missing model-training modality, without taking ownership of Book 1
+  tokenization or fixed-vector concepts.
+- The 24-problem ledger satisfies the double-length count, type, difficulty, per-concept
+  practice, and 1,120-minute contracts; its 450 lesson + 1,120 practice + 60 review + 30
+  bridge arithmetic is exactly 1,660 minutes across weeks 7–12.
+- The plan names a prerequisite-closed eight-concept ownership surface, direct evidence for
+  every required modality, five answer-affecting mutants, an implementation sequence that
+  repairs the singleton schedule contract before adding the second manifest, and a full
+  verification/content-gate phase.
+- No `[OPEN]` blocker remains from self-review.
+
+Pending independent reviews: `[sol]`, `[glm]`, and `[fable]`.
 
 ## Content Review
 
