@@ -31,7 +31,7 @@ It must not re-teach tokenization, GloVe loading, or fixed-vector similarity.
 All corpora, labels, vocabulary maps, seeds, expected probes, and checkpoints are small, explicit, synthetic, CPU-only, and committed as source-generation code or literal notebook data.
 No internet model hub, external dataset, opaque checkpoint, tokenizer library, or hidden pretrained parameter is in scope.
 Every CPU training task uses vocabulary size at most 12, sequence length at most 8, one Transformer block with model width at most 8, at most two heads, and at most 80 fixed optimization epochs; a fresh solution notebook must finish within 20 seconds and a mutated notebook within 120 seconds.
-Task 4's execution harness must measure a per-notebook 20-second wall-clock timeout and Task 5's mutation client must use 120 seconds, with regression tests that deliberately exceed each limit and fail.
+The Task 3/4 execution harness must measure a per-notebook 20-second wall-clock timeout and Task 5's mutation client must use 120 seconds, with fast regression tests that inject shorter deadlines while separately pinning the production constants.
 
 ### Owned concepts
 
@@ -177,10 +177,13 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 **Files:**
 
 - Modify: `tools/checks/schedule.py`
+- Modify: `tools/render_course_structure.py`
 - Modify: `tests/test_book2_schedule.py`
 
 - [ ] Write focused failing tests for the two-live-manifest ledger and all named negative mutations above.
 - [ ] Replace only the B2-019 singleton assumptions with the generic per-manifest ledger contract; do not change Book 1 scheduling semantics or allow unregistered units.
+- [ ] Replace the Book 2 renderer's hard-coded local/display week range, six-number cadence prose, and Week-6 final-assessment marker with values derived from the validated ledger: first/last local and global weeks, rendered weekly totals, and the final ledger week.
+  Add a copied two-manifest regression test proving the generated Book 2 schedule describes weeks 1–12 / 41–52, both six-week cadence sequences, and the final assessment after Week 12 while preserving the one-unit B2-019 output semantics.
 - [ ] Test that a unit-directory symlink and a manifest symlink are each hard failures, rather than silently disappearing from the live ledger, and that traversal is rejected through `resolve_contained_path()` realpath resolution.
 - [ ] Preserve the live B2-019 schedule byte-level allocation semantics and the live six-week/1,660-minute ledger.
   Do not append B2-020 to the live schedule until Task 3 creates its manifest and every declared statement-side path.
@@ -200,7 +203,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 - Modify: `tests/test_b2_019_statements.py`
 - Modify: `tests/test_integration.py`
 - Modify: `tests/test_scope.py`
-- Test: new assertions in `tests/test_b2_020_statements.py`
+- Create: `tests/test_b2_020_statements.py`
 
 - [ ] Add the `language-transformers` cluster, the eight owned concepts, and B2-020's exact unit/prerequisite/concept-prerequisite contract to Book 2's canonical syllabus.
 - [ ] Pin the five direct qualified Book 1 prerequisite units listed above and add a focused prereq-check fixture proving each of the ten declared Book 1 concepts is admitted only through those explicit units.
@@ -241,12 +244,13 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 - [ ] Require a bridge diagnostic that distinguishes imported fixed-vector/token-index remediation from B2-019's attention/causal-mask prerequisite and supplies qualified remediation links.
 - [ ] Create the overview, five lessons, review, generator, and all 24 final student statements to the ledger; no solutions, executed outputs, external corpus, hidden state, or pretrained checkpoint may enter a student notebook.
 - [ ] Pin `compute.policy: cpu`, fixed seed `20260812`, every session/practice minute, all source/solution paths, exact prerequisite lists, and concept tags.
-  Because this is statement-only publication, set the B2-020 manifest's policy exactly to `{status: deferred, plan: plan-020, expires: 2026-08-31}`; its focused test must prove inventory/coverage/layer-boundary accept this named temporary debt and surface its expiry rather than treating absent solutions as valid generally.
+  Because this is statement-only publication, set the B2-020 manifest's policy exactly to `{status: deferred, plan: plan-020, expires: 2026-08-31}`; the shared parser must compare that date to the current UTC date and hard-fail once expired, so this intentionally temporary intermediate commit is not green after the deadline.
+  Its focused tests must freeze the clock on each side of the expiry and prove inventory/coverage/layer-boundary accept only the unexpired named temporary debt and surface its expiry rather than treating absent solutions as valid generally.
 - [ ] Have `scripts/generate_language_data.py` run the Session-3 seeded causal/MLM pretraining contract from fixed seed `20260812`, certify literal initial and final losses, and deterministically render the trained state into tracked, human-readable `data/tiny_encoder_checkpoint.py` with vocabulary, split IDs, trained encoder weights, objective/loss trace, and semantic hash.
   The generator must pin the verification envelope to the locked CPU `torch 2.13.0+cpu`, `torch.use_deterministic_algorithms(True)`, single intra/inter-op thread, and every Python/NumPy/Torch seed.
   Define the versioned semantic hash as SHA-256 over canonical JSON containing vocabulary/splits/architecture/objective plus every trained parameter rounded to six decimal places in sorted name/index order; it intentionally excludes raw float bytes.
   p19 executes both pretraining objectives and certifies their losses; p20/p21 may load only this committed trained source checkpoint.
-  Tests must regenerate it, require per-parameter and loss-trace `allclose(atol=1e-6, rtol=1e-6)` plus the canonical semantic-hash match, and reject an initial/random-weight checkpoint before fine-tuning.
+  Tests must regenerate it, compare the same six-decimal canonical parameter/loss-trace JSON that the semantic hash covers (rather than an incompatible raw-float `allclose`), and reject an initial/random-weight checkpoint before fine-tuning.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
 - [ ] Give each of the five mutation-relevant statements its declared `MUTATION_TARGET` bind point and source-interface identifier without exposing an answer; assert the actual solution later contains exactly that marker and a separately named oracle assertion.
 - [ ] In the same commit that creates the manifest, append the exact B2-020 weeks 7–12/global weeks 47–52 ledger above and its post-week-12 final-assessment marker.
@@ -255,7 +259,8 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
   The statement test must assert this exact destination/disposition/covered-state transformation and reject any remaining `book1:C8-embeddings` evidence in the B2-020 claim, so the layer-boundary claim cannot be satisfied by Book 1 evidence.
 - [ ] Test hygiene, lesson order, manifest paths, source isolation, CPU label, imported-concept boundary, time arithmetic, and coverage tags without executing student notebooks.
 - [ ] Implement `tools/verify_book2_solution_timeouts.py` as the common fresh-kernel execution harness: it takes an explicit notebook list, executes only Book 2 solution notebooks through `NotebookClient`, enforces a process-level 20-second wall-clock deadline per notebook in addition to a cell timeout, and emits a failing notebook/elapsed-time diagnostic.
-  Test a synthetic sleeping notebook to prove it fails at 20 seconds without waiting for its sleep to finish; do not rely on a Jupyter CLI default timeout.
+  Expose a test-only injected deadline; test a synthetic sleeping notebook with a 1-second injected deadline without waiting for a production-length sleep, and separately assert the production constant is 20 seconds.
+  Do not rely on a Jupyter CLI default timeout.
 - [ ] Commit: `feat: teach language Transformer statements`.
 
 ### Task 4 — Blind-author and execute solutions
@@ -286,6 +291,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 
 - [ ] Implement the five named answer-affecting mutations and the fail-closed runner contract.
 - [ ] Enforce a 120-second mutation-execution timeout and add focused timeout mutants for both the 20-second solution route and the 120-second mutation route.
+  Both runners expose test-only injected deadlines so those tests finish in seconds, while separate assertions pin production values to 20 and 120 seconds.
 - [ ] Wire the new mutation runner into the Book 2 portion of local CI after the existing attention runner.
 - [ ] Prove every exact source/cell mutation fails its intended answer check, the untouched corpus passes, and generic runner fault modes fail closed.
 - [ ] Commit: `test: lock language Transformer evidence`.
