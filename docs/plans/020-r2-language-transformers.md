@@ -194,6 +194,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 
 - Modify: `book2/syllabus.md`
 - Modify: `docs/unit-standards.md`
+- Modify: `tools/model.py`
 - Modify: `tools/checks/scope.py`
 - Modify: `tests/test_b2_019_statements.py`
 - Modify: `tests/test_integration.py`
@@ -209,6 +210,8 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
   In that partial registration, transfer `nlp-word-embeddings` from `destination: book1:C8-embeddings` / `disposition: extend-existing-unit` to `destination: B2-020-language-transformers` / `disposition: new-unit`, retain only its declared Book 1 inputs as qualified prerequisites, and reserve the already-declared B2-owned `learned-token-embedding` concept for its future evidence claim.
 - [ ] Replace the legacy `scope-check` special case for `nlp-word-embeddings` in `tools/checks/scope.py` with its B2-020 ownership contract: destination `B2-020-language-transformers`, disposition `new-unit`, and coverage limited to the lifecycle states `partial` (Task 2) or `covered` (Task 3).
   Add `tests/test_scope.py` fixtures that accept each named lifecycle state and reject the former Book 1 C8 destination/`extend-existing-unit` state after this plan.
+- [ ] Extend the shared manifest parser in `tools/model.py` with the narrow lifecycle policy: a deferred solution policy is valid only for `B2-020-language-transformers` with `plan: plan-020`, `expires: 2026-08-31`, and **no** declared solution file present; all other deferred manifests, an altered plan/expiry, or even one present B2-020 solution under a deferred policy are hard parse errors.
+  This common parser rule is the enforcement used by inventory, coverage, and layer-boundary consumers; test each consumer observes the same rejection through a copied registered Book 2 fixture.
 - [ ] Add a focused fixture demonstrating only the named planned `B2-020-language-transformers` syllabus unit (not arbitrary manifest-less units) is checker-valid until Task 3 atomically publishes its manifest and coverage evidence.
 - [ ] Do not render inventory, Book 2 course structure, or aggregate evidence in this task; Task 3 owns their first valid regeneration.
 - [ ] Commit: `docs: register language Transformer coverage`.
@@ -260,11 +263,12 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 - Create: `book2/units/B2-020-language-transformers/practice/p01_solution.ipynb` through `p24_solution.ipynb`
 - Modify: `book2/units/B2-020-language-transformers/manifest.yaml`
 - Modify: `scripts/ci-local.sh`
+- Modify: `tools/model.py`
 - Test: `tests/test_b2_020_statements.py`
 
 - [ ] Dispatch a separate fresh GPT-5.6-sol solution session with only committed student statements and the manifest, never the author outline or statement session context.
 - [ ] Require each solution to preserve the learner-visible header, use the seeded literal data, state every answer, and end with a non-vacuous `### Answer check` plus exact numeric/shape/training assertions.
-- [ ] After all 24 solutions exist, atomically replace B2-020's deferred policy with `solution_policy: required`; test that every declared solution path exists and that any retained deferred policy or deleted solution fails inventory, coverage, and layer-boundary checks.
+- [ ] After all 24 solutions exist, atomically replace B2-020's deferred policy with `solution_policy: required`; test that every declared solution path exists and that any retained deferred policy (rejected by the shared manifest parser as soon as one solution exists) or deleted solution fails inventory, coverage, and layer-boundary checks.
 - [ ] Execute p01–p24 in numeric order through `tools/verify_book2_solution_timeouts.py`, each on its own fresh kernel with a 20-second wall-clock timeout, and invoke that same harness from the Book 2 notebook-execution step of `scripts/ci-local.sh` for the B2-020 solutions rather than the unbounded Jupyter CLI route.
   Prove the answer register, source isolation, student hygiene, required-solution policy, and timeout harness pass.
 - [ ] Commit: `feat: add independently solved language practices`.
