@@ -166,7 +166,18 @@ The untouched corpus must pass all five mutations; each altered solution must fa
 
 Each mutation-relevant student statement declares the semantic hook's required function name, input/output contract, and a non-solution `# MUTATION_TARGET:<id>` comment at the hook body.
 The blind solver may use any equivalent implementation within that hook; it does not need to reproduce a literal source line or algorithmic outline.
-The runner locates exactly one comment-delimited hook span, applies that mutation to the span rather than matching a prescribed solution line, and uses AST to bind one named top-level expected assertion.
+Each required hook is delimited exactly by `# MUTATION_TARGET:<id>:BEGIN` and `# MUTATION_TARGET:<id>:END`, each at the same indentation within the named function body; zero, multiple, reversed, nested, or cross-function markers are hard failures.
+The runner uses the delimiters plus the function AST range, applies the following fixed body replacement rather than matching a prescribed solution line, and uses AST to bind one named top-level expected assertion:
+
+| ID | Required hook signature | Mutant body outcome |
+|---|---|---|
+| `embedding-update` | `update_embedding_table(table, contexts, targets, learning_rate) -> table` | return an unchanged copy of `table` |
+| `target-shift` | `shift_targets(tokens) -> (inputs, targets)` | return `(tokens[:-1], tokens[:-1])` |
+| `mlm-mask` | `apply_mlm_mask(tokens, mask_index, mask_token) -> masked_tokens` | return an unchanged copy of `tokens` |
+| `frozen-stage` | `configure_finetune_parameters(encoder, classifier) -> None` | set every encoder parameter's `requires_grad` to `True` |
+| `evaluation-indices` | `evaluation_indices(train_indices, test_indices) -> eval_indices` | return `test_indices` plus the declared `leaked_train_index` |
+
+The parser tests every malformed-marker case and every replacement's function/signature mismatch.
 It executes the whole notebook in order with `NotebookClient(allow_errors=True)`, inspects each cell output, and accepts the mutant only if that named assertion fails with its mutation-specific exception token; an earlier error before the named oracle is a strict runner failure, is recorded, and does not substitute for the named oracle.
 It rejects zero/multiple hook spans, a target outside the declared hook, an expected-check marker outside one top-level assertion, a mutant that executes without the named oracle failing, and a named assertion that still passes.
 
@@ -251,6 +262,9 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
   Pin the authoring envelope to the lockfile-resolved CPU torch build, deterministic algorithms, single intra/inter-op thread, and every Python/NumPy/Torch seed; do not assert a Linux-only `+cpu` local-version tag.
   Define the versioned semantic hash as SHA-256 over canonical JSON containing vocabulary/splits/architecture/objective plus every committed trained parameter rounded to six decimal places in sorted name/index order; it intentionally excludes raw float bytes.
   Standard CI verifies the committed checkpoint's self-consistent canonical JSON/hash and trained functional contract (both losses improve and fixed held-out probes beat the literal initial-state baseline by named margins), but does **not** regenerate-and-hash-compare 80-epoch weights across CPU architectures.
+  The checkpoint module must export schema version `1`, `TOKEN_TO_ID`, `TRAIN_SPLIT_IDS`, exact `CAUSAL_HELDOUT_IDS` and `MLM_HELDOUT_IDS`, `INITIAL_LOSSES`, `FINAL_LOSSES`, and `PROBE_EXPECTED_TOP1_IDS`.
+  Its test reconstructs the literal initialized width-8 architecture from seed `20260812`, validates every checkpoint parameter name/shape/dtype (`float32`) against that architecture, checks checkpoint initial/final losses match recomputation within `atol=1e-4, rtol=1e-4`, and requires each trained held-out objective loss to be no more than `0.80 *` its literal initial loss and each named probe's top-1 ID to match the pinned expected ID.
+  These fixed data IDs, 20-percent margins, API fields, and canonical JSON schema/version are mandatory, so a self-hashed random or arbitrary parameter set cannot pass merely by changing its own metadata.
   A separate explicit local `--refresh-checkpoint` generator command is the record-once maintenance path; it reports canonical deltas and requires an intentional committed source update when a supported toolchain changes.
   p19 executes both pretraining objectives and certifies their losses; p20/p21 may load only this committed trained source checkpoint.
   Tests reject an initial/random-weight checkpoint before fine-tuning through the functional contract as well as hash consistency.
@@ -271,12 +285,15 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 **Files:**
 
 - Create: `book2/units/B2-020-language-transformers/practice/p01_solution.ipynb` through `p24_solution.ipynb`
+- Create: `scripts/prepare_b2_020_blind_solve_input.py`
 - Modify: `book2/units/B2-020-language-transformers/manifest.yaml`
 - Modify: `scripts/ci-local.sh`
 - Modify: `tools/model.py`
 - Test: `tests/test_b2_020_statements.py`
 
-- [ ] Dispatch a separate fresh GPT-5.6-sol solution session with only the committed student statements, manifest, and the non-solution deterministic support files `scripts/generate_language_data.py` and `data/tiny_encoder_checkpoint.py`; never provide the author outline, statement-session context, solution notebooks, or a solution design.
+- [ ] Implement and run `scripts/prepare_b2_020_blind_solve_input.py` to build an auditable isolated blind-solve handoff at the committed Task-3 revision: create a temporary directory from `git archive <task3-commit>` containing **only** the 24 student practice notebooks, unit `lesson.ipynb`/`review.ipynb`, `lessons/`, `manifest.yaml`, `scripts/generate_language_data.py`, and `data/tiny_encoder_checkpoint.py`.
+  Emit a sorted allowlist with SHA-256 for each input and the exact source commit; verify the directory contains no plan, author notes, solution notebook, or unrelated repository file.
+  Dispatch a separate fresh GPT-5.6-sol solution session in that directory with only this allowlist, never the author outline, statement-session context, solution notebooks, or a solution design; retain the allowlist and commit in the post-execution report.
 - [ ] Require each solution to preserve the learner-visible header, use the seeded literal data, state every answer, and end with a non-vacuous `### Answer check` plus exact numeric/shape/training assertions.
 - [ ] After all 24 solutions exist, atomically replace B2-020's deferred policy with `solution_policy: required`; test that every declared solution path exists and that any retained deferred policy (rejected by the shared manifest parser as soon as one solution exists) or deleted solution fails inventory, coverage, and layer-boundary checks.
 - [ ] Execute p01–p24 in numeric order through `tools/verify_b2_020_solution_timeouts.py`, each on its own fresh kernel with a 20-second wall-clock timeout, and invoke that same harness from the Book 2 notebook-execution step of `scripts/ci-local.sh` for the B2-020 solutions rather than the unbounded Jupyter CLI route.
@@ -297,6 +314,8 @@ It rejects zero/multiple hook spans, a target outside the declared hook, an expe
 - [ ] Implement the five named answer-affecting mutations and the fail-closed runner contract.
 - [ ] Enforce a 120-second mutation-execution timeout and add focused timeout mutants for both the 20-second solution route and the 120-second mutation route.
   Both runners expose test-only injected deadlines so those tests finish in seconds, while separate assertions pin production values to 20 and 120 seconds.
+- [ ] The mutation runner launches each mutated-notebook worker in a new subprocess process group, applies the 120-second process-level deadline (not merely a cell timeout), then on expiry sends TERM, escalates to KILL after a short grace period, waits/reaps the worker, and reports its notebook and elapsed time.
+  A 1-second injected synthetic-sleeper test must prove timeout, process-group cleanup, and no surviving child; an unmutated run remains required to pass.
 - [ ] Wire the new mutation runner into the Book 2 portion of local CI after the existing attention runner.
 - [ ] Prove every exact source/cell mutation fails its intended answer check, the untouched corpus passes, and generic runner fault modes fail closed.
 - [ ] Commit: `test: lock language Transformer evidence`.
