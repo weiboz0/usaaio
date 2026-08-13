@@ -166,7 +166,7 @@ The untouched corpus must pass all five mutations; each altered solution must fa
 
 Each mutation-relevant student statement declares the semantic hook's required function name, input/output contract, and the non-solution marker contract below: `# MUTATION_TARGET:<id>:BEGIN`/`END` at the hook body and exactly one top-level `# EXPECTED_CHECK:<id>` immediately preceding the mutation-specific `assert` in the solution's final Answer check.
 It instructs the solver to provide that assertion without supplying a target numeric answer, solution approach, or test expression.
-It also prohibits any assertion before the final Answer check from checking that mutation hook's behavioral outcome; ordinary shape/type/input checks remain allowed.
+It states verbatim that no assertion before the final Answer check may inspect that hook's return value or behavioral outcome; ordinary shape/type/input checks remain allowed.
 The blind solver may use any equivalent implementation within that hook; it does not need to reproduce a literal source line or algorithmic outline.
 Each required hook is delimited exactly by `# MUTATION_TARGET:<id>:BEGIN` and `# MUTATION_TARGET:<id>:END`, each at the same indentation within the named function body; zero, multiple, reversed, nested, or cross-function markers are hard failures.
 The runner uses the delimiters plus the function AST range, applies the following fixed body replacement rather than matching a prescribed solution line, and uses AST to bind one named top-level expected assertion:
@@ -174,10 +174,10 @@ The runner uses the delimiters plus the function AST range, applies the followin
 | ID | Required hook signature | Mutant body outcome |
 |---|---|---|
 | `embedding-update` | `update_embedding_table(table: torch.Tensor, contexts: torch.LongTensor shape (N,), targets: torch.LongTensor shape (N,), learning_rate: float) -> torch.Tensor` | return an unchanged clone of `table` |
-| `target-shift` | `shift_targets(tokens: list[int]) -> tuple[list[int], list[int]]`, with `tokens` exactly one nonempty unbatched sequence | return `(tokens[:-1], tokens[:-1])` |
-| `mlm-mask` | `apply_mlm_mask(tokens: list[int], mask_index: int, mask_token: int) -> list[int]` | return a list copy of unchanged `tokens` |
-| `frozen-stage` | `configure_frozen_stage_optimizer(encoder, classifier, learning_rate) -> optimizer`; the frozen stage is expressed **solely** by a classifier-only optimizer parameter list and must not set any encoder `requires_grad` flag | return a `torch.optim.SGD` optimizer over `list(encoder.parameters()) + list(classifier.parameters())` at `learning_rate` rather than the required classifier-only parameter set |
-| `evaluation-indices` | `evaluation_indices(train_indices: list[int], test_indices: list[int], leaked_train_index: int) -> list[int]` | return `list(test_indices) + [leaked_train_index]` rather than the required test-only list |
+| `target-shift` | `shift_targets(tokens: list[int]) -> tuple[list[int], list[int]]`, with `tokens` exactly one unbatched sequence of length at least 2 | return `(tokens[:-1], tokens[:-1])` |
+| `mlm-mask` | `apply_mlm_mask(tokens: list[int], mask_index: int, mask_token: int) -> list[int]`; fixtures require `tokens[mask_index] != mask_token` | return a list copy of unchanged `tokens` |
+| `frozen-stage` | `configure_frozen_stage_optimizer(encoder, classifier, learning_rate) -> optimizer`; the frozen stage is expressed **solely** by a classifier-only optimizer parameter list and must not set any encoder `requires_grad` flag; immediately before the unfreeze optimizer is built, call `encoder.zero_grad(set_to_none=True)` | return a `torch.optim.SGD` optimizer over `list(encoder.parameters()) + list(classifier.parameters())` at `learning_rate` rather than the required classifier-only parameter set |
+| `evaluation-indices` | `evaluation_indices(train_indices: list[int], test_indices: list[int], candidate_extra_index: int) -> list[int]` | return `list(test_indices) + [candidate_extra_index]` rather than the required test-only list |
 
 The parser tests every malformed-marker case and every replacement's function/signature mismatch.
 It AST-wraps that exact assertion so an `AssertionError` becomes the fixed `PLAN020_EXPECTED_CHECK::<id>` failure token, executes the whole notebook in order with `NotebookClient(allow_errors=True)`, inspects each cell output, and accepts the mutant only if that token arises from the named assertion; an earlier error before the named oracle is a strict runner failure, is recorded, and does not substitute for the named oracle.
@@ -286,7 +286,8 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   A separate explicit local `--refresh-checkpoint` generator command is the record-once maintenance path; it reports canonical deltas and requires an intentional committed source update when a supported toolchain changes.
   `data/language_fixture.py` contains only the fixed literal vocabulary, token-ID sequences, masks, splits, and labels needed by students, never author training code, answers, loss targets, or generated weights.
   The generator alone creates `tiny_encoder_checkpoint.py` and `tiny_encoder_state.py`.
-  p19 independently reruns this exact 40-update causal-then-40-update MLM sequential protocol from the literal fixture, asserts each phase improves from its own phase-initial loss, and recomputes both final-state held-out objective losses/probes; it does not load either checkpoint/state artifact or copy their constants.
+  The p19 student statement itself teaches and pins the complete preceding 40-update causal-then-40-update MLM protocol, including architecture/masks/AdamW/update order; this is necessary learner-visible training content, not an answer outline.
+  p19 independently reruns that exact protocol from the literal fixture, asserts each phase improves from its own phase-initial loss, and recomputes both final-state held-out objective losses/probes; it does not load either checkpoint/state artifact or copy their constants.
   p20/p21 may load only `tiny_encoder_state.py` as the committed trained source state.
   Tests reject an initial/random-weight checkpoint before fine-tuning through the functional contract as well as hash consistency.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
@@ -315,13 +316,14 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 - Test: `tests/test_b2_020_statements.py`
 
 - [ ] Implement and run `scripts/prepare_b2_020_blind_solve_input.py` to build an auditable, **procedurally isolated** blind-solve handoff at the committed Task-3 revision: create a temporary directory from `git archive <task3-commit>` containing **only** the 24 student practice notebooks, unit `lesson.ipynb`/`review.ipynb`, `lessons/`, `manifest.yaml`, `data/language_fixture.py`, and `data/tiny_encoder_state.py`.
-  The author-only `scripts/generate_language_data.py` is explicitly excluded because it contains the authoring training design.
+  The author-only `scripts/generate_language_data.py` is explicitly excluded because it contains generation/serialization implementation, while the necessary instructional training protocol is already stated in p19 itself.
   Emit a sorted allowlist with SHA-256 for each input and the exact source commit; verify the directory contains no plan, author notes, solution notebook, or unrelated repository file.
   Dispatch a separate fresh GPT-5.6-sol solution session in that directory with only this allowlist, never the author outline, statement-session context, solution notebooks, or a solution design.
   Its sole allowed outputs are exactly `out/practice/p01_solution.ipynb` through `p24_solution.ipynb` and `out/BLIND_OUTPUTS.sha256`; the output manifest lists those 24 relative paths in lexical order with SHA-256, and no other output file is accepted.
-  Implement and run `scripts/import_b2_020_blind_solve_output.py` to reject a missing, extra, renamed, or digest-mismatched output, and before copying run the read-only mutation-marker/AST structural validator (marker count/order/indentation/function/signature/top-level expected-check only, no mutations or answers) against the isolated outputs.
+  Implement and run `scripts/import_b2_020_blind_solve_output.py` to reject a missing, extra, renamed, or digest-mismatched output, and before copying run the read-only mutation-marker/AST structural validator (marker count/order/indentation/function/signature/top-level expected-check plus a best-effort flag for any pre-oracle assertion referencing a hook return/output variable; no mutations or answers) against the isolated outputs.
   Copy only those 24 files to the corresponding branch `practice/pNN_solution.ipynb` paths, and rehash the destination byte-for-byte against `BLIND_OUTPUTS.sha256` before Task 4 tests or mutation work.
   Task 5 may not edit an imported solution notebook. A pre-oracle mutation failure is a hard handoff failure: regenerate the full blind output through a fresh isolated solve and verified import, rather than silently repairing the branch copy.
+  Cap this recovery at two fresh blind-output attempts; a second structural or pre-oracle failure stops the autopilot at a judgment fork with the exact diagnostic rather than looping.
   Retain the input allowlist, output digest, source commit, and verified destination hashes in the post-execution report, proving the committed solution notebooks are exactly the blind-authored artifacts.
 - [ ] Require each solution to preserve the learner-visible header, use the seeded literal data, state every answer, and end with a non-vacuous `### Answer check` plus exact numeric/shape/training assertions.
 - [ ] After all 24 solutions exist, atomically replace B2-020's deferred policy with `solution_policy: required`; test that every declared solution path exists and that any retained deferred policy (rejected by the shared manifest parser as soon as one solution exists) or deleted solution fails inventory, coverage, and layer-boundary checks.
