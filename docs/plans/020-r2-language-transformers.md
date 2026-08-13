@@ -159,10 +159,10 @@ Create `tools/verify_language_transformer_mutations.py` and `tests/test_language
 The untouched corpus must pass all five mutations; each altered solution must fail its named answer assertion:
 
 1. `practice/p07_solution.ipynb` — mutate the explicitly marked context-to-target update hook so its table is not updated;
-2. `practice/p18_solution.ipynb` — mutate the explicitly marked target-shift hook so it supplies unshifted input tokens;
+2. `practice/p18_solution.ipynb` — mutate the explicitly marked target-shift hook so it supplies unshifted targets;
 3. `practice/p11_solution.ipynb` — mutate the explicitly marked masking hook so it leaves the original true token visible;
 4. `practice/p21_solution.ipynb` — mutate the explicitly marked frozen-stage parameter-policy hook so the encoder updates during the frozen stage;
-5. `practice/p24_solution.ipynb` — mutate the explicitly marked evaluation-index hook so it includes one named training row; a separate end-of-notebook disjointness assertion must detect that leaked split.
+5. `practice/p24_solution.ipynb` — mutate the explicitly marked evaluation-index hook so it includes one named training row; the marked `EXPECTED_CHECK:evaluation-indices` assertion inside the final Answer check is the separate end-of-notebook disjointness assertion that must detect that leaked split.
 
 Each mutation-relevant student statement declares the semantic hook's required function name, input/output contract, and the non-solution marker contract below: `# MUTATION_TARGET:<id>:BEGIN`/`END` at the hook body and exactly one top-level `# EXPECTED_CHECK:<id>` immediately preceding the mutation-specific `assert` in the solution's final Answer check.
 It instructs the solver to provide that assertion without supplying a target numeric answer, solution approach, or test expression.
@@ -232,6 +232,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 - [ ] Extend the shared manifest parser in `tools/model.py` with the narrow lifecycle policy: a deferred solution policy is valid only for `B2-020-language-transformers` with `plan: plan-020`, `expires: 2026-08-31`, and **no** declared solution file present; all other deferred manifests, an altered plan/expiry, or even one present B2-020 solution under a deferred policy are hard parse errors.
   Update `tools/audit_curriculum.py` to invoke `load_unit_manifests()` before its raw-YAML notebook inventory so it cannot independently accept a deferred policy that the shared parser rejects.
   This common parser rule is then the enforcement used by inventory, coverage, and layer-boundary consumers; test each consumer observes the same rejection through a copied registered Book 2 fixture.
+  Modify `scripts/ci-local.sh` and create `scripts/verify-historical-deferred-policy.sh` in this task under the explicit historical-policy contract below, with tests in this task; do not defer their behavior to Task 3.
 - [ ] Add a focused fixture demonstrating only the named planned `B2-020-language-transformers` syllabus unit (not arbitrary manifest-less units) is checker-valid until Task 3 atomically publishes its manifest and coverage evidence.
 - [ ] Do not render inventory, Book 2 course structure, or aggregate evidence in this task; Task 3 owns their first valid regeneration.
 - [ ] Commit: `docs: register language Transformer coverage`.
@@ -288,6 +289,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   The generator alone creates `tiny_encoder_checkpoint.py` and `tiny_encoder_state.py`.
   The p19 student statement itself teaches and pins the complete preceding 40-update causal-then-40-update MLM protocol, including architecture/masks/AdamW/update order; this is necessary learner-visible training content, not an answer outline.
   p19 independently reruns that exact protocol from the literal fixture, asserts each phase improves from its own phase-initial loss, and recomputes both final-state held-out objective losses/probes; it does not load either checkpoint/state artifact or copy their constants.
+  The statement/import test rejects `p19_solution.ipynb` if source references `tiny_encoder_state`, `tiny_encoder_checkpoint`, or either artifact's import path.
   p20/p21 may load only `tiny_encoder_state.py` as the committed trained source state.
   Tests reject an initial/random-weight checkpoint before fine-tuning through the functional contract as well as hash consistency.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
@@ -322,8 +324,8 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   Its sole allowed outputs are exactly `out/practice/p01_solution.ipynb` through `p24_solution.ipynb` and `out/BLIND_OUTPUTS.sha256`; the output manifest lists those 24 relative paths in lexical order with SHA-256, and no other output file is accepted.
   Implement and run `scripts/import_b2_020_blind_solve_output.py` to reject a missing, extra, renamed, or digest-mismatched output, and before copying run the read-only mutation-marker/AST structural validator (marker count/order/indentation/function/signature/top-level expected-check plus a best-effort flag for any pre-oracle assertion referencing a hook return/output variable; no mutations or answers) against the isolated outputs.
   Copy only those 24 files to the corresponding branch `practice/pNN_solution.ipynb` paths, and rehash the destination byte-for-byte against `BLIND_OUTPUTS.sha256` before Task 4 tests or mutation work.
-  Task 5 may not edit an imported solution notebook. A pre-oracle mutation failure is a hard handoff failure: regenerate the full blind output through a fresh isolated solve and verified import, rather than silently repairing the branch copy.
-  Cap this recovery at two fresh blind-output attempts; a second structural or pre-oracle failure stops the autopilot at a judgment fork with the exact diagnostic rather than looping.
+  Task 5 may not edit an imported solution notebook. A pre-oracle failure **or named oracle that survives its prescribed mutant** is a hard handoff failure: regenerate the full blind output through a fresh isolated solve and verified import, rather than silently repairing the branch copy.
+  Cap this recovery at two fresh blind-output attempts; a second structural, pre-oracle, or oracle-survival failure stops the autopilot at a judgment fork with the exact diagnostic rather than looping.
   Retain the input allowlist, output digest, source commit, and verified destination hashes in the post-execution report, proving the committed solution notebooks are exactly the blind-authored artifacts.
 - [ ] Require each solution to preserve the learner-visible header, use the seeded literal data, state every answer, and end with a non-vacuous `### Answer check` plus exact numeric/shape/training assertions.
 - [ ] After all 24 solutions exist, atomically replace B2-020's deferred policy with `solution_policy: required`; test that every declared solution path exists and that any retained deferred policy (rejected by the shared manifest parser as soon as one solution exists) or deleted solution fails inventory, coverage, and layer-boundary checks.
