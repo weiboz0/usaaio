@@ -287,6 +287,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 
 - Create: `book2/units/B2-020-language-transformers/practice/p01_solution.ipynb` through `p24_solution.ipynb`
 - Create: `scripts/prepare_b2_020_blind_solve_input.py`
+- Create: `scripts/import_b2_020_blind_solve_output.py`
 - Modify: `book2/units/B2-020-language-transformers/manifest.yaml`
 - Modify: `scripts/ci-local.sh`
 - Modify: `tools/model.py`
@@ -294,7 +295,10 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 
 - [ ] Implement and run `scripts/prepare_b2_020_blind_solve_input.py` to build an auditable isolated blind-solve handoff at the committed Task-3 revision: create a temporary directory from `git archive <task3-commit>` containing **only** the 24 student practice notebooks, unit `lesson.ipynb`/`review.ipynb`, `lessons/`, `manifest.yaml`, `scripts/generate_language_data.py`, and `data/tiny_encoder_checkpoint.py`.
   Emit a sorted allowlist with SHA-256 for each input and the exact source commit; verify the directory contains no plan, author notes, solution notebook, or unrelated repository file.
-  Dispatch a separate fresh GPT-5.6-sol solution session in that directory with only this allowlist, never the author outline, statement-session context, solution notebooks, or a solution design; retain the allowlist and commit in the post-execution report.
+  Dispatch a separate fresh GPT-5.6-sol solution session in that directory with only this allowlist, never the author outline, statement-session context, solution notebooks, or a solution design.
+  Its sole allowed outputs are exactly `out/practice/p01_solution.ipynb` through `p24_solution.ipynb` and `out/BLIND_OUTPUTS.sha256`; the output manifest lists those 24 relative paths in lexical order with SHA-256, and no other output file is accepted.
+  Implement and run `scripts/import_b2_020_blind_solve_output.py` to reject a missing, extra, renamed, or digest-mismatched output, copy only those 24 files to the corresponding branch `practice/pNN_solution.ipynb` paths, and rehash the destination byte-for-byte against `BLIND_OUTPUTS.sha256` before Task 4 tests or mutation work.
+  Retain the input allowlist, output digest, source commit, and verified destination hashes in the post-execution report, proving the committed solution notebooks are exactly the blind-authored artifacts.
 - [ ] Require each solution to preserve the learner-visible header, use the seeded literal data, state every answer, and end with a non-vacuous `### Answer check` plus exact numeric/shape/training assertions.
 - [ ] After all 24 solutions exist, atomically replace B2-020's deferred policy with `solution_policy: required`; test that every declared solution path exists and that any retained deferred policy (rejected by the shared manifest parser as soon as one solution exists) or deleted solution fails inventory, coverage, and layer-boundary checks.
 - [ ] Execute p01–p24 in numeric order through `tools/verify_b2_020_solution_timeouts.py`, each on its own fresh kernel with a 20-second wall-clock timeout, and invoke that same harness from the Book 2 notebook-execution step of `scripts/ci-local.sh` for the B2-020 solutions rather than the unbounded Jupyter CLI route.
