@@ -24,13 +24,14 @@ Its prerequisite-unit list is exactly `[book1:F1-scientific-python, book1:F3-mat
 Its manifest `concepts_used` and `concept_prerequisites` are exactly the concepts actually consumed by the teaching surface: B2-019's `attention-mask`, `causal-self-attention`, `sinusoidal-positional-encoding`, and `transformer-block`; plus Book 1's `book1:random-seeding`, `book1:matrix-multiplication`, `book1:torch-tensors`, `book1:nn-module`, `book1:requires-grad`, `book1:tensor-shape-tracing`, `book1:softmax`, `book1:cross-entropy-loss`, `book1:torch-optimizers`, and `book1:autograd-training`.
 The five direct qualified Book 1 units are required because the current checker does not propagate qualified imports through an unqualified same-book prerequisite; they put every declared Book 1 concept in the checked closure rather than relying on an implicit transitive permission.
 The bridge may link `book1:C8-embeddings` for remediation, but must never relabel the Book 1 evidence-import concepts as B2-020-owned or add them to the manifest closure.
+`book1:C8-embeddings` is deliberately absent from the prerequisite-unit list: B2-020 consumes no C8-owned concept, and the bridge's remediation link is reachable transitively through B2-019, which does declare C8. The list names only units supplying a concept in the checked closure.
 
 The unit depends on `B2-019-attention-transformers`.
 It reuses Book 1 C8 only as a qualified remediation reference for token-to-index and fixed-vector vocabulary, and it reuses B2-019 for the Transformer block and causal mask.
 It must not re-teach tokenization, GloVe loading, or fixed-vector similarity.
 All corpora, labels, vocabulary maps, seeds, expected probes, and checkpoints are small, explicit, synthetic, CPU-only, and committed as source-generation code or literal notebook data.
 No internet model hub, external dataset, opaque checkpoint, tokenizer library, or hidden pretrained parameter is in scope.
-Every CPU training task uses vocabulary size at most 12, sequence length at most 8, one Transformer block with model width at most 8, at most two heads, and at most 80 fixed optimization epochs; a fresh solution notebook must finish within 20 seconds and a mutated notebook within 120 seconds.
+Every CPU training task uses vocabulary size at most 12, sequence length at most 8, one Transformer block with embedding/attention width at most 8 (the feed-forward inner width is separately pinned at 16), at most two heads, and at most 80 fixed optimization epochs; a fresh solution notebook must finish within 20 seconds and a mutated notebook within 120 seconds.
 The Task 3/4 execution harness must measure a per-notebook 20-second wall-clock timeout and Task 5's mutation client must use 120 seconds, with fast regression tests that inject shorter deadlines while separately pinning the production constants.
 
 ### Owned concepts
@@ -55,7 +56,7 @@ It therefore supplies the missing `model-training` evidence for `nlp-word-embedd
 |---:|---|---|
 | 1 | `01-train-token-embeddings.ipynb` | one-hot lookup, embedding table shapes, context-to-target objective, cross-entropy gradient flow, seeded embedding training, and fixed versus learned-vector boundary |
 | 2 | `02-causal-transformer-language-model.ipynb` | token inputs plus B2-019's sinusoidal positional table, causal attention reuse from B2-019, shift-right labels, logits and token loss shapes, and tiny causal LM training |
-| 3 | `03-pretraining-objectives.ipynb` | causal next-token versus masked-token objectives, corruption/masking protocol, leakage counterexamples, objective selection, and reproducible pretraining traces |
+| 3 | `03-pretraining-objectives.ipynb` | causal next-token versus masked-token objectives, corruption/masking protocol, leakage counterexamples, objective selection, reproducible pretraining traces, and the pretraining stack's two architecture deltas from B2-019's block — learned positional embeddings (replacing B2-019's sinusoidal table) and a GELU feed-forward activation |
 | 4 | `04-fine-tune-a-language-transformer.ipynb` | attach a task head, checkpoint/state boundary, frozen versus trainable parameters, supervised classification fine-tuning, and held-out evaluation |
 | 5 | `05-language-task-design-and-audit.ipynb` | classify, tag, generate, and retrieve task framing; architecture/loss/metric choice; data-split and leakage audit; complete end-to-end application trace |
 
@@ -155,7 +156,7 @@ Tests must first demonstrate rejection of a second manifest by the legacy single
 
 ## Permanent answer-affecting mutations
 
-Create `tools/verify_language_transformer_mutations.py` and `tests/test_language_transformer_mutations.py` using the same fail-closed source-match and wrapped-real-answer-check pattern as Plan 019.
+Create `tools/verify_language_transformer_mutations.py` and `tests/test_language_transformer_mutations.py` using the same fail-closed marker/AST and wrapped-real-answer-check pattern as Plan 019.
 The untouched corpus must pass all five mutations; each altered solution must fail its named answer assertion:
 
 1. `practice/p07_solution.ipynb` — mutate the explicitly marked context-to-target update hook so its table is not updated;
@@ -229,7 +230,8 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   In that partial registration, transfer `nlp-word-embeddings` from `destination: book1:C8-embeddings` / `disposition: extend-existing-unit` to `destination: B2-020-language-transformers` / `disposition: new-unit`, retain only its declared Book 1 inputs as qualified prerequisites, and reserve the already-declared B2-owned `learned-token-embedding` concept for its future evidence claim.
 - [ ] Replace the legacy `scope-check` special case for `nlp-word-embeddings` in `tools/checks/scope.py` with its B2-020 ownership contract: destination `B2-020-language-transformers`, disposition `new-unit`, and coverage limited to the lifecycle states `partial` (Task 2) or `covered` (Task 3).
   Add `tests/test_scope.py` fixtures that accept each named lifecycle state and reject the former Book 1 C8 destination/`extend-existing-unit` state after this plan.
-- [ ] Extend the shared manifest parser in `tools/model.py` with the narrow lifecycle policy: a deferred solution policy is valid only for `B2-020-language-transformers` with `plan: plan-020`, `expires: 2026-08-31`, and **no** declared solution file present; all other deferred manifests, an altered plan/expiry, or even one present B2-020 solution under a deferred policy are hard parse errors.
+- [ ] Extend the shared manifest parser in `tools/model.py` with the narrow lifecycle policy: a deferred solution policy is valid only for `B2-020-language-transformers` with `plan: plan-020`, `expires: 2026-09-30`, and **no** declared solution file present; all other deferred manifests, an altered plan/expiry, or even one present B2-020 solution under a deferred policy are hard parse errors.
+  The historical-policy machinery lands in this task alongside that parser change, not later: the typed `load_unit_manifests(root, *, as_of_date: date | None = None)` parameter, the `scripts/ci-local.sh` rejection of `USAAIO_HISTORICAL_VERIFY`/`USAAIO_AS_OF_DATE`, and `scripts/verify-historical-deferred-policy.sh` are all Task 2 deliverables, and the contract governing their semantics is stated under Task 3 for readability only.
   Update `tools/audit_curriculum.py` to invoke `load_unit_manifests()` before its raw-YAML notebook inventory so it cannot independently accept a deferred policy that the shared parser rejects.
   This common parser rule is then the enforcement used by inventory, coverage, and layer-boundary consumers; test each consumer observes the same rejection through a copied registered Book 2 fixture.
   Modify `scripts/ci-local.sh` and create `scripts/verify-historical-deferred-policy.sh` in this task under the explicit historical-policy contract below, with tests in this task; do not defer their behavior to Task 3.
@@ -262,7 +264,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 - [ ] Require a bridge diagnostic that distinguishes imported fixed-vector/token-index remediation from B2-019's attention/causal-mask prerequisite and supplies qualified remediation links.
 - [ ] Create the overview, five lessons, review, generator, and all 24 final student statements to the ledger; no solutions, executed outputs, external corpus, hidden state, or pretrained checkpoint may enter a student notebook.
 - [ ] Pin `compute.policy: cpu`, fixed seed `20260812`, every session/practice minute, all source/solution paths, exact prerequisite lists, and concept tags.
-  Because this is statement-only publication, set the B2-020 manifest's policy exactly to `{status: deferred, plan: plan-020, expires: 2026-08-31}`; the shared parser must compare that date to the current UTC date and hard-fail only when `as_of_date > expires` (the expiry date itself remains valid), so this intentionally temporary intermediate commit is not green after the deadline.
+  Because this is statement-only publication, set the B2-020 manifest's policy exactly to `{status: deferred, plan: plan-020, expires: 2026-09-30}`; the shared parser must compare that date to the current UTC date and hard-fail only when `as_of_date > expires` (the expiry date itself remains valid), so this intentionally temporary intermediate commit is not green after the deadline.
   Its focused tests must freeze the clock on each side of the expiry and prove inventory/coverage/layer-boundary accept only the unexpired named temporary debt and surface its expiry rather than treating absent solutions as valid generally.
   Extend `load_unit_manifests(root, *, as_of_date: date | None = None)` with a typed, non-environment date parameter; omitted by every normal consumer, it uses current UTC, while `scripts/ci-local.sh` must reject `USAAIO_HISTORICAL_VERIFY` and `USAAIO_AS_OF_DATE` if present before any check runs.
   The only historical path is the new explicit `scripts/verify-historical-deferred-policy.sh <archived-commit> <ISO-date>` command, which extracts that commit to a temporary archive and calls a dedicated Python entry point that passes the validated ISO date through this `as_of_date` parameter.
@@ -294,6 +296,13 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   p19 independently reruns that exact protocol through this callable from the literal fixture, asserts each phase improves from its own phase-initial loss, and recomputes both final-state held-out objective losses/probes; it does not load either checkpoint/state artifact or copy their constants.
   The statement/import test rejects `p19_solution.ipynb` if source references `tiny_encoder_state`, `tiny_encoder_checkpoint`, or either artifact's import path, and execution runs p19 in a temporary copy containing only its notebook and `data/language_fixture.py` with the state/checkpoint paths absent; a dynamic-import/path-load bypass fixture must fail.
   The isolated p19 test invokes and instruments this callable's structured trace plus patchable optimizer/model constructors to prove its own 40 causal then 40 MLM ordered updates, causal then bidirectional MLM masks, and one optimizer continuous across the boundary; skip-MLM, reset-optimizer, and causal-mask-in-MLM mutants each fail named assertions.
+  **Returned-state identity (Review 4 `[sol]` BLOCKER).** Instrumenting the trace proves that updates happened; it does not prove they happened to the objects returned.
+  The isolated test must additionally assert that the parameter objects held by the instrumented optimizer are the SAME objects reachable from the returned `encoder`/`head` — identity over `optimizer.param_groups` versus `encoder.parameters()`/`head.parameters()`, not equality of values — and must snapshot those same returned objects immediately before the first update and after the last, requiring their tensors to differ.
+  It then independently reconstructs the seeded-initial state and requires each returned held-out objective loss to beat that baseline by a frozen margin, with every probe meeting a pinned oracle, so that "recomputes" is replaced by a functional assertion about the returned model.
+  A `train-A-return-fresh-B` mutant — which trains one model through all 80 valid updates and returns a freshly constructed model whose held-out values it then recomputes — must fail a named assertion.
+  **Read isolation for p19 (Review 4 `[sol]` BLOCKER).** A literal-name scan plus temporary-copy execution does not stop a synthesized absolute path, glob, or `importlib` load from the still-readable original repository.
+  p19's isolated execution must run under an enforced read allowlist whose only readable project root is the temporary copy; where the runner cannot enforce that directly, it must emit a complete read-access log that the test validates against the allowlist.
+  Dedicated mutants reaching `tiny_encoder_state`/`tiny_encoder_checkpoint` outside the temporary copy by absolute path, by glob, and by `importlib.import_module` must each fail.
   p20/p21 must load `tiny_encoder_state.py` as their sole pre-finetuning encoder state, reconstruct `ENCODER_STATE_HASH` before the first fine-tuning update, and assert equality to the shared `ENCODER_STATE_HASH` verified against `tiny_encoder_checkpoint.py`.
   Their tests replace the loader with a random/fresh or no-load encoder and require the provenance assertion to fail before fine-tuning.
   Tests reject an initial/random-weight checkpoint before fine-tuning through the functional contract as well as hash consistency.
@@ -326,6 +335,9 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   The author-only `scripts/generate_language_data.py` is explicitly excluded because it contains generation/serialization implementation, while the necessary instructional training protocol is already stated in p19 itself.
   Emit a sorted allowlist with SHA-256 for each input and the exact source commit; verify the directory contains no plan, author notes, solution notebook, or unrelated repository file.
   Dispatch a separate fresh GPT-5.6-sol solution session in that directory with only this allowlist, never the author outline, statement-session context, solution notebooks, or a solution design.
+  **Read isolation, not just input digests (Review 4 `[sol]` MAJOR).** The allowlist and digests prove what was copied in and what came back; they do not constrain what the session READ.
+  The solve must run with the temporary directory as its enforced readable project root, or else produce a complete read-access log that the importer validates against the allowlist before accepting any output; a session that reads the generator, either checkpoint, the plan file, or author material through an absolute path while emitting digest-perfect outputs must be rejected.
+  The statement-side scan is symmetric: a student notebook referencing a solution notebook name, a solution path, or any author-only artifact is a hard failure.
   Its sole allowed outputs are exactly `out/practice/p01_solution.ipynb` through `p24_solution.ipynb` and `out/BLIND_OUTPUTS.sha256`; the output manifest lists those 24 relative paths in lexical order with SHA-256, and no other output file is accepted.
   Implement and run `scripts/import_b2_020_blind_solve_output.py` to reject a missing, extra, renamed, or digest-mismatched output, and before copying run the read-only mutation-marker/AST structural validator (marker count/order/indentation/function/signature/top-level expected-check plus a best-effort flag for any pre-oracle assertion referencing a hook return/output variable; no mutations or answers) against the isolated outputs.
   Copy only those 24 files to the corresponding branch `practice/pNN_solution.ipynb` paths, and rehash the destination byte-for-byte against `BLIND_OUTPUTS.sha256` before Task 4 tests or mutation work.
@@ -375,6 +387,7 @@ PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache bash scripts/pre-mer
 - [ ] Resolve every `[OPEN]` item, rerun affected verification, append the exact evidence and reviewer verdicts below, and commit the post-execution report.
 - [ ] Before the content gate and again immediately before merge, emit a `blind-provenance` report that compares every final statement byte hash to the Task-3 input allowlist and every final solution byte hash to `BLIND_OUTPUTS.sha256`.
   Any difference must name the file, reason, authoring stage, and reviewer confirmation as a `post-blind amendment`; only a zero-difference report may claim the committed solutions are exactly the blind-authored artifacts.
+  A SEMANTIC change to any statement after the Task-3 blind input was cut invalidates the affected blind output outright: it requires a fresh isolated solve of the affected notebooks rather than a reported `post-blind amendment`, which remains available only for non-semantic edits (typography, formatting, header metadata) that the report must classify explicitly.
 - [ ] Push the feature branch, open a PR with the configured SSH origin and `.gh-token`, rerun `scripts/pre-merge-guard.sh --pr`, then squash-merge from outside this worktree.
 
 ## Out of scope
@@ -484,7 +497,40 @@ The next review round evaluates this consolidated amendment and is the first rou
   The explicit five-unit Book 1 closure now contains all ten qualified concepts, p19 is an executable model-training surface, B2-020 cannot schedule before B2-019 completion, and all five mutations bind behavior through student-facing semantic hooks to a separate named oracle.
 - This supersedes Review 1 self-review; no self-review `[OPEN]` item remains.
 
-Pending fresh independent Review 4 verdicts: `[sol]`, `[glm]`, and `[fable]`.
+### Review 4 — glm (2026-08-28)
+
+- **Verdict**: APPROVE WITH NITS.
+- `[glm][FIXED]` verified both prior findings genuinely closed: p10 is present in the owned-concept map, coverage map, and week-9 schedule; each of the five mutations binds a unique marker hook to a distinct named oracle with no ambiguous bindings.
+- Recomputed every ledger independently: practice minutes 100 + 530 + 490 = 1,120; weekly 255/275/420/270/380/60 = 1,660; bridge 30 + 5x90 + 1,120 + 60 = 1,660 = 27.67 h inside the 26-32 h band; type and difficulty mixes match; all 24 practices scheduled exactly once and at or after their teaching session; all ten Book 1 concepts map to the five pinned units.
+- `[glm][FIXED]` NIT the width cap could be read to include the feed-forward inner width; now stated as embedding/attention width with the feed-forward width called out separately.
+- `[glm][FIXED]` NIT the `2026-08-31` deferred-policy expiry left three days of runway with implementation unstarted; amended below.
+
+### Review 4 — fable (2026-08-28)
+
+- **Verdict**: APPROVE WITH NITS.
+- `[fable][FIXED]` verified all three prior findings closed by construction, including testing span ambiguity (two implementers converge because every mutant body is a `return`), hook-bypass drift (fail-closed), and the wrong-exception path through the named oracle (fails closed).
+- Independently reconfirmed the arithmetic, the registry facts against every `book1/units/*/manifest.yaml`, and the four checker claims the plan relies on; found no unsatisfiable requirement pair across five constructed conflict candidates.
+- `[fable][FIXED]` **MAJOR** the `2026-08-31` expiry literal is double-pinned and stale; the fail-closed mechanism is right and only the constant is wrong. Amended to `2026-09-30` at both pinned sites.
+- `[fable][FIXED]` **MINOR** Session 3's required teaching surface omitted the pretraining stack's two architecture deltas — learned positional embeddings (against Session 2's sinusoidal reuse) and GELU — neither of which appears anywhere in either book, so p19 would have pinned untaught content. Both are now required teaching surface.
+- `[fable][FIXED]` **MINOR** the historical-policy contract was mandated in Task 2 but written under Task 3; Task 2 now names the deliverables explicitly.
+- `[fable][FIXED]` NITs: vestigial "source-match" phrasing reworded to the governing marker/AST contract; C8's deliberate absence from the prerequisite-unit list now recorded with its reason.
+- `[fable][WONTFIX]` NIT relocating the `encoder.zero_grad(set_to_none=True)` requirement out of the `frozen-stage` hook row: it is p21 statement-protocol text, harmless to mutation semantics, and moving it risks detaching it from the protocol it constrains.
+
+### Review 4 — sol (2026-08-28)
+
+- **Verdict**: REJECT.
+- `[sol][FIXED]` **BLOCKER** p19's training was never bound to the state it returns. Instrumenting the trace proves updates occurred, not that they occurred to the returned objects, so a `train-A-return-fresh-B` notebook could train one model for all 80 valid updates, return a fresh model, recompute its held-out values, and pass. The contract now requires optimizer-parameter identity with the returned `encoder`/`head`, before/after snapshots of those same objects, and held-out losses beating an independently reconstructed seeded-initial baseline by frozen margins, with the near-miss pinned as a required failing mutant.
+- `[sol][FIXED]` **BLOCKER** p19's isolation was porous: a literal-name scan plus temporary-copy execution does not stop a synthesized absolute path, glob, or `importlib` load from the still-readable original repository. Execution now runs under an enforced read allowlist or a validated read-access log, with all three bypass mutants required to fail.
+- `[sol][FIXED]` **MAJOR** the blind-solve digests proved what was copied and returned, never what the session read. The solve now runs with the handoff directory as its enforced readable root or emits a validated read-access log, the statement-side scan symmetrically rejects solution paths and author-only artifacts, and a semantic statement change after the Task-3 cut invalidates the affected blind output outright rather than being reported as a `post-blind amendment`.
+- `[sol]` confirmed as already closed: the C7 prerequisite fix, the p20/p21 checkpoint contract's rejection of an initial random state, the five mutation oracles, the fail-closed schedule and policy transition, and Task 6 as a real named verification phase. It also judged the scope coherent as one vertical unit plus enabling infrastructure rather than three plans.
+
+### Round 4 outcome and amendment
+
+Round 4 is `[self]` APPROVE, `[glm]` APPROVE WITH NITS, `[fable]` APPROVE WITH NITS, `[sol]` REJECT — no consensus.
+Every finding above is amended in this revision, including the two `[sol]` blockers, which are the substantive ones: both were cases of a contract that looked rigorous while remaining circumventable, the failure class this project's gates have caught repeatedly.
+The deferred-policy expiry moves from `2026-08-31` to `2026-09-30`. Two independent reviewers raised it, `[fable]` at MAJOR with the fix prescribed as design-neutral and required before implementation. It is amended here rather than through a separate follow-up plan because no deferred policy is live yet: the plan has not begun implementation, so this is plan-gate iteration, not the silent extension of a running policy that the plan itself forbids.
+
+Pending fresh independent Review 5 verdicts: `[sol]`, `[glm]`, and `[fable]`.
 
 ## Content Review
 
