@@ -208,6 +208,8 @@ process-group apparatus, and student statements carry no solution-marker contrac
 - Modify: `scripts/ci-local.sh`
 - Create: `scripts/verify-historical-deferred-policy.sh`
 - Modify: `tools/checks/scope.py`
+- Modify: `book2/curriculum/coverage-map.yaml` (Task-2 erratum: checkbox 4's partial `nlp-word-embeddings` destination/disposition transfer lives here — PARTIAL only, `coverage` stays `partial`; the `covered` promotion is Task 3)
+- Modify: `tests/test_model.py` (Task-2 erratum: checkbox 6's B2-020-only deferred-policy parser change supersedes this file's generic-deferred-policy assertions)
 - Modify: `tests/test_b2_019_statements.py`
 - Modify: `tests/test_integration.py`
 - Modify: `tests/test_scope.py`
