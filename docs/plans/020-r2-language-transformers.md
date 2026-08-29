@@ -216,6 +216,22 @@ process-group apparatus, and student statements carry no solution-marker contrac
 - Modify: `tests/test_scope.py`
 - Create: `tests/test_b2_020_statements.py`
 
+>  **DESIGN DIRECTIVE (user decision 2026-08-29) — register B2-020 via `planned_units`, not `units:`.**
+>  A first Task-2 attempt registered B2-020 as a shipped `units:` entry; that fought the repo's
+>  purpose-built `planned_units` / `provisional_concepts` machinery (see `tools/model.py:PlannedUnit`
+>  and the extensive `planned_units` handling in `tools/render_curriculum_roadmap.py`) and cascaded
+>  stale generated evidence (inventory, roadmap, coverage-audit), each needing a projection
+>  workaround. B2-020 is a registered-but-not-yet-shipped unit — exactly what `planned_units` is
+>  for. Register it as a `planned_units` entry with its eight concepts as `provisional_concepts`,
+>  so the existing machinery keeps the inventory/roadmap/coverage renderers current by design with
+>  NO per-renderer projection code. The attempt was reverted to `394addc`; that first attempt's
+>  blast radius (the `tests/test_audit_curriculum.py` count 11→19, the `tests/test_attention_mutations.py`
+>  digest, and the `tests/test_book2_schedule.py` fixture edits recorded in the Files-list erratum
+>  above) was units-approach-specific and does NOT apply to the planned-units design; the real
+>  Files list will be whatever the planned-units registration actually touches. The
+>  deferred-solution-policy parser, the `scope-check` transfer, and `verify-historical-deferred-policy.sh`
+>  remain required either way.
+
 - [ ] Add the `language-transformers` cluster, the eight owned concepts, and B2-020's exact unit/prerequisite/concept-prerequisite contract to Book 2's canonical syllabus.
 - [ ] Pin the five direct qualified Book 1 prerequisite units listed above and add a focused prereq-check fixture proving each of the ten declared Book 1 concepts is admitted only through those explicit units.
 - [ ] Make B2-020 double-length in both syllabus and manifest contract and extend the standards roster to the exact text `F5, F6, C7, C11, C12, B2-019, and B2-020`, without altering the recorded C7 non-conformance history.
