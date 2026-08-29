@@ -632,7 +632,23 @@ self-inflicted phase-ordering slip from the round-8 timeout reword (an execute-s
 placed in the statement-authoring task). Fixed by deletion; Task 4 already owns solution
 execution. Three of four approve with the fourth's sole finding a one-line coherence fix.
 
-Pending fresh Review 10 verdicts: `[sol]`, `[glm]`, and `[fable]`.
+### Review 10 — self / glm / fable / sol (2026-08-29)
+
+- **`[self]`**: APPROVE — deleted the misplaced Task-3 checkbox; ran a full phase-ordering self-review (no task depends on a later task's artifact; every referenced file is created by an earlier task).
+- **`[glm]`**: APPROVE — diff is only the deletion plus round-9 records; ledgers recompute; prior verdicts unaltered.
+- **`[fable]`**: APPROVE, no findings — "the plan is implementable end-to-end as written"; deletion left no orphan (Task 4 solely owns solution execution), self-containedness and the `optimizer_step` contract intact, phase ordering sound end-to-end.
+- **`[sol]`**: APPROVE — "no content findings remain"; all six tasks correctly ordered, no normative dangling reference to removed machinery.
+
+## PLAN GATE CLOSED — 4-way consensus (Review 10, 2026-08-29)
+
+All four reviewers APPROVE with no open blockers. The gate ran ten rounds. Rounds 4-7 were a
+genuine design problem — an anti-cheat arms race the plan had pulled p19 into (each round `[sol]`
+found a sharper injection evasion of the prior round's fix). The user directed on 2026-08-28 that
+anti-cheat is out of scope and no solution may require a sandbox; the resulting strip (Review 8
+onward) reduced the plan to its material core, and the gate converged: Review 8 caught one real
+content defect the strip introduced (a dropped `optimizer_step` field), Reviews 9-10 closed a
+single misplaced checkbox. What ships is a materially simpler, self-contained, correctly phased
+plan. Implementation may proceed.
 
 ## Content Review
 
