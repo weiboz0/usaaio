@@ -31,8 +31,8 @@ It reuses Book 1 C8 only as a qualified remediation reference for token-to-index
 It must not re-teach tokenization, GloVe loading, or fixed-vector similarity.
 All corpora, labels, vocabulary maps, seeds, expected probes, and checkpoints are small, explicit, synthetic, CPU-only, and committed as source-generation code or literal notebook data.
 No internet model hub, external dataset, opaque checkpoint, tokenizer library, or hidden pretrained parameter is in scope.
-Every CPU training task uses vocabulary size at most 12, sequence length at most 8, one Transformer block with embedding/attention width at most 8 (the feed-forward inner width is separately pinned at 16), at most two heads, and at most 80 fixed optimization epochs; a fresh solution notebook must finish within 20 seconds and a mutated notebook within 120 seconds.
-The Task 3/4 execution harness must measure a per-notebook 20-second wall-clock timeout and Task 5's mutation client must use 120 seconds, with fast regression tests that inject shorter deadlines while separately pinning the production constants.
+Every CPU training task uses vocabulary size at most 12, sequence length at most 8, one Transformer block with embedding/attention width at most 8 (the feed-forward inner width is separately pinned at 16), at most two heads, and at most 80 fixed optimization epochs; a fresh solution notebook must finish within 20 seconds.
+CI enforces a plain per-notebook 20-second wall-clock timeout on fresh solution execution; the Task-5 integrity tests re-execute variant-substituted copies of the five concept-critical solutions and allow up to 120 seconds each. No execution harness, mutation client, or injected-deadline machinery is required.
 
 ### Owned concepts
 
@@ -283,9 +283,9 @@ process-group apparatus, and student statements carry no solution-marker contrac
   `data/language_fixture.py` contains only the fixed literal vocabulary, token-ID sequences, masks, splits, and labels needed by students, never author training code, answers, loss targets, or generated weights.
   The generator alone creates `tiny_encoder_checkpoint.py` and `tiny_encoder_state.py`.
   The p19 student statement teaches and pins the full pretraining protocol as learner-visible content: the 40-update causal phase, then the 40-update MLM phase, the architecture, masks, AdamW config, and update order.
-  p19 exposes `run_pretraining_protocol(fixture) -> (encoder, head, phase_trace)` and independently runs that protocol from the literal fixture; `phase_trace` has 80 ordered records with `phase`, `update_index`, `mask_mode`, and `loss`.
-  Its `### Answer check` is FUNCTIONAL: each phase's loss improves from that phase's initial loss, the final held-out objective losses and probes beat the seeded-initial baseline by the frozen margins, and the trace has the correct phase structure and update counts.
-  A light answer-check-integrity test (per `## Answer-check integrity`) confirms the honest solution's Answer check passes and that named conceptual mistakes fail it — skip-MLM, reset-optimizer between phases, and causal-mask-during-MLM. p19 trains from the fixture and does not load the generated checkpoint or state artifact.
+  p19 exposes `run_pretraining_protocol(fixture) -> (encoder, head, phase_trace)` and independently runs that protocol from the literal fixture; `phase_trace` has 80 ordered records with `phase`, `update_index`, `mask_mode`, `optimizer_step` (read from the single optimizer's own state), and `loss`.
+  Its `### Answer check` is FUNCTIONAL: each phase's loss improves from that phase's initial loss, the final held-out objective losses and probes beat the seeded-initial baseline by the frozen margins, and the trace has the correct phase structure, update counts, and a single optimizer whose `optimizer_step` runs continuously 1..80 across the phase boundary (so a phase-2 optimizer reset is caught).
+  A light answer-check-integrity test (implemented in Task 5 alongside the five function-substitution tests; stated here as contract-for-readability) confirms the honest solution's Answer check passes and that named conceptual mistakes fail it — skip-MLM, reset-optimizer between phases (caught by the `optimizer_step` continuity assertion), and causal-mask-during-MLM. p19 trains from the fixture and does not load the generated checkpoint or state artifact.
   There is no sandbox, no per-step optimizer-transition instrumentation, and no injection-mutant contract: the check verifies that the training worked, not that the runtime was un-tampered.
   p20/p21 load `tiny_encoder_state.py` as their sole pre-fine-tuning encoder state and confirm `ENCODER_STATE_HASH` matches; a no-load/random-encoder variant fails the Answer check.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
@@ -320,9 +320,9 @@ process-group apparatus, and student statements carry no solution-marker contrac
 
 - Create: `tests/test_language_transformer_checks.py`
 - Modify: `scripts/ci-local.sh`
-- Modify: `tests/test_b2_020_statements.py`
 
 - [ ] Implement the five answer-check-integrity tests from `## Answer-check integrity`: for each concept-critical practice, confirm the untouched solution's `### Answer check` passes, and that substituting the named function's wrong-answer variant in a working copy of the solution makes the Answer check fail.
+- [ ] Add, in the same file, the p19 protocol-variant integrity tests (skip-MLM, reset-optimizer, causal-mask-during-MLM) and the p20/p21 no-load/random-encoder variant test; these are protocol/loader variants rather than single-function substitutions.
 - [ ] Wire `tests/test_language_transformer_checks.py` into the Book 2 portion of local CI.
 - [ ] Prove every wrong-answer variant is rejected, the untouched corpus passes, and the tests need no sandbox or external isolation.
 - [ ] Commit: `test: lock language Transformer answer-check integrity`.
@@ -535,6 +535,11 @@ All four `[sol]` findings were defects in the Review-4 amendment itself — thre
 - `[sol][FIXED]` **BLOCKER** the round-5 returned-state fix still permitted an IN-cycle injection: copy model A's trained tensors into the returned model B during B's `forward`, so loss/gradients/step are all genuinely on B yet the values are A's, injected inside a cycle the round-5 rule only guarded from the outside. Because a correct final value is indistinguishable from a trained one, no result-level check can separate them; the fix pins the PROCESS instead — parameters held tensor-identical through forward/backward, and each of the 80 post-step optimizer states (parameters AND the AdamW moment buffers) required to equal an independently recomputed AdamW transition of the captured pre-step state under the observed gradient. `copy-into-B-during-forward` joins the required failing mutants. The moment-buffer inclusion pre-empts the obvious pivot of injecting into `exp_avg` rather than the parameters.
 - `[sol]` confirmed the other three Review-5 fixes fully closed: read isolation (no residual self-log fallback; judgment-fork stop stated for both p19 and the blind solve), the enumerated forbidden-path fix (no remaining clause forbids `tiny_encoder_state.py`), and the mechanical semantic-change digest (a changed cell source cannot be relabeled as metadata). No new contradiction with earlier-accepted contracts.
 
+### Review 6 — self (2026-08-28)
+
+- **Verdict**: APPROVE.
+- Applied the round-6 amendment (per-step transition fix + fable AdamW fix) and re-read every amended sentence; ledgers unchanged.
+
 ### Round 6 outcome and amendment
 
 Round 6 is `[self]` APPROVE, `[glm]` APPROVE, `[fable]` APPROVE WITH NITS, `[sol]` REJECT — no consensus.
@@ -554,6 +559,11 @@ The single `[sol]` blocker is one more level of the returned-state injection: ro
 
 - **Verdict**: REJECT.
 - **BLOCKER** gradient substitution: the per-step transition check trusted the *observed* gradient came from the pinned loss; a `.grad` hook forges it while parameters stay tensor-identical through forward/backward. Prescribed fix: independently recompute each step's gradient of the pinned loss and require equality.
+
+### Review 7 — self (2026-08-28)
+
+- **Verdict**: APPROVE.
+- Applied the round-7 amendment (per-step transition covering the moment buffers; the three round-6 NITs) and verified the amended paragraphs read coherently.
 
 ### Scope change — user directive (2026-08-28): anti-cheat is out of scope
 
@@ -579,7 +589,28 @@ the harness.
 The rewrite touched no ledger row (verified). This is a materially simpler plan state and starts
 a fresh review round.
 
-Pending fresh Review 8 verdicts on the simplified plan: `[sol]`, `[glm]`, and `[fable]`.
+### Review 8 — glm (2026-08-28)
+
+- **Verdict**: APPROVE WITH NITS.
+- Verified via `git diff` that the strip touched no ledger/schedule/concept row; the five pinned functions are consistent across Tasks 3/4/5; round history intact. NITs: the stale lines 34-35, and p19's light test wording. Both fixed below.
+
+### Review 8 — fable (2026-08-28)
+
+- **Verdict**: APPROVE WITH NITS.
+- Confirmed self-containedness survived (GELU/AdamW/learned-positional still taught Session 3 before p19), the generator artifact chain is coherent without p19 self-certification, and Task 6 is a real verification phase; re-derived every ledger.
+- `[fable][FIXED]` **MAJOR** the strip dropped `optimizer_step` from p19's `phase_trace`, which made the required-failing `reset-optimizer` honest mistake undetectable by the functional check (a fresh phase-2 Adam still improves loss within margin). Restored `optimizer_step` and the 1..80 cross-phase continuity assertion — teaching-adjacent, design-neutral. Plus the stale-lines and Task-5 assignment MINORs.
+
+### Review 8 — sol (2026-08-28)
+
+- **Verdict**: REJECT.
+- Stated plainly that "the simplified content design is sound"; confirmed self-containedness, the five wrong-answer variants, the generator artifact chain, and Task 6. Raised no gameability finding (out of scope).
+- `[sol][FIXED]` **MAJOR** the removed timeout/mutation machinery remained globally required at lines 34-35 (a 120s mutated-notebook path, a Task 3/4 "execution harness", a Task 5 "mutation client", injected-deadline regression tests) — an implementer following the global scope would resurrect deleted machinery. Reworded to the plain 20s per-notebook CI timeout (with a 120s bound only for Task 5's variant re-executions).
+
+### Round 8 outcome and amendment
+
+Round 8 is `[self]` APPROVE, `[glm]` APPROVE WITH NITS, `[fable]` APPROVE WITH NITS, `[sol]` REJECT — no consensus, but the character of the round confirms the strip worked: `[sol]`'s reject is janitorial (a stale requirement I forgot to clean up), not another injection evasion, and it explicitly calls the content design sound. `[fable]`'s MAJOR is a real content defect the strip introduced — dropping `optimizer_step` broke a legitimate honest-mistake check — now fixed by restoring the field. All round-8 findings are content/coherence; none reopens anti-cheat.
+
+Pending fresh Review 9 verdicts: `[sol]`, `[glm]`, and `[fable]`.
 
 ## Content Review
 
