@@ -321,14 +321,26 @@ def _render_book2_document(schedule: Book2CourseSchedule) -> str:
         sum(allocation.minutes for allocation in week.allocations)
         for week in schedule.weeks
     ]
+    first_local = schedule.weeks[0].week
+    last_local = schedule.weeks[-1].week
+    first_global = schedule.global_weeks[0]
+    last_global = schedule.global_weeks[-1]
+    scheduled_units = list(
+        dict.fromkeys(
+            allocation.unit
+            for week in schedule.weeks
+            for allocation in week.allocations
+            if allocation.unit is not None
+        )
+    )
     lines = [
         "# Book 2 Schedule",
         "",
         f"Status: {schedule.status}.",
         "",
         (
-            "The independent Round 2 schedule runs across local weeks 1–6 and "
-            "display weeks 41–46."
+            f"The independent Round 2 schedule runs across local weeks "
+            f"{first_local}–{last_local} and display weeks {first_global}–{last_global}."
         ),
         (
             f"Its explicit ledger totals {schedule.total_minutes:,} minutes; "
@@ -336,7 +348,11 @@ def _render_book2_document(schedule: Book2CourseSchedule) -> str:
                 "this staged schedule grants no live coverage until a manifest is "
                 "installed and reconciled."
                 if schedule.status == "staged"
-                else "the live manifest reconciles every lesson, practice ID, path, and minute."
+                else (
+                    "the live manifest reconciles every lesson, practice ID, path, and minute."
+                    if len(scheduled_units) == 1
+                    else "the live manifests reconcile every lesson, practice ID, path, and minute."
+                )
             )
         ),
         "",
@@ -350,15 +366,31 @@ def _render_book2_document(schedule: Book2CourseSchedule) -> str:
             f"| {week.week} | {global_week} | "
             f"{_book2_allocation_description(week)} | {total} |"
         )
+    lines.append("")
+    for unit in scheduled_units:
+        unit_totals = [
+            (
+                week.week,
+                sum(
+                    allocation.minutes
+                    for allocation in week.allocations
+                    if allocation.unit == unit
+                ),
+            )
+            for week in schedule.weeks
+            if any(allocation.unit == unit for allocation in week.allocations)
+        ]
+        cadence = "/".join(str(total) for _, total in unit_totals)
+        peak_week = max(unit_totals, key=lambda row: row[1])[0]
+        unit_qualifier = "" if len(scheduled_units) == 1 else f" for `{unit}`"
+        lines.append(
+            f"The {cadence}-minute progression{unit_qualifier} intentionally peaks in "
+            f"derivation-heavy Week {peak_week} and tapers to review instead of applying "
+            "Book 1's 450–500-minute semester band."
+        )
     lines.extend(
         [
-            "",
-            (
-                "The 255/275/420/270/380/60-minute progression intentionally peaks in "
-                "derivation-heavy Week 3 and tapers to review instead of applying Book 1's "
-                "450–500-minute semester band."
-            ),
-            "The planned future `r2-*` final assessment follows local Week 6.",
+            f"The planned future `r2-*` final assessment follows local Week {last_local}.",
             "",
         ]
     )
