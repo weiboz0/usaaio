@@ -56,7 +56,7 @@ It therefore supplies the missing `model-training` evidence for `nlp-word-embedd
 |---:|---|---|
 | 1 | `01-train-token-embeddings.ipynb` | one-hot lookup, embedding table shapes, context-to-target objective, cross-entropy gradient flow, seeded embedding training, and fixed versus learned-vector boundary |
 | 2 | `02-causal-transformer-language-model.ipynb` | token inputs plus B2-019's sinusoidal positional table, causal attention reuse from B2-019, shift-right labels, logits and token loss shapes, and tiny causal LM training |
-| 3 | `03-pretraining-objectives.ipynb` | causal next-token versus masked-token objectives, corruption/masking protocol, leakage counterexamples, objective selection, reproducible pretraining traces, and the pretraining stack's two architecture deltas from B2-019's block — learned positional embeddings (replacing B2-019's sinusoidal table) and a GELU feed-forward activation |
+| 3 | `03-pretraining-objectives.ipynb` | causal next-token versus masked-token objectives, corruption/masking protocol, leakage counterexamples, objective selection, reproducible pretraining traces, and the pretraining stack's two architecture deltas from B2-019's block — learned positional embeddings (replacing B2-019's sinusoidal table), a GELU feed-forward activation, and the optimizer AdamW introduced as Adam with decoupled weight decay (zeroed to `0` here, so numerically Adam) before p19 pins it |
 | 4 | `04-fine-tune-a-language-transformer.ipynb` | attach a task head, checkpoint/state boundary, frozen versus trainable parameters, supervised classification fine-tuning, and held-out evaluation |
 | 5 | `05-language-task-design-and-audit.ipynb` | classify, tag, generate, and retrieve task framing; architecture/loss/metric choice; data-split and leakage audit; complete end-to-end application trace |
 
@@ -299,10 +299,14 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   **Returned-state identity (Review 4 `[sol]` BLOCKER).** Instrumenting the trace proves that updates happened; it does not prove they happened to the objects returned.
   The isolated test must additionally assert that the parameter objects held by the instrumented optimizer are the SAME objects reachable from the returned `encoder`/`head` — identity over `optimizer.param_groups` versus `encoder.parameters()`/`head.parameters()`, not equality of values — and must snapshot those same returned objects immediately before the first update and after the last, requiring their tensors to differ.
   It then independently reconstructs the seeded-initial state and requires each returned held-out objective loss to beat that baseline by a frozen margin, with every probe meeting a pinned oracle, so that "recomputes" is replaced by a functional assertion about the returned model.
-  A `train-A-return-fresh-B` mutant — which trains one model through all 80 valid updates and returns a freshly constructed model whose held-out values it then recomputes — must fail a named assertion.
+  Optimizer-parameter identity alone is still evadable (Review 5 `[sol]`): a notebook can train a hidden model A, build the optimizer over the returned model B's exact parameters, then COPY A's trained tensors into B before a final no-gradient optimizer step — B changes, beats the baseline, and passes every probe although every forward and gradient came from A.
+  The identity assertion must therefore be an exact parameter-object MULTISET match (no missing, extra, or duplicated parameter) AND the test must instrument every one of the 80 updates to bind that update's loss to a forward of the returned `encoder`/`head`, its backward gradients to those same parameters, and the optimizer step to that gradient; any change to a returned parameter's tensor outside an instrumented `(forward -> loss -> backward -> step)` cycle is a hard failure.
+  Both `train-A-return-fresh-B` (returns a different object) and `train-A-copy-into-B` (returns the right object with foreign values written in outside the instrumented steps), plus `loss-on-A/optimizer-on-B` (the two bound to different models), must each fail a named assertion.
   **Read isolation for p19 (Review 4 `[sol]` BLOCKER).** A literal-name scan plus temporary-copy execution does not stop a synthesized absolute path, glob, or `importlib` load from the still-readable original repository.
-  p19's isolated execution must run under an enforced read allowlist whose only readable project root is the temporary copy; where the runner cannot enforce that directly, it must emit a complete read-access log that the test validates against the allowlist.
-  Dedicated mutants reaching `tiny_encoder_state`/`tiny_encoder_checkpoint` outside the temporary copy by absolute path, by glob, and by `importlib.import_module` must each fail.
+  A self-reported read-access log is not trusted evidence (Review 5 `[sol]`): notebook code can read through `os.open`, `pathlib`, `ctypes`, `mmap`, or a child process and still emit a clean application-level log.
+  p19's isolated execution must therefore run under a mechanism EXTERNAL to the notebook process that makes the original repository unreachable — a filesystem sandbox or mount namespace whose root is the temporary copy, or an out-of-process syscall/file-access audit covering the process and all descendants.
+  If no such facility is available in the execution environment, that is an explicit judgment-fork stop for the implementer (recorded, surfaced), not a fallback to an in-process log.
+  Dedicated bypass mutants reaching the original repository outside the temporary copy — by absolute path, by glob, by `importlib.import_module`, by `os.open`/`pathlib`, and by a child process — must each fail.
   p20/p21 must load `tiny_encoder_state.py` as their sole pre-finetuning encoder state, reconstruct `ENCODER_STATE_HASH` before the first fine-tuning update, and assert equality to the shared `ENCODER_STATE_HASH` verified against `tiny_encoder_checkpoint.py`.
   Their tests replace the loader with a random/fresh or no-load encoder and require the provenance assertion to fail before fine-tuning.
   Tests reject an initial/random-weight checkpoint before fine-tuning through the functional contract as well as hash consistency.
@@ -336,7 +340,9 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   Emit a sorted allowlist with SHA-256 for each input and the exact source commit; verify the directory contains no plan, author notes, solution notebook, or unrelated repository file.
   Dispatch a separate fresh GPT-5.6-sol solution session in that directory with only this allowlist, never the author outline, statement-session context, solution notebooks, or a solution design.
   **Read isolation, not just input digests (Review 4 `[sol]` MAJOR).** The allowlist and digests prove what was copied in and what came back; they do not constrain what the session READ.
-  The solve must run with the temporary directory as its enforced readable project root, or else produce a complete read-access log that the importer validates against the allowlist before accepting any output; a session that reads the generator, either checkpoint, the plan file, or author material through an absolute path while emitting digest-perfect outputs must be rejected.
+  A working-directory change cannot constrain a separately dispatched session, and a solver-produced log is not independent evidence (Review 5 `[sol]`).
+  The solve must run under the same external isolation the p19 test requires — a sandbox/mount namespace or out-of-process access audit under which the original repository is absent — with the same judgment-fork stop if that facility is unavailable, rather than accepting a self-reported log.
+  The forbidden reads are enumerated by exact path, not by the loose word "checkpoint": the author-only `scripts/generate_language_data.py`, `data/tiny_encoder_checkpoint.py`, the plan file, and every non-allowlisted repository file are forbidden, while the allowlisted `data/tiny_encoder_state.py` (which p20/p21 legitimately load) is explicitly permitted.
   The statement-side scan is symmetric: a student notebook referencing a solution notebook name, a solution path, or any author-only artifact is a hard failure.
   Its sole allowed outputs are exactly `out/practice/p01_solution.ipynb` through `p24_solution.ipynb` and `out/BLIND_OUTPUTS.sha256`; the output manifest lists those 24 relative paths in lexical order with SHA-256, and no other output file is accepted.
   Implement and run `scripts/import_b2_020_blind_solve_output.py` to reject a missing, extra, renamed, or digest-mismatched output, and before copying run the read-only mutation-marker/AST structural validator (marker count/order/indentation/function/signature/top-level expected-check plus a best-effort flag for any pre-oracle assertion referencing a hook return/output variable; no mutations or answers) against the isolated outputs.
@@ -387,7 +393,9 @@ PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache bash scripts/pre-mer
 - [ ] Resolve every `[OPEN]` item, rerun affected verification, append the exact evidence and reviewer verdicts below, and commit the post-execution report.
 - [ ] Before the content gate and again immediately before merge, emit a `blind-provenance` report that compares every final statement byte hash to the Task-3 input allowlist and every final solution byte hash to `BLIND_OUTPUTS.sha256`.
   Any difference must name the file, reason, authoring stage, and reviewer confirmation as a `post-blind amendment`; only a zero-difference report may claim the committed solutions are exactly the blind-authored artifacts.
-  A SEMANTIC change to any statement after the Task-3 blind input was cut invalidates the affected blind output outright: it requires a fresh isolated solve of the affected notebooks rather than a reported `post-blind amendment`, which remains available only for non-semantic edits (typography, formatting, header metadata) that the report must classify explicitly.
+  "Semantic" must be decided mechanically, not by a reported classification (Review 5 `[sol]`): a changed number, negation, identifier, or tolerance could otherwise be labeled formatting and keep a stale solution.
+  Every markdown and code cell SOURCE is treated as semantic by default: the check canonicalizes each statement notebook to the ordered concatenation of its cell sources and requires that digest to be byte-identical to the Task-3 blind input, and any difference there invalidates the affected blind output and forces a fresh isolated solve.
+  A `post-blind amendment` is admissible ONLY for changes confined to an explicitly enumerated set of notebook-JSON metadata paths (for example `metadata.kernelspec`) that leave every cell source digest unchanged.
 - [ ] Push the feature branch, open a PR with the configured SSH origin and `.gh-token`, rerun `scripts/pre-merge-guard.sh --pr`, then squash-merge from outside this worktree.
 
 ## Out of scope
@@ -530,7 +538,33 @@ Round 4 is `[self]` APPROVE, `[glm]` APPROVE WITH NITS, `[fable]` APPROVE WITH N
 Every finding above is amended in this revision, including the two `[sol]` blockers, which are the substantive ones: both were cases of a contract that looked rigorous while remaining circumventable, the failure class this project's gates have caught repeatedly.
 The deferred-policy expiry moves from `2026-08-31` to `2026-09-30`. Two independent reviewers raised it, `[fable]` at MAJOR with the fix prescribed as design-neutral and required before implementation. It is amended here rather than through a separate follow-up plan because no deferred policy is live yet: the plan has not begun implementation, so this is plan-gate iteration, not the silent extension of a running policy that the plan itself forbids.
 
-Pending fresh independent Review 5 verdicts: `[sol]`, `[glm]`, and `[fable]`.
+### Review 5 — glm (2026-08-28)
+
+- **Verdict**: APPROVE.
+- Re-derived every ledger independently again (1,120 practice minutes; weekly 255/275/420/270/380/60 = 1,660; 27.67 h in band; all 24 practices scheduled exactly once at or after their teaching session; type/difficulty mixes unchanged).
+- Confirmed both prior NITs closed (embedding/attention width wording; `2026-09-30` at both pinned sites), the Session-3 addition within budget and non-duplicative, and no new internal contradiction from the round-5 amendment. Residual NITs are review-history `2026-08-31` mentions (correct immutable text) and one wording preference — no blockers.
+
+### Review 5 — fable (2026-08-28)
+
+- **Verdict**: APPROVE WITH NITS.
+- Verified all four Round-4 `[fable]` findings closed against the repo, not the plan's assertions.
+- Independently judged the `[sol]` returned-state-identity and read-isolation contracts **implementable and not over-constrained**: an honest in-place-training notebook passes every layer while each named mutant fails a distinct layer, and the read-isolation mechanisms reduce all three bypass mutants to observable open/import events.
+- `[fable][FIXED]` **MINOR** swept the full pinned protocol constant-by-constant and found one more pinned-but-untaught item of the same class as the Round-4 GELU finding: `AdamW` appears nowhere in either book (Book 1 teaches `Adam`/`SGD`). Mitigated because at the pinned `weight_decay=0` AdamW is numerically Adam, but recorded by fable's own standard. Session 3's teaching surface now introduces AdamW as Adam with decoupled weight decay (zeroed here) before p19 pins it.
+
+### Review 5 — sol (2026-08-28)
+
+- **Verdict**: REJECT.
+- `[sol][FIXED]` **BLOCKER** the Review-4 returned-state fix was still evadable by `train-A-copy-into-B`: build the optimizer over the returned model B's exact parameters, then copy a hidden model A's trained tensors into B before a final no-gradient step — B changes, beats the baseline, passes every probe, though every forward and gradient came from A. The contract now requires an exact parameter-object multiset match and instruments every one of the 80 updates to bind its loss to a forward of the returned model, its gradients to those parameters, and its step to that gradient; any returned-parameter change outside an instrumented cycle is a hard failure. `train-A-return-fresh-B`, `train-A-copy-into-B`, and `loss-on-A/optimizer-on-B` are all required failing mutants.
+- `[sol][FIXED]` **BLOCKER** the read-isolation fallback (a self-reported access log) was not trusted evidence — notebook code can read via `os.open`/`pathlib`/`ctypes`/`mmap`/a child process and emit a clean log. Both p19 execution and the blind solve now require a mechanism EXTERNAL to the process (filesystem sandbox / mount namespace with the original repo absent, or an out-of-process access audit over all descendants), with an explicit judgment-fork stop if that facility is unavailable rather than a fallback to a self-reported log. Bypass mutants now include `os.open`/`pathlib` and a child process.
+- `[sol][FIXED]` **BLOCKER** the Review-4 blind-read wording said a session reading "either checkpoint" must be rejected, which literally rejected `tiny_encoder_state.py` — a REQUIRED allowed read for p20/p21. Forbidden reads are now enumerated by exact path (generator, `tiny_encoder_checkpoint.py`, plan file, every non-allowlisted file), with `tiny_encoder_state.py` explicitly permitted.
+- `[sol][FIXED]` **MAJOR** the semantic-vs-non-semantic statement-change distinction was human-classified. It is now mechanical: every markdown/code cell source is semantic by default, the check canonicalizes each statement notebook to its ordered cell sources and requires a byte-identical digest to the Task-3 input, and a `post-blind amendment` is admissible only for changes confined to an enumerated set of notebook-JSON metadata paths that leave every cell-source digest unchanged.
+
+### Round 5 outcome and amendment
+
+Round 5 is `[self]` APPROVE, `[glm]` APPROVE, `[fable]` APPROVE WITH NITS, `[sol]` REJECT — no consensus.
+All four `[sol]` findings were defects in the Review-4 amendment itself — three anti-cheat contracts that read as rigorous while remaining circumventable, plus one self-contradiction ("either checkpoint" rejecting a required read). This round adopts `[sol]`'s own prescribed fixes verbatim rather than a weaker paraphrase, which is what let the Review-4 versions be punctured: the read-isolation escape hatch is removed outright and its unavailability made an explicit stop, and the semantic-change test is made mechanical rather than reported. Fable's `AdamW` finding is fixed in the same pass.
+
+Pending fresh independent Review 6 verdicts: `[sol]`, `[glm]`, and `[fable]`.
 
 ## Content Review
 
