@@ -210,6 +210,7 @@ process-group apparatus, and student statements carry no solution-marker contrac
 - Modify: `tools/checks/scope.py`
 - Modify: `book2/curriculum/coverage-map.yaml` (Task-2 erratum: checkbox 4's partial `nlp-word-embeddings` destination/disposition transfer lives here — PARTIAL only, `coverage` stays `partial`; the `covered` promotion is Task 3)
 - Modify: `tests/test_model.py` (Task-2 erratum: checkbox 6's B2-020-only deferred-policy parser change supersedes this file's generic-deferred-policy assertions)
+- Modify (Task-2 erratum): `tests/test_attention_mutations.py`, `tests/test_audit_curriculum.py`, `tests/test_book2_schedule.py` — registering B2-020's 8 owned concepts mechanically invalidates a Book-2 concept count (11→19), a curriculum digest changed by the partial coverage transfer, and a copied schedule fixture that must satisfy the new shared-parser teaching-order contract. Assertions updated to the new correct values only; no test intent weakened.
 - Modify: `tests/test_b2_019_statements.py`
 - Modify: `tests/test_integration.py`
 - Modify: `tests/test_scope.py`
