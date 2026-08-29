@@ -154,35 +154,27 @@ Before B2-020 is live, replace that bootstrap contract with a data-driven Book 2
 
 Tests must first demonstrate rejection of a second manifest by the legacy singleton validator, then demonstrate the generic validator accepting both valid unit ledgers and rejecting: a duplicate problem across units, a missing B2-020 lesson allocation, a mismatched practice minute, an after-session violation, an escaped/symlinked path, a stale total, an attempt to mutate B2-019's pre-existing ledger, and a B2-020 bridge/session allocation before B2-019's final review has completed.
 
-## Permanent answer-affecting mutations
+## Answer-check integrity (non-vacuous checks)
 
-Create `tools/verify_language_transformer_mutations.py` and `tests/test_language_transformer_mutations.py` using the same fail-closed marker/AST and wrapped-real-answer-check pattern as Plan 019.
-The untouched corpus must pass all five mutations; each altered solution must fail its named answer assertion:
+The books teach; they do not police whether the person running a notebook is honest, and no
+solution requires a sandbox to author or verify.
+The one integrity property that IS the material's concern is that a solution's `### Answer
+check` must have teeth — it must reject a plausible *honest* mistake rather than pass regardless
+of what is written.
 
-1. `practice/p07_solution.ipynb` — mutate the explicitly marked context-to-target update hook so its table is not updated;
-2. `practice/p18_solution.ipynb` — mutate the explicitly marked target-shift hook so it supplies unshifted targets;
-3. `practice/p11_solution.ipynb` — mutate the explicitly marked masking hook so it leaves the original true token visible;
-4. `practice/p21_solution.ipynb` — mutate the explicitly marked frozen-stage parameter-policy hook so the encoder updates during the frozen stage;
-5. `practice/p24_solution.ipynb` — mutate the explicitly marked evaluation-index hook so it includes one named training row; the marked `EXPECTED_CHECK:evaluation-indices` assertion inside the final Answer check is the separate end-of-notebook disjointness assertion that must detect that leaked split.
+For the five concept-critical practices, a focused test (`tests/test_language_transformer_checks.py`)
+confirms the untouched solution's Answer check PASSES and that a single named wrong-answer
+variant FAILS it. The variant substitutes the body of one pinned, named function in a working
+copy of the solution and re-executes; there are no markers, AST binding, isolation, or
+process-group apparatus, and student statements carry no solution-marker contract.
 
-Each mutation-relevant student statement declares the semantic hook's required function name, input/output contract, and the non-solution marker contract below: `# MUTATION_TARGET:<id>:BEGIN`/`END` at the hook body and exactly one top-level `# EXPECTED_CHECK:<id>` immediately preceding the mutation-specific `assert` in the solution's final Answer check.
-It instructs the solver to provide that assertion without supplying a target numeric answer, solution approach, or test expression.
-It states verbatim that no assertion before the final Answer check may inspect that hook's return value or behavioral outcome; ordinary shape/type/input checks remain allowed.
-The blind solver may use any equivalent implementation within that hook; it does not need to reproduce a literal source line or algorithmic outline.
-Each required hook is delimited exactly by `# MUTATION_TARGET:<id>:BEGIN` and `# MUTATION_TARGET:<id>:END`, each at the same indentation within the named function body; zero, multiple, reversed, nested, or cross-function markers are hard failures.
-The runner uses the delimiters plus the function AST range, applies the following fixed body replacement rather than matching a prescribed solution line, and uses AST to bind one named top-level expected assertion:
-
-| ID | Required hook signature | Mutant body outcome |
+| Practice | Pinned function | Wrong-answer variant the check must reject |
 |---|---|---|
-| `embedding-update` | `update_embedding_table(table: torch.Tensor, contexts: torch.LongTensor shape (N,), targets: torch.LongTensor shape (N,), learning_rate: float) -> torch.Tensor` | return an unchanged clone of `table` |
-| `target-shift` | `shift_targets(tokens: list[int]) -> tuple[list[int], list[int]]`, with `tokens` exactly one unbatched sequence of length at least 2 | return `(tokens[:-1], tokens[:-1])` |
-| `mlm-mask` | `apply_mlm_mask(tokens: list[int], mask_index: int, mask_token: int) -> list[int]`; fixtures require `tokens[mask_index] != mask_token` | return a list copy of unchanged `tokens` |
-| `frozen-stage` | `configure_frozen_stage_optimizer(encoder, classifier, learning_rate) -> optimizer`; the frozen stage is expressed **solely** by a classifier-only optimizer parameter list and must not set any encoder `requires_grad` flag; immediately before the unfreeze optimizer is built, call `encoder.zero_grad(set_to_none=True)` | return a `torch.optim.SGD` optimizer over `list(encoder.parameters()) + list(classifier.parameters())` at `learning_rate` rather than the required classifier-only parameter set |
-| `evaluation-indices` | `evaluation_indices(train_indices: list[int], test_indices: list[int], candidate_extra_index: int) -> list[int]` | return `list(test_indices) + [candidate_extra_index]` rather than the required test-only list |
-
-The parser tests every malformed-marker case and every replacement's function/signature mismatch.
-It AST-wraps that exact assertion so an `AssertionError` becomes the fixed `PLAN020_EXPECTED_CHECK::<id>` failure token, executes the whole notebook in order with `NotebookClient(allow_errors=True)`, inspects each cell output, and accepts the mutant only if that token arises from the named assertion; an earlier error before the named oracle is a strict runner failure, is recorded, and does not substitute for the named oracle.
-It rejects zero/multiple hook spans, a target outside the declared hook, a missing/duplicate/wrong-ID/non-top-level expected-check marker, an expected-check marker outside one assertion, a mutant that executes without the named oracle failing, and a named assertion that still passes.
+| p07 | `update_embedding_table` | returns the table unchanged (no gradient step) |
+| p18 | `shift_targets` | returns unshifted targets (`(tokens[:-1], tokens[:-1])`) |
+| p11 | `apply_mlm_mask` | leaves the true token visible (no masking) |
+| p21 | `configure_frozen_stage_optimizer` | optimizes encoder + classifier during the frozen stage |
+| p24 | `evaluation_indices` | includes a training row in the evaluation split (leakage) |
 
 ## Implementation tasks
 
@@ -252,7 +244,6 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 - Create: `book2/units/B2-020-language-transformers/data/tiny_encoder_checkpoint.py` (generated, tracked source)
 - Create: `book2/units/B2-020-language-transformers/data/language_fixture.py` (literal student-facing synthetic data)
 - Create: `book2/units/B2-020-language-transformers/data/tiny_encoder_state.py` (student-facing trained state only)
-- Create: `tools/verify_b2_020_solution_timeouts.py`
 - Modify: `book2/curriculum/course-schedule.yaml`
 - Modify: `book2/curriculum/coverage-map.yaml`
 - Modify: `book2/curriculum/material-inventory.yaml` (generated)
@@ -272,7 +263,7 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   Test archived verification succeeds only with its explicit parameter; direct parser/check invocations cannot override expiry through environment variables; and normal CI fails before any check when either variable is set.
   If work has not reached the required-policy transition by that date, a separately reviewed follow-up plan must explicitly amend the expiry before any continuation; it is never silently extended.
 - [ ] Have `scripts/generate_language_data.py` run the Session-3 seeded causal/MLM pretraining contract from fixed seed `20260812`, certify literal initial and final losses, and render the trained state into tracked, human-readable `data/tiny_encoder_checkpoint.py` with vocabulary, split IDs, trained encoder weights, objective/loss trace, and semantic hash.
-  The single trained state uses this exact protocol: initialize a one-block, pre-norm causal/MLM Transformer encoder (vocabulary 12, sequence length 8, width 8, two attention heads, feed-forward width 16) plus one vocab-logit head shared across both pretraining phases but NOT weight-tied to the embedding table (the head is a distinct parameter, so the exact parameter-object multiset assertion above counts it separately) from seed `20260812`; train first on the literal causal batches for 40 full-batch AdamW updates (`lr=0.03`, `weight_decay=0`), then on the literal MLM batches for 40 full-batch AdamW updates with the same optimizer state continued across the phase boundary.
+  The single trained state uses this exact protocol: initialize a one-block, pre-norm causal/MLM Transformer encoder (vocabulary 12, sequence length 8, width 8, two attention heads, feed-forward width 16) plus one vocab-logit head shared across both pretraining phases (not weight-tied to the embedding table) from seed `20260812`; train first on the literal causal batches for 40 full-batch AdamW updates (`lr=0.03`, `weight_decay=0`), then on the literal MLM batches for 40 full-batch AdamW updates with the same optimizer state continued across the phase boundary.
   Architecture semantics are learned positional embeddings for positions 0–7, scaled dot-product attention with causal lower-triangular mask during the causal phase and bidirectional attention with only padding masked during MLM, LayerNorm `eps=1e-5`, GELU feed-forward activation, and dropout `0.0` everywhere.
   AdamW is exactly `betas=(0.9, 0.999)`, `eps=1e-8`, `amsgrad=False`, `foreach=False`, `fused=False`, and one instance created before causal update 1 whose state object/step counters continue through MLM update 40.
   Within each update, consume the fixture rows in their stored ascending order, compute mean token cross-entropy over the explicitly non-padding/non-ignored positions, call `zero_grad(set_to_none=True)`, `backward()`, then `step()`; no shuffle, dropout, gradient clipping, scheduler, accumulation, or implicit batch order is permitted.
@@ -291,39 +282,20 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
   A separate explicit local `--refresh-checkpoint` generator command is the record-once maintenance path; it reports canonical deltas and requires an intentional committed source update when a supported toolchain changes.
   `data/language_fixture.py` contains only the fixed literal vocabulary, token-ID sequences, masks, splits, and labels needed by students, never author training code, answers, loss targets, or generated weights.
   The generator alone creates `tiny_encoder_checkpoint.py` and `tiny_encoder_state.py`.
-  The p19 student statement itself teaches and pins the complete preceding 40-update causal-then-40-update MLM protocol, including architecture/masks/AdamW/update order; this is necessary learner-visible training content, not an answer outline.
-  p19 must expose `run_pretraining_protocol(fixture) -> (encoder, head, phase_trace)`, where `phase_trace` has exactly 80 ordered records with fields `phase`, `update_index`, `mask_mode`, `optimizer_instance_id`, `optimizer_step`, and `loss`.
-  p19 independently reruns that exact protocol through this callable from the literal fixture, asserts each phase improves from its own phase-initial loss, and recomputes both final-state held-out objective losses/probes; it does not load either checkpoint/state artifact or copy their constants.
-  The statement/import test rejects `p19_solution.ipynb` if source references `tiny_encoder_state`, `tiny_encoder_checkpoint`, or either artifact's import path, and execution runs p19 in a temporary copy containing only its notebook and `data/language_fixture.py` with the state/checkpoint paths absent; a dynamic-import/path-load bypass fixture must fail.
-  The isolated p19 test invokes and instruments this callable's structured trace plus patchable optimizer/model constructors to prove its own 40 causal then 40 MLM ordered updates, causal then bidirectional MLM masks, and one optimizer continuous across the boundary; skip-MLM, reset-optimizer, and causal-mask-in-MLM mutants each fail named assertions.
-  **Returned-state identity (Review 4 `[sol]` BLOCKER).** Instrumenting the trace proves that updates happened; it does not prove they happened to the objects returned.
-  The isolated test must additionally assert that the parameter objects held by the instrumented optimizer are the SAME objects reachable from the returned `encoder`/`head` — identity over `optimizer.param_groups` versus `encoder.parameters()`/`head.parameters()`, not equality of values — and must snapshot those same returned objects immediately before the first update and after the last, requiring their tensors to differ.
-  It then independently reconstructs the seeded-initial state and requires each returned held-out objective loss to beat that baseline by a frozen margin, with every probe meeting a pinned oracle, so that "recomputes" is replaced by a functional assertion about the returned model.
-  Optimizer-parameter identity alone is still evadable (Review 5 `[sol]`): a notebook can train a hidden model A, build the optimizer over the returned model B's exact parameters, then COPY A's trained tensors into B before a final no-gradient optimizer step — B changes, beats the baseline, and passes every probe although every forward and gradient came from A.
-  Restricting foreign writes to OUTSIDE the cycle is still evadable (Review 6 `[sol]`): a notebook can copy a hidden model A's trained tensors into the returned model during its `forward`, so the loss, gradients, and step are all genuinely on the returned parameters yet the values are A's, injected inside the cycle.
-  Because injecting a CORRECT final value is indistinguishable from having trained it, no result-level check (baseline margin, probe, or reference-trajectory match) can separate the two; the contract must instead pin the PROCESS by verifying the optimizer's closed-form transition at every step.
-  The assertion is therefore: an exact parameter-object MULTISET match (no missing, extra, or duplicated parameter); returned parameters held tensor-identical through each `forward` and `backward` (only `step()` may mutate `.data`, so the gradient is genuinely the return model's gradient on its own current parameters); and, at each of the 80 updates, the post-step optimizer state — every parameter tensor AND the AdamW moment buffers (`exp_avg`, `exp_avg_sq`, `step`) — equal an independently recomputed AdamW transition of the captured pre-step state under the observed gradient.
-  Pinning the full per-step transition leaves no injection point: to pass every step's recomputation a notebook must present, at every step, the exact values the real optimizer would produce from the real gradient, which is achievable only by actually running the protocol.
-  Four named mutants must each fail a named assertion: `train-A-return-fresh-B` (returns a different object), `train-A-copy-into-B` (foreign values written between or after cycles), `copy-into-B-during-forward` (foreign values written inside a cycle's forward), and `loss-on-A/optimizer-on-B` (loss and optimizer bound to different models).
-  **Read isolation for p19 (Review 4 `[sol]` BLOCKER).** A literal-name scan plus temporary-copy execution does not stop a synthesized absolute path, glob, or `importlib` load from the still-readable original repository.
-  A self-reported read-access log is not trusted evidence (Review 5 `[sol]`): notebook code can read through `os.open`, `pathlib`, `ctypes`, `mmap`, or a child process and still emit a clean application-level log.
-  p19's isolated execution must therefore run under a mechanism EXTERNAL to the notebook process that makes the original repository unreachable — a filesystem sandbox or mount namespace whose root is the temporary copy, or an out-of-process syscall/file-access audit covering the process and all descendants.
-  If no such facility is available in the execution environment, that is an explicit judgment-fork stop for the implementer (recorded, surfaced), not a fallback to an in-process log.
-  Dedicated bypass mutants reaching the original repository outside the temporary copy — by absolute path, by glob, by `importlib.import_module`, by `os.open`/`pathlib`, and by a child process — must each fail.
-  p20/p21 must load `tiny_encoder_state.py` as their sole pre-finetuning encoder state, reconstruct `ENCODER_STATE_HASH` before the first fine-tuning update, and assert equality to the shared `ENCODER_STATE_HASH` verified against `tiny_encoder_checkpoint.py`.
-  Their tests replace the loader with a random/fresh or no-load encoder and require the provenance assertion to fail before fine-tuning.
-  Tests reject an initial/random-weight checkpoint before fine-tuning through the functional contract as well as hash consistency.
+  The p19 student statement teaches and pins the full pretraining protocol as learner-visible content: the 40-update causal phase, then the 40-update MLM phase, the architecture, masks, AdamW config, and update order.
+  p19 exposes `run_pretraining_protocol(fixture) -> (encoder, head, phase_trace)` and independently runs that protocol from the literal fixture; `phase_trace` has 80 ordered records with `phase`, `update_index`, `mask_mode`, and `loss`.
+  Its `### Answer check` is FUNCTIONAL: each phase's loss improves from that phase's initial loss, the final held-out objective losses and probes beat the seeded-initial baseline by the frozen margins, and the trace has the correct phase structure and update counts.
+  A light answer-check-integrity test (per `## Answer-check integrity`) confirms the honest solution's Answer check passes and that named conceptual mistakes fail it — skip-MLM, reset-optimizer between phases, and causal-mask-during-MLM. p19 trains from the fixture and does not load the generated checkpoint or state artifact.
+  There is no sandbox, no per-step optimizer-transition instrumentation, and no injection-mutant contract: the check verifies that the training worked, not that the runtime was un-tampered.
+  p20/p21 load `tiny_encoder_state.py` as their sole pre-fine-tuning encoder state and confirm `ENCODER_STATE_HASH` matches; a no-load/random-encoder variant fails the Answer check.
 - [ ] Exercise all eight owned concepts with at least three direct practices and ensure no problem tags a concept outside the unit/prerequisite closure.
-- [ ] Give each of the five mutation-relevant statements its declared `MUTATION_TARGET` bind point and source-interface identifier without exposing an answer; assert the actual solution later contains exactly that marker and a separately named oracle assertion.
+- [ ] Pin the function names for the five concept-critical practices (see `## Answer-check integrity`) so the integrity test can substitute a wrong-answer variant; student statements carry no solution-marker apparatus.
 - [ ] In the same commit that creates the manifest, append the exact B2-020 weeks 7–12/global weeks 47–52 ledger above and its post-week-12 final-assessment marker.
   Then promote exactly the five named coverage rows with literal lesson anchors and evidence IDs, and regenerate/check the inventory, Book 2 course structure, roadmap, and audit from the now-valid paths.
   For `nlp-word-embeddings`, replace the inherited C8 anchors, Book 1 practice/assessment evidence, and Book 1 `shipped_concepts` with B2-020 Session 1–3 anchors, the named B2 practices in the ledger, and `shipped_concepts: [learned-token-embedding]`; set `coverage: covered`, `deficits.modalities_missing: []`, and retain `destination: B2-020-language-transformers`.
   The statement test must assert this exact destination/disposition/covered-state transformation and reject any remaining `book1:C8-embeddings` evidence in the B2-020 claim, so the layer-boundary claim cannot be satisfied by Book 1 evidence.
 - [ ] Test hygiene, lesson order, manifest paths, source isolation, CPU label, imported-concept boundary, time arithmetic, and coverage tags without executing student notebooks.
-- [ ] Implement `tools/verify_b2_020_solution_timeouts.py` as the fresh-kernel execution harness for B2-020: it takes an explicit notebook list, executes only B2-020 solution notebooks through `NotebookClient`, enforces a process-level 20-second wall-clock deadline per notebook in addition to a cell timeout, and emits a failing notebook/elapsed-time diagnostic.
-  It uses the same subprocess process-group TERM, KILL-after-grace, wait/reap, and no-surviving-child contract required for Task 5 mutations.
-  Expose a test-only injected deadline; test a synthetic sleeping notebook with a 1-second injected deadline without waiting for a production-length sleep, and separately assert the production constant is 20 seconds.
-  Do not rely on a Jupyter CLI default timeout.
+- [ ] Execute B2-020 solution notebooks in CI on fresh kernels under a per-notebook wall-clock timeout of 20 seconds so a runaway notebook fails rather than hangs; a fresh solution finishes well under it. No process-group, sandbox, or isolation machinery is required.
 - [ ] Commit: `feat: teach language Transformer statements`.
 
 ### Task 4 — Blind-author and execute solutions
@@ -331,54 +303,29 @@ It rejects zero/multiple hook spans, a target outside the declared hook, a missi
 **Files:**
 
 - Create: `book2/units/B2-020-language-transformers/practice/p01_solution.ipynb` through `p24_solution.ipynb`
-- Create: `scripts/prepare_b2_020_blind_solve_input.py`
-- Create: `scripts/import_b2_020_blind_solve_output.py`
 - Modify: `book2/units/B2-020-language-transformers/manifest.yaml`
 - Modify: `scripts/ci-local.sh`
-- Modify: `tools/model.py`
 - Test: `tests/test_b2_020_statements.py`
 
-- [ ] Before building the handoff, smoke-test the chosen external isolation facility (for example `bwrap` or `unshare`, both present on this host) so an unexpected unprivileged-namespace restriction surfaces as the plan's designed judgment-fork stop at the START of this task rather than mid-implementation.
-- [ ] Implement and run `scripts/prepare_b2_020_blind_solve_input.py` to build an auditable, **procedurally isolated** blind-solve handoff at the committed Task-3 revision: create a temporary directory from `git archive <task3-commit>` containing **only** the 24 student practice notebooks, unit `lesson.ipynb`/`review.ipynb`, `lessons/`, `manifest.yaml`, `data/language_fixture.py`, and `data/tiny_encoder_state.py`.
-  The author-only `scripts/generate_language_data.py` is explicitly excluded because it contains generation/serialization implementation, while the necessary instructional training protocol is already stated in p19 itself.
-  Emit a sorted allowlist with SHA-256 for each input and the exact source commit; verify the directory contains no plan, author notes, solution notebook, or unrelated repository file.
-  Dispatch a separate fresh GPT-5.6-sol solution session in that directory with only this allowlist, never the author outline, statement-session context, solution notebooks, or a solution design.
-  **Read isolation, not just input digests (Review 4 `[sol]` MAJOR).** The allowlist and digests prove what was copied in and what came back; they do not constrain what the session READ.
-  A working-directory change cannot constrain a separately dispatched session, and a solver-produced log is not independent evidence (Review 5 `[sol]`).
-  The solve must run under the same external isolation the p19 test requires — a sandbox/mount namespace or out-of-process access audit under which the original repository is absent — with the same judgment-fork stop if that facility is unavailable, rather than accepting a self-reported log.
-  The forbidden reads are enumerated by exact path, not by the loose word "checkpoint": the author-only `scripts/generate_language_data.py`, `data/tiny_encoder_checkpoint.py`, the plan file, and every non-allowlisted repository file are forbidden, while the allowlisted `data/tiny_encoder_state.py` (which p20/p21 legitimately load) is explicitly permitted.
-  The statement-side scan is symmetric: a student notebook referencing a solution notebook name, a solution path, or any author-only artifact is a hard failure.
-  Its sole allowed outputs are exactly `out/practice/p01_solution.ipynb` through `p24_solution.ipynb` and `out/BLIND_OUTPUTS.sha256`; the output manifest lists those 24 relative paths in lexical order with SHA-256, and no other output file is accepted.
-  Implement and run `scripts/import_b2_020_blind_solve_output.py` to reject a missing, extra, renamed, or digest-mismatched output, and before copying run the read-only mutation-marker/AST structural validator (marker count/order/indentation/function/signature/top-level expected-check plus a best-effort flag for any pre-oracle assertion referencing a hook return/output variable; no mutations or answers) against the isolated outputs.
-  Copy only those 24 files to the corresponding branch `practice/pNN_solution.ipynb` paths, and rehash the destination byte-for-byte against `BLIND_OUTPUTS.sha256` before Task 4 tests or mutation work.
-  Task 5 may not edit an imported solution notebook. A pre-oracle failure **or named oracle that survives its prescribed mutant** is a hard handoff failure: regenerate the full blind output through a fresh isolated solve and verified import, rather than silently repairing the branch copy.
-  Cap this recovery at two fresh blind-output attempts; a second structural, pre-oracle, or oracle-survival failure stops the autopilot at a judgment fork with the exact diagnostic rather than looping.
-  Retain the input allowlist, output digest, source commit, and verified destination hashes in the post-execution report, proving the committed solution notebooks are exactly the blind-authored artifacts.
-- [ ] Require each solution to preserve the learner-visible header, use the seeded literal data, state every answer, and end with a non-vacuous `### Answer check` plus exact numeric/shape/training assertions.
-- [ ] After all 24 solutions exist, atomically replace B2-020's deferred policy with `solution_policy: required`; test that every declared solution path exists and that any retained deferred policy (rejected by the shared manifest parser as soon as one solution exists) or deleted solution fails inventory, coverage, and layer-boundary checks.
-- [ ] Execute p01–p24 in numeric order through `tools/verify_b2_020_solution_timeouts.py`, each on its own fresh kernel with a 20-second wall-clock timeout, and invoke that same harness from the Book 2 notebook-execution step of `scripts/ci-local.sh` for the B2-020 solutions rather than the unbounded Jupyter CLI route.
-  While the blind solver constructs its complete 24-notebook output set in the isolated directory, run only this explicit-notebook-list harness and no manifest-aware verifier; the branch receives all 24 only through the atomic verified import and required-policy flip.
-  Measure each completed solution on the verification host and require the maximum to be at most 10 seconds, documenting those timings in the post-execution report as twofold headroom under the 20-second production limit.
-  Prove the answer register, source isolation, student hygiene, required-solution policy, and timeout harness pass.
+- [ ] Author the 24 solutions in a fresh GPT-5.6-sol session that works from the published Task-3 statements and was NOT given the statement-authoring session's outlines. This is blind-solve as a plain workflow step — a separate session for independence — with no sandbox, filesystem isolation, read-access audit, input/output digest, or handoff-script apparatus.
+- [ ] Each solution preserves the learner-visible header, uses the seeded literal data, states every answer, and ends with a non-vacuous `### Answer check` — exact numeric/shape/training assertions that reject a plausible wrong answer (see `## Answer-check integrity`).
+- [ ] After all 24 solutions exist, atomically flip the manifest `solution_policy` from `deferred` to `required`; test that every declared solution path exists and that a retained deferred policy or a missing solution fails inventory, coverage, and layer-boundary checks.
+- [ ] Execute p01–p24 in numeric order on fresh kernels through the Book 2 notebook-execution step of `scripts/ci-local.sh`, each under a per-notebook 20-second wall-clock timeout. Record the measured timings in the post-execution report.
+- [ ] Prove the answer register, student hygiene, required-solution policy, and execution all pass.
 - [ ] Commit: `feat: add independently solved language practices`.
 
-### Task 5 — Lock coverage and language-model failure modes
+### Task 5 — Lock the answer-check integrity tests
 
 **Files:**
 
-- Create: `tools/verify_language_transformer_mutations.py`
-- Create: `tests/test_language_transformer_mutations.py`
+- Create: `tests/test_language_transformer_checks.py`
 - Modify: `scripts/ci-local.sh`
 - Modify: `tests/test_b2_020_statements.py`
 
-- [ ] Implement the five named answer-affecting mutations and the fail-closed runner contract.
-- [ ] Enforce a 120-second mutation-execution timeout and add focused timeout mutants for both the 20-second solution route and the 120-second mutation route.
-  Both runners expose test-only injected deadlines so those tests finish in seconds, while separate assertions pin production values to 20 and 120 seconds.
-- [ ] The mutation runner launches each mutated-notebook worker in a new subprocess process group, applies the 120-second process-level deadline (not merely a cell timeout), then on expiry sends TERM, escalates to KILL after a short grace period, waits/reaps the worker, and reports its notebook and elapsed time.
-  A 1-second injected synthetic-sleeper test must prove timeout, process-group cleanup, and no surviving child; an unmutated run remains required to pass.
-- [ ] Wire the new mutation runner into the Book 2 portion of local CI after the existing attention runner.
-- [ ] Prove every exact source/cell mutation fails its intended answer check, the untouched corpus passes, and generic runner fault modes fail closed.
-- [ ] Commit: `test: lock language Transformer evidence`.
+- [ ] Implement the five answer-check-integrity tests from `## Answer-check integrity`: for each concept-critical practice, confirm the untouched solution's `### Answer check` passes, and that substituting the named function's wrong-answer variant in a working copy of the solution makes the Answer check fail.
+- [ ] Wire `tests/test_language_transformer_checks.py` into the Book 2 portion of local CI.
+- [ ] Prove every wrong-answer variant is rejected, the untouched corpus passes, and the tests need no sandbox or external isolation.
+- [ ] Commit: `test: lock language Transformer answer-check integrity`.
 
 ### Task 6 — Verification, content gate, report, and merge
 
@@ -395,11 +342,7 @@ PATH=/home/chris/.local/bin:$PATH UV_CACHE_DIR=/tmp/uvcache bash scripts/pre-mer
 
 - [ ] Run the post-cutoff four-way content gate: active-session self-review, fresh GPT-5.6-sol, GLM 5.2, and fresh Fable 5. Each reviewer blind-solves student notebooks before reading solutions.
 - [ ] Resolve every `[OPEN]` item, rerun affected verification, append the exact evidence and reviewer verdicts below, and commit the post-execution report.
-- [ ] Before the content gate and again immediately before merge, emit a `blind-provenance` report that compares every final statement byte hash to the Task-3 input allowlist and every final solution byte hash to `BLIND_OUTPUTS.sha256`.
-  Any difference must name the file, reason, authoring stage, and reviewer confirmation as a `post-blind amendment`; only a zero-difference report may claim the committed solutions are exactly the blind-authored artifacts.
-  "Semantic" must be decided mechanically, not by a reported classification (Review 5 `[sol]`): a changed number, negation, identifier, or tolerance could otherwise be labeled formatting and keep a stale solution.
-  Every markdown and code cell SOURCE is treated as semantic by default: the check canonicalizes each statement notebook to the ordered concatenation of its cell sources and requires that digest to be byte-identical to the Task-3 blind input, and any difference there invalidates the affected blind output and forces a fresh isolated solve.
-  A `post-blind amendment` is admissible ONLY for changes confined to an explicitly enumerated set of notebook-JSON metadata paths (for example `metadata.kernelspec`) that leave every cell source digest unchanged.
+- [ ] Note in the post-execution report that the 24 solutions were authored in a separate blind session (independence as a plain workflow step); no byte-hash provenance apparatus is required.
 - [ ] Push the feature branch, open a PR with the configured SSH origin and `.gh-token`, rerun `scripts/pre-merge-guard.sh --pr`, then squash-merge from outside this worktree.
 
 ## Out of scope
@@ -597,7 +540,46 @@ All four `[sol]` findings were defects in the Review-4 amendment itself — thre
 Round 6 is `[self]` APPROVE, `[glm]` APPROVE, `[fable]` APPROVE WITH NITS, `[sol]` REJECT — no consensus.
 The single `[sol]` blocker is one more level of the returned-state injection: rounds 4-6 walked it from "prove B changed and is good" to "prove B changed by training" to "prove every step is the optimizer's exact function of the gradient." This round's fix pins the full per-step optimizer transition (parameters and moment buffers), which is the terminal form: because injecting a correct value is result-indistinguishable from training it, only verifying the closed-form process at every step separates the two, and a notebook that passes every step's recomputation has necessarily run the protocol. `[fable]` closed the pinned-constant thread exhaustively and both `[sol]` and `[fable]` judge the accumulated contract satisfiable by an honest notebook, so the remaining question for round 7 is solely whether this per-step transition check has any residual gap.
 
-Pending fresh independent Review 7 verdicts: `[sol]`, `[glm]`, and `[fable]`.
+### Review 7 — glm (2026-08-28)
+
+- **Verdict**: APPROVE WITH NITS.
+- Confirmed both Review-6 NITs closed and re-derived every ledger; `git diff` showed the round-7 amendment changed no ledger row. NITs: an "above" that should read "below", and a missing `### Review 6 — self` subsection.
+
+### Review 7 — fable (2026-08-28)
+
+- **Verdict**: APPROVE.
+- Empirically ran the honest per-step contract on the locked torch and confirmed bitwise-exact AdamW transitions at all 80 steps (satisfiable, not over-constrained), and found no residual gap in the then-current contract.
+
+### Review 7 — sol (2026-08-28)
+
+- **Verdict**: REJECT.
+- **BLOCKER** gradient substitution: the per-step transition check trusted the *observed* gradient came from the pinned loss; a `.grad` hook forges it while parameters stay tensor-identical through forward/backward. Prescribed fix: independently recompute each step's gradient of the pinned loss and require equality.
+
+### Scope change — user directive (2026-08-28): anti-cheat is out of scope
+
+The user directed that anti-cheat is not the books' responsibility — "focus on the material
+instead of the execution of teaching" — and that no solution may require a sandbox, keeping
+blind-solve as a plain workflow step. This **supersedes the entire p19 anti-injection line**
+(`[sol]` Reviews 4-7: returned-state identity, per-step optimizer transition, gradient
+provenance) and the read-isolation / blind-solve sandboxing line, and moots the `[glm]`/`[fable]`
+NITs attached to that removed machinery.
+
+What was removed: the p19 returned-state identity contract and injection mutants; the p19 and
+blind-solve external-isolation/sandbox/read-audit machinery; the marker/AST mutation-oracle
+runner and its `MUTATION_TARGET`/`EXPECTED_CHECK` statement markers; the byte-hash
+blind-provenance/semantic-digest apparatus; and the process-group timeout harness.
+What was kept: all teaching content and ledgers unchanged; the self-containedness teaching
+additions (GELU, AdamW, learned positional embeddings in Session 3); p19 as a functional
+training surface (loss improves, correct shapes/probes); non-vacuous answer-checks recast as
+five lightweight "answer-check integrity" tests that reject a named honest wrong answer keyed on
+pinned function names; the generator's reproducible trained-state artifact under CI; and
+blind-solve as a plain separate-session step. A plain 20-second per-notebook CI timeout replaces
+the harness.
+
+The rewrite touched no ledger row (verified). This is a materially simpler plan state and starts
+a fresh review round.
+
+Pending fresh Review 8 verdicts on the simplified plan: `[sol]`, `[glm]`, and `[fable]`.
 
 ## Content Review
 
