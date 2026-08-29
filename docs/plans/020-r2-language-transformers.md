@@ -295,7 +295,6 @@ process-group apparatus, and student statements carry no solution-marker contrac
   For `nlp-word-embeddings`, replace the inherited C8 anchors, Book 1 practice/assessment evidence, and Book 1 `shipped_concepts` with B2-020 Session 1–3 anchors, the named B2 practices in the ledger, and `shipped_concepts: [learned-token-embedding]`; set `coverage: covered`, `deficits.modalities_missing: []`, and retain `destination: B2-020-language-transformers`.
   The statement test must assert this exact destination/disposition/covered-state transformation and reject any remaining `book1:C8-embeddings` evidence in the B2-020 claim, so the layer-boundary claim cannot be satisfied by Book 1 evidence.
 - [ ] Test hygiene, lesson order, manifest paths, source isolation, CPU label, imported-concept boundary, time arithmetic, and coverage tags without executing student notebooks.
-- [ ] Execute B2-020 solution notebooks in CI on fresh kernels under a per-notebook wall-clock timeout of 20 seconds so a runaway notebook fails rather than hangs; a fresh solution finishes well under it. No process-group, sandbox, or isolation machinery is required.
 - [ ] Commit: `feat: teach language Transformer statements`.
 
 ### Task 4 — Blind-author and execute solutions
@@ -610,7 +609,30 @@ a fresh review round.
 
 Round 8 is `[self]` APPROVE, `[glm]` APPROVE WITH NITS, `[fable]` APPROVE WITH NITS, `[sol]` REJECT — no consensus, but the character of the round confirms the strip worked: `[sol]`'s reject is janitorial (a stale requirement I forgot to clean up), not another injection evasion, and it explicitly calls the content design sound. `[fable]`'s MAJOR is a real content defect the strip introduced — dropping `optimizer_step` broke a legitimate honest-mistake check — now fixed by restoring the field. All round-8 findings are content/coherence; none reopens anti-cheat.
 
-Pending fresh Review 9 verdicts: `[sol]`, `[glm]`, and `[fable]`.
+### Review 9 — glm (2026-08-28)
+
+- **Verdict**: APPROVE.
+- Verified via `git diff` that the round-8 fixes landed and touched no ledger row; every remaining harness/sandbox mention in the body is a disclaimer, not a requirement; round history intact.
+
+### Review 9 — fable (2026-08-28)
+
+- **Verdict**: APPROVE.
+- Confirmed the `optimizer_step` restoration detects a reset optimizer (honest fresh optimizer records 1..40 twice and fails continuity; a continued one records 41..80 and passes) and is teaching-coherent; re-derived every ledger and re-verified self-containedness against the shipped corpus.
+
+### Review 9 — sol (2026-08-28)
+
+- **Verdict**: REJECT.
+- Confirmed lines 34-35, the `optimizer_step` contract, and Task 6.
+- `[sol][FIXED]` **MAJOR** phase-ordering defect introduced by the round-8 timeout reword: a Task-3 checkbox required executing B2-020 solution notebooks, but Task 3 publishes statements with solutions deferred — solutions are not created until Task 4, which already owns their CI execution. The Task-3 checkbox is deleted; Task 4 retains the complete requirement.
+
+### Round 9 outcome and amendment
+
+Round 9 is `[self]` APPROVE, `[glm]` APPROVE, `[fable]` APPROVE, `[sol]` REJECT — one finding, a
+self-inflicted phase-ordering slip from the round-8 timeout reword (an execute-solutions checkbox
+placed in the statement-authoring task). Fixed by deletion; Task 4 already owns solution
+execution. Three of four approve with the fourth's sole finding a one-line coherence fix.
+
+Pending fresh Review 10 verdicts: `[sol]`, `[glm]`, and `[fable]`.
 
 ## Content Review
 
