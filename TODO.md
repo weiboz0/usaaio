@@ -19,7 +19,7 @@
 - [x] 016 — R1 foundation, workflow, and mathematical completion (delivery branch ready)
 - [x] 017 — R1 neural-training completion (delivery branch ready)
 - [x] 018 — R1 classical-model breadth (follows Plan 017; user-authorized unavailable-Opus waiver)
-- [ ] 019 — atomic two-book roots and the first Round 2 attention unit
+- [x] 019 — atomic two-book roots and the first Round 2 attention unit (merged as PR #22)
 
 ## Deferred, with a named owner plan still to be written
 
