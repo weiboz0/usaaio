@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
+import re
 from collections import Counter
 from dataclasses import dataclass
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from tools.books import BookSpec, load_book_catalog
+from tools.books import BookSpec, load_book_catalog, resolve_contained_path
 from tools.model import (
     CourseSchedule,
     Report,
@@ -22,13 +24,6 @@ from tools.model import (
 KINDS = {"lesson-session", "practice", "review", "mock", "debrief"}
 BOOK2_KINDS = {"bridge-diagnostic", "lesson-session", "practice", "review"}
 BOOK2_UNIT = "B2-019-attention-transformers"
-BOOK2_PROBLEM_MINUTES = {
-    **{f"B2-019-p{number:02}": 20 for number in range(1, 6)},
-    **{f"B2-019-p{number:02}": 50 for number in range(6, 13)},
-    **{f"B2-019-p{number:02}": 45 for number in range(13, 17)},
-    **{f"B2-019-p{number:02}": 65 for number in range(17, 22)},
-    **{f"B2-019-p{number:02}": 55 for number in range(22, 25)},
-}
 BOOK2_WEEK_PROBLEMS = (
     ("B2-019-p01", "B2-019-p02", "B2-019-p06", "B2-019-p13"),
     ("B2-019-p03", "B2-019-p04", "B2-019-p07", "B2-019-p08", "B2-019-p14"),
@@ -43,6 +38,30 @@ BOOK2_WEEK_PROBLEMS = (
     ),
     ("B2-019-p11", "B2-019-p17", "B2-019-p18"),
     ("B2-019-p12", "B2-019-p19", "B2-019-p20", "B2-019-p22", "B2-019-p24"),
+)
+BOOK2_BASELINE_ALLOCATIONS = (
+    (
+        ("bridge-diagnostic", BOOK2_UNIT, None, None, 30, ()),
+        ("lesson-session", BOOK2_UNIT, 1, None, 90, ()),
+        ("practice", BOOK2_UNIT, None, 1, 135, BOOK2_WEEK_PROBLEMS[0]),
+    ),
+    (
+        ("lesson-session", BOOK2_UNIT, 2, None, 90, ()),
+        ("practice", BOOK2_UNIT, None, 2, 185, BOOK2_WEEK_PROBLEMS[1]),
+    ),
+    (
+        ("lesson-session", BOOK2_UNIT, 3, None, 90, ()),
+        ("practice", BOOK2_UNIT, None, 3, 330, BOOK2_WEEK_PROBLEMS[2]),
+    ),
+    (
+        ("lesson-session", BOOK2_UNIT, 4, None, 90, ()),
+        ("practice", BOOK2_UNIT, None, 4, 180, BOOK2_WEEK_PROBLEMS[3]),
+    ),
+    (
+        ("lesson-session", BOOK2_UNIT, 5, None, 90, ()),
+        ("practice", BOOK2_UNIT, None, 5, 290, BOOK2_WEEK_PROBLEMS[4]),
+    ),
+    (("review", BOOK2_UNIT, None, 1, 60, ()),),
 )
 
 
@@ -354,6 +373,591 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
     )
 
 
+def _require_book2_manifest_path(
+    root: Path,
+    unit_dir: Path,
+    relative: object,
+    *,
+    label: str,
+    errors: list[str],
+    book_relative: bool = False,
+    must_exist: bool = True,
+) -> None:
+    if not isinstance(relative, str) or not relative:
+        errors.append(f"{label}: declared manifest path must be a nonempty string")
+        return
+    selected = Path(relative) if book_relative else unit_dir.relative_to(root) / relative
+    try:
+        resolved = resolve_contained_path(
+            root,
+            selected,
+            label=f"{label}: declared manifest path",
+            must_exist=must_exist,
+        )
+    except ValueError as exc:
+        errors.append(str(exc))
+        return
+    if must_exist and not resolved.is_file():
+        errors.append(f"{label}: declared manifest path must be a regular file: {relative}")
+
+
+def _book2_solution_policy(
+    unit: str, value: object, errors: list[str]
+) -> tuple[bool, bool]:
+    """Return whether the policy is valid and whether solutions must exist now."""
+    if value == "required":
+        return True, True
+    expiry_date: date | None = None
+    if isinstance(value, dict):
+        expiry = value.get("expires")
+        if isinstance(expiry, str):
+            try:
+                expiry_date = date.fromisoformat(expiry)
+            except ValueError:
+                pass
+        if (
+            value.get("status") == "deferred"
+            and isinstance(value.get("plan"), str)
+            and re.fullmatch(r"plan-[0-9]{3}", value["plan"]) is not None
+            and isinstance(expiry, str)
+            and re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", expiry) is not None
+            and expiry_date is not None
+            and expiry_date >= datetime.now(UTC).date()
+        ):
+            return True, False
+    errors.append(
+        f"{unit}: solution_policy must be 'required' or a valid deferred mapping"
+    )
+    return False, True
+
+
+def _discover_book2_manifest_contracts(
+    root: Path, errors: list[str]
+) -> dict[str, dict[str, Any]]:
+    contracts: dict[str, dict[str, Any]] = {}
+    try:
+        units_root = resolve_contained_path(root, "units", label="Book 2 units directory")
+    except ValueError as exc:
+        errors.append(str(exc))
+        return contracts
+    if not units_root.is_dir():
+        errors.append("Book 2 units path must be a regular directory")
+        return contracts
+    syllabus_units = load_syllabus(root).units
+    for unit_dir in sorted(units_root.iterdir(), key=lambda item: item.name.encode()):
+        # The tracked empty-directory sentinel is metadata, not a units/* unit entry.
+        if unit_dir.name == ".gitkeep":
+            if (
+                unit_dir.is_symlink()
+                or not unit_dir.is_file()
+                or unit_dir.stat().st_size != 0
+            ):
+                errors.append(
+                    f"{unit_dir}: .gitkeep sentinel must be a regular, "
+                    "nonsymlink, empty file"
+                )
+            continue
+        if unit_dir.is_symlink():
+            errors.append(f"{unit_dir}: unit directory symlink is forbidden")
+            continue
+        if not unit_dir.is_dir():
+            errors.append(f"units entry {unit_dir.name} must be a regular directory")
+            continue
+        try:
+            resolve_contained_path(
+                root,
+                unit_dir.relative_to(root),
+                label=f"Book 2 unit directory {unit_dir.name}",
+            )
+        except ValueError as exc:
+            errors.append(str(exc))
+            continue
+        candidates = [
+            path
+            for path in unit_dir.iterdir()
+            if path.name.startswith("manifest") and path.suffix in {".yaml", ".yml"}
+        ]
+        manifest_path = unit_dir / "manifest.yaml"
+        if len(candidates) != 1 or manifest_path not in candidates:
+            errors.append(
+                f"{unit_dir}: must contain exactly one regular manifest.yaml; "
+                f"found {len(candidates)}"
+            )
+            continue
+        if manifest_path.is_symlink():
+            errors.append(f"{manifest_path}: manifest symlink is forbidden")
+            continue
+        if not manifest_path.is_file():
+            errors.append(f"{manifest_path}: manifest.yaml must be a regular file")
+            continue
+        try:
+            resolved_manifest = resolve_contained_path(
+                root,
+                manifest_path.relative_to(root),
+                label="Book 2 manifest",
+            )
+        except ValueError as exc:
+            errors.append(str(exc))
+            continue
+        if not resolved_manifest.is_file():
+            errors.append(f"{manifest_path}: manifest.yaml must be a regular file")
+            continue
+        if unit_dir.name not in syllabus_units:
+            errors.append(f"unregistered Book 2 unit directory {unit_dir.name}")
+        try:
+            raw = _mapping(_read_yaml(manifest_path), str(manifest_path), errors)
+        except ValueError as exc:
+            errors.append(str(exc))
+            continue
+        if raw is None:
+            continue
+        unit = raw.get("unit")
+        if unit != unit_dir.name:
+            errors.append(
+                f"{manifest_path}: manifest unit {unit!r} must match directory {unit_dir.name}"
+            )
+            continue
+        if unit in contracts:
+            errors.append(f"duplicate live Book 2 manifest unit {unit}")
+            continue
+
+        bridge = raw.get("bridge_diagnostic")
+        if not isinstance(bridge, dict):
+            errors.append(f"{unit}: manifest requires one bridge_diagnostic mapping")
+            bridge = {}
+        bridge_minutes = _positive_integer(
+            bridge.get("minutes"), f"{unit} bridge_diagnostic.minutes", errors
+        )
+        _require_book2_manifest_path(
+            root,
+            unit_dir,
+            bridge.get("path"),
+            label=f"{unit} bridge_diagnostic.path",
+            errors=errors,
+        )
+
+        estimated = raw.get("estimated_minutes")
+        if not isinstance(estimated, dict):
+            errors.append(f"{unit}: estimated_minutes must be a mapping")
+            estimated = {}
+        raw_sessions = estimated.get("lesson_sessions")
+        sessions: list[int] = []
+        if not isinstance(raw_sessions, list):
+            errors.append(f"{unit}: estimated_minutes.lesson_sessions must be a list")
+        else:
+            for index, value in enumerate(raw_sessions, start=1):
+                minutes = _positive_integer(
+                    value, f"{unit} lesson session {index} minutes", errors
+                )
+                if minutes is not None:
+                    sessions.append(minutes)
+        lesson_paths = raw.get("lesson_paths")
+        if not isinstance(lesson_paths, list) or len(lesson_paths) != len(sessions):
+            errors.append(
+                f"{unit}: lesson_paths must declare one path for every lesson session"
+            )
+            lesson_paths = lesson_paths if isinstance(lesson_paths, list) else []
+        for index, relative in enumerate(lesson_paths, start=1):
+            _require_book2_manifest_path(
+                root,
+                unit_dir,
+                relative,
+                label=f"{unit} lesson session {index}",
+                errors=errors,
+            )
+        for field in ("overview_path", "review_path", "generator_path"):
+            _require_book2_manifest_path(
+                root,
+                unit_dir,
+                raw.get(field),
+                label=f"{unit} {field}",
+                errors=errors,
+            )
+
+        raw_practice = raw.get("practice")
+        problems: dict[str, dict[str, int]] = {}
+        if not isinstance(raw_practice, list):
+            errors.append(f"{unit}: practice must be a list")
+            raw_practice = []
+        _, solutions_required = _book2_solution_policy(
+            str(unit), raw.get("solution_policy", "required"), errors
+        )
+        for row_index, row in enumerate(raw_practice):
+            if not isinstance(row, dict):
+                errors.append(f"{unit} practice row {row_index} must be a mapping")
+                continue
+            problem_id = row.get("id")
+            path_label = (
+                problem_id
+                if isinstance(problem_id, str) and problem_id
+                else f"{unit} practice row {row_index}"
+            )
+            _require_book2_manifest_path(
+                root,
+                unit_dir,
+                row.get("path"),
+                label=f"{path_label} path",
+                errors=errors,
+            )
+            if "solution_path" in row or solutions_required:
+                _require_book2_manifest_path(
+                    root,
+                    unit_dir,
+                    row.get("solution_path"),
+                    label=f"{path_label} solution_path",
+                    errors=errors,
+                    must_exist=solutions_required,
+                )
+            if not isinstance(problem_id, str) or not problem_id:
+                errors.append(f"{unit} practice row {row_index} id must be a string")
+                continue
+            if problem_id in problems:
+                errors.append(f"duplicate manifest practice ID {problem_id}")
+            minutes = _positive_integer(
+                row.get("minutes"), f"{problem_id} manifest minutes", errors
+            )
+            after_session = _positive_integer(
+                row.get("after_session"), f"{problem_id} after_session", errors
+            )
+            if minutes is not None and after_session is not None:
+                problems[problem_id] = {
+                    "minutes": minutes,
+                    "after_session": after_session,
+                }
+
+        claims = raw.get("coverage_claims", [])
+        if not isinstance(claims, list):
+            errors.append(f"{unit}: coverage_claims must be a list")
+            claims = []
+        for claim_index, claim in enumerate(claims):
+            if not isinstance(claim, dict):
+                errors.append(
+                    f"{unit}: coverage_claims row {claim_index} must be a mapping"
+                )
+                continue
+            evidence = claim.get("evidence_by_modality", {})
+            if not isinstance(evidence, dict):
+                errors.append(
+                    f"{unit}: coverage_claims row {claim_index} "
+                    "evidence_by_modality must be a mapping"
+                )
+                continue
+            for modality_name, modality in evidence.items():
+                if not isinstance(modality, dict):
+                    errors.append(
+                        f"{unit}: coverage_claims row {claim_index} modality "
+                        f"{modality_name} must be a mapping"
+                    )
+                    continue
+                anchors = modality.get("lesson_anchors", [])
+                if not isinstance(anchors, list):
+                    errors.append(
+                        f"{unit}: coverage_claims row {claim_index} "
+                        "lesson_anchors must be a list"
+                    )
+                    continue
+                for anchor_index, anchor in enumerate(anchors):
+                    if not isinstance(anchor, dict):
+                        errors.append(
+                            f"{unit}: coverage_claims row {claim_index} "
+                            f"lesson_anchors row {anchor_index} must be a mapping"
+                        )
+                        continue
+                    _require_book2_manifest_path(
+                        root,
+                        unit_dir,
+                        anchor.get("path"),
+                        label=f"{unit} coverage lesson anchor",
+                        errors=errors,
+                        book_relative=True,
+                    )
+
+        expected_practice = sum(problem["minutes"] for problem in problems.values())
+        if estimated.get("practice") != expected_practice:
+            errors.append(
+                f"{unit} manifest estimated practice minutes "
+                f"{estimated.get('practice')}; practice rows total {expected_practice}"
+            )
+        lesson_total = sum(sessions)
+        if estimated.get("lesson") != lesson_total:
+            errors.append(
+                f"{unit} manifest estimated lesson minutes {estimated.get('lesson')}; "
+                f"lesson sessions total {lesson_total}"
+            )
+        review_minutes = _positive_integer(
+            estimated.get("review"), f"{unit} estimated review minutes", errors
+        )
+        contracts[str(unit)] = {
+            "bridge": bridge_minutes,
+            "sessions": sessions,
+            "practice": expected_practice,
+            "review": review_minutes,
+            "problems": problems,
+        }
+    return contracts
+
+
+def _book2_allocation_signature(
+    allocation: ScheduleAllocation,
+) -> tuple[str, str | None, int | None, int | None, int, tuple[str, ...]]:
+    return (
+        allocation.kind,
+        allocation.unit,
+        allocation.session,
+        allocation.chunk,
+        allocation.minutes,
+        tuple(allocation.problem_ids or ()),
+    )
+
+
+def _validate_book2_unit_topology(
+    schedule: Book2CourseSchedule,
+    unit: str,
+    contract: dict[str, Any],
+    errors: list[str],
+) -> None:
+    locations = [
+        (week.week, allocation_index, allocation)
+        for week in schedule.weeks
+        for allocation_index, allocation in enumerate(week.allocations)
+        if allocation.unit == unit
+    ]
+    if not locations:
+        return
+    session_count = len(contract["sessions"])
+    first_week = min(week for week, _, _ in locations)
+    expected_weeks = list(range(first_week, first_week + session_count + 1))
+    observed_weeks = sorted({week for week, _, _ in locations})
+    if observed_weeks != expected_weeks:
+        errors.append(
+            f"{unit} allocation weeks must be {session_count + 1} consecutive weeks"
+        )
+
+    bridge_locations = [
+        row for row in locations if row[2].kind == "bridge-diagnostic"
+    ]
+    lesson_locations = [row for row in locations if row[2].kind == "lesson-session"]
+    if len(bridge_locations) == 1 and lesson_locations:
+        bridge_week, bridge_index, _ = bridge_locations[0]
+        first_lesson_week, first_lesson_index, _ = min(
+            lesson_locations, key=lambda row: (row[0], row[1])
+        )
+        if (
+            bridge_week != first_week
+            or first_lesson_week != first_week
+            or bridge_index >= first_lesson_index
+        ):
+            errors.append(
+                f"{unit} bridge diagnostic must precede instruction in its first week"
+            )
+
+    observed_sessions = [
+        (week, allocation.session) for week, _, allocation in lesson_locations
+    ]
+    expected_sessions = [
+        (first_week + offset, offset + 1) for offset in range(session_count)
+    ]
+    if observed_sessions != expected_sessions:
+        errors.append(
+            f"{unit} lesson sessions must appear once in strictly increasing order, "
+            "one per instructional week"
+        )
+
+    practice_locations = [row for row in locations if row[2].kind == "practice"]
+    observed_practices = [
+        (week, allocation.chunk) for week, _, allocation in practice_locations
+    ]
+    expected_practices = [
+        (first_week + offset, offset + 1) for offset in range(session_count)
+    ]
+    if observed_practices != expected_practices:
+        errors.append(
+            f"{unit} practice chunks must cover its instructional weeks in order, "
+            "one per declared session"
+        )
+
+    review_locations = [row for row in locations if row[2].kind == "review"]
+    if len(review_locations) == 1:
+        review_week, _, review = review_locations[0]
+        scheduled_week = next(
+            (week for week in schedule.weeks if week.week == review_week), None
+        )
+        if (
+            review_week != first_week + session_count
+            or scheduled_week is None
+            or scheduled_week.allocations != [review]
+        ):
+            errors.append(
+                f"{unit} review must be the only final allocation in the following "
+                "unit week"
+            )
+
+
+def _validate_live_book2_ledger(
+    schedule: Book2CourseSchedule,
+    contracts: dict[str, dict[str, Any]],
+    errors: list[str],
+) -> frozenset[str]:
+    if BOOK2_UNIT not in contracts:
+        errors.append(f"live Book 2 schedule requires the {BOOK2_UNIT} manifest")
+    flattened = [
+        allocation for week in schedule.weeks for allocation in week.allocations
+    ]
+    indexed = list(enumerate(flattened))
+    global_problem_ids = [
+        problem_id
+        for allocation in flattened
+        for problem_id in allocation.problem_ids or []
+    ]
+    global_counts = Counter(global_problem_ids)
+    for problem_id, count in sorted(global_counts.items()):
+        if count > 1:
+            errors.append(
+                f"{problem_id} must appear exactly once in scheduled problem_ids; found {count}"
+            )
+
+    baseline_reviews = [
+        index
+        for index, allocation in indexed
+        if allocation.unit == BOOK2_UNIT and allocation.kind == "review"
+    ]
+    baseline_review = baseline_reviews[0] if len(baseline_reviews) == 1 else None
+    for index, allocation in indexed:
+        if (
+            allocation.unit is not None
+            and allocation.unit != BOOK2_UNIT
+            and baseline_review is not None
+            and index <= baseline_review
+        ):
+            errors.append(
+                f"{allocation.unit} {allocation.kind} allocation must begin after "
+                f"{BOOK2_UNIT} final review"
+            )
+
+    covered: set[str] = set()
+    for unit, contract in contracts.items():
+        _validate_book2_unit_topology(schedule, unit, contract, errors)
+        unit_rows = [
+            (index, allocation)
+            for index, allocation in indexed
+            if allocation.unit == unit
+        ]
+        bridge_rows = [
+            (index, allocation)
+            for index, allocation in unit_rows
+            if allocation.kind == "bridge-diagnostic"
+        ]
+        if len(bridge_rows) != 1:
+            errors.append(f"bridge diagnostic allocation for {unit} must appear exactly once")
+        elif bridge_rows[0][1].minutes != contract["bridge"]:
+            errors.append(
+                f"{unit} bridge diagnostic minutes {bridge_rows[0][1].minutes}; "
+                f"expected {contract['bridge']}"
+            )
+
+        lesson_rows = [
+            (index, allocation)
+            for index, allocation in unit_rows
+            if allocation.kind == "lesson-session"
+        ]
+        for session, minutes in enumerate(contract["sessions"], start=1):
+            rows = [row for row in lesson_rows if row[1].session == session]
+            if not rows:
+                errors.append(f"unallocated lesson session {unit}#{session}")
+            elif len(rows) != 1:
+                errors.append(f"lesson session {unit}#{session} must appear exactly once")
+            elif rows[0][1].minutes != minutes:
+                errors.append(
+                    f"{unit} lesson session {session} minutes {rows[0][1].minutes}; "
+                    f"expected {minutes}"
+                )
+        expected_sessions = set(range(1, len(contract["sessions"]) + 1))
+        for session in sorted(
+            {allocation.session for _, allocation in lesson_rows if allocation.session is not None}
+            - expected_sessions
+        ):
+            errors.append(f"unknown lesson session {unit}#{session}")
+
+        practice_rows = [
+            (index, allocation)
+            for index, allocation in unit_rows
+            if allocation.kind == "practice"
+        ]
+        _check_chunks("practice", unit, practice_rows, contract["practice"], errors)
+        listed: list[str] = []
+        for index, allocation in practice_rows:
+            if allocation.problem_ids is None:
+                errors.append(
+                    f"{unit} practice chunk {allocation.chunk} requires exact problem_ids"
+                )
+                continue
+            listed.extend(allocation.problem_ids)
+            unknown = [
+                problem_id
+                for problem_id in allocation.problem_ids
+                if problem_id not in contract["problems"]
+            ]
+            for problem_id in unknown:
+                errors.append(
+                    f"{unit} practice chunk {allocation.chunk} has unknown {problem_id}"
+                )
+            if not unknown:
+                expected_minutes = sum(
+                    contract["problems"][problem_id]["minutes"]
+                    for problem_id in allocation.problem_ids
+                )
+                if expected_minutes != allocation.minutes:
+                    errors.append(
+                        f"{unit} practice chunk {allocation.chunk} problem minutes "
+                        f"{expected_minutes}; allocation minutes {allocation.minutes}"
+                    )
+            for problem_id in allocation.problem_ids:
+                problem = contract["problems"].get(problem_id)
+                if problem is None:
+                    continue
+                lesson_indexes = [
+                    lesson_index
+                    for lesson_index, lesson in lesson_rows
+                    if lesson.session == problem["after_session"]
+                ]
+                if not lesson_indexes or lesson_indexes[0] >= index:
+                    errors.append(
+                        f"{problem_id} requires session {problem['after_session']} before "
+                        "its scheduled practice allocation"
+                    )
+        counts = Counter(listed)
+        if counts != Counter(contract["problems"].keys()):
+            errors.append(
+                "live manifest problem IDs must exactly match scheduled problem_ids"
+            )
+        for problem_id, problem in contract["problems"].items():
+            if counts[problem_id] != 1:
+                errors.append(
+                    f"{problem_id} must appear exactly once in scheduled problem_ids; "
+                    f"found {counts[problem_id]}"
+                )
+            expected = problem["minutes"]
+            if type(expected) is not int:
+                errors.append(f"{problem_id} manifest minutes must be an integer")
+        covered.update(problem_id for problem_id in contract["problems"] if counts[problem_id] == 1)
+
+        review_rows = [
+            (index, allocation)
+            for index, allocation in unit_rows
+            if allocation.kind == "review"
+        ]
+        if len(review_rows) != 1:
+            errors.append(f"review allocation for {unit} must appear exactly once")
+        elif review_rows[0][1].minutes != contract["review"]:
+            errors.append(
+                f"{unit} review minutes {review_rows[0][1].minutes}; "
+                f"expected {contract['review']}"
+            )
+        if unit_rows and unit_rows[-1][1].kind != "review":
+            errors.append(f"{unit} review allocation must be its final scheduled allocation")
+    return frozenset(covered)
+
+
 def _parse_book2_schedule(
     root: Path,
     errors: list[str],
@@ -398,29 +1002,23 @@ def _parse_book2_schedule(
         40,
         errors,
     )
-    _exact_integer(
-        raw.get("total_book_weeks"),
-        "Book 2 schedule total_book_weeks",
-        6,
-        errors,
+    declared_weeks = _positive_integer(
+        raw.get("total_book_weeks"), "Book 2 schedule total_book_weeks", errors
     )
-    _exact_integer(
-        raw.get("total_minutes"),
-        "Book 2 schedule total_minutes",
-        1660,
-        errors,
+    declared_minutes = _positive_integer(
+        raw.get("total_minutes"), "Book 2 schedule total_minutes", errors
     )
+    contracts = _discover_book2_manifest_contracts(root, errors)
 
     marker = raw.get("final_assessment")
     if isinstance(marker, dict):
         marker_week = marker.get("after_book_week")
         if type(marker_week) is not int:
+            errors.append("Book 2 final_assessment.after_book_week must be an integer")
+        elif declared_weeks is not None and marker_week != declared_weeks:
             errors.append(
-                "Book 2 final_assessment.after_book_week must be an integer"
+                f"planned final assessment marker must follow book week {declared_weeks}"
             )
-            marker_week = None
-        elif marker_week != 6:
-            errors.append("planned final assessment marker must follow book week 6")
         marker_without_week = {
             key: value for key, value in marker.items() if key != "after_book_week"
         }
@@ -437,7 +1035,7 @@ def _parse_book2_schedule(
     if not isinstance(raw_weeks, list):
         errors.append("course-schedule.yaml weeks must be a list")
         return None
-
+    allowed_units = set(contracts) if status == "live" else {BOOK2_UNIT}
     local_weeks: list[int] = []
     global_weeks: list[int] = []
     weeks: list[ScheduleWeek] = []
@@ -467,10 +1065,7 @@ def _parse_book2_schedule(
             continue
         allocations: list[ScheduleAllocation] = []
         for allocation_index, value in enumerate(raw_allocations):
-            label = (
-                f"Book 2 week {book_week or row_index + 1} allocation "
-                f"{allocation_index}"
-            )
+            label = f"Book 2 week {book_week or row_index + 1} allocation {allocation_index}"
             allocation = _mapping(value, label, errors)
             if allocation is None:
                 continue
@@ -495,7 +1090,7 @@ def _parse_book2_schedule(
                 unit = None
             elif ":" in unit:
                 errors.append(f"cross-book unit reference {unit} is forbidden in Book 2 schedule")
-            elif unit != BOOK2_UNIT:
+            elif unit not in allowed_units:
                 errors.append(f"unknown Book 2 unit {unit}")
             session = None
             chunk = None
@@ -531,244 +1126,52 @@ def _parse_book2_schedule(
         if book_week is not None:
             weeks.append(ScheduleWeek(book_week, 1, allocations))
 
-    if local_weeks != list(range(1, 7)):
-        errors.append("Book 2 book_week rows must be ordered consecutively 1..6")
-    if global_weeks != list(range(41, 47)):
-        errors.append("Book 2 global_week rows must be 41..46 in order")
-
-    expected_kinds = (
-        ("bridge-diagnostic", "lesson-session", "practice"),
-        ("lesson-session", "practice"),
-        ("lesson-session", "practice"),
-        ("lesson-session", "practice"),
-        ("lesson-session", "practice"),
-        ("review",),
-    )
-    expected_minutes = (
-        (30, 90, 135),
-        (90, 185),
-        (90, 330),
-        (90, 180),
-        (90, 290),
-        (60,),
-    )
-    listed_problem_ids: list[str] = []
-    scheduled_after_sessions: dict[str, int] = {}
-    latest_session = 0
-    for index, week in enumerate(weeks[:6]):
-        kinds = tuple(allocation.kind for allocation in week.allocations)
-        if kinds != expected_kinds[index]:
-            errors.append(
-                f"Book 2 week {index + 1} allocation kinds {kinds}; "
-                f"expected {expected_kinds[index]}"
-            )
-        for allocation, minutes in zip(week.allocations, expected_minutes[index]):
-            if allocation.minutes != minutes:
-                errors.append(
-                    f"Book 2 week {index + 1} {allocation.kind} allocation minutes "
-                    f"{allocation.minutes}; expected {minutes}"
-                )
-        lesson_rows = [
-            allocation for allocation in week.allocations if allocation.kind == "lesson-session"
-        ]
-        if len(lesson_rows) == 1 and lesson_rows[0].session is not None:
-            latest_session = lesson_rows[0].session
-        if index < 5 and (
-            len(lesson_rows) != 1 or lesson_rows[0].session != index + 1
-        ):
-            errors.append(
-                f"Book 2 week {index + 1} must contain lesson session {index + 1} exactly once"
-            )
-        practice_rows = [
-            allocation for allocation in week.allocations if allocation.kind == "practice"
-        ]
-        if index < 5:
-            if len(practice_rows) != 1 or practice_rows[0].chunk != index + 1:
-                errors.append(
-                    f"Book 2 week {index + 1} must contain practice chunk {index + 1} exactly once"
-                )
-            elif practice_rows[0].problem_ids is not None:
-                listed_problem_ids.extend(practice_rows[0].problem_ids)
-                for problem_id in practice_rows[0].problem_ids:
-                    scheduled_after_sessions[problem_id] = latest_session
-                expected_ids = list(BOOK2_WEEK_PROBLEMS[index])
-                if practice_rows[0].problem_ids != expected_ids:
-                    errors.append(
-                        f"Book 2 practice chunk {index + 1} problem_ids must be {expected_ids}"
-                    )
-                known_minutes = [
-                    BOOK2_PROBLEM_MINUTES[problem_id]
-                    for problem_id in practice_rows[0].problem_ids
-                    if problem_id in BOOK2_PROBLEM_MINUTES
-                ]
-                if len(known_minutes) == len(practice_rows[0].problem_ids):
-                    actual_problem_minutes = sum(known_minutes)
-                    if actual_problem_minutes != practice_rows[0].minutes:
-                        errors.append(
-                            f"Book 2 practice chunk {index + 1} problem minutes "
-                            f"{actual_problem_minutes}; allocation minutes "
-                            f"{practice_rows[0].minutes}"
-                        )
-
-    counts = Counter(listed_problem_ids)
-    for problem_id in BOOK2_PROBLEM_MINUTES:
-        if counts[problem_id] != 1:
-            errors.append(
-                f"{problem_id} must appear exactly once in staged problem_ids; "
-                f"found {counts[problem_id]}"
-            )
-    for problem_id in sorted(set(listed_problem_ids) - set(BOOK2_PROBLEM_MINUTES)):
-        errors.append(f"unknown staged Book 2 problem ID {problem_id}")
-
+    expected_local = list(range(1, (declared_weeks or 0) + 1))
+    expected_global = list(range(41, 41 + (declared_weeks or 0)))
+    if local_weeks != expected_local:
+        errors.append(
+            f"Book 2 book_week rows must be ordered consecutively 1..{declared_weeks}"
+        )
+    if global_weeks != expected_global:
+        errors.append(
+            f"Book 2 global_week rows must be 41..{40 + (declared_weeks or 0)} in order"
+        )
     actual_total = sum(
         allocation.minutes for week in weeks for allocation in week.allocations
     )
-    if actual_total != 1660:
-        errors.append(f"Book 2 scheduled total {actual_total}; expected 1660")
-    if raw.get("total_minutes") != actual_total:
-        errors.append(
-            f"Book 2 declared total {raw.get('total_minutes')}; actual {actual_total}"
-        )
-    manifest_paths = list((root / "units").glob("*/manifest.yaml"))
-    if status == "staged" and manifest_paths:
-        errors.append(
-            "staged Book 2 schedule is forbidden once a live manifest exists"
-        )
-    covered_problem_ids: frozenset[str] = frozenset()
-    if status == "live":
-        covered_problem_ids = _validate_live_book2_manifest(
-            root,
-            manifest_paths,
-            listed_problem_ids,
-            scheduled_after_sessions,
-            errors,
-        )
+    if declared_minutes is not None and declared_minutes != actual_total:
+        errors.append(f"Book 2 declared total {declared_minutes}; actual {actual_total}")
 
+    schedule = Book2CourseSchedule(
+        schedule_version=1,
+        weeks=weeks,
+        declared_week_count=declared_weeks,
+        declared_total_minutes=declared_minutes,
+        status=str(status),
+        global_weeks=tuple(global_weeks),
+    )
+    baseline = tuple(
+        tuple(_book2_allocation_signature(allocation) for allocation in week.allocations)
+        for week in weeks[:6]
+    )
+    if baseline != BOOK2_BASELINE_ALLOCATIONS:
+        errors.append("B2-019 pre-existing ledger must remain unchanged")
+    if status == "staged":
+        if contracts:
+            errors.append("staged Book 2 schedule is forbidden once a live manifest exists")
+        if actual_total != 1660:
+            errors.append(f"Book 2 staged scheduled total {actual_total}; expected 1660")
+        return schedule
+    covered = _validate_live_book2_ledger(schedule, contracts, errors)
     return Book2CourseSchedule(
         schedule_version=1,
         weeks=weeks,
-        declared_week_count=6,
-        declared_total_minutes=1660,
+        declared_week_count=declared_weeks,
+        declared_total_minutes=declared_minutes,
         status=str(status),
         global_weeks=tuple(global_weeks),
-        covered_problem_ids=covered_problem_ids,
+        covered_problem_ids=covered,
     )
-
-
-def _validate_live_book2_manifest(
-    root: Path,
-    manifest_paths: list[Path],
-    scheduled_problem_ids: list[str],
-    scheduled_after_sessions: dict[str, int],
-    errors: list[str],
-) -> frozenset[str]:
-    if len(manifest_paths) != 1:
-        errors.append(
-            "live Book 2 schedule requires exactly one unit manifest; "
-            f"found {len(manifest_paths)}"
-        )
-        return frozenset()
-    manifest_path = manifest_paths[0]
-    try:
-        raw = _mapping(_read_yaml(manifest_path), str(manifest_path), errors)
-    except ValueError as exc:
-        errors.append(str(exc))
-        return frozenset()
-    if raw is None:
-        return frozenset()
-    if raw.get("unit") != BOOK2_UNIT:
-        errors.append(f"live Book 2 manifest unit must be {BOOK2_UNIT}")
-    unit_dir = manifest_path.parent
-
-    def require_path(relative: object) -> None:
-        if not isinstance(relative, str) or not relative:
-            errors.append("live Book 2 manifest has an empty declared student path")
-            return
-        candidate = unit_dir / relative
-        try:
-            resolved = candidate.resolve(strict=True)
-        except OSError:
-            errors.append(f"missing declared student path {relative}")
-            return
-        if not resolved.is_relative_to(unit_dir.resolve()) or any(
-            parent.is_symlink()
-            for parent in [candidate, *candidate.parents]
-            if parent.is_relative_to(unit_dir)
-        ):
-            errors.append(f"declared student path escapes or is symlinked: {relative}")
-        elif not resolved.is_file():
-            errors.append(f"missing declared student path {relative}")
-
-    expected_lessons = [
-        "lessons/01-query-key-value-and-scaled-dot-product.ipynb",
-        "lessons/02-self-attention-and-masks.ipynb",
-        "lessons/03-multi-head-position-and-cost.ipynb",
-        "lessons/04-attention-module-and-tiny-training.ipynb",
-        "lessons/05-transformer-blocks-and-architecture.ipynb",
-    ]
-    if raw.get("overview_path") != "lesson.ipynb":
-        errors.append("live Book 2 manifest overview_path must be lesson.ipynb")
-    if raw.get("lesson_paths") != expected_lessons:
-        errors.append("live Book 2 manifest lesson_paths must match sessions 1..5 exactly")
-    if raw.get("review_path") != "review.ipynb":
-        errors.append("live Book 2 manifest review_path must be review.ipynb")
-    bridge = raw.get("bridge_diagnostic")
-    bridge_path = bridge.get("path") if isinstance(bridge, dict) else None
-    if bridge_path != "lessons/00-book1-bridge.ipynb":
-        errors.append(
-            "live Book 2 manifest bridge path must be lessons/00-book1-bridge.ipynb"
-        )
-    for relative in [
-        raw.get("overview_path"),
-        bridge_path,
-        *(raw.get("lesson_paths") if isinstance(raw.get("lesson_paths"), list) else []),
-        raw.get("review_path"),
-    ]:
-        require_path(relative)
-
-    raw_practice = raw.get("practice")
-    if not isinstance(raw_practice, list):
-        errors.append("live Book 2 manifest practice must be a list")
-        return frozenset()
-    manifest_ids: list[str] = []
-    for row_index, row in enumerate(raw_practice):
-        if not isinstance(row, dict):
-            errors.append(f"live Book 2 manifest practice row {row_index} must be a mapping")
-            continue
-        problem_id = row.get("id")
-        if isinstance(problem_id, str):
-            manifest_ids.append(problem_id)
-            expected_minutes = BOOK2_PROBLEM_MINUTES.get(problem_id)
-            if expected_minutes is not None and row.get("minutes") != expected_minutes:
-                errors.append(
-                    f"{problem_id} manifest minutes {row.get('minutes')}; "
-                    f"scheduled contract requires {expected_minutes}"
-                )
-            required_session = row.get("after_session")
-            scheduled_session = scheduled_after_sessions.get(problem_id)
-            if (
-                type(required_session) is int
-                and scheduled_session is not None
-                and required_session > scheduled_session
-            ):
-                errors.append(
-                    f"{problem_id} requires session {required_session} but is scheduled "
-                    f"after session {scheduled_session}"
-                )
-        else:
-            errors.append(f"live Book 2 manifest practice row {row_index} id must be a string")
-        require_path(row.get("path"))
-    ids_match = Counter(manifest_ids) == Counter(scheduled_problem_ids)
-    if not ids_match:
-        errors.append("live manifest problem IDs must exactly match scheduled problem_ids")
-    expected_practice_minutes = sum(BOOK2_PROBLEM_MINUTES.values())
-    estimated = raw.get("estimated_minutes")
-    if not isinstance(estimated, dict) or estimated.get("practice") != expected_practice_minutes:
-        errors.append(
-            "live Book 2 manifest estimated practice minutes must equal scheduled "
-            f"{expected_practice_minutes}"
-        )
-    return frozenset(manifest_ids) if ids_match else frozenset()
 
 
 def _unit_contracts(root: Path) -> dict[str, dict[str, Any]]:
