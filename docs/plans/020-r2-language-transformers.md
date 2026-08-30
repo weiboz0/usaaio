@@ -248,6 +248,23 @@ process-group apparatus, and student statements carry no solution-marker contrac
   Modify `scripts/ci-local.sh` and create `scripts/verify-historical-deferred-policy.sh` in this task under the explicit historical-policy contract below, with tests in this task; do not defer their behavior to Task 3.
 - [ ] Add a focused fixture demonstrating only the named planned `B2-020-language-transformers` syllabus unit (not arbitrary manifest-less units) is checker-valid until Task 3 atomically publishes its manifest and coverage evidence.
 - [ ] Do not render inventory, Book 2 course structure, or aggregate evidence in this task; Task 3 owns their first valid regeneration.
+>  **TASK 2 AS IMPLEMENTED (planned-units, 2026-08-29).** Per the design directive above, B2-020
+>  was registered through the existing `planned_units` machinery in
+>  `book2/curriculum/coverage-map.yaml` (it already had a planned-unit row): its eight owned
+>  concepts became that row's `provisional_concepts`, and the `nlp-word-embeddings` knowledge
+>  point was transferred to `destination: B2-020-language-transformers` / `disposition: new-unit`
+>  (coverage stays `partial`). The legacy `nlp-word-embeddings` scope special case in
+>  `tools/checks/scope.py` was inverted to that contract, `docs/curriculum-roadmap.md` and
+>  `docs/audits/015-coverage-audit.md` were regenerated (the roadmap is where planned ownership is
+>  recorded — 3 lines), and four downstream tests were updated (fixture destination, one
+>  assertion, one inverted mutation, one re-baselined guard digest). NO syllabus change, NO parser
+>  change, NO projection code, NO staleness — the existing machinery keeps every renderer current
+>  by construction. Full suite 1117 passed; B2-019 byte-unchanged; no B2-020 content created.
+>  **Deferred to Task 3 (when B2-020 ships its manifest):** adding B2-020's unit/concepts to the
+>  canonical `syllabus.md`, the double-length standards roster entry, the deferred-solution-policy
+>  parser + historical machinery, and the live schedule-ledger entry — all of which are
+>  shipped-unit concerns, not planned-registration concerns.
+
 - [ ] Commit: `docs: register language Transformer coverage`.
 
 ### Task 3 — Author the statement-side teaching corpus

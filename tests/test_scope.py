@@ -2178,8 +2178,8 @@ def _write_book2_roadmap_fixture(root: Path) -> dict[str, Any]:
                             "assessments": [],
                         }
                     },
-                    disposition="extend-existing-unit",
-                    destination="C8-embeddings",
+                    disposition="new-unit",
+                    destination="B2-020-language-transformers",
                     deficits={"modalities_missing": ["model-training"]},
                 )
             roadmap["knowledge_points"].append(row)
@@ -2206,7 +2206,7 @@ def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets(
     assert len({point for points in planned.values() for point in points}) == 30
     assert all(not unit_id.startswith("P015-R2-") for unit_id in planned)
     embedding = next(point for point in loaded.knowledge_points if point.id == "nlp-word-embeddings")
-    assert (embedding.coverage, embedding.destination) == ("partial", "C8-embeddings")
+    assert (embedding.coverage, embedding.destination) == ("partial", "B2-020-language-transformers")
     assert report.ok, report.errors
 
 
@@ -2230,8 +2230,8 @@ def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets(
                 row
                 for row in contract["roadmap"]["knowledge_points"]
                 if row["id"] == "nlp-word-embeddings"
-            ).update(destination="B2-020-language-transformers", disposition="new-unit"),
-            "nlp-word-embeddings must retain destination C8-embeddings",
+            ).update(destination="C8-embeddings", disposition="extend-existing-unit"),
+            "nlp-word-embeddings must have destination B2-020-language-transformers",
         ),
     ],
 )
