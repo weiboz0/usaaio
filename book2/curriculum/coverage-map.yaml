@@ -34,7 +34,15 @@ planned_units:
   - nlp-pretraining
   - nlp-fine-tuning
   - transformer-nlp-applications
-  provisional_concepts: []
+  provisional_concepts:
+  - embedding-model-training
+  - learned-token-embedding
+  - language-transformer
+  - causal-language-modeling
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  - nlp-fine-tuning-protocol
+  - transformer-nlp-task-design
   estimated_hours:
     min: 26
     max: 32
@@ -568,8 +576,8 @@ knowledge_points:
       lesson_anchors: []
       practices: []
       assessments: []
-  disposition: extend-existing-unit
-  destination: book1:C8-embeddings
+  disposition: new-unit
+  destination: B2-020-language-transformers
   deficits:
     modalities_missing:
     - model-training

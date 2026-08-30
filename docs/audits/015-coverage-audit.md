@@ -2125,7 +2125,7 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** partial
-- **Destination:** book1:C8-embeddings
+- **Destination:** book2:B2-020-language-transformers
 - **Dependencies:** book1:linear-algebra-foundations, book2:nlp-tokenization
 - **Shipped concepts:** book1:embedding-matrices, book1:gensim-usage, book1:word-embeddings
 - **Modalities missing:** model-training

@@ -1174,14 +1174,18 @@ def _check_roadmap(
             errors.append(f"{coverage} {point_id} requires a destination")
         embedding_bridge = point_id == "nlp-word-embeddings"
         if embedding_bridge:
+            # Plan 020 Task 2: nlp-word-embeddings moves from the Book 1 C8 extend-existing-unit
+            # bridge to B2-020's new-unit ownership. Coverage is `partial` while B2-020 is only
+            # registered as a planned unit (Task 2) and `covered` once B2-020 ships its evidence
+            # (Task 3).
             if not (
-                coverage == "partial"
-                and disposition == "extend-existing-unit"
-                and destination == ("book1:C8-embeddings" if book is not None else "C8-embeddings")
+                coverage in {"partial", "covered"}
+                and disposition == "new-unit"
+                and destination == "B2-020-language-transformers"
             ):
                 errors.append(
-                    "nlp-word-embeddings must retain destination C8-embeddings, "
-                    "partial coverage, and extend-existing-unit disposition"
+                    "nlp-word-embeddings must have destination B2-020-language-transformers, "
+                    "new-unit disposition, and partial (Task 2) or covered (Task 3) coverage"
                 )
             if planned_owners.get(point_id, []) != ["B2-020-language-transformers"]:
                 errors.append(
