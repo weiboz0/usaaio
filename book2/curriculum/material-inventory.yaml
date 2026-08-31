@@ -1,15 +1,15 @@
 inventory_version: 1
 counts:
-  units: 1
-  concepts: 11
-  unit_practices: 24
-  lesson_sessions: 6
-  unit_nonpractice_notebooks: 8
-  unit_notebooks: 56
+  units: 2
+  concepts: 19
+  unit_practices: 48
+  lesson_sessions: 12
+  unit_nonpractice_notebooks: 16
+  unit_notebooks: 88
   mocktests: 0
   mock_notebooks: 0
-  manifested_minutes: 1630
-  scheduled_minutes: 1660
+  manifested_minutes: 3260
+  scheduled_minutes: 3320
 input_paths:
 - docs/course-structure.md
 - syllabus.md
@@ -70,17 +70,53 @@ input_paths:
 - units/B2-019-attention-transformers/practice/p24.ipynb
 - units/B2-019-attention-transformers/practice/p24_solution.ipynb
 - units/B2-019-attention-transformers/review.ipynb
+- units/B2-020-language-transformers/lesson.ipynb
+- units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb
+- units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
+- units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
+- units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
+- units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
+- units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
+- units/B2-020-language-transformers/manifest.yaml
+- units/B2-020-language-transformers/practice/p01.ipynb
+- units/B2-020-language-transformers/practice/p02.ipynb
+- units/B2-020-language-transformers/practice/p03.ipynb
+- units/B2-020-language-transformers/practice/p04.ipynb
+- units/B2-020-language-transformers/practice/p05.ipynb
+- units/B2-020-language-transformers/practice/p06.ipynb
+- units/B2-020-language-transformers/practice/p07.ipynb
+- units/B2-020-language-transformers/practice/p08.ipynb
+- units/B2-020-language-transformers/practice/p09.ipynb
+- units/B2-020-language-transformers/practice/p10.ipynb
+- units/B2-020-language-transformers/practice/p11.ipynb
+- units/B2-020-language-transformers/practice/p12.ipynb
+- units/B2-020-language-transformers/practice/p13.ipynb
+- units/B2-020-language-transformers/practice/p14.ipynb
+- units/B2-020-language-transformers/practice/p15.ipynb
+- units/B2-020-language-transformers/practice/p16.ipynb
+- units/B2-020-language-transformers/practice/p17.ipynb
+- units/B2-020-language-transformers/practice/p18.ipynb
+- units/B2-020-language-transformers/practice/p19.ipynb
+- units/B2-020-language-transformers/practice/p20.ipynb
+- units/B2-020-language-transformers/practice/p21.ipynb
+- units/B2-020-language-transformers/practice/p22.ipynb
+- units/B2-020-language-transformers/practice/p23.ipynb
+- units/B2-020-language-transformers/practice/p24.ipynb
+- units/B2-020-language-transformers/review.ipynb
 documents:
 - path: docs/course-structure.md
   kind: document
-  semantic_sha256: 9fcb8936aa47c06ac56a1bb1e07db1356f896e4a6f6920900e64865342b803cf
+  semantic_sha256: 2dbea89ba82c001e206ae2228718b9b4947af928951cbf7e23adee64d1021945
 manifests:
 - path: syllabus.md
   kind: canonical-yaml
-  semantic_sha256: 2dcf9da1aa459020bf0df4398fdfe4e2cd0cf0814eb9c5125a5ed5982ada6f51
+  semantic_sha256: 4edd5bf8d69267ecfd09298855b260d5681a62c2e50ad601bd32c7245b3ecb8d
 - path: units/B2-019-attention-transformers/manifest.yaml
   kind: yaml
   semantic_sha256: e6dd52f9851fe91c1f86e8cfc45f0d1c25c7fa78f0524abd9d34322c0b19dd29
+- path: units/B2-020-language-transformers/manifest.yaml
+  kind: yaml
+  semantic_sha256: eb192d0af0a22b34ea6d96658facca8770342bd2c0672ce44ec8f7582eee5ff3
 notebooks:
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
@@ -2548,3 +2584,1136 @@ notebooks:
   - transformer-residual-layernorm
   declared_problem_ids: []
   api_tokens: []
+- path: units/B2-020-language-transformers/lesson.ipynb
+  kind: notebook
+  semantic_sha256: 93a9aa0828717efa135ba3e363a6d97e28d58a4822ed7e7214125c7383eb0677
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/lesson.ipynb :: B2-020 — Language Transformers :: cell 1'
+    heading_path:
+    - B2-020 — Language Transformers
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lesson.ipynb :: B2-020 — Language Transformers > Goals :: cell 1'
+    heading_path:
+    - B2-020 — Language Transformers
+    - Goals
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lesson.ipynb :: B2-020 — Language Transformers > Session map :: cell 1'
+    heading_path:
+    - B2-020 — Language Transformers
+    - Session map
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lesson.ipynb :: B2-020 — Language Transformers > How to study :: cell 1'
+    heading_path:
+    - B2-020 — Language Transformers
+    - How to study
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lesson.ipynb :: B2-020 — Language Transformers > Boundaries :: cell 1'
+    heading_path:
+    - B2-020 — Language Transformers
+    - Boundaries
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - embedding-model-training
+  - language-transformer
+  - learned-token-embedding
+  - masked-language-modeling
+  - nlp-fine-tuning-protocol
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb
+  kind: notebook
+  semantic_sha256: b001e90e619658884549b5795783e85363bf0c158b3ba00f4e19c4a4142c457b
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb :: B2-020 — Book 1 and B2-019 Bridge Diagnostic
+      :: cell 1'
+    heading_path:
+    - B2-020 — Book 1 and B2-019 Bridge Diagnostic
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb :: B2-020 — Book 1 and B2-019 Bridge Diagnostic
+      > 1. Token-to-index and fixed-vector boundary :: cell 1'
+    heading_path:
+    - B2-020 — Book 1 and B2-019 Bridge Diagnostic
+    - 1. Token-to-index and fixed-vector boundary
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb :: B2-020 — Book 1 and B2-019 Bridge Diagnostic
+      > 2. Matrix and tensor shapes :: cell 1'
+    heading_path:
+    - B2-020 — Book 1 and B2-019 Bridge Diagnostic
+    - 2. Matrix and tensor shapes
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb :: B2-020 — Book 1 and B2-019 Bridge Diagnostic
+      > 3. Autograd and optimizers :: cell 1'
+    heading_path:
+    - B2-020 — Book 1 and B2-019 Bridge Diagnostic
+    - 3. Autograd and optimizers
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb :: B2-020 — Book 1 and B2-019 Bridge Diagnostic
+      > 4. B2-019 attention prerequisite :: cell 1'
+    heading_path:
+    - B2-020 — Book 1 and B2-019 Bridge Diagnostic
+    - 4. B2-019 attention prerequisite
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb :: B2-020 — Book 1 and B2-019 Bridge Diagnostic
+      > 5. Readiness decision :: cell 1'
+    heading_path:
+    - B2-020 — Book 1 and B2-019 Bridge Diagnostic
+    - 5. Readiness decision
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/00-book1-bridge.ipynb :: B2-020 — Book 1 and B2-019 Bridge Diagnostic
+      > 5. Readiness decision :: cell 2'
+    heading_path:
+    - B2-020 — Book 1 and B2-019 Bridge Diagnostic
+    - 5. Readiness decision
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - embedding-model-training
+  - language-transformer
+  - learned-token-embedding
+  - masked-language-modeling
+  - nlp-fine-tuning-protocol
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
+  kind: notebook
+  semantic_sha256: 7c84010643ee2aaca00525c37f4d6b80cc10bc9136ff3dc54892c4b5980273ba
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings > 1. One-hot lookup and shapes :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    - 1. One-hot lookup and shapes
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings > 1. One-hot lookup and shapes :: cell 2'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    - 1. One-hot lookup and shapes
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings > 2. A learned table is a model parameter :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    - 2. A learned table is a model parameter
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings > 3. Context-to-target objective :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    - 3. Context-to-target objective
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings > 4. Worked example: one gradient update :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    - '4. Worked example: one gradient update'
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings > 5. Seeded embedding training :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    - 5. Seeded embedding training
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings > 6. Nearest-neighbor interpretation :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    - 6. Nearest-neighbor interpretation
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings > 7. Common pitfalls :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    - 7. Common pitfalls
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings > 8. Exam connections and Going deeper :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    - 8. Exam connections and Going deeper
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - embedding-model-training
+  - language-transformer
+  - learned-token-embedding
+  - masked-language-modeling
+  - nlp-fine-tuning-protocol
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids: []
+  api_tokens:
+  - torch.get_num_threads
+  - torch.manual_seed
+- path: units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
+  kind: notebook
+  semantic_sha256: 3247cc9e91e9b987b30a59425936d68ebae3ae17080885b3372cf294b6b9ea15
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model > 1. Language Transformer input contract :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    - 1. Language Transformer input contract
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model > 1. Language Transformer input contract :: cell 2'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    - 1. Language Transformer input contract
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model > 2. Reuse the causal mask :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    - 2. Reuse the causal mask
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model > 3. Shift-right labels :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    - 3. Shift-right labels
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model > 4. Token loss and padding :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    - 4. Token loss and padding
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model > 5. Worked tiny causal LM trace :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    - 5. Worked tiny causal LM trace
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model > 6. Training and held-out evaluation :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    - 6. Training and held-out evaluation
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model > 7. Common pitfalls :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    - 7. Common pitfalls
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model > 8. Exam connections and Going deeper :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    - 8. Exam connections and Going deeper
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - embedding-model-training
+  - language-transformer
+  - learned-token-embedding
+  - masked-language-modeling
+  - nlp-fine-tuning-protocol
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids: []
+  api_tokens:
+  - torch.get_num_threads
+  - torch.manual_seed
+- path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
+  kind: notebook
+  semantic_sha256: b7dca4109b1095f66014bd9c98c4459b522f4e3dddcafd4c7baf9b45459cf1cc
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 1. Two pretraining objectives :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - 1. Two pretraining objectives
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 1. Two pretraining objectives :: cell 2'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - 1. Two pretraining objectives
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 2. Masked-token corruption :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - 2. Masked-token corruption
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 3. Leakage counterexample :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - 3. Leakage counterexample
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 4. Architecture delta: learned positions :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - '4. Architecture delta: learned positions'
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 5. Architecture delta: GELU :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - '5. Architecture delta: GELU'
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 6. AdamW and the sequential protocol :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - 6. AdamW and the sequential protocol
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 7. Reproducible traces and selection :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - 7. Reproducible traces and selection
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 8. Common pitfalls, Exam connections, and Going deeper :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - 8. Common pitfalls, Exam connections, and Going deeper
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - embedding-model-training
+  - language-transformer
+  - learned-token-embedding
+  - masked-language-modeling
+  - nlp-fine-tuning-protocol
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids: []
+  api_tokens:
+  - torch.get_num_threads
+  - torch.manual_seed
+- path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
+  kind: notebook
+  semantic_sha256: fcd1fdfe0c1cdc92d523da9a322d5ba15b0f342842ec81237460ae149582de96
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer > 1. Checkpoint and state boundary :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    - 1. Checkpoint and state boundary
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer > 1. Checkpoint and state boundary :: cell 2'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    - 1. Checkpoint and state boundary
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer > 2. Attach a task head :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    - 2. Attach a task head
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer > 3. Freeze parameters explicitly :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    - 3. Freeze parameters explicitly
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer > 4. Worked frozen classification step :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    - 4. Worked frozen classification step
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer > 5. Unfreeze with a deliberate optimizer :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    - 5. Unfreeze with a deliberate optimizer
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer > 6. Held-out evaluation :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    - 6. Held-out evaluation
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer > 7. Common pitfalls :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    - 7. Common pitfalls
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer > 8. Exam connections and Going deeper :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    - 8. Exam connections and Going deeper
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - embedding-model-training
+  - language-transformer
+  - learned-token-embedding
+  - masked-language-modeling
+  - nlp-fine-tuning-protocol
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids: []
+  api_tokens:
+  - torch.get_num_threads
+  - torch.manual_seed
+- path: units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
+  kind: notebook
+  semantic_sha256: f8b52d3b7bb10676da74b489a24990fe5a6a83d13887bb98095483eb595cce58
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit > 1. Classify :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    - 1. Classify
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit > 1. Classify :: cell 2'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    - 1. Classify
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit > 2. Tag :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    - 2. Tag
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit > 3. Generate :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    - 3. Generate
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit > 4. Retrieve :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    - 4. Retrieve
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit > 5. Architecture, loss, and metric matrix :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    - 5. Architecture, loss, and metric matrix
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit > 6. Data-split and leakage audit :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    - 6. Data-split and leakage audit
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit > 7. End-to-end application trace :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    - 7. End-to-end application trace
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit > 8. Common pitfalls, Exam connections, and Going deeper :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    - 8. Common pitfalls, Exam connections, and Going deeper
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - embedding-model-training
+  - language-transformer
+  - learned-token-embedding
+  - masked-language-modeling
+  - nlp-fine-tuning-protocol
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids: []
+  api_tokens:
+  - torch.get_num_threads
+  - torch.manual_seed
+- path: units/B2-020-language-transformers/practice/p01.ipynb
+  kind: notebook
+  semantic_sha256: 6868bded1d5941175c09b9784dde8c3e7bf5497a16a61c67ec121d29e9c2e5ae
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p01.ipynb :: B2-020 — Practice p01 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p01
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p01.ipynb :: B2-020 — Practice p01 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p01
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - embedding-model-training
+  declared_problem_ids:
+  - B2-020-p01
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p02.ipynb
+  kind: notebook
+  semantic_sha256: 61d320efa998eb5186e704b99930f5d967bf128d72dffb4b6b3b18b18c577f00
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p02.ipynb :: B2-020 — Practice p02 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p02
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p02.ipynb :: B2-020 — Practice p02 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p02
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - learned-token-embedding
+  declared_problem_ids:
+  - B2-020-p02
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p03.ipynb
+  kind: notebook
+  semantic_sha256: a2a050a0cb78c0086a66aa3ba70ed8779b70da8c370ef8c7681fd94f7659d668
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p03.ipynb :: B2-020 — Practice p03 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p03
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p03.ipynb :: B2-020 — Practice p03 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p03
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - learned-token-embedding
+  declared_problem_ids:
+  - B2-020-p03
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p04.ipynb
+  kind: notebook
+  semantic_sha256: e9ad002c2444537105e5c07f521830527e11501e079797a6d2b260525e97ecf1
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p04.ipynb :: B2-020 — Practice p04 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p04
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p04.ipynb :: B2-020 — Practice p04 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p04
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - language-transformer
+  declared_problem_ids:
+  - B2-020-p04
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p05.ipynb
+  kind: notebook
+  semantic_sha256: dd13a820f1b71c8aea5fe86c963c474330fa279457d15d9add51dd10e673cd2d
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p05.ipynb :: B2-020 — Practice p05 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p05
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p05.ipynb :: B2-020 — Practice p05 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p05
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  declared_problem_ids:
+  - B2-020-p05
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p06.ipynb
+  kind: notebook
+  semantic_sha256: fb7ceb9d709cf40d70a67ff2ee19369ef116fa16c6c1be59cc6fb502c2bf6d92
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p06.ipynb :: B2-020 — Practice p06 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p06
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p06.ipynb :: B2-020 — Practice p06 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p06
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p06.ipynb :: B2-020 — Practice p06 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p06
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - learned-token-embedding
+  declared_problem_ids:
+  - B2-020-p06
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p07.ipynb
+  kind: notebook
+  semantic_sha256: 35e4220c5a56efe9e308201d8dac00720db73749a276f5c40148269d5c645e6a
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p07.ipynb :: B2-020 — Practice p07 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p07
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p07.ipynb :: B2-020 — Practice p07 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p07
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p07.ipynb :: B2-020 — Practice p07 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p07
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - embedding-model-training
+  declared_problem_ids:
+  - B2-020-p07
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p08.ipynb
+  kind: notebook
+  semantic_sha256: f4d599e1280a89b92233b2936dfceae689535504b1c9b7703190ce8dcd57e256
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p08.ipynb :: B2-020 — Practice p08 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p08
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p08.ipynb :: B2-020 — Practice p08 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p08
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p08.ipynb :: B2-020 — Practice p08 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p08
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - language-transformer
+  declared_problem_ids:
+  - B2-020-p08
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p09.ipynb
+  kind: notebook
+  semantic_sha256: 886b5a3a647b182d0432a29aca5000b2a16972d6216da4051717607cb4d3a0fc
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p09.ipynb :: B2-020 — Practice p09 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p09
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p09.ipynb :: B2-020 — Practice p09 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p09
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p09.ipynb :: B2-020 — Practice p09 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p09
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - language-transformer
+  declared_problem_ids:
+  - B2-020-p09
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p10.ipynb
+  kind: notebook
+  semantic_sha256: 248dcf6c8ba3ef270ae35dc4b21bd058b53c9b43a150d10be62fdf3bf01d20dc
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p10.ipynb :: B2-020 — Practice p10 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p10
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p10.ipynb :: B2-020 — Practice p10 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p10
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p10.ipynb :: B2-020 — Practice p10 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p10
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  declared_problem_ids:
+  - B2-020-p10
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p11.ipynb
+  kind: notebook
+  semantic_sha256: 65397370b94caa68b0a441c891f0a239f8dce5e771313877b299caa0117279da
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p11.ipynb :: B2-020 — Practice p11 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p11
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p11.ipynb :: B2-020 — Practice p11 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p11
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p11.ipynb :: B2-020 — Practice p11 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p11
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - masked-language-modeling
+  declared_problem_ids:
+  - B2-020-p11
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p12.ipynb
+  kind: notebook
+  semantic_sha256: f8e176e730a2d787dc0af8a3bf6c1813266949eca947051296e571e63667eb64
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p12.ipynb :: B2-020 — Practice p12 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p12
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p12.ipynb :: B2-020 — Practice p12 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p12
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p12.ipynb :: B2-020 — Practice p12 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p12
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - nlp-fine-tuning-protocol
+  declared_problem_ids:
+  - B2-020-p12
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p13.ipynb
+  kind: notebook
+  semantic_sha256: 6c03e35408ca74d230d90ec456da35f11b72393b8f7993f591051a7c525d4969
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p13.ipynb :: B2-020 — Practice p13 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p13
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p13.ipynb :: B2-020 — Practice p13 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p13
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - embedding-model-training
+  declared_problem_ids:
+  - B2-020-p13
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p14.ipynb
+  kind: notebook
+  semantic_sha256: e8cf3bb47b3d4a7caa39adf187b8339f68c3f27a69a92e628f01d51a74c3bf35
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p14.ipynb :: B2-020 — Practice p14 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p14
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p14.ipynb :: B2-020 — Practice p14 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p14
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  declared_problem_ids:
+  - B2-020-p14
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p15.ipynb
+  kind: notebook
+  semantic_sha256: 9fe6590d7e573ba9a5eb68a2c5c425207a54fa16825ab07a95046bebd6ab8e27
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p15.ipynb :: B2-020 — Practice p15 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p15
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p15.ipynb :: B2-020 — Practice p15 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p15
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - nlp-pretraining-objectives
+  declared_problem_ids:
+  - B2-020-p15
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p16.ipynb
+  kind: notebook
+  semantic_sha256: c08a9c1a2ba66aae87ade5f6711a7705328a384eaa86350ff758752ee715fb79
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p16.ipynb :: B2-020 — Practice p16 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p16
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p16.ipynb :: B2-020 — Practice p16 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p16
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  declared_problem_ids:
+  - B2-020-p16
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p17.ipynb
+  kind: notebook
+  semantic_sha256: 2f89360ec39bc80eec176d0652aa0ba3182990ec83df99c7bc801fc1f91257cf
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p17.ipynb :: B2-020 — Practice p17 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p17
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p17.ipynb :: B2-020 — Practice p17 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p17
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p17.ipynb :: B2-020 — Practice p17 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p17
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - embedding-model-training
+  - learned-token-embedding
+  declared_problem_ids:
+  - B2-020-p17
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p18.ipynb
+  kind: notebook
+  semantic_sha256: 536d906a0d62dc0a7c2cfeb0e9430e9cc03ee0f4cb63a997ccfe0c9a4e927624
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p18.ipynb :: B2-020 — Practice p18 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p18
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p18.ipynb :: B2-020 — Practice p18 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p18
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p18.ipynb :: B2-020 — Practice p18 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p18
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - language-transformer
+  declared_problem_ids:
+  - B2-020-p18
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p19.ipynb
+  kind: notebook
+  semantic_sha256: 0bcdb684ade4d6a6f01272c389f2526eadd33d5b00360c1d225f4bee5cee8739
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p19.ipynb :: B2-020 — Practice p19 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p19
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p19.ipynb :: B2-020 — Practice p19 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p19
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p19.ipynb :: B2-020 — Practice p19 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p19
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids:
+  - B2-020-p19
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p20.ipynb
+  kind: notebook
+  semantic_sha256: 0ac6c55cdf32a0891cda1bdcd5b1bbbe515452c8b1190fd24f58f379949e0fad
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p20.ipynb :: B2-020 — Practice p20 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p20
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p20.ipynb :: B2-020 — Practice p20 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p20
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p20.ipynb :: B2-020 — Practice p20 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p20
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - nlp-fine-tuning-protocol
+  - transformer-nlp-task-design
+  declared_problem_ids:
+  - B2-020-p20
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p21.ipynb
+  kind: notebook
+  semantic_sha256: 8675d437439667deaabd0fc51991d8a6f99e6b85f0a9ba25054caa6a41df0a34
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p21.ipynb :: B2-020 — Practice p21 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p21
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p21.ipynb :: B2-020 — Practice p21 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p21
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p21.ipynb :: B2-020 — Practice p21 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p21
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - nlp-fine-tuning-protocol
+  declared_problem_ids:
+  - B2-020-p21
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p22.ipynb
+  kind: notebook
+  semantic_sha256: 4d23c5c1080f629ffeb7a38c6762377a1fc9090a14befa7a6ea79e63bc135c0c
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p22.ipynb :: B2-020 — Practice p22 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p22
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p22.ipynb :: B2-020 — Practice p22 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p22
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p22.ipynb :: B2-020 — Practice p22 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p22
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - transformer-nlp-task-design
+  declared_problem_ids:
+  - B2-020-p22
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p23.ipynb
+  kind: notebook
+  semantic_sha256: e51659e4ab8e0ad4b6ead6ad4db27a5eafd2cf416c50d2c7e6eb19a0aa4c52ea
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p23.ipynb :: B2-020 — Practice p23 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p23
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p23.ipynb :: B2-020 — Practice p23 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p23
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p23.ipynb :: B2-020 — Practice p23 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p23
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - language-transformer
+  declared_problem_ids:
+  - B2-020-p23
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p24.ipynb
+  kind: notebook
+  semantic_sha256: 801ef39bd661efbdb0d4e468f87e1aced9d1a6fd405494de74bc85aec2f76ada
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p24.ipynb :: B2-020 — Practice p24 > Task :: cell 1'
+    heading_path:
+    - B2-020 — Practice p24
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p24.ipynb :: B2-020 — Practice p24 > Task :: cell 2'
+    heading_path:
+    - B2-020 — Practice p24
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p24.ipynb :: B2-020 — Practice p24 > Your response :: cell 1'
+    heading_path:
+    - B2-020 — Practice p24
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - nlp-fine-tuning-protocol
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids:
+  - B2-020-p24
+  api_tokens: []
+- path: units/B2-020-language-transformers/review.ipynb
+  kind: notebook
+  semantic_sha256: b1c8c65dfd57403505be5ccf6ca8adffe08e945cf50fa2158604362fff4d6290
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/review.ipynb :: B2-020 — Review and Self-Quiz :: cell 1'
+    heading_path:
+    - B2-020 — Review and Self-Quiz
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/review.ipynb :: B2-020 — Review and Self-Quiz > Formula and protocol sheet
+      :: cell 1'
+    heading_path:
+    - B2-020 — Review and Self-Quiz
+    - Formula and protocol sheet
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/review.ipynb :: B2-020 — Review and Self-Quiz > Concept retrieval table ::
+      cell 1'
+    heading_path:
+    - B2-020 — Review and Self-Quiz
+    - Concept retrieval table
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/review.ipynb :: B2-020 — Review and Self-Quiz > Self-quiz :: cell 1'
+    heading_path:
+    - B2-020 — Review and Self-Quiz
+    - Self-quiz
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/review.ipynb :: B2-020 — Review and Self-Quiz > Collected answers :: cell
+      1'
+    heading_path:
+    - B2-020 — Review and Self-Quiz
+    - Collected answers
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/review.ipynb :: B2-020 — Review and Self-Quiz > Common pitfalls, Exam connections,
+      and Going deeper :: cell 1'
+    heading_path:
+    - B2-020 — Review and Self-Quiz
+    - Common pitfalls, Exam connections, and Going deeper
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - embedding-model-training
+  - language-transformer
+  - learned-token-embedding
+  - masked-language-modeling
+  - nlp-fine-tuning-protocol
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids: []
+  api_tokens: []
+warnings:
+- '/home/chris/workshop/usaaio/book2/units/B2-020-language-transformers/manifest.yaml: solution debt deferred to plan-020
+  until 2026-09-30'

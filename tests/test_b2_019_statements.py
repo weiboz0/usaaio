@@ -1187,7 +1187,8 @@ def test_generator_is_deterministic_cpu_only_and_uses_no_network(tmp_path: Path)
 def test_unit_standards_names_b2_019_in_double_length_roster() -> None:
     standards = (ROOT / "docs/unit-standards.md").read_text(encoding="utf-8")
     assert "B2-019-attention-transformers" in standards
-    assert "F5, F6, C7, C11, C12, and B2-019" in standards
+    assert "F5, F6, C7, C11, C12, B2-019, and B2-020" in standards
+    assert "B2-020-language-transformers" in standards
 
 
 def _copy_registered_statement_repo(
@@ -1241,18 +1242,10 @@ def test_required_solution_policy_cannot_be_evaded_by_deleting_all_solutions(tmp
     assert check_layer_boundary(complete).ok
 
 
-def test_deferred_solution_policy_emits_plan_linked_expiring_debt(tmp_path: Path) -> None:
-    book2 = _copy_registered_statement_repo(tmp_path / "deferred")
-    manifest_path = book2 / "units" / UNIT_ID / "manifest.yaml"
-    raw = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
-    raw["solution_policy"] = {
-        "status": "deferred",
-        "plan": "plan-020",
-        "expires": "2099-12-31",
-    }
-    manifest_path.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+def test_named_b2_020_deferred_policy_emits_plan_linked_expiring_debt(tmp_path: Path) -> None:
+    book2 = _copy_registered_statement_repo(tmp_path / "deferred", include_solutions=True)
 
-    expected = "solution debt deferred to plan-020 until 2099-12-31"
+    expected = "solution debt deferred to plan-020 until 2026-09-30"
     coverage = check_coverage(book2)
     boundary = check_layer_boundary(book2)
     inventory = audit_curriculum.build_inventory(book2)

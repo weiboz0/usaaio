@@ -25,7 +25,7 @@ import yaml
 
 from tools.books import BookSpec
 from tools.checks.schedule import load_validated_schedule, scheduled_baseline_minutes
-from tools.model import CourseSchedule
+from tools.model import CourseSchedule, load_unit_manifests
 
 INVENTORY_PATH = Path("curriculum/material-inventory.yaml")
 ScheduleLoader = Callable[[str | Path], CourseSchedule]
@@ -527,6 +527,9 @@ def build_inventory(
     expected_book_number: int | None = None,
 ) -> dict[str, Any]:
     root = Path(root).resolve()
+    # Use the shared typed manifest parser before raw-YAML inventory work so the
+    # inventory cannot accept lifecycle debt rejected by coverage or boundaries.
+    load_unit_manifests(root)
     _validate_input_file(root / "syllabus.md", root, "syllabus.md", "syllabus")
     syllabus_record, syllabus = _syllabus_record(root / "syllabus.md")
     unit_manifests = sorted(root.glob("units/*/manifest.yaml"), key=lambda item: _posix(item, root).encode("utf-8"))

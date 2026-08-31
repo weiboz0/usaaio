@@ -27,6 +27,11 @@ planned_units:
   title: Language Transformers
   layer: round-2-extension
   prerequisites:
+  - book1:F1-scientific-python
+  - book1:F3-matrices
+  - book1:C6-pytorch
+  - book1:C7-cnn-transfer
+  - book1:C11-neural-training
   - B2-019-attention-transformers
   knowledge_points:
   - nlp-word-embeddings
@@ -34,15 +39,7 @@ planned_units:
   - nlp-pretraining
   - nlp-fine-tuning
   - transformer-nlp-applications
-  provisional_concepts:
-  - embedding-model-training
-  - learned-token-embedding
-  - language-transformer
-  - causal-language-modeling
-  - masked-language-modeling
-  - nlp-pretraining-objectives
-  - nlp-fine-tuning-protocol
-  - transformer-nlp-task-design
+  provisional_concepts: []
   estimated_hours:
     min: 26
     max: 32
@@ -136,22 +133,35 @@ knowledge_points:
   evidence_by_modality:
     theory:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb, heading: "B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 2. Query, key, and value roles", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb
+        heading: "B2-019 \u2014 Session 1: Query, Key, Value, and Scaled Dot Product > 2. Query, key, and value roles"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p01, role: primary}
+      - id: B2-019-p01
+        role: primary
       assessments: []
     derivation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb, heading: "B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 3. Scale and stable row softmax", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb
+        heading: "B2-019 \u2014 Session 1: Query, Key, Value, and Scaled Dot Product > 3. Scale and stable row softmax"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p02, role: primary}
-      - {id: B2-019-p13, role: primary}
+      - id: B2-019-p02
+        role: primary
+      - id: B2-019-p13
+        role: primary
       assessments: []
     implementation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb, heading: "B2-019 — Session 1: Query, Key, Value, and Scaled Dot Product > 4. Weighted values", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb
+        heading: "B2-019 \u2014 Session 1: Query, Key, Value, and Scaled Dot Product > 4. Weighted values"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p06, role: primary}
+      - id: B2-019-p06
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-019-attention-transformers
@@ -175,22 +185,35 @@ knowledge_points:
   evidence_by_modality:
     theory:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb, heading: "B2-019 — Session 2: Self-Attention and Masks > 1. Self-attention shape contract", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb
+        heading: "B2-019 \u2014 Session 2: Self-Attention and Masks > 1. Self-attention shape contract"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p03, role: primary}
+      - id: B2-019-p03
+        role: primary
       assessments: []
     derivation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb, heading: "B2-019 — Session 2: Self-Attention and Masks > 4. Causal masks", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb
+        heading: "B2-019 \u2014 Session 2: Self-Attention and Masks > 4. Causal masks"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p14, role: primary}
+      - id: B2-019-p14
+        role: primary
       assessments: []
     implementation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb, heading: "B2-019 — Session 2: Self-Attention and Masks > 2. Additive masks before softmax", cell_ordinal: 2, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb
+        heading: "B2-019 \u2014 Session 2: Self-Attention and Masks > 2. Additive masks before softmax"
+        cell_ordinal: 2
+        role: primary
       practices:
-      - {id: B2-019-p07, role: primary}
-      - {id: B2-019-p08, role: primary}
+      - id: B2-019-p07
+        role: primary
+      - id: B2-019-p08
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-019-attention-transformers
@@ -212,21 +235,33 @@ knowledge_points:
   evidence_by_modality:
     theory:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 1. Projection and head dimensions", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb
+        heading: "B2-019 \u2014 Session 3: Multi-Head Attention, Position, and Cost > 1. Projection and head dimensions"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p15, role: primary}
+      - id: B2-019-p15
+        role: primary
       assessments: []
     derivation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 1. Projection and head dimensions", cell_ordinal: 2, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb
+        heading: "B2-019 \u2014 Session 3: Multi-Head Attention, Position, and Cost > 1. Projection and head dimensions"
+        cell_ordinal: 2
+        role: primary
       practices:
-      - {id: B2-019-p23, role: primary}
+      - id: B2-019-p23
+        role: primary
       assessments: []
     implementation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 3. Independent heads and concatenation", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb
+        heading: "B2-019 \u2014 Session 3: Multi-Head Attention, Position, and Cost > 3. Independent heads and concatenation"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p10, role: primary}
+      - id: B2-019-p10
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-019-attention-transformers
@@ -249,16 +284,25 @@ knowledge_points:
   evidence_by_modality:
     theory:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 4. Sinusoidal positional encoding", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb
+        heading: "B2-019 \u2014 Session 3: Multi-Head Attention, Position, and Cost > 4. Sinusoidal positional encoding"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p05, role: primary}
+      - id: B2-019-p05
+        role: primary
       assessments: []
     implementation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 4. Sinusoidal positional encoding", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb
+        heading: "B2-019 \u2014 Session 3: Multi-Head Attention, Position, and Cost > 4. Sinusoidal positional encoding"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p09, role: primary}
-      - {id: B2-019-p17, role: primary}
+      - id: B2-019-p09
+        role: primary
+      - id: B2-019-p17
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-019-attention-transformers
@@ -280,16 +324,25 @@ knowledge_points:
   evidence_by_modality:
     theory:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 5. Exact time and score-memory cost", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb
+        heading: "B2-019 \u2014 Session 3: Multi-Head Attention, Position, and Cost > 5. Exact time and score-memory cost"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p21, role: primary}
+      - id: B2-019-p21
+        role: primary
       assessments: []
     derivation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb, heading: "B2-019 — Session 3: Multi-Head Attention, Position, and Cost > 5. Exact time and score-memory cost", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb
+        heading: "B2-019 \u2014 Session 3: Multi-Head Attention, Position, and Cost > 5. Exact time and score-memory cost"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p16, role: primary}
-      - {id: B2-019-p23, role: primary}
+      - id: B2-019-p16
+        role: primary
+      - id: B2-019-p23
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-019-attention-transformers
@@ -315,21 +368,33 @@ knowledge_points:
   evidence_by_modality:
     theory:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb, heading: "B2-019 — Session 4: Attention Module and Tiny Training > 1. Module contract", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb
+        heading: "B2-019 \u2014 Session 4: Attention Module and Tiny Training > 1. Module contract"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p18, role: primary}
+      - id: B2-019-p18
+        role: primary
       assessments: []
     implementation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb, heading: "B2-019 — Session 4: Attention Module and Tiny Training > 2. Forward pass and mask", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb
+        heading: "B2-019 \u2014 Session 4: Attention Module and Tiny Training > 2. Forward pass and mask"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p11, role: primary}
+      - id: B2-019-p11
+        role: primary
       assessments: []
     model-training:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb, heading: "B2-019 — Session 4: Attention Module and Tiny Training > 4. Training loop", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb
+        heading: "B2-019 \u2014 Session 4: Attention Module and Tiny Training > 4. Training loop"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p17, role: primary}
+      - id: B2-019-p17
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-019-attention-transformers
@@ -353,22 +418,35 @@ knowledge_points:
   evidence_by_modality:
     theory:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb, heading: "B2-019 — Session 5: Transformer Blocks and Architecture > 5. Cross-attention role and dimensions", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb
+        heading: "B2-019 \u2014 Session 5: Transformer Blocks and Architecture > 5. Cross-attention role and dimensions"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p20, role: primary}
+      - id: B2-019-p20
+        role: primary
       assessments: []
     derivation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb, heading: "B2-019 — Session 5: Transformer Blocks and Architecture > 2. Pre-norm residual ordering", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb
+        heading: "B2-019 \u2014 Session 5: Transformer Blocks and Architecture > 2. Pre-norm residual ordering"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p19, role: primary}
+      - id: B2-019-p19
+        role: primary
       assessments: []
     implementation:
       lesson_anchors:
-      - {path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb, heading: "B2-019 — Session 5: Transformer Blocks and Architecture > 7. Architecture trace", cell_ordinal: 1, role: primary}
+      - path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb
+        heading: "B2-019 \u2014 Session 5: Transformer Blocks and Architecture > 7. Architecture trace"
+        cell_ordinal: 1
+        role: primary
       practices:
-      - {id: B2-019-p12, role: primary}
-      - {id: B2-019-p24, role: primary}
+      - id: B2-019-p12
+        role: primary
+      - id: B2-019-p24
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-019-attention-transformers
@@ -379,35 +457,55 @@ knowledge_points:
 - id: transformer-nlp-applications
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - transformer-architecture-foundations
   - nlp-tokenization
-  shipped_concepts: []
+  shipped_concepts:
+  - transformer-nlp-task-design
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
+        heading: "B2-020 \u2014 Session 5: Language Task Design and Audit > 5. Architecture, loss, and metric matrix"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p22
+        role: primary
+      - id: B2-020-p19
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
+        heading: "B2-020 \u2014 Session 5: Language Task Design and Audit > 7. End-to-end application trace"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p20
+        role: primary
+      - id: B2-020-p22
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
+        heading: "B2-020 \u2014 Session 5: Language Task Design and Audit > 6. Data-split and leakage audit"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p20
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-020-language-transformers
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: Existing NLP uses fixed GloVe retrieval, not transformer applications.
-  consequence: Students cannot apply transformers to NLP tasks.
+    modalities_missing: []
+  rationale: B2-020 maps classify, tag, generate, and retrieve deployments to architectures, losses, metrics, and audits.
+  consequence: Students can design and validate end-to-end Transformer NLP applications.
 - id: vision-transformers
   layer: round-2-extension
   requirement: required
@@ -527,157 +625,198 @@ knowledge_points:
 - id: nlp-word-embeddings
   layer: round-2-extension
   requirement: required
-  coverage: partial
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - nlp-tokenization
   - book1:linear-algebra-foundations
   shipped_concepts:
-  - book1:word-embeddings
-  - book1:gensim-usage
-  - book1:embedding-matrices
+  - learned-token-embedding
   evidence_by_modality:
     theory:
       lesson_anchors:
-      - path: book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
-        heading: "C8-embeddings \u2014 Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors"
+      - path: units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
+        heading: "B2-020 \u2014 Session 1: Train Token Embeddings > 1. One-hot lookup and shapes"
         cell_ordinal: 1
         role: primary
       practices:
-      - id: book1:C8-p02
+      - id: B2-020-p02
         role: primary
-      - id: book1:C8-p12
-        role: primary
-      - id: book1:C8-p17
-        role: primary
-      assessments:
-      - id: book1:r1-001-p05-3
-        role: primary
+      assessments: []
     implementation:
       lesson_anchors:
-      - path: book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
-        heading: "C8-embeddings \u2014 Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors"
+      - path: units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
+        heading: "B2-020 \u2014 Session 1: Train Token Embeddings > 1. One-hot lookup and shapes"
         cell_ordinal: 1
         role: primary
       practices:
-      - id: book1:C8-p05
+      - id: B2-020-p06
         role: primary
-      - id: book1:C8-p13
-        role: primary
-      - id: book1:C8-p17
-        role: primary
-      assessments:
-      - id: book1:r1-001-p05-3
-        role: primary
-      - id: book1:r1-001-p05-4
-        role: primary
+      assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
+        heading: "B2-020 \u2014 Session 1: Train Token Embeddings > 1. One-hot lookup and shapes"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p17
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-020-language-transformers
   deficits:
-    modalities_missing:
-    - model-training
-  rationale: Students load and use fixed GloVe vectors but never train embeddings.
-  consequence: Embedding use is strong while embedding model training remains absent.
+    modalities_missing: []
+  rationale: B2-020 trains a seeded token embedding table through a predictive objective and audits row movement.
+  consequence: Students can distinguish fixed vectors from learned embeddings and execute embedding model training.
 - id: nlp-transformers
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - transformer-architecture-foundations
   - nlp-tokenization
-  shipped_concepts: []
+  shipped_concepts:
+  - language-transformer
+  - causal-language-modeling
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
+        heading: "B2-020 \u2014 Session 2: Causal Transformer Language Model > 1. Language Transformer input contract"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p04
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
+        heading: "B2-020 \u2014 Session 2: Causal Transformer Language Model > 3. Shift-right labels"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p08
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
+        heading: "B2-020 \u2014 Session 2: Causal Transformer Language Model > 6. Training and held-out evaluation"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p23
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-020-language-transformers
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: No NLP transformer exists.
-  consequence: The central modern NLP family is missing.
+    modalities_missing: []
+  rationale: B2-020 applies the B2-019 block and causal mask to explicit language-token objectives.
+  consequence: Students can trace, implement, train, and evaluate a tiny causal language Transformer.
 - id: nlp-pretraining
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - nlp-transformers
-  shipped_concepts: []
+  shipped_concepts:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
+        heading: "B2-020 \u2014 Session 3: Pretraining Objectives > 1. Two pretraining objectives"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p05
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
+        heading: "B2-020 \u2014 Session 3: Pretraining Objectives > 2. Masked-token corruption"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p11
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
+        heading: "B2-020 \u2014 Session 3: Pretraining Objectives > 6. AdamW and the sequential protocol"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p24
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-020-language-transformers
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: Loading pretrained GloVe or ResNet is not teaching or executing a pretraining objective.
-  consequence: Students cannot reason about or run pretraining.
+    modalities_missing: []
+  rationale: B2-020 teaches and runs causal and masked pretraining with explicit visibility and optimizer contracts.
+  consequence: Students can select, implement, audit, and execute an NLP pretraining objective.
 - id: nlp-fine-tuning
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - nlp-pretraining
   - book1:pytorch-autograd-and-optimizer-training
-  shipped_concepts: []
+  shipped_concepts:
+  - nlp-fine-tuning-protocol
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
+        heading: "B2-020 \u2014 Session 4: Fine-Tune a Language Transformer > 1. Checkpoint and state boundary"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p12
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
+        heading: "B2-020 \u2014 Session 4: Fine-Tune a Language Transformer > 1. Checkpoint and state boundary"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p20
+        role: primary
+      - id: B2-020-p21
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
+        heading: "B2-020 \u2014 Session 4: Fine-Tune a Language Transformer > 1. Checkpoint and state boundary"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p20
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-020-language-transformers
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: C7 discusses hypothetical transfer adjustment but performs no NLP fine-tuning.
-  consequence: Students cannot adapt pretrained NLP models.
+    modalities_missing: []
+  rationale: B2-020 loads a verified trained encoder state, attaches a task head, and audits freeze/unfreeze stages.
+  consequence: Students can fine-tune an NLP encoder and evaluate it on disjoint held-out data.
 - id: object-detection
   layer: round-2-extension
   requirement: required

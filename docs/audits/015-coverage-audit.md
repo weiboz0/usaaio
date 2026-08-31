@@ -13,21 +13,21 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 1037 |
+| Unit notebooks | 1069 |
 | Mock notebooks | 10 |
-| Unit practices | 461 |
-| Total inventoried notebooks | 1047 |
+| Unit practices | 485 |
+| Total inventoried notebooks | 1079 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
-| Coverage: covered | 69 |
-| Coverage: missing | 22 |
-| Coverage: partial | 1 |
+| Coverage: covered | 74 |
+| Coverage: missing | 18 |
+| Coverage: partial | 0 |
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **20265 minutes / 337.75 hours**.
-Current scheduled baseline: **20535 minutes / 342.25 hours**.
+Current manifested baseline: **21895 minutes / 364.92 hours**.
+Current scheduled baseline: **22195 minutes / 369.92 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
@@ -40,9 +40,7 @@ Planned hours are estimates and are not manifested time.
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-Baseline plus planned-unit subtotal: **479.75–519.75 manifested-baseline hours** and **484.25–524.25 scheduled-baseline hours**.
-
-The Book 2 `B2-020-language-transformers` 26–32-hour estimate includes completing the `nlp-word-embeddings` model-training bridge; no additional Book 1 C8 correction is pending.
+Baseline plus planned-unit subtotal: **506.92–546.92 manifested-baseline hours** and **511.92–551.92 scheduled-baseline hours**.
 
 ## Non-required candidates
 
@@ -2015,26 +2013,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-020-language-transformers
 - **Dependencies:** book1:pytorch-autograd-and-optimizer-training, book2:nlp-pretraining
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** C7 discusses hypothetical transfer adjustment but performs no NLP fine-tuning.
-- **Consequence:** Students cannot adapt pretrained NLP models.
+- **Shipped concepts:** book2:nlp-fine-tuning-protocol
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-020 loads a verified trained encoder state, attaches a task head, and audits freeze/unfreeze stages.
+- **Consequence:** Students can fine-tune an NLP encoder and evaluate it on disjoint held-out data.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune a Language Transformer > 1. Checkpoint and state boundary :: cell 1
+- **implementation practices:** book2:B2-020-p20, book2:B2-020-p21
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune a Language Transformer > 1. Checkpoint and state boundary :: cell 1
+- **model-training practices:** book2:B2-020-p20
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune a Language Transformer > 1. Checkpoint and state boundary :: cell 1
+- **theory practices:** book2:B2-020-p12
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-020-p12, book2:B2-020-p20, book2:B2-020-p21
 
 Assessments: —
 
@@ -2043,26 +2041,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-020-language-transformers
 - **Dependencies:** book2:nlp-transformers
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** Loading pretrained GloVe or ResNet is not teaching or executing a pretraining objective.
-- **Consequence:** Students cannot reason about or run pretraining.
+- **Shipped concepts:** book2:masked-language-modeling, book2:nlp-pretraining-objectives
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-020 teaches and runs causal and masked pretraining with explicit visibility and optimizer contracts.
+- **Consequence:** Students can select, implement, audit, and execute an NLP pretraining objective.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining Objectives > 2. Masked-token corruption :: cell 1
+- **implementation practices:** book2:B2-020-p11
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining Objectives > 6. AdamW and the sequential protocol :: cell 1
+- **model-training practices:** book2:B2-020-p24
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining Objectives > 1. Two pretraining objectives :: cell 1
+- **theory practices:** book2:B2-020-p05
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-020-p05, book2:B2-020-p11, book2:B2-020-p24
 
 Assessments: —
 
@@ -2096,26 +2094,26 @@ Assessments: book1:r1-001-p05-1, book1:r1-001-p05-2
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-020-language-transformers
 - **Dependencies:** book2:nlp-tokenization, book2:transformer-architecture-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No NLP transformer exists.
-- **Consequence:** The central modern NLP family is missing.
+- **Shipped concepts:** book2:causal-language-modeling, book2:language-transformer
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-020 applies the B2-019 block and causal mask to explicit language-token objectives.
+- **Consequence:** Students can trace, implement, train, and evaluate a tiny causal language Transformer.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2: Causal Transformer Language Model > 3. Shift-right labels :: cell 1
+- **implementation practices:** book2:B2-020-p08
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2: Causal Transformer Language Model > 6. Training and held-out evaluation :: cell 1
+- **model-training practices:** book2:B2-020-p23
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2: Causal Transformer Language Model > 1. Language Transformer input contract :: cell 1
+- **theory practices:** book2:B2-020-p04
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-020-p04, book2:B2-020-p08, book2:B2-020-p23
 
 Assessments: —
 
@@ -2124,28 +2122,28 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** partial
+- **Coverage:** covered
 - **Destination:** book2:B2-020-language-transformers
 - **Dependencies:** book1:linear-algebra-foundations, book2:nlp-tokenization
-- **Shipped concepts:** book1:embedding-matrices, book1:gensim-usage, book1:word-embeddings
-- **Modalities missing:** model-training
+- **Shipped concepts:** book2:learned-token-embedding
+- **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** Students load and use fixed GloVe vectors but never train embeddings.
-- **Consequence:** Embedding use is strong while embedding model training remains absent.
+- **Rationale:** B2-020 trains a seeded token embedding table through a predictive objective and audits row movement.
+- **Consequence:** Students can distinguish fixed vectors from learned embeddings and execute embedding model training.
 
-- **implementation lessons:** book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb :: C8-embeddings — Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors :: cell 1
-- **implementation practices:** book1:C8-p05, book1:C8-p13, book1:C8-p17
-- **implementation assessments:** book1:r1-001-p05-3, book1:r1-001-p05-4
-- **model-training lessons:** —
-- **model-training practices:** —
+- **implementation lessons:** book2:units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token Embeddings > 1. One-hot lookup and shapes :: cell 1
+- **implementation practices:** book2:B2-020-p06
+- **implementation assessments:** —
+- **model-training lessons:** book2:units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token Embeddings > 1. One-hot lookup and shapes :: cell 1
+- **model-training practices:** book2:B2-020-p17
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb :: C8-embeddings — Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors :: cell 1
-- **theory practices:** book1:C8-p02, book1:C8-p12, book1:C8-p17
-- **theory assessments:** book1:r1-001-p05-3
+- **theory lessons:** book2:units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token Embeddings > 1. One-hot lookup and shapes :: cell 1
+- **theory practices:** book2:B2-020-p02
+- **theory assessments:** —
 
-Practices: book1:C8-p02, book1:C8-p05, book1:C8-p12, book1:C8-p13, book1:C8-p17
+Practices: book2:B2-020-p02, book2:B2-020-p06, book2:B2-020-p17
 
-Assessments: book1:r1-001-p05-3, book1:r1-001-p05-4
+Assessments: —
 
 ### object-detection
 
@@ -2401,26 +2399,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-020-language-transformers
 - **Dependencies:** book2:nlp-tokenization, book2:transformer-architecture-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** Existing NLP uses fixed GloVe retrieval, not transformer applications.
-- **Consequence:** Students cannot apply transformers to NLP tasks.
+- **Shipped concepts:** book2:transformer-nlp-task-design
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-020 maps classify, tag, generate, and retrieve deployments to architectures, losses, metrics, and audits.
+- **Consequence:** Students can design and validate end-to-end Transformer NLP applications.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language Task Design and Audit > 7. End-to-end application trace :: cell 1
+- **implementation practices:** book2:B2-020-p20, book2:B2-020-p22
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language Task Design and Audit > 6. Data-split and leakage audit :: cell 1
+- **model-training practices:** book2:B2-020-p20
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language Task Design and Audit > 5. Architecture, loss, and metric matrix :: cell 1
+- **theory practices:** book2:B2-020-p19, book2:B2-020-p22
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-020-p19, book2:B2-020-p20, book2:B2-020-p22
 
 Assessments: —
 

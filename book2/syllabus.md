@@ -24,6 +24,7 @@ baseline:
   - file-io-basics
 clusters:
 - attention-transformers
+- language-transformers
 imports:
   book: book1
   units:
@@ -102,6 +103,22 @@ concepts:
   cluster: attention-transformers
 - id: transformer-block
   cluster: attention-transformers
+- id: embedding-model-training
+  cluster: language-transformers
+- id: learned-token-embedding
+  cluster: language-transformers
+- id: language-transformer
+  cluster: language-transformers
+- id: causal-language-modeling
+  cluster: language-transformers
+- id: masked-language-modeling
+  cluster: language-transformers
+- id: nlp-pretraining-objectives
+  cluster: language-transformers
+- id: nlp-fine-tuning-protocol
+  cluster: language-transformers
+- id: transformer-nlp-task-design
+  cluster: language-transformers
 units:
 - id: B2-019-attention-transformers
   track: extension
@@ -147,5 +164,43 @@ units:
   - transformer-residual-layernorm
   - position-wise-feed-forward
   - transformer-block
+  length: double
+- id: B2-020-language-transformers
+  track: extension
+  title: Language Transformers
+  book: 2
+  layer: round-2-extension
+  round: 2
+  prereqs:
+  - book1:F1-scientific-python
+  - book1:F3-matrices
+  - book1:C6-pytorch
+  - book1:C7-cnn-transfer
+  - book1:C11-neural-training
+  - B2-019-attention-transformers
+  concept_prerequisites:
+  - attention-mask
+  - causal-self-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  - book1:random-seeding
+  - book1:matrix-multiplication
+  - book1:torch-tensors
+  - book1:nn-module
+  - book1:requires-grad
+  - book1:tensor-shape-tracing
+  - book1:softmax
+  - book1:cross-entropy-loss
+  - book1:torch-optimizers
+  - book1:autograd-training
+  teaches:
+  - embedding-model-training
+  - learned-token-embedding
+  - language-transformer
+  - causal-language-modeling
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  - nlp-fine-tuning-protocol
+  - transformer-nlp-task-design
   length: double
 ```

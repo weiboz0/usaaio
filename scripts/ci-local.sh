@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Authoritative local gate for both independently complete books.
 set -euo pipefail
+if [[ -n ${USAAIO_HISTORICAL_VERIFY+x} || -n ${USAAIO_AS_OF_DATE+x} ]]; then
+  echo "FAIL: historical deferred-policy variables are forbidden in normal CI" >&2
+  exit 2
+fi
 script_repo_root=$(cd "$(dirname "$0")/.." && pwd)
 repo_root=$script_repo_root
 registry_probe=0

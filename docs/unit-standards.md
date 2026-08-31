@@ -17,7 +17,7 @@ the content gate's reviewers enforce the qualitative parts against this document
   ~6–10 sections with worked examples and checkpoints).
   A root `lesson.ipynb` remains as the unit overview/index (goals, session map,
   prerequisites recap, how-to-study guidance).
-- Double-length units (F5, F6, C7, C11, C12, and B2-019) use 4–6 sessions.
+- Double-length units (F5, F6, C7, C11, C12, B2-019, and B2-020) use 4–6 sessions.
 - `estimated_minutes` in the manifest lists per-session lesson minutes plus practice.
 
 ## Practice sets
@@ -89,7 +89,7 @@ C11's 450/5; F7 shows why four sessions alone are not sufficient, because its 20
 inside the standard-length band.
 C5 remains a compliant standard-length unit with 22 practices because neural-network training
 moved to C11 instead of being crowded into C5.
-The current double-length roster is therefore F5, F6, C7, C11, C12, and B2-019-attention-transformers.
+The current double-length roster is therefore F5, F6, C7, C11, C12, B2-019-attention-transformers, and B2-020-language-transformers.
 Across the shipped roster, C10 has the concept maximum at 12 taught concepts, while C12 has the
 practice-time maximum at 1,410 minutes.
 
