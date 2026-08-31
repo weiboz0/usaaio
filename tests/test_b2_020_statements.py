@@ -234,6 +234,25 @@ def test_generator_exports_protocol_and_tracked_state_contract() -> None:
     module.verify_committed_artifacts()
 
 
+def test_checkpoint_verifier_recomputes_seeded_initial_baseline(monkeypatch) -> None:
+    script = UNIT / "scripts/generate_language_data.py"
+    spec = importlib.util.spec_from_file_location("b2_020_generator_baseline", script)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    original_load = module.load_module
+
+    def inflated_baseline(path: Path):
+        loaded = original_load(path)
+        if path == module.CHECKPOINT_PATH:
+            loaded.INITIAL_LOSSES = {"causal": 1_000_000.0, "mlm": 1_000_000.0}
+        return loaded
+
+    monkeypatch.setattr(module, "load_module", inflated_baseline)
+    with pytest.raises(AssertionError, match="initial loss"):
+        module.verify_committed_artifacts()
+
+
 def test_coverage_promotes_exact_five_rows_without_book1_embedding_evidence() -> None:
     coverage = yaml.safe_load((BOOK2_ROOT / "curriculum/coverage-map.yaml").read_text())
     rows = {row["id"]: row for row in coverage["knowledge_points"]}

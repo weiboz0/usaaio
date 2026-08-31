@@ -380,6 +380,31 @@ def verify_committed_artifacts() -> None:
     )
     if checkpoint.SEMANTIC_HASH != expected_semantic:
         raise AssertionError("checkpoint semantic hash mismatch")
+    if checkpoint.TOKEN_TO_ID != fixture.TOKEN_TO_ID:
+        raise AssertionError("checkpoint vocabulary mismatch")
+    if checkpoint.TRAIN_SPLIT_IDS != fixture.TRAIN_SPLIT_IDS:
+        raise AssertionError("checkpoint train split mismatch")
+    if checkpoint.CAUSAL_HELDOUT_IDS != fixture.CAUSAL_HELDOUT_IDS:
+        raise AssertionError("checkpoint causal held-out split mismatch")
+    if checkpoint.MLM_HELDOUT_IDS != fixture.MLM_HELDOUT_IDS:
+        raise AssertionError("checkpoint MLM held-out split mismatch")
+    if checkpoint.MLM_HELDOUT_LABEL_IDS != fixture.MLM_HELDOUT_LABEL_IDS:
+        raise AssertionError("checkpoint MLM held-out labels mismatch")
+    if checkpoint.OBJECTIVE != OBJECTIVE:
+        raise AssertionError("checkpoint objective mismatch")
+    initial_encoder, initial_head = build_models()
+    initial_losses, _ = _heldout_metrics(initial_encoder, initial_head, fixture)
+    for name, expected in initial_losses.items():
+        if not np.isclose(checkpoint.INITIAL_LOSSES[name], expected, atol=1e-5, rtol=1e-5):
+            raise AssertionError(f"{name} initial loss mismatch")
+    expected_trace_shape = [(phase, update) for phase in ("causal", "mlm") for update in range(1, 41)]
+    actual_trace_shape = [(row["phase"], row["update_index"]) for row in checkpoint.PHASE_TRACE]
+    if actual_trace_shape != expected_trace_shape:
+        raise AssertionError("checkpoint phase trace shape mismatch")
+    if [row["optimizer_step"] for row in checkpoint.PHASE_TRACE] != list(range(1, 81)):
+        raise AssertionError("checkpoint optimizer steps are not continuous")
+    if [row["mask_mode"] for row in checkpoint.PHASE_TRACE] != ["causal"] * 40 + ["bidirectional"] * 40:
+        raise AssertionError("checkpoint mask trace mismatch")
     encoder, head = build_models()
     encoder.load_state_dict(_load_tensor_mapping(checkpoint, "ENCODER_TENSORS"), strict=True)
     head.load_state_dict(_load_tensor_mapping(checkpoint, "HEAD_TENSORS"), strict=True)
@@ -390,7 +415,7 @@ def verify_committed_artifacts() -> None:
     for name, expected in checkpoint.FINAL_LOSSES.items():
         if not np.isclose(losses[name], expected, atol=1e-5, rtol=1e-5):
             raise AssertionError(f"{name} final loss mismatch: {losses[name]} != {expected}")
-        improvement = checkpoint.INITIAL_LOSSES[name] - losses[name]
+        improvement = initial_losses[name] - losses[name]
         if improvement < checkpoint.MIN_ABSOLUTE_LOSS_IMPROVEMENTS[name]:
             raise AssertionError(f"{name} improvement is below frozen margin")
     if probes != checkpoint.PROBE_EXPECTED_TOP1_IDS:
