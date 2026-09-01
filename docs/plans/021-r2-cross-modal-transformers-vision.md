@@ -48,17 +48,46 @@ B2-021 owns exactly these four Book 2 concepts:
 The unit introduces image patchification in Session 1 as part of the
 vision-Transformer concept rather than claiming a nonexistent prior
 `patch-embedding` concept.
-It reuses `attention-mask`, `multi-head-attention`, `transformer-block`, and
-direct qualified Book 1 CNN/training concepts.
+It reuses `attention-mask`, `query-key-value-attention`,
+`multi-head-attention`, `attention-complexity`, `transformer-block`, and the
+exact direct qualified Book 1 concepts listed below.
+
+The live B2-021 syllabus entry, manifest, notebook metadata, and every
+lesson's visible prerequisite header must use this exact ordered
+`concept_prerequisites` list (no omitted or surplus tags):
+
+```text
+attention-mask
+query-key-value-attention
+multi-head-attention
+attention-complexity
+transformer-block
+book1:numpy-arrays
+book1:broadcasting
+book1:aggregation-axis
+book1:random-seeding
+book1:matrix-multiplication
+book1:torch-tensors
+book1:nn-module
+book1:requires-grad
+book1:tensor-shape-tracing
+book1:softmax
+book1:cross-entropy-loss
+book1:torch-optimizers
+book1:autograd-training
+book1:convolution
+book1:feature-maps
+book1:cnn-training
+```
 
 ### Five-session teaching spine
 
 | Session | File | Required teaching surface |
 |---:|---|---|
-| 1 | `01-image-patches-and-vision-transformers.ipynb` | image `(B,C,H,W)` to non-overlapping patch tokens, linear patch projection, class token, learned positions, ViT shape ledger, and tiny synthetic image classification |
+| 1 | `01-image-patches-and-vision-transformers.ipynb` | image `(B,C,H,W)` to non-overlapping patch tokens, linear patch projection, class token, learned positions, ViT shape ledger, a ViT-versus-CNN data/compute/inductive-bias comparison, and a fixed-seed tiny synthetic image-classification train/evaluation trace |
 | 2 | `02-detection-grids-and-set-prediction.ipynb` | box coordinate convention, IoU derivation, grid/cell target encoding, objectness/class/box losses, thresholding, NMS, and a tiny detection training/evaluation trace |
 | 3 | `03-unet-segmentation-and-skip-connections.ipynb` | encoder/decoder resolution ledger, skip concatenation, U-Net output alignment, pixel masks, Dice/IoU metrics, and synthetic segmentation training |
-| 4 | `04-graphs-cross-modal-tokens-and-transformers.ipynb` | adjacency/message aggregation, graph tokens, cross-modal image/graph attention roles, query/key/value ownership, and a tiny graph-token classifier |
+| 4 | `04-graphs-cross-modal-tokens-and-transformers.ipynb` | adjacency/message aggregation, graph tokens, cross-modal image/graph attention roles, query/key/value ownership, and a fixed-seed tiny graph-token-classifier train/evaluation trace |
 | 5 | `05-vision-system-design-and-audit.ipynb` | choose classify/detect/segment/graph task framing, output heads/losses/metrics, split/leakage audits, and an end-to-end architecture review |
 
 Each session has 6–10 substantive sections, at least two checkpoints per
@@ -120,8 +149,8 @@ Append a six-week Book 2 ledger after B2-020:
 | 13 | 53 | bridge 30; Session 1; p01, p02, p06, p13 | 255 |
 | 14 | 54 | Session 2; p03, p04, p07, p08, p14 | 275 |
 | 15 | 55 | Session 3; p05, p09, p10, p11, p15, p17 | 370 |
-| 16 | 56 | Session 4; p12, p16, p18, p20, p21 | 370 |
-| 17 | 57 | Session 5; p19, p22, p23, p24 | 320 |
+| 16 | 56 | Session 4; p12, p16, p18, p20 | 305 |
+| 17 | 57 | Session 5; p19, p21, p22, p23, p24 | 385 |
 | 18 | 58 | review 60 | 60 |
 
 The manifest, schedule checker, course-structure renderer, inventory, and
@@ -139,49 +168,39 @@ Do not alter B2-022 through B2-024 coverage rows.
 
 **Files:**
 
-- Modify: `book2/syllabus.md`
 - Modify: `book2/curriculum/coverage-map.yaml`
-- Modify: `book2/curriculum/course-schedule.yaml`
 - Modify: `docs/curriculum-roadmap.md`
 - Modify: `docs/unit-standards.md`
-- Modify: `tools/checks/schedule.py` only if an existing generic ledger test exposes a real three-unit defect
 - Modify: `tests/test_book2_schedule.py`
 - Modify: `tests/test_b2_020_statements.py` only for exact roster/count assertions invalidated by the new registered unit
 - Create: `tests/test_b2_021_statements.py`
 
-- [ ] First add failing tests for the existing B2-021 `planned_units` row: four exact provisional concept owners, direct qualified CNN/training imports, a third six-week ledger, duplicate/misordered B2-021 allocations, total 4,970 minutes, `after_book_week: 18`, and the four coverage rows remaining missing until live source paths exist.
-- [ ] Update the existing B2-021 planned-unit row rather than adding a duplicate. Register direct `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C6-pytorch`, `book1:C7-cnn-transfer`, and `book1:C11-neural-training` prerequisites plus B2-019/B2-020; add `convolution`, `feature-maps`, and `cnn-training` to Book 2's qualified import allowlist and declare only the resulting direct qualified concepts in B2-021's `concept_prerequisites`/manifest. Test closure through those direct units, rather than through B2-020.
-- [ ] Add the B2-021 syllabus ownership, direct qualified prerequisite closure, double-length standard, and Book 2 schedule projection without changing Book 1 paths or B2-019/B2-020 allocations.
-- [ ] Prove the schedule accepts B2-019/B2-020 unchanged plus B2-021 only after Book 2 week 12, and rejects a duplicate ID, a missing Session 3 allocation, a practice-minute mismatch, or an early allocation.
+- [ ] First add failing tests for the existing B2-021 `planned_units` row: the direct unit prerequisite sequence, four exact provisional concept owners, double-length standard, and the four coverage rows remaining missing until live source paths exist. In a copied three-manifest Book 2 fixture, also prove the future six-week ledger's 4,970-minute / `after_book_week: 18` contract and rejection of duplicate, misordered, missing-Session-3, minute-mismatched, or early B2-021 allocations.
+- [ ] Update only the existing B2-021 planned-unit row rather than adding a duplicate. Register direct `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C6-pytorch`, `book1:C7-cnn-transfer`, and `book1:C11-neural-training` prerequisites plus B2-019/B2-020; update the double-length roster/roadmap generated planned view without adding B2-021 to the live Book 2 syllabus or schedule.
+- [ ] Prove the temporary three-manifest fixture accepts B2-019/B2-020 unchanged plus B2-021 only after Book 2 week 12. Do not modify `tools/checks/schedule.py` unless this test identifies a generic three-unit defect; preserve the live two-unit schedule byte-for-byte in this phase.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py tests/test_b2_021_statements.py` and commit the registration contract.
 
-### Task 2 — Author statement-side corpus and generated vision fixture
+### Task 2 — Author the hash-verified statement/fixture bundle
 
-**Files:**
+**Task-2 temporary inputs (uncommitted, outside the scanned Book 2 tree):**
 
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/manifest.yaml`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/lesson.ipynb`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/review.ipynb`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/lessons/00-book2-bridge.ipynb`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-tokens-and-transformers.ipynb`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/data/vision_fixture.py`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/data/tiny_vision_state.py`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/data/tiny_vision_checkpoint.py`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/scripts/generate_vision_data.py`
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb` through `p24.ipynb`
-- Modify: `book2/curriculum/coverage-map.yaml`
-- Modify: `book2/curriculum/material-inventory.yaml`
-- Modify: `book2/docs/course-structure.md`
-- Modify: `docs/curriculum-roadmap.md`
+- Create: `/tmp/usaaio-b2-021-draft/` with the future unit layout, SHA-256
+  manifest, lessons, fixture generator, and `p01.ipynb` through `p24.ipynb`.
+
+**Published-file targets (created only by Task 3's atomic copy):**
+
+- `book2/units/B2-021-cross-modal-transformers-vision/manifest.yaml`
+- `book2/units/B2-021-cross-modal-transformers-vision/lesson.ipynb`
+- `book2/units/B2-021-cross-modal-transformers-vision/review.ipynb`
+- `book2/units/B2-021-cross-modal-transformers-vision/lessons/00-book2-bridge.ipynb` through `05-vision-system-design-and-audit.ipynb`
+- `book2/units/B2-021-cross-modal-transformers-vision/data/vision_fixture.py`
+- `book2/units/B2-021-cross-modal-transformers-vision/scripts/generate_vision_data.py`
+- `book2/units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb` through `p24.ipynb`
 
 - [ ] Write failing statement tests that require every declared notebook/data path, unexecuted student code cells, headers, lesson checkpoints/answers, exact 24-row ledger, three-practice concept coverage, and primary evidence for all twelve coverage modalities.
-- [ ] Create deterministic literal 8x8-or-smaller image, box, mask, graph, and split fixtures using a single seed; document every coordinate convention and prohibit external data/imports. `vision_fixture.py` holds literal examples/splits, `tiny_vision_state.py` holds architecture plus canonical float32 tensors and hashes, and `tiny_vision_checkpoint.py` holds trusted seeded baseline/final metrics and probes. `generate_vision_data.py --check` must reconstruct each state from its stated seed, recompute hashes/metrics/probes, and reject drift.
+- [ ] Create a temporary, deterministic statement/fixture bundle containing literal 8x8-or-smaller image, box, mask, graph, train/held-out IDs, and seeded initial-state generators; document every coordinate convention and prohibit external data/imports. `vision_fixture.py` holds the literal examples/splits and initial-state seed only. `generate_vision_data.py --check` must regenerate examples and initial-state hashes from their stated seed and reject drift; it must never store or emit trained weights or final metrics.
 - [ ] Author the bridge, overview, five lessons, review, and student statements in prerequisite order. Lessons must teach every API, loss, metric, and shape used by later practice before it appears.
-- [ ] Do not register a live `units/B2-021-*` manifest or promote coverage in this task. Draft the statements and fixture sources in a temporary, uncommitted directory outside `book2/units/` (for example `/tmp/usaaio-b2-021-draft`) and pass only those student-facing artifacts to the blind solution session. Retain B2-021 as planned until Task 3 can copy the complete statement corpus into `book2/units/` and publish it with solutions, manifest, schedule, and coverage atomically; this avoids both a committed required-solution manifest without its solutions and an incomplete unit directory that the global audit discovers.
+- [ ] Do not register a live `units/B2-021-*` manifest or promote coverage in this task. Draft the statements and fixture sources in a temporary, uncommitted directory outside `book2/units/` (for example `/tmp/usaaio-b2-021-draft`), write a SHA-256 file manifest for that bundle, and pass only that hash-verified student-facing bundle to the blind solution session. Retain B2-021 as planned until Task 3 copies the bundle unchanged into `book2/units/` and publishes it with solutions, manifest, schedule, and coverage atomically; this avoids both a committed required-solution manifest without its solutions and an incomplete unit directory that the global audit discovers.
 - [ ] Run only the isolated statement-artifact checks in this task; global Book 2 audit/checker runs wait for Task 3's atomic publication.
 
 ### Task 3 — Blind-author solutions and execute them
@@ -196,25 +215,27 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Modify: `docs/curriculum-roadmap.md`
 - Modify: `book2/docs/course-structure.md`
 - Modify: `book2/curriculum/material-inventory.yaml`
+- Modify: `docs/audits/015-coverage-audit.md`
 - Modify: `tests/test_b2_021_statements.py`
 
-- [ ] Dispatch a fresh blind solution author that receives only student statements, learner lessons, and committed fixture files; it must not read statement-author outlines or prior solution notes.
-- [ ] Add a separate solution notebook for every statement, with no stored outputs and a final `### Answer check`; pin training protocols, independently reconstructed seeded baselines, disjoint held-out splits, dtype/shape probes, seeds, `atol`, and `rtol` wherever a numeric result is asserted.
-- [ ] Publish the live unit atomically: move B2-021 from planned to `units:` in the Book 2 syllabus, add the complete manifest and all 48 practice/solution paths, append its six-week schedule, promote only its four coverage rows, and regenerate inventory/roadmap/course structure. No committed state may expose a required solution path that does not exist.
+- [ ] Dispatch a fresh blind solution author that receives only the SHA-256-verified temporary statement/fixture bundle and learner lessons; it must not read statement-author outlines, source notebooks outside that bundle, reference metrics, or prior solution notes. Test that every copied Task-3 student file hashes identically to its Task-2 bundle source before it is published.
+- [ ] Add a separate solution notebook for every statement, with no stored outputs and a final `### Answer check`. p17 uses a 2x2-patch, dimension-8, one-head class-token ViT trained with AdamW (`lr=0.05`, 12 ordered updates); p18 uses the declared 4x4 grid detector with AdamW (`lr=0.05`, 16 ordered updates); p19 uses the declared one-down/one-up U-Net with AdamW (`lr=0.03`, 16 ordered updates); p20 uses the declared four-node, dimension-8, one-head graph-token classifier with AdamW (`lr=0.05`, 12 ordered updates). Each names immutable train/held-out IDs from `vision_fixture.py`, reconstructs its seeded baseline from the initial-state generator, records update count/order plus dtype/shape probes, and pins `atol`/`rtol` for numeric assertions. Solutions and learner notebooks may not import or load final weights, final metrics, or CI reference modules.
+- [ ] Publish the live unit atomically: add its complete B2-021 `units:` syllabus entry with the exact prerequisite list above, add the three newly permitted CNN imports (`convolution`, `feature-maps`, `cnn-training`), copy the hash-verified statement corpus and complete manifest/all 48 practice-solution paths into `book2/units/`, append its six-week schedule, promote only its four coverage rows, and regenerate inventory, Book 2 course structure, shared roadmap, and `docs/audits/015-coverage-audit.md`. No committed state may expose a required solution path that does not exist.
 - [ ] Execute every solution notebook from the Book 2 root without `--inplace`; record actual elapsed time and fail any B2-021 solution exceeding 20 seconds.
-- [ ] Run student hygiene, solution execution, Book 2 prereq/coverage/scope/layer checks, audit `--check`, and commit the atomic statement-and-solution publication.
+- [ ] Run student hygiene, solution execution, Book 2 prereq/coverage/scope/layer checks, `python -m tools.audit_curriculum --root book2 --check`, `python -m tools.render_curriculum_roadmap --root . --check`, and commit the atomic statement-and-solution publication.
 
 ### Task 4 — Lock concept-critical answer checks
 
 **Files:**
 
 - Create: `tests/test_vision_transformer_checks.py`
+- Create: `tests/fixtures/b2_021_reference.py`
 - Modify: `scripts/ci-local.sh`
 - Modify: `tests/test_b2_021_statements.py`
 
-- [ ] First write variant-execution tests that prove the untouched answers pass and a named plausible wrong answer fails for p17 (no ViT training update or leaky split), p18 (no detector training update or leaky split), p19 (skip-concatenation/segmentation output), p20 (graph edge aggregation), and p24 (cross-modal Q/K/V or leakage audit).
+- [ ] First write variant-execution tests that prove the untouched answers pass and a named plausible wrong answer fails for p17 (no ViT optimizer update or train/held-out overlap), p18 (no detector optimizer update or train/held-out overlap), p19 (skip-concatenation/segmentation output), p20 (no graph-classifier optimizer update, invalid edge aggregation, or train/held-out overlap), and p24 (cross-modal Q/K/V or leakage audit). `tests/fixtures/b2_021_reference.py` is CI-only: it independently reconstructs the fixed-seed baselines and final traces, stores expected metrics/probes but no final tensors, and is forbidden from all learner/solution imports.
 - [ ] Implement only named-function substitutions in copied solution notebooks; never add student-facing markers, sandbox machinery, or anti-cheat policies.
-- [ ] Add the focused integrity suite to `scripts/ci-local.sh` and retain the 20-second per-solution timeout for B2-021.
+- [ ] Instrument the solution execution path to count optimizer steps and verify the ordered update trace, then add the focused integrity suite to `scripts/ci-local.sh` and retain the 20-second per-solution timeout for B2-021.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_vision_transformer_checks.py tests/test_b2_021_statements.py` plus generator `--check`; commit the integrity contract.
 
 ### Task 5 — Verification, content gate, report, and merge
@@ -282,17 +303,54 @@ Do not alter B2-022 through B2-024 coverage rows.
   (`convolution`, `feature-maps`, and `cnn-training`) and requires B2-021 to
   declare them through its own qualified direct prerequisites.
 
-### Review 2 — self (2026-09-01)
+### Review 2 — Sol (2026-09-01) — superseded by Revision 3
+
+- **Verdict**: REJECT.
+- The reviewer found that a live three-unit schedule before its manifest would
+  fail discovery, that prerequisites/training integrity were under-specified,
+  that p21 ran before its decision lesson, and that the generated aggregate
+  coverage audit was omitted from atomic publication.
+
+### Review 2 findings resolution (2026-09-01)
+
+- [sol][FIXED] Task 1 now changes only provisional contracts and tests its
+  future three-unit ledger in a copied fixture; the live B2-021 syllabus entry
+  and schedule are created together with all required source paths in Task 3.
+- [sol][FIXED] The full exact ordered local/qualified prerequisite list is
+  pinned above and Task 3 requires exact syllabus/manifest/header equality.
+- [sol][FIXED] p17–p20 now have fixed architectures, train/held-out IDs,
+  optimizers, seeds, update counts, and trace requirements. Final reference
+  metrics exist only in a CI fixture and learner/solution imports are banned.
+- [sol][FIXED] Session 1 teaches p21's ViT-versus-CNN comparison, and p21 is
+  additionally scheduled after Session 5; Sessions 1 and 4 name their fixed
+  seed training/evaluation traces.
+- [sol][FIXED] Task 3 explicitly regenerates and checks
+  `docs/audits/015-coverage-audit.md` with the aggregate roadmap.
+
+### Review 2 — self (2026-09-01) — superseded by Revision 3
 
 - **Verdict**: APPROVE WITH NITS, pending the three fresh independent review
   sessions below.
 - The corrected sequence now teaches graph aggregation in Session 4 before
   p16 and p20, retains each model-training practice after its corresponding
-  session, and recomputes to `255 + 275 + 370 + 370 + 320 + 60 = 1650`
+  session, and recomputes to `255 + 275 + 370 + 305 + 385 + 60 = 1650`
   minutes (27.5 hours).
 - Task 2's temporary draft location cannot be mistaken for a live Book 2
   unit, and Task 3's atomic publication is the first committed state that the
   global manifest/audit machinery can observe.
+
+### Review 3 — self (2026-09-01)
+
+- **Verdict**: APPROVE WITH NITS, pending fresh Sol, Fable, and GLM review of
+  this exact Revision 3 commit.
+- Task 1 now leaves every live B2-021 reader unchanged and uses only a copied
+  complete fixture to exercise the prospective three-unit schedule. The first
+  committed live state is Task 3, containing the all-or-nothing source,
+  solution, syllabus, schedule, evidence, and generated-report change.
+- The schedule recomputes to `255 + 275 + 370 + 305 + 385 + 60 = 1650`
+  minutes. Each integrative model-training practice has a fixed learner-side
+  protocol and a separate CI-only reference reconstruction without trained
+  tensors, so the no-update and split-leakage mutations cannot self-certify.
 
 ## Content Review
 
