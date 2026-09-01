@@ -2793,7 +2793,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
   kind: notebook
-  semantic_sha256: a754470deaa6a267e2eb2bc9b3c7e25abe3b90a988adfbb6969ac89129f2f2a6
+  semantic_sha256: 218e24a149540e4c8429aabea4278fc25ae71fdc970ca8c0eabc81951905c221
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
       Causal Transformer Language Model :: cell 1'
@@ -2813,10 +2813,10 @@ notebooks:
     - 1. Language Transformer input contract
     cell_ordinal: 2
   - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
-      Causal Transformer Language Model > 2. Reuse the causal mask :: cell 1'
+      Causal Transformer Language Model > 2. Reuse the causal and padding masks :: cell 1'
     heading_path:
     - 'B2-020 — Session 2: Causal Transformer Language Model'
-    - 2. Reuse the causal mask
+    - 2. Reuse the causal and padding masks
     cell_ordinal: 1
   - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
       Causal Transformer Language Model > 3. Shift-right labels :: cell 1'
@@ -2877,7 +2877,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
   kind: notebook
-  semantic_sha256: 8980da2e479404deca684ae45ba0b5fc38473d6e7eb8e0ddfc122e3165ee8f5b
+  semantic_sha256: 62a67707f34701f19359a6d80b34fa0fbe1232696d6edf8b1ab4157e7433230b
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
       Objectives :: cell 1'
@@ -2915,10 +2915,10 @@ notebooks:
     - '4. Architecture delta: learned positions'
     cell_ordinal: 1
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
-      Objectives > 5. Architecture delta: GELU :: cell 1'
+      Objectives > 5. Architecture delta: GELU and the pinned block :: cell 1'
     heading_path:
     - 'B2-020 — Session 3: Pretraining Objectives'
-    - '5. Architecture delta: GELU'
+    - '5. Architecture delta: GELU and the pinned block'
     cell_ordinal: 1
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
       Objectives > 6. AdamW and the sequential protocol :: cell 1'
@@ -2961,7 +2961,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
   kind: notebook
-  semantic_sha256: a5657cf770aecc7e67530e7a3ef52c6d4bf5037568f2a552d9c92e4eb54f471c
+  semantic_sha256: a6962410d33c6c713102bc28233bff2a7dcd061d062ea2008b52ad295861dd97
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
       a Language Transformer :: cell 1'
@@ -4266,7 +4266,7 @@ notebooks:
   - visible.clone
 - path: units/B2-020-language-transformers/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: 227437d2699d5100a768da6056805a2b8375fdce31d29506b6b718791c8e4874
+  semantic_sha256: 18eb3d2fc79fd665e85be068407066519f2d9a62ae31baed4351d50a644a26fb
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p17.ipynb :: B2-020 — Practice p17 > Task :: cell 1'
     heading_path:
@@ -4299,7 +4299,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: 16f909707fbd606c167a4cf1646533d86a98d33d86632495b7f8a25623b8055c
+  semantic_sha256: b0bda93117e82e346988d6b1394ee1f515d6ce48e091f7dde037b8563c715096
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p17_solution.ipynb :: B2-020-language-transformers — Practice p17
       — Solution :: cell 1'
@@ -4362,7 +4362,6 @@ notebooks:
   - np.random.seed
   - optimizer.step
   - optimizer.zero_grad
-  - pairs.extend
   - random.seed
   - spec.loader.exec_module
   - table.detach
@@ -4374,7 +4373,7 @@ notebooks:
   - torch.topk
 - path: units/B2-020-language-transformers/practice/p18.ipynb
   kind: notebook
-  semantic_sha256: 634f91d155600aeea387be429790ffcabe7f2eb7077179d3a88ed6fb4c1cf1bb
+  semantic_sha256: b7d4f0dce8c346da79cb7d70b9de3875da39862117854fce88864404786cffe2
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p18.ipynb :: B2-020 — Practice p18 > Task :: cell 1'
     heading_path:
@@ -4493,7 +4492,7 @@ notebooks:
   - torch.triu
 - path: units/B2-020-language-transformers/practice/p19.ipynb
   kind: notebook
-  semantic_sha256: 79fbe8e45a464cf56c01ba4cc5770992ed9ac56427b67faf5dc9b8b400266a64
+  semantic_sha256: 4e5fe3775a8260dedf550952b25768c1c73d971708aae631f7e6db351974acc7
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p19.ipynb :: B2-020 — Practice p19 > Task :: cell 1'
     heading_path:
@@ -4648,7 +4647,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: c935e146b84b8f094b26cb20e24d4db31c3982b5ae01ff5353dd9a102588486a
+  semantic_sha256: dadeae8eb73d156660692ac7ec07a46f5556d395511171d0cf666e2cadfda7b4
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p20_solution.ipynb :: B2-020-language-transformers — Practice p20
       — Solution :: cell 1'
@@ -4722,6 +4721,7 @@ notebooks:
   - spec.loader.exec_module
   - splits.items
   - state.ENCODER_TENSORS.items
+  - state.canonical_encoder_state_hash
   - token_ids.eq
   - torch.arange
   - torch.equal
@@ -4767,7 +4767,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: cb83ddbc6365751db4bccac42b0ba9c8d4ee1557145fb776c9c59f1fc7124895
+  semantic_sha256: 80f8cbe41198fcd193da8e5d8a4d0d399a3f1fe588a831919dbec8cf27e718fc
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p21_solution.ipynb :: B2-020-language-transformers — Practice p21
       — Solution :: cell 1'
@@ -4842,6 +4842,7 @@ notebooks:
   - stage2_optimizer.step
   - stage2_optimizer.zero_grad
   - state.ENCODER_TENSORS.items
+  - state.canonical_encoder_state_hash
   - token_ids.eq
   - torch.allclose
   - torch.arange

@@ -31,6 +31,26 @@ CAUSAL_TRAIN_IDS = [
     [9, 9, 9, 9, 9, 0, 0, 0],
 ]
 
+# p17 consumes these context-target pairs exactly in the listed order.
+# They make the one-hot embedding-bridge training set explicit rather than
+# relying on an unstated padding-stripping or adjacent-token derivation.
+P17_CONTEXT_IDS = [
+    4, 4, 4, 4,
+    5, 5, 5, 5,
+    6, 6, 6, 6,
+    7, 7, 7, 7,
+    8, 8, 8, 8,
+    9, 9, 9, 9,
+]
+P17_TARGET_IDS = [
+    4, 4, 4, 4,
+    5, 5, 5, 5,
+    6, 6, 6, 6,
+    7, 7, 7, 7,
+    8, 8, 8, 8,
+    9, 9, 9, 9,
+]
+
 CAUSAL_HELDOUT_IDS = [
     [4, 4, 4, 4, 4, 4, 0, 0],
     [5, 5, 5, 5, 5, 5, 0, 0],

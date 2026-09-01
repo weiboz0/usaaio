@@ -224,6 +224,29 @@ def test_protocol_or_loader_wrong_answer_fails_final_answer_check(
     _assert_answer_check_fails(notebook_path)
 
 
+@pytest.mark.parametrize("practice", ("p20", "p21"))
+def test_tampered_encoder_tensor_fails_recomputed_state_hash(
+    tmp_path: Path, practice: str
+) -> None:
+    notebook_path = _working_notebook(tmp_path, practice)
+    state_path = notebook_path.parents[1] / "data" / "tiny_encoder_state.py"
+    source = state_path.read_text(encoding="utf-8")
+    original = "-0.844856858253479"
+    assert source.count(original) == 1
+    state_path.write_text(source.replace(original, "-0.744856858253479"), encoding="utf-8")
+    notebook, client = _execute(notebook_path)
+    with pytest.raises(CellExecutionError):
+        client.execute()
+    failures = [
+        index
+        for index, cell in enumerate(notebook.cells)
+        for output in cell.get("outputs", [])
+        if output.get("output_type") == "error" and output.get("ename") == "AssertionError"
+    ]
+    assert len(failures) == 1
+    assert "canonical_encoder_state_hash" in notebook.cells[failures[0]].source
+
+
 def test_book2_ci_runs_language_transformer_integrity_suite() -> None:
     source = CI_LOCAL.read_text(encoding="utf-8")
     assert "uv run pytest -q tests/test_language_transformer_checks.py" in source

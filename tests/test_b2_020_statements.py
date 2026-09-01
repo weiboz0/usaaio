@@ -405,7 +405,7 @@ def test_training_practices_pin_literal_reproducible_protocols() -> None:
     required = {
         "p17": ("language_fixture.py", "AdamW", "lr=0.03", "40 full-batch updates"),
         "p18": ("language_fixture.py", "AdamW", "lr=0.03", "exactly 80 full-batch updates"),
-        "p19": ("[4, 4, 4, 4, 4, 4, 0, 0]", "causal >= 1.020881", "mlm >= 0.969689", "causal_row0_after_red=4", "ATOL=1e-5", "RTOL=1e-5"),
+        "p19": ("[4, 4, 4, 4, 4, 4, 0, 0]", "causal >= 1.020881", "mlm >= 0.969689", "causal_row0_after_red=4", "ATOL=1e-5", "RTOL=1e-5", "padding_idx=0", "key_padding_mask=token_ids.eq(0)"),
         "p20": ("language_fixture.py", "AdamW", "lr=0.03", "exactly 40 full-batch updates"),
         "p21": ("language_fixture.py", "AdamW", "lr=0.03", "20 + 20 full-batch updates"),
     }
@@ -413,6 +413,36 @@ def test_training_practices_pin_literal_reproducible_protocols() -> None:
         source = _source(UNIT / "practice" / f"{practice}.ipynb")
         for needle in needles:
             assert needle in source
+
+
+def test_p17_uses_explicit_checked_in_context_target_pairs() -> None:
+    fixture = (UNIT / "data/language_fixture.py").read_text(encoding="utf-8")
+    statement = _source(UNIT / "practice/p17.ipynb")
+    solution = _source(UNIT / "practice/p17_solution.ipynb")
+    for name in ("P17_CONTEXT_IDS", "P17_TARGET_IDS"):
+        assert name in fixture
+        assert name in statement
+        assert f"fixture.{name}" in solution
+
+
+def test_p18_pins_the_full_tiny_causal_transformer_architecture() -> None:
+    source = _source(UNIT / "practice/p18.ipynb")
+    required = (
+        "learned positional embeddings",
+        "Linear(8,16)",
+        "GELU",
+        "LayerNorm eps=1e-5",
+        "pre-norm",
+        "dropout 0.0",
+    )
+    assert all(needle in source for needle in required)
+
+
+def test_fine_tuning_lesson_teaches_recomputed_state_hash_verification() -> None:
+    source = _source(UNIT / "lessons/04-fine-tune-a-language-transformer.ipynb")
+    assert "canonical_encoder_state_hash" in source
+    assert "recompute" in source
+    assert "ENCODER_TENSORS" in source
 
 
 def test_syllabus_and_standards_publish_b2_020_as_double_length() -> None:

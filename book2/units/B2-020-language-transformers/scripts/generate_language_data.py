@@ -348,8 +348,37 @@ def _state_source(result: dict[str, Any]) -> str:
             '"""Generated student-facing trained encoder state for B2-020."""\n\n',
             _literal("SCHEMA_VERSION", SCHEMA_VERSION),
             _literal("ARCHITECTURE", ARCHITECTURE),
+            "import hashlib\nimport json\n\n",
             _literal("ENCODER_TENSORS", result["encoder_tensors"]),
             _literal("ENCODER_STATE_HASH", result["encoder_state_hash"]),
+            "\n\n"
+            "def _flatten(values):\n"
+            "    for value in values:\n"
+            "        if isinstance(value, list):\n"
+            "            yield from _flatten(value)\n"
+            "        else:\n"
+            "            yield value\n\n"
+            "\n"
+            "def _shape(values):\n"
+            "    shape = []\n"
+            "    while isinstance(values, list):\n"
+            "        shape.append(len(values))\n"
+            "        values = values[0] if values else []\n"
+            "    return shape\n\n"
+            "\n"
+            "def canonical_encoder_state_hash(tensors):\n"
+            "    \"\"\"Return the canonical SHA-256 fingerprint of this encoder state.\"\"\"\n"
+            "    rows = []\n"
+            "    for name in sorted(tensors):\n"
+            "        values = tensors[name]\n"
+            "        rows.append([name, _shape(values), \"float32\", [round(float(value), 6) for value in _flatten(values)]])\n"
+            "    payload = {\n"
+            "        \"schema_version\": SCHEMA_VERSION,\n"
+            "        \"architecture\": [[key, ARCHITECTURE[key]] for key in ARCHITECTURE],\n"
+            "        \"tensors\": rows,\n"
+            "    }\n"
+            "    encoded = json.dumps(payload, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True)\n"
+            "    return hashlib.sha256(encoded.encode()).hexdigest()\n",
         ]
     )
 
