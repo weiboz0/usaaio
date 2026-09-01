@@ -53,14 +53,14 @@ OBJECTIVE = {
     "reduction": "mean_non_padding_non_ignored_tokens",
     "order": "stored_ascending_full_batch",
 }
-TRUSTED_INITIAL_LOSSES = {"causal": 2.32248974, "mlm": 3.45660973}
-TRUSTED_FINAL_LOSSES = {"causal": 0.00000063, "mlm": 0.00000036}
-TRUSTED_MINIMUM_IMPROVEMENTS = {"causal": 0.928996, "mlm": 1.382644}
+TRUSTED_INITIAL_LOSSES = {"causal": 2.55220652, "mlm": 2.42422199}
+TRUSTED_FINAL_LOSSES = {"causal": 0.00000476, "mlm": 0.00000060}
+TRUSTED_MINIMUM_IMPROVEMENTS = {"causal": 1.020881, "mlm": 0.969689}
 TRUSTED_PROBE_TOP1_IDS = {
     "causal_row0_after_red": 4,
     "causal_row1_after_blue": 5,
     "mlm_row0_position1": 4,
-    "mlm_row1_position4": 5,
+    "mlm_row1_position4": 4,
 }
 TRUSTED_TRACE_LOSS_SHA256 = "750f4bb861f1d65b7d9f814095345f0fc69f01e23ee9cbf9a524f80c7565dbc4"
 

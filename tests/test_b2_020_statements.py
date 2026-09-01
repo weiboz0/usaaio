@@ -66,6 +66,15 @@ def _source(path: Path) -> str:
     return "\n".join(str(cell.source) for cell in _notebook(path).cells)
 
 
+def _fixture_module():
+    path = UNIT / "data/language_fixture.py"
+    spec = importlib.util.spec_from_file_location("b2_020_language_fixture", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def test_manifest_publishes_exact_statement_ledger_and_deferred_debt() -> None:
     raw = _manifest()
     parsed = {
@@ -167,7 +176,47 @@ def test_lessons_have_substantive_sections_checkpoints_and_required_spine() -> N
     for name in ("01-train-token-embeddings.ipynb", "04-fine-tune-a-language-transformer.ipynb"):
         source = _source(UNIT / "lessons" / name)
         assert "**Fully worked computation.**" in source
-        assert "=" in source
+    embedding_source = _source(UNIT / "lessons/01-train-token-embeddings.ipynb")
+    assert "E[4] = [0.20, -0.10]" in embedding_source
+    assert "softmax([0.30, -0.20, 0.10]) = [0.4123, 0.2501, 0.3376]" in embedding_source
+    assert "loss = -log(0.2501) = 1.3859" in embedding_source
+    assert "The logit gradient is `[0.4123, -0.7499, 0.3376]`" in embedding_source
+    assert "dL/dE[4] = [1.1622, 0.3376]" in embedding_source
+    assert "E[4] after = [0.0838, -0.1338]" in embedding_source
+    assert "[-1.0000, 0.0000] -> [-0.9850, -0.0075]" in embedding_source
+    assert "E[6] = [0.00, 0.00]" in embedding_source
+
+    fine_tune_source = _source(UNIT / "lessons/04-fine-tune-a-language-transformer.ipynb")
+    assert "h = [0.40, -0.20]" in fine_tune_source
+    assert "logits = [0.22, -0.16]" in fine_tune_source
+    assert "softmax([0.22, -0.16]) = [0.5939, 0.4061]" in fine_tune_source
+    assert "loss = -log(0.4061) = 0.9011" in fine_tune_source
+    assert "dL/dW = [[0.2376, -0.1188], [-0.2376, 0.1188]]" in fine_tune_source
+    assert "head_before = [[0.50, -0.10], [-0.20, 0.40]]" in fine_tune_source
+    assert "head_after = [[0.4762, -0.0881], [-0.1762, 0.3881]]" in fine_tune_source
+    assert "encoder_before = [0.40, -0.20]" in fine_tune_source
+    assert "encoder_after = [0.40, -0.20]" in fine_tune_source
+
+
+def test_pretraining_heldout_rows_and_masked_pairs_are_disjoint_from_training() -> None:
+    fixture = _fixture_module()
+    causal_train = {tuple(row) for row in fixture.CAUSAL_TRAIN_IDS}
+    causal_heldout = {tuple(row) for row in fixture.CAUSAL_HELDOUT_IDS}
+    assert causal_train.isdisjoint(causal_heldout)
+
+    mlm_train = {
+        (tuple(input_ids), tuple(label_ids))
+        for input_ids, label_ids in zip(fixture.MLM_INPUT_IDS, fixture.MLM_LABEL_IDS, strict=True)
+    }
+    mlm_heldout = {
+        (tuple(input_ids), tuple(label_ids))
+        for input_ids, label_ids in zip(
+            fixture.MLM_HELDOUT_IDS, fixture.MLM_HELDOUT_LABEL_IDS, strict=True
+        )
+    }
+    assert mlm_train.isdisjoint(mlm_heldout)
+
+
 
 
 def test_collected_checkpoint_answers_match_their_numbered_questions() -> None:
@@ -233,7 +282,7 @@ def test_training_practices_pin_literal_reproducible_protocols() -> None:
     required = {
         "p17": ("language_fixture.py", "AdamW", "lr=0.03", "40 full-batch updates"),
         "p18": ("language_fixture.py", "AdamW", "lr=0.03", "exactly 80 full-batch updates"),
-        "p19": ("[4, 4, 4, 4, 4, 0, 0, 0]", "causal >= 0.928996", "mlm >= 1.382644", "causal_row0_after_red=4", "ATOL=1e-5", "RTOL=1e-5"),
+        "p19": ("[4, 4, 4, 4, 4, 4, 0, 0]", "causal >= 1.020881", "mlm >= 0.969689", "causal_row0_after_red=4", "ATOL=1e-5", "RTOL=1e-5"),
         "p20": ("language_fixture.py", "AdamW", "lr=0.03", "exactly 40 full-batch updates"),
         "p21": ("language_fixture.py", "AdamW", "lr=0.03", "20 + 20 full-batch updates"),
     }

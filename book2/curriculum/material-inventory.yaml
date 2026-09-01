@@ -2685,7 +2685,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
   kind: notebook
-  semantic_sha256: f461cbc3c9f6e325e4998a148b14e4d5708415f2573cf5f08771545feed86e5c
+  semantic_sha256: 2de0af83caf053ff6a3dcd50872feec4c65be3cb674401a218b0c1bc56ad9f41
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
       Embeddings :: cell 1'
@@ -2937,7 +2937,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
   kind: notebook
-  semantic_sha256: 3f1191f814e9903aef93e9ee88496cb20a950a68fa0fe2b5c85ff3a2b1d2a851
+  semantic_sha256: a5657cf770aecc7e67530e7a3ef52c6d4bf5037568f2a552d9c92e4eb54f471c
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
       a Language Transformer :: cell 1'
@@ -3546,7 +3546,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p19.ipynb
   kind: notebook
-  semantic_sha256: 5b3eb69d5ee232e032f5aa3f115c94364d838c59a907e3603bd377dfbb57e08d
+  semantic_sha256: 79fbe8e45a464cf56c01ba4cc5770992ed9ac56427b67faf5dc9b8b400266a64
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p19.ipynb :: B2-020 — Practice p19 > Task :: cell 1'
     heading_path:

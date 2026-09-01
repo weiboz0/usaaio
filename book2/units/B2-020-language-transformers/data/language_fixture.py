@@ -32,8 +32,8 @@ CAUSAL_TRAIN_IDS = [
 ]
 
 CAUSAL_HELDOUT_IDS = [
-    [4, 4, 4, 4, 4, 0, 0, 0],
-    [5, 5, 5, 5, 5, 0, 0, 0],
+    [4, 4, 4, 4, 4, 4, 0, 0],
+    [5, 5, 5, 5, 5, 5, 0, 0],
 ]
 
 # The true targets live only in MLM_LABEL_IDS. A label of -100 is ignored.
@@ -93,13 +93,13 @@ MLM_LABEL_IDS = [
 ]
 
 MLM_HELDOUT_IDS = [
-    [4, 1, 4, 4, 4, 0, 0, 0],
-    [5, 5, 5, 5, 1, 0, 0, 0],
+    [4, 1, 4, 4, 4, 4, 0, 0],
+    [5, 5, 5, 5, 5, 1, 0, 0],
 ]
 
 MLM_HELDOUT_LABEL_IDS = [
     [-100, 4, -100, -100, -100, -100, -100, -100],
-    [-100, -100, -100, -100, 5, -100, -100, -100],
+    [-100, -100, -100, -100, -100, 5, -100, -100],
 ]
 
 # Small intent-classification fixture used only after loading tiny_encoder_state.py.
