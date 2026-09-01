@@ -766,5 +766,5 @@ they do not change the shipped answer contracts or curriculum coverage.
 
 ### Review and shipping status
 
-The four-way content gate closed above. PR guard, PR creation, and squash merge
-are the remaining lifecycle actions.
+The four-way content gate closed above. The PR guard passed, and PR #24 was
+squash-merged to `main` as `1ed8cc7` on 2026-09-01.
