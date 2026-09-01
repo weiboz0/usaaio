@@ -688,8 +688,83 @@ plan. Implementation may proceed.
 
 ## Content Review
 
-Pending implementation and four-way blind review.
+### Review 1 — self (2026-09-01)
+
+- **Verdict**: APPROVE.
+- Verified the generated state and material inventory are current, the Book 2
+  curriculum audit passes, the branch has no Book 1/C12 leakage against
+  `origin/main`, and `git diff --check` is clean.
+- Confirmed the final corrections: p17 checks every unused embedding row,
+  p18 uses fixed sinusoidal positions, and p20/p21 hash the exact loaded
+  float32 encoder state.
+
+### Review 1 — sol (2026-09-01)
+
+- **Verdict**: APPROVE.
+- Blind-solved p17--p21 at `8c70dc3`; independently reproduced the embedding,
+  causal-mask, pretraining, state-load, and freeze/unfreeze certificates.
+- Earlier findings were resolved before this pass: six-decimal state hashing
+  was replaced by exact IEEE-754 float32 hashing (`9e055be`), and p17's unused
+  rows plus p18's fixed-sinusoidal wording were corrected (`c238791`).
+
+### Review 1 — fable (2026-09-01)
+
+- **Verdict**: APPROVE WITH SUGGESTIONS.
+- Blind-solved p17--p21 and confirmed the answer checks, state contract,
+  closure, scope isolation, and exact-path token guard exception.
+- Non-blocking nits: p19 seeds only Torch although Python/NumPy are unused;
+  its unmasked-position probe is fragile if the state is regenerated; and the
+  execution report still needed to be appended.
+
+### Review 1 — glm (2026-09-01)
+
+- **Verdict**: APPROVE WITH SUGGESTIONS.
+- Blind-solved p17--p21 before opening solutions, then verified all requested
+  contracts at `8c70dc3`: exact unused rows, fixed-sinusoidal causal p18,
+  p19's continuous one-optimizer protocol, exact float32 hash rejection,
+  closure/coverage, Book 1/C12 isolation, and the narrow token-path guard.
+- Non-blocking nits: p19's `mlm_row1_position4` is intentionally an unmasked
+  probe and could be named more clearly; p20/p21 could pin pooling explicitly;
+  p17 could name `nn.Embedding` rather than its equivalent raw parameter;
+  and p19's time budget is tight. These do not contradict the stated,
+  deterministic protocols or their checks.
+
+## CONTENT GATE CLOSED — 4-way consensus (2026-09-01)
+
+All four reviewers APPROVE or APPROVE WITH SUGGESTIONS. There are no `[OPEN]`
+findings. The minor suggestions are deferred as future clarity improvements;
+they do not change the shipped answer contracts or curriculum coverage.
 
 ## Post-execution report
 
-Pending implementation, verification, review, PR guard, and squash merge.
+### Delivered scope
+
+- Tasks 1--5 delivered the Book 2 language-Transformer unit, six-week schedule
+  ledger, manifest/coverage ownership, generated synthetic fixture and
+  state/checkpoint artifacts, five lessons, 24 student practices with blind
+  solutions, and answer-check integrity enforcement.
+- Final corrections landed in `9e055be`, `c238791`, and `8c70dc3`: exact
+  float32 state hashing, p17/p18 consistency, and a single exact-path scope
+  guard exception for the token-embedding lesson.
+
+### Verification evidence
+
+- `tests/test_language_transformer_checks.py`: 20 passed.
+- `tests/test_b2_020_statements.py`: 22 passed.
+- Full repository test suite: 1164 passed, 21 warnings (GLM final gate,
+  2026-09-01).
+- All 24 B2-020 solution notebooks executed under the CI's 20-second timeout.
+- Book 1 and Book 2 prereq, coverage, scope, schedule, hygiene, blueprint,
+  overlap, answer-key, and layer-boundary checks passed; the Book 2
+  answer-key check emitted its designed no-final-mocktests skip.
+- Fresh final self-check: Book 2 curriculum audit and generated-language-data
+  `--check` passed; `git diff --check` passed; no Book 1/C12 path is in the
+  `origin/main...HEAD` diff.
+- The user waived a redundant rerun of `scripts/ci-local.sh`; the independently
+  observed full test suite and notebook executions above provide the final
+  current-head evidence instead.
+
+### Review and shipping status
+
+The four-way content gate closed above. PR guard, PR creation, and squash merge
+are the remaining lifecycle actions.
