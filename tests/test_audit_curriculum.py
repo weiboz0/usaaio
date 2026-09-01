@@ -522,7 +522,7 @@ def test_plan019_cutover_real_book1_inventory_and_book2_ownership_are_partitione
         "manifested_minutes": 18_635,
         "scheduled_minutes": 18_875,
     }
-    assert len(book2_concepts) == 11
+    assert len(book2_concepts) == 19
     assert set(syllabus.concepts).isdisjoint(book2_concepts)
     material_paths = {
         row["path"]
@@ -588,10 +588,11 @@ def test_plan019_task3_aggregate_renderer_assigns_embedding_completion_to_b2_020
 
     for document in rendered.values():
         assert "unestimated C8" not in document
+        assert "book2:B2-020-language-transformers" in document
+        assert "nlp-word-embeddings" in document
         assert (
-            "The Book 2 `B2-020-language-transformers` 26–32-hour estimate includes "
-            "completing the `nlp-word-embeddings` model-training bridge; no additional "
-            "Book 1 C8 correction is pending."
+            "Baseline plus planned-unit subtotal: **506.92–546.92 manifested-baseline hours** "
+            "and **511.92–551.92 scheduled-baseline hours**."
         ) in document
 
 

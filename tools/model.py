@@ -524,8 +524,11 @@ def _lesson_sessions(raw: dict[str, Any], path: Path) -> list[int] | None:
     return lesson_sessions
 
 
-def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
+def load_unit_manifests(
+    root: str | Path, *, as_of_date: date | None = None
+) -> list[UnitManifest]:
     root = Path(root)
+    policy_date = datetime.now(UTC).date() if as_of_date is None else as_of_date
     units_root = root / "units"
     if units_root.is_symlink():
         raise ValueError(
@@ -609,7 +612,7 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
                 expiry_date = date.fromisoformat(str(solution_policy_expires))
             except ValueError:
                 expiry_date = None
-            valid_deferred = (
+            valid_shape = (
                 solution_policy == "deferred"
                 and isinstance(solution_policy_plan, str)
                 and re.fullmatch(r"plan-[0-9]{3}", solution_policy_plan) is not None
@@ -617,13 +620,34 @@ def load_unit_manifests(root: str | Path) -> list[UnitManifest]:
                 and re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", solution_policy_expires)
                 is not None
                 and expiry_date is not None
-                and expiry_date >= datetime.now(UTC).date()
             )
-            if not valid_deferred:
+            if not valid_shape:
                 raise ValueError(
                     f"{path}: deferred solution_policy requires plan-NNN and "
                     "expires YYYY-MM-DD"
                 )
+            if not (
+                unit_id == "B2-020-language-transformers"
+                and solution_policy_plan == "plan-020"
+                and solution_policy_expires == "2026-09-30"
+            ):
+                raise ValueError(
+                    f"{path}: deferred solution_policy is allowed only "
+                    "B2-020-language-transformers with plan-020 through 2026-09-30"
+                )
+            if policy_date > expiry_date:
+                raise ValueError(
+                    f"{path}: deferred solution_policy expired after 2026-09-30"
+                )
+            for problem in practice:
+                if not problem.solution_path:
+                    continue
+                solution_path = path.parent / problem.solution_path
+                if solution_path.exists():
+                    raise ValueError(
+                        f"{path}: deferred solution_policy must not have a solution "
+                        f"file present: {problem.solution_path}"
+                    )
         elif not isinstance(solution_policy_value, str):
             raise ValueError(  # noqa: TRY004 - manifest contract uses ValueError uniformly
                 f"{path}: solution_policy must be 'required' or a deferred mapping"

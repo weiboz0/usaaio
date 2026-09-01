@@ -1,5 +1,6 @@
 import importlib
 import re
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -117,55 +118,102 @@ practice: []
         load_unit_manifests(tmp_path)
 
 
-@pytest.mark.parametrize(
-    "policy",
-    [
-        "deferred",
-        "{status: deferred, plan: plan-020}",
-        "{status: deferred, expires: '2099-12-31'}",
-        "{status: deferred, plan: issue-20, expires: '2099-12-31'}",
-        "{status: deferred, plan: plan-020, expires: tomorrow}",
-    ],
-)
-def test_deferred_solution_policy_requires_plan_and_expiry(tmp_path, policy):
-    unit_dir = tmp_path / "units" / "F1-scientific-python"
+def _write_deferred_manifest(
+    root: Path,
+    *,
+    unit: str = "B2-020-language-transformers",
+    plan: str = "plan-020",
+    expires: str = "2026-09-30",
+    with_solution: bool = False,
+) -> None:
+    unit_dir = root / "units" / unit
     unit_dir.mkdir(parents=True)
+    solution_path = "practice/p01_solution.ipynb"
     (unit_dir / "manifest.yaml").write_text(
         f"""
-unit: F1-scientific-python
-solution_policy: {policy}
+unit: {unit}
+book: 2
+layer: round-2-extension
+round: 2
+track: extension
+solution_policy: {{status: deferred, plan: {plan}, expires: '{expires}'}}
 concepts_taught: []
 concepts_used: []
+concept_prerequisites: []
 prereq_units: []
-practice: []
+bridge_diagnostic:
+  path: lessons/00-book1-bridge.ipynb
+  minutes: 30
+  referenced_concepts: []
+coverage_claims: []
+practice:
+  - id: B2-020-p01
+    concepts: []
+    path: practice/p01.ipynb
+    solution_path: {solution_path!r}
+    minutes: 20
+    after_session: 1
+    compute: {{policy: cpu, seed: 20260812}}
 """,
         encoding="utf-8",
     )
+    if with_solution:
+        solution = unit_dir / solution_path
+        solution.parent.mkdir(parents=True)
+        solution.write_text("{}", encoding="utf-8")
 
-    with pytest.raises(ValueError, match="deferred solution_policy requires"):
-        load_unit_manifests(tmp_path)
 
+def test_named_b2_020_deferred_policy_is_valid_through_expiry(tmp_path):
+    _write_deferred_manifest(tmp_path)
 
-def test_deferred_solution_policy_parses_plan_linked_expiring_debt(tmp_path):
-    unit_dir = tmp_path / "units" / "F1-scientific-python"
-    unit_dir.mkdir(parents=True)
-    (unit_dir / "manifest.yaml").write_text(
-        """
-unit: F1-scientific-python
-solution_policy: {status: deferred, plan: plan-020, expires: '2099-12-31'}
-concepts_taught: []
-concepts_used: []
-prereq_units: []
-practice: []
-""",
-        encoding="utf-8",
-    )
-
-    manifest = load_unit_manifests(tmp_path)[0]
+    manifest = load_unit_manifests(tmp_path, as_of_date=date(2026, 9, 30))[0]
 
     assert manifest.solution_policy == "deferred"
     assert manifest.solution_policy_plan == "plan-020"
-    assert manifest.solution_policy_expires == "2099-12-31"
+    assert manifest.solution_policy_expires == "2026-09-30"
+
+
+def test_named_b2_020_deferred_policy_expires_after_pinned_date(tmp_path):
+    _write_deferred_manifest(tmp_path)
+
+    with pytest.raises(ValueError, match="expired after 2026-09-30"):
+        load_unit_manifests(tmp_path, as_of_date=date(2026, 10, 1))
+
+
+@pytest.mark.parametrize(
+    ("unit", "plan", "expires"),
+    [
+        ("F1-scientific-python", "plan-020", "2026-09-30"),
+        ("B2-019-attention-transformers", "plan-020", "2026-09-30"),
+        ("B2-020-language-transformers", "plan-019", "2026-09-30"),
+        ("B2-020-language-transformers", "plan-020", "2026-10-01"),
+    ],
+)
+def test_deferred_policy_is_narrowly_pinned_to_b2_020_lifecycle(
+    tmp_path: Path, unit: str, plan: str, expires: str
+) -> None:
+    _write_deferred_manifest(tmp_path, unit=unit, plan=plan, expires=expires)
+
+    with pytest.raises(ValueError, match="only B2-020-language-transformers"):
+        load_unit_manifests(tmp_path, as_of_date=date(2026, 9, 1))
+
+
+def test_b2_020_deferred_policy_rejects_even_one_declared_solution(tmp_path: Path) -> None:
+    _write_deferred_manifest(tmp_path, with_solution=True)
+
+    with pytest.raises(ValueError, match="must not have a solution file present"):
+        load_unit_manifests(tmp_path, as_of_date=date(2026, 9, 1))
+
+
+def test_environment_cannot_override_deferred_policy_date(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _write_deferred_manifest(tmp_path)
+    monkeypatch.setenv("USAAIO_HISTORICAL_VERIFY", "1")
+    monkeypatch.setenv("USAAIO_AS_OF_DATE", "2026-09-01")
+
+    with pytest.raises(ValueError, match="expired after 2026-09-30"):
+        load_unit_manifests(tmp_path, as_of_date=date(2026, 10, 1))
 
 
 def test_unit_manifest_roundtrip(tmp_path):

@@ -1,0 +1,629 @@
+unit: B2-020-language-transformers
+book: 2
+layer: round-2-extension
+round: 2
+track: extension
+length: double
+solution_policy: required
+concepts_taught:
+- embedding-model-training
+- learned-token-embedding
+- language-transformer
+- causal-language-modeling
+- masked-language-modeling
+- nlp-pretraining-objectives
+- nlp-fine-tuning-protocol
+- transformer-nlp-task-design
+concepts_used: &id001
+- attention-mask
+- causal-self-attention
+- sinusoidal-positional-encoding
+- transformer-block
+- book1:random-seeding
+- book1:matrix-multiplication
+- book1:torch-tensors
+- book1:nn-module
+- book1:requires-grad
+- book1:tensor-shape-tracing
+- book1:softmax
+- book1:cross-entropy-loss
+- book1:torch-optimizers
+- book1:autograd-training
+concept_prerequisites: *id001
+prereq_units:
+- book1:F1-scientific-python
+- book1:F3-matrices
+- book1:C6-pytorch
+- book1:C7-cnn-transfer
+- book1:C11-neural-training
+- B2-019-attention-transformers
+bridge_diagnostic:
+  path: lessons/00-book1-bridge.ipynb
+  minutes: 30
+  referenced_concepts: *id001
+overview_path: lesson.ipynb
+lesson_paths:
+- lessons/01-train-token-embeddings.ipynb
+- lessons/02-causal-transformer-language-model.ipynb
+- lessons/03-pretraining-objectives.ipynb
+- lessons/04-fine-tune-a-language-transformer.ipynb
+- lessons/05-language-task-design-and-audit.ipynb
+review_path: review.ipynb
+generator_path: scripts/generate_language_data.py
+data_paths:
+- data/language_fixture.py
+- data/tiny_encoder_checkpoint.py
+- data/tiny_encoder_state.py
+estimated_minutes:
+  lesson: 450
+  lesson_sessions:
+  - 90
+  - 90
+  - 90
+  - 90
+  - 90
+  practice: 1120
+  review: 60
+concept_sessions:
+  embedding-model-training: 1
+  learned-token-embedding: 1
+  language-transformer: 2
+  causal-language-modeling: 2
+  masked-language-modeling: 3
+  nlp-pretraining-objectives: 3
+  nlp-fine-tuning-protocol: 4
+  transformer-nlp-task-design: 5
+coverage_claims:
+- knowledge_point: nlp-word-embeddings
+  first_session: 1
+  modalities:
+  - theory
+  - implementation
+  - model-training
+  evidence_concepts:
+  - embedding-model-training
+  - learned-token-embedding
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
+        heading: "B2-020 \u2014 Session 1: Train Token Embeddings > 1. One-hot lookup and shapes"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p02
+        role: primary
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
+        heading: "B2-020 \u2014 Session 1: Train Token Embeddings > 1. One-hot lookup and shapes"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p06
+        role: primary
+      assessments: []
+    model-training:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
+        heading: "B2-020 \u2014 Session 1: Train Token Embeddings > 1. One-hot lookup and shapes"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p17
+        role: primary
+      assessments: []
+- knowledge_point: nlp-transformers
+  first_session: 2
+  modalities:
+  - theory
+  - implementation
+  - model-training
+  evidence_concepts:
+  - language-transformer
+  - causal-language-modeling
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
+        heading: "B2-020 \u2014 Session 2: Causal Transformer Language Model > 1. Language Transformer input contract"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p04
+        role: primary
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
+        heading: "B2-020 \u2014 Session 2: Causal Transformer Language Model > 3. Shift-right labels"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p08
+        role: primary
+      assessments: []
+    model-training:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
+        heading: "B2-020 \u2014 Session 2: Causal Transformer Language Model > 6. Training and held-out evaluation"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p18
+        role: primary
+      assessments: []
+- knowledge_point: nlp-pretraining
+  first_session: 3
+  modalities:
+  - theory
+  - implementation
+  - model-training
+  evidence_concepts:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
+        heading: "B2-020 \u2014 Session 3: Pretraining Objectives > 1. Two pretraining objectives"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p05
+        role: primary
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
+        heading: "B2-020 \u2014 Session 3: Pretraining Objectives > 2. Masked-token corruption"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p11
+        role: primary
+      assessments: []
+    model-training:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
+        heading: "B2-020 \u2014 Session 3: Pretraining Objectives > 6. AdamW and the sequential protocol"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p19
+        role: primary
+      assessments: []
+- knowledge_point: nlp-fine-tuning
+  first_session: 4
+  modalities:
+  - theory
+  - implementation
+  - model-training
+  evidence_concepts:
+  - nlp-fine-tuning-protocol
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
+        heading: "B2-020 \u2014 Session 4: Fine-Tune a Language Transformer > 1. Checkpoint and state boundary"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p12
+        role: primary
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
+        heading: "B2-020 \u2014 Session 4: Fine-Tune a Language Transformer > 1. Checkpoint and state boundary"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p20
+        role: primary
+      - id: B2-020-p21
+        role: primary
+      assessments: []
+    model-training:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
+        heading: "B2-020 \u2014 Session 4: Fine-Tune a Language Transformer > 1. Checkpoint and state boundary"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p20
+        role: primary
+      assessments: []
+- knowledge_point: transformer-nlp-applications
+  first_session: 5
+  modalities:
+  - theory
+  - implementation
+  - model-training
+  evidence_concepts:
+  - transformer-nlp-task-design
+  evidence_by_modality:
+    theory:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
+        heading: "B2-020 \u2014 Session 5: Language Task Design and Audit > 5. Architecture, loss, and metric matrix"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p22
+        role: primary
+      - id: B2-020-p19
+        role: primary
+      assessments: []
+    implementation:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
+        heading: "B2-020 \u2014 Session 5: Language Task Design and Audit > 7. End-to-end application trace"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p20
+        role: primary
+      - id: B2-020-p22
+        role: primary
+      assessments: []
+    model-training:
+      lesson_anchors:
+      - path: units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
+        heading: "B2-020 \u2014 Session 5: Language Task Design and Audit > 6. Data-split and leakage audit"
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-020-p20
+        role: primary
+      assessments: []
+practice:
+- id: B2-020-p01
+  set: A
+  type: mc
+  difficulty: intro
+  provenance: original
+  concepts:
+  - embedding-model-training
+  path: practice/p01.ipynb
+  solution_path: practice/p01_solution.ipynb
+  minutes: 20
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p02
+  set: A
+  type: mc-normal-form
+  difficulty: intro
+  provenance: original
+  concepts:
+  - learned-token-embedding
+  path: practice/p02.ipynb
+  solution_path: practice/p02_solution.ipynb
+  minutes: 20
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p03
+  set: A
+  type: mc
+  difficulty: core
+  provenance: original
+  concepts:
+  - learned-token-embedding
+  path: practice/p03.ipynb
+  solution_path: practice/p03_solution.ipynb
+  minutes: 20
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p04
+  set: A
+  type: mc
+  difficulty: intro
+  provenance: original
+  concepts:
+  - language-transformer
+  - causal-language-modeling
+  path: practice/p04.ipynb
+  solution_path: practice/p04_solution.ipynb
+  minutes: 20
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p05
+  set: A
+  type: mc
+  difficulty: core
+  provenance: original
+  concepts:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  path: practice/p05.ipynb
+  solution_path: practice/p05_solution.ipynb
+  minutes: 20
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p06
+  set: B
+  type: constrained-coding
+  difficulty: intro
+  provenance: original
+  concepts:
+  - learned-token-embedding
+  path: practice/p06.ipynb
+  solution_path: practice/p06_solution.ipynb
+  minutes: 50
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p07
+  set: B
+  type: constrained-coding
+  difficulty: core
+  provenance: original
+  concepts:
+  - embedding-model-training
+  path: practice/p07.ipynb
+  solution_path: practice/p07_solution.ipynb
+  minutes: 50
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p08
+  set: B
+  type: constrained-coding
+  difficulty: core
+  provenance: original
+  concepts:
+  - language-transformer
+  - causal-language-modeling
+  path: practice/p08.ipynb
+  solution_path: practice/p08_solution.ipynb
+  minutes: 50
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p09
+  set: B
+  type: constrained-coding
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - language-transformer
+  path: practice/p09.ipynb
+  solution_path: practice/p09_solution.ipynb
+  minutes: 50
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p10
+  set: B
+  type: constrained-coding
+  difficulty: core
+  provenance: original
+  concepts:
+  - causal-language-modeling
+  path: practice/p10.ipynb
+  solution_path: practice/p10_solution.ipynb
+  minutes: 50
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p11
+  set: B
+  type: constrained-coding
+  difficulty: intro
+  provenance: original
+  concepts:
+  - masked-language-modeling
+  path: practice/p11.ipynb
+  solution_path: practice/p11_solution.ipynb
+  minutes: 50
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p12
+  set: B
+  type: constrained-coding
+  difficulty: intro
+  provenance: original
+  concepts:
+  - nlp-fine-tuning-protocol
+  path: practice/p12.ipynb
+  solution_path: practice/p12_solution.ipynb
+  minutes: 50
+  after_session: 4
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p13
+  set: B
+  type: proof
+  difficulty: core
+  provenance: original
+  concepts:
+  - embedding-model-training
+  path: practice/p13.ipynb
+  solution_path: practice/p13_solution.ipynb
+  minutes: 45
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p14
+  set: B
+  type: proof
+  difficulty: core
+  provenance: original
+  concepts:
+  - causal-language-modeling
+  path: practice/p14.ipynb
+  solution_path: practice/p14_solution.ipynb
+  minutes: 45
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p15
+  set: B
+  type: proof
+  difficulty: core
+  provenance: original
+  concepts:
+  - nlp-pretraining-objectives
+  path: practice/p15.ipynb
+  solution_path: practice/p15_solution.ipynb
+  minutes: 45
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p16
+  set: B
+  type: proof
+  difficulty: core
+  provenance: original
+  concepts:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  path: practice/p16.ipynb
+  solution_path: practice/p16_solution.ipynb
+  minutes: 45
+  after_session: 3
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p17
+  set: C
+  type: integrative
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - embedding-model-training
+  - learned-token-embedding
+  path: practice/p17.ipynb
+  solution_path: practice/p17_solution.ipynb
+  minutes: 65
+  after_session: 1
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p18
+  set: C
+  type: integrative
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - language-transformer
+  - causal-language-modeling
+  path: practice/p18.ipynb
+  solution_path: practice/p18_solution.ipynb
+  minutes: 65
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p19
+  set: C
+  type: scenario
+  difficulty: core
+  provenance: original
+  concepts:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  path: practice/p19.ipynb
+  solution_path: practice/p19_solution.ipynb
+  minutes: 65
+  after_session: 5
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p20
+  set: C
+  type: integrative
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - nlp-fine-tuning-protocol
+  - transformer-nlp-task-design
+  path: practice/p20.ipynb
+  solution_path: practice/p20_solution.ipynb
+  minutes: 65
+  after_session: 5
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p21
+  set: C
+  type: integrative
+  difficulty: core
+  provenance: original
+  concepts:
+  - nlp-fine-tuning-protocol
+  path: practice/p21.ipynb
+  solution_path: practice/p21_solution.ipynb
+  minutes: 65
+  after_session: 4
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p22
+  set: C
+  type: scenario
+  difficulty: intro
+  provenance: original
+  concepts:
+  - transformer-nlp-task-design
+  path: practice/p22.ipynb
+  solution_path: practice/p22_solution.ipynb
+  minutes: 55
+  after_session: 5
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p23
+  set: C
+  type: challenge
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - language-transformer
+  - causal-language-modeling
+  path: practice/p23.ipynb
+  solution_path: practice/p23_solution.ipynb
+  minutes: 55
+  after_session: 2
+  compute:
+    policy: cpu
+    seed: 20260812
+- id: B2-020-p24
+  set: C
+  type: challenge
+  difficulty: advanced
+  provenance: original
+  concepts:
+  - nlp-pretraining-objectives
+  - nlp-fine-tuning-protocol
+  - transformer-nlp-task-design
+  path: practice/p24.ipynb
+  solution_path: practice/p24_solution.ipynb
+  minutes: 55
+  after_session: 5
+  compute:
+    policy: cpu
+    seed: 20260812

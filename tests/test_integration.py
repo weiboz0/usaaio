@@ -121,6 +121,17 @@ PLAN019_B2_019_CONCEPTS = (
     "transformer-block",
 )
 
+PLAN020_B2_020_CONCEPTS = (
+    "embedding-model-training",
+    "learned-token-embedding",
+    "language-transformer",
+    "causal-language-modeling",
+    "masked-language-modeling",
+    "nlp-pretraining-objectives",
+    "nlp-fine-tuning-protocol",
+    "transformer-nlp-task-design",
+)
+
 PLAN017_C11_CONCEPTS_USED = [
     "numpy-arrays",
     "array-indexing-slicing",
@@ -500,14 +511,18 @@ def test_concepts_have_manifest_owners_for_live_b2_019():
     assert set(manifest_owner_counts.values()) == {1}
     assert nonlive_book2_units == set()
     assert [manifest.unit_id for manifest in book2_manifests] == [
-        "B2-019-attention-transformers"
+        "B2-019-attention-transformers",
+        "B2-020-language-transformers",
     ]
     assert book2_syllabus.units["B2-019-attention-transformers"].teaches == list(
         PLAN019_B2_019_CONCEPTS
     )
-    assert set(book2_syllabus.concepts) == set(PLAN019_B2_019_CONCEPTS)
+    assert set(book2_syllabus.concepts) == set(PLAN019_B2_019_CONCEPTS) | set(
+        PLAN020_B2_020_CONCEPTS
+    )
     assert (
-        set(planned_units) - {"B2-019-attention-transformers"}
+        set(planned_units)
+        - {"B2-019-attention-transformers", "B2-020-language-transformers"}
     ).isdisjoint(book2_syllabus.units)
 
     for unit in syllabus.units.values():
@@ -691,7 +706,7 @@ def test_plan019_phase1_exact_live_corpus_counts_and_double_length_roster():
 
     assert len(manifests) == 19
     assert len(syllabus.concepts) == 149
-    assert len(book2_syllabus.concepts) == 11
+    assert len(book2_syllabus.concepts) == 19
     assert set(syllabus.concepts).isdisjoint(book2_syllabus.concepts)
     assert sum(len(manifest.practice) for manifest in manifests) == 437
     assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 69
@@ -717,7 +732,7 @@ def test_plan019_phase1_exact_live_corpus_counts_and_double_length_roster():
     }
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
     assert (
-        "Double-length units (F5, F6, C7, C11, C12, and B2-019) use 4–6 sessions."
+        "Double-length units (F5, F6, C7, C11, C12, B2-019, and B2-020) use 4–6 sessions."
         in standards
     )
 
@@ -1463,7 +1478,7 @@ def test_plan019_phase1_book1_narrative_order_and_book2_dependency_contract():
     assert re.search(r'^name = "seaborn"$', (ROOT / "uv.lock").read_text(), re.MULTILINE)
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
     assert (
-        "Double-length units (F5, F6, C7, C11, C12, and B2-019) use 4–6 sessions."
+        "Double-length units (F5, F6, C7, C11, C12, B2-019, and B2-020) use 4–6 sessions."
         in standards
     )
 
@@ -1694,6 +1709,36 @@ def test_pre_merge_guard_rejects_staged_protected_path(tmp_path: Path) -> None:
 
     assert proc.returncode != 0
     assert "protected env path" in proc.stdout + proc.stderr
+
+
+def test_pre_merge_guard_allows_the_declared_language_token_lesson(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    _install_pre_merge_enforcement(repo)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+    lesson = (
+        repo
+        / "book2/units/B2-020-language-transformers/lessons"
+        / "01-train-token-embeddings.ipynb"
+    )
+    lesson.parent.mkdir(parents=True)
+    lesson.write_text("{}\n", encoding="utf-8")
+    _git(repo, "add", lesson.relative_to(repo).as_posix())
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
 
 
 @pytest.mark.parametrize(

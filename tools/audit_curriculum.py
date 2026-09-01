@@ -25,7 +25,7 @@ import yaml
 
 from tools.books import BookSpec
 from tools.checks.schedule import load_validated_schedule, scheduled_baseline_minutes
-from tools.model import CourseSchedule
+from tools.model import CourseSchedule, load_unit_manifests
 
 INVENTORY_PATH = Path("curriculum/material-inventory.yaml")
 ScheduleLoader = Callable[[str | Path], CourseSchedule]
@@ -538,6 +538,10 @@ def build_inventory(
         _validate_input_file(path, root / "mocktests", _posix(path, root), "manifest")
     for path in synthesis_manifests:
         _validate_input_file(path, root / "synthesis", _posix(path, root), "manifest")
+    # Preserve audit's file-validation precedence, then use the shared typed
+    # parser so inventory cannot accept lifecycle debt rejected by coverage or
+    # boundaries.
+    load_unit_manifests(root)
     manifest_paths = unit_manifests + mock_manifests + synthesis_manifests
     manifests = [syllabus_record] + [manifest_record(path, _posix(path, root)) for path in manifest_paths]
 

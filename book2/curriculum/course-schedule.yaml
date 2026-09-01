@@ -2,12 +2,12 @@ schedule_version: 1
 book: 2
 status: live
 starts_after_global_week: 40
-total_book_weeks: 6
-total_minutes: 1660
+total_book_weeks: 12
+total_minutes: 3320
 final_assessment:
   kind: future-r2-mock
   status: planned
-  after_book_week: 6
+  after_book_week: 12
 weeks:
   - book_week: 1
     global_week: 41
@@ -77,5 +77,75 @@ weeks:
     allocations:
       - kind: review
         unit: B2-019-attention-transformers
+        chunk: 1
+        minutes: 60
+  - book_week: 7
+    global_week: 47
+    allocations:
+      - kind: bridge-diagnostic
+        unit: B2-020-language-transformers
+        minutes: 30
+      - kind: lesson-session
+        unit: B2-020-language-transformers
+        session: 1
+        minutes: 90
+      - kind: practice
+        unit: B2-020-language-transformers
+        chunk: 1
+        minutes: 135
+        problem_ids: [B2-020-p01, B2-020-p02, B2-020-p06, B2-020-p13]
+  - book_week: 8
+    global_week: 48
+    allocations:
+      - kind: lesson-session
+        unit: B2-020-language-transformers
+        session: 2
+        minutes: 90
+      - kind: practice
+        unit: B2-020-language-transformers
+        chunk: 2
+        minutes: 185
+        problem_ids: [B2-020-p03, B2-020-p04, B2-020-p07, B2-020-p08, B2-020-p14]
+  - book_week: 9
+    global_week: 49
+    allocations:
+      - kind: lesson-session
+        unit: B2-020-language-transformers
+        session: 3
+        minutes: 90
+      - kind: practice
+        unit: B2-020-language-transformers
+        chunk: 3
+        minutes: 330
+        problem_ids: [B2-020-p05, B2-020-p09, B2-020-p10, B2-020-p15, B2-020-p16, B2-020-p17, B2-020-p23]
+  - book_week: 10
+    global_week: 50
+    allocations:
+      - kind: lesson-session
+        unit: B2-020-language-transformers
+        session: 4
+        minutes: 90
+      - kind: practice
+        unit: B2-020-language-transformers
+        chunk: 4
+        minutes: 180
+        problem_ids: [B2-020-p12, B2-020-p18, B2-020-p21]
+  - book_week: 11
+    global_week: 51
+    allocations:
+      - kind: lesson-session
+        unit: B2-020-language-transformers
+        session: 5
+        minutes: 90
+      - kind: practice
+        unit: B2-020-language-transformers
+        chunk: 5
+        minutes: 290
+        problem_ids: [B2-020-p11, B2-020-p19, B2-020-p20, B2-020-p22, B2-020-p24]
+  - book_week: 12
+    global_week: 52
+    allocations:
+      - kind: review
+        unit: B2-020-language-transformers
         chunk: 1
         minutes: 60

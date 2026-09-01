@@ -1794,8 +1794,8 @@ def test_renderer_recomputes_the_design019_book2_planned_delta() -> None:
         assert "C6 and C8 are not yet estimated" not in document
         assert "C8" in document
         assert "so this is not a complete roadmap total" not in document
-        assert "**169.17–209.17 manifested-baseline hours**" in document
-        assert "**169.67–209.67 scheduled-baseline hours**" in document
+        assert "**196.33–236.33 manifested-baseline hours**" in document
+        assert "**197.33–237.33 scheduled-baseline hours**" in document
         assert "Total roadmap delta" not in document
 
 
@@ -2178,8 +2178,8 @@ def _write_book2_roadmap_fixture(root: Path) -> dict[str, Any]:
                             "assessments": [],
                         }
                     },
-                    disposition="extend-existing-unit",
-                    destination="C8-embeddings",
+                    disposition="new-unit",
+                    destination="B2-020-language-transformers",
                     deficits={"modalities_missing": ["model-training"]},
                 )
             roadmap["knowledge_points"].append(row)
@@ -2206,7 +2206,7 @@ def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets(
     assert len({point for points in planned.values() for point in points}) == 30
     assert all(not unit_id.startswith("P015-R2-") for unit_id in planned)
     embedding = next(point for point in loaded.knowledge_points if point.id == "nlp-word-embeddings")
-    assert (embedding.coverage, embedding.destination) == ("partial", "C8-embeddings")
+    assert (embedding.coverage, embedding.destination) == ("partial", "B2-020-language-transformers")
     assert report.ok, report.errors
 
 
@@ -2230,8 +2230,8 @@ def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets(
                 row
                 for row in contract["roadmap"]["knowledge_points"]
                 if row["id"] == "nlp-word-embeddings"
-            ).update(destination="B2-020-language-transformers", disposition="new-unit"),
-            "nlp-word-embeddings must retain destination C8-embeddings",
+            ).update(destination="C8-embeddings", disposition="extend-existing-unit"),
+            "nlp-word-embeddings must have destination B2-020-language-transformers",
         ),
     ],
 )
@@ -2287,6 +2287,19 @@ def _bridge_rows(roadmap: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 _C8_LESSON = "book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb"
+_B2_020_EMBEDDINGS_LESSON = (
+    "units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb"
+)
+_C8_IMPORTED_CONCEPTS = {
+    "tokenization",
+    "word-embeddings",
+    "gensim-usage",
+    "embedding-matrices",
+}
+_C8_IMPORTED_PRACTICES = {
+    f"C8-p{number:02d}" for number in (1, 2, 5, 6, 12, 13, 15, 17)
+}
+_C8_IMPORTED_ASSESSMENTS = {f"r1-001-p05-{number}" for number in (1, 2, 3, 4)}
 _C8_BRIDGE_CANONICAL: dict[str, dict[str, Any]] = {
     "nlp-tokenization": {
         "shipped_concepts": ["book1:tokenization"],
@@ -2313,46 +2326,44 @@ _C8_BRIDGE_CANONICAL: dict[str, dict[str, Any]] = {
         },
     },
     "nlp-word-embeddings": {
-        "shipped_concepts": [
-            "book1:word-embeddings",
-            "book1:gensim-usage",
-            "book1:embedding-matrices",
-        ],
+        "shipped_concepts": ["learned-token-embedding"],
         "evidence_by_modality": {
             "theory": {
                 "lesson_anchors": [
                     {
-                        "path": _C8_LESSON,
-                        "heading": "C8-embeddings — Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors",
+                        "path": _B2_020_EMBEDDINGS_LESSON,
+                        "heading": "B2-020 — Session 1: Train Token Embeddings > 1. One-hot lookup and shapes",
                         "cell_ordinal": 1,
                         "role": "primary",
                     }
                 ],
-                "practices": [
-                    {"id": f"book1:C8-p{number:02d}", "role": "primary"}
-                    for number in (2, 12, 17)
-                ],
-                "assessments": [{"id": "book1:r1-001-p05-3", "role": "primary"}],
+                "practices": [{"id": "B2-020-p02", "role": "primary"}],
+                "assessments": [],
             },
             "implementation": {
                 "lesson_anchors": [
                     {
-                        "path": _C8_LESSON,
-                        "heading": "C8-embeddings — Session 1: Tokens and Embeddings > 4. Loading GloVe: `gensim` KeyedVectors",
+                        "path": _B2_020_EMBEDDINGS_LESSON,
+                        "heading": "B2-020 — Session 1: Train Token Embeddings > 1. One-hot lookup and shapes",
                         "cell_ordinal": 1,
                         "role": "primary",
                     }
                 ],
-                "practices": [
-                    {"id": f"book1:C8-p{number:02d}", "role": "primary"}
-                    for number in (5, 13, 17)
-                ],
-                "assessments": [
-                    {"id": f"book1:r1-001-p05-{number}", "role": "primary"}
-                    for number in (3, 4)
-                ],
+                "practices": [{"id": "B2-020-p06", "role": "primary"}],
+                "assessments": [],
             },
-            "model-training": {"lesson_anchors": [], "practices": [], "assessments": []},
+            "model-training": {
+                "lesson_anchors": [
+                    {
+                        "path": _B2_020_EMBEDDINGS_LESSON,
+                        "heading": "B2-020 — Session 1: Train Token Embeddings > 1. One-hot lookup and shapes",
+                        "cell_ordinal": 1,
+                        "role": "primary",
+                    }
+                ],
+                "practices": [{"id": "B2-020-p17", "role": "primary"}],
+                "assessments": [],
+            },
         },
     },
 }
@@ -2387,29 +2398,10 @@ def test_two_c8_bridge_rows_resolve_exact_qualified_evidence_allowlist() -> None
 
     _assert_canonical_c8_bridge(rows)
     evidence = books.load_book_evidence_imports(book2)
-    assert set(evidence.concepts) == {
-        value.removeprefix("book1:")
-        for row in rows
-        for value in row["shipped_concepts"]
-    }
-    assert set(evidence.lesson_paths) == {
-        anchor["path"].removeprefix("book1:")
-        for row in rows
-        for modality in row["evidence_by_modality"].values()
-        for anchor in modality["lesson_anchors"]
-    }
-    assert set(evidence.practices) == {
-        practice["id"].removeprefix("book1:")
-        for row in rows
-        for modality in row["evidence_by_modality"].values()
-        for practice in modality["practices"]
-    }
-    assert set(evidence.assessments) == {
-        assessment["id"].removeprefix("book1:")
-        for row in rows
-        for modality in row["evidence_by_modality"].values()
-        for assessment in modality["assessments"]
-    }
+    assert set(evidence.concepts) == _C8_IMPORTED_CONCEPTS
+    assert set(evidence.lesson_paths) == {_C8_LESSON.removeprefix("book1:")}
+    assert set(evidence.practices) == _C8_IMPORTED_PRACTICES
+    assert set(evidence.assessments) == _C8_IMPORTED_ASSESSMENTS
     report = check_scope(book2.root)
     assert report.ok, report.errors
 

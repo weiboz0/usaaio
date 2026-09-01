@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Authoritative local gate for both independently complete books.
 set -euo pipefail
+if [[ -n ${USAAIO_HISTORICAL_VERIFY+x} || -n ${USAAIO_AS_OF_DATE+x} ]]; then
+  echo "FAIL: historical deferred-policy variables are forbidden in normal CI" >&2
+  exit 2
+fi
 script_repo_root=$(cd "$(dirname "$0")/.." && pwd)
 repo_root=$script_repo_root
 registry_probe=0
@@ -68,7 +72,11 @@ for index in "${!BOOK_IDS[@]}"; do
   for notebook in "${notebooks[@]}"; do
     relative=${notebook#"$book_root"/}
     echo "executing [$book]: $relative"
-    (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" uv run --project .. jupyter execute "$relative")
+    if [[ $relative == units/B2-020-language-transformers/practice/p??_solution.ipynb ]]; then
+      (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" timeout 20s uv run --project .. jupyter execute "$relative")
+    else
+      (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" uv run --project .. jupyter execute "$relative")
+    fi
   done
   mapfile -t lessons < <(
     find "$book_root/units" -type f -name '*.ipynb' \
@@ -117,6 +125,7 @@ done
 uv run python -m tools.verify_training_mutations --root "$book1_root"
 uv run python -m tools.verify_classical_mutations --root "$book1_root"
 uv run python -m tools.verify_attention_mutations --root "$book2_root"
+uv run pytest -q tests/test_language_transformer_checks.py
 
 step "8/9 PDF build"
 for book in "${BOOK_IDS[@]}"; do
