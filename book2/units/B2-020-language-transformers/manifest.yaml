@@ -4,10 +4,7 @@ layer: round-2-extension
 round: 2
 track: extension
 length: double
-solution_policy:
-  status: deferred
-  plan: plan-020
-  expires: '2026-09-30'
+solution_policy: required
 concepts_taught:
 - embedding-model-training
 - learned-token-embedding

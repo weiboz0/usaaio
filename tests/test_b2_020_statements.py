@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import shutil
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -10,7 +11,10 @@ import nbformat
 import pytest
 import yaml
 
+from tools import audit_curriculum
+from tools.checks.coverage import check_coverage
 from tools.checks.hygiene import check_hygiene
+from tools.checks.layer_boundary import check_layer_boundary
 from tools.model import load_syllabus, load_unit_manifests
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -75,18 +79,24 @@ def _fixture_module():
     return module
 
 
-def test_manifest_publishes_exact_statement_ledger_and_deferred_debt() -> None:
+def _register_module():
+    path = ROOT / "scripts/verify-register.py"
+    spec = importlib.util.spec_from_file_location("b2_020_verify_register", path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.BOOK_ROOT = BOOK2_ROOT
+    return module
+
+
+def test_manifest_publishes_exact_statement_ledger_and_required_solutions() -> None:
     raw = _manifest()
     parsed = {
         item.unit_id: item
         for item in load_unit_manifests(BOOK2_ROOT, as_of_date=date(2026, 9, 30))
     }[UNIT_ID]
 
-    assert raw["solution_policy"] == {
-        "status": "deferred",
-        "plan": "plan-020",
-        "expires": "2026-09-30",
-    }
+    assert raw["solution_policy"] == "required"
     assert raw["length"] == "double"
     assert raw["prereq_units"] == PREREQ_UNITS
     assert set(raw["concepts_taught"]) == OWNED
@@ -119,7 +129,119 @@ def test_manifest_publishes_exact_statement_ledger_and_deferred_debt() -> None:
     }
     assert all(row["compute"] == {"policy": "cpu", "seed": SEED} for row in raw["practice"])
     assert all(row["solution_path"].endswith("_solution.ipynb") for row in raw["practice"])
-    assert not list(UNIT.glob("practice/*_solution.ipynb"))
+    assert sorted(path.name for path in UNIT.glob("practice/*_solution.ipynb")) == [
+        f"p{number:02}_solution.ipynb" for number in range(1, 25)
+    ]
+
+
+def test_task4_solutions_preserve_headers_answer_register_and_executable_checks() -> None:
+    raw = _manifest()
+    register = _register_module()
+    answer_register = {
+        1: 'ANSWER = "B"',
+        2: "assert ANSWER == 5",
+        3: 'ANSWER = "C"',
+        4: 'ANSWER = "B"',
+        5: 'ANSWER = "B"',
+    }
+    implementation_register = {
+        6: "def one_hot_embedding_lookup",
+        7: "def update_embedding_table",
+        8: "def build_causal_batch",
+        9: "def tiny_causal_lm_forward",
+        10: "def masked_token_cross_entropy",
+        11: "def apply_mlm_mask",
+        12: "def attach_classification_head",
+        17: "def bridge_loss",
+        18: "def shift_targets",
+        19: "def run_pretraining_protocol",
+        20: "RESULT = (encoder, head, metrics)",
+        21: "def configure_frozen_stage_optimizer",
+        22: "DESIGNS =",
+        23: "mutated_logits =",
+        24: "def evaluation_indices",
+    }
+    for number, row in enumerate(raw["practice"], start=1):
+        statement_path = UNIT / row["path"]
+        solution_path = UNIT / row["solution_path"]
+        statement = _notebook(statement_path)
+        solution = _notebook(solution_path)
+        solution_source = _source(solution_path)
+
+        assert solution.cells[0].source.startswith(
+            f"# {UNIT_ID} — Practice p{number:02} — Solution\n"
+        )
+        assert f"**Type:** {row['type']} · **Difficulty:** {row['difficulty']}" in solution.cells[0].source
+        assert f"**Concepts:** {', '.join(row['concepts'])}" in solution.cells[0].source
+        assert "Round 2 extension" in solution.cells[0].source
+        assert "compute.policy: cpu" in solution.cells[0].source
+        assert not register._check_solution_header(UNIT_ID, row)
+        assert solution.metadata["usaaio"] == {
+            **statement.metadata["usaaio"],
+            "surface": f"practice/p{number:02}_solution.ipynb",
+        }
+        assert solution.cells[-2].cell_type == "markdown"
+        assert solution.cells[-2].source.strip() == "### Answer check"
+        assert solution.cells[-1].cell_type == "code"
+        assert "assert " in solution.cells[-1].source
+        assert all(
+            cell.execution_count is None and not cell.outputs
+            for cell in solution.cells
+            if cell.cell_type == "code"
+        )
+        if number in answer_register:
+            assert answer_register[number] in solution_source
+        if number in implementation_register:
+            assert implementation_register[number] in solution_source
+
+
+def _copy_book2(tmp_path: Path) -> Path:
+    repo = tmp_path / "repo"
+    repo.mkdir(parents=True)
+    shutil.copy2(ROOT / "books.yaml", repo / "books.yaml")
+    (repo / "book1").mkdir()
+    shutil.copy2(ROOT / "book1/syllabus.md", repo / "book1/syllabus.md")
+    shutil.copytree(BOOK2_ROOT, repo / "book2")
+    return repo / "book2"
+
+
+def test_task4_policy_and_solution_set_fail_closed(tmp_path: Path) -> None:
+    deferred = _copy_book2(tmp_path / "deferred")
+    deferred_manifest = deferred / "units" / UNIT_ID / "manifest.yaml"
+    raw = yaml.safe_load(deferred_manifest.read_text(encoding="utf-8"))
+    raw["solution_policy"] = {
+        "status": "deferred",
+        "plan": "plan-020",
+        "expires": "2026-09-30",
+    }
+    deferred_manifest.write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="must not have a solution file present"):
+        audit_curriculum.build_inventory(deferred)
+    with pytest.raises(ValueError, match="must not have a solution file present"):
+        check_coverage(deferred)
+    assert not check_layer_boundary(deferred).ok
+
+    missing = _copy_book2(tmp_path / "missing")
+    (missing / "units" / UNIT_ID / "practice/p24_solution.ipynb").unlink()
+    with pytest.raises(audit_curriculum.InventoryError, match="declared notebook is missing"):
+        audit_curriculum.build_inventory(missing)
+    assert any("missing solution path" in error for error in check_coverage(missing).errors)
+    assert any(
+        "cpu task requires a local solution path" in error
+        for error in check_layer_boundary(missing).errors
+    )
+
+
+def test_task4_ci_executes_b2_020_solutions_with_twenty_second_timeout() -> None:
+    script = (ROOT / "scripts/ci-local.sh").read_text(encoding="utf-8")
+    assert (
+        "if [[ $relative == units/B2-020-language-transformers/practice/"
+        "p??_solution.ipynb ]]; then"
+    ) in script
+    assert (
+        'timeout 20s uv run --project .. jupyter execute "$relative"'
+    ) in script
 
 
 def test_statement_notebooks_are_complete_unexecuted_and_source_isolated() -> None:
