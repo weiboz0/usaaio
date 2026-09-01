@@ -170,6 +170,29 @@ def test_lessons_have_substantive_sections_checkpoints_and_required_spine() -> N
         assert "=" in source
 
 
+def test_collected_checkpoint_answers_match_their_numbered_questions() -> None:
+    expected = {
+        "02-causal-transformer-language-model.ipynb": (
+            "**Answer 2A.** `j <= i`.",
+            "**Answer 3A.** both inputs and targets have shape `(3,7)`.",
+            "**Answer 5A.** the `Linear(8,12)` vocabulary head.",
+        ),
+        "03-pretraining-objectives.ipynb": (
+            "**Answer 2A.** copying preserves true labels",
+            "**Answer 6B.** it is the first MLM update with optimizer step 41.",
+            "**Answer 7B.** bidirectional.",
+        ),
+        "05-language-task-design-and-audit.ipynb": (
+            "**Answer 2A.** `(B,N,L)` token logits.",
+            "**Answer 6B.** train rows only.",
+            "**Answer 8A.** p24.",
+        ),
+    }
+    for name, answers in expected.items():
+        source = _source(UNIT / "lessons" / name)
+        assert all(answer in source for answer in answers)
+
+
 def test_bridge_distinguishes_remediation_from_attention_prerequisite() -> None:
     source = _source(UNIT / "lessons/00-book1-bridge.ipynb")
     assert "book1:C8-embeddings" in source
@@ -210,7 +233,7 @@ def test_training_practices_pin_literal_reproducible_protocols() -> None:
     required = {
         "p17": ("language_fixture.py", "AdamW", "lr=0.03", "40 full-batch updates"),
         "p18": ("language_fixture.py", "AdamW", "lr=0.03", "exactly 80 full-batch updates"),
-        "p19": ("CAUSAL_HELDOUT_IDS", "MIN_ABSOLUTE_LOSS_IMPROVEMENTS", "ATOL=1e-5", "RTOL=1e-5"),
+        "p19": ("[4, 4, 4, 4, 4, 0, 0, 0]", "causal >= 0.928996", "mlm >= 1.382644", "causal_row0_after_red=4", "ATOL=1e-5", "RTOL=1e-5"),
         "p20": ("language_fixture.py", "AdamW", "lr=0.03", "exactly 40 full-batch updates"),
         "p21": ("language_fixture.py", "AdamW", "lr=0.03", "20 + 20 full-batch updates"),
     }
@@ -305,6 +328,41 @@ def test_checkpoint_verifier_recomputes_seeded_initial_baseline(monkeypatch) -> 
 
     monkeypatch.setattr(module, "load_module", inflated_baseline)
     with pytest.raises(AssertionError, match="initial loss"):
+        module.verify_committed_artifacts()
+
+
+def test_checkpoint_verifier_rejects_self_consistent_untrained_checkpoint(monkeypatch) -> None:
+    script = UNIT / "scripts/generate_language_data.py"
+    spec = importlib.util.spec_from_file_location("b2_020_generator_untrained", script)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    original_load = module.load_module
+    checkpoint = original_load(module.CHECKPOINT_PATH)
+    state = original_load(module.STATE_PATH)
+    encoder, head = module.build_models()
+    fixture = module._fixture()
+    losses, probes = module._heldout_metrics(encoder, head, fixture)
+    checkpoint.ENCODER_TENSORS = module._tensor_mapping(encoder)
+    checkpoint.HEAD_TENSORS = module._tensor_mapping(head)
+    checkpoint.ENCODER_STATE_HASH = module.encoder_state_hash(checkpoint.ENCODER_TENSORS)
+    checkpoint.SEMANTIC_HASH = module.semantic_hash(fixture, checkpoint.ENCODER_TENSORS, checkpoint.HEAD_TENSORS)
+    checkpoint.INITIAL_LOSSES = losses
+    checkpoint.FINAL_LOSSES = losses
+    checkpoint.MIN_ABSOLUTE_LOSS_IMPROVEMENTS = {"causal": 0.0, "mlm": 0.0}
+    checkpoint.PROBE_EXPECTED_TOP1_IDS = probes
+    state.ENCODER_TENSORS = checkpoint.ENCODER_TENSORS
+    state.ENCODER_STATE_HASH = checkpoint.ENCODER_STATE_HASH
+
+    def fake_load(path: Path):
+        if path == module.CHECKPOINT_PATH:
+            return checkpoint
+        if path == module.STATE_PATH:
+            return state
+        return original_load(path)
+
+    monkeypatch.setattr(module, "load_module", fake_load)
+    with pytest.raises(AssertionError, match="trusted"):
         module.verify_committed_artifacts()
 
 

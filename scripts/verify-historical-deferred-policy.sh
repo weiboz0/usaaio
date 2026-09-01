@@ -17,8 +17,6 @@ trap cleanup EXIT
 git -C "$repo_root" rev-parse --verify "${commit}^{commit}" >/dev/null
 git -C "$repo_root" archive "$commit" | tar -x -C "$archive_root"
 (
-  cd "$archive_root"
-  PYTHONPATH="$archive_root" \
-    uv run --project "$repo_root" python -m tools.verify_historical_deferred_policy \
-      --root "$archive_root/book2" --as-of-date "$as_of_date"
+  uv run --project "$repo_root" python "$repo_root/tools/verify_historical_deferred_policy.py" \
+    --root "$archive_root/book2" --as-of-date "$as_of_date"
 )

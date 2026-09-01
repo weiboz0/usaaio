@@ -2769,7 +2769,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
   kind: notebook
-  semantic_sha256: 988a1040cd2da2b125699a6725de53cdc481118f8227b286d94d3da109c668f4
+  semantic_sha256: a754470deaa6a267e2eb2bc9b3c7e25abe3b90a988adfbb6969ac89129f2f2a6
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
       Causal Transformer Language Model :: cell 1'
@@ -2853,7 +2853,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
   kind: notebook
-  semantic_sha256: 1dfe931ec34e5ebeb43094cd36aa572ce0c73dad6e56a96e9f5473d963eb5959
+  semantic_sha256: 8980da2e479404deca684ae45ba0b5fc38473d6e7eb8e0ddfc122e3165ee8f5b
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
       Objectives :: cell 1'
@@ -3021,7 +3021,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
   kind: notebook
-  semantic_sha256: 7987d7148a641116ae835002f055bb1e7e16f0630e211dcf9c600611946e7bc3
+  semantic_sha256: 5d050eb002c2803a8caab6567a21a9566827f86f59ad27ae22f8c6bb00e2d58d
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
       Task Design and Audit :: cell 1'
@@ -3546,7 +3546,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p19.ipynb
   kind: notebook
-  semantic_sha256: e7b7bfde07466018bee4335b12adbceff1a53db3c7bddeac9f4d8e459e5079bd
+  semantic_sha256: 5b3eb69d5ee232e032f5aa3f115c94364d838c59a907e3603bd377dfbb57e08d
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p19.ipynb :: B2-020 — Practice p19 > Task :: cell 1'
     heading_path:

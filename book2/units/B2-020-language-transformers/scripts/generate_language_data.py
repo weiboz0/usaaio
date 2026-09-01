@@ -53,6 +53,16 @@ OBJECTIVE = {
     "reduction": "mean_non_padding_non_ignored_tokens",
     "order": "stored_ascending_full_batch",
 }
+TRUSTED_INITIAL_LOSSES = {"causal": 2.32248974, "mlm": 3.45660973}
+TRUSTED_FINAL_LOSSES = {"causal": 0.00000063, "mlm": 0.00000036}
+TRUSTED_MINIMUM_IMPROVEMENTS = {"causal": 0.928996, "mlm": 1.382644}
+TRUSTED_PROBE_TOP1_IDS = {
+    "causal_row0_after_red": 4,
+    "causal_row1_after_blue": 5,
+    "mlm_row0_position1": 4,
+    "mlm_row1_position4": 5,
+}
+TRUSTED_TRACE_LOSS_SHA256 = "750f4bb861f1d65b7d9f814095345f0fc69f01e23ee9cbf9a524f80c7565dbc4"
 
 
 def load_module(path: Path) -> ModuleType:
@@ -203,6 +213,11 @@ def _tensor_rows(mapping: dict[str, list[Any]]) -> list[list[Any]]:
 
 def _canonical_json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+
+
+def _trace_loss_digest(trace: list[dict[str, Any]]) -> str:
+    losses = [row["loss"] for row in trace]
+    return hashlib.sha256(_canonical_json(losses).encode()).hexdigest()
 
 
 def encoder_state_hash(tensors: dict[str, list[Any]]) -> str:
@@ -392,6 +407,14 @@ def verify_committed_artifacts() -> None:
         raise AssertionError("checkpoint MLM held-out labels mismatch")
     if checkpoint.OBJECTIVE != OBJECTIVE:
         raise AssertionError("checkpoint objective mismatch")
+    if checkpoint.INITIAL_LOSSES != TRUSTED_INITIAL_LOSSES:
+        raise AssertionError("checkpoint trusted initial losses mismatch")
+    if checkpoint.FINAL_LOSSES != TRUSTED_FINAL_LOSSES:
+        raise AssertionError("checkpoint trusted final losses mismatch")
+    if checkpoint.MIN_ABSOLUTE_LOSS_IMPROVEMENTS != TRUSTED_MINIMUM_IMPROVEMENTS:
+        raise AssertionError("checkpoint trusted improvement margins mismatch")
+    if checkpoint.PROBE_EXPECTED_TOP1_IDS != TRUSTED_PROBE_TOP1_IDS:
+        raise AssertionError("checkpoint trusted probes mismatch")
     initial_encoder, initial_head = build_models()
     initial_losses, _ = _heldout_metrics(initial_encoder, initial_head, fixture)
     for name, expected in initial_losses.items():
@@ -405,6 +428,8 @@ def verify_committed_artifacts() -> None:
         raise AssertionError("checkpoint optimizer steps are not continuous")
     if [row["mask_mode"] for row in checkpoint.PHASE_TRACE] != ["causal"] * 40 + ["bidirectional"] * 40:
         raise AssertionError("checkpoint mask trace mismatch")
+    if _trace_loss_digest(checkpoint.PHASE_TRACE) != TRUSTED_TRACE_LOSS_SHA256:
+        raise AssertionError("checkpoint trusted trace losses mismatch")
     encoder, head = build_models()
     encoder.load_state_dict(_load_tensor_mapping(checkpoint, "ENCODER_TENSORS"), strict=True)
     head.load_state_dict(_load_tensor_mapping(checkpoint, "HEAD_TENSORS"), strict=True)
