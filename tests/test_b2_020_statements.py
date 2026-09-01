@@ -423,6 +423,8 @@ def test_p17_uses_explicit_checked_in_context_target_pairs() -> None:
         assert name in fixture
         assert name in statement
         assert f"fixture.{name}" in solution
+    assert "unused_rows = (0, 1, 2, 3, 10, 11)" in solution
+    assert "for row in unused_rows:" in solution
 
 
 def test_p18_pins_the_full_tiny_causal_transformer_architecture() -> None:
@@ -440,6 +442,8 @@ def test_p18_pins_the_full_tiny_causal_transformer_architecture() -> None:
     assert all(needle in source for needle in required)
     assert "sinusoidal_positions" in solution
     assert "self.position_embedding = nn.Embedding(8, 8)" not in solution
+    assert "fixed-sinusoidal-position" in solution
+    assert "learned-position" not in solution
 
 
 def test_fine_tuning_lesson_teaches_recomputed_state_hash_verification() -> None:
