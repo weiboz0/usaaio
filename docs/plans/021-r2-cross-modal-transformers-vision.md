@@ -108,7 +108,7 @@ and tolerances; every solution ends with `### Answer check`.
 | p02 | A | mc | intro | 20 | distinguish class token, position token, and patch token roles |
 | p03 | A | mc | core | 20 | select a valid ViT class-logit path and reject channel/sequence confusion |
 | p04 | A | mc | intro | 20 | compute box intersection, union, and IoU from two literal boxes |
-| p05 | A | mc | core | 20 | identify a U-Net skip connection and output-resolution contract |
+| p05 | A | mc | intro | 20 | identify a U-Net skip connection and output-resolution contract |
 | p06 | B | constrained-coding | intro | 50 | patchify literal `float32` images with exact token ordering and shape probes |
 | p07 | B | constrained-coding | core | 50 | construct a class token plus learned positions and trace the ViT input shape |
 | p08 | B | constrained-coding | intro | 50 | compute pairwise IoU and encode grid detection targets without coordinate swaps |
@@ -149,8 +149,8 @@ Append a six-week Book 2 ledger after B2-020:
 | 13 | 53 | bridge 30; Session 1; p01, p02, p06, p13 | 255 |
 | 14 | 54 | Session 2; p03, p04, p07, p08, p14 | 275 |
 | 15 | 55 | Session 3; p05, p09, p10, p11, p15, p17 | 370 |
-| 16 | 56 | Session 4; p12, p16, p18, p20 | 305 |
-| 17 | 57 | Session 5; p19, p21, p22, p23, p24 | 385 |
+| 16 | 56 | Session 4; p12, p16, p18, p20 | 315 |
+| 17 | 57 | Session 5; p19, p21, p22, p23, p24 | 375 |
 | 18 | 58 | review 60 | 60 |
 
 The manifest, schedule checker, course-structure renderer, inventory, and
@@ -170,15 +170,16 @@ Do not alter B2-022 through B2-024 coverage rows.
 
 - Modify: `book2/curriculum/coverage-map.yaml`
 - Modify: `docs/curriculum-roadmap.md`
-- Modify: `docs/unit-standards.md`
+- Modify: `tools/checks/schedule.py` only if the copied three-unit negative
+  mutation exposes a generic later-unit ordering defect
 - Modify: `tests/test_book2_schedule.py`
 - Modify: `tests/test_b2_020_statements.py` only for exact roster/count assertions invalidated by the new registered unit
-- Create: `tests/test_b2_021_statements.py`
+- Create: `tests/test_b2_021_plan.py`
 
 - [ ] First add failing tests for the existing B2-021 `planned_units` row: the direct unit prerequisite sequence, four exact provisional concept owners, double-length standard, and the four coverage rows remaining missing until live source paths exist. In a copied three-manifest Book 2 fixture, also prove the future six-week ledger's 4,970-minute / `after_book_week: 18` contract and rejection of duplicate, misordered, missing-Session-3, minute-mismatched, or early B2-021 allocations.
-- [ ] Update only the existing B2-021 planned-unit row rather than adding a duplicate. Register direct `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C6-pytorch`, `book1:C7-cnn-transfer`, and `book1:C11-neural-training` prerequisites plus B2-019/B2-020; update the double-length roster/roadmap generated planned view without adding B2-021 to the live Book 2 syllabus or schedule.
-- [ ] Prove the temporary three-manifest fixture accepts B2-019/B2-020 unchanged plus B2-021 only after Book 2 week 12. Do not modify `tools/checks/schedule.py` unless this test identifies a generic three-unit defect; preserve the live two-unit schedule byte-for-byte in this phase.
-- [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py tests/test_b2_021_statements.py` and commit the registration contract.
+- [ ] Update only the existing B2-021 planned-unit row rather than adding a duplicate. Register direct `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C6-pytorch`, `book1:C7-cnn-transfer`, and `book1:C11-neural-training` prerequisites plus B2-019/B2-020; regenerate only the roadmap's planned view without adding B2-021 to the live Book 2 syllabus, schedule, or shipped-unit standards roster.
+- [ ] Prove the temporary three-manifest fixture accepts B2-019/B2-020 unchanged plus B2-021 only after Book 2 week 12. If the whole-unit early-placement mutation reveals that the generic checker only fences later units after B2-019 rather than their declared predecessor B2-020, first add that failing test and make the minimal generic `tools/checks/schedule.py` correction; otherwise preserve the live two-unit schedule byte-for-byte in this phase.
+- [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py tests/test_b2_021_plan.py` and commit the registration contract.
 
 ### Task 2 — Author the hash-verified statement/fixture bundle
 
@@ -197,17 +198,18 @@ Do not alter B2-022 through B2-024 coverage rows.
 - `book2/units/B2-021-cross-modal-transformers-vision/scripts/generate_vision_data.py`
 - `book2/units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb` through `p24.ipynb`
 
-- [ ] Write failing statement tests that require every declared notebook/data path, unexecuted student code cells, headers, lesson checkpoints/answers, exact 24-row ledger, three-practice concept coverage, and primary evidence for all twelve coverage modalities.
-- [ ] Create a temporary, deterministic statement/fixture bundle containing literal 8x8-or-smaller image, box, mask, graph, train/held-out IDs, and seeded initial-state generators; document every coordinate convention and prohibit external data/imports. `vision_fixture.py` holds the literal examples/splits and initial-state seed only. `generate_vision_data.py --check` must regenerate examples and initial-state hashes from their stated seed and reject drift; it must never store or emit trained weights or final metrics.
+- [ ] Write and run transient statement-bundle checks inside the temporary directory: every declared notebook/data path, unexecuted student code cells, headers, lesson checkpoints/answers, exact 24-row ledger, three-practice concept coverage, and primary evidence for all twelve coverage modalities. Do not commit these checks because their source is not present in a fresh checkout; Task 3 creates the equivalent committed `tests/test_b2_021_statements.py` only after the final tree exists.
+- [ ] Create a temporary, deterministic statement/fixture bundle containing literal 8x8-or-smaller image, box, mask, graph, and immutable train/held-out IDs, plus a separately seeded initial-state generator; document every coordinate convention and prohibit external data/imports. `vision_fixture.py` canonically serializes and hashes the literal data/splits, while `generate_vision_data.py --check` regenerates only the initial-state tensors from the stated seed and verifies both their hashes and the literals' canonical hashes. It must never store or emit trained weights or final metrics.
 - [ ] Author the bridge, overview, five lessons, review, and student statements in prerequisite order. Lessons must teach every API, loss, metric, and shape used by later practice before it appears.
-- [ ] Do not register a live `units/B2-021-*` manifest or promote coverage in this task. Draft the statements and fixture sources in a temporary, uncommitted directory outside `book2/units/` (for example `/tmp/usaaio-b2-021-draft`), write a SHA-256 file manifest for that bundle, and pass only that hash-verified student-facing bundle to the blind solution session. Retain B2-021 as planned until Task 3 copies the bundle unchanged into `book2/units/` and publishes it with solutions, manifest, schedule, and coverage atomically; this avoids both a committed required-solution manifest without its solutions and an incomplete unit directory that the global audit discovers.
+- [ ] Do not register a live `units/B2-021-*` manifest or promote coverage in this task. Draft the statements and fixture sources in a temporary, uncommitted directory outside `book2/units/` (for example `/tmp/usaaio-b2-021-draft`), write a SHA-256 file manifest for that bundle, and pass only that hash-verified student-facing bundle to the blind solution session. Tasks 2 and 3 are one contiguous session: no handoff, reboot, or commit boundary may depend on a temporary bundle; if it is lost, regenerate it before blind solving. Retain B2-021 as planned until Task 3 copies the bundle unchanged into `book2/units/` and publishes it with solutions, manifest, schedule, and coverage atomically; this avoids both a committed required-solution manifest without its solutions and an incomplete unit directory that the global audit discovers.
 - [ ] Run only the isolated statement-artifact checks in this task; global Book 2 audit/checker runs wait for Task 3's atomic publication.
 
 ### Task 3 — Blind-author solutions and execute them
 
 **Files:**
 
-- Create: `book2/units/B2-021-cross-modal-transformers-vision/practice/p01_solution.ipynb` through `p24_solution.ipynb`
+- Create: `/tmp/usaaio-b2-021-solutions/` holding the blind solution notebooks
+  beside a hash-verified copy of the Task-2 statement/fixture bundle
 - Modify: `book2/units/B2-021-cross-modal-transformers-vision/manifest.yaml`
 - Modify: `book2/syllabus.md`
 - Modify: `book2/curriculum/coverage-map.yaml`
@@ -216,13 +218,19 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Modify: `book2/docs/course-structure.md`
 - Modify: `book2/curriculum/material-inventory.yaml`
 - Modify: `docs/audits/015-coverage-audit.md`
+- Modify: `docs/unit-standards.md`
+- Modify: `tests/test_book2_schedule.py`
+- Modify: `tests/test_b2_020_statements.py`
+- Modify: `tests/test_b2_019_statements.py`
+- Modify: `tests/test_integration.py`
+- Create: `tests/test_b2_021_statements.py`
 - Modify: `tests/test_b2_021_statements.py`
 
-- [ ] Dispatch a fresh blind solution author that receives only the SHA-256-verified temporary statement/fixture bundle and learner lessons; it must not read statement-author outlines, source notebooks outside that bundle, reference metrics, or prior solution notes. Test that every copied Task-3 student file hashes identically to its Task-2 bundle source before it is published.
+- [ ] Dispatch a fresh blind solution author that receives only the SHA-256-verified temporary statement/fixture bundle and learner lessons; it must write/execute all solutions in a second temporary directory (`/tmp/usaaio-b2-021-solutions/`), and must not read statement-author outlines, source notebooks outside that bundle, reference metrics, or prior solution notes. Run the hash-equality check as a transient publication-time command and record its result in the post-execution report; do not commit a test that refers to a vanished temporary path.
 - [ ] Add a separate solution notebook for every statement, with no stored outputs and a final `### Answer check`. p17 uses a 2x2-patch, dimension-8, one-head class-token ViT trained with AdamW (`lr=0.05`, 12 ordered updates); p18 uses the declared 4x4 grid detector with AdamW (`lr=0.05`, 16 ordered updates); p19 uses the declared one-down/one-up U-Net with AdamW (`lr=0.03`, 16 ordered updates); p20 uses the declared four-node, dimension-8, one-head graph-token classifier with AdamW (`lr=0.05`, 12 ordered updates). Each names immutable train/held-out IDs from `vision_fixture.py`, reconstructs its seeded baseline from the initial-state generator, records update count/order plus dtype/shape probes, and pins `atol`/`rtol` for numeric assertions. Solutions and learner notebooks may not import or load final weights, final metrics, or CI reference modules.
-- [ ] Publish the live unit atomically: add its complete B2-021 `units:` syllabus entry with the exact prerequisite list above, add the three newly permitted CNN imports (`convolution`, `feature-maps`, `cnn-training`), copy the hash-verified statement corpus and complete manifest/all 48 practice-solution paths into `book2/units/`, append its six-week schedule, promote only its four coverage rows, and regenerate inventory, Book 2 course structure, shared roadmap, and `docs/audits/015-coverage-audit.md`. No committed state may expose a required solution path that does not exist.
+- [ ] Publish the live unit atomically: add its complete B2-021 `units:` syllabus entry with the exact prerequisite list above, add the three newly permitted CNN imports (`convolution`, `feature-maps`, `cnn-training`), copy the hash-verified statement corpus and all 24 temporary solution notebooks as one complete unit tree into `book2/units/`, append its six-week schedule, promote only its four coverage rows, update the double-length shipped-unit standards roster and the exact B2-019/B2-020/integration consumers, and regenerate inventory, Book 2 course structure, shared roadmap, and `docs/audits/015-coverage-audit.md`. No committed state may expose a required solution path that does not exist.
 - [ ] Execute every solution notebook from the Book 2 root without `--inplace`; record actual elapsed time and fail any B2-021 solution exceeding 20 seconds.
-- [ ] Run student hygiene, solution execution, Book 2 prereq/coverage/scope/layer checks, `python -m tools.audit_curriculum --root book2 --check`, `python -m tools.render_curriculum_roadmap --root . --check`, and commit the atomic statement-and-solution publication.
+- [ ] Run student hygiene, solution execution, Book 2 prereq/coverage/scope/layer checks, the pinned 18-week/4,970-minute/72-practice live-ledger and shipped-roster consumers, `python -m tools.audit_curriculum --root book2 --check`, `python -m tools.render_curriculum_roadmap --root . --check`, and commit the atomic statement-and-solution publication.
 
 ### Task 4 — Lock concept-critical answer checks
 
@@ -233,7 +241,7 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Modify: `scripts/ci-local.sh`
 - Modify: `tests/test_b2_021_statements.py`
 
-- [ ] First write variant-execution tests that prove the untouched answers pass and a named plausible wrong answer fails for p17 (no ViT optimizer update or train/held-out overlap), p18 (no detector optimizer update or train/held-out overlap), p19 (skip-concatenation/segmentation output), p20 (no graph-classifier optimizer update, invalid edge aggregation, or train/held-out overlap), and p24 (cross-modal Q/K/V or leakage audit). `tests/fixtures/b2_021_reference.py` is CI-only: it independently reconstructs the fixed-seed baselines and final traces, stores expected metrics/probes but no final tensors, and is forbidden from all learner/solution imports.
+- [ ] First write variant-execution tests that prove the untouched answers pass and a named plausible wrong answer fails for every p17–p20 training claim: no optimizer update and train/held-out overlap, plus p19's skip-concatenation/segmentation output and p20's invalid edge aggregation. Also reject p24's cross-modal Q/K/V reversal or leakage audit error. `tests/fixtures/b2_021_reference.py` is CI-only: it independently reconstructs the fixed-seed baselines and final traces, stores expected metrics/probes but no final tensors, and is forbidden from all learner/solution imports.
 - [ ] Implement only named-function substitutions in copied solution notebooks; never add student-facing markers, sandbox machinery, or anti-cheat policies.
 - [ ] Instrument the solution execution path to count optimizer steps and verify the ordered update trace, then add the focused integrity suite to `scripts/ci-local.sh` and retain the 20-second per-solution timeout for B2-021.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_vision_transformer_checks.py tests/test_b2_021_statements.py` plus generator `--check`; commit the integrity contract.
@@ -280,8 +288,8 @@ Do not alter B2-022 through B2-024 coverage rows.
 - [sol][FIXED] p16 moved to Book week 16 with Session 4, which teaches graph
   aggregation; p12 and p16 occur before p20's graph-token training practice.
 - [sol][FIXED] p01 is now the numeric `mc-normal-form` item, while p02 is an
-  ordinary conceptual MC item; the ledger mix is 7 intro, 11 core, and 6
-  advanced practices.
+  ordinary conceptual MC item; p05 is an introductory recognition question,
+  leaving the ledger at 7 intro, 11 core, and 6 advanced practices.
 - [sol][FIXED] Task 4 now mutates p17/p18's actual model-training claims
   (missing update or leaky split), with independently reconstructed baselines
   and held-out splits specified in Task 3.
@@ -333,13 +341,39 @@ Do not alter B2-022 through B2-024 coverage rows.
   sessions below.
 - The corrected sequence now teaches graph aggregation in Session 4 before
   p16 and p20, retains each model-training practice after its corresponding
-  session, and recomputes to `255 + 275 + 370 + 305 + 385 + 60 = 1650`
+  session, and recomputes to `255 + 275 + 370 + 315 + 375 + 60 = 1650`
   minutes (27.5 hours).
 - Task 2's temporary draft location cannot be mistaken for a live Book 2
   unit, and Task 3's atomic publication is the first committed state that the
   global manifest/audit machinery can observe.
 
-### Review 3 — self (2026-09-01)
+### Review 3 — Sol (2026-09-01) — superseded by Revision 4
+
+- **Verdict**: REJECT.
+- The reviewer found incorrect Week 16/17 arithmetic, consumer/roster updates
+  that must occur only when B2-021 becomes live, solution staging that could
+  expose an incomplete unit, and missing p19 training-leakage mutation proof.
+
+### Review 3 findings resolution (2026-09-01)
+
+- [sol][FIXED] Week 16 is `315` minutes and Week 17 is `375` minutes; the
+  corrected ledger is 1,650 minutes and Book 2 totals 4,970 minutes.
+- [sol][FIXED] The standards roster remains unchanged while B2-021 is planned.
+  Task 3 now owns every pinned live consumer, including B2-019/B2-020 schedule
+  assertions and integration roster expectations.
+- [sol][FIXED] The blind solver writes and executes in a second temporary
+  directory; the final copy places statements and all 24 solutions in the
+  live tree only as one complete atomic publication.
+- [sol][FIXED] p17 through p20 now each reject both no-update and
+  train/held-out-overlap variants, with immutable-ID instrumentation.
+- [sol][FIXED] The generator hashes literal fixtures independently from its
+  separately seeded initializer, and Task 1 includes the conditional generic
+  three-unit schedule-order correction if the copied mutation proves it.
+- [fable][FIXED] Temporary bundle checks and source-hash comparison are now
+  explicitly publication-time/transient, and Tasks 2–3 must run as one
+  contiguous session so no commit or handoff depends on `/tmp` persistence.
+
+### Review 3 — self (2026-09-01) — superseded by Revision 4
 
 - **Verdict**: APPROVE WITH NITS, pending fresh Sol, Fable, and GLM review of
   this exact Revision 3 commit.
@@ -347,10 +381,19 @@ Do not alter B2-022 through B2-024 coverage rows.
   complete fixture to exercise the prospective three-unit schedule. The first
   committed live state is Task 3, containing the all-or-nothing source,
   solution, syllabus, schedule, evidence, and generated-report change.
-- The schedule recomputes to `255 + 275 + 370 + 305 + 385 + 60 = 1650`
+- The schedule recomputes to `255 + 275 + 370 + 315 + 375 + 60 = 1650`
   minutes. Each integrative model-training practice has a fixed learner-side
   protocol and a separate CI-only reference reconstruction without trained
   tensors, so the no-update and split-leakage mutations cannot self-certify.
+
+### Review 4 — self (2026-09-01)
+
+- **Verdict**: APPROVE WITH NITS, pending fresh Sol, Fable, and GLM review of
+  the exact Revision 4 commit.
+- The prospective ledger independently sums to 1,650 minutes: Weeks 16 and
+  17 are 90 + (50 + 45 + 65 + 65) = 315 and 90 + (65 + 55 + 55 + 55 + 55) =
+  375 respectively. Task 1 makes no shipped-unit claim, and Task 3 atomically
+  changes every reader that observes the 18-week live state.
 
 ## Content Review
 
