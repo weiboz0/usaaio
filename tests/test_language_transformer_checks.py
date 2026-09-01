@@ -232,9 +232,9 @@ def test_tampered_encoder_tensor_fails_recomputed_state_hash(
     notebook_path = _working_notebook(tmp_path, practice)
     state_path = notebook_path.parents[1] / "data" / "tiny_encoder_state.py"
     source = state_path.read_text(encoding="utf-8")
-    original = "-0.844856858253479"
+    original = "0.16335205733776093"
     assert source.count(original) == 1
-    state_path.write_text(source.replace(original, "-0.744856858253479"), encoding="utf-8")
+    state_path.write_text(source.replace(original, "0.16335215733776093"), encoding="utf-8")
     notebook, client = _execute(notebook_path)
     with pytest.raises(CellExecutionError):
         client.execute()

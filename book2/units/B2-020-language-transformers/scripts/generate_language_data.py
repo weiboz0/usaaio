@@ -8,6 +8,7 @@ import hashlib
 import importlib.util
 import json
 import random
+import struct
 from pathlib import Path
 from types import ModuleType
 from typing import Any
@@ -211,6 +212,16 @@ def _tensor_rows(mapping: dict[str, list[Any]]) -> list[list[Any]]:
     return rows
 
 
+def _state_tensor_rows(mapping: dict[str, list[Any]]) -> list[list[Any]]:
+    """Encode each IEEE-754 float32 value exactly for the student-state hash."""
+    rows: list[list[Any]] = []
+    for name in sorted(mapping):
+        tensor = torch.tensor(mapping[name], dtype=torch.float32)
+        values = [struct.pack(">f", float(value)).hex() for value in tensor.reshape(-1)]
+        rows.append([name, list(tensor.shape), "float32", values])
+    return rows
+
+
 def _canonical_json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
 
@@ -224,7 +235,7 @@ def encoder_state_hash(tensors: dict[str, list[Any]]) -> str:
     payload = {
         "schema_version": SCHEMA_VERSION,
         "architecture": [[key, ARCHITECTURE[key]] for key in ARCHITECTURE],
-        "tensors": _tensor_rows(tensors),
+        "tensors": _state_tensor_rows(tensors),
     }
     return hashlib.sha256(_canonical_json(payload).encode()).hexdigest()
 
@@ -348,7 +359,7 @@ def _state_source(result: dict[str, Any]) -> str:
             '"""Generated student-facing trained encoder state for B2-020."""\n\n',
             _literal("SCHEMA_VERSION", SCHEMA_VERSION),
             _literal("ARCHITECTURE", ARCHITECTURE),
-            "import hashlib\nimport json\n\n",
+            "import hashlib\nimport json\nimport struct\n\n",
             _literal("ENCODER_TENSORS", result["encoder_tensors"]),
             _literal("ENCODER_STATE_HASH", result["encoder_state_hash"]),
             "\n\n"
@@ -366,12 +377,15 @@ def _state_source(result: dict[str, Any]) -> str:
             "        values = values[0] if values else []\n"
             "    return shape\n\n"
             "\n"
+            "def _float32_hex(value):\n"
+            "    return struct.pack(\">f\", float(value)).hex()\n\n"
+            "\n"
             "def canonical_encoder_state_hash(tensors):\n"
             "    \"\"\"Return the canonical SHA-256 fingerprint of this encoder state.\"\"\"\n"
             "    rows = []\n"
             "    for name in sorted(tensors):\n"
             "        values = tensors[name]\n"
-            "        rows.append([name, _shape(values), \"float32\", [round(float(value), 6) for value in _flatten(values)]])\n"
+            "        rows.append([name, _shape(values), \"float32\", [_float32_hex(value) for value in _flatten(values)]])\n"
             "    payload = {\n"
             "        \"schema_version\": SCHEMA_VERSION,\n"
             "        \"architecture\": [[key, ARCHITECTURE[key]] for key in ARCHITECTURE],\n"

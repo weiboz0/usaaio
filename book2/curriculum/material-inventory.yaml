@@ -4650,7 +4650,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: dadeae8eb73d156660692ac7ec07a46f5556d395511171d0cf666e2cadfda7b4
+  semantic_sha256: d7b83c597b2fbbf29185fb03d037d54a00a285ef1d56b435d7c4fc00e3ce4962
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p20_solution.ipynb :: B2-020-language-transformers — Practice p20
       — Solution :: cell 1'
@@ -4770,7 +4770,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: 80f8cbe41198fcd193da8e5d8a4d0d399a3f1fe588a831919dbec8cf27e718fc
+  semantic_sha256: e64f82cc3c9919584821ccf32a1aac86ca80b5d1774e440d38c256b03cd08385
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p21_solution.ipynb :: B2-020-language-transformers — Practice p21
       — Solution :: cell 1'
