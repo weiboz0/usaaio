@@ -5,7 +5,7 @@ counts:
   unit_practices: 48
   lesson_sessions: 12
   unit_nonpractice_notebooks: 16
-  unit_notebooks: 88
+  unit_notebooks: 112
   mocktests: 0
   mock_notebooks: 0
   manifested_minutes: 3260
@@ -79,29 +79,53 @@ input_paths:
 - units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
 - units/B2-020-language-transformers/manifest.yaml
 - units/B2-020-language-transformers/practice/p01.ipynb
+- units/B2-020-language-transformers/practice/p01_solution.ipynb
 - units/B2-020-language-transformers/practice/p02.ipynb
+- units/B2-020-language-transformers/practice/p02_solution.ipynb
 - units/B2-020-language-transformers/practice/p03.ipynb
+- units/B2-020-language-transformers/practice/p03_solution.ipynb
 - units/B2-020-language-transformers/practice/p04.ipynb
+- units/B2-020-language-transformers/practice/p04_solution.ipynb
 - units/B2-020-language-transformers/practice/p05.ipynb
+- units/B2-020-language-transformers/practice/p05_solution.ipynb
 - units/B2-020-language-transformers/practice/p06.ipynb
+- units/B2-020-language-transformers/practice/p06_solution.ipynb
 - units/B2-020-language-transformers/practice/p07.ipynb
+- units/B2-020-language-transformers/practice/p07_solution.ipynb
 - units/B2-020-language-transformers/practice/p08.ipynb
+- units/B2-020-language-transformers/practice/p08_solution.ipynb
 - units/B2-020-language-transformers/practice/p09.ipynb
+- units/B2-020-language-transformers/practice/p09_solution.ipynb
 - units/B2-020-language-transformers/practice/p10.ipynb
+- units/B2-020-language-transformers/practice/p10_solution.ipynb
 - units/B2-020-language-transformers/practice/p11.ipynb
+- units/B2-020-language-transformers/practice/p11_solution.ipynb
 - units/B2-020-language-transformers/practice/p12.ipynb
+- units/B2-020-language-transformers/practice/p12_solution.ipynb
 - units/B2-020-language-transformers/practice/p13.ipynb
+- units/B2-020-language-transformers/practice/p13_solution.ipynb
 - units/B2-020-language-transformers/practice/p14.ipynb
+- units/B2-020-language-transformers/practice/p14_solution.ipynb
 - units/B2-020-language-transformers/practice/p15.ipynb
+- units/B2-020-language-transformers/practice/p15_solution.ipynb
 - units/B2-020-language-transformers/practice/p16.ipynb
+- units/B2-020-language-transformers/practice/p16_solution.ipynb
 - units/B2-020-language-transformers/practice/p17.ipynb
+- units/B2-020-language-transformers/practice/p17_solution.ipynb
 - units/B2-020-language-transformers/practice/p18.ipynb
+- units/B2-020-language-transformers/practice/p18_solution.ipynb
 - units/B2-020-language-transformers/practice/p19.ipynb
+- units/B2-020-language-transformers/practice/p19_solution.ipynb
 - units/B2-020-language-transformers/practice/p20.ipynb
+- units/B2-020-language-transformers/practice/p20_solution.ipynb
 - units/B2-020-language-transformers/practice/p21.ipynb
+- units/B2-020-language-transformers/practice/p21_solution.ipynb
 - units/B2-020-language-transformers/practice/p22.ipynb
+- units/B2-020-language-transformers/practice/p22_solution.ipynb
 - units/B2-020-language-transformers/practice/p23.ipynb
+- units/B2-020-language-transformers/practice/p23_solution.ipynb
 - units/B2-020-language-transformers/practice/p24.ipynb
+- units/B2-020-language-transformers/practice/p24_solution.ipynb
 - units/B2-020-language-transformers/review.ipynb
 documents:
 - path: docs/course-structure.md
@@ -116,7 +140,7 @@ manifests:
   semantic_sha256: e6dd52f9851fe91c1f86e8cfc45f0d1c25c7fa78f0524abd9d34322c0b19dd29
 - path: units/B2-020-language-transformers/manifest.yaml
   kind: yaml
-  semantic_sha256: 7602260e960a6294801cb2e930ad7abb6f48cbb4f22a5e36c9bd438d0de2848f
+  semantic_sha256: bfa3ac777af9115966af3008168fa11b392334f7eb02837bf66bd6e092fe7327
 notebooks:
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
@@ -3124,6 +3148,48 @@ notebooks:
   declared_problem_ids:
   - B2-020-p01
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p01_solution.ipynb
+  kind: notebook
+  semantic_sha256: d1d6c69b9be5de3328609e52039d80c49da19cba5d838cc1c7f100bc266d98f0
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p01_solution.ipynb :: B2-020-language-transformers — Practice p01
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p01 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p01_solution.ipynb :: B2-020-language-transformers — Practice p01
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p01 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p01_solution.ipynb :: B2-020-language-transformers — Practice p01
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p01 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p01_solution.ipynb :: B2-020-language-transformers — Practice p01
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p01 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p01_solution.ipynb :: B2-020-language-transformers — Practice p01
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p01 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - embedding-model-training
+  declared_problem_ids:
+  - B2-020-p01
+  api_tokens: []
 - path: units/B2-020-language-transformers/practice/p02.ipynb
   kind: notebook
   semantic_sha256: 61d320efa998eb5186e704b99930f5d967bf128d72dffb4b6b3b18b18c577f00
@@ -3145,6 +3211,49 @@ notebooks:
   declared_problem_ids:
   - B2-020-p02
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p02_solution.ipynb
+  kind: notebook
+  semantic_sha256: e65f9a809d084111e753b25e6ce20e6153165b602b881a296a072248091c52cd
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p02_solution.ipynb :: B2-020-language-transformers — Practice p02
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p02 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p02_solution.ipynb :: B2-020-language-transformers — Practice p02
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p02 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p02_solution.ipynb :: B2-020-language-transformers — Practice p02
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p02 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p02_solution.ipynb :: B2-020-language-transformers — Practice p02
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p02 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p02_solution.ipynb :: B2-020-language-transformers — Practice p02
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p02 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - learned-token-embedding
+  declared_problem_ids:
+  - B2-020-p02
+  api_tokens:
+  - math.gcd
 - path: units/B2-020-language-transformers/practice/p03.ipynb
   kind: notebook
   semantic_sha256: a2a050a0cb78c0086a66aa3ba70ed8779b70da8c370ef8c7681fd94f7659d668
@@ -3159,6 +3268,48 @@ notebooks:
     - B2-020 — Practice p03
     - Your response
     cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - learned-token-embedding
+  declared_problem_ids:
+  - B2-020-p03
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p03_solution.ipynb
+  kind: notebook
+  semantic_sha256: 7edb5e52aec13e117604c2560e47cfe6f2e131c9098a95b707e3b58f3da911b6
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p03_solution.ipynb :: B2-020-language-transformers — Practice p03
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p03 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p03_solution.ipynb :: B2-020-language-transformers — Practice p03
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p03 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p03_solution.ipynb :: B2-020-language-transformers — Practice p03
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p03 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p03_solution.ipynb :: B2-020-language-transformers — Practice p03
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p03 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p03_solution.ipynb :: B2-020-language-transformers — Practice p03
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p03 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -3188,6 +3339,49 @@ notebooks:
   declared_problem_ids:
   - B2-020-p04
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p04_solution.ipynb
+  kind: notebook
+  semantic_sha256: 0d8e77458955bc03ff738c87771df629bdb6d86be608316363884f2a7dd42005
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p04_solution.ipynb :: B2-020-language-transformers — Practice p04
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p04 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p04_solution.ipynb :: B2-020-language-transformers — Practice p04
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p04 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p04_solution.ipynb :: B2-020-language-transformers — Practice p04
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p04 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p04_solution.ipynb :: B2-020-language-transformers — Practice p04
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p04 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p04_solution.ipynb :: B2-020-language-transformers — Practice p04
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p04 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - language-transformer
+  declared_problem_ids:
+  - B2-020-p04
+  api_tokens: []
 - path: units/B2-020-language-transformers/practice/p05.ipynb
   kind: notebook
   semantic_sha256: dd13a820f1b71c8aea5fe86c963c474330fa279457d15d9add51dd10e673cd2d
@@ -3202,6 +3396,49 @@ notebooks:
     - B2-020 — Practice p05
     - Your response
     cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  declared_problem_ids:
+  - B2-020-p05
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p05_solution.ipynb
+  kind: notebook
+  semantic_sha256: 366cf5047e352a162fb3ea04a673275d0069accf71dbc3864132f6236d21aad8
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p05_solution.ipynb :: B2-020-language-transformers — Practice p05
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p05 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p05_solution.ipynb :: B2-020-language-transformers — Practice p05
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p05 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p05_solution.ipynb :: B2-020-language-transformers — Practice p05
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p05 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p05_solution.ipynb :: B2-020-language-transformers — Practice p05
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p05 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p05_solution.ipynb :: B2-020-language-transformers — Practice p05
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p05 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -3236,6 +3473,54 @@ notebooks:
   declared_problem_ids:
   - B2-020-p06
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p06_solution.ipynb
+  kind: notebook
+  semantic_sha256: 02664fa8303b6342153a8afbd4f95b0e022216972b1ac24d6605c62e418e0730
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p06_solution.ipynb :: B2-020-language-transformers — Practice p06
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p06 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p06_solution.ipynb :: B2-020-language-transformers — Practice p06
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p06_solution.ipynb :: B2-020-language-transformers — Practice p06
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p06_solution.ipynb :: B2-020-language-transformers — Practice p06
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p06 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p06_solution.ipynb :: B2-020-language-transformers — Practice p06
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p06 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - learned-token-embedding
+  declared_problem_ids:
+  - B2-020-p06
+  api_tokens:
+  - one_hot.sum
+  - torch.allclose
+  - torch.arange
+  - torch.ones
+  - torch.tensor
+  - torch.zeros
 - path: units/B2-020-language-transformers/practice/p07.ipynb
   kind: notebook
   semantic_sha256: 35e4220c5a56efe9e308201d8dac00720db73749a276f5c40148269d5c645e6a
@@ -3262,6 +3547,65 @@ notebooks:
   declared_problem_ids:
   - B2-020-p07
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p07_solution.ipynb
+  kind: notebook
+  semantic_sha256: f014c9c57c1ec2bfe47afc2eea1007eb6950528fe030595140d1e89640d74030
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p07_solution.ipynb :: B2-020-language-transformers — Practice p07
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p07 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p07_solution.ipynb :: B2-020-language-transformers — Practice p07
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p07_solution.ipynb :: B2-020-language-transformers — Practice p07
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p07_solution.ipynb :: B2-020-language-transformers — Practice p07
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p07 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p07_solution.ipynb :: B2-020-language-transformers — Practice p07
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p07 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - embedding-model-training
+  declared_problem_ids:
+  - B2-020-p07
+  api_tokens:
+  - F.cross_entropy
+  - fresh_loss.item
+  - head.parameters
+  - head.weight.data_ptr
+  - initial_loss.item
+  - loss.backward
+  - nn.Linear
+  - nn.Parameter
+  - optimizer.step
+  - optimizer.zero_grad
+  - table.data_ptr
+  - table.detach
+  - torch.allclose
+  - torch.manual_seed
+  - torch.optim.SGD
+  - torch.randn
+  - torch.tensor
 - path: units/B2-020-language-transformers/practice/p08.ipynb
   kind: notebook
   semantic_sha256: f4d599e1280a89b92233b2936dfceae689535504b1c9b7703190ce8dcd57e256
@@ -3289,6 +3633,57 @@ notebooks:
   declared_problem_ids:
   - B2-020-p08
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p08_solution.ipynb
+  kind: notebook
+  semantic_sha256: 8f463a0faf99920c01c09868b273437b29f86203364965eea4c2eed629981a3a
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p08_solution.ipynb :: B2-020-language-transformers — Practice p08
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p08 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p08_solution.ipynb :: B2-020-language-transformers — Practice p08
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p08 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p08_solution.ipynb :: B2-020-language-transformers — Practice p08
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p08 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p08_solution.ipynb :: B2-020-language-transformers — Practice p08
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p08 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p08_solution.ipynb :: B2-020-language-transformers — Practice p08
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p08 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - language-transformer
+  declared_problem_ids:
+  - B2-020-p08
+  api_tokens:
+  - nn.Embedding
+  - nn.Linear
+  - self.embedding
+  - self.head
+  - self.modes.append
+  - torch.equal
+  - torch.manual_seed
+  - torch.tensor
 - path: units/B2-020-language-transformers/practice/p09.ipynb
   kind: notebook
   semantic_sha256: 886b5a3a647b182d0432a29aca5000b2a16972d6216da4051717607cb4d3a0fc
@@ -3315,6 +3710,68 @@ notebooks:
   declared_problem_ids:
   - B2-020-p09
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p09_solution.ipynb
+  kind: notebook
+  semantic_sha256: b32997969873289f2a3b7e9eac1320cb4fe86b4b10960df81a89662fbdda4fc2
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p09_solution.ipynb :: B2-020-language-transformers — Practice p09
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p09 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p09_solution.ipynb :: B2-020-language-transformers — Practice p09
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p09 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p09_solution.ipynb :: B2-020-language-transformers — Practice p09
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p09 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p09_solution.ipynb :: B2-020-language-transformers — Practice p09
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p09 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p09_solution.ipynb :: B2-020-language-transformers — Practice p09
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p09 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - language-transformer
+  declared_problem_ids:
+  - B2-020-p09
+  api_tokens:
+  - math.log
+  - nn.Embedding
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.MultiheadAttention
+  - self.attention
+  - self.norm
+  - token_embedding.weight.data_ptr
+  - tokens.clone
+  - torch.allclose
+  - torch.arange
+  - torch.cos
+  - torch.exp
+  - torch.manual_seed
+  - torch.ones
+  - torch.sin
+  - torch.tensor
+  - torch.triu
+  - torch.zeros
+  - vocab_head.weight.data_ptr
 - path: units/B2-020-language-transformers/practice/p10.ipynb
   kind: notebook
   semantic_sha256: 248dcf6c8ba3ef270ae35dc4b21bd058b53c9b43a150d10be62fdf3bf01d20dc
@@ -3341,6 +3798,55 @@ notebooks:
   declared_problem_ids:
   - B2-020-p10
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p10_solution.ipynb
+  kind: notebook
+  semantic_sha256: b178895f0d03e35b99604b48510936e6548567bc09e493ce51e5c1e437d04fd9
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p10_solution.ipynb :: B2-020-language-transformers — Practice p10
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p10 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p10_solution.ipynb :: B2-020-language-transformers — Practice p10
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p10 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p10_solution.ipynb :: B2-020-language-transformers — Practice p10
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p10 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p10_solution.ipynb :: B2-020-language-transformers — Practice p10
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p10 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p10_solution.ipynb :: B2-020-language-transformers — Practice p10
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p10 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  declared_problem_ids:
+  - B2-020-p10
+  api_tokens:
+  - log_probabilities.gather
+  - logits.log_softmax
+  - targets.unsqueeze
+  - torch.allclose
+  - torch.stack
+  - torch.zeros
+  - valid_mask.sum
 - path: units/B2-020-language-transformers/practice/p11.ipynb
   kind: notebook
   semantic_sha256: 65397370b94caa68b0a441c891f0a239f8dce5e771313877b299caa0117279da
@@ -3367,6 +3873,55 @@ notebooks:
   declared_problem_ids:
   - B2-020-p11
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p11_solution.ipynb
+  kind: notebook
+  semantic_sha256: 07ffff446120de5b7025171b4d3e5e859b4fb5acc3b27beca71ee419090503c1
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p11_solution.ipynb :: B2-020-language-transformers — Practice p11
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p11 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p11_solution.ipynb :: B2-020-language-transformers — Practice p11
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p11 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p11_solution.ipynb :: B2-020-language-transformers — Practice p11
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p11 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p11_solution.ipynb :: B2-020-language-transformers — Practice p11
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p11 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p11_solution.ipynb :: B2-020-language-transformers — Practice p11
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p11 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - masked-language-modeling
+  declared_problem_ids:
+  - B2-020-p11
+  api_tokens:
+  - corrupted.tolist
+  - labels.tolist
+  - token_ids.clone
+  - torch.equal
+  - torch.full_like
+  - torch.ones
+  - torch.tensor
 - path: units/B2-020-language-transformers/practice/p12.ipynb
   kind: notebook
   semantic_sha256: f8e176e730a2d787dc0af8a3bf6c1813266949eca947051296e571e63667eb64
@@ -3393,6 +3948,57 @@ notebooks:
   declared_problem_ids:
   - B2-020-p12
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p12_solution.ipynb
+  kind: notebook
+  semantic_sha256: c38e4fb416fa829a6665b5c31fd10d0198ed999842f59cf0390e65751c637948
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p12_solution.ipynb :: B2-020-language-transformers — Practice p12
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p12 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p12_solution.ipynb :: B2-020-language-transformers — Practice p12
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p12_solution.ipynb :: B2-020-language-transformers — Practice p12
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p12_solution.ipynb :: B2-020-language-transformers — Practice p12
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p12 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p12_solution.ipynb :: B2-020-language-transformers — Practice p12
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p12 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - nlp-fine-tuning-protocol
+  declared_problem_ids:
+  - B2-020-p12
+  api_tokens:
+  - encoder.parameters
+  - head.named_parameters
+  - head.parameters
+  - nn.Embedding
+  - nn.Linear
+  - parameter.requires_grad_
+  - self.embedding
+  - torch.manual_seed
+  - torch.tensor
 - path: units/B2-020-language-transformers/practice/p13.ipynb
   kind: notebook
   semantic_sha256: 6c03e35408ca74d230d90ec456da35f11b72393b8f7993f591051a7c525d4969
@@ -3414,6 +4020,51 @@ notebooks:
   declared_problem_ids:
   - B2-020-p13
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p13_solution.ipynb
+  kind: notebook
+  semantic_sha256: 68753944ac95222a0162fab1dd0d76cc63f69aef8f7fa5e6746fc4c7cadfae7f
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p13_solution.ipynb :: B2-020-language-transformers — Practice p13
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p13 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p13_solution.ipynb :: B2-020-language-transformers — Practice p13
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p13 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p13_solution.ipynb :: B2-020-language-transformers — Practice p13
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p13 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p13_solution.ipynb :: B2-020-language-transformers — Practice p13
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p13 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p13_solution.ipynb :: B2-020-language-transformers — Practice p13
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p13 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - embedding-model-training
+  declared_problem_ids:
+  - B2-020-p13
+  api_tokens:
+  - torch.equal
+  - torch.tensor
+  - torch.zeros
 - path: units/B2-020-language-transformers/practice/p14.ipynb
   kind: notebook
   semantic_sha256: e8cf3bb47b3d4a7caa39adf187b8339f68c3f27a69a92e628f01d51a74c3bf35
@@ -3428,6 +4079,48 @@ notebooks:
     - B2-020 — Practice p14
     - Your response
     cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  declared_problem_ids:
+  - B2-020-p14
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p14_solution.ipynb
+  kind: notebook
+  semantic_sha256: b2a697e3e4806056e1618859e93b9c5636486a4d1fb5104f3ca73758584b5ebe
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p14_solution.ipynb :: B2-020-language-transformers — Practice p14
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p14 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p14_solution.ipynb :: B2-020-language-transformers — Practice p14
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p14 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p14_solution.ipynb :: B2-020-language-transformers — Practice p14
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p14 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p14_solution.ipynb :: B2-020-language-transformers — Practice p14
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p14 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p14_solution.ipynb :: B2-020-language-transformers — Practice p14
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p14 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -3456,6 +4149,51 @@ notebooks:
   declared_problem_ids:
   - B2-020-p15
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p15_solution.ipynb
+  kind: notebook
+  semantic_sha256: 0e25a100555f1d98372f783342c87139c7848acd35016b52d9a20b2c87fc4da1
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p15_solution.ipynb :: B2-020-language-transformers — Practice p15
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p15 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p15_solution.ipynb :: B2-020-language-transformers — Practice p15
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p15 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p15_solution.ipynb :: B2-020-language-transformers — Practice p15
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p15 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p15_solution.ipynb :: B2-020-language-transformers — Practice p15
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p15 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p15_solution.ipynb :: B2-020-language-transformers — Practice p15
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p15 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - nlp-pretraining-objectives
+  declared_problem_ids:
+  - B2-020-p15
+  api_tokens:
+  - mask.sum
+  - torch.isclose
+  - torch.tensor
 - path: units/B2-020-language-transformers/practice/p16.ipynb
   kind: notebook
   semantic_sha256: c08a9c1a2ba66aae87ade5f6711a7705328a384eaa86350ff758752ee715fb79
@@ -3478,6 +4216,54 @@ notebooks:
   declared_problem_ids:
   - B2-020-p16
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p16_solution.ipynb
+  kind: notebook
+  semantic_sha256: b8893458f5239cdf8b27fe9b61f2c0e8f3b9668cba472ee9b1053e0feb9fac67
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p16_solution.ipynb :: B2-020-language-transformers — Practice p16
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p16 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p16_solution.ipynb :: B2-020-language-transformers — Practice p16
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p16 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p16_solution.ipynb :: B2-020-language-transformers — Practice p16
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p16 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p16_solution.ipynb :: B2-020-language-transformers — Practice p16
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p16 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p16_solution.ipynb :: B2-020-language-transformers — Practice p16
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p16 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  declared_problem_ids:
+  - B2-020-p16
+  api_tokens:
+  - labels.tolist
+  - torch.equal
+  - torch.full_like
+  - torch.tensor
+  - visible.clone
 - path: units/B2-020-language-transformers/practice/p17.ipynb
   kind: notebook
   semantic_sha256: 227437d2699d5100a768da6056805a2b8375fdce31d29506b6b718791c8e4874
@@ -3511,6 +4297,81 @@ notebooks:
   declared_problem_ids:
   - B2-020-p17
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p17_solution.ipynb
+  kind: notebook
+  semantic_sha256: 16f909707fbd606c167a4cf1646533d86a98d33d86632495b7f8a25623b8055c
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p17_solution.ipynb :: B2-020-language-transformers — Practice p17
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p17 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p17_solution.ipynb :: B2-020-language-transformers — Practice p17
+      — Solution > Pinned reproducibility protocol :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p17 — Solution
+    - Pinned reproducibility protocol
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p17_solution.ipynb :: B2-020-language-transformers — Practice p17
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p17_solution.ipynb :: B2-020-language-transformers — Practice p17
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p17_solution.ipynb :: B2-020-language-transformers — Practice p17
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p17 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p17_solution.ipynb :: B2-020-language-transformers — Practice p17
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p17 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - embedding-model-training
+  - learned-token-embedding
+  declared_problem_ids:
+  - B2-020-p17
+  api_tokens:
+  - F.cosine_similarity
+  - F.cross_entropy
+  - before.clone
+  - context_ids.tolist
+  - final_loss.item
+  - head.parameters
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - indices.tolist
+  - initial_loss.item
+  - loss.backward
+  - nn.Linear
+  - nn.Parameter
+  - np.random.seed
+  - optimizer.step
+  - optimizer.zero_grad
+  - pairs.extend
+  - random.seed
+  - spec.loader.exec_module
+  - table.detach
+  - torch.allclose
+  - torch.manual_seed
+  - torch.optim.AdamW
+  - torch.randn
+  - torch.tensor
+  - torch.topk
 - path: units/B2-020-language-transformers/practice/p18.ipynb
   kind: notebook
   semantic_sha256: 634f91d155600aeea387be429790ffcabe7f2eb7077179d3a88ed6fb4c1cf1bb
@@ -3544,6 +4405,92 @@ notebooks:
   declared_problem_ids:
   - B2-020-p18
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p18_solution.ipynb
+  kind: notebook
+  semantic_sha256: 0348e1fe6d6ae1a61724ea05e0d22db2e1bacfd92073a5e0fc6e54e723a93ba7
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p18_solution.ipynb :: B2-020-language-transformers — Practice p18
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p18 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p18_solution.ipynb :: B2-020-language-transformers — Practice p18
+      — Solution > Pinned reproducibility protocol :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p18 — Solution
+    - Pinned reproducibility protocol
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p18_solution.ipynb :: B2-020-language-transformers — Practice p18
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p18_solution.ipynb :: B2-020-language-transformers — Practice p18
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p18_solution.ipynb :: B2-020-language-transformers — Practice p18
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p18 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p18_solution.ipynb :: B2-020-language-transformers — Practice p18
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p18 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - language-transformer
+  declared_problem_ids:
+  - B2-020-p18
+  api_tokens:
+  - F.cross_entropy
+  - F.gelu
+  - encoder.parameters
+  - final_heldout_loss.item
+  - final_train_loss.item
+  - head.parameters
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - initial_heldout_loss.item
+  - initial_train_loss.item
+  - loss.backward
+  - nn.Embedding
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.MultiheadAttention
+  - optimizer.step
+  - optimizer.zero_grad
+  - prefix_rows.clone
+  - self.attention
+  - self.ff1
+  - self.ff2
+  - self.norm1
+  - self.norm2
+  - self.position_embedding
+  - self.token_embedding
+  - spec.loader.exec_module
+  - targets.ne
+  - token_ids.eq
+  - torch.allclose
+  - torch.arange
+  - torch.equal
+  - torch.manual_seed
+  - torch.ones
+  - torch.optim.AdamW
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.triu
 - path: units/B2-020-language-transformers/practice/p19.ipynb
   kind: notebook
   semantic_sha256: 79fbe8e45a464cf56c01ba4cc5770992ed9ac56427b67faf5dc9b8b400266a64
@@ -3578,6 +4525,94 @@ notebooks:
   declared_problem_ids:
   - B2-020-p19
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p19_solution.ipynb
+  kind: notebook
+  semantic_sha256: b9037dc9108476b8dc38c5d808dba6c94fbd38a5ef675eed6bb867906fa5dbfd
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p19_solution.ipynb :: B2-020-language-transformers — Practice p19
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p19 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p19_solution.ipynb :: B2-020-language-transformers — Practice p19
+      — Solution > Pinned held-out certificate :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p19 — Solution
+    - Pinned held-out certificate
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p19_solution.ipynb :: B2-020-language-transformers — Practice p19
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p19_solution.ipynb :: B2-020-language-transformers — Practice p19
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p19_solution.ipynb :: B2-020-language-transformers — Practice p19
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p19 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p19_solution.ipynb :: B2-020-language-transformers — Practice p19
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p19 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - masked-language-modeling
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids:
+  - B2-020-p19
+  api_tokens:
+  - F.cross_entropy
+  - F.gelu
+  - causal_logits.argmax
+  - causal_targets.ne
+  - encoder.parameters
+  - head.parameters
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - logits.reshape
+  - loss.backward
+  - loss.item
+  - mlm_labels.reshape
+  - mlm_logits.argmax
+  - mlm_logits.reshape
+  - nn.Embedding
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.MultiheadAttention
+  - optimizer.step
+  - optimizer.zero_grad
+  - self.attention
+  - self.ff1
+  - self.ff2
+  - self.mask_history.append
+  - self.norm1
+  - self.norm2
+  - self.position_embedding
+  - self.token_embedding
+  - spec.loader.exec_module
+  - token_ids.eq
+  - torch.arange
+  - torch.manual_seed
+  - torch.ones
+  - torch.optim.AdamW
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.triu
+  - trace.append
 - path: units/B2-020-language-transformers/practice/p20.ipynb
   kind: notebook
   semantic_sha256: 98b65b9b196eab02394257d8e6409636deafa19e55bdb23d4981bf6c7ac177c8
@@ -3611,6 +4646,93 @@ notebooks:
   declared_problem_ids:
   - B2-020-p20
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p20_solution.ipynb
+  kind: notebook
+  semantic_sha256: c935e146b84b8f094b26cb20e24d4db31c3982b5ae01ff5353dd9a102588486a
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p20_solution.ipynb :: B2-020-language-transformers — Practice p20
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p20 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p20_solution.ipynb :: B2-020-language-transformers — Practice p20
+      — Solution > Pinned reproducibility protocol :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p20 — Solution
+    - Pinned reproducibility protocol
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p20_solution.ipynb :: B2-020-language-transformers — Practice p20
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p20_solution.ipynb :: B2-020-language-transformers — Practice p20
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p20_solution.ipynb :: B2-020-language-transformers — Practice p20
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p20 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p20_solution.ipynb :: B2-020-language-transformers — Practice p20
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p20 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - nlp-fine-tuning-protocol
+  - transformer-nlp-task-design
+  declared_problem_ids:
+  - B2-020-p20
+  api_tokens:
+  - F.cross_entropy
+  - F.gelu
+  - encoder.load_state_dict
+  - encoder.parameters
+  - encoder.state_dict
+  - head.parameters
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - logits.argmax
+  - loss.backward
+  - nn.Embedding
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.MultiheadAttention
+  - optimizer.step
+  - optimizer.zero_grad
+  - rows.ne
+  - self.attention
+  - self.ff1
+  - self.ff2
+  - self.norm1
+  - self.norm2
+  - self.position_embedding
+  - self.token_embedding
+  - spec.loader.exec_module
+  - splits.items
+  - state.ENCODER_TENSORS.items
+  - token_ids.eq
+  - torch.arange
+  - torch.equal
+  - torch.manual_seed
+  - torch.ones
+  - torch.optim.AdamW
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.triu
+  - valid.sum
+  - valid.unsqueeze
 - path: units/B2-020-language-transformers/practice/p21.ipynb
   kind: notebook
   semantic_sha256: 532a81efe598c40d30a88c9df4a4850a6e4d6ff0a14b6c76d0ca1a6db52dac94
@@ -3643,6 +4765,96 @@ notebooks:
   declared_problem_ids:
   - B2-020-p21
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p21_solution.ipynb
+  kind: notebook
+  semantic_sha256: cb83ddbc6365751db4bccac42b0ba9c8d4ee1557145fb776c9c59f1fc7124895
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p21_solution.ipynb :: B2-020-language-transformers — Practice p21
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p21 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p21_solution.ipynb :: B2-020-language-transformers — Practice p21
+      — Solution > Pinned reproducibility protocol :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p21 — Solution
+    - Pinned reproducibility protocol
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p21_solution.ipynb :: B2-020-language-transformers — Practice p21
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p21 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p21_solution.ipynb :: B2-020-language-transformers — Practice p21
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p21 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p21_solution.ipynb :: B2-020-language-transformers — Practice p21
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p21 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p21_solution.ipynb :: B2-020-language-transformers — Practice p21
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p21 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - nlp-fine-tuning-protocol
+  declared_problem_ids:
+  - B2-020-p21
+  api_tokens:
+  - F.cross_entropy
+  - F.gelu
+  - classifier.parameters
+  - classifier.state_dict
+  - encoder.load_state_dict
+  - encoder.parameters
+  - encoder.state_dict
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loss.backward
+  - nn.Embedding
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.MultiheadAttention
+  - parameter.requires_grad_
+  - rows.ne
+  - self.attention
+  - self.ff1
+  - self.ff2
+  - self.norm1
+  - self.norm2
+  - self.position_embedding
+  - self.token_embedding
+  - spec.loader.exec_module
+  - stage1_optimizer.step
+  - stage1_optimizer.zero_grad
+  - stage2_optimizer.step
+  - stage2_optimizer.zero_grad
+  - state.ENCODER_TENSORS.items
+  - token_ids.eq
+  - torch.allclose
+  - torch.arange
+  - torch.equal
+  - torch.manual_seed
+  - torch.ones
+  - torch.optim.AdamW
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.triu
+  - valid.sum
+  - valid.unsqueeze
+  - value.detach
 - path: units/B2-020-language-transformers/practice/p22.ipynb
   kind: notebook
   semantic_sha256: 4d23c5c1080f629ffeb7a38c6762377a1fc9090a14befa7a6ea79e63bc135c0c
@@ -3662,6 +4874,48 @@ notebooks:
     - B2-020 — Practice p22
     - Your response
     cell_ordinal: 1
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - transformer-nlp-task-design
+  declared_problem_ids:
+  - B2-020-p22
+  api_tokens: []
+- path: units/B2-020-language-transformers/practice/p22_solution.ipynb
+  kind: notebook
+  semantic_sha256: eaaa5631e875eca716c284390de32effdc4283695b2d97381afb34a41313ff1d
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p22_solution.ipynb :: B2-020-language-transformers — Practice p22
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p22 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p22_solution.ipynb :: B2-020-language-transformers — Practice p22
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p22 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p22_solution.ipynb :: B2-020-language-transformers — Practice p22
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p22 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p22_solution.ipynb :: B2-020-language-transformers — Practice p22
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p22 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p22_solution.ipynb :: B2-020-language-transformers — Practice p22
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p22 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -3696,6 +4950,73 @@ notebooks:
   declared_problem_ids:
   - B2-020-p23
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p23_solution.ipynb
+  kind: notebook
+  semantic_sha256: 68c86dd201aa838ecebd1100098dd7a3c52848d78aa7344f9c381a424aafbd62
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p23_solution.ipynb :: B2-020-language-transformers — Practice p23
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p23 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p23_solution.ipynb :: B2-020-language-transformers — Practice p23
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p23 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p23_solution.ipynb :: B2-020-language-transformers — Practice p23
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p23 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p23_solution.ipynb :: B2-020-language-transformers — Practice p23
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p23 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p23_solution.ipynb :: B2-020-language-transformers — Practice p23
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p23 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - causal-language-modeling
+  - language-transformer
+  declared_problem_ids:
+  - B2-020-p23
+  api_tokens:
+  - F.cross_entropy
+  - F.gelu
+  - inputs.clone
+  - logits.reshape
+  - nn.Embedding
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.MultiheadAttention
+  - self.attention
+  - self.ff1
+  - self.ff2
+  - self.norm1
+  - self.norm2
+  - self.position_embedding
+  - self.token_embedding
+  - targets.reshape
+  - token_ids.eq
+  - torch.allclose
+  - torch.arange
+  - torch.manual_seed
+  - torch.ones
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.triu
 - path: units/B2-020-language-transformers/practice/p24.ipynb
   kind: notebook
   semantic_sha256: 801ef39bd661efbdb0d4e468f87e1aced9d1a6fd405494de74bc85aec2f76ada
@@ -3724,6 +5045,70 @@ notebooks:
   declared_problem_ids:
   - B2-020-p24
   api_tokens: []
+- path: units/B2-020-language-transformers/practice/p24_solution.ipynb
+  kind: notebook
+  semantic_sha256: d6d2bf54b24d3e7bf23d289180b95001a00d0ace227a3a4b047234e26e09f8ad
+  anchors:
+  - anchor: 'units/B2-020-language-transformers/practice/p24_solution.ipynb :: B2-020-language-transformers — Practice p24
+      — Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p24 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p24_solution.ipynb :: B2-020-language-transformers — Practice p24
+      — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p24 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p24_solution.ipynb :: B2-020-language-transformers — Practice p24
+      — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p24 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/practice/p24_solution.ipynb :: B2-020-language-transformers — Practice p24
+      — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-020-language-transformers — Practice p24 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p24_solution.ipynb :: B2-020-language-transformers — Practice p24
+      — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-020-language-transformers — Practice p24 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - nlp-fine-tuning-protocol
+  - nlp-pretraining-objectives
+  - transformer-nlp-task-design
+  declared_problem_ids:
+  - B2-020-p24
+  api_tokens:
+  - F.cross_entropy
+  - F.one_hot
+  - classifier.parameters
+  - classifier.state_dict
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loss.backward
+  - nn.Linear
+  - optimizer.step
+  - optimizer.zero_grad
+  - selected.sum
+  - spec.loader.exec_module
+  - torch.equal
+  - torch.full_like
+  - torch.manual_seed
+  - torch.ones
+  - torch.optim.AdamW
+  - torch.tensor
+  - true_tokens.clone
+  - value.detach
 - path: units/B2-020-language-transformers/review.ipynb
   kind: notebook
   semantic_sha256: b1c8c65dfd57403505be5ccf6ca8adffe08e945cf50fa2158604362fff4d6290
@@ -3774,6 +5159,3 @@ notebooks:
   - transformer-nlp-task-design
   declared_problem_ids: []
   api_tokens: []
-warnings:
-- '/home/chris/workshop/usaaio/book2/units/B2-020-language-transformers/manifest.yaml: solution debt deferred to plan-020
-  until 2026-09-30'

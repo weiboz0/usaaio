@@ -19,6 +19,7 @@ python_consumers:
   - tests/test_attention_mutations.py
   - tests/test_audit_curriculum.py
   - tests/test_b2_019_statements.py
+  - tests/test_b2_020_statements.py
   - tests/test_blueprint.py
   - tests/test_book2_schedule.py
   - tests/test_c11_solution_regressions.py
@@ -27,6 +28,7 @@ python_consumers:
   - tests/test_hygiene.py
   - tests/test_integration.py
   - tests/test_layer_boundary.py
+  - tests/test_language_transformer_checks.py
   - tests/test_model.py
   - tests/test_new_mocktest.py
   - tests/test_overlap.py

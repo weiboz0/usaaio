@@ -9,7 +9,8 @@ from nbclient import NotebookClient
 from nbclient.exceptions import CellExecutionError
 
 ROOT = Path(__file__).resolve().parents[1]
-UNIT = ROOT / "book2/units/B2-020-language-transformers"
+BOOK2_ROOT = ROOT / "book2"
+UNIT = BOOK2_ROOT / "units" / "B2-020-language-transformers"
 CI_LOCAL = ROOT / "scripts/ci-local.sh"
 
 FUNCTION_VARIANTS = (

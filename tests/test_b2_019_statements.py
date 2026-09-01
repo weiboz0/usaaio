@@ -28,6 +28,7 @@ BOOK1_ROOT = ROOT / "book1"
 BOOK2_ROOT = ROOT / "book2"
 UNIT_ID = "B2-019-attention-transformers"
 UNIT = BOOK2_ROOT / "units" / UNIT_ID
+LANGUAGE_UNIT_ID = "B2-020-language-transformers"
 SEED = 20260808
 
 LESSONS = [
@@ -1201,13 +1202,15 @@ def _copy_registered_statement_repo(
     shutil.copy2(BOOK1_ROOT / "syllabus.md", repo / "book1/syllabus.md")
     shutil.copytree(BOOK2_ROOT, repo / "book2")
     if not include_solutions:
-        for path in (repo / "book2").glob("units/*/practice/*_solution.ipynb"):
+        for path in (repo / "book2" / "units" / LANGUAGE_UNIT_ID).glob(
+            "practice/*_solution.ipynb"
+        ):
             path.unlink()
     return repo / "book2"
 
 
 def _install_solution_placeholders(book2: Path, count: int) -> None:
-    practice = book2 / "units" / UNIT_ID / "practice"
+    practice = book2 / "units" / LANGUAGE_UNIT_ID / "practice"
     for number in range(1, count + 1):
         shutil.copy2(
             practice / f"p{number:02}.ipynb",
@@ -1243,7 +1246,15 @@ def test_required_solution_policy_cannot_be_evaded_by_deleting_all_solutions(tmp
 
 
 def test_named_b2_020_deferred_policy_emits_plan_linked_expiring_debt(tmp_path: Path) -> None:
-    book2 = _copy_registered_statement_repo(tmp_path / "deferred", include_solutions=True)
+    book2 = _copy_registered_statement_repo(tmp_path / "deferred")
+    manifest_path = book2 / "units" / LANGUAGE_UNIT_ID / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest["solution_policy"] = {
+        "status": "deferred",
+        "plan": "plan-020",
+        "expires": "2026-09-30",
+    }
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
 
     expected = "solution debt deferred to plan-020 until 2026-09-30"
     coverage = check_coverage(book2)

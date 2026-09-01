@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from datetime import date
 import os
-from pathlib import Path
 import subprocess
+from datetime import date
+from pathlib import Path
 
 import pytest
 
@@ -30,6 +30,7 @@ def test_historical_script_uses_current_verifier_for_pre_verifier_archive() -> N
         cwd=ROOT,
         env=env,
         capture_output=True,
+        check=False,
         text=True,
     )
     assert result.returncode == 0, result.stderr

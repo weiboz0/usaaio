@@ -527,9 +527,6 @@ def build_inventory(
     expected_book_number: int | None = None,
 ) -> dict[str, Any]:
     root = Path(root).resolve()
-    # Use the shared typed manifest parser before raw-YAML inventory work so the
-    # inventory cannot accept lifecycle debt rejected by coverage or boundaries.
-    load_unit_manifests(root)
     _validate_input_file(root / "syllabus.md", root, "syllabus.md", "syllabus")
     syllabus_record, syllabus = _syllabus_record(root / "syllabus.md")
     unit_manifests = sorted(root.glob("units/*/manifest.yaml"), key=lambda item: _posix(item, root).encode("utf-8"))
@@ -541,6 +538,10 @@ def build_inventory(
         _validate_input_file(path, root / "mocktests", _posix(path, root), "manifest")
     for path in synthesis_manifests:
         _validate_input_file(path, root / "synthesis", _posix(path, root), "manifest")
+    # Preserve audit's file-validation precedence, then use the shared typed
+    # parser so inventory cannot accept lifecycle debt rejected by coverage or
+    # boundaries.
+    load_unit_manifests(root)
     manifest_paths = unit_manifests + mock_manifests + synthesis_manifests
     manifests = [syllabus_record] + [manifest_record(path, _posix(path, root)) for path in manifest_paths]
 

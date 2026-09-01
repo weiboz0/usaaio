@@ -13,10 +13,10 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 1069 |
+| Unit notebooks | 1093 |
 | Mock notebooks | 10 |
 | Unit practices | 485 |
-| Total inventoried notebooks | 1079 |
+| Total inventoried notebooks | 1103 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |

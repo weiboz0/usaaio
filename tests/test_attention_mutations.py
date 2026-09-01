@@ -266,7 +266,17 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
         and point_id != "nlp-tokenization"
     }
     assert later
-    assert {points[point_id]["coverage"] for point_id in later} <= {"missing", "partial"}
+    covered_later = {
+        point_id for point_id in later if points[point_id]["coverage"] == "covered"
+    }
+    assert covered_later == {
+        "nlp-word-embeddings",
+        "nlp-transformers",
+        "nlp-pretraining",
+        "nlp-fine-tuning",
+        "transformer-nlp-applications",
+    }
+    assert {points[point_id]["coverage"] for point_id in later} <= {"covered", "missing"}
 
     non_target_roadmap = {
         **roadmap,
@@ -284,7 +294,7 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
             ensure_ascii=False,
         ).encode()
     ).hexdigest()
-    assert unchanged_digest == "8a6a0adddc6f0f284471a759ebd07b6a633a32514d7c049b44b20a696475422b"
+    assert unchanged_digest == "67601f636753145239ec413a408ef2f308c6130459ef5ac0a0cdbf1d68ab9bd3"
 
 
 def test_attention_manifest_adds_only_the_exact_seven_evidence_claims() -> None:

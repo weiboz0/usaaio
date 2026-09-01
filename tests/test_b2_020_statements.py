@@ -18,6 +18,7 @@ from tools.checks.layer_boundary import check_layer_boundary
 from tools.model import load_syllabus, load_unit_manifests
 
 ROOT = Path(__file__).resolve().parents[1]
+BOOK1_ROOT = ROOT / "book1"
 BOOK2_ROOT = ROOT / "book2"
 UNIT_ID = "B2-020-language-transformers"
 UNIT = BOOK2_ROOT / "units" / UNIT_ID
@@ -200,7 +201,7 @@ def _copy_book2(tmp_path: Path) -> Path:
     repo.mkdir(parents=True)
     shutil.copy2(ROOT / "books.yaml", repo / "books.yaml")
     (repo / "book1").mkdir()
-    shutil.copy2(ROOT / "book1/syllabus.md", repo / "book1/syllabus.md")
+    shutil.copy2(BOOK1_ROOT / "syllabus.md", repo / "book1/syllabus.md")
     shutil.copytree(BOOK2_ROOT, repo / "book2")
     return repo / "book2"
 
