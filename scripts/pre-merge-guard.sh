@@ -53,7 +53,7 @@ require_enforcement_file() {
 }
 require_enforcement_file "$scope_verifier" \
   100755 \
-  6e8819d2ae6ac5fe5f81aaf43a4a38d6fbf79ac18c394d429a7e59fe27f2f17a
+  9153dc4396799356c6d77fe19b439d742d6d31a75c388624374f0bb0eb5129ef
 require_enforcement_file "$scope_inventory" \
   100644 \
   669f587b5526cd5fa5df662a43e4d92f11e876f5b730d1f43166e6c314627f68

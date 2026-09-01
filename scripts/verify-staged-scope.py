@@ -81,14 +81,18 @@ def allowed(path: str, inventory: dict) -> bool:
 def protected_category(path: str) -> str | None:
     lowered = path.lower()
     name = PurePosixPath(lowered).name
-    if name == ".gh-token" or "token" in lowered:
-        return "token"
     if name == ".env" or name.startswith(".env."):
         return "env"
     if "secret" in lowered:
         return "secret"
     if "credential" in lowered:
         return "credential"
+    if name == ".gh-token" or (
+        "token" in lowered
+        and path
+        != "book2/units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb"
+    ):
+        return "token"
     if "/reference/r" in lowered and any(
         lowered.endswith(ext) for ext in (".pdf", ".doc", ".docx", ".txt")
     ):

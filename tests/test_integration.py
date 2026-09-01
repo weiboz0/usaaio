@@ -1711,6 +1711,36 @@ def test_pre_merge_guard_rejects_staged_protected_path(tmp_path: Path) -> None:
     assert "protected env path" in proc.stdout + proc.stderr
 
 
+def test_pre_merge_guard_allows_the_declared_language_token_lesson(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    _install_pre_merge_enforcement(repo)
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+    lesson = (
+        repo
+        / "book2/units/B2-020-language-transformers/lessons"
+        / "01-train-token-embeddings.ipynb"
+    )
+    lesson.parent.mkdir(parents=True)
+    lesson.write_text("{}\n", encoding="utf-8")
+    _git(repo, "add", lesson.relative_to(repo).as_posix())
+
+    proc = subprocess.run(
+        ["bash", "scripts/pre-merge-guard.sh"],
+        cwd=repo,
+        env=_fake_uv_environment(tmp_path),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
 @pytest.mark.parametrize(
     ("mutation", "targets"),
     [
