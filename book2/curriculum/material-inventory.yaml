@@ -2877,7 +2877,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
   kind: notebook
-  semantic_sha256: 9e5f287bad5f9edf1c9f1bd1faeffef93487f2818f528a2ec98de79a860e59f5
+  semantic_sha256: 5b07d5881eff9d79f47330c8d63797aa163aa787e8de53b7e81ef45e604e7941
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
       Objectives :: cell 1'
@@ -2915,10 +2915,10 @@ notebooks:
     - '4. Architecture delta: learned positions'
     cell_ordinal: 1
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
-      Objectives > 5. Architecture delta: GELU and the pinned block :: cell 1'
+      Objectives > 5. Architecture delta: GELU and the pinned pretraining block :: cell 1'
     heading_path:
     - 'B2-020 — Session 3: Pretraining Objectives'
-    - '5. Architecture delta: GELU and the pinned block'
+    - '5. Architecture delta: GELU and the pinned pretraining block'
     cell_ordinal: 1
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
       Objectives > 6. AdamW and the sequential protocol :: cell 1'
@@ -4373,7 +4373,7 @@ notebooks:
   - torch.topk
 - path: units/B2-020-language-transformers/practice/p18.ipynb
   kind: notebook
-  semantic_sha256: b7d4f0dce8c346da79cb7d70b9de3875da39862117854fce88864404786cffe2
+  semantic_sha256: cf3ddfb94c4c9b280df806910d81adbb72321391091e42290890a122705ac144
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p18.ipynb :: B2-020 — Practice p18 > Task :: cell 1'
     heading_path:
@@ -4406,7 +4406,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p18_solution.ipynb
   kind: notebook
-  semantic_sha256: 0348e1fe6d6ae1a61724ea05e0d22db2e1bacfd92073a5e0fc6e54e723a93ba7
+  semantic_sha256: 8caef513586cc7cc81dbbdda7a43c5fffb28a459a6d83bee3ae214abd0b1e416
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p18_solution.ipynb :: B2-020-language-transformers — Practice p18
       — Solution :: cell 1'
@@ -4470,26 +4470,29 @@ notebooks:
   - nn.MultiheadAttention
   - optimizer.step
   - optimizer.zero_grad
+  - positions.unsqueeze
   - prefix_rows.clone
   - self.attention
   - self.ff1
   - self.ff2
   - self.norm1
   - self.norm2
-  - self.position_embedding
   - self.token_embedding
   - spec.loader.exec_module
   - targets.ne
   - token_ids.eq
   - torch.allclose
   - torch.arange
+  - torch.cos
   - torch.equal
   - torch.manual_seed
   - torch.ones
   - torch.optim.AdamW
   - torch.set_num_threads
+  - torch.sin
   - torch.tensor
   - torch.triu
+  - torch.zeros
 - path: units/B2-020-language-transformers/practice/p19.ipynb
   kind: notebook
   semantic_sha256: 4c0f0cb643f7cd1f026961c12125f3dab49761d78ee9ba7a6154bca673e530ff
