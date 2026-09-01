@@ -104,7 +104,7 @@ and tolerances; every solution ends with `### Answer check`.
 
 | ID | Set | Type | Difficulty | Minutes | Primary scored contract |
 |---|---|---|---:|---:|---|
-| p01 | A | mc-normal-form | intro | 20 | derive normalized numeric patch count and token shape from image/patch dimensions |
+| p01 | A | mc-normal-form | intro | 20 | derive a patch-count/token-shape rational, reduce it to `a/b` with `gcd(a,b)=1` and `b>0`, then select normalized `a+b` from exactly five A–E choices |
 | p02 | A | mc | intro | 20 | distinguish class token, position token, and patch token roles |
 | p03 | A | mc | core | 20 | select a valid ViT class-logit path and reject channel/sequence confusion |
 | p04 | A | mc | intro | 20 | compute box intersection, union, and IoU from two literal boxes |
@@ -185,7 +185,7 @@ Do not alter B2-022 through B2-024 coverage rows.
 
 **Task-2 temporary inputs (uncommitted, outside the scanned Book 2 tree):**
 
-- Create: `/tmp/usaaio-b2-021-draft/` with the future unit layout, SHA-256
+- Create: a `mktemp -d` draft root with the future unit layout, SHA-256
   manifest, lessons, fixture generator, and `p01.ipynb` through `p24.ipynb`.
 
 **Published-file targets (created only by Task 3's atomic copy):**
@@ -198,17 +198,17 @@ Do not alter B2-022 through B2-024 coverage rows.
 - `book2/units/B2-021-cross-modal-transformers-vision/scripts/generate_vision_data.py`
 - `book2/units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb` through `p24.ipynb`
 
-- [ ] Write and run transient statement-bundle checks inside the temporary directory: every declared notebook/data path, unexecuted student code cells, headers, lesson checkpoints/answers, exact 24-row ledger, three-practice concept coverage, and primary evidence for all twelve coverage modalities. Do not commit these checks because their source is not present in a fresh checkout; Task 3 creates the equivalent committed `tests/test_b2_021_statements.py` only after the final tree exists.
+- [ ] Write and run transient statement-bundle checks inside the `mktemp -d` directory: regular nonsymlink files only, an exact allowlist with no extras, every declared notebook/data path, unexecuted student code cells, headers, lesson checkpoints/answers, exact 24-row ledger, p01's five A–E choices and gcd/sign normalization, three-practice concept coverage, and primary evidence for all twelve coverage modalities. Store the expected SHA-256 manifest outside the mutable bundle; do not commit these checks because their source is not present in a fresh checkout. Task 3 creates the equivalent committed `tests/test_b2_021_statements.py` only after the final tree exists.
 - [ ] Create a temporary, deterministic statement/fixture bundle containing literal 8x8-or-smaller image, box, mask, graph, and immutable train/held-out IDs, plus a separately seeded initial-state generator; document every coordinate convention and prohibit external data/imports. `vision_fixture.py` canonically serializes and hashes the literal data/splits, while `generate_vision_data.py --check` regenerates only the initial-state tensors from the stated seed and verifies both their hashes and the literals' canonical hashes. It must never store or emit trained weights or final metrics.
 - [ ] Author the bridge, overview, five lessons, review, and student statements in prerequisite order. Lessons must teach every API, loss, metric, and shape used by later practice before it appears.
-- [ ] Do not register a live `units/B2-021-*` manifest or promote coverage in this task. Draft the statements and fixture sources in a temporary, uncommitted directory outside `book2/units/` (for example `/tmp/usaaio-b2-021-draft`), write a SHA-256 file manifest for that bundle, and pass only that hash-verified student-facing bundle to the blind solution session. Tasks 2 and 3 are one contiguous session: no handoff, reboot, or commit boundary may depend on a temporary bundle; if it is lost, regenerate it before blind solving. Retain B2-021 as planned until Task 3 copies the bundle unchanged into `book2/units/` and publishes it with solutions, manifest, schedule, and coverage atomically; this avoids both a committed required-solution manifest without its solutions and an incomplete unit directory that the global audit discovers.
+- [ ] Do not register a live `units/B2-021-*` manifest or promote coverage in this task. Draft the statements and fixture sources in the unique temporary root outside `book2/units/`, write a SHA-256 file manifest, and pass only that hash-verified student-facing bundle to the blind solution session. Tasks 2 and 3 are one contiguous session; if a bundle is lost, regenerate it before blind solving. Retain B2-021 as planned until Task 3 verifies the external digest, copies the bundle unchanged into `book2/units/`, then removes both temporary roots after publication.
 - [ ] Run only the isolated statement-artifact checks in this task; global Book 2 audit/checker runs wait for Task 3's atomic publication.
 
 ### Task 3 — Blind-author solutions and execute them
 
 **Files:**
 
-- Create: `/tmp/usaaio-b2-021-solutions/` holding the blind solution notebooks
+- Create: a second `mktemp -d` solution root holding the blind solution notebooks
   beside a hash-verified copy of the Task-2 statement/fixture bundle
 - Modify: `book2/units/B2-021-cross-modal-transformers-vision/manifest.yaml`
 - Modify: `book2/syllabus.md`
@@ -223,12 +223,15 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Modify: `tests/test_b2_020_statements.py`
 - Modify: `tests/test_b2_019_statements.py`
 - Modify: `tests/test_integration.py`
+- Modify: `tests/test_audit_curriculum.py`
+- Modify: `tests/fixtures/plan019-path-inventory.yaml`
+- Modify: `scripts/pre-merge-guard.sh`
 - Create: `tests/test_b2_021_statements.py`
 - Modify: `tests/test_b2_021_statements.py`
 
-- [ ] Dispatch a fresh blind solution author that receives only the SHA-256-verified temporary statement/fixture bundle and learner lessons; it must write/execute all solutions in a second temporary directory (`/tmp/usaaio-b2-021-solutions/`), and must not read statement-author outlines, source notebooks outside that bundle, reference metrics, or prior solution notes. Run the hash-equality check as a transient publication-time command and record its result in the post-execution report; do not commit a test that refers to a vanished temporary path.
-- [ ] Add a separate solution notebook for every statement, with no stored outputs and a final `### Answer check`. p17 uses a 2x2-patch, dimension-8, one-head class-token ViT trained with AdamW (`lr=0.05`, 12 ordered updates); p18 uses the declared 4x4 grid detector with AdamW (`lr=0.05`, 16 ordered updates); p19 uses the declared one-down/one-up U-Net with AdamW (`lr=0.03`, 16 ordered updates); p20 uses the declared four-node, dimension-8, one-head graph-token classifier with AdamW (`lr=0.05`, 12 ordered updates). Each names immutable train/held-out IDs from `vision_fixture.py`, reconstructs its seeded baseline from the initial-state generator, records update count/order plus dtype/shape probes, and pins `atol`/`rtol` for numeric assertions. Solutions and learner notebooks may not import or load final weights, final metrics, or CI reference modules.
-- [ ] Publish the live unit atomically: add its complete B2-021 `units:` syllabus entry with the exact prerequisite list above, add the three newly permitted CNN imports (`convolution`, `feature-maps`, `cnn-training`), copy the hash-verified statement corpus and all 24 temporary solution notebooks as one complete unit tree into `book2/units/`, append its six-week schedule, promote only its four coverage rows, update the double-length shipped-unit standards roster and the exact B2-019/B2-020/integration consumers, and regenerate inventory, Book 2 course structure, shared roadmap, and `docs/audits/015-coverage-audit.md`. No committed state may expose a required solution path that does not exist.
+- [ ] Dispatch a fresh blind solution author that receives only the SHA-256-verified temporary statement/fixture bundle and learner lessons; it must write/execute all solutions in the second unique temporary directory, and must not read statement-author outlines, source notebooks outside that bundle, reference metrics, or prior solution notes. Verify the external digest and regular-file allowlist before publication; record the transient check in the post-execution report.
+- [ ] Add a separate solution notebook for every statement, with no stored outputs and a final `### Answer check`. Freeze `SEED=20260901`, construction order, canonical train-ID batch order, mean loss reduction, and AdamW `(betas=(0.9,0.999), eps=1e-8, weight_decay=0.0)` for p17–p20. p17 `train_vit_classifier(model, batch, optimizer)` is 2x2-patch/dim-8/one-head/class-token, `lr=.05`, 12 updates; p18 `train_grid_detector(model, batch, optimizer)` is 4x4 grid, `lr=.05`, 16; p19 `train_unet_segmenter(model, batch, optimizer)` is one-down/one-up, `lr=.03`, 16; p20 `train_graph_token_classifier(model, batch, optimizer)` is four-node/dim-8/one-head, `lr=.05`, 12. p24 exposes `audit_cross_modal_sources(trace)`. Each names immutable splits, reconstructs seeded baseline, records update trace/probes and `atol`/`rtol`; no learner/solution imports final weights, metrics, or CI reference modules.
+- [ ] Publish the live unit atomically: add its complete B2-021 `units:` syllabus entry with the exact prerequisite list above, add the three CNN imports, clear B2-021 `planned_units.provisional_concepts` to `[]`, copy the verified complete unit tree, append schedule, promote only four coverage rows, update standards and B2-019/B2-020/integration/audit consumers, classify all new path-bearing tests/fixture in `plan019-path-inventory.yaml` and update its guard SHA, then regenerate inventory/course structure/roadmap/audit. Rebaseline audit rendered hours to manifested `534.42–574.42` and scheduled `539.42–579.42`; no committed state may expose a required solution path missing.
 - [ ] Execute every solution notebook from the Book 2 root without `--inplace`; record actual elapsed time and fail any B2-021 solution exceeding 20 seconds.
 - [ ] Run student hygiene, solution execution, Book 2 prereq/coverage/scope/layer checks, the pinned 18-week/4,970-minute/72-practice live-ledger and shipped-roster consumers, `python -m tools.audit_curriculum --root book2 --check`, `python -m tools.render_curriculum_roadmap --root . --check`, and commit the atomic statement-and-solution publication.
 
