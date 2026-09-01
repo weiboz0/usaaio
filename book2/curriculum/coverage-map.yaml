@@ -710,7 +710,7 @@ knowledge_points:
         cell_ordinal: 1
         role: primary
       practices:
-      - id: B2-020-p23
+      - id: B2-020-p18
         role: primary
       assessments: []
   disposition: new-unit
@@ -758,7 +758,7 @@ knowledge_points:
         cell_ordinal: 1
         role: primary
       practices:
-      - id: B2-020-p24
+      - id: B2-020-p19
         role: primary
       assessments: []
   disposition: new-unit

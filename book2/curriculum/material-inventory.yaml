@@ -116,7 +116,7 @@ manifests:
   semantic_sha256: e6dd52f9851fe91c1f86e8cfc45f0d1c25c7fa78f0524abd9d34322c0b19dd29
 - path: units/B2-020-language-transformers/manifest.yaml
   kind: yaml
-  semantic_sha256: eb192d0af0a22b34ea6d96658facca8770342bd2c0672ce44ec8f7582eee5ff3
+  semantic_sha256: 7602260e960a6294801cb2e930ad7abb6f48cbb4f22a5e36c9bd438d0de2848f
 notebooks:
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
@@ -2685,7 +2685,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
   kind: notebook
-  semantic_sha256: 7c84010643ee2aaca00525c37f4d6b80cc10bc9136ff3dc54892c4b5980273ba
+  semantic_sha256: f461cbc3c9f6e325e4998a148b14e4d5708415f2573cf5f08771545feed86e5c
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
       Embeddings :: cell 1'
@@ -2746,6 +2746,12 @@ notebooks:
     - 'B2-020 — Session 1: Train Token Embeddings'
     - 8. Exam connections and Going deeper
     cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
+      Embeddings > Collected checkpoint answers :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 1: Train Token Embeddings'
+    - Collected checkpoint answers
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -2763,7 +2769,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb
   kind: notebook
-  semantic_sha256: 3247cc9e91e9b987b30a59425936d68ebae3ae17080885b3372cf294b6b9ea15
+  semantic_sha256: 988a1040cd2da2b125699a6725de53cdc481118f8227b286d94d3da109c668f4
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
       Causal Transformer Language Model :: cell 1'
@@ -2824,6 +2830,12 @@ notebooks:
     - 'B2-020 — Session 2: Causal Transformer Language Model'
     - 8. Exam connections and Going deeper
     cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2:
+      Causal Transformer Language Model > Collected checkpoint answers :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 2: Causal Transformer Language Model'
+    - Collected checkpoint answers
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -2841,7 +2853,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
   kind: notebook
-  semantic_sha256: b7dca4109b1095f66014bd9c98c4459b522f4e3dddcafd4c7baf9b45459cf1cc
+  semantic_sha256: 1dfe931ec34e5ebeb43094cd36aa572ce0c73dad6e56a96e9f5473d963eb5959
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
       Objectives :: cell 1'
@@ -2902,6 +2914,12 @@ notebooks:
     - 'B2-020 — Session 3: Pretraining Objectives'
     - 8. Common pitfalls, Exam connections, and Going deeper
     cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > Collected checkpoint answers :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - Collected checkpoint answers
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -2919,7 +2937,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
   kind: notebook
-  semantic_sha256: fcd1fdfe0c1cdc92d523da9a322d5ba15b0f342842ec81237460ae149582de96
+  semantic_sha256: 3f1191f814e9903aef93e9ee88496cb20a950a68fa0fe2b5c85ff3a2b1d2a851
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
       a Language Transformer :: cell 1'
@@ -2980,6 +2998,12 @@ notebooks:
     - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
     - 8. Exam connections and Going deeper
     cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb :: B2-020 — Session 4: Fine-Tune
+      a Language Transformer > Collected checkpoint answers :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 4: Fine-Tune a Language Transformer'
+    - Collected checkpoint answers
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -2997,7 +3021,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb
   kind: notebook
-  semantic_sha256: f8b52d3b7bb10676da74b489a24990fe5a6a83d13887bb98095483eb595cce58
+  semantic_sha256: 7987d7148a641116ae835002f055bb1e7e16f0630e211dcf9c600611946e7bc3
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
       Task Design and Audit :: cell 1'
@@ -3057,6 +3081,12 @@ notebooks:
     heading_path:
     - 'B2-020 — Session 5: Language Task Design and Audit'
     - 8. Common pitfalls, Exam connections, and Going deeper
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lessons/05-language-task-design-and-audit.ipynb :: B2-020 — Session 5: Language
+      Task Design and Audit > Collected checkpoint answers :: cell 1'
+    heading_path:
+    - 'B2-020 — Session 5: Language Task Design and Audit'
+    - Collected checkpoint answers
     cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
@@ -3450,7 +3480,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: 2f89360ec39bc80eec176d0652aa0ba3182990ec83df99c7bc801fc1f91257cf
+  semantic_sha256: 227437d2699d5100a768da6056805a2b8375fdce31d29506b6b718791c8e4874
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p17.ipynb :: B2-020 — Practice p17 > Task :: cell 1'
     heading_path:
@@ -3467,6 +3497,12 @@ notebooks:
     - B2-020 — Practice p17
     - Your response
     cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p17.ipynb :: B2-020 — Practice p17 > Pinned reproducibility protocol
+      :: cell 1'
+    heading_path:
+    - B2-020 — Practice p17
+    - Pinned reproducibility protocol
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -3477,7 +3513,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p18.ipynb
   kind: notebook
-  semantic_sha256: 536d906a0d62dc0a7c2cfeb0e9430e9cc03ee0f4cb63a997ccfe0c9a4e927624
+  semantic_sha256: 634f91d155600aeea387be429790ffcabe7f2eb7077179d3a88ed6fb4c1cf1bb
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p18.ipynb :: B2-020 — Practice p18 > Task :: cell 1'
     heading_path:
@@ -3494,6 +3530,12 @@ notebooks:
     - B2-020 — Practice p18
     - Your response
     cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p18.ipynb :: B2-020 — Practice p18 > Pinned reproducibility protocol
+      :: cell 1'
+    heading_path:
+    - B2-020 — Practice p18
+    - Pinned reproducibility protocol
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -3504,7 +3546,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p19.ipynb
   kind: notebook
-  semantic_sha256: 0bcdb684ade4d6a6f01272c389f2526eadd33d5b00360c1d225f4bee5cee8739
+  semantic_sha256: e7b7bfde07466018bee4335b12adbceff1a53db3c7bddeac9f4d8e459e5079bd
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p19.ipynb :: B2-020 — Practice p19 > Task :: cell 1'
     heading_path:
@@ -3521,6 +3563,12 @@ notebooks:
     - B2-020 — Practice p19
     - Your response
     cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p19.ipynb :: B2-020 — Practice p19 > Pinned held-out certificate
+      :: cell 1'
+    heading_path:
+    - B2-020 — Practice p19
+    - Pinned held-out certificate
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -3532,7 +3580,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p20.ipynb
   kind: notebook
-  semantic_sha256: 0ac6c55cdf32a0891cda1bdcd5b1bbbe515452c8b1190fd24f58f379949e0fad
+  semantic_sha256: 98b65b9b196eab02394257d8e6409636deafa19e55bdb23d4981bf6c7ac177c8
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p20.ipynb :: B2-020 — Practice p20 > Task :: cell 1'
     heading_path:
@@ -3549,6 +3597,12 @@ notebooks:
     - B2-020 — Practice p20
     - Your response
     cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p20.ipynb :: B2-020 — Practice p20 > Pinned reproducibility protocol
+      :: cell 1'
+    heading_path:
+    - B2-020 — Practice p20
+    - Pinned reproducibility protocol
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -3559,7 +3613,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p21.ipynb
   kind: notebook
-  semantic_sha256: 8675d437439667deaabd0fc51991d8a6f99e6b85f0a9ba25054caa6a41df0a34
+  semantic_sha256: 532a81efe598c40d30a88c9df4a4850a6e4d6ff0a14b6c76d0ca1a6db52dac94
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p21.ipynb :: B2-020 — Practice p21 > Task :: cell 1'
     heading_path:
@@ -3575,6 +3629,12 @@ notebooks:
     heading_path:
     - B2-020 — Practice p21
     - Your response
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/practice/p21.ipynb :: B2-020 — Practice p21 > Pinned reproducibility protocol
+      :: cell 1'
+    heading_path:
+    - B2-020 — Practice p21
+    - Pinned reproducibility protocol
     cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers

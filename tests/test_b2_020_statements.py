@@ -157,11 +157,17 @@ def test_lessons_have_substantive_sections_checkpoints_and_required_spine() -> N
         )
         assert 6 <= section_count <= 10
         assert source.count("**Checkpoint") >= 2 * section_count
+        assert "## Collected checkpoint answers" in source
+        assert source.count("**Answer ") >= 2 * section_count
         assert "Common pitfalls" in source
         assert "Exam connections" in source
         assert "Going deeper" in source
         for needle in needles:
             assert needle.lower() in source.lower()
+    for name in ("01-train-token-embeddings.ipynb", "04-fine-tune-a-language-transformer.ipynb"):
+        source = _source(UNIT / "lessons" / name)
+        assert "**Fully worked computation.**" in source
+        assert "=" in source
 
 
 def test_bridge_distinguishes_remediation_from_attention_prerequisite() -> None:
@@ -200,6 +206,20 @@ def test_five_integrity_function_names_are_pinned_in_statements() -> None:
     assert "optimizer_step" in _source(UNIT / "practice/p19.ipynb")
 
 
+def test_training_practices_pin_literal_reproducible_protocols() -> None:
+    required = {
+        "p17": ("language_fixture.py", "AdamW", "lr=0.03", "40 full-batch updates"),
+        "p18": ("language_fixture.py", "AdamW", "lr=0.03", "exactly 80 full-batch updates"),
+        "p19": ("CAUSAL_HELDOUT_IDS", "MIN_ABSOLUTE_LOSS_IMPROVEMENTS", "ATOL=1e-5", "RTOL=1e-5"),
+        "p20": ("language_fixture.py", "AdamW", "lr=0.03", "exactly 40 full-batch updates"),
+        "p21": ("language_fixture.py", "AdamW", "lr=0.03", "20 + 20 full-batch updates"),
+    }
+    for practice, needles in required.items():
+        source = _source(UNIT / "practice" / f"{practice}.ipynb")
+        for needle in needles:
+            assert needle in source
+
+
 def test_syllabus_and_standards_publish_b2_020_as_double_length() -> None:
     syllabus = load_syllabus(BOOK2_ROOT)
     unit = syllabus.units[UNIT_ID]
@@ -232,6 +252,41 @@ def test_generator_exports_protocol_and_tracked_state_contract() -> None:
     assert checkpoint_ns.ENCODER_STATE_HASH == state_ns.ENCODER_STATE_HASH
     assert set(vars(state_ns)) & {"INITIAL_LOSSES", "FINAL_LOSSES", "PROBE_EXPECTED_TOP1_IDS"} == set()
     module.verify_committed_artifacts()
+
+
+def test_generator_instruments_actual_masks_and_one_optimizer(monkeypatch) -> None:
+    script = UNIT / "scripts/generate_language_data.py"
+    spec = importlib.util.spec_from_file_location("b2_020_generator_instrumented", script)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    observed_masks: list[str] = []
+    optimizers = []
+    original_forward = module.TinyEncoder.forward
+    original_adamw = module.torch.optim.AdamW
+
+    def observed_forward(self, token_ids, *, mask_mode):
+        observed_masks.append(mask_mode)
+        return original_forward(self, token_ids, mask_mode=mask_mode)
+
+    class ObservedAdamW(original_adamw):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            optimizers.append(self)
+
+    monkeypatch.setattr(module.TinyEncoder, "forward", observed_forward)
+    monkeypatch.setattr(module.torch.optim, "AdamW", ObservedAdamW)
+    monkeypatch.setattr(
+        module,
+        "_heldout_metrics",
+        lambda encoder, head, fixture: ({"causal": 2.0, "mlm": 2.0}, {}),
+    )
+
+    protocol = module.generate_protocol()
+
+    assert observed_masks == ["causal"] * 40 + ["bidirectional"] * 40
+    assert len(optimizers) == 1
+    assert [row["optimizer_step"] for row in protocol["trace"]] == list(range(1, 81))
 
 
 def test_checkpoint_verifier_recomputes_seeded_initial_baseline(monkeypatch) -> None:
@@ -281,6 +336,12 @@ def test_coverage_promotes_exact_five_rows_without_book1_embedding_evidence() ->
                 practice_concepts[practice["id"]] & shipped
                 for practice in evidence["practices"]
             )
+    assert claims["nlp-transformers"]["evidence_by_modality"]["model-training"]["practices"] == [
+        {"id": "B2-020-p18", "role": "primary"}
+    ]
+    assert claims["nlp-pretraining"]["evidence_by_modality"]["model-training"]["practices"] == [
+        {"id": "B2-020-p19", "role": "primary"}
+    ]
     assert rows["nlp-word-embeddings"]["destination"] == UNIT_ID
     assert rows["nlp-word-embeddings"]["disposition"] == "new-unit"
     assert rows["nlp-word-embeddings"]["shipped_concepts"] == ["learned-token-embedding"]

@@ -2054,13 +2054,13 @@ Assessments: —
 - **implementation practices:** book2:B2-020-p11
 - **implementation assessments:** —
 - **model-training lessons:** book2:units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining Objectives > 6. AdamW and the sequential protocol :: cell 1
-- **model-training practices:** book2:B2-020-p24
+- **model-training practices:** book2:B2-020-p19
 - **model-training assessments:** —
 - **theory lessons:** book2:units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining Objectives > 1. Two pretraining objectives :: cell 1
 - **theory practices:** book2:B2-020-p05
 - **theory assessments:** —
 
-Practices: book2:B2-020-p05, book2:B2-020-p11, book2:B2-020-p24
+Practices: book2:B2-020-p05, book2:B2-020-p11, book2:B2-020-p19
 
 Assessments: —
 
@@ -2107,13 +2107,13 @@ Assessments: book1:r1-001-p05-1, book1:r1-001-p05-2
 - **implementation practices:** book2:B2-020-p08
 - **implementation assessments:** —
 - **model-training lessons:** book2:units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2: Causal Transformer Language Model > 6. Training and held-out evaluation :: cell 1
-- **model-training practices:** book2:B2-020-p23
+- **model-training practices:** book2:B2-020-p18
 - **model-training assessments:** —
 - **theory lessons:** book2:units/B2-020-language-transformers/lessons/02-causal-transformer-language-model.ipynb :: B2-020 — Session 2: Causal Transformer Language Model > 1. Language Transformer input contract :: cell 1
 - **theory practices:** book2:B2-020-p04
 - **theory assessments:** —
 
-Practices: book2:B2-020-p04, book2:B2-020-p08, book2:B2-020-p23
+Practices: book2:B2-020-p04, book2:B2-020-p08, book2:B2-020-p18
 
 Assessments: —
 
