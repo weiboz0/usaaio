@@ -405,7 +405,7 @@ def test_training_practices_pin_literal_reproducible_protocols() -> None:
     required = {
         "p17": ("language_fixture.py", "AdamW", "lr=0.03", "40 full-batch updates"),
         "p18": ("language_fixture.py", "AdamW", "lr=0.03", "exactly 80 full-batch updates"),
-        "p19": ("[4, 4, 4, 4, 4, 4, 0, 0]", "causal >= 1.020881", "mlm >= 0.969689", "causal_row0_after_red=4", "ATOL=1e-5", "RTOL=1e-5", "padding_idx=0", "key_padding_mask=token_ids.eq(0)"),
+        "p19": ("[4, 4, 4, 4, 4, 4, 0, 0]", "causal >= 1.020881", "mlm >= 0.969689", "causal_row0_after_red=4", "ATOL=1e-5", "RTOL=1e-5", "padding_idx=0", "key_padding_mask=token_ids.eq(0)", "construct `TinyEncoder` before the distinct `Linear(8,12)` head"),
         "p20": ("language_fixture.py", "AdamW", "lr=0.03", "exactly 40 full-batch updates"),
         "p21": ("language_fixture.py", "AdamW", "lr=0.03", "20 + 20 full-batch updates"),
     }

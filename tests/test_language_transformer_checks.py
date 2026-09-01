@@ -122,7 +122,8 @@ PROTOCOL_VARIANTS = (
     pytest.param(
         "p20",
         """def loaded_encoder():
-    assert state.ENCODER_STATE_HASH == EXPECTED_STATE_HASH
+    computed_state_hash = state.canonical_encoder_state_hash(state.ENCODER_TENSORS)
+    assert state.ENCODER_STATE_HASH == EXPECTED_STATE_HASH == computed_state_hash
     encoder = TinyEncoder()
     tensor_state = {name: torch.tensor(value, dtype=torch.float32) for name, value in state.ENCODER_TENSORS.items()}
     encoder.load_state_dict(tensor_state, strict=True)

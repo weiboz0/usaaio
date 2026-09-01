@@ -2877,7 +2877,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
   kind: notebook
-  semantic_sha256: 62a67707f34701f19359a6d80b34fa0fbe1232696d6edf8b1ab4157e7433230b
+  semantic_sha256: 9e5f287bad5f9edf1c9f1bd1faeffef93487f2818f528a2ec98de79a860e59f5
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
       Objectives :: cell 1'
@@ -4492,7 +4492,7 @@ notebooks:
   - torch.triu
 - path: units/B2-020-language-transformers/practice/p19.ipynb
   kind: notebook
-  semantic_sha256: 4e5fe3775a8260dedf550952b25768c1c73d971708aae631f7e6db351974acc7
+  semantic_sha256: 4c0f0cb643f7cd1f026961c12125f3dab49761d78ee9ba7a6154bca673e530ff
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p19.ipynb :: B2-020 — Practice p19 > Task :: cell 1'
     heading_path:
