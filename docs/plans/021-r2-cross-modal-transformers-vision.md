@@ -193,13 +193,14 @@ Do not alter B2-022 through B2-024 coverage rows.
 - `book2/units/B2-021-cross-modal-transformers-vision/manifest.yaml`
 - `book2/units/B2-021-cross-modal-transformers-vision/lesson.ipynb`
 - `book2/units/B2-021-cross-modal-transformers-vision/review.ipynb`
-- `book2/units/B2-021-cross-modal-transformers-vision/lessons/00-book2-bridge.ipynb`, `01-image-patches-and-vision-transformers.ipynb`, `02-detection-grids-and-set-prediction.ipynb`, `03-unet-segmentation-and-skip-connections.ipynb`, `04-graphs-cross-modal-attention.ipynb`, and `05-vision-system-design-and-audit.ipynb`
+- `book2/units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb`, `01-image-patches-and-vision-transformers.ipynb`, `02-detection-grids-and-set-prediction.ipynb`, `03-unet-segmentation-and-skip-connections.ipynb`, `04-graphs-cross-modal-attention.ipynb`, and `05-vision-system-design-and-audit.ipynb`
 - `book2/units/B2-021-cross-modal-transformers-vision/data/vision_fixture.py`
 - `book2/units/B2-021-cross-modal-transformers-vision/scripts/generate_vision_data.py`
 - `book2/units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb` through `p24.ipynb`
+- `book2/units/B2-021-cross-modal-transformers-vision/practice/p01_solution.ipynb` through `p24_solution.ipynb`
 
 - [ ] Write and run transient statement-bundle checks inside the `mktemp -d` directory: regular nonsymlink files only, an exact allowlist with no extras, every declared notebook/data path, unexecuted student code cells, headers, lesson checkpoints/answers, exact 24-row ledger, p01's five A–E choices and gcd/sign normalization, three-practice concept coverage, and primary evidence for all twelve coverage modalities. Store the expected SHA-256 manifest outside the mutable bundle; do not commit these checks because their source is not present in a fresh checkout. Task 3 creates the equivalent committed `tests/test_b2_021_statements.py` only after the final tree exists.
-- [ ] Create a temporary, deterministic statement/fixture bundle containing literal 8x8-or-smaller image, box, mask, graph, and immutable train/held-out IDs, plus a separately seeded initial-state generator; document every coordinate convention and prohibit external data/imports. `vision_fixture.py` canonically fingerprints every feature/target row from its dtype, shape, and contiguous bytes and exposes a one-to-one immutable `fingerprint -> example_id` registry; tests reject duplicate fingerprints or an ID appearing in both splits. `generate_vision_data.py --check` regenerates only the initial-state tensors from the stated seed and verifies both their hashes and the literals' canonical hashes. It must never store or emit trained weights or final metrics.
+- [ ] Create a temporary, deterministic statement/fixture bundle containing literal 8x8-or-smaller image, box, mask, graph, and immutable train/held-out IDs, plus a separately seeded initial-state generator; document every coordinate convention and prohibit external data/imports. `vision_fixture.py` canonically fingerprints each structured feature from ordered field/type names plus every component's dtype, shape, and contiguous bytes, exposing a unique immutable `feature_fingerprint -> example_id` map. It separately stores `example_id -> canonical_target_fingerprint`, allowing repeated class/target values across examples. Tests reject duplicate feature fingerprints, unknown IDs, target mismatch for an aligned feature ID, or an ID appearing in both splits. `generate_vision_data.py --check` regenerates only the initial-state tensors from the stated seed and verifies both their hashes and the literals' canonical hashes. It must never store or emit trained weights or final metrics.
 - [ ] Author the bridge, overview, five lessons, review, and student statements in prerequisite order. Lessons must teach every API, loss, metric, and shape used by later practice before it appears.
 - [ ] Do not register a live `units/B2-021-*` manifest or promote coverage in this task. Draft the statements and fixture sources in the unique temporary root outside `book2/units/`, write a SHA-256 file manifest, and pass only that hash-verified student-facing bundle to the blind solution session. Tasks 2 and 3 are one contiguous session; if a bundle is lost, regenerate it before blind solving. Retain B2-021 as planned until Task 3 verifies the external digest, copies the bundle unchanged into `book2/units/`, then removes both temporary roots after publication.
 - [ ] Run only the isolated statement-artifact checks in this task; global Book 2 audit/checker runs wait for Task 3's atomic publication.
@@ -243,7 +244,7 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Modify: `scripts/ci-local.sh`
 - Modify: `tests/test_b2_021_statements.py`
 
-- [ ] First write variant-execution tests that prove the untouched answers pass and a named plausible wrong answer fails for every p17–p20 training claim: no optimizer update and train/held-out overlap, plus p19's skip-concatenation/segmentation output and p20's invalid edge aggregation. Independently wrap each model-forward and target-loss call, fingerprint the actual feature/target rows consumed there, resolve them through the immutable fixture registry, and reject unknown fingerprints, duplicates, or any train/evaluation cross-split row regardless of reported IDs. Add a named mutant where `build_train_batch(TRAIN_IDS)` returns held-out feature/target rows while reporting `TRAIN_IDS`; it must fail. Also reject p24's cross-modal Q/K/V reversal or leakage audit error. `tests/fixtures/b2_021_reference.py` is CI-only: it independently reconstructs the fixed-seed baselines and final traces, stores expected metrics/probes but no final tensors, and is forbidden from all learner/solution imports.
+- [ ] First write variant-execution tests that prove the untouched answers pass and a named plausible wrong answer fails for every p17–p20 training claim: no optimizer update and train/held-out overlap, plus p19's skip-concatenation/segmentation output and p20's invalid edge aggregation. Independently wrap each model-forward call, fingerprint the actual structured features, and resolve their immutable IDs; at each loss call, pair those derived IDs with the actual aligned targets and verify each target against `example_id -> canonical_target_fingerprint`. Reject unknown/duplicate features, target substitution or misalignment, and any train/evaluation cross-split feature regardless of reported IDs. Add named mutants for held-out feature substitution, target-row substitution/misalignment, and declared-ID lies. Also reject p24's cross-modal Q/K/V reversal or leakage audit error. `tests/fixtures/b2_021_reference.py` is CI-only: it independently reconstructs the fixed-seed baselines and final traces, stores expected metrics/probes but no final tensors, and is forbidden from all learner/solution imports.
 - [ ] Implement only named-function substitutions in copied solution notebooks; never add student-facing markers, sandbox machinery, or anti-cheat policies.
 - [ ] Instrument the solution execution path to count optimizer steps and verify the ordered update trace, then add the focused integrity suite to `scripts/ci-local.sh` and retain the 20-second per-solution timeout for B2-021.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_vision_transformer_checks.py tests/test_b2_021_statements.py` plus generator `--check`; commit the integrity contract.
@@ -430,13 +431,43 @@ Do not alter B2-022 through B2-024 coverage rows.
   `build_train_batch(TRAIN_IDS)` while reporting `TRAIN_IDS`; the plan now
   requires that mutant to fail.
 
-### Review 6 — self (2026-09-11)
+### Review 6 — self (2026-09-11) — superseded by Revision 8
 
 - **Verdict**: APPROVE WITH NITS, pending fresh Sol, Fable, and GLM review of
   the exact Revision 7 commit.
 - The enforcement oracle is no longer solution-controlled: declared IDs are
   diagnostic only, while independently fingerprinted feature/target tensors
   determine which immutable examples reached optimization and evaluation.
+
+### Review 6 — Sol (2026-09-11)
+
+- **Verdict**: REJECT.
+- A one-to-one feature/target fingerprint registry is invalid for
+  classification because multiple examples legitimately share a target, and
+  structured detection/graph inputs need a canonical field-aware encoding.
+
+### Review 6 findings resolution (2026-09-11)
+
+- [sol][FIXED] Revision 8 makes only structured feature fingerprints unique.
+  Targets are stored separately as `example_id -> target_fingerprint`, so
+  repeated labels are valid while feature/target misalignment remains
+  detectable at the loss seam.
+- [sol][FIXED] The mutation suite now includes held-out feature substitution,
+  target substitution/misalignment, and declared-ID lies.
+- [sol][FIXED] The atomic published-path inventory now names all 24 solution
+  notebooks, and the bridge filename matches the Book 1 bridge convention.
+
+### Review 7 — self (2026-09-11)
+
+- **Verdict**: APPROVE WITH NITS, pending fresh Sol and GLM review of the exact
+  Revision 8 commit.
+- **Temporary Fable waiver:** by user directive on 2026-09-11, the Fable slot
+  is skipped through Sunday 2026-09-13 16:00 America/Los_Angeles because the
+  configured Claude account is rate-limited. This waiver does not substitute
+  another model or relax the remaining self/Sol/GLM blocking consensus.
+- Structured features—not declared IDs—now identify each consumed example;
+  actual aligned targets are checked against the independently derived feature
+  identity.
 
 ## Content Review
 
