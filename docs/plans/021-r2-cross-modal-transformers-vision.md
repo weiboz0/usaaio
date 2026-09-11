@@ -199,7 +199,7 @@ Do not alter B2-022 through B2-024 coverage rows.
 - `book2/units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb` through `p24.ipynb`
 
 - [ ] Write and run transient statement-bundle checks inside the `mktemp -d` directory: regular nonsymlink files only, an exact allowlist with no extras, every declared notebook/data path, unexecuted student code cells, headers, lesson checkpoints/answers, exact 24-row ledger, p01's five A–E choices and gcd/sign normalization, three-practice concept coverage, and primary evidence for all twelve coverage modalities. Store the expected SHA-256 manifest outside the mutable bundle; do not commit these checks because their source is not present in a fresh checkout. Task 3 creates the equivalent committed `tests/test_b2_021_statements.py` only after the final tree exists.
-- [ ] Create a temporary, deterministic statement/fixture bundle containing literal 8x8-or-smaller image, box, mask, graph, and immutable train/held-out IDs, plus a separately seeded initial-state generator; document every coordinate convention and prohibit external data/imports. `vision_fixture.py` canonically serializes and hashes the literal data/splits, while `generate_vision_data.py --check` regenerates only the initial-state tensors from the stated seed and verifies both their hashes and the literals' canonical hashes. It must never store or emit trained weights or final metrics.
+- [ ] Create a temporary, deterministic statement/fixture bundle containing literal 8x8-or-smaller image, box, mask, graph, and immutable train/held-out IDs, plus a separately seeded initial-state generator; document every coordinate convention and prohibit external data/imports. `vision_fixture.py` canonically fingerprints every feature/target row from its dtype, shape, and contiguous bytes and exposes a one-to-one immutable `fingerprint -> example_id` registry; tests reject duplicate fingerprints or an ID appearing in both splits. `generate_vision_data.py --check` regenerates only the initial-state tensors from the stated seed and verifies both their hashes and the literals' canonical hashes. It must never store or emit trained weights or final metrics.
 - [ ] Author the bridge, overview, five lessons, review, and student statements in prerequisite order. Lessons must teach every API, loss, metric, and shape used by later practice before it appears.
 - [ ] Do not register a live `units/B2-021-*` manifest or promote coverage in this task. Draft the statements and fixture sources in the unique temporary root outside `book2/units/`, write a SHA-256 file manifest, and pass only that hash-verified student-facing bundle to the blind solution session. Tasks 2 and 3 are one contiguous session; if a bundle is lost, regenerate it before blind solving. Retain B2-021 as planned until Task 3 verifies the external digest, copies the bundle unchanged into `book2/units/`, then removes both temporary roots after publication.
 - [ ] Run only the isolated statement-artifact checks in this task; global Book 2 audit/checker runs wait for Task 3's atomic publication.
@@ -227,10 +227,9 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Modify: `tests/fixtures/plan019-path-inventory.yaml`
 - Modify: `scripts/pre-merge-guard.sh`
 - Create: `tests/test_b2_021_statements.py`
-- Modify: `tests/test_b2_021_statements.py`
 
 - [ ] Dispatch a fresh blind solution author that receives only the SHA-256-verified temporary statement/fixture bundle and learner lessons; it must write/execute all solutions in the second unique temporary directory, and must not read statement-author outlines, source notebooks outside that bundle, reference metrics, or prior solution notes. Verify the external digest and regular-file allowlist before publication; record the transient check in the post-execution report.
-- [ ] Add a separate solution notebook for every statement, with no stored outputs and a final `### Answer check`. Freeze `SEED=20260901`, construction order, canonical train-ID batch order, mean loss reduction, and AdamW `(betas=(0.9,0.999), eps=1e-8, weight_decay=0.0)` for p17–p20. Every training solution exposes `build_train_batch(ids)`, `build_heldout_batch(ids)`, and `compute_loss(model, batch, consumed_ids)`; `consumed_ids` enters an independently captured training/evaluation trace. p17 `train_vit_classifier(model, batch, optimizer)` is 2x2-patch/dim-8/one-head/class-token, `lr=.05`, 12 updates; p18 `train_grid_detector(model, batch, optimizer)` is 4x4 grid, `lr=.05`, 16; p19 `train_unet_segmenter(model, batch, optimizer)` is one-down/one-up, `lr=.03`, 16; p20 `train_graph_token_classifier(model, batch, optimizer)` is four-node/dim-8/one-head, `lr=.05`, 12. p24 exposes `audit_cross_modal_sources(trace)`. Each names immutable splits, reconstructs seeded baseline, records update trace/probes and `atol`/`rtol`; no learner/solution imports final weights, metrics, or CI reference modules.
+- [ ] Add a separate solution notebook for every statement, with no stored outputs and a final `### Answer check`. Freeze `SEED=20260901`, construction order, canonical train-ID batch order, mean loss reduction, and AdamW `(betas=(0.9,0.999), eps=1e-8, weight_decay=0.0)` for p17–p20. Every training solution exposes `build_train_batch(ids)`, `build_heldout_batch(ids)`, and `compute_loss(model, features, targets)`; declared IDs may be logged for diagnostics but are never the integrity oracle. p17 `train_vit_classifier(model, batch, optimizer)` is 2x2-patch/dim-8/one-head/class-token, `lr=.05`, 12 updates; p18 `train_grid_detector(model, batch, optimizer)` is 4x4 grid, `lr=.05`, 16; p19 `train_unet_segmenter(model, batch, optimizer)` is one-down/one-up, `lr=.03`, 16; p20 `train_graph_token_classifier(model, batch, optimizer)` is four-node/dim-8/one-head, `lr=.05`, 12. p24 exposes `audit_cross_modal_sources(trace)`. Each names immutable splits, reconstructs seeded baseline, records update trace/probes and `atol`/`rtol`; no learner/solution imports final weights, metrics, or CI reference modules.
 - [ ] Publish the live unit atomically: add its complete B2-021 `units:` syllabus entry with the exact prerequisite list above, add the three CNN imports, clear B2-021 `planned_units.provisional_concepts` to `[]`, copy the verified complete unit tree, append schedule, promote only four coverage rows, update standards and B2-019/B2-020/integration/audit consumers, classify all new path-bearing tests/fixture in `plan019-path-inventory.yaml` and update its guard SHA, then regenerate inventory/course structure/roadmap/audit. Rebaseline audit rendered hours to manifested `533.92–573.92` and scheduled `539.42–579.42`; no committed state may expose a required solution path missing.
 - [ ] Execute every solution notebook from the Book 2 root without `--inplace`; record actual elapsed time and fail any B2-021 solution exceeding 20 seconds.
 - [ ] Run student hygiene, solution execution, Book 2 prereq/coverage/scope/layer checks, the pinned 18-week/4,970-minute/72-practice live-ledger and shipped-roster consumers, `python -m tools.audit_curriculum --root book2 --check`, `python -m tools.render_curriculum_roadmap --root . --check`, and commit the atomic statement-and-solution publication.
@@ -244,7 +243,7 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Modify: `scripts/ci-local.sh`
 - Modify: `tests/test_b2_021_statements.py`
 
-- [ ] First write variant-execution tests that prove the untouched answers pass and a named plausible wrong answer fails for every p17–p20 training claim: no optimizer update and train/held-out overlap, plus p19's skip-concatenation/segmentation output and p20's invalid edge aggregation. Independently wrap `build_train_batch`, `build_heldout_batch`, and `compute_loss` to capture every consumed ID and reject train/held-out intersection even if the notebook reports a nominal trace. Also reject p24's cross-modal Q/K/V reversal or leakage audit error. `tests/fixtures/b2_021_reference.py` is CI-only: it independently reconstructs the fixed-seed baselines and final traces, stores expected metrics/probes but no final tensors, and is forbidden from all learner/solution imports.
+- [ ] First write variant-execution tests that prove the untouched answers pass and a named plausible wrong answer fails for every p17–p20 training claim: no optimizer update and train/held-out overlap, plus p19's skip-concatenation/segmentation output and p20's invalid edge aggregation. Independently wrap each model-forward and target-loss call, fingerprint the actual feature/target rows consumed there, resolve them through the immutable fixture registry, and reject unknown fingerprints, duplicates, or any train/evaluation cross-split row regardless of reported IDs. Add a named mutant where `build_train_batch(TRAIN_IDS)` returns held-out feature/target rows while reporting `TRAIN_IDS`; it must fail. Also reject p24's cross-modal Q/K/V reversal or leakage audit error. `tests/fixtures/b2_021_reference.py` is CI-only: it independently reconstructs the fixed-seed baselines and final traces, stores expected metrics/probes but no final tensors, and is forbidden from all learner/solution imports.
 - [ ] Implement only named-function substitutions in copied solution notebooks; never add student-facing markers, sandbox machinery, or anti-cheat policies.
 - [ ] Instrument the solution execution path to count optimizer steps and verify the ordered update trace, then add the focused integrity suite to `scripts/ci-local.sh` and retain the 20-second per-solution timeout for B2-021.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_vision_transformer_checks.py tests/test_b2_021_statements.py` plus generator `--check`; commit the integrity contract.
@@ -389,7 +388,7 @@ Do not alter B2-022 through B2-024 coverage rows.
   protocol and a separate CI-only reference reconstruction without trained
   tensors, so the no-update and split-leakage mutations cannot self-certify.
 
-### Review 4 — self (2026-09-01)
+### Review 4 — self (2026-09-01) — superseded by Revision 5
 
 - **Verdict**: APPROVE WITH NITS, pending fresh Sol, Fable, and GLM review of
   the exact Revision 4 commit.
@@ -397,6 +396,47 @@ Do not alter B2-022 through B2-024 coverage rows.
   17 are 90 + (50 + 45 + 65 + 65) = 315 and 90 + (65 + 55 + 55 + 55 + 55) =
   375 respectively. Task 1 makes no shipped-unit claim, and Task 3 atomically
   changes every reader that observes the 18-week live state.
+
+### Review 4 — Sol (2026-09-05) — superseded by Revision 6
+
+- **Verdict**: REJECT.
+- The reviewer found a lesson filename rejected by the staged-scope token
+  guard, a 30-minute manifested-versus-scheduled baseline error, and a
+  split-integrity seam that trusted solution-provided consumed IDs.
+
+### Review 4 findings resolution (2026-09-05)
+
+- [sol][FIXED] The Session 4 path is now
+  `04-graphs-cross-modal-attention.ipynb`, which does not trigger the token
+  path safeguard.
+- [sol][FIXED] The aggregate baseline distinguishes 1,620 manifested minutes
+  from 1,650 scheduled minutes, producing `533.92–573.92` manifested and
+  `539.42–579.42` scheduled hours.
+
+### Review 5 — Sol (2026-09-08)
+
+- **Verdict**: REJECT.
+- The remaining split verifier still observed IDs supplied by the solution;
+  a mutant could return held-out tensors while reporting disjoint train IDs.
+
+### Review 5 findings resolution (2026-09-11)
+
+- [sol][FIXED] The fixture now requires a one-to-one canonical fingerprint
+  registry derived from every literal feature/target row's dtype, shape, and
+  bytes. Integrity tests observe actual tensors at model-forward and loss
+  seams, resolve their fingerprints independently, and reject unknown,
+  duplicate, or cross-split rows.
+- [sol][FIXED] A named mutant returns held-out tensors from
+  `build_train_batch(TRAIN_IDS)` while reporting `TRAIN_IDS`; the plan now
+  requires that mutant to fail.
+
+### Review 6 — self (2026-09-11)
+
+- **Verdict**: APPROVE WITH NITS, pending fresh Sol, Fable, and GLM review of
+  the exact Revision 7 commit.
+- The enforcement oracle is no longer solution-controlled: declared IDs are
+  diagnostic only, while independently fingerprinted feature/target tensors
+  determine which immutable examples reached optimization and evaluation.
 
 ## Content Review
 
