@@ -52,9 +52,8 @@ It reuses `attention-mask`, `query-key-value-attention`,
 `multi-head-attention`, `attention-complexity`, `transformer-block`, and the
 exact direct qualified Book 1 concepts listed below.
 
-The live B2-021 syllabus entry, manifest, notebook metadata, and every
-lesson's visible prerequisite header must use this exact ordered
-`concept_prerequisites` list (no omitted or surplus tags):
+The live B2-021 syllabus entry, manifest, and notebook metadata must use this
+exact ordered `concept_prerequisites` list (no omitted or surplus tags):
 
 ```text
 attention-mask
@@ -79,6 +78,13 @@ book1:convolution
 book1:feature-maps
 book1:cnn-training
 ```
+
+Visible notebook headers preserve the established Book 2 convention instead
+of replacing it with concept tags: `Qualified prerequisites` lists the exact
+ordered direct unit prerequisites, and `Remediation links actually used`
+provides a relative link for each of those units. Concept prerequisites
+supplement those visible unit-level headers through the manifest, syllabus,
+notebook metadata, and practice concept labels.
 
 ### Five-session teaching spine
 
@@ -170,15 +176,13 @@ Do not alter B2-022 through B2-024 coverage rows.
 
 - Modify: `book2/curriculum/coverage-map.yaml`
 - Modify: `docs/curriculum-roadmap.md`
-- Modify: `tools/checks/schedule.py` only if the copied three-unit negative
-  mutation exposes a generic later-unit ordering defect
+- Modify: `tools/checks/schedule.py`
 - Modify: `tests/test_book2_schedule.py`
-- Modify: `tests/test_b2_020_statements.py` only for exact roster/count assertions invalidated by the new registered unit
 - Create: `tests/test_b2_021_plan.py`
 
 - [ ] First add failing tests for the existing B2-021 `planned_units` row: the direct unit prerequisite sequence, four exact provisional concept owners, double-length standard, and the four coverage rows remaining missing until live source paths exist. In a copied three-manifest Book 2 fixture, also prove that appending the 1,650-minute six-week ledger to the current 3,320-minute ledger yields 4,970 minutes / `after_book_week: 18`, plus rejection of duplicate, misordered, missing-Session-3, minute-mismatched, or early B2-021 allocations.
 - [ ] Update only the existing B2-021 planned-unit row rather than adding a duplicate. Register direct `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C6-pytorch`, `book1:C7-cnn-transfer`, and `book1:C11-neural-training` prerequisites plus B2-019/B2-020, and set `provisional_concepts` exactly to `vision-transformers`, `object-detection`, `unet`, and `graph-neural-network-transformer-applications`. Regenerate only the roadmap's planned view without adding B2-021 to the live Book 2 syllabus, schedule, or shipped-unit standards roster.
-- [ ] Prove the temporary three-manifest fixture accepts B2-019/B2-020 unchanged plus B2-021 only after Book 2 week 12. If the whole-unit early-placement mutation reveals that the generic checker only fences later units after B2-019 rather than their declared predecessor B2-020, first add that failing test and make the minimal generic `tools/checks/schedule.py` correction; otherwise preserve the live two-unit schedule byte-for-byte in this phase.
+- [ ] Prove the temporary three-manifest fixture accepts B2-019/B2-020 unchanged plus B2-021 only after Book 2 week 12. First add a failing whole-unit early-placement mutation, then make the minimal generic `tools/checks/schedule.py` correction so every later unit starts after its declared predecessor completes; preserve the live two-unit schedule byte-for-byte in this phase.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py tests/test_b2_021_plan.py` and commit the registration contract.
 
 ### Task 2 — Author the hash-verified statement/fixture bundle
@@ -244,7 +248,7 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Modify: `scripts/ci-local.sh`
 - Modify: `tests/test_b2_021_statements.py`
 
-- [ ] First write variant-execution tests that prove the untouched answers pass and a named plausible wrong answer fails for every p17–p20 training claim: no optimizer update and train/held-out overlap, plus p19's skip-concatenation/segmentation output and p20's invalid edge aggregation. Independently wrap each model-forward call, fingerprint the actual structured features, and resolve their immutable IDs; at each loss call, pair those derived IDs with the actual aligned targets and verify each target against `example_id -> canonical_target_fingerprint`. Reject unknown/duplicate features, target substitution or misalignment, and any train/evaluation cross-split feature regardless of reported IDs. Add named mutants for held-out feature substitution, target-row substitution/misalignment, and declared-ID lies. Also reject p24's cross-modal Q/K/V reversal or leakage audit error. `tests/fixtures/b2_021_reference.py` is CI-only: it independently reconstructs the fixed-seed baselines and final traces, stores expected metrics/probes but no final tensors, and is forbidden from all learner/solution imports.
+- [ ] First write variant-execution tests that prove the untouched answers pass and a named plausible wrong answer fails for every p17–p20 training claim: no optimizer update and train/held-out overlap, plus p19's skip-concatenation/segmentation output and p20's invalid edge aggregation. Independently wrap each model-forward call, fingerprint the actual structured features, and resolve their immutable IDs; at each loss call, pair those derived IDs with the actual aligned targets and verify each target against `example_id -> canonical_target_fingerprint`. Reject unknown feature identities and duplicate rows within one batch, target substitution or misalignment, and any train/evaluation cross-split feature regardless of reported IDs; repeated observation of the same legitimate training example across optimizer steps is expected and must not be rejected. Add named mutants for held-out feature substitution, target-row substitution/misalignment, and declared-ID lies. Also reject p24's cross-modal Q/K/V reversal or leakage audit error. `tests/fixtures/b2_021_reference.py` is CI-only: it independently reconstructs the fixed-seed baselines and final traces, stores expected metrics/probes but no final tensors, and is forbidden from all learner/solution imports.
 - [ ] Implement only named-function substitutions in copied solution notebooks; never add student-facing markers, sandbox machinery, or anti-cheat policies.
 - [ ] Instrument the solution execution path to count optimizer steps and verify the ordered update trace, then add the focused integrity suite to `scripts/ci-local.sh` and retain the 20-second per-solution timeout for B2-021.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_vision_transformer_checks.py tests/test_b2_021_statements.py` plus generator `--check`; commit the integrity contract.
@@ -253,7 +257,7 @@ Do not alter B2-022 through B2-024 coverage rows.
 
 - [ ] Run focused Book 2 checks, both B2-020/B2-021 statement and integrity suites, generated-artifact `--check`, `python -m tools.audit_curriculum --root book2 --check`, and `git diff --check`.
 - [ ] Run `scripts/ci-local.sh` before merge.
-- [ ] Run the mandatory four-way blind content gate (self, Sol, GLM, Fable); resolve every `[OPEN]` finding in this plan and re-review the exact final head after material changes.
+- [ ] Run the mandatory four-way blind content gate (self, Sol, GLM, Fable); if it occurs before Sunday 2026-09-13 16:00 America/Los_Angeles, apply the recorded user-directed Fable waiver and require blocking consensus from self, Sol, and GLM. Resolve every `[OPEN]` finding in this plan and re-review the exact final head after material changes.
 - [ ] Append the verdicts, verification evidence, and post-execution report to this plan; update `TODO.md` at shipping time.
 - [ ] Push the feature branch, open a PR, run `scripts/pre-merge-guard.sh --pr`, squash-merge, and verify `main` equals `origin/main`.
 
@@ -490,11 +494,40 @@ Do not alter B2-022 through B2-024 coverage rows.
 
 ### Review 8 — self (2026-09-11)
 
-- **Verdict**: APPROVE WITH NITS, pending fresh Sol and GLM review of the exact
-  Revision 9 commit; the user-directed Fable waiver above remains active.
+- **Verdict**: APPROVE WITH NITS; the user-directed Fable waiver above remains
+  active.
 - The plan now has an executable producer-to-consumer chain for feature
   identity, aligned targets, provisional ownership, and atomic live
   publication.
+
+### Review 8 — Sol / GLM (2026-09-11)
+
+- [sol] **Verdict**: APPROVE WITH NITS on exact clean commit `8ab1c4a`.
+  No blockers remained. The reviewer requested that duplicate-feature
+  rejection distinguish duplicate rows within one batch from legitimate
+  repeated observations across optimizer steps.
+- [glm] **Verdict**: APPROVE on exact clean commit `8ab1c4a`.
+  No blockers remained. GLM independently verified the schedule and baseline
+  arithmetic, prerequisite closure, practice/lesson standards, filenames, and
+  governance contracts. It requested clarification of the visible notebook
+  header convention and noted three lifecycle nits.
+
+### Review 8 findings resolution and gate closure (2026-09-11)
+
+- [sol][FIXED] The integrity contract now rejects unknown identities and
+  duplicate rows within a batch while explicitly permitting the same training
+  example to recur across optimizer steps.
+- [glm][FIXED] Visible notebook headers retain the Book 2 unit-level qualified
+  prerequisite and remediation-link convention; concept tags supplement those
+  headers in structured metadata rather than replacing them.
+- [glm][FIXED] Task 1 no longer names an unaffected B2-020 test, and the known
+  generic later-unit schedule defect is now an unconditional red-test/fix.
+- [glm][FIXED] Task 5 explicitly applies the temporary Fable waiver when the
+  content gate occurs inside its stated window.
+- **PLAN GATE CLOSED:** self, Sol, and GLM reached blocking consensus; Fable is
+  user-waived through Sunday 2026-09-13 16:00 America/Los_Angeles. These
+  reviewer-requested clarifications are non-material and require no new gate
+  round.
 
 ## Content Review
 
