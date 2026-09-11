@@ -176,8 +176,8 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Modify: `tests/test_b2_020_statements.py` only for exact roster/count assertions invalidated by the new registered unit
 - Create: `tests/test_b2_021_plan.py`
 
-- [ ] First add failing tests for the existing B2-021 `planned_units` row: the direct unit prerequisite sequence, four exact provisional concept owners, double-length standard, and the four coverage rows remaining missing until live source paths exist. In a copied three-manifest Book 2 fixture, also prove the future six-week ledger's 4,970-minute / `after_book_week: 18` contract and rejection of duplicate, misordered, missing-Session-3, minute-mismatched, or early B2-021 allocations.
-- [ ] Update only the existing B2-021 planned-unit row rather than adding a duplicate. Register direct `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C6-pytorch`, `book1:C7-cnn-transfer`, and `book1:C11-neural-training` prerequisites plus B2-019/B2-020; regenerate only the roadmap's planned view without adding B2-021 to the live Book 2 syllabus, schedule, or shipped-unit standards roster.
+- [ ] First add failing tests for the existing B2-021 `planned_units` row: the direct unit prerequisite sequence, four exact provisional concept owners, double-length standard, and the four coverage rows remaining missing until live source paths exist. In a copied three-manifest Book 2 fixture, also prove that appending the 1,650-minute six-week ledger to the current 3,320-minute ledger yields 4,970 minutes / `after_book_week: 18`, plus rejection of duplicate, misordered, missing-Session-3, minute-mismatched, or early B2-021 allocations.
+- [ ] Update only the existing B2-021 planned-unit row rather than adding a duplicate. Register direct `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C6-pytorch`, `book1:C7-cnn-transfer`, and `book1:C11-neural-training` prerequisites plus B2-019/B2-020, and set `provisional_concepts` exactly to `vision-transformers`, `object-detection`, `unet`, and `graph-neural-network-transformer-applications`. Regenerate only the roadmap's planned view without adding B2-021 to the live Book 2 syllabus, schedule, or shipped-unit standards roster.
 - [ ] Prove the temporary three-manifest fixture accepts B2-019/B2-020 unchanged plus B2-021 only after Book 2 week 12. If the whole-unit early-placement mutation reveals that the generic checker only fences later units after B2-019 rather than their declared predecessor B2-020, first add that failing test and make the minimal generic `tools/checks/schedule.py` correction; otherwise preserve the live two-unit schedule byte-for-byte in this phase.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py tests/test_b2_021_plan.py` and commit the registration contract.
 
@@ -201,7 +201,7 @@ Do not alter B2-022 through B2-024 coverage rows.
 
 - [ ] Write and run transient statement-bundle checks inside the `mktemp -d` directory: regular nonsymlink files only, an exact allowlist with no extras, every declared notebook/data path, unexecuted student code cells, headers, lesson checkpoints/answers, exact 24-row ledger, p01's five A–E choices and gcd/sign normalization, three-practice concept coverage, and primary evidence for all twelve coverage modalities. Store the expected SHA-256 manifest outside the mutable bundle; do not commit these checks because their source is not present in a fresh checkout. Task 3 creates the equivalent committed `tests/test_b2_021_statements.py` only after the final tree exists.
 - [ ] Create a temporary, deterministic statement/fixture bundle containing literal 8x8-or-smaller image, box, mask, graph, and immutable train/held-out IDs, plus a separately seeded initial-state generator; document every coordinate convention and prohibit external data/imports. `vision_fixture.py` canonically fingerprints each structured feature from ordered field/type names plus every component's dtype, shape, and contiguous bytes, exposing a unique immutable `feature_fingerprint -> example_id` map. It separately stores `example_id -> canonical_target_fingerprint`, allowing repeated class/target values across examples. Tests reject duplicate feature fingerprints, unknown IDs, target mismatch for an aligned feature ID, or an ID appearing in both splits. `generate_vision_data.py --check` regenerates only the initial-state tensors from the stated seed and verifies both their hashes and the literals' canonical hashes. It must never store or emit trained weights or final metrics.
-- [ ] Author the bridge, overview, five lessons, review, and student statements in prerequisite order. Lessons must teach every API, loss, metric, and shape used by later practice before it appears.
+- [ ] Dispatch statement/lesson authoring to `codex:codex-rescue` with GPT-5.6-sol. Author the bridge, overview, five lessons, review, and student statements in prerequisite order; lessons must teach every API, loss, metric, and shape used by later practice before it appears.
 - [ ] Do not register a live `units/B2-021-*` manifest or promote coverage in this task. Draft the statements and fixture sources in the unique temporary root outside `book2/units/`, write a SHA-256 file manifest, and pass only that hash-verified student-facing bundle to the blind solution session. Tasks 2 and 3 are one contiguous session; if a bundle is lost, regenerate it before blind solving. Retain B2-021 as planned until Task 3 verifies the external digest, copies the bundle unchanged into `book2/units/`, then removes both temporary roots after publication.
 - [ ] Run only the isolated statement-artifact checks in this task; global Book 2 audit/checker runs wait for Task 3's atomic publication.
 
@@ -229,9 +229,9 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Modify: `scripts/pre-merge-guard.sh`
 - Create: `tests/test_b2_021_statements.py`
 
-- [ ] Dispatch a fresh blind solution author that receives only the SHA-256-verified temporary statement/fixture bundle and learner lessons; it must write/execute all solutions in the second unique temporary directory, and must not read statement-author outlines, source notebooks outside that bundle, reference metrics, or prior solution notes. Verify the external digest and regular-file allowlist before publication; record the transient check in the post-execution report.
+- [ ] Dispatch a separate fresh `codex:codex-rescue` GPT-5.6-sol blind solution session that receives only the SHA-256-verified temporary statement/fixture bundle and learner lessons; it must write/execute all solutions in the second unique temporary directory, and must not read statement-author outlines, source notebooks outside that bundle, reference metrics, or prior solution notes. Verify the external digest and regular-file allowlist before publication; record the transient check in the post-execution report.
 - [ ] Add a separate solution notebook for every statement, with no stored outputs and a final `### Answer check`. Freeze `SEED=20260901`, construction order, canonical train-ID batch order, mean loss reduction, and AdamW `(betas=(0.9,0.999), eps=1e-8, weight_decay=0.0)` for p17–p20. Every training solution exposes `build_train_batch(ids)`, `build_heldout_batch(ids)`, and `compute_loss(model, features, targets)`; declared IDs may be logged for diagnostics but are never the integrity oracle. p17 `train_vit_classifier(model, batch, optimizer)` is 2x2-patch/dim-8/one-head/class-token, `lr=.05`, 12 updates; p18 `train_grid_detector(model, batch, optimizer)` is 4x4 grid, `lr=.05`, 16; p19 `train_unet_segmenter(model, batch, optimizer)` is one-down/one-up, `lr=.03`, 16; p20 `train_graph_token_classifier(model, batch, optimizer)` is four-node/dim-8/one-head, `lr=.05`, 12. p24 exposes `audit_cross_modal_sources(trace)`. Each names immutable splits, reconstructs seeded baseline, records update trace/probes and `atol`/`rtol`; no learner/solution imports final weights, metrics, or CI reference modules.
-- [ ] Publish the live unit atomically: add its complete B2-021 `units:` syllabus entry with the exact prerequisite list above, add the three CNN imports, clear B2-021 `planned_units.provisional_concepts` to `[]`, copy the verified complete unit tree, append schedule, promote only four coverage rows, update standards and B2-019/B2-020/integration/audit consumers, classify all new path-bearing tests/fixture in `plan019-path-inventory.yaml` and update its guard SHA, then regenerate inventory/course structure/roadmap/audit. Rebaseline audit rendered hours to manifested `533.92–573.92` and scheduled `539.42–579.42`; no committed state may expose a required solution path missing.
+- [ ] Publish the live unit atomically: add the `cross-modal-vision` cluster and all four owned concept IDs to the Book 2 syllabus `concepts:` registry, add its complete B2-021 `units:` entry with the exact prerequisite list above, add the three CNN imports, clear B2-021 `planned_units.provisional_concepts` to `[]`, copy the verified complete unit tree, append schedule, promote only four coverage rows, update standards and B2-019/B2-020/integration/audit consumers, classify all new path-bearing tests/fixture in `plan019-path-inventory.yaml` and update its guard SHA, then regenerate inventory/course structure/roadmap/audit. Rebaseline audit rendered hours to manifested `533.92–573.92` and scheduled `539.42–579.42`; no committed state may expose a required solution path missing.
 - [ ] Execute every solution notebook from the Book 2 root without `--inplace`; record actual elapsed time and fail any B2-021 solution exceeding 20 seconds.
 - [ ] Run student hygiene, solution execution, Book 2 prereq/coverage/scope/layer checks, the pinned 18-week/4,970-minute/72-practice live-ledger and shipped-roster consumers, `python -m tools.audit_curriculum --root book2 --check`, `python -m tools.render_curriculum_roadmap --root . --check`, and commit the atomic statement-and-solution publication.
 
@@ -457,7 +457,7 @@ Do not alter B2-022 through B2-024 coverage rows.
 - [sol][FIXED] The atomic published-path inventory now names all 24 solution
   notebooks, and the bridge filename matches the Book 1 bridge convention.
 
-### Review 7 — self (2026-09-11)
+### Review 7 — self (2026-09-11) — superseded by Revision 9
 
 - **Verdict**: APPROVE WITH NITS, pending fresh Sol and GLM review of the exact
   Revision 8 commit.
@@ -468,6 +468,33 @@ Do not alter B2-022 through B2-024 coverage rows.
 - Structured features—not declared IDs—now identify each consumed example;
   actual aligned targets are checked against the independently derived feature
   identity.
+
+### Review 7 — Sol / GLM (2026-09-11) — superseded by Revision 9
+
+- [sol] **Verdict**: REJECT. The feature and target fingerprints were both
+  required to be unique, which rejects legitimate repeated class targets and
+  underspecifies structured detection/graph inputs.
+- [glm] **Verdict**: APPROVE WITH NITS on Revision 8. GLM independently
+  confirmed the schedule, prerequisite, and baseline arithmetic, then noted
+  that Task 1 did not actually populate its asserted provisional concepts and
+  that author dispatch/owned-concept registry steps should be explicit.
+
+### Review 7 findings resolution (2026-09-11)
+
+- [sol][FIXED] Revision 9 uniquely fingerprints canonical structured features
+  only; repeated targets are allowed in the per-example target map, and loss
+  checks detect target substitution/misalignment against feature-derived IDs.
+- [glm][FIXED] Task 1 now populates the exact four provisional concepts before
+  Task 3 clears them. Statement and blind-solution dispatches name their fresh
+  Sol sessions, and Task 3 registers the new cluster and all owned concepts.
+
+### Review 8 — self (2026-09-11)
+
+- **Verdict**: APPROVE WITH NITS, pending fresh Sol and GLM review of the exact
+  Revision 9 commit; the user-directed Fable waiver above remains active.
+- The plan now has an executable producer-to-consumer chain for feature
+  identity, aligned targets, provisional ownership, and atomic live
+  publication.
 
 ## Content Review
 
