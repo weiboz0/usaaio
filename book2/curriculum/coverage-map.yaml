@@ -48,13 +48,23 @@ planned_units:
   title: Cross-modal Transformers and Advanced Vision
   layer: round-2-extension
   prerequisites:
+  - book1:F1-scientific-python
+  - book1:F3-matrices
+  - book1:C6-pytorch
+  - book1:C7-cnn-transfer
+  - book1:C11-neural-training
+  - B2-019-attention-transformers
   - B2-020-language-transformers
   knowledge_points:
   - vision-transformers
   - graph-neural-network-transformer-applications
   - object-detection
   - unet
-  provisional_concepts: []
+  provisional_concepts:
+  - vision-transformers
+  - object-detection
+  - unet
+  - graph-neural-network-transformer-applications
   estimated_hours:
     min: 22
     max: 28

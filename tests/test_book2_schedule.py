@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import re
 import shutil
 from collections.abc import Callable
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -25,6 +27,16 @@ BOOK2_SCHEDULE_SHA256 = "2bddad6ce2ec1e96bf9e34f770d53ac1332ade51611026acc49725c
 BOOK2_MANIFEST_SHA256 = "c50be81714b421e85f1e3e3afdf0eddd65352ae7c0f94ba5f655cb2716e9d5c1"
 B2_019 = "B2-019-attention-transformers"
 B2_020 = "B2-020-language-transformers"
+B2_021 = "B2-021-cross-modal-transformers-vision"
+B2_021_PREREQUISITES = (
+    "book1:F1-scientific-python",
+    "book1:F3-matrices",
+    "book1:C6-pytorch",
+    "book1:C7-cnn-transfer",
+    "book1:C11-neural-training",
+    B2_019,
+    B2_020,
+)
 B2_020_WEEK_PROBLEMS = (
     ("B2-020-p01", "B2-020-p02", "B2-020-p06", "B2-020-p13"),
     ("B2-020-p03", "B2-020-p04", "B2-020-p07", "B2-020-p08", "B2-020-p14"),
@@ -40,6 +52,21 @@ B2_020_WEEK_PROBLEMS = (
     ("B2-020-p12", "B2-020-p18", "B2-020-p21"),
     ("B2-020-p11", "B2-020-p19", "B2-020-p20", "B2-020-p22", "B2-020-p24"),
 )
+B2_021_WEEK_PROBLEMS = (
+    ("B2-021-p01", "B2-021-p02", "B2-021-p06", "B2-021-p13"),
+    ("B2-021-p03", "B2-021-p04", "B2-021-p07", "B2-021-p08", "B2-021-p14"),
+    (
+        "B2-021-p05",
+        "B2-021-p09",
+        "B2-021-p10",
+        "B2-021-p11",
+        "B2-021-p15",
+        "B2-021-p17",
+    ),
+    ("B2-021-p12", "B2-021-p16", "B2-021-p18", "B2-021-p20"),
+    ("B2-021-p19", "B2-021-p21", "B2-021-p22", "B2-021-p23", "B2-021-p24"),
+)
+B2_021_WEEK_MINUTES = (255, 275, 370, 315, 375, 60)
 
 
 def _load_schedule(root: Path = BOOK2_ROOT) -> dict[str, Any]:
@@ -84,6 +111,154 @@ def _two_manifest_root(tmp_path: Path) -> Path:
     selected = tmp_path / "book2"
     shutil.copytree(BOOK2_ROOT, selected)
     return selected
+
+
+def _replace_syllabus_contract(path: Path, raw: dict[str, Any]) -> None:
+    text = path.read_text(encoding="utf-8")
+    match = re.search(
+        r"(<!-- syllabus-canonical -->\s*```yaml\n)(.*?)(\n```)",
+        text,
+        re.DOTALL,
+    )
+    assert match is not None
+    replacement = (
+        match.group(1)
+        + yaml.safe_dump(raw, sort_keys=False).rstrip()
+        + match.group(3)
+    )
+    path.write_text(
+        text[: match.start()] + replacement + text[match.end() :],
+        encoding="utf-8",
+    )
+
+
+def _b2_021_problem_minutes(problem_number: int) -> int:
+    if problem_number <= 5:
+        return 20
+    if problem_number <= 12:
+        return 50
+    if problem_number <= 16:
+        return 45
+    if problem_number <= 20:
+        return 65
+    return 55
+
+
+def _three_manifest_root(tmp_path: Path) -> Path:
+    selected = _two_manifest_root(tmp_path)
+    source = selected / "units" / B2_020
+    target = selected / "units" / B2_021
+    shutil.copytree(source, target)
+
+    manifest_path = target / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest["unit"] = B2_021
+    manifest["prereq_units"] = list(B2_021_PREREQUISITES)
+    manifest["estimated_minutes"]["practice"] = 1110
+    after_sessions = {
+        problem_id: session
+        for session, problem_ids in enumerate(B2_021_WEEK_PROBLEMS, start=1)
+        for problem_id in problem_ids
+    }
+    for problem_number, problem in enumerate(manifest["practice"], start=1):
+        problem_id = f"B2-021-p{problem_number:02}"
+        problem["id"] = problem_id
+        problem["minutes"] = _b2_021_problem_minutes(problem_number)
+        problem["after_session"] = after_sessions[problem_id]
+    _write_yaml(manifest_path, manifest)
+
+    syllabus_path = selected / "syllabus.md"
+    syllabus = load_syllabus(selected)
+    syllabus_text = syllabus_path.read_text(encoding="utf-8")
+    match = re.search(
+        r"<!-- syllabus-canonical -->\s*```yaml\n(.*?)\n```",
+        syllabus_text,
+        re.DOTALL,
+    )
+    assert match is not None
+    syllabus_contract = yaml.safe_load(match.group(1))
+    assert B2_021 not in syllabus.units
+    new_unit = deepcopy(
+        next(unit for unit in syllabus_contract["units"] if unit["id"] == B2_020)
+    )
+    new_unit.update(
+        id=B2_021,
+        title="Cross-modal Transformers and Advanced Vision",
+        prereqs=list(B2_021_PREREQUISITES),
+    )
+    syllabus_contract["units"].append(new_unit)
+    _replace_syllabus_contract(syllabus_path, syllabus_contract)
+
+    schedule_path = selected / "curriculum" / "course-schedule.yaml"
+    schedule = _load_schedule(selected)
+    schedule["total_book_weeks"] = 18
+    schedule["total_minutes"] = 4970
+    schedule["final_assessment"]["after_book_week"] = 18
+    for offset, problem_ids in enumerate(B2_021_WEEK_PROBLEMS):
+        practice_minutes = sum(
+            _b2_021_problem_minutes(int(problem_id[-2:]))
+            for problem_id in problem_ids
+        )
+        schedule["weeks"].append(
+            {
+                "book_week": 13 + offset,
+                "global_week": 53 + offset,
+                "allocations": [
+                    *(
+                        [
+                            {
+                                "kind": "bridge-diagnostic",
+                                "unit": B2_021,
+                                "minutes": 30,
+                            }
+                        ]
+                        if offset == 0
+                        else []
+                    ),
+                    {
+                        "kind": "lesson-session",
+                        "unit": B2_021,
+                        "session": offset + 1,
+                        "minutes": 90,
+                    },
+                    {
+                        "kind": "practice",
+                        "unit": B2_021,
+                        "chunk": offset + 1,
+                        "minutes": practice_minutes,
+                        "problem_ids": list(problem_ids),
+                    },
+                ],
+            }
+        )
+    schedule["weeks"].append(
+        {
+            "book_week": 18,
+            "global_week": 58,
+            "allocations": [
+                {
+                    "kind": "review",
+                    "unit": B2_021,
+                    "chunk": 1,
+                    "minutes": 60,
+                }
+            ],
+        }
+    )
+    _write_yaml(schedule_path, schedule)
+    return selected
+
+
+def _report_for_three_manifest_mutation(
+    tmp_path: Path,
+    mutate: Callable[[dict[str, Any]], None],
+):
+    selected = _three_manifest_root(tmp_path)
+    schedule_path = selected / "curriculum" / "course-schedule.yaml"
+    schedule = _load_schedule(selected)
+    mutate(schedule)
+    _write_yaml(schedule_path, schedule)
+    return schedule_checker.check_schedule(selected, expected_book_number=2)
 
 
 def _report_for_two_manifest_mutation(
@@ -223,6 +398,100 @@ def test_generic_book2_schedule_accepts_two_manifest_ledger(tmp_path: Path) -> N
     inventory = audit_curriculum.build_inventory(selected, expected_book_number=2)
     assert inventory["counts"]["scheduled_minutes"] == 3320
     assert inventory["counts"]["unit_practices"] == 48
+
+
+def test_generic_book2_schedule_accepts_prospective_three_manifest_ledger(
+    tmp_path: Path,
+) -> None:
+    selected = _three_manifest_root(tmp_path)
+    raw = _load_schedule(selected)
+
+    assert raw["weeks"][:12] == _load_schedule()["weeks"]
+    assert [
+        sum(allocation["minutes"] for allocation in week["allocations"])
+        for week in raw["weeks"][12:]
+    ] == list(B2_021_WEEK_MINUTES)
+
+    report = schedule_checker.check_schedule(selected, expected_book_number=2)
+
+    assert report.ok, report.errors
+    validated = schedule_checker.load_validated_schedule(
+        selected, expected_book_number=2
+    )
+    assert validated.declared_week_count == 18
+    assert validated.total_minutes == 4970
+    assert list(validated.global_weeks) == list(range(41, 59))
+    assert raw["final_assessment"]["after_book_week"] == 18
+    assert validated.covered_problem_ids == frozenset(
+        [f"B2-019-p{number:02}" for number in range(1, 25)]
+        + [f"B2-020-p{number:02}" for number in range(1, 25)]
+        + [f"B2-021-p{number:02}" for number in range(1, 25)]
+    )
+
+
+@pytest.mark.parametrize(
+    ("mutate", "message"),
+    [
+        pytest.param(
+            lambda schedule: schedule["weeks"][12]["allocations"][2][
+                "problem_ids"
+            ].__setitem__(0, "B2-021-p02"),
+            "B2-021-p02 must appear exactly once",
+            id="duplicate-problem-id",
+        ),
+        pytest.param(
+            lambda schedule: (
+                schedule["weeks"][13]["allocations"][0].update(session=3),
+                schedule["weeks"][14]["allocations"][0].update(session=2),
+            ),
+            f"{B2_021} lesson sessions must appear once in strictly increasing order",
+            id="misordered-sessions",
+        ),
+        pytest.param(
+            lambda schedule: schedule["weeks"][14]["allocations"].pop(0),
+            f"unallocated lesson session {B2_021}#3",
+            id="missing-session-3",
+        ),
+        pytest.param(
+            lambda schedule: (
+                schedule["weeks"][12]["allocations"][2].update(minutes=136),
+                schedule.update(total_minutes=4971),
+            ),
+            f"{B2_021} practice chunk 1 problem minutes 135; allocation minutes 136",
+            id="minute-mismatch",
+        ),
+    ],
+)
+def test_three_manifest_ledger_rejects_b2_021_contract_mutations(
+    tmp_path: Path,
+    mutate: Callable[[dict[str, Any]], None],
+    message: str,
+) -> None:
+    report = _report_for_three_manifest_mutation(tmp_path, mutate)
+
+    assert not report.ok
+    assert any(message in error for error in report.errors), report.errors
+
+
+def test_b2_021_whole_unit_must_follow_b2_020_completion(tmp_path: Path) -> None:
+    def move_whole_unit_early(schedule: dict[str, Any]) -> None:
+        earlier = [week["allocations"] for week in schedule["weeks"][6:12]]
+        later = [week["allocations"] for week in schedule["weeks"][12:18]]
+        for week, allocations in zip(schedule["weeks"][6:12], later, strict=True):
+            week["allocations"] = allocations
+        for week, allocations in zip(schedule["weeks"][12:18], earlier, strict=True):
+            week["allocations"] = allocations
+
+    report = _report_for_three_manifest_mutation(
+        tmp_path, move_whole_unit_early
+    )
+
+    assert not report.ok
+    assert any(
+        f"{B2_021} bridge-diagnostic allocation must begin after {B2_020} final review"
+        in error
+        for error in report.errors
+    ), report.errors
 
 
 def test_two_manifest_ledger_rejects_reversed_session_order(tmp_path: Path) -> None:

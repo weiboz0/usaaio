@@ -521,6 +521,15 @@ def _discover_book2_manifest_contracts(
             errors.append(f"duplicate live Book 2 manifest unit {unit}")
             continue
 
+        raw_prereqs = raw.get("prereq_units")
+        if not isinstance(raw_prereqs, list) or not all(
+            isinstance(prereq, str) and prereq for prereq in raw_prereqs
+        ):
+            errors.append(f"{unit}: prereq_units must be a list of nonempty strings")
+            prereqs: list[str] = []
+        else:
+            prereqs = list(raw_prereqs)
+
         bridge = raw.get("bridge_diagnostic")
         if not isinstance(bridge, dict):
             errors.append(f"{unit}: manifest requires one bridge_diagnostic mapping")
@@ -693,6 +702,7 @@ def _discover_book2_manifest_contracts(
             "practice": expected_practice,
             "review": review_minutes,
             "problems": problems,
+            "prereqs": prereqs,
         }
     return contracts
 
@@ -816,23 +826,28 @@ def _validate_live_book2_ledger(
                 f"{problem_id} must appear exactly once in scheduled problem_ids; found {count}"
             )
 
-    baseline_reviews = [
-        index
-        for index, allocation in indexed
-        if allocation.unit == BOOK2_UNIT and allocation.kind == "review"
-    ]
-    baseline_review = baseline_reviews[0] if len(baseline_reviews) == 1 else None
-    for index, allocation in indexed:
-        if (
-            allocation.unit is not None
-            and allocation.unit != BOOK2_UNIT
-            and baseline_review is not None
-            and index <= baseline_review
-        ):
-            errors.append(
-                f"{allocation.unit} {allocation.kind} allocation must begin after "
-                f"{BOOK2_UNIT} final review"
+    for unit, contract in contracts.items():
+        for predecessor in contract["prereqs"]:
+            if predecessor not in contracts:
+                continue
+            predecessor_reviews = [
+                index
+                for index, allocation in indexed
+                if allocation.unit == predecessor and allocation.kind == "review"
+            ]
+            predecessor_review = (
+                predecessor_reviews[0] if len(predecessor_reviews) == 1 else None
             )
+            for index, allocation in indexed:
+                if (
+                    allocation.unit == unit
+                    and predecessor_review is not None
+                    and index <= predecessor_review
+                ):
+                    errors.append(
+                        f"{unit} {allocation.kind} allocation must begin after "
+                        f"{predecessor} final review"
+                    )
 
     covered: set[str] = set()
     for unit, contract in contracts.items():
