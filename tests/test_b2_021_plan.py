@@ -25,6 +25,7 @@ OWNED_CONCEPTS = [
     "unet",
     "graph-neural-network-transformer-applications",
 ]
+EXPECTED_MODALITIES = {"theory", "implementation", "model-training"}
 
 
 def _coverage_map() -> dict[str, Any]:
@@ -73,6 +74,7 @@ def test_b2_021_coverage_stays_missing_until_live_sources_exist() -> None:
         assert row["deficits"] == {
             "modalities_missing": ["theory", "implementation", "model-training"]
         }
+        assert set(row["evidence_by_modality"]) == EXPECTED_MODALITIES
         assert all(
             evidence
             == {

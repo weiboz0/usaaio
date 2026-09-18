@@ -144,7 +144,8 @@ def _b2_021_problem_minutes(problem_number: int) -> int:
     return 55
 
 
-def _three_manifest_root(tmp_path: Path) -> Path:
+def _prospective_schedule_only_three_manifest_root(tmp_path: Path) -> Path:
+    """Build only a schedule fixture; inherited concept/coverage metadata is invalid."""
     selected = _two_manifest_root(tmp_path)
     source = selected / "units" / B2_020
     target = selected / "units" / B2_021
@@ -253,7 +254,7 @@ def _report_for_three_manifest_mutation(
     tmp_path: Path,
     mutate: Callable[[dict[str, Any]], None],
 ):
-    selected = _three_manifest_root(tmp_path)
+    selected = _prospective_schedule_only_three_manifest_root(tmp_path)
     schedule_path = selected / "curriculum" / "course-schedule.yaml"
     schedule = _load_schedule(selected)
     mutate(schedule)
@@ -403,7 +404,7 @@ def test_generic_book2_schedule_accepts_two_manifest_ledger(tmp_path: Path) -> N
 def test_generic_book2_schedule_accepts_prospective_three_manifest_ledger(
     tmp_path: Path,
 ) -> None:
-    selected = _three_manifest_root(tmp_path)
+    selected = _prospective_schedule_only_three_manifest_root(tmp_path)
     raw = _load_schedule(selected)
 
     assert raw["weeks"][:12] == _load_schedule()["weeks"]
@@ -487,11 +488,15 @@ def test_b2_021_whole_unit_must_follow_b2_020_completion(tmp_path: Path) -> None
     )
 
     assert not report.ok
-    assert any(
-        f"{B2_021} bridge-diagnostic allocation must begin after {B2_020} final review"
-        in error
+    expected = (
+        f"{B2_021} bridge-diagnostic allocation must begin after "
+        f"{B2_020} final review"
+    )
+    assert [
+        error
         for error in report.errors
-    ), report.errors
+        if f"{B2_021} " in error and f"after {B2_020} final review" in error
+    ] == [expected]
 
 
 def test_two_manifest_ledger_rejects_reversed_session_order(tmp_path: Path) -> None:

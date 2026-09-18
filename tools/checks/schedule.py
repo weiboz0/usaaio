@@ -827,6 +827,14 @@ def _validate_live_book2_ledger(
             )
 
     for unit, contract in contracts.items():
+        successor_rows = [
+            (index, allocation)
+            for index, allocation in indexed
+            if allocation.unit == unit
+        ]
+        if not successor_rows:
+            continue
+        successor_start, first_allocation = successor_rows[0]
         for predecessor in contract["prereqs"]:
             if predecessor not in contracts:
                 continue
@@ -838,16 +846,14 @@ def _validate_live_book2_ledger(
             predecessor_review = (
                 predecessor_reviews[0] if len(predecessor_reviews) == 1 else None
             )
-            for index, allocation in indexed:
-                if (
-                    allocation.unit == unit
-                    and predecessor_review is not None
-                    and index <= predecessor_review
-                ):
-                    errors.append(
-                        f"{unit} {allocation.kind} allocation must begin after "
-                        f"{predecessor} final review"
-                    )
+            if (
+                predecessor_review is not None
+                and successor_start <= predecessor_review
+            ):
+                errors.append(
+                    f"{unit} {first_allocation.kind} allocation must begin after "
+                    f"{predecessor} final review"
+                )
 
     covered: set[str] = set()
     for unit, contract in contracts.items():
