@@ -53,17 +53,18 @@ No teaching material, solution, manifest, curriculum inventory, generated docume
 - [ ] Add or retain negative witnesses showing that malformed reconciliation data, a real non-ancestor commit, wrong ignore patterns, and overlap errors still fail.
 - [ ] Add a behavioral CI regression proving a normal Git checkout invokes `scripts/pre-merge-guard.sh`, while a source archive without Git metadata emits one exact resource-skip marker and continues to `ci-local: ALL GREEN`.
 - [ ] Prove the no-Git path cannot be selected merely by an environment variable and that a failing pre-merge guard remains blocking whenever Git metadata exists.
+- [ ] Cover an archive nested beneath an unrelated parent Git work tree and a corrupt local `.git` marker: the unrelated parent must not select the guard, while corrupt metadata at the archive root must fail loudly rather than select the skip.
 
 ## Task 2 — Separate unavailable history from failed ancestry
 
-- [ ] In `tools/checks/scope.py`, probe whether the repository history is available before running `git merge-base --is-ancestor`.
+- [ ] In `tools/checks/scope.py`, anchor the repository probe to the canonical inspected repository root before running `git merge-base --is-ancestor`; an unrelated enclosing repository is not history for the inspected tree.
 - [ ] If no Git work tree exists, retain all reconciliation-document structure checks but omit only the unreconstructible ancestry query.
-- [ ] If Git history exists, preserve the current rejection for a missing or non-ancestor squash commit.
+- [ ] If root-local Git metadata exists, preserve the current rejection for a missing or non-ancestor squash commit and fail loudly if that metadata is unusable.
 - [ ] Do not use environment flags, dates, network access, or mutable repository state to choose the mode.
 
 ## Task 3 — Keep the pre-merge guard strict and resource-scoped
 
-- [ ] In `scripts/ci-local.sh`, detect Git work-tree availability immediately before step 9.
+- [ ] In `scripts/ci-local.sh`, detect root-local Git work-tree availability immediately before step 9: canonical `git rev-parse --show-toplevel` must equal canonical `repo_root`; an enclosing parent work tree does not count, while any root-local `.git` file, directory, or symlink that cannot support the probe is an error rather than a skip.
 - [ ] In a normal checkout, invoke `bash scripts/pre-merge-guard.sh` exactly as before and propagate every nonzero result.
 - [ ] In a historyless source archive, do not invoke the index-based guard; emit the exact marker `SKIP pre-merge-guard: Git work tree unavailable in clean archive` and continue.
 - [ ] Do not add a bypass environment variable, initialize Git metadata, or weaken `scripts/pre-merge-guard.sh` itself.
@@ -97,6 +98,7 @@ This is a tooling/test-only plan and ships no unit or mock-test content, so the 
 - Copying raw past-test papers into a clean archive.
 - Changing `.gitignore`, overlap thresholds, curriculum scope, or reconciliation policy.
 - Any curriculum-content or generated-evidence change.
+- Design section 2 content verification: this tooling/test-only plan ships no unit or mock-test content and instead uses the named tooling verification phase in Task 4.
 
 ## Plan Review
 
@@ -112,7 +114,15 @@ This revision adds the ninth downstream failure, `scripts/ci-local.sh` to exact 
 
 ### Round 2 — revised plan
 
-Pending four-way review.
+Exact commit `bd65f0a` reached consensus on 2026-09-19:
+
+- `[claude-self]` **APPROVE** — the ninth failure, strict normal-checkout behavior, archive-only skip, negative witnesses, and lifecycle are complete.
+- `[codex]` **APPROVE** — confirmed the Round-1 blocker is closed without weakening the real guard.
+- `[fable]` **APPROVE WITH NITS** — requested root-anchored Git detection that cannot inherit a parent repository and placement of the tooling exemption in `## Out of scope`.
+- `[glm]` **APPROVE WITH NITS** — requested explicit behavior for enclosing repositories and corrupt root-local Git metadata; its tag-renaming nit was not adopted because the active project instructions require `[claude-self]` and `[codex]`.
+
+All actionable nits are resolved in this gate-record update without changing scope or architecture.
+The four-way plan gate is passed and implementation is authorized.
 
 ## Content Review
 
