@@ -1556,6 +1556,61 @@ def test_plan014_corrupt_root_git_metadata_fails_loudly(tmp_path: Path) -> None:
     _assert_error(check_scope(tmp_path), "Git metadata at repository root is unusable")
 
 
+def test_plan014_partial_root_git_metadata_under_parent_fails_loudly(
+    tmp_path: Path,
+) -> None:
+    _scope_git(tmp_path, "init", "-b", "main")
+    nested = tmp_path / "archive"
+    _base_contract(nested)
+    reconciliation = nested / "docs" / "audits" / "015-plan014-reconciliation.md"
+    reconciliation.write_text(
+        "Plan 014 is **merged**.\n"
+        "Its squash commit is `deadbeefdeadbeefdeadbeefdeadbeefdeadbeef`.\n"
+    )
+    (nested / ".git").mkdir()
+
+    _assert_error(check_scope(nested), "Git metadata at repository root is unusable")
+
+
+def test_plan014_reconciliation_scrubs_repository_environment(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _base_contract(tmp_path)
+    commit = _initialize_scope_git_repository(tmp_path)
+    reconciliation = tmp_path / "docs" / "audits" / "015-plan014-reconciliation.md"
+    reconciliation.write_text(
+        f"Plan 014 is **merged**.\nIts squash commit is `{commit}`.\n"
+    )
+    poisoned = {
+        "GIT_DIR": "/nonexistent/poisoned-git-dir",
+        "GIT_WORK_TREE": "/nonexistent/poisoned-work-tree",
+        "GIT_INDEX_FILE": "/nonexistent/poisoned-index",
+        "GIT_OBJECT_DIRECTORY": "/nonexistent/poisoned-objects",
+        "GIT_COMMON_DIR": "/nonexistent/poisoned-common-dir",
+        "GIT_ALTERNATE_OBJECT_DIRECTORIES": "/nonexistent/poisoned-alternates",
+    }
+    for name, value in poisoned.items():
+        monkeypatch.setenv(name, value)
+
+    report = check_scope(tmp_path)
+
+    assert report.ok, report.errors
+
+
+def test_plan014_missing_git_binary_reports_unusable_metadata(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _base_contract(tmp_path)
+    commit = _initialize_scope_git_repository(tmp_path)
+    reconciliation = tmp_path / "docs" / "audits" / "015-plan014-reconciliation.md"
+    reconciliation.write_text(
+        f"Plan 014 is **merged**.\nIts squash commit is `{commit}`.\n"
+    )
+    monkeypatch.setenv("PATH", "")
+
+    _assert_error(check_scope(tmp_path), "Git metadata at repository root is unusable")
+
+
 def test_renderer_owns_both_documents_and_keeps_assessments_separate(tmp_path: Path) -> None:
     contract = _base_contract(tmp_path)
     evidence = contract["roadmap"]["knowledge_points"][0]["evidence_by_modality"]["theory"]

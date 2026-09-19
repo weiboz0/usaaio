@@ -144,15 +144,28 @@ def _check_reconciliation(root: Path, errors: list[str]) -> None:
     if not git_metadata.exists() and not git_metadata.is_symlink():
         return
     git_env = os.environ.copy()
-    git_env.pop("GIT_DIR", None)
-    git_env.pop("GIT_WORK_TREE", None)
-    probe = subprocess.run(
-        ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
-        capture_output=True,
-        text=True,
-        check=False,
-        env=git_env,
-    )
+    for variable in (
+        "GIT_DIR",
+        "GIT_WORK_TREE",
+        "GIT_INDEX_FILE",
+        "GIT_OBJECT_DIRECTORY",
+        "GIT_COMMON_DIR",
+        "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+    ):
+        git_env.pop(variable, None)
+    try:
+        probe = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
+            capture_output=True,
+            text=True,
+            check=False,
+            env=git_env,
+        )
+    except OSError as exc:
+        errors.append(
+            f"Plan 014 reconciliation Git metadata at repository root is unusable: {exc}"
+        )
+        return
     if probe.returncode != 0:
         errors.append("Plan 014 reconciliation Git metadata at repository root is unusable")
         return
@@ -165,21 +178,27 @@ def _check_reconciliation(root: Path, errors: list[str]) -> None:
     if work_tree != inspected_root:
         errors.append("Plan 014 reconciliation Git metadata at repository root is unusable")
         return
-    proc = subprocess.run(
-        [
-            "git",
-            "-C",
-            str(root),
-            "merge-base",
-            "--is-ancestor",
-            match.group(1),
-            "HEAD",
-        ],
-        capture_output=True,
-        text=True,
-        check=False,
-        env=git_env,
-    )
+    try:
+        proc = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(root),
+                "merge-base",
+                "--is-ancestor",
+                match.group(1),
+                "HEAD",
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+            env=git_env,
+        )
+    except OSError as exc:
+        errors.append(
+            f"Plan 014 reconciliation Git metadata at repository root is unusable: {exc}"
+        )
+        return
     if proc.returncode != 0:
         errors.append(
             f"Plan 014 reconciliation squash commit {match.group(1)} is not an ancestor of HEAD"

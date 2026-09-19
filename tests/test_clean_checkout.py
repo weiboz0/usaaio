@@ -1401,6 +1401,7 @@ def test_book_local_generated_paths_are_ignored_without_ignoring_sources(
         capture_output=True,
         text=True,
         check=True,
+        env={**os.environ, "GIT_CONFIG_GLOBAL": os.devnull, "GIT_CONFIG_NOSYSTEM": "1"},
     )
     git_prefix = [
         "git",
@@ -1410,11 +1411,17 @@ def test_book_local_generated_paths_are_ignored_without_ignoring_sources(
         "--no-index",
         "--quiet",
     ]
+    git_env = {
+        **os.environ,
+        "GIT_CONFIG_GLOBAL": os.devnull,
+        "GIT_CONFIG_NOSYSTEM": "1",
+    }
 
     for relative in ignored:
         proc = subprocess.run(
             [*git_prefix, relative],
             check=False,
+            env=git_env,
         )
         assert proc.returncode == 0, relative
     for relative in sources:
@@ -1422,6 +1429,7 @@ def test_book_local_generated_paths_are_ignored_without_ignoring_sources(
         proc = subprocess.run(
             [*git_prefix, relative],
             check=False,
+            env=git_env,
         )
         assert proc.returncode == 1, relative
 
@@ -1712,6 +1720,13 @@ def _ci_guard_fixture(repo: Path, *, initialize_git: bool = False) -> tuple[Path
     guard = repo / "scripts" / "pre-merge-guard.sh"
     guard.write_text(
         "#!/usr/bin/env bash\n"
+        "for variable in GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_OBJECT_DIRECTORY "
+        "GIT_COMMON_DIR GIT_ALTERNATE_OBJECT_DIRECTORIES; do\n"
+        "  if [[ -v $variable ]]; then\n"
+        "    printf 'poisoned-%s\\n' \"$variable\" >> \"$GUARD_TRACE\"\n"
+        "    exit 91\n"
+        "  fi\n"
+        "done\n"
         "printf 'guard-invoked\\n' >> \"$GUARD_TRACE\"\n"
         "exit \"${GUARD_EXIT:-0}\"\n",
         encoding="utf-8",
@@ -1839,6 +1854,25 @@ def test_ci_corrupt_root_git_metadata_fails_instead_of_skipping(tmp_path: Path) 
     assert "ci-local: ALL GREEN" not in proc.stdout
 
 
+def test_ci_partial_root_git_metadata_under_parent_repo_fails_loudly(
+    tmp_path: Path,
+) -> None:
+    parent = tmp_path / "parent"
+    parent.mkdir()
+    _git(parent, "init", "-b", "main")
+    repo = parent / "archive"
+    fake_bin, trace = _ci_guard_fixture(repo)
+    (repo / ".git").mkdir()
+
+    proc = _run_ci_guard_fixture(repo, fake_bin, trace)
+
+    assert proc.returncode != 0
+    assert not trace.exists()
+    assert "FAIL: Git metadata at repository root is unusable" in proc.stderr
+    assert "SKIP pre-merge-guard" not in proc.stdout
+    assert "ci-local: ALL GREEN" not in proc.stdout
+
+
 def test_ci_pre_merge_guard_failure_remains_blocking_with_git_metadata(
     tmp_path: Path,
 ) -> None:
@@ -1853,7 +1887,7 @@ def test_ci_pre_merge_guard_failure_remains_blocking_with_git_metadata(
     assert "ci-local: ALL GREEN" not in proc.stdout
 
 
-def test_ci_cannot_select_historyless_mode_with_environment_variable(
+def test_ci_scrubs_repository_environment_before_probe_and_guard(
     tmp_path: Path,
 ) -> None:
     repo = tmp_path / "repo"
@@ -1863,7 +1897,14 @@ def test_ci_cannot_select_historyless_mode_with_environment_variable(
         repo,
         fake_bin,
         trace,
-        extra_env={"USAAIO_SKIP_PRE_MERGE_GUARD": "1"},
+        extra_env={
+            "GIT_DIR": "/nonexistent/poisoned-git-dir",
+            "GIT_WORK_TREE": "/nonexistent/poisoned-work-tree",
+            "GIT_INDEX_FILE": "/nonexistent/poisoned-index",
+            "GIT_OBJECT_DIRECTORY": "/nonexistent/poisoned-objects",
+            "GIT_COMMON_DIR": "/nonexistent/poisoned-common-dir",
+            "GIT_ALTERNATE_OBJECT_DIRECTORIES": "/nonexistent/poisoned-alternates",
+        },
     )
 
     assert proc.returncode == 0, proc.stdout + proc.stderr

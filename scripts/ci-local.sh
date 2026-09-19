@@ -140,7 +140,16 @@ done
 step "9/9 pre-merge guard"
 git_metadata=$repo_root/.git
 if [[ -e $git_metadata || -L $git_metadata ]]; then
-  if ! git_work_tree=$(env -u GIT_DIR -u GIT_WORK_TREE \
+  git_clean_env=(
+    env
+    -u GIT_DIR
+    -u GIT_WORK_TREE
+    -u GIT_INDEX_FILE
+    -u GIT_OBJECT_DIRECTORY
+    -u GIT_COMMON_DIR
+    -u GIT_ALTERNATE_OBJECT_DIRECTORIES
+  )
+  if ! git_work_tree=$("${git_clean_env[@]}" \
     git -C "$repo_root" rev-parse --show-toplevel 2>/dev/null); then
     echo "FAIL: Git metadata at repository root is unusable" >&2
     exit 1
@@ -154,7 +163,7 @@ if [[ -e $git_metadata || -L $git_metadata ]]; then
     echo "FAIL: Git metadata at repository root is unusable" >&2
     exit 1
   fi
-  bash scripts/pre-merge-guard.sh
+  "${git_clean_env[@]}" bash scripts/pre-merge-guard.sh
 else
   echo "SKIP pre-merge-guard: Git work tree unavailable in clean archive"
 fi
