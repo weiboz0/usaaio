@@ -104,3 +104,18 @@ def test_hygiene_accepts_solution_notebook_with_assert(tmp_path):
     )
 
     assert check_hygiene(tmp_path).ok
+
+
+def test_hygiene_accepts_torch_testing_assert_close_as_executable_check(tmp_path):
+    write_nb(
+        tmp_path / "units" / "U1" / "practice" / "p01_solution.ipynb",
+        {
+            "cell_type": "code",
+            "source": "import torch\ntorch.testing.assert_close(actual, expected)",
+            "metadata": {},
+            "outputs": [],
+            "execution_count": None,
+        },
+    )
+
+    assert check_hygiene(tmp_path).ok

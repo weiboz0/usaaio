@@ -461,8 +461,8 @@ def test_syllabus_and_standards_publish_b2_020_as_double_length() -> None:
     assert set(unit.concept_prerequisites) == IMPORTED
     assert unit.length == "double"
     standards = (ROOT / "docs/unit-standards.md").read_text(encoding="utf-8")
-    assert "F5, F6, C7, C11, C12, B2-019, and B2-020" in standards
-    assert standards.count("B2-019") >= 2 and standards.count("B2-020") >= 2
+    assert "F5, F6, C7, C11, C12, B2-019, B2-020, and B2-021" in standards
+    assert all(standards.count(unit) >= 2 for unit in ("B2-019", "B2-020", "B2-021"))
 
 
 def test_generator_exports_protocol_and_tracked_state_contract() -> None:
@@ -619,10 +619,10 @@ def test_coverage_promotes_exact_five_rows_without_book1_embedding_evidence() ->
 
 def test_live_schedule_appends_exact_second_six_week_ledger() -> None:
     schedule = yaml.safe_load((BOOK2_ROOT / "curriculum/course-schedule.yaml").read_text())
-    assert schedule["total_book_weeks"] == 12
-    assert schedule["total_minutes"] == 3320
-    assert schedule["final_assessment"]["after_book_week"] == 12
-    weeks = schedule["weeks"][6:]
+    assert schedule["total_book_weeks"] == 18
+    assert schedule["total_minutes"] == 4970
+    assert schedule["final_assessment"]["after_book_week"] == 18
+    weeks = schedule["weeks"][6:12]
     assert [row["book_week"] for row in weeks] == list(range(7, 13))
     assert [row["global_week"] for row in weeks] == list(range(47, 53))
     assert [sum(item["minutes"] for item in row["allocations"]) for row in weeks] == [255, 275, 420, 270, 380, 60]

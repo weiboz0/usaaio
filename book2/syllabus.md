@@ -25,6 +25,7 @@ baseline:
 clusters:
 - attention-transformers
 - language-transformers
+- cross-modal-vision
 imports:
   book: book1
   units:
@@ -57,6 +58,9 @@ imports:
   - cross-entropy-loss
   - torch-optimizers
   - autograd-training
+  - convolution
+  - feature-maps
+  - cnn-training
 evidence_imports:
   book: book1
   concepts:
@@ -119,6 +123,14 @@ concepts:
   cluster: language-transformers
 - id: transformer-nlp-task-design
   cluster: language-transformers
+- id: vision-transformers
+  cluster: cross-modal-vision
+- id: object-detection
+  cluster: cross-modal-vision
+- id: unet
+  cluster: cross-modal-vision
+- id: graph-neural-network-transformer-applications
+  cluster: cross-modal-vision
 units:
 - id: B2-019-attention-transformers
   track: extension
@@ -202,5 +214,47 @@ units:
   - nlp-pretraining-objectives
   - nlp-fine-tuning-protocol
   - transformer-nlp-task-design
+  length: double
+- id: B2-021-cross-modal-transformers-vision
+  track: extension
+  title: Cross-modal Transformers and Advanced Vision
+  book: 2
+  layer: round-2-extension
+  round: 2
+  prereqs:
+  - book1:F1-scientific-python
+  - book1:F3-matrices
+  - book1:C6-pytorch
+  - book1:C7-cnn-transfer
+  - book1:C11-neural-training
+  - B2-019-attention-transformers
+  - B2-020-language-transformers
+  concept_prerequisites:
+  - attention-mask
+  - query-key-value-attention
+  - multi-head-attention
+  - attention-complexity
+  - transformer-block
+  - book1:numpy-arrays
+  - book1:broadcasting
+  - book1:aggregation-axis
+  - book1:random-seeding
+  - book1:matrix-multiplication
+  - book1:torch-tensors
+  - book1:nn-module
+  - book1:requires-grad
+  - book1:tensor-shape-tracing
+  - book1:softmax
+  - book1:cross-entropy-loss
+  - book1:torch-optimizers
+  - book1:autograd-training
+  - book1:convolution
+  - book1:feature-maps
+  - book1:cnn-training
+  teaches:
+  - vision-transformers
+  - object-detection
+  - unet
+  - graph-neural-network-transformer-applications
   length: double
 ```

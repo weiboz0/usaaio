@@ -23,7 +23,7 @@ BOOK2_ROOT = ROOT / "book2"
 FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "two-books-valid"
 BOOK1_SCHEDULE_SHA256 = "6c1f4f6eeb518930e5772ef0f14d8bba18be1f191114c91edfae52ef8811eb4d"
 BOOK1_STRUCTURE_SHA256 = "75518825359dd1e0ed3501c0301fbdfb1fc685d6944465f924f1f88c0d25e642"
-BOOK2_SCHEDULE_SHA256 = "2bddad6ce2ec1e96bf9e34f770d53ac1332ade51611026acc49725caba5cf543"
+BOOK2_SCHEDULE_SHA256 = "c4cd74a7977ad9af37fa187989a78d2f0b02d9b80ab2c33c878fc36e7b66b17d"
 BOOK2_MANIFEST_SHA256 = "c50be81714b421e85f1e3e3afdf0eddd65352ae7c0f94ba5f655cb2716e9d5c1"
 B2_019 = "B2-019-attention-transformers"
 B2_020 = "B2-020-language-transformers"
@@ -110,6 +110,26 @@ def _write_yaml(path: Path, value: dict[str, Any]) -> None:
 def _two_manifest_root(tmp_path: Path) -> Path:
     selected = tmp_path / "book2"
     shutil.copytree(BOOK2_ROOT, selected)
+    shutil.rmtree(selected / "units" / B2_021, ignore_errors=True)
+
+    syllabus_path = selected / "syllabus.md"
+    contract = yaml.safe_load(
+        re.search(
+            r"<!-- syllabus-canonical -->\s*```yaml\n(.*?)\n```",
+            syllabus_path.read_text(encoding="utf-8"),
+            re.DOTALL,
+        ).group(1)
+    )
+    contract["units"] = [row for row in contract["units"] if row["id"] != B2_021]
+    _replace_syllabus_contract(syllabus_path, contract)
+
+    schedule_path = selected / "curriculum" / "course-schedule.yaml"
+    schedule = _load_schedule(selected)
+    schedule["total_book_weeks"] = 12
+    schedule["total_minutes"] = 3320
+    schedule["final_assessment"]["after_book_week"] = 12
+    schedule["weeks"] = schedule["weeks"][:12]
+    _write_yaml(schedule_path, schedule)
     return selected
 
 
@@ -309,26 +329,26 @@ def test_schedule_dispatch_uses_explicit_book_policies() -> None:
     )
 
 
-def test_registered_book2_schedule_is_exact_twelve_week_live_ledger() -> None:
+def test_registered_book2_schedule_is_exact_eighteen_week_live_ledger() -> None:
     raw = _load_schedule()
 
     assert raw["schedule_version"] == 1
     assert raw["book"] == 2
     assert raw["status"] == "live"
     assert raw["starts_after_global_week"] == 40
-    assert raw["total_book_weeks"] == 12
-    assert raw["total_minutes"] == 3320
+    assert raw["total_book_weeks"] == 18
+    assert raw["total_minutes"] == 4970
     assert raw["final_assessment"] == {
         "kind": "future-r2-mock",
         "status": "planned",
-        "after_book_week": 12,
+        "after_book_week": 18,
     }
-    assert [week["book_week"] for week in raw["weeks"]] == list(range(1, 13))
-    assert [week["global_week"] for week in raw["weeks"]] == list(range(41, 53))
+    assert [week["book_week"] for week in raw["weeks"]] == list(range(1, 19))
+    assert [week["global_week"] for week in raw["weeks"]] == list(range(41, 59))
     assert [
         sum(allocation["minutes"] for allocation in week["allocations"])
         for week in raw["weeks"]
-    ] == [255, 275, 420, 270, 380, 60] * 2
+    ] == [255, 275, 420, 270, 380, 60] * 2 + list(B2_021_WEEK_MINUTES)
 
     problem_ids = [
         problem_id
@@ -339,35 +359,41 @@ def test_registered_book2_schedule_is_exact_twelve_week_live_ledger() -> None:
     assert sorted(problem_ids) == [
         *[f"B2-019-p{number:02}" for number in range(1, 25)],
         *[f"B2-020-p{number:02}" for number in range(1, 25)],
+        *[f"B2-021-p{number:02}" for number in range(1, 25)],
     ]
-    assert len(problem_ids) == len(set(problem_ids)) == 48
+    assert len(problem_ids) == len(set(problem_ids)) == 72
 
     report = schedule_checker.check_schedule(BOOK2_ROOT)
     assert report.ok, report.errors
     validated = schedule_checker.load_validated_schedule(BOOK2_ROOT)
     assert validated.status == "live"
-    assert [week.week for week in validated.weeks] == list(range(1, 13))
-    assert list(validated.global_weeks) == list(range(41, 53))
-    assert validated.total_minutes == 3320
+    assert [week.week for week in validated.weeks] == list(range(1, 19))
+    assert list(validated.global_weeks) == list(range(41, 59))
+    assert validated.total_minutes == 4970
     assert validated.covered_problem_ids == frozenset(problem_ids)
     inventory = audit_curriculum.build_inventory(BOOK2_ROOT)
-    assert inventory["counts"]["scheduled_minutes"] == 3320
-    assert inventory["counts"]["unit_practices"] == 48
+    assert inventory["counts"]["scheduled_minutes"] == 4970
+    assert inventory["counts"]["unit_practices"] == 72
 
 
 def test_live_book2_minutes_enter_the_aggregate_baseline() -> None:
     rendered = render_course_structure.render_document(BOOK2_ROOT)
     aggregate = audit_curriculum.build_inventory(BOOK2_ROOT)
 
-    assert aggregate["counts"]["scheduled_minutes"] == 3320
-    assert "3,320 minutes" in rendered
+    assert aggregate["counts"]["scheduled_minutes"] == 4970
+    assert aggregate["counts"]["manifested_minutes"] == 4880
+    assert aggregate["counts"]["unit_practices"] == 72
+    assert "4,970 minutes" in rendered
     assert "live manifests reconcile every lesson, practice ID, path, and minute" in rendered
     assert rendered.count("255/275/420/270/380/60-minute progression") == 2
+    assert rendered.count("255/275/370/315/375/60-minute progression") == 1
 
     documents = render_curriculum_roadmap.render_documents(ROOT)
     for document in documents.values():
-        assert "Current scheduled baseline: **22195 minutes / 369.92 hours**." in document
+        assert "Current scheduled baseline: **23845 minutes / 397.42 hours**." in document
         assert "| **Planned-unit subtotal** | **142** | **182** |" in document
+        assert "**533.92–573.92 manifested-baseline hours**" in document
+        assert "**539.42–579.42 scheduled-baseline hours**" in document
     roadmap = documents[Path("docs/curriculum-roadmap.md")]
     assert (
         "| book2 | book2:B2-019-attention-transformers | Attention and Transformer "
@@ -407,7 +433,7 @@ def test_generic_book2_schedule_accepts_prospective_three_manifest_ledger(
     selected = _prospective_schedule_only_three_manifest_root(tmp_path)
     raw = _load_schedule(selected)
 
-    assert raw["weeks"][:12] == _load_schedule()["weeks"]
+    assert raw["weeks"][:12] == _load_schedule()["weeks"][:12]
     assert [
         sum(allocation["minutes"] for allocation in week["allocations"])
         for week in raw["weeks"][12:]
@@ -987,12 +1013,12 @@ def test_unregistered_direct_schedule_api_requires_explicit_identity(
     [
         pytest.param(
             lambda schedule: schedule["weeks"][2].update(book_week=2),
-            "book_week rows must be ordered consecutively 1..12",
+            "book_week rows must be ordered consecutively 1..18",
             id="local-numbering",
         ),
         pytest.param(
             lambda schedule: schedule["weeks"][2].update(global_week=99),
-            "global_week rows must be 41..52",
+            "global_week rows must be 41..58",
             id="global-numbering",
         ),
         pytest.param(
@@ -1013,7 +1039,7 @@ def test_unregistered_direct_schedule_api_requires_explicit_identity(
             lambda schedule: schedule["final_assessment"].update(
                 after_book_week=5
             ),
-            "planned final assessment marker must follow book week 12",
+            "planned final assessment marker must follow book week 18",
             id="stale-final-marker",
         ),
         pytest.param(
@@ -1121,13 +1147,13 @@ def test_shared_renderer_supports_live_book2_manifest_coverage() -> None:
     rendered = render_course_structure.render_document(BOOK2_ROOT)
 
     assert "Book 2 Schedule" in rendered
-    assert "local weeks 1–12" in rendered
-    assert "display weeks 41–52" in rendered
-    assert "3,320 minutes" in rendered
+    assert "local weeks 1–18" in rendered
+    assert "display weeks 41–58" in rendered
+    assert "4,970 minutes" in rendered
     assert "Status: live." in rendered
     assert "live manifests reconcile every lesson, practice ID, path, and minute" in rendered
     assert "derivation-heavy Week 3" in rendered
-    assert "planned future `r2-*` final assessment follows local Week 12" in rendered
+    assert "planned future `r2-*` final assessment follows local Week 18" in rendered
 
 
 def test_two_manifest_renderer_derives_ranges_cadences_and_final_week(
@@ -1145,14 +1171,16 @@ def test_two_manifest_renderer_derives_ranges_cadences_and_final_week(
     assert "planned future `r2-*` final assessment follows local Week 12" in rendered
 
 
-def test_live_book2_ledger_bytes_and_presence_of_b2_020_are_pinned() -> None:
+def test_live_book2_ledger_bytes_and_presence_of_all_units_are_pinned() -> None:
     schedule_path = BOOK2_ROOT / "curriculum" / "course-schedule.yaml"
     manifest_path = BOOK2_ROOT / "units" / B2_019 / "manifest.yaml"
 
     assert hashlib.sha256(schedule_path.read_bytes()).hexdigest() == BOOK2_SCHEDULE_SHA256
     assert hashlib.sha256(manifest_path.read_bytes()).hexdigest() == BOOK2_MANIFEST_SHA256
     assert (BOOK2_ROOT / "units" / B2_020 / "manifest.yaml").is_file()
-    assert B2_020 in schedule_path.read_text(encoding="utf-8")
+    assert (BOOK2_ROOT / "units" / B2_021 / "manifest.yaml").is_file()
+    schedule_text = schedule_path.read_text(encoding="utf-8")
+    assert B2_020 in schedule_text and B2_021 in schedule_text
 
 
 def test_book1_bytes_remain_pinned_while_valid_book2_fixture_renders(
