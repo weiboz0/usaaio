@@ -10,8 +10,10 @@ Plan 022 verification intentionally changed C12 Session 6 and p20.
 `tests/test_integration.py::test_plan019_task3_every_book1_manifest_and_notebook_matches_pinned_cutover` then failed because it compares the current working tree to pre-cutover commit `4cc3894` and treats every notebook not changed by Plan 019 as permanently immutable.
 That is broader than Plan 019 Task 3, whose contract is that the Plan 019 migration itself preserved Book 1 except for inventoried path-resolution cells.
 
-The post-cutover reference is merge commit `ab795cd` (`Plan 019: split complete books and add attention foundations (#22)`).
-With Git history available, the regression should compare `4cc3894:<old path>` to `ab795cd:book1/<path>`.
+The pre-cutover reference is full commit `4cc38946548f618ac131d246bfd4191d20e4e7d8`.
+The post-cutover reference is full squash-merge commit `ab795cdfb1ea6efcebce351ef7968f36435bffec` (`Plan 019: split complete books and add attention foundations (#22)`).
+The quarantined pre-cutover commit is not an ancestor of the squash commit, so the implementation must read blobs directly and must not rely on ancestry, merge bases, or commit ranges.
+With Git history available, the regression should compare `4cc38946548f618ac131d246bfd4191d20e4e7d8:<old path>` to `ab795cdfb1ea6efcebce351ef7968f36435bffec:book1/<path>`.
 Later working-tree content is outside that historical proof.
 Without those commits (for example, a source archive), the test cannot prove historical byte identity and must limit itself to current structural/path-resolution checks rather than hash the current curriculum as if it were the Plan 019 result.
 
@@ -31,17 +33,21 @@ No teaching material, solution, manifest, curriculum inventory, generated docume
 
 ## Task 1 — Lock the regression behavior
 
-- [ ] Add a focused test for a helper that resolves the post-cutover Book 1 blob from pinned commit `ab795cd`, not from `BOOK1_ROOT` in the current worktree.
-- [ ] Pin both historical commit constants and exact old/new path mapping (`<path>` to `book1/<path>`).
-- [ ] Add a historyless-mode regression proving the historical byte/digest assertions are skipped when either pinned commit is unavailable while structural/path-resolution checks remain active.
-- [ ] Capture RED against the current implementation before refactoring.
+- [ ] Add a focused test for a helper that resolves the post-cutover Book 1 blob from pinned full commit `ab795cdfb1ea6efcebce351ef7968f36435bffec`, not from `BOOK1_ROOT` in the current worktree.
+- [ ] Pin both full historical commit constants and exact old/new path mapping (`<path>` to `book1/<path>`).
+- [ ] Build one isolated real-repository fixture that replaces exactly these current Book 1 notebook blobs with the Plan 022 branch versions: `units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb`, `units/C12-classical-models/practice/p20.ipynb`, and `units/C12-classical-models/practice/p20_solution.ipynb`.
+- [ ] Prove that exact fixture fails the current cutover regression before the refactor and passes the refactored regression afterward; a missing-helper-only RED is insufficient.
+- [ ] Add separate historyless-mode regressions for unavailable pre-cutover commit and unavailable post-cutover commit.
+- [ ] In either historyless case, retain and mutation-test exactly these assertions: the fixture has 64 discovery rows plus three special consumers covering 67 unique notebook destinations; all 67 current Book 1 destinations exist; every inventoried cell index exists; every inventoried migrated cell contains `USAAIO_BOOK_ROOT` or `book_root` and does not contain top-level `pyproject.toml` discovery.
+- [ ] Prove historyless mode still fails when one inventoried destination is deleted and when one inventoried path-resolution marker is corrupted.
+- [ ] In historyless mode, explicitly skip the unreconstructible historical universe assertions: 991/20 path counts, full path-set digest, manifest digest, unchanged-notebook digest, changed-structure digest, and changed-source digest. Never derive those historical expectations from the current worktree.
 
 ## Task 2 — Refactor the historical cutover proof
 
 - [ ] Introduce small read-only helpers for commit availability and blob reads; no checkout, worktree mutation, or network access.
-- [ ] When both commits exist, compare pre-cutover blobs from `4cc3894` with post-cutover blobs from `ab795cd` and retain the existing exact path counts, changed-cell set, structures, sources, and aggregate digest expectations.
+- [ ] When both commits exist, compare pre-cutover blobs from the pinned full pre-cutover SHA with post-cutover blobs from the pinned full squash SHA and retain the existing 991/20/67 counts, 64-entry discovery inventory, full path-set digest, changed-cell set, structures, sources, and all four aggregate record digests.
 - [ ] Never use current Book 1 notebook/manifest bytes in historical digest records when the pinned commits exist.
-- [ ] In historyless mode, validate current destination existence plus the inventoried migrated cells' structural markers, but do not assert historical blob equality or historical aggregate digests that cannot be reconstructed.
+- [ ] In historyless mode, inspect only the 67 paths named by the committed fixture, validate the retained destination/cell/marker assertions from Task 1, and do not enumerate the current Book 1 tree as a substitute historical path universe.
 - [ ] Preserve the 64-consumer inventory, changed-cell rules, PDF input-set test, and all other Plan 019 guards.
 
 ## Task 3 — Verification phase
@@ -50,7 +56,8 @@ This is a tooling/test-only plan and ships no unit or mock-test content, so the 
 
 - [ ] Run the focused new tests and the entire `tests/test_integration.py` suite.
 - [ ] Run `tests/test_clean_checkout.py` and `tests/test_audit_curriculum.py` to cover archive and inventory consumers.
-- [ ] Reproduce the Plan 022 scenario by applying its three notebook blobs in a temporary worktree or equivalent isolated fixture and prove the historical cutover test still passes.
+- [ ] Reproduce the exact Plan 022 three-blob RED/GREEN scenario in the isolated fixture and retain the command/output in the report.
+- [ ] Run `scripts/verify-clean-checkout.sh` so the real repository's `git archive HEAD` path executes full CI without `.git`; a synthetic mini-repository alone is insufficient.
 - [ ] Run `ruff`, `git diff --check`, and mandatory `scripts/ci-local.sh` on a clean branch tip.
 - [ ] Run the four-way tooling/content review gate on the exact verified commit and resolve every open finding.
 
@@ -58,6 +65,7 @@ This is a tooling/test-only plan and ships no unit or mock-test content, so the 
 
 - [ ] Record the passing four-way plan gate before implementation.
 - [ ] Complete the post-execution report with RED/GREEN, history-present/historyless evidence, the Plan 022 mutation witness, full-CI result, and exact paths.
+- [ ] Record two known pre-existing limitations in the report: the PDF input-set test intentionally freezes the R1 mock-test file list and must be revisited by the future r1-002/r1-003 plan; the TODO ledger currently jumps from Plan 019 because 020 is recorded only in its plan and 021/022 remain in flight.
 - [ ] Add Plan 023's shipped status to `TODO.md` without changing unrelated entries.
 - [ ] Commit final records and run authoritative clean-tip `scripts/ci-local.sh` again.
 - [ ] Push, open a PR with `GH_TOKEN=$(cat .gh-token)`, run `bash scripts/pre-merge-guard.sh --pr`, and squash-merge.
@@ -65,6 +73,7 @@ This is a tooling/test-only plan and ships no unit or mock-test content, so the 
 
 ## Out of scope
 
+- Design §2 content verification: this is a tooling/test-only plan and ships no unit or mock-test content.
 - Any curriculum-content or generated-evidence change.
 - Updating Plan 019's historical fixture values or weakening its exact migration-cell assertions.
 - General Git-history abstraction outside this one integration contract.
@@ -72,7 +81,19 @@ This is a tooling/test-only plan and ships no unit or mock-test content, so the 
 
 ## Plan Review
 
-Pending the mandatory four-way gate.
+### Round 1 — exact commit `02c8960` (2026-09-19)
+
+- `[claude-self]` **REJECT** — accepted the independent findings that the exact Plan 022 three-blob RED witness and historyless negative mutations were underspecified.
+- `[codex]` **REJECT** — required the same exact fixture to fail before and pass after, explicit retained/skipped historyless assertions, both missing-commit cases, and missing-destination/corrupt-marker negatives.
+- `[fable]` **APPROVE WITH NITS** — independently verified the root cause, 67-path bijection, unchanged digest constants, and archive consumer; requested explicit confinement of all current-tree counts/digests.
+- `[glm]` **APPROVE WITH NITS** — independently recomputed every pinned digest from the two commits; requested a real archive run, full SHA terminology, and documentation of the PDF-list/TODO limitations.
+
+Round 1 did not reach consensus and did not authorize implementation.
+This revision closes every finding with the exact three-path RED/GREEN fixture, full non-ancestral commit pins, an exhaustive historyless assertion partition and negative matrix, real archive CI, the tooling exemption, and known-limitations reporting.
+
+### Round 2 — revised plan
+
+Pending a fresh mandatory four-way gate on the exact revised commit.
 
 ## Content Review
 
