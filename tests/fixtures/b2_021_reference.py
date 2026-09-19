@@ -34,6 +34,15 @@ TASK_SPLITS = MappingProxyType(
     }
 )
 
+EXPECTED_ADAMW_LR = MappingProxyType(
+    {
+        "vit": 0.05,
+        "detection": 0.05,
+        "segmentation": 0.03,
+        "graph": 0.05,
+    }
+)
+
 
 def canonical_array_fingerprint(
     components: tuple[tuple[str, np.ndarray], ...],
@@ -287,6 +296,10 @@ class IntegrityObserver:
         self.loss_calls: list[tuple[str, tuple[str, ...]]] = []
         self._active_loss: dict[str, object] | None = None
         self._loss_functions: dict[str, object] = {}
+        self._optimizer_identity: torch.optim.AdamW | None = None
+        self._expected_parameter_values: tuple[torch.Tensor, ...] | None = None
+        self._expected_optimizer_state: tuple[dict[str, object], ...] | None = None
+        self._completed_steps = 0
 
     def begin_loss(
         self,
@@ -470,7 +483,130 @@ class IntegrityObserver:
             self.abort_loss()
             raise
 
-    def observe_step(self, model: nn.Module) -> None:
+    def _adamw_config(self) -> dict[str, object]:
+        return {
+            "lr": EXPECTED_ADAMW_LR[self.task],
+            "betas": (0.9, 0.999),
+            "eps": 1e-8,
+            "weight_decay": 0,
+            "amsgrad": False,
+            "maximize": False,
+            "foreach": False,
+            "capturable": False,
+            "differentiable": False,
+            "fused": False,
+            "decoupled_weight_decay": True,
+        }
+
+    def _validate_optimizer(
+        self,
+        model: nn.Module,
+        optimizer: torch.optim.Optimizer,
+    ) -> tuple[nn.Parameter, ...]:
+        if type(optimizer) is not torch.optim.AdamW:
+            raise AssertionError("training must use exactly torch.optim.AdamW")
+        if self._optimizer_identity is None:
+            self._optimizer_identity = optimizer
+        elif optimizer is not self._optimizer_identity:
+            raise AssertionError("optimizer object changed during training")
+        if len(optimizer.param_groups) != 1:
+            raise AssertionError("AdamW must have exactly one parameter group")
+        model_parameters = tuple(model.parameters())
+        group = optimizer.param_groups[0]
+        group_parameters = tuple(group["params"])
+        if len(group_parameters) != len(model_parameters) or any(
+            expected is not actual
+            for expected, actual in zip(model_parameters, group_parameters, strict=True)
+        ):
+            raise AssertionError("AdamW parameter membership or order mismatch")
+        for name, expected in self._adamw_config().items():
+            if group.get(name) != expected or optimizer.defaults.get(name) != expected:
+                raise AssertionError(f"AdamW {name} configuration mismatch")
+        return model_parameters
+
+    @classmethod
+    def _clone_state_value(cls, value: object) -> object:
+        if isinstance(value, torch.Tensor):
+            return value.detach().clone()
+        if isinstance(value, dict):
+            return {key: cls._clone_state_value(item) for key, item in value.items()}
+        if isinstance(value, tuple):
+            return tuple(cls._clone_state_value(item) for item in value)
+        if isinstance(value, list):
+            return [cls._clone_state_value(item) for item in value]
+        return value
+
+    @classmethod
+    def _assert_state_equal(cls, actual: object, expected: object, label: str) -> None:
+        if isinstance(actual, torch.Tensor) or isinstance(expected, torch.Tensor):
+            if not isinstance(actual, torch.Tensor) or not isinstance(expected, torch.Tensor):
+                raise TypeError(f"{label} tensor type mismatch")
+            if (
+                actual.shape != expected.shape
+                or actual.dtype != expected.dtype
+                or actual.device != expected.device
+                or not torch.allclose(actual, expected, rtol=1e-6, atol=1e-7)
+            ):
+                raise AssertionError(f"{label} tensor mismatch")
+            return
+        if isinstance(actual, dict) or isinstance(expected, dict):
+            if not isinstance(actual, dict) or not isinstance(expected, dict):
+                raise TypeError(f"{label} mapping type mismatch")
+            if actual.keys() != expected.keys():
+                raise AssertionError(f"{label} mapping keys mismatch")
+            for key in actual:
+                cls._assert_state_equal(actual[key], expected[key], f"{label}.{key}")
+            return
+        if isinstance(actual, (tuple, list)) or isinstance(expected, (tuple, list)):
+            if type(actual) is not type(expected) or len(actual) != len(expected):
+                raise AssertionError(f"{label} sequence mismatch")
+            for index, (actual_item, expected_item) in enumerate(
+                zip(actual, expected, strict=True)
+            ):
+                cls._assert_state_equal(
+                    actual_item,
+                    expected_item,
+                    f"{label}[{index}]",
+                )
+            return
+        if actual != expected:
+            raise AssertionError(f"{label} value mismatch")
+
+    def _snapshot_optimizer_state(
+        self,
+        optimizer: torch.optim.Optimizer,
+        parameters: tuple[nn.Parameter, ...],
+    ) -> tuple[dict[str, object], ...]:
+        parameter_ids = {id(parameter) for parameter in parameters}
+        if any(id(parameter) not in parameter_ids for parameter in optimizer.state):
+            raise AssertionError("AdamW state contains a non-model parameter")
+        return tuple(
+            {
+                key: self._clone_state_value(value)
+                for key, value in optimizer.state.get(parameter, {}).items()
+            }
+            for parameter in parameters
+        )
+
+    @classmethod
+    def _assert_parameter_values(
+        cls,
+        parameters: tuple[nn.Parameter, ...],
+        expected: tuple[torch.Tensor, ...],
+        label: str,
+    ) -> None:
+        if len(parameters) != len(expected):
+            raise AssertionError(f"{label} parameter count mismatch")
+        for index, (parameter, expected_value) in enumerate(
+            zip(parameters, expected, strict=True)
+        ):
+            cls._assert_state_equal(
+                parameter.detach(),
+                expected_value,
+                f"{label} parameter {index}",
+            )
+
+    def prepare_step(self, model: nn.Module, optimizer: torch.optim.Optimizer) -> None:
         active = self._require_active_loss()
         try:
             if active["phase"] != "awaiting-backward-step":
@@ -480,9 +616,7 @@ class IntegrityObserver:
                     "authenticated returned loss must be the scalar backward root exactly once"
                 )
             parameters = active["parameters"]
-            model_parameters = tuple(
-                parameter for parameter in model.parameters() if parameter.requires_grad
-            )
+            model_parameters = self._validate_optimizer(model, optimizer)
             if len(parameters) != len(model_parameters) or any(
                 expected is not actual
                 for expected, actual in zip(parameters, model_parameters, strict=True)
@@ -494,10 +628,124 @@ class IntegrityObserver:
                 active["expected_parameter_gradients"],
                 "optimizer parameter",
             )
+            if self._expected_parameter_values is None:
+                expected_pre_parameters = tuple(
+                    parameter.detach().clone() for parameter in model_parameters
+                )
+            else:
+                expected_pre_parameters = self._expected_parameter_values
+                self._assert_parameter_values(
+                    model_parameters,
+                    expected_pre_parameters,
+                    "pre-step",
+                )
+            actual_pre_state = self._snapshot_optimizer_state(optimizer, model_parameters)
+            expected_pre_state = self._expected_optimizer_state
+            if expected_pre_state is None:
+                expected_pre_state = tuple({} for _ in model_parameters)
+            self._assert_state_equal(actual_pre_state, expected_pre_state, "pre-step AdamW state")
+
+            shadow_parameters = tuple(
+                nn.Parameter(value.detach().clone()) for value in expected_pre_parameters
+            )
+            for shadow_parameter, expected_gradient in zip(
+                shadow_parameters,
+                active["expected_parameter_gradients"],
+                strict=True,
+            ):
+                if expected_gradient is not None:
+                    shadow_parameter.grad = expected_gradient.detach().clone()
+            config = self._adamw_config()
+            shadow_optimizer = torch.optim.AdamW(
+                shadow_parameters,
+                lr=config["lr"],
+                betas=config["betas"],
+                eps=config["eps"],
+                weight_decay=config["weight_decay"],
+                amsgrad=config["amsgrad"],
+                maximize=config["maximize"],
+                foreach=config["foreach"],
+                capturable=config["capturable"],
+                differentiable=config["differentiable"],
+                fused=config["fused"],
+            )
+            for shadow_parameter, state in zip(
+                shadow_parameters,
+                expected_pre_state,
+                strict=True,
+            ):
+                if state:
+                    shadow_optimizer.state[shadow_parameter] = self._clone_state_value(state)
+            shadow_optimizer.step()
+            active["expected_post_parameters"] = tuple(
+                parameter.detach().clone() for parameter in shadow_parameters
+            )
+            active["expected_post_state"] = self._snapshot_optimizer_state(
+                shadow_optimizer,
+                shadow_parameters,
+            )
+            active["phase"] = "awaiting-real-step"
+        except BaseException:
+            self.abort_loss()
+            raise
+
+    def finish_step(self, model: nn.Module, optimizer: torch.optim.Optimizer) -> None:
+        active = self._require_active_loss()
+        try:
+            if active["phase"] != "awaiting-real-step":
+                raise AssertionError("real optimizer step was not independently prepared")
+            parameters = self._validate_optimizer(model, optimizer)
+            self._assert_parameter_values(
+                parameters,
+                active["expected_post_parameters"],
+                "post-step",
+            )
+            actual_post_state = self._snapshot_optimizer_state(optimizer, parameters)
+            self._assert_state_equal(
+                actual_post_state,
+                active["expected_post_state"],
+                "post-step AdamW state",
+            )
+            self._expected_parameter_values = tuple(
+                value.detach().clone() for value in active["expected_post_parameters"]
+            )
+            self._expected_optimizer_state = self._clone_state_value(
+                active["expected_post_state"]
+            )
+            self._completed_steps += 1
         except BaseException:
             self.abort_loss()
             raise
         self.abort_loss()
+
+    def finish_training(
+        self,
+        model: nn.Module,
+        optimizer: torch.optim.Optimizer,
+        expected_steps: int,
+    ) -> None:
+        if self._active_loss is not None:
+            self.abort_loss()
+            raise AssertionError("training ended with an unconsumed loss transaction")
+        if self._completed_steps != expected_steps:
+            raise AssertionError(
+                f"expected {expected_steps} authenticated AdamW transitions, "
+                f"observed {self._completed_steps}"
+            )
+        parameters = self._validate_optimizer(model, optimizer)
+        if self._expected_parameter_values is None or self._expected_optimizer_state is None:
+            raise AssertionError("training ended without an AdamW transition baseline")
+        self._assert_parameter_values(
+            parameters,
+            self._expected_parameter_values,
+            "completed-training",
+        )
+        actual_state = self._snapshot_optimizer_state(optimizer, parameters)
+        self._assert_state_equal(
+            actual_state,
+            self._expected_optimizer_state,
+            "completed-training AdamW state",
+        )
 
     def _require_active_loss(self) -> dict[str, object]:
         if self._active_loss is None:

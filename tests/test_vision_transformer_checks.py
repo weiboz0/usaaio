@@ -227,13 +227,19 @@ def {train_name}(model, batch, optimizer):
     _original_step = optimizer.step
     _step_order = []
     def _counted_step(*args, **kwargs):
-        _integrity_observer.observe_step(model)
-        result = _original_step(*args, **kwargs)
+        _integrity_observer.prepare_step(model, optimizer)
+        try:
+            result = _original_step(*args, **kwargs)
+        except BaseException:
+            _integrity_observer.abort_loss()
+            raise
+        _integrity_observer.finish_step(model, optimizer)
         _step_order.append(len(_step_order) + 1)
         return result
     optimizer.step = _counted_step
     try:
         trace = {candidate_name}(model, batch, optimizer)
+        _integrity_observer.finish_training(model, optimizer, {updates})
     finally:
         optimizer.step = _original_step
         _integrity_observer.abort_loss()
@@ -508,6 +514,62 @@ def _mutate_final_parameter_gradients(notebook_path: Path) -> None:
     )
 
 
+def _mutate_final_step_empty_parameter_group(notebook_path: Path) -> None:
+    _replace_fragment_in_function(
+        notebook_path,
+        "train_vit_classifier",
+        "optimizer.step()",
+        """if update == 12:
+            saved_parameters = optimizer.param_groups[0]["params"]
+            optimizer.param_groups[0]["params"] = []
+            optimizer.step()
+            optimizer.param_groups[0]["params"] = saved_parameters
+        else:
+            optimizer.step()""",
+    )
+
+
+def _mutate_final_step_zero_learning_rate(notebook_path: Path) -> None:
+    _replace_fragment_in_function(
+        notebook_path,
+        "train_vit_classifier",
+        "optimizer.step()",
+        """if update == 12:
+            saved_lr = optimizer.param_groups[0]["lr"]
+            optimizer.param_groups[0]["lr"] = 0.0
+            optimizer.step()
+            optimizer.param_groups[0]["lr"] = saved_lr
+        else:
+            optimizer.step()""",
+    )
+
+
+def _mutate_final_step_optimizer_state(notebook_path: Path) -> None:
+    _replace_fragment_in_function(
+        notebook_path,
+        "train_vit_classifier",
+        "optimizer.step()",
+        """if update == 12:
+            parameter = optimizer.param_groups[0]["params"][0]
+            optimizer.state[parameter]["exp_avg"].zero_()
+        optimizer.step()""",
+    )
+
+
+def _mutate_final_parameter_transition_after_step(notebook_path: Path) -> None:
+    _replace_fragment_in_function(
+        notebook_path,
+        "train_vit_classifier",
+        "optimizer.step()",
+        """before_step = [parameter.detach().clone() for parameter in model.parameters()]
+        optimizer.step()
+        if update == 12:
+            with torch.no_grad():
+                for parameter, value in zip(model.parameters(), before_step):
+                    parameter.copy_(value)""",
+    )
+
+
 def test_ci_only_reference_reconstructs_fixed_seed_traces_without_final_tensors() -> None:
     reference = _reference_module()
     assert reference.reconstruct_reference_results() == reference.EXPECTED_RESULTS
@@ -632,6 +694,42 @@ def test_p17_optimizer_rejects_direct_parameter_gradient_substitution(
 ) -> None:
     notebook_path = _working_notebook(tmp_path, "p17")
     _mutate_final_parameter_gradients(notebook_path)
+    _instrument_training_notebook(notebook_path, "p17")
+    _assert_execution_fails(notebook_path)
+
+
+def test_p17_optimizer_rejects_empty_parameter_group_noop_step(
+    tmp_path: Path,
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p17")
+    _mutate_final_step_empty_parameter_group(notebook_path)
+    _instrument_training_notebook(notebook_path, "p17")
+    _assert_execution_fails(notebook_path)
+
+
+def test_p17_optimizer_rejects_zero_learning_rate_noop_step(
+    tmp_path: Path,
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p17")
+    _mutate_final_step_zero_learning_rate(notebook_path)
+    _instrument_training_notebook(notebook_path, "p17")
+    _assert_execution_fails(notebook_path)
+
+
+def test_p17_optimizer_rejects_pre_step_state_tampering(
+    tmp_path: Path,
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p17")
+    _mutate_final_step_optimizer_state(notebook_path)
+    _instrument_training_notebook(notebook_path, "p17")
+    _assert_execution_fails(notebook_path)
+
+
+def test_p17_optimizer_rejects_post_step_parameter_transition_undo(
+    tmp_path: Path,
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p17")
+    _mutate_final_parameter_transition_after_step(notebook_path)
     _instrument_training_notebook(notebook_path, "p17")
     _assert_execution_fails(notebook_path)
 
