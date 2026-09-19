@@ -135,13 +135,35 @@ def validate_actual(features, targets):
 {loss_candidate}
 
 def compute_loss(model, features, targets):
-    _integrity_observer.observe_loss(
+    _original_cross_entropy = F.cross_entropy
+    _original_binary_cross_entropy_with_logits = F.binary_cross_entropy_with_logits
+    _original_smooth_l1_loss = F.smooth_l1_loss
+    _integrity_observer.begin_loss(
         features,
         targets,
         training=model.training,
         grad_enabled=torch.is_grad_enabled(),
+        loss_functions={{
+            "cross_entropy": _original_cross_entropy,
+            "binary_cross_entropy_with_logits": _original_binary_cross_entropy_with_logits,
+            "smooth_l1_loss": _original_smooth_l1_loss,
+        }},
     )
-    return _candidate_compute_loss(model, features, targets)
+    F.cross_entropy = _integrity_observer.cross_entropy
+    F.binary_cross_entropy_with_logits = _integrity_observer.binary_cross_entropy_with_logits
+    F.smooth_l1_loss = _integrity_observer.smooth_l1_loss
+    try:
+        try:
+            result = _candidate_compute_loss(model, features, targets)
+        except BaseException:
+            _integrity_observer.abort_loss()
+            raise
+    finally:
+        F.cross_entropy = _original_cross_entropy
+        F.binary_cross_entropy_with_logits = _original_binary_cross_entropy_with_logits
+        F.smooth_l1_loss = _original_smooth_l1_loss
+    _integrity_observer.finish_loss()
+    return result
 """
     _replace_named_function(notebook_path, "compute_loss", loss_wrapper)
 
@@ -152,36 +174,42 @@ def compute_loss(model, features, targets):
 {forward_candidate}
 
 def forward(self, nodes, adjacency, return_aux=False):
+    result = self._candidate_forward(nodes, adjacency, return_aux=return_aux)
     _integrity_observer.observe_forward(
         {{"node_features": nodes, "adjacency": adjacency}},
         training=self.training,
         grad_enabled=torch.is_grad_enabled(),
+        output=result,
     )
-    return self._candidate_forward(nodes, adjacency, return_aux=return_aux)
+    return result
 """
     elif practice in ("p17", "p19"):
         forward_wrapper = f"""
 {forward_candidate}
 
 def forward(self, images, return_aux=False):
+    result = self._candidate_forward(images, return_aux=return_aux)
     _integrity_observer.observe_forward(
         {{"image": images}},
         training=self.training,
         grad_enabled=torch.is_grad_enabled(),
+        output=result,
     )
-    return self._candidate_forward(images, return_aux=return_aux)
+    return result
 """
     else:
         forward_wrapper = f"""
 {forward_candidate}
 
 def forward(self, images):
+    result = self._candidate_forward(images)
     _integrity_observer.observe_forward(
         {{"image": images}},
         training=self.training,
         grad_enabled=torch.is_grad_enabled(),
+        output=result,
     )
-    return self._candidate_forward(images)
+    return result
 """
     _replace_named_function(notebook_path, "forward", forward_wrapper)
 
@@ -222,6 +250,54 @@ def {train_name}(model, batch, optimizer):
     return trace
 """
     _replace_named_function(notebook_path, train_name, train_wrapper)
+
+
+def _instrument_p24_audit(notebook_path: Path) -> None:
+    _, audit_source = _named_function_source(notebook_path, "audit_cross_modal_sources")
+    audit_candidate = _rename_definition(
+        audit_source,
+        "audit_cross_modal_sources",
+        "_candidate_audit_cross_modal_sources",
+    )
+    audit_wrapper = f"""
+{audit_candidate}
+
+def audit_cross_modal_sources(trace):
+    result = _candidate_audit_cross_modal_sources(trace)
+    base = deepcopy(trace)
+    base["adjacency"] = ((1,1,0,0),(1,1,1,0),(0,1,1,0),(0,0,0,0))
+    base["optimizer_ids"] = base["train_ids"]
+    base["q_source"] = "image_tokens"
+    base["k_source"] = "graph_tokens"
+    base["v_source"] = "graph_tokens"
+    base["score_shape"] = ("B","N_image","N_graph")
+    clean_before = deepcopy(base)
+    clean_audit = _candidate_audit_cross_modal_sources(base)
+    assert base == clean_before, "audit mutated the independent clean trace"
+    assert clean_audit["ok"] is True and clean_audit["violations"] == (), (
+        "independent clean trace must pass"
+    )
+
+    single_faults = (
+        ("q-source", "q_source", "graph_tokens", "reversed-qkv"),
+        ("k-source", "k_source", "image_tokens", "reversed-qkv"),
+        ("v-source", "v_source", "image_tokens", "reversed-qkv"),
+        ("score-shape", "score_shape", ("B","N_graph","N_image"), "reversed-qkv"),
+        ("optimizer-leakage", "optimizer_ids", (base["train_ids"][0], base["heldout_ids"][0]), "heldout-optimizer-id"),
+    )
+    for label, field, bad_value, expected_code in single_faults:
+        case = deepcopy(base)
+        case[field] = bad_value
+        case_before = deepcopy(case)
+        observed = _candidate_audit_cross_modal_sources(case)
+        assert case == case_before, f"audit mutated the independent {{label}} trace"
+        codes = tuple(violation["code"] for violation in observed["violations"])
+        assert observed["ok"] is False and codes == (expected_code,), (
+            f"independent {{label}} fault expected only {{expected_code}}, observed {{codes}}"
+        )
+    return result
+"""
+    _replace_named_function(notebook_path, "audit_cross_modal_sources", audit_wrapper)
 
 
 def _execute(notebook_path: Path) -> nbformat.NotebookNode:
@@ -324,6 +400,52 @@ def build_train_batch(ids):
     )
 
 
+def _mutate_compensated_direct_ce(notebook_path: Path, practice: str) -> None:
+    if practice == "p17":
+        replacement = """
+def compute_loss(model, features, targets):
+    validate_actual(features, targets)
+    logits = model(features["image"])
+    return F.cross_entropy(logits.flip(-1), 1-targets["label"], reduction="mean")
+"""
+    elif practice == "p19":
+        replacement = """
+def compute_loss(model, features, targets):
+    validate_actual(features, targets)
+    logits = model(features["image"])
+    return F.cross_entropy(logits.flip(1), 1-targets["mask"], reduction="mean")
+"""
+    elif practice == "p20":
+        replacement = """
+def compute_loss(model, features, targets):
+    validate_actual(features, targets)
+    logits = model(features["node_features"], features["adjacency"])
+    return F.cross_entropy(logits.flip(-1), 1-targets["label"], reduction="mean")
+"""
+    else:
+        raise AssertionError(practice)
+    _replace_named_function(notebook_path, "compute_loss", replacement)
+
+
+def _mutate_final_update_wrong_gradient(notebook_path: Path) -> None:
+    _replace_named_function(
+        notebook_path,
+        "compute_loss",
+        """
+def compute_loss(model, features, targets):
+    validate_actual(features, targets)
+    logits = model(features["image"])
+    good = F.cross_entropy(logits, targets["label"], reduction="mean")
+    if model.training:
+        compute_loss.training_calls = getattr(compute_loss, "training_calls", 0) + 1
+        if compute_loss.training_calls == 12:
+            wrong = F.cross_entropy(logits, targets["label"].roll(1), reduction="mean")
+            return good.detach() + wrong - wrong.detach()
+    return good
+""",
+    )
+
+
 def test_ci_only_reference_reconstructs_fixed_seed_traces_without_final_tensors() -> None:
     reference = _reference_module()
     assert reference.reconstruct_reference_results() == reference.EXPECTED_RESULTS
@@ -406,6 +528,25 @@ def test_target_row_substitution_or_misalignment_mutant_fails(
     _assert_execution_fails(notebook_path)
 
 
+@pytest.mark.parametrize("practice", ("p17", "p19", "p20"))
+def test_actual_direct_ce_rejects_compensated_logit_and_target_flip(
+    tmp_path: Path, practice: str
+) -> None:
+    notebook_path = _working_notebook(tmp_path, practice)
+    _mutate_compensated_direct_ce(notebook_path, practice)
+    _instrument_training_notebook(notebook_path, practice)
+    _assert_execution_fails(notebook_path)
+
+
+def test_p17_final_update_rejects_value_preserving_wrong_target_gradient(
+    tmp_path: Path,
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p17")
+    _mutate_final_update_wrong_gradient(notebook_path)
+    _instrument_training_notebook(notebook_path, "p17")
+    _assert_execution_fails(notebook_path)
+
+
 @pytest.mark.parametrize("practice", tuple(TRAINING), ids=lambda value: f"{value}-declared-id-lie")
 def test_declared_train_ids_cannot_hide_heldout_features(tmp_path: Path, practice: str) -> None:
     notebook_path = _working_notebook(tmp_path, practice)
@@ -470,6 +611,35 @@ def test_p20_invalid_edge_aggregation_mutant_fails(tmp_path: Path) -> None:
     ("old", "new"),
     (
         pytest.param(
+            "F.binary_cross_entropy_with_logits(objectness_logits,objectness_target,reduction=\"mean\")",
+            "F.binary_cross_entropy_with_logits(-objectness_logits,1-objectness_target,reduction=\"mean\")",
+            id="p18-compensated-bce-input-target-flip",
+        ),
+        pytest.param(
+            "F.cross_entropy(class_logits.permute(0,2,3,1)[positive],class_target[positive],reduction=\"mean\")",
+            "F.cross_entropy(class_logits.flip(1).permute(0,2,3,1)[positive],1-class_target[positive],reduction=\"mean\")",
+            id="p18-compensated-class-ce-flip",
+        ),
+        pytest.param(
+            "F.smooth_l1_loss(predicted_boxes,target_boxes,reduction=\"mean\")",
+            "F.smooth_l1_loss(1-predicted_boxes,1-target_boxes,reduction=\"mean\")",
+            id="p18-compensated-smooth-l1-reflection",
+        ),
+    ),
+)
+def test_p18_actual_loss_primitives_reject_compensated_wrong_arguments(
+    tmp_path: Path, old: str, new: str
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p18")
+    _replace_fragment_in_function(notebook_path, "_loss_components", old, new)
+    _instrument_training_notebook(notebook_path, "p18")
+    _assert_execution_fails(notebook_path)
+
+
+@pytest.mark.parametrize(
+    ("old", "new"),
+    (
+        pytest.param(
             'heldout_optimizer = set(trace["optimizer_ids"]) & set(trace["heldout_ids"])',
             "heldout_optimizer = set()",
             id="p24-leakage-audit-disabled",
@@ -484,11 +654,53 @@ def test_p20_invalid_edge_aggregation_mutant_fails(tmp_path: Path) -> None:
 def test_p24_qkv_reversal_or_leakage_audit_mutant_fails(tmp_path: Path, old: str, new: str) -> None:
     notebook_path = _working_notebook(tmp_path, "p24")
     _replace_fragment_in_function(notebook_path, "audit_cross_modal_sources", old, new)
+    _instrument_p24_audit(notebook_path)
+    _assert_execution_fails(notebook_path)
+
+
+@pytest.mark.parametrize(
+    ("old", "new"),
+    (
+        pytest.param(
+            'and trace.get("q_source") == expected["q_source"]',
+            "and True",
+            id="p24-delete-q-source-clause",
+        ),
+        pytest.param(
+            'and trace.get("k_source") == expected["k_source"]',
+            "and True",
+            id="p24-delete-k-source-clause",
+        ),
+        pytest.param(
+            'and trace.get("v_source") == expected["v_source"]',
+            "and True",
+            id="p24-delete-v-source-clause",
+        ),
+        pytest.param(
+            'and tuple(trace.get("score_shape", ())) == expected["score_shape"]',
+            "and True",
+            id="p24-delete-score-shape-clause",
+        ),
+        pytest.param(
+            'heldout_optimizer = set(trace["optimizer_ids"]) & set(trace["heldout_ids"])',
+            'heldout_optimizer = {"masked-by-q-error"} if trace.get("q_source") == "graph_tokens" else set()',
+            id="p24-couple-leakage-to-q-error",
+        ),
+    ),
+)
+def test_p24_each_direction_and_leakage_clause_is_independently_required(
+    tmp_path: Path, old: str, new: str
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p24")
+    _replace_fragment_in_function(notebook_path, "audit_cross_modal_sources", old, new)
+    _instrument_p24_audit(notebook_path)
     _assert_execution_fails(notebook_path)
 
 
 def test_untouched_p24_cross_modal_audit_passes(tmp_path: Path) -> None:
-    _execute(_working_notebook(tmp_path, "p24"))
+    notebook_path = _working_notebook(tmp_path, "p24")
+    _instrument_p24_audit(notebook_path)
+    _execute(notebook_path)
 
 
 def test_book2_ci_runs_vision_transformer_integrity_suite() -> None:
