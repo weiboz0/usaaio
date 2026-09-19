@@ -902,15 +902,21 @@ def test_plan019_cutover_ignores_exact_plan022_three_blob_worktree_change(
         == 0
         for commit in (PLAN019_PRE_CUTOVER_COMMIT, PLAN019_POST_CUTOVER_COMMIT)
     )
-    assert subprocess.run(
-        ["git", "diff", "--name-only"],
-        cwd=fixture_root,
-        capture_output=True,
-        text=True,
-        check=True,
-    ).stdout.splitlines() == [
-        f"book1/{path}" for path in PLAN022_CHANGED_BOOK1_NOTEBOOKS
-    ]
+    for relative_path in PLAN022_CHANGED_BOOK1_NOTEBOOKS:
+        plan022_blob = _plan019_read_blob(
+            fixture_root,
+            PLAN022_SOURCE_COMMIT,
+            f"book1/{relative_path}",
+        )
+        post_cutover_blob = _plan019_read_blob(
+            fixture_root,
+            PLAN019_POST_CUTOVER_COMMIT,
+            f"book1/{relative_path}",
+        )
+        assert plan022_blob is not None, relative_path
+        assert post_cutover_blob is not None, relative_path
+        assert (fixture_root / "book1" / relative_path).read_bytes() == plan022_blob
+        assert plan022_blob != post_cutover_blob, relative_path
 
     _assert_plan019_cutover(fixture_root)
 
