@@ -13,6 +13,7 @@ import math
 import random
 import struct
 from collections.abc import Mapping
+from contextlib import contextmanager
 from types import MappingProxyType
 
 import numpy as np
@@ -51,6 +52,22 @@ EXPECTED_TRAINING_STEPS = MappingProxyType(
         "graph": 12,
     }
 )
+
+
+@contextmanager
+def _isolated_cpu_float32_reference():
+    """Isolate deterministic reference construction from process-global state."""
+    python_state = random.getstate()
+    numpy_state = np.random.get_state()
+    default_dtype = torch.get_default_dtype()
+    try:
+        torch.set_default_dtype(torch.float32)
+        with torch.random.fork_rng(devices=[]):
+            yield
+    finally:
+        random.setstate(python_state)
+        np.random.set_state(numpy_state)
+        torch.set_default_dtype(default_dtype)
 
 
 def canonical_array_fingerprint(
@@ -625,18 +642,15 @@ class IntegrityObserver:
             "segmentation": _Unet,
             "graph": _Graph,
         }
-        python_state = random.getstate()
-        numpy_state = np.random.get_state()
-        try:
-            with torch.random.fork_rng(devices=[]):
-                torch.manual_seed(SEED)
-                reference_model = model_types[self.task]()
-                return tuple(
-                    parameter.detach().clone() for parameter in reference_model.parameters()
-                )
-        finally:
-            random.setstate(python_state)
-            np.random.set_state(numpy_state)
+        with _isolated_cpu_float32_reference():
+            torch.manual_seed(SEED)
+            reference_model = model_types[self.task]().to(
+                device=torch.device("cpu"),
+                dtype=torch.float32,
+            )
+            return tuple(
+                parameter.detach().clone() for parameter in reference_model.parameters()
+            )
 
     def begin_training(
         self,
@@ -1220,12 +1234,12 @@ def _round(value: float) -> float:
     return round(float(value), 8)
 
 
-def reconstruct_reference_results() -> dict[str, object]:
+def _reconstruct_reference_results() -> dict[str, object]:
     """Rebuild all four baselines and scalar final traces from first principles."""
     results: dict[str, object] = {}
 
     _seed()
-    vit = _Vit()
+    vit = _Vit().to(device=torch.device("cpu"), dtype=torch.float32)
     train, train_targets = build_batch("vit", "train")
     heldout, heldout_targets = build_batch("vit", "heldout")
     optimizer = torch.optim.AdamW(
@@ -1262,7 +1276,7 @@ def reconstruct_reference_results() -> dict[str, object]:
     }
 
     _seed()
-    detector = _Detector()
+    detector = _Detector().to(device=torch.device("cpu"), dtype=torch.float32)
     train, train_targets = build_batch("detection", "train")
     heldout, heldout_targets = build_batch("detection", "heldout")
     optimizer = torch.optim.AdamW(
@@ -1300,7 +1314,7 @@ def reconstruct_reference_results() -> dict[str, object]:
     }
 
     _seed()
-    unet = _Unet()
+    unet = _Unet().to(device=torch.device("cpu"), dtype=torch.float32)
     train, train_targets = build_batch("segmentation", "train")
     heldout, heldout_targets = build_batch("segmentation", "heldout")
     optimizer = torch.optim.AdamW(
@@ -1344,7 +1358,7 @@ def reconstruct_reference_results() -> dict[str, object]:
     }
 
     _seed()
-    graph = _Graph()
+    graph = _Graph().to(device=torch.device("cpu"), dtype=torch.float32)
     train, train_targets = build_batch("graph", "train")
     heldout, heldout_targets = build_batch("graph", "heldout")
     optimizer = torch.optim.AdamW(
@@ -1389,6 +1403,12 @@ def reconstruct_reference_results() -> dict[str, object]:
         "train_baseline_probe": _round(baseline),
     }
     return results
+
+
+def reconstruct_reference_results() -> dict[str, object]:
+    """Rebuild the CPU float32 oracle without leaking process-global state."""
+    with _isolated_cpu_float32_reference():
+        return _reconstruct_reference_results()
 
 
 # Scalar metrics, ordered scalar update traces, and shape probes only.

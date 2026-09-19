@@ -601,6 +601,50 @@ def test_ci_only_reference_reconstructs_fixed_seed_traces_without_final_tensors(
     assert not any(isinstance(value, reference.torch.Tensor) for value in values(reference.EXPECTED_RESULTS))
 
 
+def test_ci_only_reference_isolates_float32_baselines_and_global_rng_state() -> None:
+    reference = _reference_module()
+    torch = reference.torch
+    outer_python_state = reference.random.getstate()
+    outer_numpy_state = reference.np.random.get_state()
+    outer_torch_state = torch.get_rng_state()
+    outer_dtype = torch.get_default_dtype()
+
+    def assert_numpy_state_equal(actual, expected) -> None:
+        assert actual[0] == expected[0]
+        assert reference.np.array_equal(actual[1], expected[1])
+        assert actual[2:] == expected[2:]
+
+    try:
+        torch.set_default_dtype(torch.float64)
+        reference.random.seed(731)
+        reference.np.random.seed(732)
+        torch.manual_seed(733)
+        expected_python_state = reference.random.getstate()
+        expected_numpy_state = reference.np.random.get_state()
+        expected_torch_state = torch.get_rng_state()
+
+        assert reference.reconstruct_reference_results() == reference.EXPECTED_RESULTS
+        for task in reference.EXPECTED_TRAINING_STEPS:
+            parameters = reference.IntegrityObserver(
+                task
+            )._independent_initial_parameter_values()
+            assert parameters
+            assert all(
+                parameter.device.type == "cpu" and parameter.dtype == torch.float32
+                for parameter in parameters
+            )
+
+        assert reference.random.getstate() == expected_python_state
+        assert_numpy_state_equal(reference.np.random.get_state(), expected_numpy_state)
+        assert torch.equal(torch.get_rng_state(), expected_torch_state)
+        assert torch.get_default_dtype() == torch.float64
+    finally:
+        reference.random.setstate(outer_python_state)
+        reference.np.random.set_state(outer_numpy_state)
+        torch.set_rng_state(outer_torch_state)
+        torch.set_default_dtype(outer_dtype)
+
+
 def test_ci_only_reference_has_no_book_learner_or_solution_imports() -> None:
     source = REFERENCE.read_text(encoding="utf-8")
     tree = ast.parse(source, filename=str(REFERENCE))
@@ -613,6 +657,7 @@ def test_ci_only_reference_has_no_book_learner_or_solution_imports() -> None:
     assert imported_roots <= {
         "__future__",
         "collections",
+        "contextlib",
         "hashlib",
         "math",
         "random",
