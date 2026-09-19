@@ -55,9 +55,10 @@ The accepted design is `docs/designs/022-c12-p20-kmeans-tie-erratum.md`.
 
 ## Task 1 — Lock the regression contract
 
-- [ ] Add statement-contract assertions requiring p20 to state both `atol=1e-10, rtol=1e-8` eligibility and lowest-seed selection, and requiring Session 6 to teach that numerical-objective near-ties use the declared tolerance before the deterministic secondary key.
-- [ ] Require `p20_solution.ipynb` to define the private selector `_lowest_seed_near_minimum(seeds, inertias, *, atol, rtol)` and require `kmeans_stability_audit` to call it; the ordinary solution regression must execute the actual notebook through the existing `_execute_solution` mechanism.
-- [ ] Locate and execute the selector's exact production code cell in an isolated test namespace; apply mutant source transforms only to an in-memory copy of that cell, then judge every mutant solely against these deterministic fixture expectations—not against a live K-means run or its thread-sensitive answer check:
+- [ ] Add statement-contract assertions requiring the exact p20 formula `eligible(i) iff abs(inertia[i] - minimum) <= 1e-10 + 1e-8 * abs(minimum)` and the phrase “numerically smallest seed”; do not accept the pre-repair grader-note tolerance and generic “smaller seed” wording as sufficient. Also require Session 6 to teach that numerical-objective near-ties use the declared tolerance before the deterministic secondary key.
+- [ ] Require `p20_solution.ipynb` to place shared `ATOL = 1e-10`, `RTOL = 1e-8`, and the private selector `_lowest_seed_near_minimum(seeds, inertias, *, atol, rtol)` in a dedicated code cell with no live audit invocation. The selector returns the selected row index, and its body must use the supplied keyword parameters as `np.isclose(..., atol=atol, rtol=rtol)`.
+- [ ] Pin the exact production dataflow inside `kmeans_stability_audit`: `best_index = _lowest_seed_near_minimum(seeds, inertias, atol=ATOL, rtol=RTOL)` followed by `best_seed = int(seeds[best_index])`; reject an ignored/decoy helper call, hard-coded index, or second selection path. The ordinary solution regression must execute the actual notebook through the existing `_execute_solution` mechanism.
+- [ ] Locate and execute the selector's dedicated production code cell in an isolated test namespace; apply mutant source transforms only to an in-memory copy of that cell, then judge every mutant solely against these deterministic fixture expectations—not against a live K-means run or its thread-sensitive answer check:
 
 ```python
 ascending_seeds = np.array([20260804, 20260805, 20260806], dtype=np.int64)
@@ -87,15 +88,18 @@ eligible(i) iff abs(inertia[i] - minimum) <= 1e-10 + 1e-8 * abs(minimum)
 
 Then choose the eligible candidate with the numerically smallest seed.
 
-- [ ] In the solution-owned private selector called by `kmeans_stability_audit`, implement the equivalent NumPy policy:
+- [ ] In the solution-owned private selector called by `kmeans_stability_audit`, implement the equivalent NumPy policy and return the selected row index:
 
 ```python
 minimum = float(np.min(inertias))
 candidates = np.flatnonzero(
-    np.isclose(inertias, minimum, atol=1e-10, rtol=1e-8)
+    np.isclose(inertias, minimum, atol=atol, rtol=rtol)
 )
 best_index = int(candidates[np.argmin(seeds[candidates])])
+return best_index
 ```
+
+The only production call is `best_index = _lowest_seed_near_minimum(seeds, inertias, atol=ATOL, rtol=RTOL)`; `best_seed` is then `int(seeds[best_index])`.
 
 - [ ] Update the answer check to require `best_index == 0` and `best_seed == 20260804` while retaining every existing shape, dtype, inertia, agreement, dictionary-key, and interpretation assertion.
 - [ ] Add `ERRATA.md` recording the former raw-`argmin` behavior (including that bitwise ties at lower thread counts selected first seed `20260804` and still failed the old `20260805` assertion), the numerical cause, the corrected rule, the corrected expected seed, the affected statement/solution/lesson, and that siblings p21 and p30 were audited and are immune: p21 fixes its primary run by index, while p30 selects deterministic hand-computed NumPy WCSS.
@@ -113,7 +117,7 @@ PATH=/home/chris/.local/bin:$PATH uv run pytest -q \
 ```
 
 - [ ] Execute Session 6 and p20 solution from the Book 1 root without `--inplace`, and verify their source SHA-256 hashes remain unchanged.
-- [ ] Execute p20 solution in fresh Jupyter kernels spanning `OMP_NUM_THREADS=1,2,4,8` (at least eight executions total, with repeated 4- and 8-thread runs); all runs must select the same contract and pass.
+- [ ] Execute p20 solution in fresh Jupyter kernels spanning `OMP_NUM_THREADS=1,2,4,8` (at least eight executions total, with repeated 4- and 8-thread runs); all runs must select `best_index == 0`, `best_seed == 20260804`, and pass the answer check.
 - [ ] Confirm p20 remains a core, 65-minute integrative practice and that no manifest, schedule, difficulty, or timing field changed.
 - [ ] Run Book 1 hygiene, tolerance, integration, material-inventory freshness, and `git diff --check`.
 - [ ] Run the mandatory `scripts/ci-local.sh` from a clean worktree.
@@ -164,6 +168,18 @@ Although Round 2 formally passed, this revision incorporates all cheap semantic 
 Because the reviewed commit changed, implementation remains paused pending a fresh exact-commit Round 3.
 
 ### Round 3 — final hardened plan
+
+Exact commit `6f66f0e` did not reach consensus on 2026-09-19:
+
+- `[claude-self]` **REJECT** — accepted the external production-dataflow finding: a helper call alone did not prove its result owned `best_index`.
+- `[codex]` **REJECT** — required an exact assignment from the helper, parameter use rather than hard-coded tolerance literals, and an explicit return contract.
+- `[fable]` **APPROVE WITH NITS** — verified the full fixture/mutant matrix and requested an isolated selector cell plus parameter plumbing.
+- `[glm]` **APPROVE WITH NITS** — independently confirmed parameter-plumbing/return ambiguity and requested exact statement literals and thread-matrix outcomes.
+
+This revision closes the blocker by pinning a dedicated selector cell, shared constants, parameterized `np.isclose`, an integer index return, and the exact helper-to-`best_index`-to-`best_seed` dataflow.
+It also prevents a pre-repair statement-contract false green and makes fresh-kernel expectations explicit.
+
+### Round 4 — exact dataflow confirmation
 
 Pending a fresh mandatory four-way gate on the exact revised commit.
 
