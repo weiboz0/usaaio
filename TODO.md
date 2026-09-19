@@ -20,6 +20,7 @@
 - [x] 017 — R1 neural-training completion (delivery branch ready)
 - [x] 018 — R1 classical-model breadth (follows Plan 017; user-authorized unavailable-Opus waiver)
 - [x] 019 — atomic two-book roots and the first Round 2 attention unit (merged as PR #22)
+- [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
 
 ## Deferred, with a named owner plan still to be written
