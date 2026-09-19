@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).parents[1]
 BOOK1_ROOT = ROOT / "book1"
 PRACTICE = BOOK1_ROOT / "units" / "C12-classical-models" / "practice"
+LESSONS = BOOK1_ROOT / "units" / "C12-classical-models" / "lessons"
 
 
 def _source(number: int) -> str:
@@ -75,6 +76,37 @@ def test_p19_pins_deterministic_bagging_and_base_tree_parameters() -> None:
         "`warm_start=False, n_jobs=1, random_state=seed)`",
     ):
         assert literal in source
+
+
+def test_p20_pins_near_tie_formula_and_numerically_smallest_seed() -> None:
+    source = _source(20)
+    assert (
+        "eligible(i) iff abs(inertia[i] - minimum) <= "
+        "1e-10 + 1e-8 * abs(minimum)"
+    ) in source
+    assert "numerically smallest seed" in source
+
+
+def test_session6_teaches_tolerance_before_the_secondary_key() -> None:
+    notebook = json.loads(
+        (LESSONS / "06-kmeans-and-model-comparison.ipynb").read_text()
+    )
+    source = "\n".join(
+        "".join(cell.get("source", []))
+        if isinstance(cell.get("source", ""), list)
+        else str(cell.get("source", ""))
+        for cell in notebook["cells"]
+    ).lower()
+
+    for phrase in (
+        "numerically equivalent objectives",
+        "declared tolerance",
+        "deterministic secondary key",
+    ):
+        assert phrase in source
+    assert source.index("declared tolerance") < source.index(
+        "deterministic secondary key"
+    )
 
 
 def test_p21_pins_nested_schema_and_default_sensitive_parameters() -> None:

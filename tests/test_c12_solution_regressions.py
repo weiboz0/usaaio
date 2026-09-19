@@ -12,6 +12,102 @@ BOOK1_ROOT = ROOT / "book1"
 PRACTICE = BOOK1_ROOT / "units" / "C12-classical-models" / "practice"
 PROBLEMS = tuple(f"p{index:02d}" for index in range(1, 31))
 
+P20_ASCENDING_SEEDS = np.array([20260804, 20260805, 20260806], dtype=np.int64)
+P20_PERMUTED_SEEDS = np.array([20260805, 20260804, 20260806], dtype=np.int64)
+P20_SELECTOR_FIXTURES = (
+    (
+        "absolute_and_relative_near_tie",
+        P20_ASCENDING_SEEDS,
+        np.array([1.0 + 5e-11, 1.0, 2.0], dtype=np.float64),
+        0,
+        20260804,
+    ),
+    (
+        "relative_term_required",
+        P20_ASCENDING_SEEDS,
+        np.array([1000.0 + 5e-6, 1000.0, 2000.0], dtype=np.float64),
+        0,
+        20260804,
+    ),
+    (
+        "absolute_term_required",
+        P20_ASCENDING_SEEDS,
+        np.array([5e-11, 0.0, 2.0], dtype=np.float64),
+        0,
+        20260804,
+    ),
+    (
+        "inclusive_absolute_boundary",
+        P20_ASCENDING_SEEDS,
+        np.array([1e-10, 0.0, 2.0], dtype=np.float64),
+        0,
+        20260804,
+    ),
+    (
+        "outside_relative_boundary",
+        P20_ASCENDING_SEEDS,
+        np.array([1000.0 + 2e-5, 1000.0, 2000.0], dtype=np.float64),
+        1,
+        20260805,
+    ),
+    (
+        "permuted_secondary_key",
+        P20_PERMUTED_SEEDS,
+        np.array([1.0, 1.0 + 5e-11, 2.0], dtype=np.float64),
+        1,
+        20260804,
+    ),
+)
+
+P20_ISCLOSE_EXPRESSION = (
+    "np.isclose(inertias, minimum, atol=atol, rtol=rtol)"
+)
+P20_SECONDARY_KEY_ASSIGNMENT = (
+    "best_index = int(candidates[np.argmin(seeds[candidates])])"
+)
+P20_SELECTOR_MUTANTS = (
+    (
+        "raw_argmin",
+        P20_SECONDARY_KEY_ASSIGNMENT,
+        "best_index = int(np.argmin(inertias))",
+    ),
+    (
+        "exact_equality",
+        P20_ISCLOSE_EXPRESSION,
+        "inertias == minimum",
+    ),
+    (
+        "missing_relative_tolerance",
+        "rtol=rtol",
+        "rtol=0.0",
+    ),
+    (
+        "missing_absolute_tolerance",
+        "atol=atol",
+        "atol=0.0",
+    ),
+    (
+        "strict_boundary",
+        P20_ISCLOSE_EXPRESSION,
+        "np.abs(inertias - minimum) < atol + rtol * abs(minimum)",
+    ),
+    (
+        "all_candidates_eligible",
+        P20_ISCLOSE_EXPRESSION,
+        "np.ones_like(inertias, dtype=bool)",
+    ),
+    (
+        "first_eligible",
+        P20_SECONDARY_KEY_ASSIGNMENT,
+        "best_index = int(candidates[0])",
+    ),
+    (
+        "largest_seed",
+        "np.argmin(seeds[candidates])",
+        "np.argmax(seeds[candidates])",
+    ),
+)
+
 
 def _source(cell: dict[str, object]) -> str:
     source = cell.get("source", "")
@@ -57,6 +153,249 @@ def _execute_solution(problem: str) -> dict[str, object]:
                 namespace,
             )
     return namespace
+
+
+def _p20_selector_cell_source() -> str:
+    matches = [
+        _source(cell)
+        for cell in _notebook("p20", solution=True)["cells"]
+        if cell["cell_type"] == "code"
+        and "def _lowest_seed_near_minimum" in _source(cell)
+    ]
+    assert len(matches) == 1, "p20 needs one dedicated selector code cell"
+    return matches[0]
+
+
+def _execute_p20_selector_cell(source: str | None = None) -> dict[str, object]:
+    namespace: dict[str, object] = {}
+    exec(  # noqa: S102 - execute the production selector cell in isolation
+        compile(source or _p20_selector_cell_source(), "p20-selector-cell", "exec"),
+        namespace,
+    )
+    return namespace
+
+
+def _function_node(source: str, name: str) -> ast.FunctionDef:
+    matches = [
+        node
+        for node in ast.parse(source).body
+        if isinstance(node, ast.FunctionDef) and node.name == name
+    ]
+    assert len(matches) == 1, f"expected exactly one definition of {name}"
+    return matches[0]
+
+
+def _mutate_p20_selector_cell(old: str, new: str) -> str:
+    source = _p20_selector_cell_source()
+    assert source.count(old) == 1, f"mutation target is not unique: {old}"
+    return source.replace(old, new, 1)
+
+
+def _p20_selector_outcomes(
+    selector: object,
+) -> list[tuple[int, int]]:
+    outcomes: list[tuple[int, int]] = []
+    for _, seeds, inertias, _, _ in P20_SELECTOR_FIXTURES:
+        index = selector(seeds, inertias, atol=1e-10, rtol=1e-8)  # type: ignore[operator]
+        outcomes.append((index, int(seeds[index])))
+    return outcomes
+
+
+def test_p20_selector_cell_is_standalone_and_owns_shared_tolerances() -> None:
+    source = _p20_selector_cell_source()
+    tree = ast.parse(source)
+    selector = _function_node(source, "_lowest_seed_near_minimum")
+
+    assert any(
+        isinstance(node, ast.Import)
+        and any(alias.name == "numpy" and alias.asname == "np" for alias in node.names)
+        for node in tree.body
+    )
+    assert [argument.arg for argument in selector.args.args] == ["seeds", "inertias"]
+    assert selector.args.defaults == []
+    assert [argument.arg for argument in selector.args.kwonlyargs] == ["atol", "rtol"]
+    assert selector.args.kw_defaults == [None, None]
+    assert [
+        node.name for node in tree.body if isinstance(node, ast.FunctionDef)
+    ] == ["_lowest_seed_near_minimum"]
+
+    top_level_assignments = {
+        target.id
+        for node in tree.body
+        if isinstance(node, (ast.Assign, ast.AnnAssign))
+        for target in (node.targets if isinstance(node, ast.Assign) else [node.target])
+        if isinstance(target, ast.Name)
+    }
+    assert top_level_assignments == {"ATOL", "RTOL"}
+
+    all_code = _code("p20", solution=True)
+    for name in ("ATOL", "RTOL"):
+        definitions = [
+            node
+            for node in ast.walk(ast.parse(all_code))
+            if isinstance(node, ast.Name)
+            and node.id == name
+            and isinstance(node.ctx, ast.Store)
+        ]
+        assert len(definitions) == 1, f"{name} must have one shared definition"
+        assert any(
+            isinstance(node, (ast.Assign, ast.AnnAssign))
+            and any(
+                isinstance(target, ast.Name) and target.id == name
+                for target in (
+                    node.targets if isinstance(node, ast.Assign) else [node.target]
+                )
+            )
+            for node in tree.body
+        ), f"{name} must be defined in the selector cell"
+
+    calls = [
+        node
+        for node in ast.walk(selector)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and isinstance(node.func.value, ast.Name)
+        and node.func.value.id == "np"
+        and node.func.attr == "isclose"
+    ]
+    assert len(calls) == 1
+    keywords = {keyword.arg: keyword.value for keyword in calls[0].keywords}
+    assert isinstance(keywords.get("atol"), ast.Name)
+    assert keywords["atol"].id == "atol"
+    assert isinstance(keywords.get("rtol"), ast.Name)
+    assert keywords["rtol"].id == "rtol"
+
+    assert not any(
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id in {"_lowest_seed_near_minimum", "kmeans_stability_audit"}
+        for node in ast.walk(tree)
+    )
+    namespace = _execute_p20_selector_cell(source)
+    assert namespace["ATOL"] == 1e-10
+    assert namespace["RTOL"] == 1e-8
+    assert callable(namespace["_lowest_seed_near_minimum"])
+
+
+def test_p20_audit_uses_the_selector_result_as_its_only_selection_path() -> None:
+    code = _code("p20", solution=True)
+    code_tree = ast.parse(code)
+    audit = _function_node(code, "kmeans_stability_audit")
+
+    selector_calls = [
+        node
+        for node in ast.walk(code_tree)
+        if isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "_lowest_seed_near_minimum"
+    ]
+    assert len(selector_calls) == 1
+
+    best_index_assignments = [
+        node
+        for node in ast.walk(audit)
+        if isinstance(node, ast.Assign)
+        and any(
+            isinstance(target, ast.Name) and target.id == "best_index"
+            for target in node.targets
+        )
+    ]
+    assert len(best_index_assignments) == 1
+    assert sum(
+        isinstance(node, ast.Name)
+        and node.id == "best_index"
+        and isinstance(node.ctx, ast.Store)
+        for node in ast.walk(audit)
+    ) == 1
+    selector_call = best_index_assignments[0].value
+    assert isinstance(selector_call, ast.Call)
+    assert isinstance(selector_call.func, ast.Name)
+    assert selector_call.func.id == "_lowest_seed_near_minimum"
+    assert [ast.unparse(argument) for argument in selector_call.args] == [
+        "seeds",
+        "inertias",
+    ]
+    assert {
+        keyword.arg: ast.unparse(keyword.value) for keyword in selector_call.keywords
+    } == {"atol": "ATOL", "rtol": "RTOL"}
+
+    best_seed_assignments = [
+        node
+        for node in ast.walk(audit)
+        if isinstance(node, ast.Assign)
+        and any(
+            isinstance(target, ast.Name) and target.id == "best_seed"
+            for target in node.targets
+        )
+    ]
+    assert len(best_seed_assignments) == 1
+    assert sum(
+        isinstance(node, ast.Name)
+        and node.id == "best_seed"
+        and isinstance(node.ctx, ast.Store)
+        for node in ast.walk(audit)
+    ) == 1
+    assert ast.unparse(best_seed_assignments[0].value) == "int(seeds[best_index])"
+
+    returns = [node for node in ast.walk(audit) if isinstance(node, ast.Return)]
+    assert len(returns) == 1 and isinstance(returns[0].value, ast.Dict)
+    returned = {
+        key.value: value
+        for key, value in zip(returns[0].value.keys, returns[0].value.values)
+        if isinstance(key, ast.Constant) and isinstance(key.value, str)
+    }
+    assert isinstance(returned["best_index"], ast.Name)
+    assert returned["best_index"].id == "best_index"
+    assert isinstance(returned["best_seed"], ast.Name)
+    assert returned["best_seed"].id == "best_seed"
+
+
+@pytest.mark.parametrize(
+    ("_name", "seeds", "inertias", "expected_index", "expected_seed"),
+    P20_SELECTOR_FIXTURES,
+    ids=[fixture[0] for fixture in P20_SELECTOR_FIXTURES],
+)
+def test_p20_production_selector_pins_indices_and_mapped_seeds(
+    _name: str,
+    seeds: np.ndarray,
+    inertias: np.ndarray,
+    expected_index: int,
+    expected_seed: int,
+) -> None:
+    namespace = _execute_p20_selector_cell()
+    selector = namespace["_lowest_seed_near_minimum"]
+    index = selector(seeds, inertias, atol=1e-10, rtol=1e-8)  # type: ignore[operator]
+
+    assert type(index) is int
+    assert index == expected_index
+    assert int(seeds[index]) == expected_seed
+
+
+@pytest.mark.parametrize(
+    ("mutant_name", "old", "new"),
+    P20_SELECTOR_MUTANTS,
+    ids=[mutant[0] for mutant in P20_SELECTOR_MUTANTS],
+)
+def test_p20_selector_fixtures_kill_in_memory_mutants(
+    mutant_name: str,
+    old: str,
+    new: str,
+) -> None:
+    mutated = _mutate_p20_selector_cell(old, new)
+    namespace = _execute_p20_selector_cell(mutated)
+    observed = _p20_selector_outcomes(namespace["_lowest_seed_near_minimum"])
+    expected = [
+        (expected_index, expected_seed)
+        for _, _, _, expected_index, expected_seed in P20_SELECTOR_FIXTURES
+    ]
+    assert observed != expected, f"selector mutant survived: {mutant_name}"
+
+
+def test_p20_solution_executes_with_the_deterministic_lowest_seed() -> None:
+    namespace = _execute_solution("p20")
+    audit = namespace["audit_p20"]
+    assert audit["best_index"] == 0
+    assert audit["best_seed"] == 20260804
 
 
 @pytest.mark.parametrize("problem", PROBLEMS)
