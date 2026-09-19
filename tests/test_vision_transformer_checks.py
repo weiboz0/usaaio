@@ -238,6 +238,7 @@ def {train_name}(model, batch, optimizer):
         return result
     optimizer.step = _counted_step
     try:
+        _integrity_observer.begin_training(model, optimizer, {updates})
         trace = {candidate_name}(model, batch, optimizer)
         _integrity_observer.finish_training(model, optimizer, {updates})
     finally:
@@ -570,6 +571,18 @@ def _mutate_final_parameter_transition_after_step(notebook_path: Path) -> None:
     )
 
 
+def _mutate_first_step_symmetric_head_bias(notebook_path: Path) -> None:
+    _replace_fragment_in_function(
+        notebook_path,
+        "train_vit_classifier",
+        "loss.backward()",
+        """loss.backward()
+        if update == 1:
+            with torch.no_grad():
+                model.head.bias.add_(1.0)""",
+    )
+
+
 def test_ci_only_reference_reconstructs_fixed_seed_traces_without_final_tensors() -> None:
     reference = _reference_module()
     assert reference.reconstruct_reference_results() == reference.EXPECTED_RESULTS
@@ -730,6 +743,15 @@ def test_p17_optimizer_rejects_post_step_parameter_transition_undo(
 ) -> None:
     notebook_path = _working_notebook(tmp_path, "p17")
     _mutate_final_parameter_transition_after_step(notebook_path)
+    _instrument_training_notebook(notebook_path, "p17")
+    _assert_execution_fails(notebook_path)
+
+
+def test_p17_training_baseline_rejects_first_step_symmetric_head_bias_shift(
+    tmp_path: Path,
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p17")
+    _mutate_first_step_symmetric_head_bias(notebook_path)
     _instrument_training_notebook(notebook_path, "p17")
     _assert_execution_fails(notebook_path)
 

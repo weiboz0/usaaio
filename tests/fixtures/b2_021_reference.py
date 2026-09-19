@@ -43,6 +43,15 @@ EXPECTED_ADAMW_LR = MappingProxyType(
     }
 )
 
+EXPECTED_TRAINING_STEPS = MappingProxyType(
+    {
+        "vit": 12,
+        "detection": 16,
+        "segmentation": 16,
+        "graph": 12,
+    }
+)
+
 
 def canonical_array_fingerprint(
     components: tuple[tuple[str, np.ndarray], ...],
@@ -300,6 +309,9 @@ class IntegrityObserver:
         self._expected_parameter_values: tuple[torch.Tensor, ...] | None = None
         self._expected_optimizer_state: tuple[dict[str, object], ...] | None = None
         self._completed_steps = 0
+        self._expected_steps: int | None = None
+        self._training_started = False
+        self._training_finished = False
 
     def begin_loss(
         self,
@@ -606,9 +618,67 @@ class IntegrityObserver:
                 f"{label} parameter {index}",
             )
 
+    def _independent_initial_parameter_values(self) -> tuple[torch.Tensor, ...]:
+        model_types = {
+            "vit": _Vit,
+            "detection": _Detector,
+            "segmentation": _Unet,
+            "graph": _Graph,
+        }
+        python_state = random.getstate()
+        numpy_state = np.random.get_state()
+        try:
+            with torch.random.fork_rng(devices=[]):
+                torch.manual_seed(SEED)
+                reference_model = model_types[self.task]()
+                return tuple(
+                    parameter.detach().clone() for parameter in reference_model.parameters()
+                )
+        finally:
+            random.setstate(python_state)
+            np.random.set_state(numpy_state)
+
+    def begin_training(
+        self,
+        model: nn.Module,
+        optimizer: torch.optim.Optimizer,
+        expected_steps: int,
+    ) -> None:
+        if self._training_started or self._active_loss is not None:
+            raise AssertionError("training integrity transaction already started")
+        if expected_steps != EXPECTED_TRAINING_STEPS[self.task]:
+            raise AssertionError("training wrapper expected-step count mismatch")
+        parameters = self._validate_optimizer(model, optimizer)
+        reference_values = self._independent_initial_parameter_values()
+        if len(parameters) != len(reference_values):
+            raise AssertionError("initial model parameter count mismatch")
+        for index, (parameter, expected_value) in enumerate(
+            zip(parameters, reference_values, strict=True)
+        ):
+            if (
+                parameter.shape != expected_value.shape
+                or parameter.dtype != expected_value.dtype
+                or parameter.device != expected_value.device
+                or not torch.equal(parameter.detach(), expected_value)
+            ):
+                raise AssertionError(f"initial model parameter {index} mismatch")
+        initial_state = self._snapshot_optimizer_state(optimizer, parameters)
+        if any(state for state in initial_state):
+            raise AssertionError("AdamW initial state must be empty")
+        self._expected_parameter_values = tuple(
+            value.detach().clone() for value in reference_values
+        )
+        self._expected_optimizer_state = tuple({} for _ in parameters)
+        self._expected_steps = expected_steps
+        self._training_started = True
+
     def prepare_step(self, model: nn.Module, optimizer: torch.optim.Optimizer) -> None:
         active = self._require_active_loss()
         try:
+            if not self._training_started or self._training_finished:
+                raise AssertionError("optimizer step occurred outside the training transaction")
+            if self._expected_steps is None or self._completed_steps >= self._expected_steps:
+                raise AssertionError("optimizer exceeded the exact expected step count")
             if active["phase"] != "awaiting-backward-step":
                 raise AssertionError("optimizer step occurred before authenticated loss completion")
             if active["backward_count"] != 1 or not active["backward_root_valid"]:
@@ -629,20 +699,17 @@ class IntegrityObserver:
                 "optimizer parameter",
             )
             if self._expected_parameter_values is None:
-                expected_pre_parameters = tuple(
-                    parameter.detach().clone() for parameter in model_parameters
-                )
-            else:
-                expected_pre_parameters = self._expected_parameter_values
-                self._assert_parameter_values(
-                    model_parameters,
-                    expected_pre_parameters,
-                    "pre-step",
-                )
+                raise AssertionError("independent initial parameter baseline is missing")
+            expected_pre_parameters = self._expected_parameter_values
+            self._assert_parameter_values(
+                model_parameters,
+                expected_pre_parameters,
+                "pre-step",
+            )
             actual_pre_state = self._snapshot_optimizer_state(optimizer, model_parameters)
             expected_pre_state = self._expected_optimizer_state
             if expected_pre_state is None:
-                expected_pre_state = tuple({} for _ in model_parameters)
+                raise AssertionError("independent initial AdamW state baseline is missing")
             self._assert_state_equal(actual_pre_state, expected_pre_state, "pre-step AdamW state")
 
             shadow_parameters = tuple(
@@ -727,6 +794,13 @@ class IntegrityObserver:
         if self._active_loss is not None:
             self.abort_loss()
             raise AssertionError("training ended with an unconsumed loss transaction")
+        if (
+            not self._training_started
+            or self._training_finished
+            or self._expected_steps is None
+            or expected_steps != self._expected_steps
+        ):
+            raise AssertionError("training completion does not match its outer transaction")
         if self._completed_steps != expected_steps:
             raise AssertionError(
                 f"expected {expected_steps} authenticated AdamW transitions, "
@@ -746,6 +820,7 @@ class IntegrityObserver:
             self._expected_optimizer_state,
             "completed-training AdamW state",
         )
+        self._training_finished = True
 
     def _require_active_loss(self) -> dict[str, object]:
         if self._active_loss is None:
