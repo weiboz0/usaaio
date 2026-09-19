@@ -5398,7 +5398,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb
   kind: notebook
-  semantic_sha256: c61f9f9f7f4861f908c0532753d7050d638f64c197a783a2f37c20b86f871803
+  semantic_sha256: 1a0dc124c36f109b5a33576f0b3556e273428c96450dcb87588b475c27596b53
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
       Session 2: Detection Grids and Set Prediction :: cell 1'
@@ -5587,7 +5587,7 @@ notebooks:
   - torch.randn
 - path: units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb
   kind: notebook
-  semantic_sha256: 4e0fab18c5ed4ec99646673e0f561763dacb84316fcdff7b5d8eca475281d0e2
+  semantic_sha256: a9b7d27817bfa3ef1aac67eeabc42bafbdaa567d76ae35032cb854e073fc5729
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
       4: Graphs and Cross-modal Attention :: cell 1'
@@ -6790,7 +6790,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: f3d29e790e5c9d31490bba77558e6c4ad78ed2e103632d1774984888826d45dc
+  semantic_sha256: bf4f7fee28cc4bcbe7c875aa9cd729082b2a5c36cb4e35fb5263559ee220db71
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p17_solution.ipynb :: Solution to p17 :: cell 1'
     heading_path:
@@ -6839,6 +6839,7 @@ notebooks:
   - np.random.seed
   - optimizer.step
   - optimizer.zero_grad
+  - path.is_file
   - pathlib.Path
   - random.seed
   - self.attention
@@ -6891,7 +6892,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p18_solution.ipynb
   kind: notebook
-  semantic_sha256: 1e3b5605212296d28583c595322c9f63d9fdf994f1ec545c873cdf07b29cdbcc
+  semantic_sha256: cdd7e2691dd69fba0c28dce94ef56f21fe2e788dd1f4223b3b15a818a8f97ec1
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p18_solution.ipynb :: Solution to p18 :: cell 1'
     heading_path:
@@ -6946,6 +6947,7 @@ notebooks:
   - objectness_target.bool
   - optimizer.step
   - optimizer.zero_grad
+  - path.is_file
   - pathlib.Path
   - random.seed
   - self.backbone
@@ -7002,7 +7004,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: 9e9e2edd66d408c4e5c760e8e6db361dd4e5833be37640231355917c61f6dc77
+  semantic_sha256: 53835ec8a7657b7765cde90881fe46c7bea072a36751144167f394ca996d59ad
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p19_solution.ipynb :: Solution to p19 :: cell 1'
     heading_path:
@@ -7050,6 +7052,7 @@ notebooks:
   - np.random.seed
   - optimizer.step
   - optimizer.zero_grad
+  - path.is_file
   - pathlib.Path
   - predicted_fg.sum
   - random.seed
@@ -7103,7 +7106,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 491b171a12b19de83c4cb850e8c18a50e19179d8c4a354757dfa7032fec273e3
+  semantic_sha256: 622e70a221787b5b7cd472ed9302b5de33958ce562b6faa3837dfc1afec4152e
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p20_solution.ipynb :: Solution to p20 :: cell 1'
     heading_path:
@@ -7154,6 +7157,7 @@ notebooks:
   - np.random.seed
   - optimizer.step
   - optimizer.zero_grad
+  - path.is_file
   - pathlib.Path
   - random.seed
   - self.attention

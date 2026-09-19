@@ -234,14 +234,21 @@ def test_task4_policy_and_solution_set_fail_closed(tmp_path: Path) -> None:
     )
 
 
-def test_task4_ci_executes_b2_020_solutions_with_twenty_second_timeout() -> None:
+def test_ci_bounds_b2_020_and_b2_021_and_preserves_other_solution_execution() -> None:
     script = (ROOT / "scripts/ci-local.sh").read_text(encoding="utf-8")
     assert (
         "if [[ $relative == units/B2-020-language-transformers/practice/"
-        "p??_solution.ipynb ]]; then"
+        "p??_solution.ipynb || $relative == units/B2-021-cross-modal-transformers-vision/"
+        "practice/p??_solution.ipynb ]]; then"
     ) in script
     assert (
         'timeout 20s uv run --project .. jupyter execute "$relative"'
+    ) in script
+    assert (
+        'else\n'
+        '      (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" '
+        'uv run --project .. jupyter execute "$relative")\n'
+        '    fi'
     ) in script
 
 

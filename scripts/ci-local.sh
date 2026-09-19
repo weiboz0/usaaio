@@ -72,7 +72,7 @@ for index in "${!BOOK_IDS[@]}"; do
   for notebook in "${notebooks[@]}"; do
     relative=${notebook#"$book_root"/}
     echo "executing [$book]: $relative"
-    if [[ $relative == units/B2-020-language-transformers/practice/p??_solution.ipynb ]]; then
+    if [[ $relative == units/B2-020-language-transformers/practice/p??_solution.ipynb || $relative == units/B2-021-cross-modal-transformers-vision/practice/p??_solution.ipynb ]]; then
       (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" timeout 20s uv run --project .. jupyter execute "$relative")
     else
       (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" uv run --project .. jupyter execute "$relative")

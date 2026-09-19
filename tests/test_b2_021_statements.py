@@ -5,6 +5,7 @@ import importlib.util
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from collections import Counter
@@ -15,6 +16,7 @@ import pytest
 import yaml
 
 from tools.checks.hygiene import check_hygiene
+from tools.checks.tolerance import check_tolerance
 from tools.model import load_unit_manifests
 
 sys.dont_write_bytecode = True
@@ -274,6 +276,36 @@ def test_five_sessions_have_exact_nine_section_lab_checkpoint_structure() -> Non
         assert len(meaningful_code) >= 2
 
 
+def test_live_tolerance_check_passes_and_rejects_an_omitted_lesson_tolerance(
+    tmp_path: Path,
+) -> None:
+    live = check_tolerance(BOOK2_ROOT)
+    assert live.ok, live.errors
+
+    selected = tmp_path / "book2"
+    shutil.copytree(UNIT, selected / "units" / UNIT_ID)
+    lesson = selected / "units" / UNIT_ID / LESSONS[2]
+    notebook = json.loads(lesson.read_text(encoding="utf-8"))
+    changed = False
+    for cell in notebook["cells"]:
+        if cell["cell_type"] != "code" or "atol=1e-6, rtol=1e-6" not in cell["source"]:
+            continue
+        cell["source"] = cell["source"].replace(
+            ", atol=1e-6, rtol=1e-6", "", 1
+        )
+        changed = True
+        break
+    assert changed
+    lesson.write_text(json.dumps(notebook), encoding="utf-8")
+
+    report = check_tolerance(selected)
+    assert not report.ok
+    assert any(
+        "torch.allclose must explicitly state atol and rtol" in error
+        for error in report.errors
+    )
+
+
 def test_p01_has_exact_five_choices_and_positive_reduced_normal_form() -> None:
     source = _source("practice/p01.ipynb")
     compact = source.replace(" ", "")
@@ -468,3 +500,22 @@ def test_solution_notebooks_are_complete_answer_checked_and_output_free() -> Non
         assert all(cell.cell_type == "code" for cell in notebook.cells[answer_index + 1 :])
         assert all(str(cell.source).strip() for cell in notebook.cells[answer_index + 1 :])
         assert "_solution.ipynb" not in json.dumps(notebook)
+
+
+@pytest.mark.parametrize("number", range(17, 21))
+def test_training_solutions_execute_via_authoritative_jupyter_route_without_inplace(
+    number: int,
+) -> None:
+    relative = f"units/{UNIT_ID}/practice/p{number:02}_solution.ipynb"
+    path = BOOK2_ROOT / relative
+    before = path.read_bytes()
+    proc = subprocess.run(
+        ["timeout", "20s", "../.venv/bin/jupyter", "execute", relative],
+        cwd=BOOK2_ROOT,
+        env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert path.read_bytes() == before
