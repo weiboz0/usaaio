@@ -4,6 +4,7 @@ import importlib
 import os
 import re
 import shutil
+import subprocess
 from collections.abc import Callable
 from pathlib import Path
 from types import SimpleNamespace
@@ -1483,14 +1484,76 @@ def test_plan014_abandonment_fields_are_nonempty_and_date_is_iso(
     _assert_error(check_scope(tmp_path), message)
 
 
-def test_plan014_merged_squash_commit_must_be_ancestor(tmp_path: Path) -> None:
+def _scope_git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", *args], cwd=root, capture_output=True, text=True, check=True
+    )
+
+
+def _initialize_scope_git_repository(root: Path) -> str:
+    _scope_git(root, "init", "-b", "main")
+    _scope_git(root, "config", "user.email", "test@example.com")
+    _scope_git(root, "config", "user.name", "Test")
+    _scope_git(root, "add", ".")
+    _scope_git(root, "commit", "-m", "fixture")
+    return _scope_git(root, "rev-parse", "HEAD").stdout.strip()
+
+
+def test_plan014_merged_reconciliation_accepts_unavailable_git_history(
+    tmp_path: Path,
+) -> None:
     _base_contract(tmp_path)
     reconciliation = tmp_path / "docs" / "audits" / "015-plan014-reconciliation.md"
     reconciliation.write_text(
-        "Plan 014 is **merged**.\nIts squash commit is `deadbeefdeadbeefdeadbeefdeadbeefdeadbeef`.\n"
+        "Plan 014 is **merged**.\n"
+        "Its squash commit is `deadbeefdeadbeefdeadbeefdeadbeefdeadbeef`.\n"
+    )
+
+    report = check_scope(tmp_path)
+
+    assert report.ok, report.errors
+
+
+def test_plan014_reconciliation_ignores_unrelated_parent_git_repository(
+    tmp_path: Path,
+) -> None:
+    _scope_git(tmp_path, "init", "-b", "main")
+    nested = tmp_path / "archive"
+    _base_contract(nested)
+    reconciliation = nested / "docs" / "audits" / "015-plan014-reconciliation.md"
+    reconciliation.write_text(
+        "Plan 014 is **merged**.\n"
+        "Its squash commit is `deadbeefdeadbeefdeadbeefdeadbeefdeadbeef`.\n"
+    )
+
+    report = check_scope(nested)
+
+    assert report.ok, report.errors
+
+
+def test_plan014_merged_squash_commit_must_be_ancestor(tmp_path: Path) -> None:
+    _base_contract(tmp_path)
+    _initialize_scope_git_repository(tmp_path)
+    tree = _scope_git(tmp_path, "write-tree").stdout.strip()
+    nonancestor = _scope_git(tmp_path, "commit-tree", tree, "-m", "unmerged").stdout.strip()
+    reconciliation = tmp_path / "docs" / "audits" / "015-plan014-reconciliation.md"
+    reconciliation.write_text(
+        f"Plan 014 is **merged**.\nIts squash commit is `{nonancestor}`.\n"
     )
 
     _assert_error(check_scope(tmp_path), "is not an ancestor of HEAD")
+
+
+def test_plan014_corrupt_root_git_metadata_fails_loudly(tmp_path: Path) -> None:
+    _base_contract(tmp_path)
+    reconciliation = tmp_path / "docs" / "audits" / "015-plan014-reconciliation.md"
+    reconciliation.write_text(
+        "Plan 014 is **merged**.\n"
+        "Its squash commit is `deadbeefdeadbeefdeadbeefdeadbeefdeadbeef`.\n"
+    )
+    (tmp_path / ".git").write_text("gitdir: missing-git-directory\n")
+
+    _assert_error(check_scope(tmp_path), "Git metadata at repository root is unusable")
 
 
 def test_renderer_owns_both_documents_and_keeps_assessments_separate(tmp_path: Path) -> None:

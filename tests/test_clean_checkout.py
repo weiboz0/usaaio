@@ -1372,7 +1372,9 @@ def test_atomic_cutover_has_every_moved_producer_and_no_legacy_root() -> None:
         assert not path.is_symlink(), f"legacy symlink remains: {legacy}"
 
 
-def test_book_local_generated_paths_are_ignored_without_ignoring_sources() -> None:
+def test_book_local_generated_paths_are_ignored_without_ignoring_sources(
+    tmp_path: Path,
+) -> None:
     ignored = (
         "book1/build/mock.pdf",
         "book2/build/unit.pdf",
@@ -1393,18 +1395,32 @@ def test_book_local_generated_paths_are_ignored_without_ignoring_sources() -> No
         "book1/mocktests/r1-001/problems/p09.ipynb",
     )
 
+    git_dir = tmp_path / "metadata.git"
+    subprocess.run(
+        ["git", "init", "--bare", str(git_dir)],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    git_prefix = [
+        "git",
+        f"--git-dir={git_dir}",
+        f"--work-tree={ROOT}",
+        "check-ignore",
+        "--no-index",
+        "--quiet",
+    ]
+
     for relative in ignored:
         proc = subprocess.run(
-            ["git", "check-ignore", "--no-index", "--quiet", relative],
-            cwd=ROOT,
+            [*git_prefix, relative],
             check=False,
         )
         assert proc.returncode == 0, relative
     for relative in sources:
         assert (ROOT / relative).is_file(), relative
         proc = subprocess.run(
-            ["git", "check-ignore", "--no-index", "--quiet", relative],
-            cwd=ROOT,
+            [*git_prefix, relative],
             check=False,
         )
         assert proc.returncode == 1, relative
@@ -1681,6 +1697,158 @@ def test_clean_checkout_adversarial_noop_and_omission_mutations_fail(
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(["git", *args], cwd=repo, capture_output=True, text=True, check=True)
+
+
+def _ci_guard_fixture(repo: Path, *, initialize_git: bool = False) -> tuple[Path, Path]:
+    (repo / "scripts").mkdir(parents=True)
+    (repo / "book1" / "units").mkdir(parents=True)
+    (repo / "book1" / "mocktests").mkdir()
+    (repo / "book2" / "units").mkdir(parents=True)
+    (repo / "book2" / "mocktests").mkdir()
+    shutil.copy2(ROOT / "scripts" / "ci-local.sh", repo / "scripts" / "ci-local.sh")
+    build = repo / "scripts" / "build-pdf.sh"
+    build.write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
+    build.chmod(0o755)
+    guard = repo / "scripts" / "pre-merge-guard.sh"
+    guard.write_text(
+        "#!/usr/bin/env bash\n"
+        "printf 'guard-invoked\\n' >> \"$GUARD_TRACE\"\n"
+        "exit \"${GUARD_EXIT:-0}\"\n",
+        encoding="utf-8",
+    )
+    guard.chmod(0o755)
+    fake_bin = repo / "fake-bin"
+    fake_bin.mkdir()
+    uv = fake_bin / "uv"
+    uv.write_text(
+        "#!/usr/bin/env bash\n"
+        "if [[ \" $* \" == *\" --project \"*\" python - \"* ]]; then\n"
+        "  printf 'book1\\t1\\t%s/book1\\n' \"$PWD\"\n"
+        "  printf 'book2\\t2\\t%s/book2\\n' \"$PWD\"\n"
+        "fi\n",
+        encoding="utf-8",
+    )
+    uv.chmod(0o755)
+    trace = repo / "guard.trace"
+    if initialize_git:
+        _git(repo, "init", "-b", "main")
+    return fake_bin, trace
+
+
+def _run_ci_guard_fixture(
+    repo: Path,
+    fake_bin: Path,
+    trace: Path,
+    *,
+    guard_exit: int = 0,
+    extra_env: dict[str, str] | None = None,
+) -> subprocess.CompletedProcess[str]:
+    env = {
+        **os.environ,
+        "PATH": f"{fake_bin}:{os.environ['PATH']}",
+        "GUARD_TRACE": str(trace),
+        "GUARD_EXIT": str(guard_exit),
+        **(extra_env or {}),
+    }
+    return subprocess.run(
+        ["bash", "scripts/ci-local.sh"],
+        cwd=repo,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def test_ci_invokes_pre_merge_guard_exactly_once_in_git_checkout(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    fake_bin, trace = _ci_guard_fixture(repo, initialize_git=True)
+
+    proc = _run_ci_guard_fixture(repo, fake_bin, trace)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert trace.read_text(encoding="utf-8").splitlines() == ["guard-invoked"]
+    assert "SKIP pre-merge-guard" not in proc.stdout
+    assert "ci-local: ALL GREEN" in proc.stdout
+
+
+def test_ci_historyless_archive_skips_only_pre_merge_guard(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    fake_bin, trace = _ci_guard_fixture(repo)
+
+    proc = _run_ci_guard_fixture(repo, fake_bin, trace)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert not trace.exists()
+    assert proc.stdout.count(
+        "SKIP pre-merge-guard: Git work tree unavailable in clean archive"
+    ) == 1
+    assert "ci-local: ALL GREEN" in proc.stdout
+
+
+def test_ci_historyless_mode_ignores_unrelated_parent_git_repository(
+    tmp_path: Path,
+) -> None:
+    parent = tmp_path / "parent"
+    parent.mkdir()
+    _git(parent, "init", "-b", "main")
+    repo = parent / "archive"
+    fake_bin, trace = _ci_guard_fixture(repo)
+
+    proc = _run_ci_guard_fixture(repo, fake_bin, trace)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert not trace.exists()
+    assert proc.stdout.count(
+        "SKIP pre-merge-guard: Git work tree unavailable in clean archive"
+    ) == 1
+    assert "ci-local: ALL GREEN" in proc.stdout
+
+
+def test_ci_corrupt_root_git_metadata_fails_instead_of_skipping(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    fake_bin, trace = _ci_guard_fixture(repo)
+    (repo / ".git").write_text("gitdir: missing-git-directory\n", encoding="utf-8")
+
+    proc = _run_ci_guard_fixture(repo, fake_bin, trace)
+
+    assert proc.returncode != 0
+    assert not trace.exists()
+    assert "FAIL: Git metadata at repository root is unusable" in proc.stderr
+    assert "SKIP pre-merge-guard" not in proc.stdout
+    assert "ci-local: ALL GREEN" not in proc.stdout
+
+
+def test_ci_pre_merge_guard_failure_remains_blocking_with_git_metadata(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    fake_bin, trace = _ci_guard_fixture(repo, initialize_git=True)
+
+    proc = _run_ci_guard_fixture(repo, fake_bin, trace, guard_exit=17)
+
+    assert proc.returncode == 17
+    assert trace.read_text(encoding="utf-8").splitlines() == ["guard-invoked"]
+    assert "SKIP pre-merge-guard" not in proc.stdout
+    assert "ci-local: ALL GREEN" not in proc.stdout
+
+
+def test_ci_cannot_select_historyless_mode_with_environment_variable(
+    tmp_path: Path,
+) -> None:
+    repo = tmp_path / "repo"
+    fake_bin, trace = _ci_guard_fixture(repo, initialize_git=True)
+
+    proc = _run_ci_guard_fixture(
+        repo,
+        fake_bin,
+        trace,
+        extra_env={"USAAIO_SKIP_PRE_MERGE_GUARD": "1"},
+    )
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert trace.read_text(encoding="utf-8").splitlines() == ["guard-invoked"]
+    assert "SKIP pre-merge-guard" not in proc.stdout
 
 
 def _init_scope_repo(tmp_path: Path) -> Path:

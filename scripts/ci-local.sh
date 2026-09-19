@@ -133,7 +133,26 @@ for book in "${BOOK_IDS[@]}"; do
 done
 
 step "9/9 pre-merge guard"
-bash scripts/pre-merge-guard.sh
+git_metadata=$repo_root/.git
+if [[ -e $git_metadata || -L $git_metadata ]]; then
+  if ! git_work_tree=$(env -u GIT_DIR -u GIT_WORK_TREE \
+    git -C "$repo_root" rev-parse --show-toplevel 2>/dev/null); then
+    echo "FAIL: Git metadata at repository root is unusable" >&2
+    exit 1
+  fi
+  canonical_repo_root=$(cd "$repo_root" && pwd -P)
+  if ! canonical_git_work_tree=$(cd "$git_work_tree" 2>/dev/null && pwd -P); then
+    echo "FAIL: Git metadata at repository root is unusable" >&2
+    exit 1
+  fi
+  if [[ $canonical_git_work_tree != "$canonical_repo_root" ]]; then
+    echo "FAIL: Git metadata at repository root is unusable" >&2
+    exit 1
+  fi
+  bash scripts/pre-merge-guard.sh
+else
+  echo "SKIP pre-merge-guard: Git work tree unavailable in clean archive"
+fi
 
 echo
 echo "ci-local: ALL GREEN"

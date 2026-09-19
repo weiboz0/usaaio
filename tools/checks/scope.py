@@ -4,6 +4,7 @@ import datetime as dt
 import hashlib
 import json
 import math
+import os
 import re
 import subprocess
 import unicodedata
@@ -139,12 +140,45 @@ def _check_reconciliation(root: Path, errors: list[str]) -> None:
     if match is None:
         errors.append("Plan 014 reconciliation merged resolution must name its squash commit")
         return
-    proc = subprocess.run(
-        ["git", "merge-base", "--is-ancestor", match.group(1), "HEAD"],
-        cwd=root,
+    git_metadata = root / ".git"
+    if not git_metadata.exists() and not git_metadata.is_symlink():
+        return
+    git_env = os.environ.copy()
+    git_env.pop("GIT_DIR", None)
+    git_env.pop("GIT_WORK_TREE", None)
+    probe = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
         capture_output=True,
         text=True,
         check=False,
+        env=git_env,
+    )
+    if probe.returncode != 0:
+        errors.append("Plan 014 reconciliation Git metadata at repository root is unusable")
+        return
+    try:
+        work_tree = Path(probe.stdout.strip()).resolve(strict=True)
+        inspected_root = root.resolve(strict=True)
+    except (OSError, RuntimeError):
+        errors.append("Plan 014 reconciliation Git metadata at repository root is unusable")
+        return
+    if work_tree != inspected_root:
+        errors.append("Plan 014 reconciliation Git metadata at repository root is unusable")
+        return
+    proc = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(root),
+            "merge-base",
+            "--is-ancestor",
+            match.group(1),
+            "HEAD",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+        env=git_env,
     )
     if proc.returncode != 0:
         errors.append(
