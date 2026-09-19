@@ -1,0 +1,496 @@
+from __future__ import annotations
+
+import ast
+import importlib.util
+import re
+import shutil
+import textwrap
+from pathlib import Path
+
+import nbformat
+import pytest
+from nbclient import NotebookClient
+from nbclient.exceptions import CellExecutionError
+
+ROOT = Path(__file__).resolve().parents[1]
+REFERENCE = ROOT / "tests" / "fixtures" / "b2_021_reference.py"
+CI_LOCAL = ROOT / "scripts" / "ci-local.sh"
+UNIT = ROOT / "book2" / "units" / "B2-021-cross-modal-transformers-vision"
+
+TRAINING = {
+    "p17": ("vit", "TinyViTClassifier", "train_vit_classifier", 12, "mean_ce"),
+    "p18": ("detection", "TinyGridDetector", "train_grid_detector", 16, "loss"),
+    "p19": ("segmentation", "TinyUNetSegmenter", "train_unet_segmenter", 16, "mean_pixel_ce"),
+    "p20": ("graph", "GraphTokenClassifier", "train_graph_token_classifier", 12, "mean_ce"),
+}
+
+
+def _reference_module():
+    spec = importlib.util.spec_from_file_location("b2_021_reference", REFERENCE)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _working_notebook(tmp_path: Path, practice: str) -> Path:
+    working_unit = tmp_path / UNIT.name
+    shutil.copytree(UNIT, working_unit)
+    return working_unit / "practice" / f"{practice}_solution.ipynb"
+
+
+def _function_location(source: str, name: str) -> tuple[int, int, int]:
+    tree = ast.parse(source)
+    matches = [
+        node
+        for node in ast.walk(tree)
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == name
+    ]
+    assert len(matches) == 1, f"expected exactly one named function {name}, found {len(matches)}"
+    node = matches[0]
+    assert node.end_lineno is not None
+    return node.lineno - 1, node.end_lineno, node.col_offset
+
+
+def _named_function_source(notebook_path: Path, name: str) -> tuple[int, str]:
+    notebook = nbformat.read(notebook_path, as_version=4)
+    matches = []
+    for index, cell in enumerate(notebook.cells):
+        if cell.cell_type != "code":
+            continue
+        try:
+            start, end, column = _function_location(str(cell.source), name)
+        except AssertionError as exc:
+            if "found 0" not in str(exc):
+                raise
+            continue
+        lines = str(cell.source).splitlines()
+        matches.append((index, textwrap.dedent("\n".join(lines[start:end])), column))
+    assert len(matches) == 1, f"expected one {name} definition in {notebook_path.name}"
+    index, source, _ = matches[0]
+    return index, source
+
+
+def _replace_named_function(notebook_path: Path, name: str, replacement: str) -> None:
+    notebook = nbformat.read(notebook_path, as_version=4)
+    matches = []
+    for cell_index, cell in enumerate(notebook.cells):
+        if cell.cell_type != "code":
+            continue
+        try:
+            start, end, column = _function_location(str(cell.source), name)
+        except AssertionError as exc:
+            if "found 0" not in str(exc):
+                raise
+            continue
+        matches.append((cell_index, start, end, column))
+    assert len(matches) == 1, f"expected one substitution seam for {name}"
+    cell_index, start, end, column = matches[0]
+    cell = notebook.cells[cell_index]
+    lines = str(cell.source).splitlines()
+    indented = textwrap.indent(textwrap.dedent(replacement).strip(), " " * column)
+    lines[start:end] = indented.splitlines()
+    cell.source = "\n".join(lines)
+    nbformat.write(notebook, notebook_path)
+
+
+def _replace_fragment_in_function(notebook_path: Path, name: str, old: str, new: str) -> None:
+    _, source = _named_function_source(notebook_path, name)
+    assert source.count(old) == 1, f"expected one {old!r} in {name}"
+    _replace_named_function(notebook_path, name, source.replace(old, new))
+
+
+def _rename_definition(source: str, old: str, new: str) -> str:
+    renamed, count = re.subn(rf"(?m)^def {re.escape(old)}(?=\s*\()", f"def {new}", source, count=1)
+    assert count == 1
+    return renamed
+
+
+def _instrument_training_notebook(notebook_path: Path, practice: str) -> None:
+    task, _, train_name, updates, trace_key = TRAINING[practice]
+    _, validation_source = _named_function_source(notebook_path, "validate_actual")
+    validation_candidate = _rename_definition(
+        validation_source, "validate_actual", "_candidate_validate_actual"
+    )
+    validation_wrapper = f"""
+{validation_candidate}
+
+_reference_spec = importlib.util.spec_from_file_location(
+    "b2_021_integrity_reference_{practice}", Path({str(REFERENCE)!r})
+)
+_integrity_reference = importlib.util.module_from_spec(_reference_spec)
+sys.modules[_reference_spec.name] = _integrity_reference
+_reference_spec.loader.exec_module(_integrity_reference)
+_integrity_observer = _integrity_reference.IntegrityObserver({task!r})
+
+def validate_actual(features, targets):
+    _integrity_reference.pair_loss_rows({task!r}, features, targets)
+    return _candidate_validate_actual(features, targets)
+"""
+    _replace_named_function(notebook_path, "validate_actual", validation_wrapper)
+
+    _, loss_source = _named_function_source(notebook_path, "compute_loss")
+    loss_candidate = _rename_definition(loss_source, "compute_loss", "_candidate_compute_loss")
+    loss_wrapper = f"""
+{loss_candidate}
+
+def compute_loss(model, features, targets):
+    _integrity_observer.observe_loss(
+        features,
+        targets,
+        training=model.training,
+        grad_enabled=torch.is_grad_enabled(),
+    )
+    return _candidate_compute_loss(model, features, targets)
+"""
+    _replace_named_function(notebook_path, "compute_loss", loss_wrapper)
+
+    _, forward_source = _named_function_source(notebook_path, "forward")
+    forward_candidate = _rename_definition(forward_source, "forward", "_candidate_forward")
+    if practice == "p20":
+        forward_wrapper = f"""
+{forward_candidate}
+
+def forward(self, nodes, adjacency, return_aux=False):
+    _integrity_observer.observe_forward(
+        {{"node_features": nodes, "adjacency": adjacency}},
+        training=self.training,
+        grad_enabled=torch.is_grad_enabled(),
+    )
+    return self._candidate_forward(nodes, adjacency, return_aux=return_aux)
+"""
+    elif practice in ("p17", "p19"):
+        forward_wrapper = f"""
+{forward_candidate}
+
+def forward(self, images, return_aux=False):
+    _integrity_observer.observe_forward(
+        {{"image": images}},
+        training=self.training,
+        grad_enabled=torch.is_grad_enabled(),
+    )
+    return self._candidate_forward(images, return_aux=return_aux)
+"""
+    else:
+        forward_wrapper = f"""
+{forward_candidate}
+
+def forward(self, images):
+    _integrity_observer.observe_forward(
+        {{"image": images}},
+        training=self.training,
+        grad_enabled=torch.is_grad_enabled(),
+    )
+    return self._candidate_forward(images)
+"""
+    _replace_named_function(notebook_path, "forward", forward_wrapper)
+
+    _, train_source = _named_function_source(notebook_path, train_name)
+    candidate_name = f"_candidate_{train_name}"
+    train_candidate = _rename_definition(train_source, train_name, candidate_name)
+    if practice == "p18":
+        actual_trace = "tuple(tuple(round(float(row[key]), 8) for key in ('loss','bce_obj','ce_cls','smooth_l1_box')) for row in trace)"
+    else:
+        actual_trace = f"tuple(round(float(row[{trace_key!r}]), 8) for row in trace)"
+    train_wrapper = f"""
+{train_candidate}
+
+def {train_name}(model, batch, optimizer):
+    _original_step = optimizer.step
+    _step_order = []
+    def _counted_step(*args, **kwargs):
+        result = _original_step(*args, **kwargs)
+        _step_order.append(len(_step_order) + 1)
+        return result
+    optimizer.step = _counted_step
+    try:
+        trace = {candidate_name}(model, batch, optimizer)
+    finally:
+        optimizer.step = _original_step
+    assert tuple(_step_order) == tuple(range(1, {updates + 1}))
+    assert tuple(row["update"] for row in trace) == tuple(range(1, {updates + 1}))
+    _actual_trace = {actual_trace}
+    _expected_trace = _integrity_reference.EXPECTED_RESULTS[{practice!r}]["trace"]
+    assert len(_actual_trace) == len(_expected_trace)
+    if {practice!r} == "p18":
+        assert all(
+            all(abs(actual - expected) <= 1e-6 for actual, expected in zip(actual_row, expected_row))
+            for actual_row, expected_row in zip(_actual_trace, _expected_trace)
+        )
+    else:
+        assert all(abs(actual - expected) <= 1e-6 for actual, expected in zip(_actual_trace, _expected_trace))
+    return trace
+"""
+    _replace_named_function(notebook_path, train_name, train_wrapper)
+
+
+def _execute(notebook_path: Path) -> nbformat.NotebookNode:
+    notebook = nbformat.read(notebook_path, as_version=4)
+    client = NotebookClient(
+        notebook,
+        timeout=20,
+        kernel_name="python3",
+        resources={"metadata": {"path": str(notebook_path.parent)}},
+    )
+    client.execute()
+    return notebook
+
+
+def _assert_execution_fails(notebook_path: Path) -> None:
+    with pytest.raises(CellExecutionError):
+        _execute(notebook_path)
+
+
+def _mutate_no_update(notebook_path: Path, practice: str) -> None:
+    train_name = TRAINING[practice][2]
+    _replace_fragment_in_function(notebook_path, train_name, "optimizer.step()", "pass")
+
+
+def _overlap_builder(task: str) -> str:
+    return f"""
+def build_train_batch(ids):
+    train_features, train_targets = vision_fixture.build_task_batch({task!r}, TRAIN_IDS)
+    held_features, held_targets = vision_fixture.build_task_batch({task!r}, HELDOUT_IDS)
+    features = {{
+        name: np.concatenate((held_features[name], train_features[name][:2]), axis=0)
+        for name in train_features
+    }}
+    targets = {{
+        name: np.concatenate((held_targets[name], train_targets[name][:2]), axis=0)
+        for name in train_targets
+    }}
+    return _to_torch(features), _to_torch(targets)
+"""
+
+
+def _mutate_train_heldout_overlap(notebook_path: Path, practice: str) -> None:
+    _replace_named_function(
+        notebook_path, "build_train_batch", _overlap_builder(TRAINING[practice][0])
+    )
+
+
+def _mutate_declared_id_lie(notebook_path: Path, practice: str) -> None:
+    _mutate_train_heldout_overlap(notebook_path, practice)
+    _replace_named_function(
+        notebook_path,
+        "validate_actual",
+        """
+def validate_actual(features, targets):
+    return "train", TRAIN_IDS
+""",
+    )
+
+
+def _mutate_target_misalignment(notebook_path: Path, practice: str) -> None:
+    task = TRAINING[practice][0]
+    _replace_named_function(
+        notebook_path,
+        "build_train_batch",
+        f"""
+def build_train_batch(ids):
+    features, targets = vision_fixture.build_task_batch({task!r}, TRAIN_IDS)
+    targets = {{name: value[::-1].copy() for name, value in targets.items()}}
+    return _to_torch(features), _to_torch(targets)
+""",
+    )
+
+
+def _mutate_unknown_feature(notebook_path: Path, practice: str) -> None:
+    assert practice == "p17"
+    _replace_named_function(
+        notebook_path,
+        "build_train_batch",
+        """
+def build_train_batch(ids):
+    features, targets = vision_fixture.build_task_batch('vit', TRAIN_IDS)
+    features["image"][0,0,0,0] += np.float32(.123)
+    return _to_torch(features), _to_torch(targets)
+""",
+    )
+
+
+def _mutate_duplicate_feature(notebook_path: Path, practice: str) -> None:
+    assert practice == "p17"
+    _replace_named_function(
+        notebook_path,
+        "build_train_batch",
+        """
+def build_train_batch(ids):
+    features, targets = vision_fixture.build_task_batch('vit', TRAIN_IDS)
+    features["image"][1] = features["image"][0]
+    targets["label"][1] = targets["label"][0]
+    return _to_torch(features), _to_torch(targets)
+""",
+    )
+
+
+def test_ci_only_reference_reconstructs_fixed_seed_traces_without_final_tensors() -> None:
+    reference = _reference_module()
+    assert reference.reconstruct_reference_results() == reference.EXPECTED_RESULTS
+    assert reference.SEED == 20260901
+
+    def values(value):
+        if isinstance(value, dict):
+            for nested in value.values():
+                yield from values(nested)
+        elif isinstance(value, (tuple, list)):
+            for nested in value:
+                yield from values(nested)
+        else:
+            yield value
+
+    assert not any(isinstance(value, reference.torch.Tensor) for value in values(reference.EXPECTED_RESULTS))
+
+
+def test_ci_only_reference_has_no_book_learner_or_solution_imports() -> None:
+    source = REFERENCE.read_text(encoding="utf-8")
+    tree = ast.parse(source, filename=str(REFERENCE))
+    imported_roots = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            imported_roots.update(alias.name.split(".")[0] for alias in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            imported_roots.add(node.module.split(".")[0])
+    assert imported_roots <= {
+        "__future__",
+        "collections",
+        "hashlib",
+        "math",
+        "random",
+        "struct",
+        "types",
+        "typing",
+        "numpy",
+        "torch",
+    }
+    assert "importlib" not in imported_roots
+    assert "book1" not in source and "book2" not in source
+
+
+@pytest.mark.parametrize("practice", tuple(TRAINING))
+def test_untouched_training_answers_pass_independent_integrity_execution(
+    tmp_path: Path, practice: str
+) -> None:
+    notebook_path = _working_notebook(tmp_path, practice)
+    _instrument_training_notebook(notebook_path, practice)
+    _execute(notebook_path)
+
+
+@pytest.mark.parametrize("practice", tuple(TRAINING), ids=lambda value: f"{value}-no-update")
+def test_no_optimizer_update_mutant_fails(tmp_path: Path, practice: str) -> None:
+    notebook_path = _working_notebook(tmp_path, practice)
+    _mutate_no_update(notebook_path, practice)
+    _instrument_training_notebook(notebook_path, practice)
+    _assert_execution_fails(notebook_path)
+
+
+@pytest.mark.parametrize(
+    "practice", tuple(TRAINING), ids=lambda value: f"{value}-train-heldout-overlap"
+)
+def test_train_heldout_feature_overlap_mutant_fails(tmp_path: Path, practice: str) -> None:
+    notebook_path = _working_notebook(tmp_path, practice)
+    _mutate_train_heldout_overlap(notebook_path, practice)
+    _instrument_training_notebook(notebook_path, practice)
+    _assert_execution_fails(notebook_path)
+
+
+@pytest.mark.parametrize(
+    "practice", tuple(TRAINING), ids=lambda value: f"{value}-target-row-misalignment"
+)
+def test_target_row_substitution_or_misalignment_mutant_fails(
+    tmp_path: Path, practice: str
+) -> None:
+    notebook_path = _working_notebook(tmp_path, practice)
+    _mutate_target_misalignment(notebook_path, practice)
+    _instrument_training_notebook(notebook_path, practice)
+    _assert_execution_fails(notebook_path)
+
+
+@pytest.mark.parametrize("practice", tuple(TRAINING), ids=lambda value: f"{value}-declared-id-lie")
+def test_declared_train_ids_cannot_hide_heldout_features(tmp_path: Path, practice: str) -> None:
+    notebook_path = _working_notebook(tmp_path, practice)
+    _mutate_declared_id_lie(notebook_path, practice)
+    _instrument_training_notebook(notebook_path, practice)
+    _assert_execution_fails(notebook_path)
+
+
+@pytest.mark.parametrize(
+    ("mutation", "variant"),
+    (
+        pytest.param(_mutate_unknown_feature, "unknown", id="p17-unknown-feature"),
+        pytest.param(_mutate_duplicate_feature, "duplicate", id="p17-duplicate-row-in-batch"),
+    ),
+)
+def test_unknown_or_duplicate_feature_rows_fail(tmp_path: Path, mutation, variant: str) -> None:
+    notebook_path = _working_notebook(tmp_path, "p17")
+    mutation(notebook_path, "p17")
+    _instrument_training_notebook(notebook_path, "p17")
+    _assert_execution_fails(notebook_path)
+
+
+@pytest.mark.parametrize(
+    ("function_name", "old", "new"),
+    (
+        pytest.param(
+            "forward",
+            "torch.cat((decoder,skip),dim=1)",
+            "torch.cat((decoder,decoder),dim=1)",
+            id="p19-skip-concatenation-omitted",
+        ),
+        pytest.param(
+            "forward",
+            "logits=self.head(fused)",
+            "logits=F.avg_pool2d(self.head(fused),2)",
+            id="p19-wrong-segmentation-output-resolution",
+        ),
+    ),
+)
+def test_p19_skip_and_segmentation_output_mutants_fail(
+    tmp_path: Path, function_name: str, old: str, new: str
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p19")
+    _replace_fragment_in_function(notebook_path, function_name, old, new)
+    _instrument_training_notebook(notebook_path, "p19")
+    _assert_execution_fails(notebook_path)
+
+
+def test_p20_invalid_edge_aggregation_mutant_fails(tmp_path: Path) -> None:
+    notebook_path = _working_notebook(tmp_path, "p20")
+    _replace_fragment_in_function(
+        notebook_path,
+        "mean_neighbor_aggregate",
+        "torch.bmm(adjacency_float,nodes)/degree",
+        "torch.bmm(adjacency_float.transpose(1,2),nodes)/degree",
+    )
+    _instrument_training_notebook(notebook_path, "p20")
+    _assert_execution_fails(notebook_path)
+
+
+@pytest.mark.parametrize(
+    ("old", "new"),
+    (
+        pytest.param(
+            'heldout_optimizer = set(trace["optimizer_ids"]) & set(trace["heldout_ids"])',
+            "heldout_optimizer = set()",
+            id="p24-leakage-audit-disabled",
+        ),
+        pytest.param(
+            'trace.get("q_source") == expected["q_source"]',
+            'trace.get("q_source") == "graph_tokens"',
+            id="p24-cross-modal-q-source-reversed",
+        ),
+    ),
+)
+def test_p24_qkv_reversal_or_leakage_audit_mutant_fails(tmp_path: Path, old: str, new: str) -> None:
+    notebook_path = _working_notebook(tmp_path, "p24")
+    _replace_fragment_in_function(notebook_path, "audit_cross_modal_sources", old, new)
+    _assert_execution_fails(notebook_path)
+
+
+def test_untouched_p24_cross_modal_audit_passes(tmp_path: Path) -> None:
+    _execute(_working_notebook(tmp_path, "p24"))
+
+
+def test_book2_ci_runs_vision_transformer_integrity_suite() -> None:
+    source = CI_LOCAL.read_text(encoding="utf-8")
+    assert "uv run pytest -q tests/test_vision_transformer_checks.py" in source
