@@ -15,7 +15,12 @@ while (($#)); do
     *) echo "usage: scripts/ci-local.sh [--root REPO] [--registry-probe]" >&2; exit 2 ;;
   esac
 done
-cd "$repo_root"
+requested_repo_root=$repo_root
+if ! cd "$requested_repo_root"; then
+  echo "FAIL: repository root is unavailable: $requested_repo_root" >&2
+  exit 1
+fi
+repo_root=$(pwd -P)
 
 step() { echo; echo "=== $1 ==="; }
 if ! registry_records=$(PYTHONPATH="$script_repo_root${PYTHONPATH:+:$PYTHONPATH}" \

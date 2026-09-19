@@ -1742,6 +1742,8 @@ def _run_ci_guard_fixture(
     *,
     guard_exit: int = 0,
     extra_env: dict[str, str] | None = None,
+    args: tuple[str, ...] = (),
+    cwd: Path | None = None,
 ) -> subprocess.CompletedProcess[str]:
     env = {
         **os.environ,
@@ -1751,8 +1753,8 @@ def _run_ci_guard_fixture(
         **(extra_env or {}),
     }
     return subprocess.run(
-        ["bash", "scripts/ci-local.sh"],
-        cwd=repo,
+        ["bash", str(repo / "scripts" / "ci-local.sh"), *args],
+        cwd=cwd or repo,
         env=env,
         capture_output=True,
         text=True,
@@ -1765,6 +1767,24 @@ def test_ci_invokes_pre_merge_guard_exactly_once_in_git_checkout(tmp_path: Path)
     fake_bin, trace = _ci_guard_fixture(repo, initialize_git=True)
 
     proc = _run_ci_guard_fixture(repo, fake_bin, trace)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert trace.read_text(encoding="utf-8").splitlines() == ["guard-invoked"]
+    assert "SKIP pre-merge-guard" not in proc.stdout
+    assert "ci-local: ALL GREEN" in proc.stdout
+
+
+def test_ci_relative_root_still_invokes_guard_in_git_checkout(tmp_path: Path) -> None:
+    repo = tmp_path / "repo"
+    fake_bin, trace = _ci_guard_fixture(repo, initialize_git=True)
+
+    proc = _run_ci_guard_fixture(
+        repo,
+        fake_bin,
+        trace,
+        args=("--root", repo.name),
+        cwd=repo.parent,
+    )
 
     assert proc.returncode == 0, proc.stdout + proc.stderr
     assert trace.read_text(encoding="utf-8").splitlines() == ["guard-invoked"]
