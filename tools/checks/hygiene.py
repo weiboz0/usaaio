@@ -28,15 +28,6 @@ def _solution_notebooks(root: Path) -> list[Path]:
 
 
 def _has_executable_assert(notebook: nbformat.NotebookNode) -> bool:
-    def qualified_name(node: ast.AST) -> str | None:
-        parts: list[str] = []
-        while isinstance(node, ast.Attribute):
-            parts.append(node.attr)
-            node = node.value
-        if not isinstance(node, ast.Name):
-            return None
-        return ".".join([node.id, *reversed(parts)])
-
     for cell in notebook.get("cells", []):
         if cell.get("cell_type") != "code":
             continue
@@ -47,14 +38,7 @@ def _has_executable_assert(notebook: nbformat.NotebookNode) -> bool:
             tree = ast.parse(source)
         except SyntaxError:
             continue
-        if any(
-            isinstance(node, ast.Assert)
-            or (
-                isinstance(node, ast.Call)
-                and qualified_name(node.func) == "torch.testing.assert_close"
-            )
-            for node in ast.walk(tree)
-        ):
+        if any(isinstance(node, ast.Assert) for node in ast.walk(tree)):
             return True
     return False
 

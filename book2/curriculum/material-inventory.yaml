@@ -6730,7 +6730,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 9aa47c3d1206f316d9c36168c9298fa5049b7cdec398bf3999189d5e625dde1c
+  semantic_sha256: 872bd63388f1f78510cf51fb51d944c3cad752f045d73df5dabfab32f6b439e2
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p16_solution.ipynb :: Solution to p16 :: cell 1'
     heading_path:
@@ -6757,6 +6757,7 @@ notebooks:
   api_tokens:
   - A.sum
   - Ap.sum
+  - torch.allclose
   - torch.diag
   - torch.linalg.solve
   - torch.tensor
