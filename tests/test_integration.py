@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import functools
 import hashlib
 import json
 import os
@@ -10,6 +9,7 @@ import subprocess
 import sys
 import tomllib
 from collections import Counter
+from collections.abc import Callable
 from pathlib import Path
 
 import pytest
@@ -27,6 +27,15 @@ from tools.model import load_syllabus, load_unit_manifests
 ROOT = Path(__file__).resolve().parents[1]
 BOOK1_ROOT = ROOT / "book1"
 BOOK2_ROOT = ROOT / "book2"
+
+PLAN019_PRE_CUTOVER_COMMIT = "4cc38946548f618ac131d246bfd4191d20e4e7d8"
+PLAN019_POST_CUTOVER_COMMIT = "ab795cdfb1ea6efcebce351ef7968f36435bffec"
+PLAN022_SOURCE_COMMIT = "d653fcbf1fdcd46fd759bf2a03506d5368c17926"
+PLAN022_CHANGED_BOOK1_NOTEBOOKS = (
+    "units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb",
+    "units/C12-classical-models/practice/p20.ipynb",
+    "units/C12-classical-models/practice/p20_solution.ipynb",
+)
 
 NEW_CONCEPT_CLUSTERS = {
     "seaborn-programming": "python-scientific",
@@ -738,49 +747,52 @@ def test_plan019_phase1_exact_live_corpus_counts_and_double_length_roster():
     )
 
 
-@functools.cache
-def _plan019_pinned_commit_available() -> bool:
+def _plan019_commit_available(root: Path, commit: str) -> bool:
     return subprocess.run(
-        ["git", "cat-file", "-e", "4cc3894^{commit}"],
-        cwd=ROOT,
+        ["git", "cat-file", "-e", f"{commit}^{{commit}}"],
+        cwd=root,
         capture_output=True,
         check=False,
     ).returncode == 0
 
 
-def _plan019_pinned_paths() -> tuple[list[str], dict[str, set[int]]]:
-    if _plan019_pinned_commit_available():
-        tracked = subprocess.run(
-            [
-                "git",
-                "ls-tree",
-                "-r",
-                "--name-only",
-                "4cc3894",
-                "--",
-                "units",
-                "mocktests",
-            ],
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        candidates = tracked.stdout.splitlines()
-    else:
-        candidates = sorted(
-            path.relative_to(BOOK1_ROOT).as_posix()
-            for tree in (BOOK1_ROOT / "units", BOOK1_ROOT / "mocktests")
-            for path in tree.rglob("*")
-            if path.is_file()
-        )
-    paths = [
+def _plan019_read_blob(root: Path, commit: str, path: str) -> bytes | None:
+    proc = subprocess.run(
+        ["git", "show", f"{commit}:{path}"],
+        cwd=root,
+        capture_output=True,
+        check=False,
+    )
+    return proc.stdout if proc.returncode == 0 else None
+
+
+def _plan019_pre_cutover_paths(root: Path) -> list[str]:
+    tracked = subprocess.run(
+        [
+            "git",
+            "ls-tree",
+            "-r",
+            "--name-only",
+            PLAN019_PRE_CUTOVER_COMMIT,
+            "--",
+            "units",
+            "mocktests",
+        ],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return [
         path
-        for path in candidates
+        for path in tracked.stdout.splitlines()
         if path.endswith((".ipynb", "manifest.yaml"))
     ]
+
+
+def _plan019_inventory(root: Path) -> tuple[dict[str, object], dict[str, set[int]]]:
     inventory = yaml.safe_load(
-        (ROOT / "tests/fixtures/plan019-path-inventory.yaml").read_text(encoding="utf-8")
+        (root / "tests/fixtures/plan019-path-inventory.yaml").read_text(encoding="utf-8")
     )
     changed_cells = {
         row["path"]: set(row["cells"])
@@ -788,19 +800,34 @@ def _plan019_pinned_paths() -> tuple[list[str], dict[str, set[int]]]:
     }
     for row in inventory["special_notebook_consumers"]:
         changed_cells.setdefault(row["path"], set()).update(row["cells"])
-    return paths, changed_cells
+    return inventory, changed_cells
 
 
-def _plan019_pinned_blob(path: str) -> bytes | None:
-    if not _plan019_pinned_commit_available():
-        return None
-    proc = subprocess.run(
-        ["git", "show", f"4cc3894:{path}"],
-        cwd=ROOT,
-        capture_output=True,
-        check=False,
-    )
-    return proc.stdout if proc.returncode == 0 else None
+def _plan019_assert_live_migration_cells(
+    root: Path,
+    inventory: dict[str, object],
+    changed_cells: dict[str, set[int]],
+) -> None:
+    discovery_rows = inventory["notebook_pyproject_discovery"]
+    special_rows = inventory["special_notebook_consumers"]
+    assert isinstance(discovery_rows, list)
+    assert isinstance(special_rows, list)
+    assert len(discovery_rows) == 64
+    assert len(special_rows) == 3
+    assert len(changed_cells) == 67
+
+    for path, indices in changed_cells.items():
+        destination = root / "book1" / path
+        assert destination.is_file(), path
+        notebook = json.loads(destination.read_bytes())
+        for index in indices:
+            assert index < len(notebook["cells"]), (path, index)
+            source = "".join(notebook["cells"][index]["source"])
+            assert "USAAIO_BOOK_ROOT" in source or "book_root" in source.lower(), (
+                path,
+                index,
+            )
+            assert "pyproject.toml" not in source, (path, index)
 
 
 def _plan019_digest(value: object) -> str:
@@ -813,8 +840,178 @@ def _plan019_digest(value: object) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def test_plan019_task3_every_book1_manifest_and_notebook_matches_pinned_cutover() -> None:
-    paths, changed_cells = _plan019_pinned_paths()
+def _plan019_clone_with_plan022_notebooks(source: Path, destination: Path) -> Path:
+    subprocess.run(
+        ["git", "clone", "--no-local", "--quiet", str(source), str(destination)],
+        check=True,
+    )
+    for relative_path in PLAN022_CHANGED_BOOK1_NOTEBOOKS:
+        blob = subprocess.run(
+            [
+                "git",
+                "show",
+                f"{PLAN022_SOURCE_COMMIT}:book1/{relative_path}",
+            ],
+            cwd=source,
+            capture_output=True,
+            check=True,
+        ).stdout
+        (destination / "book1" / relative_path).write_bytes(blob)
+    return destination
+
+
+def _plan019_historyless_fixture(source: Path, destination: Path) -> Path:
+    fixture_path = Path("tests/fixtures/plan019-path-inventory.yaml")
+    (destination / fixture_path).parent.mkdir(parents=True)
+    shutil.copy2(source / fixture_path, destination / fixture_path)
+    _, changed_cells = _plan019_inventory(destination)
+    for relative_path in changed_cells:
+        target = destination / "book1" / relative_path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source / "book1" / relative_path, target)
+    decoy = destination / "book1/units/not-in-plan019/manifest.yaml"
+    decoy.parent.mkdir(parents=True)
+    decoy.write_text("not: [a, valid, manifest\n", encoding="utf-8")
+    return destination
+
+
+def test_plan019_cutover_ignores_exact_plan022_three_blob_worktree_change(
+    tmp_path: Path,
+) -> None:
+    required_commits = (
+        PLAN019_PRE_CUTOVER_COMMIT,
+        PLAN019_POST_CUTOVER_COMMIT,
+        PLAN022_SOURCE_COMMIT,
+    )
+    missing_commits = [
+        commit for commit in required_commits if not _plan019_commit_available(ROOT, commit)
+    ]
+    if missing_commits:
+        pytest.skip(
+            "exact Plan 022 blob witness requires repository history: "
+            + ",".join(missing_commits)
+        )
+
+    fixture_root = _plan019_clone_with_plan022_notebooks(ROOT, tmp_path / "repository")
+    assert all(
+        subprocess.run(
+            ["git", "cat-file", "-e", f"{commit}^{{commit}}"],
+            cwd=fixture_root,
+            check=False,
+        ).returncode
+        == 0
+        for commit in (PLAN019_PRE_CUTOVER_COMMIT, PLAN019_POST_CUTOVER_COMMIT)
+    )
+    for relative_path in PLAN022_CHANGED_BOOK1_NOTEBOOKS:
+        plan022_blob = _plan019_read_blob(
+            fixture_root,
+            PLAN022_SOURCE_COMMIT,
+            f"book1/{relative_path}",
+        )
+        post_cutover_blob = _plan019_read_blob(
+            fixture_root,
+            PLAN019_POST_CUTOVER_COMMIT,
+            f"book1/{relative_path}",
+        )
+        assert plan022_blob is not None, relative_path
+        assert post_cutover_blob is not None, relative_path
+        assert (fixture_root / "book1" / relative_path).read_bytes() == plan022_blob
+        assert plan022_blob != post_cutover_blob, relative_path
+
+    _assert_plan019_cutover(fixture_root)
+
+
+@pytest.mark.parametrize(
+    "missing_commit",
+    [PLAN019_PRE_CUTOVER_COMMIT, PLAN019_POST_CUTOVER_COMMIT],
+    ids=["pre-cutover-missing", "post-cutover-missing"],
+)
+def test_plan019_historyless_mode_checks_only_inventory_destinations(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+    monkeypatch: pytest.MonkeyPatch,
+    missing_commit: str,
+) -> None:
+    fixture_root = _plan019_historyless_fixture(ROOT, tmp_path / "archive")
+
+    def commit_available(_root: Path, commit: str) -> bool:
+        return commit != missing_commit
+
+    def forbidden_blob_read(_root: Path, _commit: str, _path: str) -> bytes | None:
+        pytest.fail("historyless mode must not read historical blobs")
+
+    def forbidden_digest(_value: object) -> str:
+        pytest.fail("historyless mode must not derive historical digests from live files")
+
+    monkeypatch.setattr(sys.modules[__name__], "_plan019_digest", forbidden_digest)
+    _assert_plan019_cutover(
+        fixture_root,
+        commit_available=commit_available,
+        blob_reader=forbidden_blob_read,
+    )
+
+    assert capsys.readouterr().out.strip() == (
+        "PLAN019_CUTOVER_MODE=historyless "
+        f"reason=missing-commit:{missing_commit} structural-destinations=67"
+    )
+
+
+@pytest.mark.parametrize("mutation", ["delete-destination", "corrupt-marker"])
+def test_plan019_historyless_mode_rejects_live_inventory_mutations(
+    tmp_path: Path,
+    mutation: str,
+) -> None:
+    fixture_root = _plan019_historyless_fixture(ROOT, tmp_path / "archive")
+    _, changed_cells = _plan019_inventory(fixture_root)
+    first_path, indices = next(iter(changed_cells.items()))
+    destination = fixture_root / "book1" / first_path
+    if mutation == "delete-destination":
+        destination.unlink()
+    else:
+        notebook = json.loads(destination.read_bytes())
+        first_index = min(indices)
+        notebook["cells"][first_index]["source"] = [
+            "from pathlib import Path\n",
+            "repo_root = Path.cwd()\n",
+        ]
+        destination.write_text(json.dumps(notebook), encoding="utf-8")
+
+    with pytest.raises(AssertionError):
+        _assert_plan019_cutover(
+            fixture_root,
+            commit_available=lambda _root, commit: (
+                commit != PLAN019_PRE_CUTOVER_COMMIT
+            ),
+            blob_reader=lambda _root, _commit, _path: pytest.fail(
+                "historyless mode must not read historical blobs"
+            ),
+        )
+
+
+def _assert_plan019_cutover(
+    root: Path,
+    *,
+    commit_available: Callable[[Path, str], bool] = _plan019_commit_available,
+    blob_reader: Callable[[Path, str, str], bytes | None] = _plan019_read_blob,
+) -> None:
+    inventory, changed_cells = _plan019_inventory(root)
+    _plan019_assert_live_migration_cells(root, inventory, changed_cells)
+
+    missing_commits = [
+        commit
+        for commit in (PLAN019_PRE_CUTOVER_COMMIT, PLAN019_POST_CUTOVER_COMMIT)
+        if not commit_available(root, commit)
+    ]
+    if missing_commits:
+        label = "missing-commit" if len(missing_commits) == 1 else "missing-commits"
+        print(
+            "PLAN019_CUTOVER_MODE=historyless "
+            f"reason={label}:{','.join(missing_commits)} structural-destinations=67"
+        )
+        return
+
+    print("PLAN019_CUTOVER_MODE=history-present historical-proof=pre-to-post")
+    paths = _plan019_pre_cutover_paths(root)
     notebooks = [path for path in paths if path.endswith(".ipynb")]
     manifests = [path for path in paths if path.endswith("manifest.yaml")]
 
@@ -824,29 +1021,36 @@ def test_plan019_task3_every_book1_manifest_and_notebook_matches_pinned_cutover(
     assert _plan019_digest(paths) == (
         "76c9236aa561f1bb9c45cd88f3562047fa8e2a5aaec4f18010e43ed81a34e2ec"
     )
-    assert len({row["path"] for row in yaml.safe_load(
-        (ROOT / "tests/fixtures/plan019-path-inventory.yaml").read_text(encoding="utf-8")
-    )["notebook_pyproject_discovery"]}) == 64
 
     manifest_records: list[list[str]] = []
     unchanged_records: list[list[str]] = []
     changed_structures: list[list[object]] = []
     changed_sources: list[list[object]] = []
     for path in manifests:
-        current_bytes = (BOOK1_ROOT / path).read_bytes()
-        manifest_records.append([path, hashlib.sha256(current_bytes).hexdigest()])
-        pinned_bytes = _plan019_pinned_blob(path)
-        if pinned_bytes is not None:
-            assert current_bytes == pinned_bytes, path
+        before_bytes = blob_reader(root, PLAN019_PRE_CUTOVER_COMMIT, path)
+        after_bytes = blob_reader(
+            root,
+            PLAN019_POST_CUTOVER_COMMIT,
+            f"book1/{path}",
+        )
+        assert before_bytes is not None, path
+        assert after_bytes is not None, path
+        manifest_records.append([path, hashlib.sha256(after_bytes).hexdigest()])
+        assert after_bytes == before_bytes, path
 
     observed_changed: set[str] = set()
     for path in notebooks:
-        before_bytes = _plan019_pinned_blob(path)
-        after_bytes = (BOOK1_ROOT / path).read_bytes()
+        before_bytes = blob_reader(root, PLAN019_PRE_CUTOVER_COMMIT, path)
+        after_bytes = blob_reader(
+            root,
+            PLAN019_POST_CUTOVER_COMMIT,
+            f"book1/{path}",
+        )
+        assert before_bytes is not None, path
+        assert after_bytes is not None, path
         if path not in changed_cells:
             unchanged_records.append([path, hashlib.sha256(after_bytes).hexdigest()])
-            if before_bytes is not None:
-                assert after_bytes == before_bytes, path
+            assert after_bytes == before_bytes, path
             continue
 
         observed_changed.add(path)
@@ -862,12 +1066,6 @@ def test_plan019_task3_every_book1_manifest_and_notebook_matches_pinned_cutover(
             else:
                 structure["cells"].append(cell)
         changed_structures.append([path, structure])
-        if before_bytes is None:
-            for index in changed_cells[path]:
-                new_source = "".join(after["cells"][index]["source"])
-                assert "USAAIO_BOOK_ROOT" in new_source or "book_root" in new_source.lower()
-                assert "pyproject.toml" not in new_source
-            continue
 
         before = json.loads(before_bytes)
         expected_cells = changed_cells[path]
@@ -911,6 +1109,10 @@ def test_plan019_task3_every_book1_manifest_and_notebook_matches_pinned_cutover(
     )
 
 
+def test_plan019_task3_every_book1_manifest_and_notebook_matches_pinned_cutover() -> None:
+    _assert_plan019_cutover(ROOT)
+
+
 def test_plan019_task3_book1_pdf_sources_match_the_pinned_r1_set() -> None:
     proc = subprocess.run(
         ["bash", "scripts/build-pdf.sh", "--book", "book1", "--list-inputs"],
@@ -923,7 +1125,7 @@ def test_plan019_task3_book1_pdf_sources_match_the_pinned_r1_set() -> None:
     current = tuple(
         path.removeprefix("book1/") for path in proc.stdout.splitlines() if path.strip()
     )
-    if _plan019_pinned_commit_available():
+    if _plan019_commit_available(ROOT, PLAN019_PRE_CUTOVER_COMMIT):
         pinned = tuple(
             path
             for path in subprocess.run(
@@ -932,7 +1134,7 @@ def test_plan019_task3_book1_pdf_sources_match_the_pinned_r1_set() -> None:
                     "ls-tree",
                     "-r",
                     "--name-only",
-                    "4cc3894",
+                    PLAN019_PRE_CUTOVER_COMMIT,
                     "--",
                     "mocktests/r1-001",
                 ],
