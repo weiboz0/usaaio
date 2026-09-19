@@ -56,7 +56,7 @@ The accepted design is `docs/designs/022-c12-p20-kmeans-tie-erratum.md`.
 ## Task 1 — Lock the regression contract
 
 - [ ] Add statement-contract assertions requiring the exact p20 formula `eligible(i) iff abs(inertia[i] - minimum) <= 1e-10 + 1e-8 * abs(minimum)` and the phrase “numerically smallest seed”; do not accept the pre-repair grader-note tolerance and generic “smaller seed” wording as sufficient. Also require Session 6 to teach that numerical-objective near-ties use the declared tolerance before the deterministic secondary key.
-- [ ] Require `p20_solution.ipynb` to place shared `ATOL = 1e-10`, `RTOL = 1e-8`, and the private selector `_lowest_seed_near_minimum(seeds, inertias, *, atol, rtol)` in a dedicated code cell with no live audit invocation. The selector returns the selected row index, and its body must use the supplied keyword parameters as `np.isclose(..., atol=atol, rtol=rtol)`.
+- [ ] Require `p20_solution.ipynb` to place `import numpy as np`, the notebook's only definitions of shared `ATOL = 1e-10` and `RTOL = 1e-8`, and the private selector `_lowest_seed_near_minimum(seeds, inertias, *, atol, rtol)` in a dedicated standalone-executable code cell with no live audit invocation. The selector returns the selected row index, and its body must use the supplied keyword parameters as `np.isclose(..., atol=atol, rtol=rtol)`.
 - [ ] Pin the exact production dataflow inside `kmeans_stability_audit`: `best_index = _lowest_seed_near_minimum(seeds, inertias, atol=ATOL, rtol=RTOL)` followed by `best_seed = int(seeds[best_index])`; reject an ignored/decoy helper call, hard-coded index, or second selection path. The ordinary solution regression must execute the actual notebook through the existing `_execute_solution` mechanism.
 - [ ] Locate and execute the selector's dedicated production code cell in an isolated test namespace; apply mutant source transforms only to an in-memory copy of that cell, then judge every mutant solely against these deterministic fixture expectations—not against a live K-means run or its thread-sensitive answer check:
 
@@ -71,7 +71,7 @@ outside_boundary = np.array([1000.0 + 2e-5, 1000.0, 2000.0], dtype=np.float64)
 permuted_near_tie = np.array([1.0, 1.0 + 5e-11, 2.0], dtype=np.float64)
 ```
 
-- [ ] With `ascending_seeds`, require seeds `20260804`, `20260804`, `20260804`, `20260804`, and `20260805` for the first five inertia fixtures respectively; with `permuted_seeds` and `permuted_near_tie`, require `20260804`.
+- [ ] With `ascending_seeds`, require returned indices `0, 0, 0, 0, 1` and mapped seeds `20260804`, `20260804`, `20260804`, `20260804`, `20260805` for the first five inertia fixtures respectively; with `permuted_seeds` and `permuted_near_tie`, require returned index `1` and mapped seed `20260804`.
 - [ ] Prove the fixture contract kills raw `argmin`, exact-equality filtering, `rtol=0`, `atol=0`, strict-`<` boundary eligibility, over-broad/all-candidate eligibility, first-eligible selection, and largest-eligible-seed selection deterministically.
 - [ ] Preserve Plan 018's exact five registered classical mutation tests; p20 is a focused regression, not a sixth registered mutation.
 - [ ] Commit the failing regression contract separately or retain exact RED command/output in the post-execution report.
@@ -126,7 +126,7 @@ PATH=/home/chris/.local/bin:$PATH uv run pytest -q \
 
 ## Task 4 — Report and ship
 
-- [ ] Before implementation, record both plan-review rounds and the passing four-way gate in this section; append all four content-review verdicts after implementation.
+- [ ] Before implementation, record all plan-review rounds and the passing four-way gate in this section; append all four content-review verdicts after implementation.
 - [ ] Complete the post-execution report with RED/GREEN evidence, the thread-matrix fresh-kernel results, p21/p30 immunity, the pre-existing TODO ledger gap for shipped Plan 020/in-flight Plan 021, full-CI results, provenance, and exact changed paths.
 - [ ] Add Plan 022's shipped erratum status to `TODO.md` without changing other deferred work.
 - [ ] After content-review resolutions, the post-execution report, generated inventory, and `TODO.md` are final, commit them and run `scripts/ci-local.sh` again on the clean branch tip; this is the authoritative final CI for shipping.
@@ -181,7 +181,15 @@ It also prevents a pre-repair statement-contract false green and makes fresh-ker
 
 ### Round 4 — exact dataflow confirmation
 
-Pending a fresh mandatory four-way gate on the exact revised commit.
+Exact commit `0574806` reached consensus on 2026-09-19:
+
+- `[claude-self]` **APPROVE** — exact selector dataflow, RED literals, verification, and lifecycle ordering verified.
+- `[codex]` **APPROVE WITH NITS** — confirmed the Round-3 blocker is closed and requested only the stale “both rounds” wording fix.
+- `[fable]` **APPROVE WITH NITS** — independently executed the full fixture/mutant matrix and requested a standalone NumPy namespace plus explicit index assertions.
+- `[glm]` **APPROVE WITH NITS** — independently reproduced thread-dependent winners and requested a standalone selector import and single shared tolerance definitions.
+
+All nits are resolved in this review-record update without changing scope or architecture.
+The four-way plan gate is passed and implementation is authorized.
 
 ## Content Review
 
