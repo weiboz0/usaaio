@@ -319,22 +319,73 @@ class IntegrityObserver:
             "ids": ids,
             "training": training,
             "grad_enabled": grad_enabled,
+            "phase": "computing",
             "forwards": [],
             "primitives": [],
+            "primitive_results": [],
             "expected_primitives": expected_primitives,
         }
         self._loss_functions = dict(loss_functions)
 
     def abort_loss(self) -> None:
+        if self._active_loss is not None:
+            hook_handle = self._active_loss.get("hook_handle")
+            if hook_handle is not None:
+                hook_handle.remove()
         self._active_loss = None
         self._loss_functions = {}
 
-    def finish_loss(self) -> None:
+    @staticmethod
+    def _forward_tensors(output: object) -> tuple[torch.Tensor, ...]:
+        if isinstance(output, torch.Tensor):
+            return (output,)
+        if isinstance(output, (tuple, list)):
+            return tuple(value for value in output if isinstance(value, torch.Tensor))
+        raise AssertionError("authenticated model forward did not return tensors")
+
+    @staticmethod
+    def _assert_gradients_equal(
+        actual: tuple[torch.Tensor | None, ...],
+        expected: tuple[torch.Tensor | None, ...],
+        label: str,
+    ) -> None:
+        if len(actual) != len(expected):
+            raise AssertionError(f"{label} gradient count mismatch")
+        for index, (actual_gradient, expected_gradient) in enumerate(
+            zip(actual, expected, strict=True)
+        ):
+            if actual_gradient is None or expected_gradient is None:
+                if actual_gradient is not expected_gradient:
+                    raise AssertionError(f"{label} gradient {index} reachability mismatch")
+                continue
+            if (
+                actual_gradient.shape != expected_gradient.shape
+                or actual_gradient.dtype != expected_gradient.dtype
+                or actual_gradient.device != expected_gradient.device
+                or not torch.allclose(
+                    actual_gradient,
+                    expected_gradient,
+                    rtol=1e-6,
+                    atol=1e-7,
+                )
+            ):
+                raise AssertionError(f"{label} gradient {index} mismatch")
+
+    def _expected_composed_loss(self, active: Mapping[str, object]) -> torch.Tensor:
+        results = active["primitive_results"]
+        if self.task == "detection":
+            bce, cross_entropy, smooth_l1 = results
+            return bce + cross_entropy + 2 * smooth_l1
+        return results[0]
+
+    def finish_loss(self, result: torch.Tensor, model: nn.Module) -> None:
         active = self._require_active_loss()
         forwards = active["forwards"]
         primitives = tuple(active["primitives"])
         expected = active["expected_primitives"]
         try:
+            if active["phase"] != "computing":
+                raise AssertionError("compute_loss transaction phase mismatch")
             if len(forwards) != 1:
                 raise AssertionError(
                     f"compute_loss must consume exactly one model forward, observed {len(forwards)}"
@@ -343,8 +394,110 @@ class IntegrityObserver:
                 raise AssertionError(
                     f"loss primitive sequence mismatch: expected {expected}, observed {primitives}"
                 )
-        finally:
+            if len(active["primitive_results"]) != len(expected):
+                raise AssertionError("loss primitive result count mismatch")
+            if not isinstance(result, torch.Tensor) or result.shape != ():
+                raise AssertionError("compute_loss must return one scalar tensor")
+            expected_loss = self._expected_composed_loss(active)
+            if not torch.equal(result.detach(), expected_loss.detach()):
+                raise AssertionError("compute_loss scalar does not match authenticated primitives")
+            if not active["grad_enabled"]:
+                self.abort_loss()
+                return
+            if not result.requires_grad or not expected_loss.requires_grad:
+                raise AssertionError("compute_loss result detached from authenticated primitives")
+            forward_tensors = tuple(
+                tensor for tensor in self._forward_tensors(forwards[0]) if tensor.requires_grad
+            )
+            parameters = tuple(parameter for parameter in model.parameters() if parameter.requires_grad)
+            actual_forward_gradients = torch.autograd.grad(
+                result,
+                forward_tensors,
+                retain_graph=True,
+                allow_unused=True,
+            )
+            expected_forward_gradients = torch.autograd.grad(
+                expected_loss,
+                forward_tensors,
+                retain_graph=True,
+                allow_unused=True,
+            )
+            self._assert_gradients_equal(
+                actual_forward_gradients,
+                expected_forward_gradients,
+                "returned-loss forward",
+            )
+            actual_parameter_gradients = torch.autograd.grad(
+                result,
+                parameters,
+                retain_graph=True,
+                allow_unused=True,
+            )
+            expected_parameter_gradients = torch.autograd.grad(
+                expected_loss,
+                parameters,
+                retain_graph=True,
+                allow_unused=True,
+            )
+            self._assert_gradients_equal(
+                actual_parameter_gradients,
+                expected_parameter_gradients,
+                "returned-loss parameter",
+            )
+            if not active["training"]:
+                self.abort_loss()
+                return
+            active["parameters"] = parameters
+            active["expected_parameter_gradients"] = tuple(
+                None if gradient is None else gradient.detach().clone()
+                for gradient in expected_parameter_gradients
+            )
+            active["backward_count"] = 0
+            active["backward_root_valid"] = True
+            active["phase"] = "awaiting-backward-step"
+
+            def _observe_backward(gradient: torch.Tensor) -> torch.Tensor:
+                if self._active_loss is not active:
+                    raise AssertionError("stale authenticated loss used for backward")
+                active["backward_count"] += 1
+                root = torch.ones_like(gradient)
+                if gradient.shape != () or not torch.equal(gradient, root):
+                    active["backward_root_valid"] = False
+                return gradient
+
+            active["hook_handle"] = result.register_hook(_observe_backward)
+        except BaseException:
             self.abort_loss()
+            raise
+
+    def observe_step(self, model: nn.Module) -> None:
+        active = self._require_active_loss()
+        try:
+            if active["phase"] != "awaiting-backward-step":
+                raise AssertionError("optimizer step occurred before authenticated loss completion")
+            if active["backward_count"] != 1 or not active["backward_root_valid"]:
+                raise AssertionError(
+                    "authenticated returned loss must be the scalar backward root exactly once"
+                )
+            parameters = active["parameters"]
+            model_parameters = tuple(
+                parameter for parameter in model.parameters() if parameter.requires_grad
+            )
+            if len(parameters) != len(model_parameters) or any(
+                expected is not actual
+                for expected, actual in zip(parameters, model_parameters, strict=True)
+            ):
+                raise AssertionError("optimizer model parameters changed during loss transaction")
+            actual_gradients = tuple(parameter.grad for parameter in parameters)
+            self._assert_gradients_equal(
+                actual_gradients,
+                active["expected_parameter_gradients"],
+                "optimizer parameter",
+            )
+        except BaseException:
+            self.abort_loss()
+            raise
+        self.abort_loss()
 
     def _require_active_loss(self) -> dict[str, object]:
         if self._active_loss is None:
@@ -366,12 +519,18 @@ class IntegrityObserver:
         if not grad_enabled and role != "heldout":
             raise ValueError("training feature reached held-out evaluation")
         self.forward_calls.append((role, ids))
-        if self._active_loss is not None:
-            active = self._active_loss
+        active = self._active_loss
+        if training and grad_enabled and active is None:
+            raise AssertionError("grad-enabled training forward occurred outside compute_loss")
+        if active is not None:
+            if active["phase"] != "computing":
+                raise AssertionError("extra forward occurred outside active compute_loss body")
             if ids != active["ids"] or role != active["role"]:
                 raise ValueError("forward feature IDs do not match the active loss")
             if training != active["training"] or grad_enabled != active["grad_enabled"]:
                 raise ValueError("forward mode does not match the active loss")
+            if active["forwards"]:
+                raise AssertionError("compute_loss performed more than one model forward")
             active["forwards"].append(output)
         return ids
 
@@ -520,9 +679,11 @@ class IntegrityObserver:
             require_identity=require_identity,
         )
         self._assert_target(target, expected_target, "cross-entropy target")
-        return self._loss_functions["cross_entropy"](
+        result = self._loss_functions["cross_entropy"](
             input_value, target, *args, **kwargs
         )
+        active["primitive_results"].append(result)
+        return result
 
     def binary_cross_entropy_with_logits(
         self,
@@ -546,9 +707,11 @@ class IntegrityObserver:
             require_identity=True,
         )
         self._assert_target(target, expected_target, "binary-cross-entropy target")
-        return self._loss_functions["binary_cross_entropy_with_logits"](
+        result = self._loss_functions["binary_cross_entropy_with_logits"](
             input_value, target, *args, **kwargs
         )
+        active["primitive_results"].append(result)
+        return result
 
     def smooth_l1_loss(
         self,
@@ -575,9 +738,11 @@ class IntegrityObserver:
             require_identity=False,
         )
         self._assert_target(target, expected_target, "smooth-L1 target")
-        return self._loss_functions["smooth_l1_loss"](
+        result = self._loss_functions["smooth_l1_loss"](
             input_value, target, *args, **kwargs
         )
+        active["primitive_results"].append(result)
+        return result
 
 
 def _seed() -> None:

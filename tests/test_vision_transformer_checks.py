@@ -162,7 +162,7 @@ def compute_loss(model, features, targets):
         F.cross_entropy = _original_cross_entropy
         F.binary_cross_entropy_with_logits = _original_binary_cross_entropy_with_logits
         F.smooth_l1_loss = _original_smooth_l1_loss
-    _integrity_observer.finish_loss()
+    _integrity_observer.finish_loss(result, model)
     return result
 """
     _replace_named_function(notebook_path, "compute_loss", loss_wrapper)
@@ -227,6 +227,7 @@ def {train_name}(model, batch, optimizer):
     _original_step = optimizer.step
     _step_order = []
     def _counted_step(*args, **kwargs):
+        _integrity_observer.observe_step(model)
         result = _original_step(*args, **kwargs)
         _step_order.append(len(_step_order) + 1)
         return result
@@ -235,6 +236,7 @@ def {train_name}(model, batch, optimizer):
         trace = {candidate_name}(model, batch, optimizer)
     finally:
         optimizer.step = _original_step
+        _integrity_observer.abort_loss()
     assert tuple(_step_order) == tuple(range(1, {updates + 1}))
     assert tuple(row["update"] for row in trace) == tuple(range(1, {updates + 1}))
     _actual_trace = {actual_trace}
@@ -446,6 +448,66 @@ def compute_loss(model, features, targets):
     )
 
 
+def _mutate_final_update_manual_wrong_gradient(notebook_path: Path) -> None:
+    _replace_named_function(
+        notebook_path,
+        "compute_loss",
+        """
+def compute_loss(model, features, targets):
+    validate_actual(features, targets)
+    logits = model(features["image"])
+    good = F.cross_entropy(logits, targets["label"], reduction="mean")
+    if model.training:
+        compute_loss.training_calls = getattr(compute_loss, "training_calls", 0) + 1
+        if compute_loss.training_calls == 12:
+            wrong = -F.log_softmax(logits,1).gather(1,targets["label"].roll(2)[:,None]).mean()
+            return good.detach() + wrong - wrong.detach()
+    return good
+""",
+    )
+
+
+def _mutate_train_ignores_authenticated_loss(notebook_path: Path) -> None:
+    _replace_named_function(
+        notebook_path,
+        "train_vit_classifier",
+        """
+def train_vit_classifier(model, batch, optimizer):
+    features, targets = batch
+    role, ids = validate_actual(features, targets)
+    if role != "train" or ids != TRAIN_IDS:
+        raise ValueError("optimizer batches must contain only the immutable train split")
+    trace = []
+    model.train()
+    for update in range(1,13):
+        optimizer.zero_grad(set_to_none=True)
+        loss = compute_loss(model, features, targets)
+        if update == 12:
+            logits = model(features["image"])
+            wrong = -F.log_softmax(logits,1).gather(1,targets["label"].roll(2)[:,None]).mean()
+            wrong.backward()
+        else:
+            loss.backward()
+        optimizer.step()
+        trace.append({"update":update, "mean_ce":float(loss.detach())})
+    return tuple(trace)
+""",
+    )
+
+
+def _mutate_final_parameter_gradients(notebook_path: Path) -> None:
+    _replace_fragment_in_function(
+        notebook_path,
+        "train_vit_classifier",
+        "loss.backward()",
+        """loss.backward()
+        if update == 12:
+            for parameter in model.parameters():
+                if parameter.grad is not None:
+                    parameter.grad.neg_()""",
+    )
+
+
 def test_ci_only_reference_reconstructs_fixed_seed_traces_without_final_tensors() -> None:
     reference = _reference_module()
     assert reference.reconstruct_reference_results() == reference.EXPECTED_RESULTS
@@ -543,6 +605,33 @@ def test_p17_final_update_rejects_value_preserving_wrong_target_gradient(
 ) -> None:
     notebook_path = _working_notebook(tmp_path, "p17")
     _mutate_final_update_wrong_gradient(notebook_path)
+    _instrument_training_notebook(notebook_path, "p17")
+    _assert_execution_fails(notebook_path)
+
+
+def test_p17_returned_loss_rejects_manual_value_preserving_wrong_gradient(
+    tmp_path: Path,
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p17")
+    _mutate_final_update_manual_wrong_gradient(notebook_path)
+    _instrument_training_notebook(notebook_path, "p17")
+    _assert_execution_fails(notebook_path)
+
+
+def test_p17_optimizer_rejects_ignoring_authenticated_loss_for_extra_forward(
+    tmp_path: Path,
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p17")
+    _mutate_train_ignores_authenticated_loss(notebook_path)
+    _instrument_training_notebook(notebook_path, "p17")
+    _assert_execution_fails(notebook_path)
+
+
+def test_p17_optimizer_rejects_direct_parameter_gradient_substitution(
+    tmp_path: Path,
+) -> None:
+    notebook_path = _working_notebook(tmp_path, "p17")
+    _mutate_final_parameter_gradients(notebook_path)
     _instrument_training_notebook(notebook_path, "p17")
     _assert_execution_fails(notebook_path)
 
