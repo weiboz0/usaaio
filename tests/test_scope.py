@@ -1512,6 +1512,9 @@ def test_plan014_merged_reconciliation_accepts_unavailable_git_history(
     report = check_scope(tmp_path)
 
     assert report.ok, report.errors
+    assert report.warnings == [
+        "Plan 014 reconciliation squash ancestry unverified: Git work tree unavailable"
+    ]
 
 
 def test_plan014_reconciliation_ignores_unrelated_parent_git_repository(
@@ -1588,6 +1591,10 @@ def test_plan014_reconciliation_scrubs_repository_environment(
         "GIT_OBJECT_DIRECTORY": "/nonexistent/poisoned-objects",
         "GIT_COMMON_DIR": "/nonexistent/poisoned-common-dir",
         "GIT_ALTERNATE_OBJECT_DIRECTORIES": "/nonexistent/poisoned-alternates",
+        "GIT_CONFIG_COUNT": "1",
+        "GIT_CONFIG_KEY_0": "core.worktree",
+        "GIT_CONFIG_VALUE_0": "/nonexistent/poisoned-config-work-tree",
+        "GIT_CEILING_DIRECTORIES": str(tmp_path.parent),
     }
     for name, value in poisoned.items():
         monkeypatch.setenv(name, value)
@@ -1609,6 +1616,21 @@ def test_plan014_missing_git_binary_reports_unusable_metadata(
     monkeypatch.setenv("PATH", "")
 
     _assert_error(check_scope(tmp_path), "Git metadata at repository root is unusable")
+
+
+def test_plan014_unknown_commit_reports_incomplete_history(tmp_path: Path) -> None:
+    _base_contract(tmp_path)
+    _initialize_scope_git_repository(tmp_path)
+    reconciliation = tmp_path / "docs" / "audits" / "015-plan014-reconciliation.md"
+    reconciliation.write_text(
+        "Plan 014 is **merged**.\n"
+        "Its squash commit is `deadbeefdeadbeefdeadbeefdeadbeefdeadbeef`.\n"
+    )
+
+    report = check_scope(tmp_path)
+
+    _assert_error(report, "Git history is unavailable or incomplete")
+    assert all("is not an ancestor" not in error for error in report.errors)
 
 
 def test_renderer_owns_both_documents_and_keeps_assessments_separate(tmp_path: Path) -> None:

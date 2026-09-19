@@ -140,15 +140,10 @@ done
 step "9/9 pre-merge guard"
 git_metadata=$repo_root/.git
 if [[ -e $git_metadata || -L $git_metadata ]]; then
-  git_clean_env=(
-    env
-    -u GIT_DIR
-    -u GIT_WORK_TREE
-    -u GIT_INDEX_FILE
-    -u GIT_OBJECT_DIRECTORY
-    -u GIT_COMMON_DIR
-    -u GIT_ALTERNATE_OBJECT_DIRECTORIES
-  )
+  git_clean_env=(env)
+  while IFS= read -r variable; do
+    [[ $variable == GIT_* ]] && git_clean_env+=(-u "$variable")
+  done < <(compgen -e)
   if ! git_work_tree=$("${git_clean_env[@]}" \
     git -C "$repo_root" rev-parse --show-toplevel 2>/dev/null); then
     echo "FAIL: Git metadata at repository root is unusable" >&2

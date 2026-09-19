@@ -101,7 +101,9 @@ def _cycle_nodes(graph: dict[str, list[str]]) -> set[str]:
     return cycles
 
 
-def _check_reconciliation(root: Path, errors: list[str]) -> None:
+def _check_reconciliation(
+    root: Path, errors: list[str], warnings: list[str]
+) -> None:
     path = root / "docs" / "audits" / "015-plan014-reconciliation.md"
     if not path.is_file():
         errors.append(f"Plan 014 reconciliation is missing: {path.relative_to(root)}")
@@ -142,17 +144,14 @@ def _check_reconciliation(root: Path, errors: list[str]) -> None:
         return
     git_metadata = root / ".git"
     if not git_metadata.exists() and not git_metadata.is_symlink():
+        warnings.append(
+            "Plan 014 reconciliation squash ancestry unverified: "
+            "Git work tree unavailable"
+        )
         return
-    git_env = os.environ.copy()
-    for variable in (
-        "GIT_DIR",
-        "GIT_WORK_TREE",
-        "GIT_INDEX_FILE",
-        "GIT_OBJECT_DIRECTORY",
-        "GIT_COMMON_DIR",
-        "GIT_ALTERNATE_OBJECT_DIRECTORIES",
-    ):
-        git_env.pop(variable, None)
+    git_env = {
+        name: value for name, value in os.environ.items() if not name.startswith("GIT_")
+    }
     try:
         probe = subprocess.run(
             ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
@@ -199,9 +198,15 @@ def _check_reconciliation(root: Path, errors: list[str]) -> None:
             f"Plan 014 reconciliation Git metadata at repository root is unusable: {exc}"
         )
         return
-    if proc.returncode != 0:
+    if proc.returncode == 1:
         errors.append(
             f"Plan 014 reconciliation squash commit {match.group(1)} is not an ancestor of HEAD"
+        )
+    elif proc.returncode != 0:
+        detail = proc.stderr.strip() or f"git exited {proc.returncode}"
+        errors.append(
+            "Plan 014 reconciliation Git history is unavailable or incomplete: "
+            f"{detail}"
         )
 
 
@@ -1345,5 +1350,7 @@ def check_scope(root: str | Path) -> Report:
         catalog=catalog,
         book=book,
     )
-    _check_reconciliation(catalog.repo_root if catalog is not None else root, errors)
+    _check_reconciliation(
+        catalog.repo_root if catalog is not None else root, errors, warnings
+    )
     return Report(name="scope-check", ok=not errors, errors=errors, warnings=warnings)

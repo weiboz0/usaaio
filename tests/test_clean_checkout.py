@@ -1407,6 +1407,8 @@ def test_book_local_generated_paths_are_ignored_without_ignoring_sources(
         "git",
         f"--git-dir={git_dir}",
         f"--work-tree={ROOT}",
+        "-c",
+        f"core.excludesFile={os.devnull}",
         "check-ignore",
         "--no-index",
         "--quiet",
@@ -1720,13 +1722,10 @@ def _ci_guard_fixture(repo: Path, *, initialize_git: bool = False) -> tuple[Path
     guard = repo / "scripts" / "pre-merge-guard.sh"
     guard.write_text(
         "#!/usr/bin/env bash\n"
-        "for variable in GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_OBJECT_DIRECTORY "
-        "GIT_COMMON_DIR GIT_ALTERNATE_OBJECT_DIRECTORIES; do\n"
-        "  if [[ -v $variable ]]; then\n"
-        "    printf 'poisoned-%s\\n' \"$variable\" >> \"$GUARD_TRACE\"\n"
-        "    exit 91\n"
-        "  fi\n"
-        "done\n"
+        "if compgen -e | grep -q '^GIT_'; then\n"
+        "  printf 'poisoned-git-environment\\n' >> \"$GUARD_TRACE\"\n"
+        "  exit 91\n"
+        "fi\n"
         "printf 'guard-invoked\\n' >> \"$GUARD_TRACE\"\n"
         "exit \"${GUARD_EXIT:-0}\"\n",
         encoding="utf-8",
@@ -1904,6 +1903,10 @@ def test_ci_scrubs_repository_environment_before_probe_and_guard(
             "GIT_OBJECT_DIRECTORY": "/nonexistent/poisoned-objects",
             "GIT_COMMON_DIR": "/nonexistent/poisoned-common-dir",
             "GIT_ALTERNATE_OBJECT_DIRECTORIES": "/nonexistent/poisoned-alternates",
+            "GIT_CONFIG_COUNT": "1",
+            "GIT_CONFIG_KEY_0": "core.worktree",
+            "GIT_CONFIG_VALUE_0": "/nonexistent/poisoned-config-work-tree",
+            "GIT_CEILING_DIRECTORIES": str(repo.parent),
         },
     )
 
