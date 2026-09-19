@@ -877,6 +877,20 @@ def _plan019_historyless_fixture(source: Path, destination: Path) -> Path:
 def test_plan019_cutover_ignores_exact_plan022_three_blob_worktree_change(
     tmp_path: Path,
 ) -> None:
+    required_commits = (
+        PLAN019_PRE_CUTOVER_COMMIT,
+        PLAN019_POST_CUTOVER_COMMIT,
+        PLAN022_SOURCE_COMMIT,
+    )
+    missing_commits = [
+        commit for commit in required_commits if not _plan019_commit_available(ROOT, commit)
+    ]
+    if missing_commits:
+        pytest.skip(
+            "exact Plan 022 blob witness requires repository history: "
+            + ",".join(missing_commits)
+        )
+
     fixture_root = _plan019_clone_with_plan022_notebooks(ROOT, tmp_path / "repository")
     assert all(
         subprocess.run(
