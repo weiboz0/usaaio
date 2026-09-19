@@ -9,8 +9,8 @@ Repair C12 practice p20 so numerically equivalent K-means inertias select one de
 ## Architecture
 
 The student-facing contract and Session 6 will define one shared near-tie relation using `atol=1e-10` and `rtol=1e-8`.
-The solution will filter all inertias equivalent to the minimum under that relation, then select the eligible row with the smallest seed.
-An independent synthetic regression—not a live K-means run—will discriminate this rule from raw `argmin`, exact-equality filtering, and largest-seed tie-breaking.
+The solution will expose one private selector owned and called by `kmeans_stability_audit`; it will filter all inertias equivalent to the minimum under that relation, then select the eligible row with the smallest seed.
+Synthetic regressions will execute that solution-owned selector—not a test-local reimplementation or a live K-means run—and discriminate the full rule from raw `argmin`, exact-equality filtering, absolute-tolerance-only filtering, over-broad eligibility, and largest-seed tie-breaking.
 
 ## Tech stack
 
@@ -55,22 +55,26 @@ The accepted design is `docs/designs/022-c12-p20-kmeans-tie-erratum.md`.
 
 ## Task 1 — Lock the regression contract
 
-- [ ] Add a statement-contract assertion requiring p20 to state both `atol=1e-10, rtol=1e-8` eligibility and lowest-seed selection.
-- [ ] Add an independent helper/test in `tests/test_c12_solution_regressions.py` using:
+- [ ] Add statement-contract assertions requiring p20 to state both `atol=1e-10, rtol=1e-8` eligibility and lowest-seed selection, and requiring Session 6 to teach that numerical-objective near-ties use the declared tolerance before the deterministic secondary key.
+- [ ] Require `p20_solution.ipynb` to define a private selector such as `_lowest_seed_near_minimum(seeds, inertias, *, atol, rtol)` and require `kmeans_stability_audit` to call it; execute the selector from the actual solution notebook through the existing `_execute_solution` mechanism.
+- [ ] Exercise the solution-owned selector with all three deterministic fixtures:
 
 ```python
 seeds = np.array([20260804, 20260805, 20260806], dtype=np.int64)
-inertias = np.array([1.0 + 5e-11, 1.0, 2.0], dtype=np.float64)
+near_one = np.array([1.0 + 5e-11, 1.0, 2.0], dtype=np.float64)
+relative_required = np.array([1000.0 + 5e-6, 1000.0, 2000.0], dtype=np.float64)
+outside_boundary = np.array([1000.0 + 2e-5, 1000.0, 2000.0], dtype=np.float64)
 ```
 
-- [ ] Prove RED against the shipped implementation: raw `np.argmin` selects `20260805`, while the required result is `20260804`.
-- [ ] Add named mutants for exact-equality filtering and largest-eligible-seed selection; both must fail the regression.
+- [ ] Require seeds `20260804`, `20260804`, and `20260805` respectively: the first kills raw `np.argmin` and exact equality; the second requires the relative term rather than `rtol=0`; the third rejects an over-broad eligibility rule.
+- [ ] Mutate the actual copied notebook source and execute it to prove that raw `argmin`, exact-equality filtering, `rtol=0`, over-broad/all-candidate eligibility, and largest-eligible-seed selection each fail deterministically.
 - [ ] Preserve Plan 018's exact five registered classical mutation tests; p20 is a focused regression, not a sixth registered mutation.
 - [ ] Commit the failing regression contract separately or retain exact RED command/output in the post-execution report.
 
 ## Task 2 — Teach and implement the deterministic tie policy
 
-- [ ] In Session 6, teach that numerically equivalent objectives must be compared using a declared tolerance before a deterministic secondary key is applied.
+- [ ] In Session 6, teach that numerically equivalent objectives must be compared using a declared tolerance before a deterministic secondary key is applied; present this as the numerical-objective refinement of the existing exact-tie rules.
+- [ ] Place the teaching in a new late subsection without inserting cells before or renaming/reordering the three coverage-map-pinned anchors under headings 2, 5, and 6; keep their `cell_ordinal` values unchanged so no coverage-map or roadmap edit is needed.
 - [ ] In p20, replace “exact inertia tie” with this precise rule:
 
 ```text
@@ -79,7 +83,7 @@ eligible(i) iff abs(inertia[i] - minimum) <= 1e-10 + 1e-8 * abs(minimum)
 
 Then choose the eligible candidate with the numerically smallest seed.
 
-- [ ] In the solution, implement the equivalent NumPy policy:
+- [ ] In the solution-owned private selector called by `kmeans_stability_audit`, implement the equivalent NumPy policy:
 
 ```python
 minimum = float(np.min(inertias))
@@ -90,8 +94,8 @@ best_index = int(candidates[np.argmin(seeds[candidates])])
 ```
 
 - [ ] Update the answer check to require `best_index == 0` and `best_seed == 20260804` while retaining every existing shape, dtype, inertia, agreement, dictionary-key, and interpretation assertion.
-- [ ] Add `ERRATA.md` recording the former raw-`argmin` behavior, the numerical cause, the corrected rule, the corrected expected seed, and the affected statement/solution/lesson.
-- [ ] Regenerate `book1/curriculum/material-inventory.yaml`; do not hand-edit generated hashes.
+- [ ] Add `ERRATA.md` recording the former raw-`argmin` behavior (including that bitwise ties at lower thread counts selected first seed `20260804` and still failed the old `20260805` assertion), the numerical cause, the corrected rule, the corrected expected seed, the affected statement/solution/lesson, and that sibling p30 was audited and is immune because it selects deterministic hand-computed NumPy WCSS.
+- [ ] Regenerate `book1/curriculum/material-inventory.yaml` with `PATH=/home/chris/.local/bin:$PATH uv run python -m tools.audit_curriculum --root book1`; do not hand-edit generated hashes.
 - [ ] Commit the content repair.
 
 ## Task 3 — Verification phase
@@ -105,7 +109,7 @@ PATH=/home/chris/.local/bin:$PATH uv run pytest -q \
 ```
 
 - [ ] Execute Session 6 and p20 solution from the Book 1 root without `--inplace`, and verify their source SHA-256 hashes remain unchanged.
-- [ ] Execute p20 solution in at least five fresh Jupyter kernels; all runs must select the same contract and pass.
+- [ ] Execute p20 solution in fresh Jupyter kernels spanning `OMP_NUM_THREADS=1,2,4,8` (at least eight executions total, with repeated 4- and 8-thread runs); all runs must select the same contract and pass.
 - [ ] Run Book 1 hygiene, tolerance, integration, material-inventory freshness, and `git diff --check`.
 - [ ] Run the mandatory `scripts/ci-local.sh` from a clean worktree.
 - [ ] Run the four-way content-review gate on the exact verified head, blind-solving p20 from the statement before reading the solution.
@@ -113,9 +117,10 @@ PATH=/home/chris/.local/bin:$PATH uv run pytest -q \
 
 ## Task 4 — Report and ship
 
-- [ ] Append all four plan-review verdicts and all four content-review verdicts to this plan.
-- [ ] Complete the post-execution report with RED/GREEN evidence, five-kernel results, full-CI result, provenance, and exact changed paths.
+- [ ] Before implementation, record both plan-review rounds and the passing four-way gate in this section; append all four content-review verdicts after implementation.
+- [ ] Complete the post-execution report with RED/GREEN evidence, the thread-matrix fresh-kernel results, p30 immunity, full-CI results, provenance, and exact changed paths.
 - [ ] Add Plan 022's shipped erratum status to `TODO.md` without changing other deferred work.
+- [ ] After content-review resolutions, the post-execution report, generated inventory, and `TODO.md` are final, commit them and run `scripts/ci-local.sh` again on the clean branch tip; this is the authoritative final CI for shipping.
 - [ ] Push the branch and open a PR using the configured SSH origin and `GH_TOKEN=$(cat .gh-token)`.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH bash scripts/pre-merge-guard.sh --pr`.
 - [ ] Squash-merge only after the guard and required PR checks pass; verify local `main` equals `origin/main`.
@@ -131,7 +136,19 @@ PATH=/home/chris/.local/bin:$PATH uv run pytest -q \
 
 ## Plan Review
 
-Pending the mandatory four-way gate.
+### Round 1 — exact commit `845590a` (2026-09-19)
+
+- `[claude-self]` **REJECT** — the synthetic witness was not bound to the actual notebook implementation, did not require the relative-tolerance term, and the ship sequence omitted final clean-tip CI after report/TODO/review edits.
+- `[codex]` **REJECT** — confirmed those three blockers with live evidence: raw `argmin` could false-green on the fixed dataset; the `5e-11` fixture was satisfied by absolute tolerance alone; and workflow-required final CI was ordered too early.
+- `[fable]` **APPROVE WITH NITS** — independently confirmed the diagnosis and core policy; requested a relative-term-sensitive fixture and documentation that sibling p30 is immune.
+- `[glm]` **APPROVE WITH NITS** — independently reproduced thread-dependent winners and raised the implementation-binding issue, Session 6 contract/anchor preservation, thread-matrix verification, roster recording, and fuller erratum history.
+
+Round 1 did not reach consensus and therefore did not authorize implementation.
+This revision closes every blocking or substantive finding by binding tests to a solution-owned selector, adding relative-required and outside-boundary fixtures, pinning Session 6 teaching, preserving coverage-map anchors, testing the OpenMP failure axis, naming the inventory generator, recording p30's immunity in the report, and adding final clean-tip CI.
+
+### Round 2 — revised plan
+
+Pending a fresh mandatory four-way gate on the exact revised commit.
 
 ## Content Review
 
