@@ -15,7 +15,12 @@ while (($#)); do
     *) echo "usage: scripts/ci-local.sh [--root REPO] [--registry-probe]" >&2; exit 2 ;;
   esac
 done
-cd "$repo_root"
+requested_repo_root=$repo_root
+if ! cd "$requested_repo_root"; then
+  echo "FAIL: repository root is unavailable: $requested_repo_root" >&2
+  exit 1
+fi
+repo_root=$(pwd -P)
 
 step() { echo; echo "=== $1 ==="; }
 if ! registry_records=$(PYTHONPATH="$script_repo_root${PYTHONPATH:+:$PYTHONPATH}" \
@@ -133,7 +138,30 @@ for book in "${BOOK_IDS[@]}"; do
 done
 
 step "9/9 pre-merge guard"
-bash scripts/pre-merge-guard.sh
+git_metadata=$repo_root/.git
+if [[ -e $git_metadata || -L $git_metadata ]]; then
+  git_clean_env=(env)
+  while IFS= read -r variable; do
+    [[ $variable == GIT_* ]] && git_clean_env+=(-u "$variable")
+  done < <(compgen -e)
+  if ! git_work_tree=$("${git_clean_env[@]}" \
+    git -C "$repo_root" rev-parse --show-toplevel 2>/dev/null); then
+    echo "FAIL: Git metadata at repository root is unusable" >&2
+    exit 1
+  fi
+  canonical_repo_root=$(cd "$repo_root" && pwd -P)
+  if ! canonical_git_work_tree=$(cd "$git_work_tree" 2>/dev/null && pwd -P); then
+    echo "FAIL: Git metadata at repository root is unusable" >&2
+    exit 1
+  fi
+  if [[ $canonical_git_work_tree != "$canonical_repo_root" ]]; then
+    echo "FAIL: Git metadata at repository root is unusable" >&2
+    exit 1
+  fi
+  "${git_clean_env[@]}" bash scripts/pre-merge-guard.sh
+else
+  echo "SKIP pre-merge-guard: Git work tree unavailable in clean archive"
+fi
 
 echo
 echo "ci-local: ALL GREEN"

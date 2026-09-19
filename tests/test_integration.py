@@ -19,6 +19,7 @@ from tools.checks.blueprint import check_blueprint
 from tools.checks.coverage import check_coverage
 from tools.checks.hygiene import check_hygiene
 from tools.checks.new_mocktest import scaffold_mocktest
+from tools.checks.overlap import REMEDY as OVERLAP_CORPUS_REMEDY
 from tools.checks.overlap import check_overlap
 from tools.checks.prereq import check_prereq
 from tools.model import load_syllabus, load_unit_manifests
@@ -1688,17 +1689,23 @@ def test_plan016_practice_coverage_is_green():
 
 
 def test_ci_checks_other_than_plan016_pending_coverage_are_green():
+    overlap = check_overlap(BOOK1_ROOT)
     reports = [
         check_prereq(BOOK1_ROOT),
         check_hygiene(BOOK1_ROOT),
         check_blueprint(BOOK1_ROOT),
-        check_overlap(BOOK1_ROOT),
+        overlap,
     ]
     for report in reports:
         assert not report.errors
         assert report.ok
-        if report.name == "overlap-scan":
-            assert report.skipped is None
+    corpus_present = any((BOOK1_ROOT / "reference").glob("*/index.yaml")) or any(
+        (BOOK1_ROOT / "reference").glob("*/*.pdf")
+    )
+    if corpus_present:
+        assert overlap.skipped is None
+    else:
+        assert overlap.skipped == OVERLAP_CORPUS_REMEDY
 
 
 def test_cli_exit_codes(tmp_path):
