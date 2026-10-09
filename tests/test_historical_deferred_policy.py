@@ -19,6 +19,8 @@ def test_explicit_historical_entry_point_accepts_only_an_iso_date(tmp_path: Path
 
 
 def test_historical_script_uses_current_verifier_for_pre_verifier_archive() -> None:
+    if not os.path.lexists(ROOT / ".git"):
+        pytest.skip("Git history unavailable in clean archive")
     env = os.environ | {"PATH": f"/home/chris/.local/bin:{os.environ['PATH']}"}
     result = subprocess.run(
         [

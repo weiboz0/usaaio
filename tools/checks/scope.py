@@ -4,6 +4,7 @@ import datetime as dt
 import hashlib
 import json
 import math
+import os
 import re
 import subprocess
 import unicodedata
@@ -100,7 +101,9 @@ def _cycle_nodes(graph: dict[str, list[str]]) -> set[str]:
     return cycles
 
 
-def _check_reconciliation(root: Path, errors: list[str]) -> None:
+def _check_reconciliation(
+    root: Path, errors: list[str], warnings: list[str]
+) -> None:
     path = root / "docs" / "audits" / "015-plan014-reconciliation.md"
     if not path.is_file():
         errors.append(f"Plan 014 reconciliation is missing: {path.relative_to(root)}")
@@ -139,16 +142,71 @@ def _check_reconciliation(root: Path, errors: list[str]) -> None:
     if match is None:
         errors.append("Plan 014 reconciliation merged resolution must name its squash commit")
         return
-    proc = subprocess.run(
-        ["git", "merge-base", "--is-ancestor", match.group(1), "HEAD"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if proc.returncode != 0:
+    git_metadata = root / ".git"
+    if not git_metadata.exists() and not git_metadata.is_symlink():
+        warnings.append(
+            "Plan 014 reconciliation squash ancestry unverified: "
+            "Git work tree unavailable"
+        )
+        return
+    git_env = {
+        name: value for name, value in os.environ.items() if not name.startswith("GIT_")
+    }
+    try:
+        probe = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
+            capture_output=True,
+            text=True,
+            check=False,
+            env=git_env,
+        )
+    except OSError as exc:
+        errors.append(
+            f"Plan 014 reconciliation Git metadata at repository root is unusable: {exc}"
+        )
+        return
+    if probe.returncode != 0:
+        errors.append("Plan 014 reconciliation Git metadata at repository root is unusable")
+        return
+    try:
+        work_tree = Path(probe.stdout.strip()).resolve(strict=True)
+        inspected_root = root.resolve(strict=True)
+    except (OSError, RuntimeError):
+        errors.append("Plan 014 reconciliation Git metadata at repository root is unusable")
+        return
+    if work_tree != inspected_root:
+        errors.append("Plan 014 reconciliation Git metadata at repository root is unusable")
+        return
+    try:
+        proc = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(root),
+                "merge-base",
+                "--is-ancestor",
+                match.group(1),
+                "HEAD",
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+            env=git_env,
+        )
+    except OSError as exc:
+        errors.append(
+            f"Plan 014 reconciliation Git metadata at repository root is unusable: {exc}"
+        )
+        return
+    if proc.returncode == 1:
         errors.append(
             f"Plan 014 reconciliation squash commit {match.group(1)} is not an ancestor of HEAD"
+        )
+    elif proc.returncode != 0:
+        detail = proc.stderr.strip() or f"git exited {proc.returncode}"
+        errors.append(
+            "Plan 014 reconciliation Git history is unavailable or incomplete: "
+            f"{detail}"
         )
 
 
@@ -1292,5 +1350,7 @@ def check_scope(root: str | Path) -> Report:
         catalog=catalog,
         book=book,
     )
-    _check_reconciliation(catalog.repo_root if catalog is not None else root, errors)
+    _check_reconciliation(
+        catalog.repo_root if catalog is not None else root, errors, warnings
+    )
     return Report(name="scope-check", ok=not errors, errors=errors, warnings=warnings)

@@ -11675,7 +11675,7 @@ notebooks:
   - rng.integers
 - path: units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb
   kind: notebook
-  semantic_sha256: 9b70e6cc5adecbb7f056880e076f8541eb31cc9e3ac404d99df8870fb7379fb2
+  semantic_sha256: 6d5e84c2ef2ccfe987d53b67a3eb0cac4dc081b4d0b2fb118388d25a22fd0bf0
   anchors:
   - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
       Lloyd''s k-means and Classical-Model Comparison :: cell 1'
@@ -11753,6 +11753,14 @@ notebooks:
     - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
     - 7. Full classical-model comparison matrix
     cell_ordinal: 2
+  - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
+      Lloyd''s k-means and Classical-Model Comparison > 7. Full classical-model comparison matrix > 7.1 Near-tied numerical
+      objectives :: cell 1'
+    heading_path:
+    - 'C12-classical-models — Session 6: Lloyd''s k-means and Classical-Model Comparison'
+    - 7. Full classical-model comparison matrix
+    - 7.1 Near-tied numerical objectives
+    cell_ordinal: 1
   - anchor: 'units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6:
       Lloyd''s k-means and Classical-Model Comparison > 8. Pitfalls, exam connections, and closing synthesis :: cell 1'
     heading_path:
@@ -13118,7 +13126,7 @@ notebooks:
   - tree_variance.mean
 - path: units/C12-classical-models/practice/p20.ipynb
   kind: notebook
-  semantic_sha256: 8176e36ba565f9f34e3fe4d0d50ef4e8ff2ac776317ab29cd3b8a5c28fa9c2d7
+  semantic_sha256: 0eb14b49e924ae96f952789baf7ebf1b85d9cd80ccac1b7b6ec6131c48842c6b
   anchors:
   - anchor: 'units/C12-classical-models/practice/p20.ipynb :: C12-classical-models — Practice p20 :: cell 1'
     heading_path:
@@ -13141,7 +13149,7 @@ notebooks:
   - rng_p20.normal
 - path: units/C12-classical-models/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 7b777d20ea666e75083f3cc822b42447628fef45024c055658afc5f401888510
+  semantic_sha256: 65a6b9d52a22f19ed38c68f8d4985862cf8b18a645bc6333c26418fabccabb2b
   anchors:
   - anchor: 'units/C12-classical-models/practice/p20_solution.ipynb :: C12-classical-models — Practice p20 — Solution :: cell
       1'
@@ -13158,6 +13166,11 @@ notebooks:
     heading_path:
     - C12-classical-models — Practice p20 — Solution
     cell_ordinal: 3
+  - anchor: 'units/C12-classical-models/practice/p20_solution.ipynb :: C12-classical-models — Practice p20 — Solution :: cell
+      4'
+    heading_path:
+    - C12-classical-models — Practice p20 — Solution
+    cell_ordinal: 4
   - anchor: 'units/C12-classical-models/practice/p20_solution.ipynb :: C12-classical-models — Practice p20 — Solution > Answer
       check :: cell 1'
     heading_path:
@@ -13182,7 +13195,10 @@ notebooks:
   - np.arange
   - np.argmin
   - np.array
+  - np.flatnonzero
+  - np.isclose
   - np.mean
+  - np.min
   - np.ones
   - np.random.default_rng
   - np.stack

@@ -21,7 +21,7 @@ Skip when the task is well-defined (e.g. "add unit NN per the syllabus").
    blueprint conformance, overlap scan, prereq closure, practice coverage all pass;
    PDF builds; difficulty/timing budget stated.
    Exempt (docs-only, tooling-only, plan-design plans) must say so in `## Out of scope`.
-4. Self-review, then run the 4-way plan-review gate (`AGENTS.md ## Plan-review gate`).
+4. Self-review, then run the 3-way plan-review gate (`AGENTS.md ## Plan-review gate`).
    A passing gate IS approval to implement.
 5. Save as `docs/plans/NNN-name.md` (next free number) and commit before any implementation.
 
@@ -39,7 +39,7 @@ Independent phases may run in parallel subagents; dependent phases run in order.
 
 ## Step 5 — Review
 
-Run the 4-way content-review gate per `docs/content-review-gate.md`.
+Run the 3-way content-review gate per `docs/content-review-gate.md`.
 Findings live in the plan file's `## Content Review`; all `[OPEN]` items resolve before merge.
 Evaluate findings rigorously — push back with reasoning rather than agreeing performatively.
 
