@@ -206,6 +206,7 @@ def _copy_book2(tmp_path: Path) -> Path:
     return repo / "book2"
 
 
+@pytest.mark.usefixtures("deferred_policy_window")
 def test_task4_policy_and_solution_set_fail_closed(tmp_path: Path) -> None:
     deferred = _copy_book2(tmp_path / "deferred")
     deferred_manifest = deferred / "units" / UNIT_ID / "manifest.yaml"

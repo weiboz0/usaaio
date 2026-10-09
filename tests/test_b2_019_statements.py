@@ -1245,6 +1245,7 @@ def test_required_solution_policy_cannot_be_evaded_by_deleting_all_solutions(tmp
     assert check_layer_boundary(complete).ok
 
 
+@pytest.mark.usefixtures("deferred_policy_window")
 def test_named_b2_020_deferred_policy_emits_plan_linked_expiring_debt(tmp_path: Path) -> None:
     book2 = _copy_registered_statement_repo(tmp_path / "deferred")
     manifest_path = book2 / "units" / LANGUAGE_UNIT_ID / "manifest.yaml"

@@ -12,8 +12,8 @@ gates, autopilot through merge) tailored for content development.
 ## CRITICAL RULES (never skip)
 
 - **Autopilot is the DEFAULT operating mode.** For design, plans, and fixes, run the full
-  lifecycle autonomously through merge — design → 4-way plan-review gate → phase-by-phase
-  implementation → verification (`scripts/ci-local.sh`) → 4-way content-review gate →
+  lifecycle autonomously through merge — design → 3-way plan-review gate → phase-by-phase
+  implementation → verification (`scripts/ci-local.sh`) → 3-way content-review gate →
   post-execution report → PR → `scripts/pre-merge-guard.sh --pr` → squash-merge — without
   per-step approval. **Pause only for:**
   - **Genuine judgment forks** (scope / curriculum-direction / trust decisions) via `AskUserQuestion`.
@@ -28,8 +28,8 @@ gates, autopilot through merge) tailored for content development.
   - The user can redirect at any time. Gates are conducted by autopilot, never skipped by it.
 - **Branch BEFORE drafting a plan.** `git checkout -b feature/plan-NNN-description` first;
   the plan file and all review verdicts live on that branch. Never commit directly to `main`.
-- **Run the 4-way plan-review gate before any implementation** (see `## Plan-review gate`).
-- **Run the 4-way content-review gate before opening a PR** (see `docs/content-review-gate.md`).
+- **Run the 3-way plan-review gate before any implementation** (see `## Plan-review gate`).
+- **Run the 3-way content-review gate before opening a PR** (see `docs/content-review-gate.md`).
 - **Self-containedness is law.** The student baseline is Calculus AB + basic Python.
   Nothing may be used before it is taught (prereq closure), nothing taught without practice
   (coverage), nothing tested that was not taught. These are CI checks once plan 004 lands;
@@ -79,59 +79,46 @@ while the named plan is unshipped.
   the script takes no PR number).
 - Commit messages: what changed and why. Batch related small fixes into one logical commit.
 
-## Plan-review gate (mandatory — 4-way)
+## Plan-review gate (mandatory — 3-way)
 
 | # | Reviewer | Dispatch | Model |
 |---|----------|----------|-------|
 | 1 | Self-review | active session inline; record in `## Plan Review` | active session model |
-| 2 | Sol reviewer | `codex:codex-rescue` subagent, fresh and read-only (request `--model gpt-5.6-sol`) | GPT-5.6-sol |
-| 3 | GLM reviewer | `opencode:opencode-review` subagent, fresh and read-only | opencode-go/glm-5.2 |
-| 4 | DeepSeek reviewer | `opencode:opencode-review` subagent, separate fresh and read-only (request `--model deepseek/deepseek-v4-flash`) | DeepSeek V4 Flash |
+| 2 | Sol reviewer | `codex:codex-rescue` subagent, fresh and read-only (request `--model gpt-6-sol`; if it is rejected or unavailable, fall back to `--model gpt-5.6-sol`) | GPT-6-sol (fallback GPT-5.6-sol) |
+| 3 | Fable reviewer | fresh, read-only Fable 5 subagent (`Agent`, general-purpose) | Fable 5 |
 
-**Temporary review rotation (new rounds only).** The roster above applies to review rounds
-started after this policy is merged and before **2026-08-09 16:00 America/Los_Angeles**.
-For rounds started at or after that timestamp, slot 4 is a fresh, read-only Fable 5 reviewer
-instead of DeepSeek V4 Flash. Slots 1–3 are unchanged.
-The roster is fixed when a round begins; existing or pending rounds retain the roster recorded
-in their plan file and are never retroactively reassigned.
-
-Dispatch 2–4 in parallel with the inline self-review (one message).
-Consensus is full blocking: all four APPROVE / APPROVE WITH NITS, no open blockers.
-Verdicts use the reviewer tags stated by the active rotation:
-`[self]` / `[sol]` / `[glm]` / `[deepseek]` before the cutoff, then
-`[self]` / `[sol]` / `[glm]` / `[fable]`.
+Dispatch 2–3 in parallel with the inline self-review (one message).
+Consensus is full blocking: all three APPROVE / APPROVE WITH NITS, no open blockers.
+Verdicts use tags `[self]` / `[sol]` / `[fable]`.
+(Roster aligned with `../py4kids` by user directive on 2026-10-09: the GLM and DeepSeek
+opencode reviewers are removed and the gate is 3-way. A round already begun keeps the roster
+recorded in its plan file.)
 Reviewers MUST REJECT a plan shipping units/mock tests without a named verification phase
 (design §2 "verification phase" rule; docs-only and tooling-only plans state the exemption
 in `## Out of scope`).
 
-## Content-review gate (mandatory — 4-way, pre-PR)
+## Content-review gate (mandatory — 3-way, pre-PR)
 
-Use the same temporary review rotation as the plan-review gate:
-active-session self-review, GPT-5.6-sol, GLM-5.2, and DeepSeek V4 Flash before
-2026-08-09 16:00 America/Los_Angeles; Fable 5 replaces the DeepSeek slot at or after that
-time. This applies only to rounds begun after this policy is merged; existing rounds keep
-their recorded roster.
+Same roster and tags as the plan-review gate.
 Duties and format: `docs/content-review-gate.md`.
-Findings use the reviewer tags stated in `docs/content-review-gate.md` with
-`[OPEN]` / `[FIXED]` / `[WONTFIX]` in the plan file's `## Content Review`;
+Findings use `[OPEN]` / `[FIXED]` / `[WONTFIX]` in the plan file's `## Content Review`;
 all `[OPEN]` resolve before merge.
 
 ## Agent dispatch
 
 | Work | Dispatch |
 |------|----------|
-| Planning, review orchestration, test assembly | Active Codex session inline |
-| Lesson content + problem/mock-question STATEMENTS | `codex:codex-rescue` (GPT-5.6-sol) — user directive 2026-08-06 |
-| ANY job previously routed to Fable 5 (drafting, independent review, audits) | `codex:codex-rescue` (GPT-5.6-sol) — TEMPORARY, expires 2026-08-09 16:00, except the post-cutoff reviewer-slot-4 rotation above |
-| SOLUTIONS to practice + mock questions | `codex:codex-rescue` (GPT-5.6-sol) — SEPARATE fresh session, never reads statements' outlines; blind-solve independence is now session-level (same model family), cross-model verification lives in the gates |
-| Blind independent solving (content gate) | Gate roster (all four reviewers solve blind) |
-| Tooling code (`tools/`, `scripts/`) | `codex:codex-rescue` (GPT-5.6-sol) |
+| Planning, review orchestration, test assembly | Active session inline |
+| Lesson content + problem/mock-question STATEMENTS | Opus subagent (`Agent`, `model: opus`) |
+| SOLUTIONS to practice + mock questions | Opus subagent (`Agent`, `model: opus`) — SEPARATE fresh session, never reads statements' outlines; authoring-side independence is session-level only (same model family), cross-model verification lives in the gates |
+| Blind independent solving (content gate) | Gate roster (all three reviewers solve blind) |
+| Tooling code (`tools/`, `scripts/`) | Opus subagent (`Agent`, `model: opus`) |
 | Trivially-scoped edits | Inline |
 
 ## Errata
 
 Post-merge content bugs (wrong answer key, broken problem): 2-way diagnosis
-(Claude inline + Codex on GPT-5.6-sol — audits use sol, read-only) → fix plan → gates → merge, plus an `ERRATA.md`
+(Claude inline + Codex on GPT-6-sol, fallback GPT-5.6-sol, read-only) → fix plan → gates → merge, plus an `ERRATA.md`
 entry in the affected mock test's directory. Typos skip diagnosis.
 
 ## Session Handoff

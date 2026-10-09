@@ -17,12 +17,12 @@ Four numbered folders, all 3-digit prefix, monotonically increasing per folder:
 - `reviews/NNN-…` — standalone review artifacts that outgrow a plan file (rare).
 
 Lifecycle per plan: design (or verbal alignment) → plan file committed on a feature branch →
-4-way plan-review gate → phase-by-phase build → verification (`scripts/ci-local.sh`) →
-4-way content-review gate → post-execution report → PR → `scripts/pre-merge-guard.sh --pr` → squash-merge.
+3-way plan-review gate → phase-by-phase build → verification (`scripts/ci-local.sh`) →
+3-way content-review gate → post-execution report → PR → `scripts/pre-merge-guard.sh --pr` → squash-merge.
 
 ## Reference docs
 
 - `development-workflow.md` — Steps 1–6 of the lifecycle, tailored for content development.
-- `content-review-gate.md` — the 4-way content-review gate (replaces a code-review gate).
+- `content-review-gate.md` — the 3-way content-review gate (replaces a code-review gate).
 - `mocktest-generation.md` — the book-selected repeatable mock-test generation pipeline.
 - `architecture/decisions.md` — single source of truth for cross-cutting decisions.
