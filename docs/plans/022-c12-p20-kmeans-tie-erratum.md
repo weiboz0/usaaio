@@ -129,7 +129,7 @@ PATH=/home/chris/.local/bin:$PATH uv run pytest -q \
 - [x] Before implementation, record all plan-review rounds and the passing four-way gate in this section; append all four content-review verdicts after implementation.
 - [x] Complete the post-execution report with RED/GREEN evidence, the thread-matrix fresh-kernel results, p21/p30 immunity, the pre-existing TODO ledger gap for shipped Plan 020/in-flight Plan 021, full-CI results, provenance, and exact changed paths.
 - [x] Add Plan 022's shipped erratum status to `TODO.md` without changing other deferred work.
-- [ ] After content-review resolutions, the post-execution report, generated inventory, and `TODO.md` are final, commit them and run `scripts/ci-local.sh` again on the clean branch tip; this is the authoritative final CI for shipping.
+- [x] After content-review resolutions, the post-execution report, generated inventory, and `TODO.md` are final, commit them and run `scripts/ci-local.sh` again on the clean branch tip; this is the authoritative final CI for shipping.
 - [ ] Push the branch and open a PR using the configured SSH origin and `GH_TOKEN=$(cat .gh-token)`.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH bash scripts/pre-merge-guard.sh --pr`.
 - [ ] Squash-merge only after the guard and required PR checks pass; verify local `main` equals `origin/main`.
@@ -248,3 +248,5 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`). Plan 026 (user directive 2026-10
 - `tests/test_c12_solution_regressions.py`
 - `tests/test_c12_statement_contracts.py`
 - `TODO.md`
+
+**Final authoritative CI (2026-10-09):** `scripts/ci-local.sh` on the clean branch tip 63caf91 (after merging post-Plan-026 `main`): **ALL GREEN**, 9/9, `pre-merge-guard: OK`.
