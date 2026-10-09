@@ -119,15 +119,19 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`), reviewing this diff as code and 
 - **Verdict**: Approve.
 
 ### Review 2 — Sol (2026-10-09; rollout metadata `gpt-6-sol`)
-- **Verdict**: Reject → Approve after fix.
-1. `[FIXED]` Must Fix: `## Exact scope` omitted `docs/designs/000-project-design.md`. → Response: added. Sol stated this one-line scope edit was the only remaining blocker.
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: `## Exact scope` omitted `docs/designs/000-project-design.md`. → Response: added at 1c8fe7e.
+
+### Review 3 — Sol (2026-10-09; rollout `rollout-2026-10-09T12-36-20-…` records `gpt-6-sol`, although the model self-described as "GPT-6-astra")
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Nit: this record pre-stated Sol's approval before Sol issued it. → Response: rounds 2 and 3 are now separate entries with Sol's actual verdicts.
 
 ### Review 2 — Fable (2026-10-09)
 - **Verdict**: Approve with nits.
 1. `[WONTFIX]` Nit: Plan 020's task text still names a four-way content gate. → Response: Plan 020 shipped as PR #24; that task line is a historical record, not a pending round.
 2. `[FIXED]` Nit: the post-execution report must be filled before the PR. → Response: filled at shipping.
 
-**Gate result:** 3-way consensus at the commit that adds this record.
+**Gate result:** 3-way consensus (self Approve, Sol Approve with nits in round 3, Fable Approve with nits in round 2) at 1c8fe7e plus this record-only update.
 
 ## Post-execution report
 
