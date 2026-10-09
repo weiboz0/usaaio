@@ -126,9 +126,9 @@ PATH=/home/chris/.local/bin:$PATH uv run pytest -q \
 
 ## Task 4 — Report and ship
 
-- [ ] Before implementation, record all plan-review rounds and the passing four-way gate in this section; append all four content-review verdicts after implementation.
-- [ ] Complete the post-execution report with RED/GREEN evidence, the thread-matrix fresh-kernel results, p21/p30 immunity, the pre-existing TODO ledger gap for shipped Plan 020/in-flight Plan 021, full-CI results, provenance, and exact changed paths.
-- [ ] Add Plan 022's shipped erratum status to `TODO.md` without changing other deferred work.
+- [x] Before implementation, record all plan-review rounds and the passing four-way gate in this section; append all four content-review verdicts after implementation.
+- [x] Complete the post-execution report with RED/GREEN evidence, the thread-matrix fresh-kernel results, p21/p30 immunity, the pre-existing TODO ledger gap for shipped Plan 020/in-flight Plan 021, full-CI results, provenance, and exact changed paths.
+- [x] Add Plan 022's shipped erratum status to `TODO.md` without changing other deferred work.
 - [ ] After content-review resolutions, the post-execution report, generated inventory, and `TODO.md` are final, commit them and run `scripts/ci-local.sh` again on the clean branch tip; this is the authoritative final CI for shipping.
 - [ ] Push the branch and open a PR using the configured SSH origin and `GH_TOKEN=$(cat .gh-token)`.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH bash scripts/pre-merge-guard.sh --pr`.
@@ -213,4 +213,38 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`). Plan 026 (user directive 2026-10
 
 ## Post-execution report
 
-Pending implementation.
+**Shipped:** a deterministic near-tie rule for C12 p20 (`atol=1e-10`, `rtol=1e-8`, then the numerically smallest seed). It is taught in Session 6 §7.1, stated in p20, implemented by `_lowest_seed_near_minimum` in the solution, and documented in `book1/units/C12-classical-models/ERRATA.md`.
+
+**RED → GREEN:**
+- RED: at the test-only commit 6137610, `pytest -q tests/test_c12_statement_contracts.py tests/test_c12_solution_regressions.py` gave 19 failed / 116 passed, including `test_p20_solution_executes_with_the_deterministic_lowest_seed`.
+- GREEN: after a332cdf/0437e1b, 135 passed. The fixture mutants (raw `argmin`, exact equality, `atol=0`, `rtol=0`, strict boundary, all-eligible, first-eligible, largest-seed) are all killed.
+
+**Thread matrix (2026-10-09):**
+- Fresh-kernel `jupyter execute` of `p20_solution.ipynb` passed at `OMP/MKL/OPENBLAS_NUM_THREADS` = 1, 2, 4, 4, 8, 8, 2, 1 (8/8). Each run's answer check asserts `best_index == 0` and `best_seed == 20260804`.
+- Session 6 also executes.
+- Both notebooks' source SHA-256 values were unchanged by execution.
+
+**Other checks:**
+- p21/p30 immunity was audited (see ERRATA) and independently confirmed by Fable in the content gate.
+- p20 is still core, integrative and 65 minutes; no manifest, schedule, difficulty or timing field changed.
+- Book 1 hygiene, tolerance, inventory freshness and `git diff --check` all pass.
+
+**Full CI:**
+- `main` also carried a date-bomb failure, which Plan 026 fixed. Until 026 merged, each branch was red without the other.
+- `scripts/ci-local.sh` on 026 merged with this branch (bd0ed16) was **ALL GREEN** through all 9 steps.
+- The final authoritative run is on this branch's tip after merging post-026 `main`; its result is recorded at the end of this report.
+
+**Content gate:** 3-way consensus under the Plan 026 roster. Both external reviewers blind-solved p20 to index 0 / seed 20260804. Two prose nits were fixed and re-verified.
+
+**TODO ledger gap:** shipped Plan 020 and in-flight Plan 021 were missing from `TODO.md`. This plan adds 020 (shipped as PR #24) and 022; 021 is added when it ships.
+
+**Provenance:** original repair; no external source.
+
+**Changed paths:**
+- `book1/curriculum/material-inventory.yaml`
+- `book1/units/C12-classical-models/{ERRATA.md, lessons/06-kmeans-and-model-comparison.ipynb, practice/p20.ipynb, practice/p20_solution.ipynb}`
+- `docs/designs/022-c12-p20-kmeans-tie-erratum.md`
+- `docs/plans/022-c12-p20-kmeans-tie-erratum.md`
+- `tests/test_c12_solution_regressions.py`
+- `tests/test_c12_statement_contracts.py`
+- `TODO.md`
