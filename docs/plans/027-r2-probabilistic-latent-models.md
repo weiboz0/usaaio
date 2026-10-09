@@ -3,7 +3,7 @@
 ## Goal
 
 Ship `book2:B2-022-probabilistic-latent-models` as a self-contained, double-length Round 2 unit after B2-021.
-It closes `multivariate-gaussian`, `gaussian-reparameterization`, `kl-divergence`, `autoencoder`, and `variational-autoencoder` in theory, implementation, and model-training modalities.
+It closes `multivariate-gaussian`, `gaussian-reparameterization`, `kl-divergence`, `autoencoder`, and `variational-autoencoder` in every modality each coverage-map row requires (see the coverage table below).
 It uses no external data, no model hubs, and no GPU.
 
 ## Branch and baseline
@@ -86,7 +86,7 @@ The unit itself teaches these tools before any practice uses them:
 - **Determinants (Session 1).** For a symmetric positive-definite matrix, `det` is the product of its eigenvalues (via `book1:spectral-decomposition`). Also taught: the 2×2 formula, and `torch.linalg.slogdet` as the numerically stable API. Book 1 F6 deliberately stops short of determinants.
 - **Linear-transform covariance rule (Session 1).** `Cov(Az + b) = A Cov(z) Aᵀ` is derived from the scalar `book1:covariance` definition. Session 1 also introduces `torch.linalg.cholesky`, stating (not proving) the factor property `L Lᵀ = Σ` and noting the spectral square root `Q Λ^{1/2}` as an equivalent valid factor.
 - **Jensen's inequality for `log` (Session 2).** Taught as an in-unit lemma, proved from the Calculus-AB tangent-line bound `log x ≤ x − 1` (equality only at `x = 1`). The same bound gives Gibbs' inequality, `KL ≥ 0`, directly. p14 and the Session 4 ELBO derivation cite this lemma. `book1:F7` is not a prerequisite.
-- **MLE (Session 1).** The mean MLE and the diagonal-covariance MLE are derived with single-variable calculus per coordinate. The full-covariance MLE `Σ̂ = (1/n) Σᵢ (xᵢ − μ̂)(xᵢ − μ̂)ᵀ` is stated, not derived; its proof needs matrix calculus outside the baseline. Session 1 states the conditions for it: the 1/n convention, and that the MLE exists only when `Σ̂` is positive definite (the centered data span ℝᵈ, which requires n > d). Rank-deficient data has no unrestricted MLE.
+- **MLE (Session 1).** The mean MLE and the diagonal-covariance MLE are derived with single-variable calculus per coordinate. The full-covariance MLE `Σ̂ = (1/n) Σᵢ (xᵢ − μ̂)(xᵢ − μ̂)ᵀ` is stated, not derived; its proof needs matrix calculus outside the baseline. Session 1 states the conditions for it: the 1/n convention, and that the MLE exists only when `Σ̂` is positive definite (the centered data span ℝᵈ, which requires n > d). Rank-deficient data has no unrestricted MLE. For the diagonal case (p13) the condition is per coordinate: n ≥ 2 and the coordinate's samples not all equal, so each variance MLE is positive.
 - **Projection-matrix subspace distance (Session 3).** For a column basis `W`, `P = W (WᵀW)⁻¹ Wᵀ` (computed with `torch.linalg.solve`). Two k-dimensional subspaces are compared by `‖P_A − P_B‖_F`, which is 0 exactly when the subspaces coincide.
 - **Discrete-KL convention (Session 2).** The `0 · log 0 = 0` convention, and why `KL` is infinite when `q_i = 0 < p_i`.
 
@@ -134,7 +134,7 @@ Every solution ends with `### Answer check`.
 | p15 | B | proof | core | 45 | derive the closed-form KL between `N(mu, sigma^2)` and `N(0, 1)` |
 | p16 | B | proof | advanced | 45 | derive the ELBO and show `log p(x) = ELBO + KL(q‖p(z|x))` |
 | p17 | C | integrative | core | 65 | train a tiny autoencoder and certify held-out reconstruction improvement |
-| p18 | C | integrative | advanced | 65 | train a tiny linear autoencoder (Adam, `lr` and step count fixed in the statement, well under 20 s) and certify `‖P_AE − P_PCA‖_F` falls below a stated tolerance |
+| p18 | C | integrative | advanced | 65 | train a tiny linear autoencoder (Adam, `lr` and step count fixed in the statement, well under 20 s) and certify `‖P_AE − P_PCA‖_F` falls below a stated tolerance (set from the frozen-seed run with margin, not a priori) |
 | p19 | C | integrative | advanced | 65 | train a tiny VAE and certify negative-ELBO decrease, KL bookkeeping, and held-out evaluation |
 | p20 | C | integrative | advanced | 65 | sample from a trained VAE's prior and interpolate in latent space with shape and statistic probes |
 | p21 | C | scenario | core | 55 | choose diagonal versus full covariance, and an AE versus a VAE, under stated data/goal constraints |
@@ -150,8 +150,8 @@ Every owned concept has at least three direct practices:
 | `multivariate-gaussian` | p01, p02, p06, p07, p13, p21 |
 | `kl-divergence` | p03, p08, p09, p14, p15, p22 |
 | `autoencoder` | p04, p10, p17, p18, p21 |
-| `gaussian-reparameterization` | p05, p11, p23, p24 |
-| `variational-autoencoder` | p12, p16, p19, p20, p22, p23 |
+| `gaussian-reparameterization` | p05, p11, p16, p23, p24 |
+| `variational-autoencoder` | p12, p16, p19, p20, p21, p22, p23 |
 
 ### Six-week schedule and coverage
 
@@ -206,7 +206,7 @@ Steps:
   - the five coverage rows staying `missing` until live source paths exist.
   In a copied Book 2 fixture, also prove that appending the six-week ledger after B2-021 yields `after_book_week: 24` and the exact minute total, and that duplicate, misordered, missing-session, minute-mismatched, or before-week-19 allocations are rejected.
 - [ ] Update only the existing planned row (no duplicate):
-  - set the prerequisites above (drop `book1:C7-cnn-transfer`; add `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C2-linear-models`, `book1:C6-pytorch`, `book1:C9-dimensionality-reduction` and `B2-021-cross-modal-transformers-vision`);
+  - set the prerequisites above (drop `book1:C7-cnn-transfer`; add `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C1-ml-fundamentals`, `book1:C2-linear-models`, `book1:C5-neural-networks`, `book1:C6-pytorch`, `book1:C9-dimensionality-reduction` and `B2-021-cross-modal-transformers-vision`);
   - set `provisional_concepts` to the five owned concepts.
   Regenerate the roadmap and audit with `uv run python -m tools.render_curriculum_roadmap --root .`. Do not add B2-022 to the live syllabus, schedule, or standards roster in this task.
 - [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py tests/test_b2_022_plan.py` and commit.
