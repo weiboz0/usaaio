@@ -79,6 +79,18 @@ Roster: py4kids 3-way (`[self]` / `[sol]` / `[fable]`), the roster this plan ado
 2. `[FIXED]` Should Fix: tasks were ticked before the green suite ran. → Response: unticked until verified.
 3. `[FIXED]` Nit: naive `now()` stand-in returned an aware datetime. → Response: returns naive for `tz=None`.
 
+### Review 2 — self (2026-10-09)
+- **Verdict**: Approve. Affected files 209 passed at 05c9b00; full CI is the plan's own verification task.
+
+### Review 2 — Sol (2026-10-09; requested `gpt-6-sol`, model self-reported "GPT-6-astra")
+- **Verdict**: Approve with nits.
+1. `[WONTFIX]` Nit: `tests/test_scope.py:377` uses `review_after: 2099-01-01` against the real clock at `tools/checks/scope.py:268`. → Response: not a date bomb before 2099 and outside this plan's two failing tests.
+
+### Review 2 — Fable (2026-10-09)
+- **Verdict**: Approve. No new findings; 209 passed on the three affected files.
+
+**Gate result:** 3-way consensus at 05c9b00; implementation authorized.
+
 ## Content Review
 
 Pending.
