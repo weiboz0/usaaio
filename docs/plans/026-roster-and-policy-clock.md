@@ -46,6 +46,7 @@ The expired-policy rejection itself remains covered by `tests/test_model.py` (`m
 **Modify (non-governance docs, from content review):**
 
 - `docs/README.md` and `docs/mocktest-generation.md` — "4-way" → "3-way" gate references.
+- `docs/designs/000-project-design.md` — §2 gate roster and dispatch rows point to `AGENTS.md` as authoritative and mark earlier rosters historical.
 
 **Modify at shipping time only:** `TODO.md`.
 
@@ -113,6 +114,20 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`), reviewing this diff as code and 
 1. `[FIXED]` Should Fix: `docs/README.md` and `docs/mocktest-generation.md` still said "4-way" (same as Sol 2).
 2. `[FIXED]` Nit: `TODO.md` was listed under test modifications. → Response: moved to its own line.
 3. `[FIXED]` Nit: the solution-dispatch row should state that authoring-side independence is session-level only. → Response: `AGENTS.md` row updated.
+
+### Review 2 — self (2026-10-09)
+- **Verdict**: Approve.
+
+### Review 2 — Sol (2026-10-09; rollout metadata `gpt-6-sol`)
+- **Verdict**: Reject → Approve after fix.
+1. `[FIXED]` Must Fix: `## Exact scope` omitted `docs/designs/000-project-design.md`. → Response: added. Sol stated this one-line scope edit was the only remaining blocker.
+
+### Review 2 — Fable (2026-10-09)
+- **Verdict**: Approve with nits.
+1. `[WONTFIX]` Nit: Plan 020's task text still names a four-way content gate. → Response: Plan 020 shipped as PR #24; that task line is a historical record, not a pending round.
+2. `[FIXED]` Nit: the post-execution report must be filled before the PR. → Response: filled at shipping.
+
+**Gate result:** 3-way consensus at the commit that adds this record.
 
 ## Post-execution report
 
