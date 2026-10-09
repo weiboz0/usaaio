@@ -132,7 +132,7 @@ Every solution ends with `### Answer check`.
 | p13 | B | proof | core | 45 | prove the MLE mean and the diagonal-covariance MLE (1/n convention) of a multivariate Gaussian, stating where positive variance is required |
 | p14 | B | proof | core | 45 | prove discrete KL nonnegativity from the in-unit `log x ≤ x − 1` lemma |
 | p15 | B | proof | core | 45 | derive the closed-form KL between `N(mu, sigma^2)` and `N(0, 1)` |
-| p16 | B | proof | advanced | 45 | derive the ELBO and show `log p(x) = ELBO + KL(q‖p(z|x))`; then derive the reparameterized gradient path (`∂z/∂mu = 1`, `∂z/∂logvar = ½·exp(½·logvar)·eps`) and explain why sampling `z ~ q` directly gives no pathwise gradient to the encoder |
+| p16 | B | proof | advanced | 45 | (a) derive the ELBO and show `log p(x) = ELBO + KL(q‖p(z|x))`; (b) derive the reparameterized gradient path (`∂z/∂mu = 1`, `∂z/∂logvar = ½·exp(½·logvar)·eps`) and explain why sampling `z ~ q` directly gives no pathwise gradient to the encoder |
 | p17 | C | integrative | core | 65 | train a tiny autoencoder and certify held-out reconstruction improvement |
 | p18 | C | integrative | advanced | 65 | train a tiny linear autoencoder (Adam, `lr` and step count fixed in the statement, well under 20 s) and certify `‖P_AE − P_PCA‖_F` falls below a stated tolerance (set from the frozen-seed run with margin, not a priori) |
 | p19 | C | integrative | advanced | 65 | train a tiny VAE and certify negative-ELBO decrease, KL bookkeeping, and held-out evaluation |
@@ -230,7 +230,7 @@ Steps:
 
 - [ ] Dispatch a separate fresh Opus subagent for solutions. It receives only the hash-verified student bundle (lessons plus statements plus generator), never the statement author's outlines, and writes one solution notebook per statement with no stored outputs and a final `### Answer check`.
   - Freeze `SEED=20260927` and the canonical batch order.
-  - Training practices (p17, p18, p19, p20) use Adam with `lr` and step counts stated in each statement, and expose `train_rows()` / `heldout_rows()` that return tensors drawn from the generator's split IDs.
+  - Training practices (p17, p18, p19, p20) use Adam with `lr` and step counts stated in each statement, and expose `train_rows()` / `heldout_rows()` that return tensors drawn from the generator's split IDs (required in every training statement, including p20, even where `heldout_rows()` is otherwise unused).
   - p17 exposes `train_autoencoder(model, batch, optimizer)`; p18 exposes `train_linear_autoencoder(model, batch, optimizer)`; p20 exposes `train_vae_for_sampling(model, batch, optimizer)`.
   - p19 exposes `train_vae(model, batch, optimizer)` and `negative_elbo(x, x_hat, mu, logvar)`.
   - p11 exposes `reparameterize(mu, logvar, eps)`.
@@ -257,7 +257,7 @@ Steps:
   - `negative_elbo`: KL sign flipped, or reduction mean-over-features instead of the stated sum;
   - every training practice (p17 `train_autoencoder`, p18 `train_linear_autoencoder`, p19 `train_vae`, p20 `train_vae_for_sampling`): a no-op optimizer step, and held-out rows used in training.
     - The no-op check compares the parameters before and after the stated step count.
-    - The leakage check wraps the model's `forward` during the training call, hashes every input row the model actually sees, and asserts none is in the generator's `HELDOUT_IDS` hash set.
+    - The leakage check wraps the model's `forward` during the training call, hashes every input row the model actually sees, and asserts none is in the held-out hash set the test builds from `HELDOUT_IDS` and the generator's canonical per-row SHA-256 map.
     - This is a plain correctness check on the shipped pipeline. It is not adversarial hardening; anti-cheat stays out of scope (user directive, 2026-08-28).
 - [ ] Implement only named-function substitutions in copied solution notebooks. Add no student-facing markers, no sandbox, and no anti-cheat policy.
 - [ ] Add the focused suite to `scripts/ci-local.sh` step 7, next to `tests/test_language_transformer_checks.py`, and commit.
@@ -326,6 +326,19 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 - **Verdict**: Reject.
 1. `[FIXED]` Must Fix: p16 did not derive the reparameterization gradient path. → Response: p16 now derives `∂z/∂mu`, `∂z/∂logvar`, and why direct sampling has no pathwise gradient.
 2. `[FIXED]` Must Fix: integrity checks covered only p17/p19 and watched the wrong seam. → Response: all four training practices are covered; leakage is observed at the model's `forward`. Kept non-adversarial per the anti-cheat directive.
+
+### Review 3 — self (2026-10-09)
+- **Verdict**: Approve. I re-read p16's widened scope: part (b) is a two-line chain-rule derivation plus one paragraph, and it fits the 45 minutes as a separately labelled part.
+
+### Review 3 — Fable (2026-10-09)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Nit: label p16 parts (a)/(b). 2. `[FIXED]` Nit: p20 must still expose `heldout_rows()`. 3. `[FIXED]` Nit: self round-3 entry records the p16 re-read.
+
+### Review 3 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Nit: the held-out hash set is built from `HELDOUT_IDS` plus the per-row SHA-256 map.
+
+**Gate result:** 3-way consensus at round 3; implementation authorized after Plan 021 merges and this branch merges that `main`.
 
 ## Content Review
 
