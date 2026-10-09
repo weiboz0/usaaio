@@ -22,6 +22,7 @@
 - [x] 019 — atomic two-book roots and the first Round 2 attention unit (merged as PR #22)
 - [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
+- [x] 026 — py4kids 3-way review roster and Opus dispatch; deferred-policy test clock pinned
 
 ## Deferred, with a named owner plan still to be written
 

@@ -52,12 +52,12 @@ The expired-policy rejection itself remains covered by `tests/test_model.py` (`m
 
 ## Tasks
 
-- [ ] Edit the three governance files to the py4kids roster; no other governance text changes.
-- [ ] Add the fixture and markers; production code unchanged.
-- [ ] Run `uv run ruff check tools/ tests/` and the full `uv run pytest -q`; both must be green.
-- [ ] Run `scripts/ci-local.sh` (verification phase).
-- [ ] Run the 3-way content-review gate (as conventional code/doc review of this diff) and record it in `## Content Review`.
-- [ ] Record the post-execution report, tick `TODO.md`, push, PR, `pre-merge-guard --pr`, squash-merge.
+- [x] Edit the three governance files to the py4kids roster; no other governance text changes.
+- [x] Add the fixture and markers; production code unchanged.
+- [x] Run `uv run ruff check tools/ tests/` and the full `uv run pytest -q`; both must be green.
+- [x] Run `scripts/ci-local.sh` (verification phase).
+- [x] Run the 3-way content-review gate (as conventional code/doc review of this diff) and record it in `## Content Review`.
+- [x] Record the post-execution report, tick `TODO.md`, push, PR, `pre-merge-guard --pr`, squash-merge.
 
 ## Out of scope
 
@@ -135,4 +135,16 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`), reviewing this diff as code and 
 
 ## Post-execution report
 
-Pending.
+**Shipped:** the py4kids 3-way roster and Opus dispatch in `AGENTS.md`, `docs/content-review-gate.md` and `docs/development-workflow.md`; the matching references in `docs/README.md`, `docs/mocktest-generation.md` and `docs/designs/000-project-design.md`; and a function-scoped `deferred_policy_window` fixture in `tests/conftest.py` used by the two date-dependent tests.
+
+**Verification:**
+- RED on `origin/main` 210bf68 (2026-10-09): `pytest -q` failed the two named tests with `deferred solution_policy expired after 2026-09-30`.
+- GREEN on this branch: `ruff check tools/ tests/` clean; `pytest -q` 1184 passed.
+- `scripts/ci-local.sh` on this branch alone reaches step 3 and fails at `book1/units/C12-classical-models/practice/p20_solution.ipynb`. That is the pre-existing `main` near-tie bug owned by Plan 022, independent of this diff.
+- Each branch is red without the other, so the authoritative check ran on a throwaway merge of this branch's final content with Plan 022 (`integ/026-022` at bd0ed16): **`ci-local: ALL GREEN`** through all 9 steps, including `pre-merge-guard: OK`. Plan 022 merges immediately after this plan.
+
+**Deviations:** content-review round 1 widened the scope to three non-governance docs that still described the four-way roster; Sol's round 2 required listing the design doc in `## Exact scope`.
+
+**Follow-ups:**
+- `tests/test_scope.py:377` compares a `2099-01-01` date against the real clock (WONTFIX here, harmless before 2099).
+- Codex models can misreport their own name. Take the slot's model from the `~/.codex/sessions` rollout metadata.
