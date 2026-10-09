@@ -41,7 +41,7 @@ B2-022 owns exactly these five Book 2 concepts, matching its knowledge points:
 ### Direct prerequisites
 
 Unit prerequisites (`prereq_units`, in this order):
-`book1:F1-scientific-python`, `book1:F3-matrices`, `book1:F4-multivar-calculus`, `book1:F5-probability`, `book1:F6-svd-spectral`, `book1:C2-linear-models`, `book1:C6-pytorch`, `book1:C9-dimensionality-reduction`, `book1:C11-neural-training`, `B2-021-cross-modal-transformers-vision`.
+`book1:F1-scientific-python`, `book1:F3-matrices`, `book1:F4-multivar-calculus`, `book1:F5-probability`, `book1:F6-svd-spectral`, `book1:C1-ml-fundamentals`, `book1:C2-linear-models`, `book1:C5-neural-networks`, `book1:C6-pytorch`, `book1:C9-dimensionality-reduction`, `book1:C11-neural-training`, `B2-021-cross-modal-transformers-vision`.
 
 B2-021 is a schedule-order predecessor only: `tools/checks/schedule.py` places a unit after its declared predecessors' final review.
 No B2-021 concept is used.
@@ -64,7 +64,11 @@ book1:conditional-probability
 book1:bayes-rule
 book1:eigenvalues-eigenvectors
 book1:spectral-decomposition
+book1:svd
+book1:train-test-split
 book1:mse-loss
+book1:relu-activation
+book1:mlp-architecture
 book1:torch-tensors
 book1:nn-module
 book1:requires-grad
@@ -73,23 +77,37 @@ book1:autograd-training
 book1:pca
 ```
 
+`book1:tensor-shape-tracing` (owned by C7) is not a prerequisite, so no notebook or practice may carry that tag; "shape ledger" is fine as prose.
+
+### Taught in this unit (not in the baseline or Book 1)
+
+The unit itself teaches these tools before any practice uses them:
+
+- **Determinants (Session 1).** For a symmetric positive-definite matrix, `det` is the product of its eigenvalues (via `book1:spectral-decomposition`). Also taught: the 2×2 formula, and `torch.linalg.slogdet` as the numerically stable API. Book 1 F6 deliberately stops short of determinants.
+- **Linear-transform covariance rule (Session 1).** `Cov(Az + b) = A Cov(z) Aᵀ` is derived from the scalar `book1:covariance` definition. Session 1 also introduces `torch.linalg.cholesky`, stating (not proving) the factor property `L Lᵀ = Σ` and noting the spectral square root `Q Λ^{1/2}` as an equivalent valid factor.
+- **Jensen's inequality for `log` (Session 2).** Taught as an in-unit lemma, proved from the Calculus-AB tangent-line bound `log x ≤ x − 1` (equality only at `x = 1`). The same bound gives Gibbs' inequality, `KL ≥ 0`, directly. p14 and the Session 4 ELBO derivation cite this lemma. `book1:F7` is not a prerequisite.
+- **MLE (Session 1).** The mean MLE and the diagonal-covariance MLE are derived with single-variable calculus per coordinate. The full-covariance MLE `Σ̂ = (1/n) Σᵢ (xᵢ − μ̂)(xᵢ − μ̂)ᵀ` is stated, not derived; its proof needs matrix calculus outside the baseline. Session 1 states the conditions for it: the 1/n convention, and that the MLE exists only when `Σ̂` is positive definite (the centered data span ℝᵈ, which requires n > d). Rank-deficient data has no unrestricted MLE.
+- **Projection-matrix subspace distance (Session 3).** For a column basis `W`, `P = W (WᵀW)⁻¹ Wᵀ` (computed with `torch.linalg.solve`). Two k-dimensional subspaces are compared by `‖P_A − P_B‖_F`, which is 0 exactly when the subspaces coincide.
+- **Discrete-KL convention (Session 2).** The `0 · log 0 = 0` convention, and why `KL` is infinite when `q_i = 0 < p_i`.
+
 Visible notebook headers keep the Book 2 convention: `Qualified prerequisites` lists the unit prerequisites, and `Remediation links actually used` links each of them.
 
 ### Five-session teaching spine
 
 | Session | File | Required teaching surface |
 |---:|---|---|
-| 1 | `01-multivariate-gaussians.ipynb` | mean vector and covariance matrix; density and log-density with determinant and quadratic form; covariance eigen-geometry (ellipse axes); sampling via `L @ z + mu` with a Cholesky factor `L`; diagonal versus full covariance; maximum-likelihood mean/covariance from data |
-| 2 | `02-kl-divergence.ipynb` | discrete KL from the definition; nonnegativity (Gibbs) and asymmetry with worked numbers; forward versus reverse KL behaviour; closed-form KL between two univariate and two diagonal Gaussians; KL to the standard normal `0.5*sum(mu^2+sigma^2-log sigma^2-1)` |
-| 3 | `03-autoencoders.ipynb` | encoder/bottleneck/decoder shape ledger; reconstruction (MSE) loss; the linear autoencoder and PCA subspace connection; undercomplete versus overcomplete; a fixed-seed tiny autoencoder training/evaluation trace with held-out reconstruction error |
-| 4 | `04-reparameterization-and-the-elbo.ipynb` | latent-variable model `p(x|z)p(z)`; approximate posterior `q(z|x)`; ELBO = reconstruction − KL derived from Jensen; why sampling blocks gradients; reparameterization `z = mu + sigma * eps`; log-variance parameterization; gradient-flow check with autograd |
-| 5 | `05-training-and-using-vaes.ipynb` | full VAE training loop; loss bookkeeping (sum versus mean, per-example); beta weighting; posterior collapse symptoms; sampling new data from the prior; latent interpolation; diagnosing a VAE from a loss trace |
+| 1 | `01-multivariate-gaussians.ipynb` | mean vector and covariance matrix; determinants of SPD matrices and `slogdet`; density and log-density (normalizer plus quadratic form); covariance eigen-geometry (ellipse axes); `Cov(Az+b)` rule; sampling via `L @ z + mu` with a Cholesky or spectral factor; diagonal versus full covariance; MLE as specified above |
+| 2 | `02-kl-divergence.ipynb` | discrete KL from the definition with the `0·log 0` convention; the in-unit Jensen/`log x ≤ x−1` lemma; nonnegativity (Gibbs) and asymmetry with worked numbers; forward versus reverse KL behaviour; closed-form KL between two univariate and two diagonal Gaussians; KL to the standard normal `0.5*sum(mu^2+sigma^2-log sigma^2-1)` |
+| 3 | `03-autoencoders.ipynb` | encoder/bottleneck/decoder shape ledger; reconstruction (MSE) loss; the linear autoencoder and PCA subspace connection with the projection-matrix distance; undercomplete versus overcomplete; a fixed-seed tiny autoencoder training/evaluation trace with held-out reconstruction error |
+| 4 | `04-reparameterization-and-the-elbo.ipynb` | latent-variable model `p(x|z)p(z)`; approximate posterior `q(z|x)`; ELBO = reconstruction − KL derived from Jensen; why sampling blocks gradients; reparameterization `z = mu + sigma * eps`; log-variance parameterization; per-example negative ELBO with sum-over-features reconstruction and sum-over-latents KL, averaged over the batch; gradient-flow check with autograd |
+| 5 | `05-training-and-using-vaes.ipynb` | full VAE training loop; loss-bookkeeping pitfalls (mean-over-features versus sum); beta weighting; posterior collapse symptoms; sampling new data from the prior; latent interpolation; diagnosing a VAE from a loss trace |
 
 Each session has 6–10 substantive sections, at least two checkpoints per section with collected answers, common pitfalls, exam connections, and one forward-only deeper topic.
 Session 1 contains a worked 2-D density and Cholesky-sampling example.
 Session 2 contains a worked Gaussian-to-standard-normal KL calculation.
 Session 4 contains a worked ELBO derivation and a reparameterized-gradient example.
 Every API, loss, metric, and shape that practice uses is taught in a lesson before the practice is scheduled.
+Each lesson's "going deeper" pointer names `B2-023-generative-models-diffusion` where relevant; diffusion can be framed as a chain of Gaussian reparameterizations.
 
 ### Exact practice ledger
 
@@ -99,7 +117,7 @@ Every solution ends with `### Answer check`.
 
 | ID | Set | Type | Difficulty | Minutes | Primary scored contract |
 |---|---|---|---:|---:|---|
-| p01 | A | mc-normal-form | intro | 20 | compute a 2-D Gaussian log-density term as a rational `a/b` with `gcd(a,b)=1`, `b>0`, and select normalized `a+b` from exactly five A–E choices |
+| p01 | A | mc-normal-form | intro | 20 | compute the quadratic-form (Mahalanobis) term of a 2-D Gaussian log-density with integer `mu`/`Sigma` as a rational `a/b` with `gcd(a,b)=1`, `b>0`, and select normalized `a+b` from exactly five A–E choices |
 | p02 | A | mc | intro | 20 | read covariance eigenvalues/eigenvectors as ellipse axis lengths and directions |
 | p03 | A | mc | intro | 20 | compute a discrete KL value and identify that `KL(P‖Q) ≠ KL(Q‖P)` |
 | p04 | A | mc | intro | 20 | identify the bottleneck shape and reconstruction target of an autoencoder |
@@ -111,12 +129,12 @@ Every solution ends with `### Answer check`.
 | p10 | B | constrained-coding | intro | 50 | build an MLP autoencoder module with an exact encoder/decoder shape ledger |
 | p11 | B | constrained-coding | core | 50 | implement `reparameterize(mu, logvar, eps)` and verify gradients reach `mu` and `logvar` |
 | p12 | B | constrained-coding | core | 50 | implement the per-example negative ELBO (reconstruction + KL) with an explicit reduction |
-| p13 | B | proof | core | 45 | prove the MLE mean and covariance of a multivariate Gaussian |
-| p14 | B | proof | core | 45 | prove KL nonnegativity via Jensen's inequality |
+| p13 | B | proof | core | 45 | prove the MLE mean and the diagonal-covariance MLE (1/n convention) of a multivariate Gaussian, stating where positive variance is required |
+| p14 | B | proof | core | 45 | prove discrete KL nonnegativity from the in-unit `log x ≤ x − 1` lemma |
 | p15 | B | proof | core | 45 | derive the closed-form KL between `N(mu, sigma^2)` and `N(0, 1)` |
 | p16 | B | proof | advanced | 45 | derive the ELBO and show `log p(x) = ELBO + KL(q‖p(z|x))` |
 | p17 | C | integrative | core | 65 | train a tiny autoencoder and certify held-out reconstruction improvement |
-| p18 | C | integrative | advanced | 65 | relate a trained linear autoencoder's subspace to the PCA subspace via principal angles |
+| p18 | C | integrative | advanced | 65 | train a tiny linear autoencoder (Adam, `lr` and step count fixed in the statement, well under 20 s) and certify `‖P_AE − P_PCA‖_F` falls below a stated tolerance |
 | p19 | C | integrative | advanced | 65 | train a tiny VAE and certify negative-ELBO decrease, KL bookkeeping, and held-out evaluation |
 | p20 | C | integrative | advanced | 65 | sample from a trained VAE's prior and interpolate in latent space with shape and statistic probes |
 | p21 | C | scenario | core | 55 | choose diagonal versus full covariance, and an AE versus a VAE, under stated data/goal constraints |
@@ -144,15 +162,29 @@ Append a six-week Book 2 ledger after B2-021's final review (Book 2 week 18):
 | 19 | 59 | bridge 30; Session 1; p01, p02, p06, p13 | 255 |
 | 20 | 60 | Session 2; p03, p07, p08, p14, p15 | 300 |
 | 21 | 61 | Session 3; p04, p09, p10, p17, p18 | 340 |
-| 22 | 62 | Session 4; p05, p11, p12, p16 | 255 |
-| 23 | 63 | Session 5; p19, p20, p21, p22, p23, p24 | 440 |
+| 22 | 62 | Session 4; p05, p11, p12, p16, p21 | 310 |
+| 23 | 63 | Session 5; p19, p20, p22, p23, p24 | 385 |
 | 24 | 64 | review 60 | 60 |
 
 The unit totals 1,650 minutes: bridge 30, five 90-minute sessions (450), practices 1,110, and review 60.
 Task 1 recomputes the practice sum from the ledger and fails on any mismatch.
-The manifest, schedule checker, course-structure renderer, inventory, and coverage map must agree on the extended Book 2 ledger and on `final_assessment.after_book_week: 24`.
-Task 1's tests pin the exact Book 2 minute total as B2-021's shipped total plus this unit's total.
-Promote exactly these coverage rows from `missing` to `covered`, each with theory, implementation, and model-training evidence: `multivariate-gaussian`, `gaussian-reparameterization`, `kl-divergence`, `autoencoder`, and `variational-autoencoder`.
+As in Plan 021, the 30-minute bridge is scheduled but not manifested: the manifest totals 1,620 minutes and the schedule 1,650.
+B2-021 ships Book 2 at 18 weeks / 4,970 scheduled minutes.
+After this unit the manifest, schedule checker, course-structure renderer, inventory, and coverage map must agree on **24 weeks / 6,620 scheduled minutes** and `final_assessment.after_book_week: 24`.
+Audit rendered hours rebaseline by +27.0 h manifested and +27.5 h scheduled.
+From Plan 021's 533.92–573.92 manifested / 539.42–579.42 scheduled, that gives **560.92–600.92 manifested / 566.92–606.92 scheduled**.
+If B2-021's merged values differ, Task 1 restates these from the merged `main` before writing tests.
+Promote exactly these coverage rows from `missing` to `covered` and set each row's `modalities_missing: []`. Each row needs evidence for exactly the modalities its coverage-map row lists:
+
+| Row | Required modalities | Primary practices |
+|---|---|---|
+| `multivariate-gaussian` | theory, derivation, implementation | p02; p13; p06, p07 |
+| `kl-divergence` | theory, derivation, implementation | p03; p14, p15; p08, p09 |
+| `gaussian-reparameterization` | theory, derivation, implementation | p05; p16 (gradient-path step); p11 |
+| `autoencoder` | theory, implementation, model-training | p04; p10; p17, p18 |
+| `variational-autoencoder` | theory, derivation, implementation, model-training | p21; p16; p12; p19, p20 |
+
+Every row also needs a lesson anchor for each modality.
 Do not alter the B2-023 or B2-024 rows.
 
 ## Implementation tasks
@@ -184,7 +216,7 @@ Steps:
 - [ ] Dispatch lesson and statement authoring to an Opus subagent (`Agent`, `model: opus`) per `AGENTS.md ## Agent dispatch`. It writes, in a temporary directory outside `book2/units/`:
   - the bridge, overview, five lessons, and review;
   - the 24 student statements;
-  - `generate_latent_data.py`, a seeded generator for the small 2-D/8-D Gaussian-mixture and low-rank datasets with immutable train/held-out splits. It has a `--check` mode that regenerates and compares SHA-256 hashes, and it never stores trained weights or final metrics.
+  - `generate_latent_data.py`, a seeded generator for the small 2-D/8-D Gaussian-mixture and low-rank datasets. It exposes immutable `TRAIN_IDS` / `HELDOUT_IDS` index arrays and a canonical per-row SHA-256 map. It has a `--check` mode that regenerates and compares SHA-256 hashes, and it never stores trained weights or final metrics.
 - [ ] The orchestrator checks the bundle against an exact allowlist:
   - regular files only;
   - unexecuted student code cells;
@@ -198,7 +230,7 @@ Steps:
 
 - [ ] Dispatch a separate fresh Opus subagent for solutions. It receives only the hash-verified student bundle (lessons plus statements plus generator), never the statement author's outlines, and writes one solution notebook per statement with no stored outputs and a final `### Answer check`.
   - Freeze `SEED=20260927` and the canonical batch order.
-  - Training practices (p17, p19, p20) use Adam with `lr` and step counts stated in each statement.
+  - Training practices (p17, p18, p19, p20) use Adam with `lr` and step counts stated in each statement, and expose `train_rows()` / `heldout_rows()` that return tensors drawn from the generator's split IDs.
   - p17 exposes `train_autoencoder(model, batch, optimizer)`.
   - p19 exposes `train_vae(model, batch, optimizer)` and `negative_elbo(x, x_hat, mu, logvar)`.
   - p11 exposes `reparameterize(mu, logvar, eps)`.
@@ -213,7 +245,7 @@ Steps:
   - add B2-022 to the double-length roster in `docs/unit-standards.md`;
   - classify every new path-bearing test or fixture in `tests/fixtures/plan019-path-inventory.yaml` and update its guard SHA;
   - regenerate the inventory, course structure, roadmap, and audit.
-- [ ] Add B2-022 to the 20-second solution timeout set in `scripts/ci-local.sh` (the `run_solution_notebook` pattern).
+- [ ] Add a `units/B2-022-probabilistic-latent-models/practice/p??_solution.ipynb` glob alongside the existing B2-020/B2-021 globs in the 20-second solution-timeout condition of `scripts/ci-local.sh`.
 - [ ] Execute every B2-022 solution from the Book 2 root without `--inplace` and record each elapsed time; any solution over 20 s fails.
 - [ ] Commit `tests/test_b2_022_statements.py`, covering statement hygiene, the ledger, concept coverage, the generator `--check`, and the notebook headers.
 
@@ -223,7 +255,7 @@ Steps:
   - `kl_to_standard_normal`: drop the `-1` term, or use `sigma` where `sigma^2` belongs;
   - `reparameterize`: `exp(logvar)` used as the std, or `eps` detached from the graph by sampling inside without `mu`/`logvar`;
   - `negative_elbo`: KL sign flipped, or reduction mean-over-features instead of the stated sum;
-  - `train_autoencoder` / `train_vae`: a no-op optimizer step, or held-out rows included in the training batch.
+  - `train_autoencoder` / `train_vae`: a no-op optimizer step, or held-out rows included in the training batch. Detection is by row hash: the test hashes every row passed to the training function and asserts that none is in the generator's `HELDOUT_IDS` hash set.
 - [ ] Implement only named-function substitutions in copied solution notebooks. Add no student-facing markers, no sandbox, and no anti-cheat policy.
 - [ ] Add the focused suite to `scripts/ci-local.sh` step 7, next to `tests/test_language_transformer_checks.py`, and commit.
 
@@ -237,7 +269,7 @@ Steps:
   - `python -m tools.render_curriculum_roadmap --root . --check`;
   - `git diff --check`.
 - [ ] Run `scripts/ci-local.sh`; it must be ALL GREEN.
-- [ ] Run the 3-way blind content gate (self, Sol, Fable). Every reviewer solves a stated sample before reading solutions: Sol takes p01, p09, p15, p19 and p23; Fable takes p03, p11, p16, p20 and p22; self reviews the ledger, coverage, and accessibility for the Calculus AB + Book 1 baseline. Resolve every `[OPEN]` finding and re-review the final head after material changes.
+- [ ] Run the 3-way blind content gate (self, Sol, Fable). Every reviewer solves a stated sample before reading solutions: Sol takes p01, p09, p15, p19 and p23; Fable takes p03, p11, p16, p20 and p22; self takes p07, p13, p17, p21 and p24 and also reviews the ledger, coverage, and accessibility for the Calculus AB + Book 1 baseline. Resolve every `[OPEN]` finding and re-review the final head after material changes.
 - [ ] Write the verdicts and the post-execution report into this plan, and add Plan 027 to `TODO.md`.
 - [ ] Rerun `scripts/ci-local.sh` on the clean tip, push, open the PR, run `scripts/pre-merge-guard.sh --pr`, squash-merge, and verify `main` equals `origin/main`.
 
@@ -251,7 +283,32 @@ Steps:
 
 ## Plan Review
 
-Pending.
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
+
+### Review 1 — self (2026-10-09)
+- **Verdict**: Changes requested.
+1. `[FIXED]` Determinants, Jensen's inequality, and the Cholesky factor are outside Book 1 and the baseline; the unit must teach them explicitly. → Response: see "Taught in this unit".
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: prerequisite closure missed `book1:svd`, `book1:mlp-architecture`, and Jensen before p14. → Response: added `svd`, `mlp-architecture`, `relu-activation`, `train-test-split` with C1/C5 units; Jensen taught in Session 2 from `log x ≤ x − 1`.
+2. `[FIXED]` Must Fix: p13 is false without a positive-definite / full-rank condition. → Response: p13 now covers the mean MLE and diagonal-covariance MLE with the 1/n convention and the positive-variance condition; Session 1 states the full-covariance MLE's existence condition (n > d, centered data span ℝᵈ).
+3. `[FIXED]` Must Fix: coverage promotion named the wrong modalities. → Response: a per-row modality table pinned to each coverage-map row.
+4. `[FIXED]` Must Fix: self had no blind-solve assignment. → Response: self solves p07, p13, p17, p21, p24.
+5. `[FIXED]` Should Fix: p01 rationality; p18 training protocol. → Response: p01 is the quadratic-form term; p18 trains a tiny linear AE with a fixed protocol and uses the projection distance.
+
+### Review 1 — Fable (2026-10-09)
+- **Verdict**: Approve with nits (conditional on its Must Fix items).
+1. `[FIXED]` Must Fix: Jensen used before taught. → Response: option (b), in-unit lemma.
+2. `[FIXED]` Must Fix: p13 full-covariance MLE needs matrix calculus. → Response: scoped to mean + diagonal; full case stated, not derived.
+3. `[FIXED]` Must Fix: determinants not taught in Book 1. → Response: Session 1 teaches the eigenvalue product, the 2×2 formula, and `slogdet`.
+4. `[FIXED]` Should Fix: C1/C5 concepts missing; `tensor-shape-tracing` tag forbidden. → Response: added; the tag ban is stated.
+5. `[FIXED]` Should Fix: coverage modalities. → Response: per-row table.
+6. `[FIXED]` Should Fix: principal angles untaught. → Response: replaced by the projection-matrix distance, taught in Session 3.
+7. `[FIXED]` Should Fix: Cholesky and the transform rule. → Response: `Cov(Az+b)` derived; Cholesky as a stated-property API with a spectral alternative.
+8. `[FIXED]` Should Fix: leakage-mutant detection. → Response: generator split IDs plus a row-hash check.
+9. `[FIXED]` Should Fix: pin the aggregate. → Response: 24 weeks / 6,620 min, manifested-vs-scheduled distinction, and the hour rebaseline stated.
+10. `[FIXED]` Nits: p01 quadratic form; p12 reduction now taught in Session 4; `0·log 0` convention; p21 moved to week 22 (310/385); timeout glob wording; B2-023 forward pointer.
 
 ## Content Review
 
