@@ -132,7 +132,7 @@ Every solution ends with `### Answer check`.
 | p13 | B | proof | core | 45 | prove the MLE mean and the diagonal-covariance MLE (1/n convention) of a multivariate Gaussian, stating where positive variance is required |
 | p14 | B | proof | core | 45 | prove discrete KL nonnegativity from the in-unit `log x ≤ x − 1` lemma |
 | p15 | B | proof | core | 45 | derive the closed-form KL between `N(mu, sigma^2)` and `N(0, 1)` |
-| p16 | B | proof | advanced | 45 | derive the ELBO and show `log p(x) = ELBO + KL(q‖p(z|x))` |
+| p16 | B | proof | advanced | 45 | derive the ELBO and show `log p(x) = ELBO + KL(q‖p(z|x))`; then derive the reparameterized gradient path (`∂z/∂mu = 1`, `∂z/∂logvar = ½·exp(½·logvar)·eps`) and explain why sampling `z ~ q` directly gives no pathwise gradient to the encoder |
 | p17 | C | integrative | core | 65 | train a tiny autoencoder and certify held-out reconstruction improvement |
 | p18 | C | integrative | advanced | 65 | train a tiny linear autoencoder (Adam, `lr` and step count fixed in the statement, well under 20 s) and certify `‖P_AE − P_PCA‖_F` falls below a stated tolerance (set from the frozen-seed run with margin, not a priori) |
 | p19 | C | integrative | advanced | 65 | train a tiny VAE and certify negative-ELBO decrease, KL bookkeeping, and held-out evaluation |
@@ -231,7 +231,7 @@ Steps:
 - [ ] Dispatch a separate fresh Opus subagent for solutions. It receives only the hash-verified student bundle (lessons plus statements plus generator), never the statement author's outlines, and writes one solution notebook per statement with no stored outputs and a final `### Answer check`.
   - Freeze `SEED=20260927` and the canonical batch order.
   - Training practices (p17, p18, p19, p20) use Adam with `lr` and step counts stated in each statement, and expose `train_rows()` / `heldout_rows()` that return tensors drawn from the generator's split IDs.
-  - p17 exposes `train_autoencoder(model, batch, optimizer)`.
+  - p17 exposes `train_autoencoder(model, batch, optimizer)`; p18 exposes `train_linear_autoencoder(model, batch, optimizer)`; p20 exposes `train_vae_for_sampling(model, batch, optimizer)`.
   - p19 exposes `train_vae(model, batch, optimizer)` and `negative_elbo(x, x_hat, mu, logvar)`.
   - p11 exposes `reparameterize(mu, logvar, eps)`.
   - p09 exposes `kl_to_standard_normal(mu, logvar)`.
@@ -255,7 +255,10 @@ Steps:
   - `kl_to_standard_normal`: drop the `-1` term, or use `sigma` where `sigma^2` belongs;
   - `reparameterize`: `exp(logvar)` used as the std, or `eps` detached from the graph by sampling inside without `mu`/`logvar`;
   - `negative_elbo`: KL sign flipped, or reduction mean-over-features instead of the stated sum;
-  - `train_autoencoder` / `train_vae`: a no-op optimizer step, or held-out rows included in the training batch. Detection is by row hash: the test hashes every row passed to the training function and asserts that none is in the generator's `HELDOUT_IDS` hash set.
+  - every training practice (p17 `train_autoencoder`, p18 `train_linear_autoencoder`, p19 `train_vae`, p20 `train_vae_for_sampling`): a no-op optimizer step, and held-out rows used in training.
+    - The no-op check compares the parameters before and after the stated step count.
+    - The leakage check wraps the model's `forward` during the training call, hashes every input row the model actually sees, and asserts none is in the generator's `HELDOUT_IDS` hash set.
+    - This is a plain correctness check on the shipped pipeline. It is not adversarial hardening; anti-cheat stays out of scope (user directive, 2026-08-28).
 - [ ] Implement only named-function substitutions in copied solution notebooks. Add no student-facing markers, no sandbox, and no anti-cheat policy.
 - [ ] Add the focused suite to `scripts/ci-local.sh` step 7, next to `tests/test_language_transformer_checks.py`, and commit.
 
@@ -309,6 +312,20 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 8. `[FIXED]` Should Fix: leakage-mutant detection. → Response: generator split IDs plus a row-hash check.
 9. `[FIXED]` Should Fix: pin the aggregate. → Response: 24 weeks / 6,620 min, manifested-vs-scheduled distinction, and the hour rebaseline stated.
 10. `[FIXED]` Nits: p01 quadratic form; p12 reduction now taught in Session 4; `0·log 0` convention; p21 moved to week 22 (310/385); timeout glob wording; B2-023 forward pointer.
+
+### Review 2 — self (2026-10-09)
+- **Verdict**: Approve.
+
+### Review 2 — Fable (2026-10-09)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Should Fix: Task 1's add-list omitted C1/C5. → Response: added.
+2. `[FIXED]` Should Fix: the modality table cited p16/p21 outside the direct-practice map. → Response: p16 added to `gaussian-reparameterization`, p21 to `variational-autoencoder`.
+3. `[FIXED]` Nits: Goal modality wording; p18 tolerance set from the frozen-seed run; diagonal-MLE variance condition.
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: p16 did not derive the reparameterization gradient path. → Response: p16 now derives `∂z/∂mu`, `∂z/∂logvar`, and why direct sampling has no pathwise gradient.
+2. `[FIXED]` Must Fix: integrity checks covered only p17/p19 and watched the wrong seam. → Response: all four training practices are covered; leakage is observed at the model's `forward`. Kept non-adversarial per the anti-cheat directive.
 
 ## Content Review
 
