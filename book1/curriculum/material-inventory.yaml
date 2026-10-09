@@ -13149,7 +13149,7 @@ notebooks:
   - rng_p20.normal
 - path: units/C12-classical-models/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 6d46ded1d79799378f07eaf4f99718beaaf01dfee4dd316832fa253dca775646
+  semantic_sha256: 65a6b9d52a22f19ed38c68f8d4985862cf8b18a645bc6333c26418fabccabb2b
   anchors:
   - anchor: 'units/C12-classical-models/practice/p20_solution.ipynb :: C12-classical-models — Practice p20 — Solution :: cell
       1'

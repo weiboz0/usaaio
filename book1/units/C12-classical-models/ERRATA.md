@@ -8,7 +8,7 @@ The originally shipped solution selected the best run with raw `np.argmin(inerti
 answer check required seed `20260805`.
 At lower thread counts, bitwise-tied inertias caused `np.argmin` to select the first seed,
 `20260804`, which still failed that old assertion.
-At other thread counts, different seeds could appear one floating-point step lower.
+At other thread counts, a different seed could come out lower by about `1e-14` (a last-bits difference) and win the raw `argmin`.
 
 The cause was parallel floating-point reduction order, not a substantive difference in the
 clustering: all eight runs recovered the same co-clustering partition, and their inertia spread

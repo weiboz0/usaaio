@@ -55,10 +55,10 @@ The accepted design is `docs/designs/022-c12-p20-kmeans-tie-erratum.md`.
 
 ## Task 1 — Lock the regression contract
 
-- [ ] Add statement-contract assertions requiring the exact p20 formula `eligible(i) iff abs(inertia[i] - minimum) <= 1e-10 + 1e-8 * abs(minimum)` and the phrase “numerically smallest seed”; do not accept the pre-repair grader-note tolerance and generic “smaller seed” wording as sufficient. Also require Session 6 to teach that numerical-objective near-ties use the declared tolerance before the deterministic secondary key.
-- [ ] Require `p20_solution.ipynb` to place `import numpy as np`, the notebook's only definitions of shared `ATOL = 1e-10` and `RTOL = 1e-8`, and the private selector `_lowest_seed_near_minimum(seeds, inertias, *, atol, rtol)` in a dedicated standalone-executable code cell with no live audit invocation. The selector returns the selected row index, and its body must use the supplied keyword parameters as `np.isclose(..., atol=atol, rtol=rtol)`.
-- [ ] Pin the exact production dataflow inside `kmeans_stability_audit`: `best_index = _lowest_seed_near_minimum(seeds, inertias, atol=ATOL, rtol=RTOL)` followed by `best_seed = int(seeds[best_index])`; reject an ignored/decoy helper call, hard-coded index, or second selection path. The ordinary solution regression must execute the actual notebook through the existing `_execute_solution` mechanism.
-- [ ] Locate and execute the selector's dedicated production code cell in an isolated test namespace; apply mutant source transforms only to an in-memory copy of that cell, then judge every mutant solely against these deterministic fixture expectations—not against a live K-means run or its thread-sensitive answer check:
+- [x] Add statement-contract assertions requiring the exact p20 formula `eligible(i) iff abs(inertia[i] - minimum) <= 1e-10 + 1e-8 * abs(minimum)` and the phrase “numerically smallest seed”; do not accept the pre-repair grader-note tolerance and generic “smaller seed” wording as sufficient. Also require Session 6 to teach that numerical-objective near-ties use the declared tolerance before the deterministic secondary key.
+- [x] Require `p20_solution.ipynb` to place `import numpy as np`, the notebook's only definitions of shared `ATOL = 1e-10` and `RTOL = 1e-8`, and the private selector `_lowest_seed_near_minimum(seeds, inertias, *, atol, rtol)` in a dedicated standalone-executable code cell with no live audit invocation. The selector returns the selected row index, and its body must use the supplied keyword parameters as `np.isclose(..., atol=atol, rtol=rtol)`.
+- [x] Pin the exact production dataflow inside `kmeans_stability_audit`: `best_index = _lowest_seed_near_minimum(seeds, inertias, atol=ATOL, rtol=RTOL)` followed by `best_seed = int(seeds[best_index])`; reject an ignored/decoy helper call, hard-coded index, or second selection path. The ordinary solution regression must execute the actual notebook through the existing `_execute_solution` mechanism.
+- [x] Locate and execute the selector's dedicated production code cell in an isolated test namespace; apply mutant source transforms only to an in-memory copy of that cell, then judge every mutant solely against these deterministic fixture expectations—not against a live K-means run or its thread-sensitive answer check:
 
 ```python
 ascending_seeds = np.array([20260804, 20260805, 20260806], dtype=np.int64)
@@ -71,16 +71,16 @@ outside_boundary = np.array([1000.0 + 2e-5, 1000.0, 2000.0], dtype=np.float64)
 permuted_near_tie = np.array([1.0, 1.0 + 5e-11, 2.0], dtype=np.float64)
 ```
 
-- [ ] With `ascending_seeds`, require returned indices `0, 0, 0, 0, 1` and mapped seeds `20260804`, `20260804`, `20260804`, `20260804`, `20260805` for the first five inertia fixtures respectively; with `permuted_seeds` and `permuted_near_tie`, require returned index `1` and mapped seed `20260804`.
-- [ ] Prove the fixture contract kills raw `argmin`, exact-equality filtering, `rtol=0`, `atol=0`, strict-`<` boundary eligibility, over-broad/all-candidate eligibility, first-eligible selection, and largest-eligible-seed selection deterministically.
-- [ ] Preserve Plan 018's exact five registered classical mutation tests; p20 is a focused regression, not a sixth registered mutation.
-- [ ] Commit the failing regression contract separately or retain exact RED command/output in the post-execution report.
+- [x] With `ascending_seeds`, require returned indices `0, 0, 0, 0, 1` and mapped seeds `20260804`, `20260804`, `20260804`, `20260804`, `20260805` for the first five inertia fixtures respectively; with `permuted_seeds` and `permuted_near_tie`, require returned index `1` and mapped seed `20260804`.
+- [x] Prove the fixture contract kills raw `argmin`, exact-equality filtering, `rtol=0`, `atol=0`, strict-`<` boundary eligibility, over-broad/all-candidate eligibility, first-eligible selection, and largest-eligible-seed selection deterministically.
+- [x] Preserve Plan 018's exact five registered classical mutation tests; p20 is a focused regression, not a sixth registered mutation.
+- [x] Commit the failing regression contract separately or retain exact RED command/output in the post-execution report.
 
 ## Task 2 — Teach and implement the deterministic tie policy
 
-- [ ] In Session 6, teach that numerically equivalent objectives must be compared using a declared tolerance before a deterministic secondary key is applied; present this as the numerical-objective refinement of the existing exact-tie rules.
-- [ ] Place the teaching in a new late subsection without inserting cells before or renaming/reordering the three coverage-map-pinned anchors under headings 2, 5, and 6; keep their `cell_ordinal` values unchanged so no coverage-map or roadmap edit is needed.
-- [ ] In p20, replace “exact inertia tie” with this precise rule:
+- [x] In Session 6, teach that numerically equivalent objectives must be compared using a declared tolerance before a deterministic secondary key is applied; present this as the numerical-objective refinement of the existing exact-tie rules.
+- [x] Place the teaching in a new late subsection without inserting cells before or renaming/reordering the three coverage-map-pinned anchors under headings 2, 5, and 6; keep their `cell_ordinal` values unchanged so no coverage-map or roadmap edit is needed.
+- [x] In p20, replace “exact inertia tie” with this precise rule:
 
 ```text
 eligible(i) iff abs(inertia[i] - minimum) <= 1e-10 + 1e-8 * abs(minimum)
@@ -88,7 +88,7 @@ eligible(i) iff abs(inertia[i] - minimum) <= 1e-10 + 1e-8 * abs(minimum)
 
 Then choose the eligible candidate with the numerically smallest seed.
 
-- [ ] In the solution-owned private selector called by `kmeans_stability_audit`, implement the equivalent NumPy policy and return the selected row index:
+- [x] In the solution-owned private selector called by `kmeans_stability_audit`, implement the equivalent NumPy policy and return the selected row index:
 
 ```python
 minimum = float(np.min(inertias))
@@ -101,14 +101,14 @@ return best_index
 
 The only production call is `best_index = _lowest_seed_near_minimum(seeds, inertias, atol=ATOL, rtol=RTOL)`; `best_seed` is then `int(seeds[best_index])`.
 
-- [ ] Update the answer check to require `best_index == 0` and `best_seed == 20260804` while retaining every existing shape, dtype, inertia, agreement, dictionary-key, and interpretation assertion.
-- [ ] Add `ERRATA.md` recording the former raw-`argmin` behavior (including that bitwise ties at lower thread counts selected first seed `20260804` and still failed the old `20260805` assertion), the numerical cause, the corrected rule, the corrected expected seed, the affected statement/solution/lesson, and that siblings p21 and p30 were audited and are immune: p21 fixes its primary run by index, while p30 selects deterministic hand-computed NumPy WCSS.
-- [ ] Regenerate `book1/curriculum/material-inventory.yaml` with `PATH=/home/chris/.local/bin:$PATH uv run python -m tools.audit_curriculum --root book1`; do not hand-edit generated hashes.
-- [ ] Commit the content repair.
+- [x] Update the answer check to require `best_index == 0` and `best_seed == 20260804` while retaining every existing shape, dtype, inertia, agreement, dictionary-key, and interpretation assertion.
+- [x] Add `ERRATA.md` recording the former raw-`argmin` behavior (including that bitwise ties at lower thread counts selected first seed `20260804` and still failed the old `20260805` assertion), the numerical cause, the corrected rule, the corrected expected seed, the affected statement/solution/lesson, and that siblings p21 and p30 were audited and are immune: p21 fixes its primary run by index, while p30 selects deterministic hand-computed NumPy WCSS.
+- [x] Regenerate `book1/curriculum/material-inventory.yaml` with `PATH=/home/chris/.local/bin:$PATH uv run python -m tools.audit_curriculum --root book1`; do not hand-edit generated hashes.
+- [x] Commit the content repair.
 
 ## Task 3 — Verification phase
 
-- [ ] Run the exact focused contract tests:
+- [x] Run the exact focused contract tests:
 
 ```bash
 PATH=/home/chris/.local/bin:$PATH uv run pytest -q \
@@ -116,13 +116,13 @@ PATH=/home/chris/.local/bin:$PATH uv run pytest -q \
   tests/test_c12_solution_regressions.py
 ```
 
-- [ ] Execute Session 6 and p20 solution from the Book 1 root without `--inplace`, and verify their source SHA-256 hashes remain unchanged.
-- [ ] Execute p20 solution in fresh Jupyter kernels spanning `OMP_NUM_THREADS=1,2,4,8` (at least eight executions total, with repeated 4- and 8-thread runs); all runs must select `best_index == 0`, `best_seed == 20260804`, and pass the answer check.
-- [ ] Confirm p20 remains a core, 65-minute integrative practice and that no manifest, schedule, difficulty, or timing field changed.
-- [ ] Run Book 1 hygiene, tolerance, integration, material-inventory freshness, and `git diff --check`.
+- [x] Execute Session 6 and p20 solution from the Book 1 root without `--inplace`, and verify their source SHA-256 hashes remain unchanged.
+- [x] Execute p20 solution in fresh Jupyter kernels spanning `OMP_NUM_THREADS=1,2,4,8` (at least eight executions total, with repeated 4- and 8-thread runs); all runs must select `best_index == 0`, `best_seed == 20260804`, and pass the answer check.
+- [x] Confirm p20 remains a core, 65-minute integrative practice and that no manifest, schedule, difficulty, or timing field changed.
+- [x] Run Book 1 hygiene, tolerance, integration, material-inventory freshness, and `git diff --check`.
 - [ ] Run the mandatory `scripts/ci-local.sh` from a clean worktree.
-- [ ] Run the four-way content-review gate on the exact verified head, blind-solving p20 from the statement before reading the solution.
-- [ ] Resolve every `[OPEN]` finding and rerun affected checks plus full CI after material changes.
+- [x] Run the four-way content-review gate on the exact verified head, blind-solving p20 from the statement before reading the solution.
+- [x] Resolve every `[OPEN]` finding and rerun affected checks plus full CI after material changes.
 
 ## Task 4 — Report and ship
 
@@ -193,7 +193,23 @@ The four-way plan gate is passed and implementation is authorized.
 
 ## Content Review
 
-Pending implementation and full verification.
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`). Plan 026 (user directive 2026-10-09) replaced the four-way roster before this content gate began; the plan gate above keeps its recorded roster.
+
+### Review 1 — self (2026-10-09)
+- **Verdict**: Approve. Session 6 §7.1 teaches the tolerance-then-lowest-seed rule before p20 uses it; statement, solution and ERRATA agree; the diff touches only scoped paths and no manifest, schedule, difficulty or timing field.
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-09)
+- **Blind answer** (before reading the solution): `best_index = 0`, `best_seed = 20260804`.
+- **Verdict**: Approve. No findings. Focused tests 135 passed in its environment.
+
+### Review 1 — Fable (2026-10-09)
+- **Blind answer** (own implementation, 1 and 4 threads): `best_index = 0`, `best_seed = 20260804`; raw `np.argmin` gave 0 at 1 thread and 1 at 4 threads, reproducing the defect.
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Nit: the solution's explanatory markdown did not mention the tolerance rule. → Response: one sentence added to `p20_solution.ipynb` cell 1 (markdown only); inventory regenerated; p20 re-executed and focused tests re-run (135 passed).
+2. `[WONTFIX]` Nit: statement formula writes `inertia[i]` while the key is `inertias`. → Response: readable pseudo-notation, and `tests/test_c12_statement_contracts.py` pins the exact statement string.
+3. `[FIXED]` Nit: ERRATA's "one floating-point step lower" was vague. → Response: now "lower by about `1e-14` (a last-bits difference)".
+
+**Gate result:** 3-way consensus; the two fixes are prose-only and re-verified.
 
 ## Post-execution report
 
