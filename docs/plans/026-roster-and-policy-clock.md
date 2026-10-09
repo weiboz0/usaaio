@@ -42,7 +42,12 @@ The expired-policy rejection itself remains covered by `tests/test_model.py` (`m
 **Modify (tests):**
 
 - `tests/test_b2_019_statements.py` and `tests/test_b2_020_statements.py` — mark the two date-dependent tests with `@pytest.mark.usefixtures("deferred_policy_window")`.
-- `TODO.md` at shipping time only.
+
+**Modify (non-governance docs, from content review):**
+
+- `docs/README.md` and `docs/mocktest-generation.md` — "4-way" → "3-way" gate references.
+
+**Modify at shipping time only:** `TODO.md`.
 
 ## Tasks
 
@@ -93,7 +98,21 @@ Roster: py4kids 3-way (`[self]` / `[sol]` / `[fable]`), the roster this plan ado
 
 ## Content Review
 
-Pending.
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`), reviewing this diff as code and doc review.
+
+### Review 1 — self (2026-10-09)
+- **Verdict**: Approve with suggestions. Unit tests 1184 passed. `ci-local.sh` failed only at the Book 1 C12 p20 solution notebook (pre-existing `main` near-tie bug owned by Plan 022). See the post-execution report for the paired 026+022 CI run.
+
+### Review 1 — Sol (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: the round-2 plan-gate Sol entry recorded a self-reported "GPT-6-astra" model, so the slot's model was unproven. → Response: Codex's own session rollouts for 2026-10-09 (`~/.codex/sessions/2026/10/09/rollout-*.jsonl`, all four review sessions) record `"model":"gpt-6-sol"`. The model's self-description is not authoritative; the rollout metadata is.
+2. `[FIXED]` Must Fix: four-reviewer instructions remained in `docs/designs/000-project-design.md`, `docs/README.md` and `docs/mocktest-generation.md`. → Response: all three now describe the 3-way roster; the design doc defers to `AGENTS.md` as authoritative and labels earlier rosters historical.
+
+### Review 1 — Fable (2026-10-09)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Should Fix: `docs/README.md` and `docs/mocktest-generation.md` still said "4-way" (same as Sol 2).
+2. `[FIXED]` Nit: `TODO.md` was listed under test modifications. → Response: moved to its own line.
+3. `[FIXED]` Nit: the solution-dispatch row should state that authoring-side independence is session-level only. → Response: `AGENTS.md` row updated.
 
 ## Post-execution report
 

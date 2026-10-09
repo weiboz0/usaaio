@@ -80,18 +80,20 @@ usaaio/
 The plan-driven lifecycle carries over unchanged:
 autopilot through merge is the default operating mode;
 feature branch before plan; numbered plan file committed before work;
-4-way plan-review gate; phase-by-phase build; post-execution report;
+3-way plan-review gate; phase-by-phase build; post-execution report;
 PR; `pre-merge-guard --pr`; squash-merge to main.
 Hard safeguards carry over (no direct commits to main, governance docs human-reviewed,
 no force-push, unresolved `[OPEN]` blockers block merge).
 
 Two gates are retargeted:
 
-### Plan-review gate (4-way, roster unchanged)
+### Plan-review gate (3-way)
 
-Claude self-review inline (Fable), Codex via `codex:codex-rescue`,
-independent fresh-context Fable via `Agent` (read-only),
-GLM via `opencode:opencode-review` (read-only).
+The live roster is defined in `AGENTS.md ## Plan-review gate` and is authoritative.
+Since Plan 026 (2026-10-09) it matches `../py4kids`: self-review inline,
+Sol via `codex:codex-rescue` (GPT-6-sol, fallback GPT-5.6-sol, read-only),
+and a fresh read-only Fable 5 via `Agent`.
+Earlier rosters (GLM, DeepSeek, Opus slots) are historical and recorded in their plan files.
 The PowerMarket "integration-tests phase" rule becomes a **verification phase** rule.
 Every plan that ships problems or lessons MUST include a named verification phase specifying
 solution execution and answer-key reproduction, manifest validation, PDF validation, and the
@@ -150,7 +152,7 @@ so generation is repeatable and each run's parameters are recorded:
    so data are regenerable, not opaque blobs.
 4. **Verify** — the automated checks of §3 (solution execution, hygiene, manifest, blueprint
    conformance, overlap scan, PDF build).
-5. **Gate** — the 4-way content-review gate (§2), which includes the fidelity review.
+5. **Gate** — the 3-way content-review gate (§2), which includes the fidelity review.
 
 The manifest records the blueprint version and every generation parameter,
 so a future session can reproduce or extend the test without reverse-engineering it.
@@ -171,10 +173,9 @@ so a future session can reproduce or extend the test without reverse-engineering
   Human/model: content-gate reviewers independently note any past problem a mock problem
   resembles, checked against the provenance tags.
 
-### Content-review gate (replaces the code-review gate, same 4-way roster shape)
+### Content-review gate (replaces the code-review gate, same 3-way roster)
 
-Following the PowerMarket convention, the two Claude slots run **Fable for plan review**
-and **Opus for the content-review gate** (Codex and GLM fill the other two slots in both).
+The content gate uses the same roster as the plan gate (`AGENTS.md`, `docs/content-review-gate.md`).
 
 Reviewers receive the student-facing materials plus the answer key and must:
 
@@ -230,9 +231,9 @@ Same area-based philosophy as PowerMarket, remapped:
 | Work | Dispatch |
 |------|----------|
 | Planning, review orchestration, test assembly | Orchestrator Claude inline |
-| Problem / lesson drafting | `general-purpose` subagents (parallelizable per unit/problem) |
-| Blind independent solving (content gate) | 4-way roster (Codex + GLM solve blind) |
-| Tooling code (`tools/`, `scripts/`) | `codex:codex-rescue` |
+| Problem / lesson drafting | Opus subagents (parallelizable per unit/problem); live table in `AGENTS.md ## Agent dispatch` |
+| Blind independent solving (content gate) | 3-way gate roster (all reviewers solve blind) |
+| Tooling code (`tools/`, `scripts/`) | Opus subagent |
 | Trivially-scoped edits | Inline |
 
 Python environment via `uv`.

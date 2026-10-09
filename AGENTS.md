@@ -110,7 +110,7 @@ all `[OPEN]` resolve before merge.
 |------|----------|
 | Planning, review orchestration, test assembly | Active session inline |
 | Lesson content + problem/mock-question STATEMENTS | Opus subagent (`Agent`, `model: opus`) |
-| SOLUTIONS to practice + mock questions | Opus subagent (`Agent`, `model: opus`) — SEPARATE fresh session, never reads statements' outlines; cross-model verification lives in the gates |
+| SOLUTIONS to practice + mock questions | Opus subagent (`Agent`, `model: opus`) — SEPARATE fresh session, never reads statements' outlines; authoring-side independence is session-level only (same model family), cross-model verification lives in the gates |
 | Blind independent solving (content gate) | Gate roster (all three reviewers solve blind) |
 | Tooling code (`tools/`, `scripts/`) | Opus subagent (`Agent`, `model: opus`) |
 | Trivially-scoped edits | Inline |

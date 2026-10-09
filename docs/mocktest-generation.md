@@ -40,7 +40,7 @@ Design rationale: `docs/designs/000-project-design.md §2b`.
 3. **Draft** — write problems + solutions per spec (drafting rules below).
    Dispatch per `CLAUDE.md ## Agent dispatch`; parallel per-problem subagents are the norm.
 4. **Verify** — `bash scripts/ci-local.sh` (verification map below).
-5. **Gate** — the 4-way content-review gate (`docs/content-review-gate.md`), including the
+5. **Gate** — the 3-way content-review gate (`docs/content-review-gate.md`), including the
    blind-solve and fidelity duties; fidelity compares against
    `book1/reference/analysis.md ## Style notes`.
 
