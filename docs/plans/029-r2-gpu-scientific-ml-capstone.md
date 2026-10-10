@@ -53,14 +53,14 @@ B2-024 owns exactly six Book 2 concepts, matching its knowledge points:
 ### Direct prerequisites
 
 Unit prerequisites (`prereq_units`, in this order):
-`book1:F1-scientific-python`, `book1:F3-matrices`, `book1:F4-multivar-calculus`, `book1:F5-probability`, `book1:C1-ml-fundamentals`, `book1:C2-linear-models`, `book1:C3-gradient-descent`, `book1:C6-pytorch`, `book1:C7-cnn-transfer`, `book1:C10-competition-craft`, `book1:C11-neural-training`, `book1:C12-classical-models`, `B2-022-probabilistic-latent-models`, `B2-023-generative-models-diffusion`.
+`book1:F1-scientific-python`, `book1:F3-matrices`, `book1:F4-multivar-calculus`, `book1:F5-probability`, `book1:C1-ml-fundamentals`, `book1:C2-linear-models`, `book1:C3-gradient-descent`, `book1:C5-neural-networks`, `book1:C6-pytorch`, `book1:C7-cnn-transfer`, `book1:C10-competition-craft`, `book1:C11-neural-training`, `book1:C12-classical-models`, `B2-023-generative-models-diffusion`.
 
-B2-023 is a schedule-order predecessor; no B2-023 concept is used.
+B2-023 is a schedule-order predecessor; no Book 2 concept is used. The mixture bumps are one-dimensional, so `book1:gaussian-distribution` covers them, and `multivariate-gaussian` and B2-022 are not prerequisites.
+Task 1 rewrites the planned row's `prerequisites` to exactly this 14-unit list: B2-020, B2-021 and B2-022 are dropped and C5 is added. Its test asserts the new list.
 
 The live syllabus entry, manifest, and notebook metadata use this exact ordered `concept_prerequisites` list:
 
 ```text
-multivariate-gaussian
 book1:numpy-arrays
 book1:broadcasting
 book1:random-seeding
@@ -77,13 +77,20 @@ book1:gaussian-distribution
 book1:sampling-simulation
 book1:train-test-split
 book1:overfitting
+book1:accuracy-precision-recall
 book1:class-imbalance
+book1:linear-regression
 book1:mse-loss
+book1:l2-regularization
 book1:gradient-descent
 book1:learning-rate
+book1:stochastic-gd
+book1:relu-activation
+book1:mlp-architecture
 book1:torch-tensors
 book1:nn-module
 book1:requires-grad
+book1:parameter-counting
 book1:convolution
 book1:cnn-training
 book1:hidden-test-protocol
@@ -95,6 +102,7 @@ book1:softmax
 book1:cross-entropy-loss
 book1:torch-optimizers
 book1:autograd-training
+book1:trained-mlp
 book1:k-means
 book1:lloyd-algorithm
 ```
@@ -103,26 +111,40 @@ No notebook or practice may carry a concept tag outside this list or the six own
 Lessons must reference every listed concept so `concepts_used` stays honest.
 Task 3 extends the Book 2 `imports:` allowlist with every Book 1 unit and concept above that is not already imported, and lists the additions.
 
+### Evaluation protocol (all model-building practices)
+
+Every model-building practice (p16–p22, p26, p27) uses three immutable splits from its generator: `train_rows()`, `val_rows()`, and a locked test set.
+- Learners may iterate, tune, and select only on train and validation.
+- The test set is reachable only through `final_test_score(predict_fn)` in the unit's data module, which returns the stated metric. Each solution calls it exactly once, after all fitting and selection.
+- The answer check asserts one call, after training, and asserts that neither validation nor test rows entered training (checked at the practice's named seam; see Task 4).
+- Baselines are fixed: each is computed by committed code in the data module (`baseline_score(task)`) at the frozen seed, and the statement prints the resulting number.
+
 ### Taught in this unit (not in the baseline, Book 1, or earlier Book 2 units)
 
 - **Device placement and mixed precision (Session 1).**
   - The device-agnostic pattern `device = "cuda" if torch.cuda.is_available() else "cpu"`, moving the model and every batch with `.to(device)`, and device-mismatch errors.
-  - `torch.autocast(device_type, dtype)`: `bfloat16` on CPU and L4, with a gradient scaler only for `float16` on CUDA.
-  - Memory arithmetic: bytes per element; parameters, gradients and Adam state.
-- **Resumable training (Session 1).** Checkpointing the model, optimizer, step, and RNG states (`torch.get_rng_state`, and the CUDA state when present). A resumed run reproduces the uninterrupted run's next-step loss.
+  - `torch.autocast(device_type, dtype)`: `bfloat16` on L4, `float16` with a gradient scaler as the alternative, and `amp_dtype=None` (no autocast) as the CI path. Running `bfloat16` on CPU is shown for correctness only; on CPUs without native bf16 support it can be slower than `float32`.
+  - CPU and L4 configurations are one config dict passed to the same code path, so the never-executed accelerator extension cannot drift from what CI runs.
+  - Memory arithmetic with `book1:parameter-counting`: bytes per element, and fp32 master weights, fp32 gradients, two fp32 Adam moments, and activations.
+- **Resumable training (Session 1).** Checkpointing the model, optimizer, step, and RNG states (`torch.get_rng_state`, and the CUDA state when present). Batch sampling uses the global `torch` RNG, so restoring it restores the sampler, and a resumed run reproduces the uninterrupted run's next-step loss under `torch.equal`.
 - **Bootstrap confidence intervals (Session 3).** Percentile bootstrap over test examples with a seeded generator; paired comparison across shared seeds and examples. Why `Var(mean of n iid) = σ²/n` follows from `book1:variance-of-sums` and `book1:independence`.
 - **Pseudo-labeling and cluster-then-label (Session 4).**
   - Confidence-thresholded, class-balanced pseudo-label selection and confirmation bias.
   - Cluster-then-label: `book1:k-means` on frozen features, with clusters labelled by majority of the labelled points.
   - Validation drawn only from labelled data.
 - **Inverse problems (Session 5).**
-  - Forward/observation operator, ill-posedness, and Tikhonov regularization.
+  - Forward/observation operator, ill-posedness, and Tikhonov regularization as ridge regression (`book1:l2-regularization`).
+  - The nonlinear field operator is linearized by discretization:
+    - fix a 9×9 grid of candidate source positions on `[0,1]²`;
+    - `A[i, j]` is the field magnitude at sensor `i` from a unit source at grid node `j`;
+    - solve for a nonnegative-clipped grid density;
+    - the source estimate is the density-weighted centroid of the top-3 nodes, and its strength is their total mass.
   - The closed form `(AᵀA + λI)⁻¹Aᵀy`, derived from `book1:sum-of-squares-gradients` and `book1:invertibility-via-rank`.
   - Learned inversion trained on simulated pairs; physics-residual checks.
 - **Mixture-function parameter regression (Session 6).**
-  - Sum-of-Gaussian-bumps functions and label switching (non-identifiability under permutation).
+  - Functions that are sums of exactly `K = 3` one-dimensional Gaussian bumps. The generator enforces center separation ≥ 3 × the largest width and positive weights. Label switching (non-identifiability under permutation).
   - Canonicalization by sorting on the center.
-  - Permutation-invariant loss and evaluation; a gradient-based least-squares baseline.
+  - Permutation-invariant loss and evaluation; a least-squares baseline fitted with Adam (`lr=0.02`, 500 steps) from a fixed initialization: evenly spaced centers, equal weights, median width.
 
 ### Six-session teaching spine
 
@@ -147,37 +169,43 @@ Every solution ends with `### Answer check`.
 
 | ID | Set | Type | Difficulty | Min | Compute | Primary scored contract |
 |---|---|---|---:|---:|---|---|
-| p01 | A | mc-normal-form | intro | 20 | cpu | from literal tensor shapes, compute the ratio of training memory in bytes with `bfloat16` activations to all-`float32` activations as `a/b` (`gcd(a,b)=1`, `b>0`); select normalized `a+b` from exactly five A–E choices |
+| p01 | A | mc-normal-form | intro | 20 | cpu | from a literal parameter count and activation element count, compute the ratio of training memory with `bfloat16` activations to all-`float32` training memory as `a/b` (`gcd(a,b)=1`, `b>0`). Counted tensors: fp32 master weights, fp32 gradients, two fp32 Adam moments, and activations. Select normalized `a+b` from exactly five A–E choices |
 | p02 | A | mc | intro | 20 | cpu | identify the cause of, and the fix for, a device-mismatch traceback |
 | p03 | A | mc | intro | 20 | cpu | choose the baseline and the single ablation that test a stated hypothesis |
 | p04 | A | mc | core | 20 | cpu | apply a confidence threshold and per-class cap to a literal probability table |
 | p05 | A | mc | core | 20 | cpu | identify which loss is permutation-invariant for mixture parameters |
 | p06 | B | constrained-coding | intro | 50 | L4 | implement `get_device()`, `move_batch(batch, device)` and `train_step(model, batch, optimizer, device, amp_dtype)` with autocast, verified on CPU |
-| p07 | B | constrained-coding | core | 50 | L4 | implement `save_checkpoint(path, model, optimizer, step)` and `load_checkpoint(path, model, optimizer)` including RNG state; a resumed run must reproduce the uninterrupted next-step loss exactly |
+| p07 | B | constrained-coding | core | 50 | L4 | implement `save_checkpoint(path, model, optimizer, step)` and `load_checkpoint(path, model, optimizer)` including the global `torch` RNG state; a resumed run must reproduce the uninterrupted next-step loss (`torch.equal`) |
 | p08 | B | constrained-coding | core | 50 | cpu | implement `bootstrap_ci(metric_fn, y_true, y_pred, n_boot, alpha, generator)` (percentile) and `paired_bootstrap_diff(...)` |
 | p09 | B | constrained-coding | core | 50 | cpu | implement `select_pseudo_labels(probs, threshold, max_per_class)` returning indices and labels, class-balanced and deterministic on ties |
-| p10 | B | constrained-coding | core | 50 | cpu | implement `forward_field(source_xy, strength, sensors_xy)` and `tikhonov_solve(A, y, lam)` using `torch.linalg.solve` |
-| p11 | B | constrained-coding | core | 50 | cpu | implement `mixture_function(x, weights, centers, widths)` and `canonicalize(params)` (sort by center) |
+| p10 | B | constrained-coding | core | 50 | cpu | implement `forward_field(source_xy, strength, sensors_xy)`, `grid_operator(grid_xy, sensors_xy)` building `A`, and `tikhonov_solve(A, y, lam)` using `torch.linalg.solve` |
+| p11 | B | constrained-coding | core | 50 | cpu | implement `mixture_function(x, weights, centers, widths)` for `K = 3` and `canonicalize(params)` (sort by center) |
 | p12 | B | constrained-coding | advanced | 50 | cpu | implement `run_ablation(configs, train_fn, seeds)` returning a per-config mean ± sample-std table under a fixed step budget |
 | p13 | B | proof | core | 45 | cpu | derive the Tikhonov minimizer `(AᵀA + λI)⁻¹Aᵀy` and prove it is unique for `λ > 0` |
 | p14 | B | proof | core | 45 | cpu | prove that permuting mixture components leaves the function unchanged, and that sorting by strictly distinct centers gives a unique canonical parameter vector |
 | p15 | B | proof | core | 45 | cpu | prove `Var(mean) = σ²/n` for iid runs, and show that a paired difference has lower variance when the runs are positively correlated |
-| p16 | C | integrative | core | 65 | L4 | train a small CNN with the p06/p07 helpers: autocast, checkpoint at step k, resume, and certify the loss decrease and resume equality on CPU; accelerator extension for L4 |
-| p17 | C | integrative | advanced | 65 | L4 | semi-supervised shape classification on 8×8 synthetic images with 10% labels: certify that self-training beats the labelled-only baseline on the held-out test set, with validation from labelled data only |
-| p18 | C | integrative | advanced | 65 | cpu | cluster-then-label with `k-means` on frozen features versus threshold pseudo-labels; certify both against the baseline and report which wins |
-| p19 | C | integrative | advanced | 65 | L4 | learned inversion: train an MLP on simulated sensor→source pairs; certify held-out source error below the Tikhonov-linearized baseline and a physics residual below a stated bound |
-| p20 | C | integrative | advanced | 65 | L4 | train a regressor from sampled function values to canonical mixture parameters; certify held-out permutation-invariant error below the least-squares baseline's |
+| p16 | C | integrative | core | 65 | L4 | train a small CNN (the statement describes the 8×8 shape dataset itself) with the p06/p07 helpers: checkpoint at step k, resume, and certify the loss decrease and resume equality on CPU with `amp_dtype=None`; accelerator extension for L4 |
+| p17 | C | integrative | advanced | 65 | L4 | semi-supervised shape classification on 8×8 synthetic images with 30 labelled examples: certify that self-training beats the fixed labelled-only baseline's test accuracy by a stated margin, with selection on labelled validation only |
+| p18 | C | integrative | advanced | 65 | cpu | cluster-then-label with `k-means` (k = 3) on frozen features from a labelled-only CNN, versus threshold pseudo-labels; certify that cluster-then-label beats the fixed baseline by a stated margin, and report its comparison with the threshold method |
+| p19 | C | integrative | advanced | 65 | L4 | learned inversion: train an MLP on simulated sensor→source pairs; certify that the final test source-position error is below the fixed grid-Tikhonov baseline score, and that the physics residual is below a stated bound |
+| p20 | C | integrative | advanced | 65 | L4 | train a regressor from 32 sampled function values to the 9 canonical parameters; certify that the final test permutation-invariant error is below the fixed least-squares baseline score |
 | p21 | C | integrative | core | 65 | cpu | produce an evaluation report for two model families: bootstrap CIs, a paired comparison across shared seeds, an ablation table, and robustness to an input-noise shift |
 | p22 | C | integrative | core | 65 | cpu | run a budgeted experiment campaign (hypothesis → configs → results → decision) within a fixed total step budget and log it |
 | p23 | C | scenario | core | 55 | cpu | plan a Colab L4 session for a stated task: memory and time budget, OOM triage order, checkpoint cadence, restart procedure, submission checklist |
 | p24 | C | scenario | core | 55 | cpu | choose the next experiments under a time limit while avoiding hidden-test overfitting |
 | p25 | C | scenario | core | 55 | cpu | diagnose when pseudo-labeling hurts (confirmation bias, imbalance) from a literal training trace, and choose a remedy |
-| p26 | C | challenge | advanced | 55 | cpu | open-ended inverse-problem mini-competition: build any valid approach within the budget, beat a stated baseline score on the held-out set, and write the approach/alternatives/evaluation section |
-| p27 | C | challenge | advanced | 55 | cpu | open-ended mixture-parameter mini-competition with the same deliverables |
+| p26 | C | challenge | advanced | 55 | cpu | open-ended inverse-problem mini-competition: build any valid approach within the budget (≤ 2,000 optimizer steps, counted by a provided `StepBudget` wrapper, and < 15 s wall-clock); beat the committed baseline score on the locked test set; write the rubric writeup |
+| p27 | C | challenge | advanced | 55 | cpu | open-ended mixture-parameter mini-competition with the same budget, baseline, and writeup deliverables |
 | p28 | C | challenge | advanced | 55 | cpu | audit a results report for test-set reuse, seed cherry-picking, an invalid CI, and leakage; write the corrected report |
 
 The ledger has 28 practices: 5 MC, 7 constrained coding, 3 proof, 7 integrative, 3 scenario, and 3 challenge (1,370 practice minutes).
-The difficulty spread is 4 intro / 16 core / 8 advanced.
+The difficulty spread is 4 intro / 16 core / 8 advanced. The intro share (14%) is below the ~30% guide by design: this is the capstone. Siblings shipped about 21%.
+
+The writeup rubric for p26/p27 has four required subsections:
+- **Approach**: the model, its features, and why.
+- **Alternatives considered**: at least two, each with the evidence that ruled it out.
+- **Evaluation**: the validation protocol, the single final test score with a bootstrap CI, and the comparison with the baseline.
+- **Limitations**: at least one failure mode and how it would be tested.
 Every owned concept has at least three direct practices:
 
 | Concept | Direct practices |
@@ -247,7 +275,7 @@ Steps:
   - the double-length standard (6 sessions, 28 practices);
   - the six rows staying `missing`.
   Also prove, in a copied fixture, the seven-week ledger after B2-023 (`after_book_week: 37`, 10,270 scheduled minutes) and that duplicate, misordered, missing-session, minute-mismatched, or before-week-31 allocations are rejected.
-- [ ] Update only the existing planned row and regenerate the roadmap and audit. Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_compute_policy.py tests/test_book2_schedule.py tests/test_b2_024_plan.py` and commit.
+- [ ] Update only the existing planned row (prerequisites rewritten to the 14-unit list; `provisional_concepts` set) and regenerate the roadmap and audit. The "rows stay `missing`" assertions are rewritten in Task 3 when the rows are promoted. Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_compute_policy.py tests/test_book2_schedule.py tests/test_b2_024_plan.py` and commit.
 
 ### Task 2 — Author lessons, statements, and generators
 
@@ -256,14 +284,29 @@ Steps:
   - the 28 statements;
   - `scripts/generate_capstone_data.py` with `data/capstone_data.py`.
 - [ ] The generator produces four seeded datasets:
-  - 8×8 synthetic shape images (3 classes) with a 10% labelled split, an unlabelled pool, and a held-out test set;
-  - inverse-problem pairs (2-D source position and strength → noisy field magnitudes at fixed sensors), split into train and held-out;
-  - mixture-function samples (2–3 Gaussian bumps, canonical parameters), split into train and held-out;
+  - 8×8 synthetic shape images (3 classes) with noise, position jitter, and stroke-width variation, tuned so the labelled-only baseline lands at most 0.85 test accuracy at the frozen seed. Splits: 30 labelled train, 30 labelled validation, 600 unlabelled, and 300 test;
+  - inverse-problem pairs (2-D source position in `[0.1, 0.9]²` and strength → noisy field magnitudes at 8 fixed sensors): 800 train, 200 validation, and 200 test;
+  - mixture-function samples (`K = 3` bumps, 32 x-values, canonical parameters): 800 train, 200 validation, and 200 test;
   - two literal results tables for p24/p28.
-  It exposes immutable split ID tuples and a canonical per-row SHA-256 map, has a `--check` mode, and never stores trained weights or metrics.
-- [ ] Training statements (p16–p22, p26, p27) require `train_rows()` / `heldout_rows()` from the generator splits. Clean rows pass unchanged through the model's first `forward` call (or `forward_field` for simulation), so leakage checks can hash them.
-- [ ] Every `optional-colab-l4` statement carries an `Accelerator extension` section with the larger L4 configuration.
-- [ ] CPU budget for each training solution: fewer than 2,000 examples, at most 2,000 full-batch or mini-batch steps, and well under 20 s on CPU. Each statement pins its exact sizes.
+  It exposes immutable split ID tuples, a canonical per-row SHA-256 map, `final_test_score(predict_fn)`, `baseline_score(task)`, and a `StepBudget` optimizer wrapper. It has a `--check` mode, and it never stores trained weights or metrics.
+- [ ] Model-building statements (p16–p22, p26, p27) follow the evaluation protocol above and name one clean-row seam each, so leakage checks can hash clean rows there:
+  - p16, p17, p19 and p20: the model's first `forward`;
+  - p18: the frozen feature extractor's `features(x)`;
+  - p21 and p22: the `fit(train_x, train_y)` call of the compared models;
+  - p26 and p27: the `fit` entry point the statement requires every approach to expose.
+- [ ] Every `optional-colab-l4` statement carries an `Accelerator extension` section: the larger L4 configuration, given as a replacement config dict for the same code path.
+- [ ] CPU budgets, pinned in the statements:
+  - p16: CNN `Conv(1→8,3)`, ReLU, `Conv(8→16,3)`, ReLU, linear head to 3 classes; 600 rows; 300 mini-batch steps (batch 64).
+  - p17: the same CNN; 3 self-training rounds of 150 steps each.
+  - p18: the p16 CNN trained on labelled data only (150 steps), then k-means with k = 3 and 20 Lloyd iterations.
+  - p19: MLP `8→64→64→3`; 1,500 full-batch Adam steps.
+  - p20: MLP `32→128→128→9`; 1,500 full-batch Adam steps.
+  - p21 and p22: MLPs no wider than 64 on generator tabular data; ≤ 2,000 total steps.
+  - p26 and p27: within `StepBudget(2000)`.
+  Every solution must run well under 20 s on CPU, measured in Task 3.
+- [ ] Certification margins are set from the frozen-seed run with comfortable slack. Two are pinned here:
+  - p17 and p18 must beat the baseline by at least 0.03 absolute test accuracy;
+  - p19, p20, p26 and p27 must beat their committed baseline scores.
 - [ ] The open-ended challenges (p26, p27) fix a held-out set, a score function, a stated baseline score, a step budget, and a required writeup (approach, alternatives considered, evaluation). Any approach that beats the baseline within budget is correct. The solution gives one reference approach plus the writeup.
 - [ ] Bundle allowlist checks (as in Plans 027/028), then a SHA-256 manifest outside the bundle.
 
@@ -290,8 +333,12 @@ Steps:
   - `select_pseudo_labels`: `>` versus `>=` at the threshold, or the per-class cap ignored;
   - `tikhonov_solve`: `+λ` dropped;
   - `canonicalize`: sorting by weight instead of center;
-  - `run_ablation`: population std instead of sample std.
-  In addition, every training practice (p16–p22, p26, p27) gets a no-op optimizer-step mutant and a held-out-row mutant, detected at the clean-row seam and armed only during the training call.
+  - `run_ablation`: population std instead of sample std;
+  - `train_step`: autocast omitted when `amp_dtype=torch.bfloat16`, detected by the output dtype on CPU.
+  In addition:
+  - p16, p17, p19 and p20 (whose statements require a named training function with an optimizer) get a no-op optimizer-step mutant.
+  - Every model-building practice gets a leakage mutant (validation or test rows reaching training), detected at its named seam with the check armed only during fitting.
+  - Every model-building practice gets a protocol mutant (`final_test_score` called twice, or before fitting).
 - [ ] This is a correctness check only; anti-cheat is out of scope. Wire the suite into `scripts/ci-local.sh` step 7 and commit.
 
 ### Task 5 — Verification, content gate, report, merge
@@ -306,7 +353,7 @@ Steps:
 - [ ] 3-way blind content gate:
   - Sol solves p01, p10, p13, p19 and p26.
   - Fable solves p04, p08, p14, p17 and p27.
-  - Self solves p07, p11, p15, p20 and p23, and also reviews the ledger, coverage, accessibility, and provenance (originality against the reference analysis).
+  - Self solves p07, p11, p15, p20 and p23, and also reviews the ledger, coverage, and accessibility. Self also checks provenance: the generator specifics are compared against the local reference index and rationale (where present on this machine) as well as `analysis.md`, to confirm the task families are original and not close paraphrases.
   Resolve every `[OPEN]` finding and re-review after material changes.
 - [ ] Write the verdicts and the post-execution report, and add Plan 029 to `TODO.md`.
 - [ ] Rerun CI on the clean tip, push, open the PR, run `pre-merge-guard --pr`, squash-merge without deleting local history refs, and verify `main` equals `origin/main`.
@@ -321,7 +368,31 @@ Steps:
 
 ## Plan Review
 
-Pending.
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
+
+### Review 1 — self (2026-10-09)
+- **Verdict**: Approve with suggestions. Plans 027/028 review lessons were applied up front.
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: prerequisite closure missed `mlp-architecture`, `relu-activation`, and `linear-regression`. → Response: C5 added; concept list expanded (also `l2-regularization`, `trained-mlp`, `parameter-counting`, `stochastic-gd`, `accuracy-precision-recall`).
+2. `[FIXED]` Must Fix: repeated selection against held-out data reuses the test set. → Response: an "Evaluation protocol" with train/validation/locked test, and `final_test_score` called once after fitting.
+3. `[FIXED]` Must Fix: optimizer and `forward` mutants don't fit p18/p21/p26/p27. → Response: a named seam per practice; optimizer mutants limited to p16/p17/p19/p20; protocol mutants added.
+4. `[FIXED]` Should Fix: baseline linearization and attainable thresholds undefined. → Response: the grid-Tikhonov construction is pinned; baselines are committed code at the frozen seed; margins come from the frozen run.
+
+### Review 1 — Fable (2026-10-09)
+- **Verdict**: Approve with nits (conditional on Must Fix 1–3).
+1. `[FIXED]` Must Fix: inverse-problem `A` undefined. → Response: a 9×9 candidate-grid operator, Tikhonov density, and top-3 centroid read-out.
+2. `[FIXED]` Must Fix: variable `K`. → Response: `K = 3`, enforced separation, and a pinned LS baseline initialization and steps.
+3. `[FIXED]` Must Fix: SSL headroom. → Response: generator difficulty tuned to a baseline ≤ 0.85; a 0.03 margin; p18's certification defined.
+4. `[FIXED]` Should Fix: pin CPU budgets. → Response: per-practice sizes and steps.
+5. `[FIXED]` Should Fix: CPU bf16 honesty. → Response: `amp_dtype=None` CI path; bf16-on-CPU for correctness only; L4 extension as a config dict for the same code.
+6. `[FIXED]` Should Fix: concept-tag gaps; `multivariate-gaussian` unused. → Response: tags added; `multivariate-gaussian` and B2-022 dropped.
+7. `[FIXED]` Should Fix: planned-row prerequisites. → Response: Task 1 explicitly rewrites them to the 14-unit list.
+8. `[FIXED]` Should Fix: p26/p27 gradability. → Response: `StepBudget` plus wall-clock limit, committed baseline, four-part writeup rubric.
+9. `[FIXED]` Should Fix: p07 exact resume. → Response: global RNG for sampling; `torch.equal`.
+10. `[FIXED]` Should Fix: p01 memory model. → Response: the counted tensors are enumerated.
+11. `[FIXED]` Nits: the missing-row tests are rewritten in Task 3; autocast-omitted mutant; p16 describes its dataset; provenance compared against the local index and rationale; intro share noted.
 
 ## Content Review
 
