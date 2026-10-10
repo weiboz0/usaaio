@@ -392,3 +392,34 @@ def test_overlap_rejects_wrong_round_directory_for_selected_book2(
 
     with pytest.raises(ValueError, match="book 2 assessments"):
         check_overlap(tmp_path, book_number=2)
+
+
+def test_overlap_ignores_shared_latex_math_notation(tmp_path):
+    # Standard formulas shared with a reference (plain-text in the index, LaTeX in
+    # our notebooks) are notation, not copied prose, and must not count as overlap.
+    reference = (
+        "the forward step is x t sqrt alpha t x t 1 sqrt 1 alpha t eps and "
+        "kl q x t 1 x t x 0 p theta x t 1 x t"
+    )
+    write_reference(tmp_path, reference)
+    markdown = (
+        "Our own derivation uses $x_t=\\sqrt{\\alpha_t}\\,x_{t-1}+\\sqrt{1-\\alpha_t}\\,\\varepsilon$ "
+        "and $$\\mathrm{KL}\\big(q(x_{t-1}\\mid x_t,x_0)\\,\\|\\,p_\\theta(x_{t-1}\\mid x_t)\\big)$$ "
+        "in an original sentence."
+    )
+    write_notebook(tmp_path, "notation.ipynb", markdown=markdown)
+
+    report = check_overlap(tmp_path)
+
+    assert report.ok, report.errors
+
+
+def test_overlap_math_stripping_keeps_prose_detection(tmp_path):
+    copied = "alpha beta gamma delta epsilon zeta eta theta iota kappa lambda"
+    write_reference(tmp_path, copied)
+    path = write_notebook(tmp_path, "prose.ipynb", markdown=f"$x_t$ {copied} $y$")
+
+    report = check_overlap(tmp_path)
+
+    assert not report.ok
+    assert any(str(path) in error for error in report.errors)

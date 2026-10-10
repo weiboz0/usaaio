@@ -49,7 +49,15 @@ def _shingles(text: str) -> set[tuple[str, ...]]:
     return {tuple(words[i : i + SHINGLE_SIZE]) for i in range(max(0, len(words) - SHINGLE_SIZE + 1))}
 
 
+LATEX_MATH_PATTERN = re.compile(
+    r"\$\$.*?\$\$|\$[^$\n]+\$|\\\[.*?\\\]|\\\(.*?\\\)", re.DOTALL
+)
+
+
 def _without_boilerplate(text: str) -> str:
+    # Shared mathematical notation (e.g. a standard DDPM forward step) is not copied
+    # prose; drop LaTeX math spans from the artifact before shingling.
+    text = LATEX_MATH_PATTERN.sub(" ", text)
     lines = []
     for line in text.splitlines():
         stripped = line.lstrip()
