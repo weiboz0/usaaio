@@ -89,11 +89,11 @@ Visible notebook headers keep the Book 2 convention (`Qualified prerequisites`, 
 
 - **Sigmoid and binary cross-entropy with logits (Session 1).** Book 1 never teaches the sigmoid, so it is defined here, and BCE is taught as the two-class special case of `book1:cross-entropy-loss`, with `torch.nn.functional.binary_cross_entropy_with_logits` as the stable API.
 - **Continuous-density KL and Jensen–Shannon divergence (Session 1).** First the integral form `KL(p‖q) = ∫ p log(p/q)` is stated, with `KL ≥ 0` carrying over from B2-022's `log x ≤ x − 1` argument. JS is then defined from it through the mixture `M = (P+Q)/2`. Nonnegativity, with equality iff `P = Q`, follows from B2-022's `KL ≥ 0`.
-- **Pointwise optimization of an integral objective (Session 1).** For the optimal discriminator: maximizing `a·log y + b·log(1−y)` over `y ∈ (0,1)` for each point separately, using single-variable calculus.
+- **Pointwise optimization of an integral objective (Session 1).** For the optimal discriminator: maximizing `a·log y + b·log(1−y)` over `y ∈ (0,1)` for each point separately, using single-variable calculus, under the stated assumption that both densities are positive at the point. Where one density is zero the supremum sits at the boundary `y ∈ {0, 1}`; the lesson states this convention, and p13–p14 assume positive densities.
 - **Sum of independent Gaussians (Session 3).** `N(0, s²) + N(0, r²)` independent is `N(0, s² + r²)`. Gaussianity is stated; the variance follows from `book1:independence` and `book1:variance-of-sums`. It is used to collapse the forward process.
 - **Gaussian posterior of the forward process (Session 4).** The formula for `q(x_{t−1} | x_t, x_0)`, its mean `μ̃_t` and variance `β̃_t`, is stated, not derived. The unit derives only the consequence for `t ≥ 2`: KL between two equal-variance Gaussians is a scaled squared mean difference, which becomes the ε-prediction objective (from B2-022's Gaussian KL).
 At `t = 1` the posterior variance `β̃_1 = 0`, so that KL argument does not apply. The endpoint is the decoder term `−log p(x_0 | x_1)`, and the lesson states that the simplified objective treats it with the same ε-MSE.
-- **Sampling variance (Session 4).** The reverse step uses `σ_t² = β_t` (the choice pinned for p11 and graded in p23). `β̃_t` is mentioned as the other standard choice.
+- **Sampling variance (Session 4).** The reverse step uses `σ_t² = β̃_t`, the posterior variance (the choice pinned for p11 and graded in p23). With the model's reverse variance equal to the posterior variance, the `t ≥ 2` KL is exactly the equal-variance case, so the derivation and the sampler agree. `β_t` is mentioned as the other common choice; with it, the KL gains only a model-independent constant and the same weighted ε-MSE mean term.
 - **Classifier-free guidance (Session 5).** `ε̂ = ε_uncond + w·(ε_cond − ε_uncond)` with conditioning dropout during training.
 - **Cross-attention conditioning (Session 5).** Image/latent tokens are queries; text tokens are keys and values. This is B2-019's Q/K/V with B2-021's modal-ownership rule.
 
@@ -129,7 +129,7 @@ Every solution ends with `### Answer check`.
 | p08 | B | constrained-coding | core | 50 | implement `mode_coverage(samples, centers, radius)` returning per-component counts and the number of covered modes |
 | p09 | B | constrained-coding | intro | 50 | implement `make_schedule(T, beta_1, beta_T)` (linear) and `q_sample(x0, t, eps, alpha_bar)` with exact probes |
 | p10 | B | constrained-coding | core | 50 | implement `ddpm_loss(model, x0, t, eps, alpha_bar)` for ε-prediction with explicit mean reduction |
-| p11 | B | constrained-coding | core | 50 | implement `p_sample(model, x_t, t, z, schedule)` with `σ_t² = β_t`, and `sample_loop(model, x_T, noises, schedule)` with fixed noise and no noise at the final step |
+| p11 | B | constrained-coding | core | 50 | implement `p_sample(model, x_t, t, z, schedule)` with `σ_t² = β̃_t`, and `sample_loop(model, x_T, noises, schedule)` with fixed noise and no noise at the final step |
 | p12 | B | constrained-coding | advanced | 50 | implement `cfg_combine(eps_uncond, eps_cond, w)` and a cross-attention conditioning block with an exact Q/K/V shape ledger |
 | p13 | B | proof | core | 45 | derive the optimal discriminator for fixed `G` |
 | p14 | B | proof | advanced | 45 | show that the minimax value at the optimal discriminator, `C(G) = max_D V(D, G)`, equals `−log 4 + 2·JS(p_data‖p_g)`, and that its minimum is reached iff `p_g = p_data`; note why the non-saturating loss is not this quantity |
@@ -218,7 +218,11 @@ Do not alter the B2-024 rows.
     - GAN: generator `2→32→32→2`, discriminator `2→32→32→1`, 600 alternating steps;
     - DDPM: an MLP on `(x, t/T)`, `3→64→64→2`, `T=50`, 1,500 full-batch steps;
     - p19 reruns p18's protocol in-notebook;
-    - p20: 1,500 steps in the 2-D latent.
+    - p20:
+      - data: 3 classes, 64 train / 16 held-out rows per class, generated as `decode(z)` from 2-D latents drawn around class centers at least 4 standard deviations apart, so they lie in the decoder's column space and `decode(encode(x)) = x` on data;
+      - denoiser: an MLP on `(z_t, t/T, c)`, where `c` is the output of one single-head cross-attention block (dimension 16) whose query is the latent token and whose keys/values are the class token plus a learned null token;
+      - conditioning dropout 0.2;
+      - Adam `lr=1e-2`, full batch, 1,500 steps, `T=50`.
     Every solution must stay under the 20 s limit, measured in Task 3.
 - [ ] The orchestrator checks the bundle against an exact allowlist:
   - regular files only;
@@ -254,7 +258,7 @@ Do not alter the B2-024 rows.
 
 - [ ] Write `tests/test_generative_model_checks.py` so that, for every pinned function, the untouched solution passes and a named plausible wrong implementation fails its answer check:
   - `generator_loss`: the saturating `log(1−D)` form;
-  - `gan_step`: a missing `detach` in the D-step. Detected at the gradient boundary: `gan_step` zeroes gradients with `set_to_none=True` before each sub-step, and the check asserts every generator parameter's `.grad` is `None` right after the D-step backward;
+  - `gan_step`: a missing `detach` in the D-step. `gan_step` must call pinned helpers `d_step(G, D, opt_d, real, z)` then `g_step(G, D, opt_g, z)`, each zeroing gradients with `set_to_none=True` first. The test drives `d_step` alone and asserts every generator parameter's `.grad` is `None` afterwards;
   - `q_sample`: `α_t` used where `ᾱ_t` belongs;
   - `p_sample`: noise added at the final step;
   - `cfg_combine`: the guidance sign flipped;
@@ -263,7 +267,7 @@ Do not alter the B2-024 rows.
   - `make_schedule`: an off-by-one `linspace` endpoint;
   - `ddpm_loss`: an `x0` target instead of `ε`;
   - `sample_loop`: the timesteps visited in ascending order.
-  - All four training functions (p17–p20) also get a no-op optimizer-step mutant and a held-out-row mutant. Leakage is detected by wrapping the named clean-row seam (discriminator `forward`, `q_sample`'s `x0`, or the frozen `encode`) during training and hashing every clean row against the held-out hash set built from `HELDOUT_IDS` and the per-row SHA-256 map.
+  - All four training functions (p17–p20) also get a no-op optimizer-step mutant and a held-out-row mutant. Leakage is detected by wrapping the named clean-row seam (discriminator `forward`, `q_sample`'s `x0`, or the frozen `encode`) only for the duration of the `train_*` call — held-out evaluation legitimately uses the same seams afterwards — and hashing every clean row against the held-out hash set built from `HELDOUT_IDS` and the per-row SHA-256 map.
 - [ ] Implement only named-function substitutions in copied solution notebooks. This is a correctness check, not adversarial hardening; anti-cheat stays out of scope.
 - [ ] Add the suite to `scripts/ci-local.sh` step 7, next to the existing focused suites, and commit.
 
@@ -314,6 +318,21 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 5. `[FIXED]` Should Fix: p20's autoencoder source and class rule. → Response: literal encoder/decoder, nearest-center rule, thresholds from the frozen seed.
 6. `[FIXED]` Should Fix: GAN loss contract. → Response: a D-loss band around `2·log 2` plus a finite G-loss bound.
 7. `[FIXED]` Nit: mutants for all ten pinned functions. 8. `[FIXED]` Nit: p19 downgraded to core (5/12/7). 9. `[FIXED]` Nit: CFG compares `w=3` with both `w=1` and `w=0`. 10. `[FIXED]` Nit: the GAN row's `depends_on` is left unchanged, as stated. 11. `[FIXED]` Nit: `multi-head-attention` dropped; lessons must reference every listed concept.
+
+### Review 2 — self (2026-10-09)
+- **Verdict**: Approve after fixes.
+
+### Review 2 — Fable (2026-10-09)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Nit: `gan_step`'s internal gradient check needs a drivable seam. → Response: pinned `d_step`/`g_step` helpers.
+2. `[FIXED]` Nit: the leakage wrapper must be armed only during the `train_*` call.
+3. `[FIXED]` Nit: p20 data generated as `decode(z)`, so `decode(encode(x)) = x`.
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: `σ_t² = β_t` contradicts the equal-variance KL with posterior variance `β̃_t`. → Response: `σ_t² = β̃_t` is pinned everywhere, and the `β_t` alternative is explained as adding only a constant.
+2. `[FIXED]` Should Fix: p20 CPU contract underspecified. → Response: data construction, denoiser, cross-attention size, dropout, optimizer, and steps are pinned.
+3. `[FIXED]` Nit: optimal-discriminator boundary. → Response: positive-density assumption plus a boundary convention.
 
 ## Content Review
 
