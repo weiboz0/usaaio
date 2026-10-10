@@ -43,7 +43,7 @@ BOOK1_OWNED_R2_DEPENDENCIES = {
         "eigenvalues-and-eigenvectors",
     ],
     "gaussian-reparameterization": ["pytorch-autograd-and-optimizer-training"],
-    "kl-divergence": ["conditional-probability", "expectation"],
+    "kl-divergence": ["conditional-probability", "probability-and-statistics-foundations"],
     "gpu-colab-l4-workflow": [
         "colab-coding-submission",
         "pytorch-autograd-and-optimizer-training",
@@ -1934,8 +1934,8 @@ def test_renderer_recomputes_the_design019_book2_planned_delta() -> None:
         assert "C6 and C8 are not yet estimated" not in document
         assert "C8" in document
         assert "so this is not a complete roadmap total" not in document
-        assert "**533.92–573.92 manifested-baseline hours**" in document
-        assert "**539.42–579.42 scheduled-baseline hours**" in document
+        assert "**560.92–600.92 manifested-baseline hours**" in document
+        assert "**566.92–606.92 scheduled-baseline hours**" in document
         assert "Total roadmap delta" not in document
 
 
@@ -2771,7 +2771,7 @@ def test_imported_taught_closure_authorized_subset_is_exact() -> None:
 @pytest.mark.parametrize(
     ("requested", "message"),
     [
-        pytest.param("book1:C5-neural-networks", "allowlist", id="nonallowlisted-unit"),
+        pytest.param("book1:C12-classical-models", "allowlist", id="nonallowlisted-unit"),
         pytest.param("F1-scientific-python", "qualified", id="unqualified-unit"),
         pytest.param("book2:F1-scientific-python", "owner", id="wrong-owner-unit"),
     ],

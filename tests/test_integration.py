@@ -142,6 +142,14 @@ PLAN020_B2_020_CONCEPTS = (
     "transformer-nlp-task-design",
 )
 
+PLAN027_B2_022_CONCEPTS = (
+    "multivariate-gaussian",
+    "kl-divergence",
+    "autoencoder",
+    "gaussian-reparameterization",
+    "variational-autoencoder",
+)
+
 PLAN021_B2_021_CONCEPTS = (
     "vision-transformers",
     "object-detection",
@@ -531,19 +539,21 @@ def test_concepts_have_manifest_owners_for_live_b2_019():
         "B2-019-attention-transformers",
         "B2-020-language-transformers",
         "B2-021-cross-modal-transformers-vision",
+        "B2-022-probabilistic-latent-models",
     ]
     assert book2_syllabus.units["B2-019-attention-transformers"].teaches == list(
         PLAN019_B2_019_CONCEPTS
     )
     assert set(book2_syllabus.concepts) == set(PLAN019_B2_019_CONCEPTS) | set(
         PLAN020_B2_020_CONCEPTS
-    ) | set(PLAN021_B2_021_CONCEPTS)
+    ) | set(PLAN021_B2_021_CONCEPTS) | set(PLAN027_B2_022_CONCEPTS)
     assert (
         set(planned_units)
         - {
             "B2-019-attention-transformers",
             "B2-020-language-transformers",
             "B2-021-cross-modal-transformers-vision",
+            "B2-022-probabilistic-latent-models",
         }
     ).isdisjoint(book2_syllabus.units)
 
@@ -728,7 +738,7 @@ def test_plan019_phase1_exact_live_corpus_counts_and_double_length_roster():
 
     assert len(manifests) == 19
     assert len(syllabus.concepts) == 149
-    assert len(book2_syllabus.concepts) == 23
+    assert len(book2_syllabus.concepts) == 28
     assert set(syllabus.concepts).isdisjoint(book2_syllabus.concepts)
     assert sum(len(manifest.practice) for manifest in manifests) == 437
     assert sum(len(manifest.lesson_sessions or []) for manifest in manifests) == 69
@@ -754,7 +764,7 @@ def test_plan019_phase1_exact_live_corpus_counts_and_double_length_roster():
     }
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
     assert (
-        "Double-length units (F5, F6, C7, C11, C12, B2-019, B2-020, and B2-021) use 4–6 sessions."
+        "Double-length units (F5, F6, C7, C11, C12, B2-019, B2-020, B2-021, and B2-022) use 4–6 sessions."
         in standards
     )
 
@@ -1693,7 +1703,7 @@ def test_plan019_phase1_book1_narrative_order_and_book2_dependency_contract():
     assert re.search(r'^name = "seaborn"$', (ROOT / "uv.lock").read_text(), re.MULTILINE)
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
     assert (
-        "Double-length units (F5, F6, C7, C11, C12, B2-019, B2-020, and B2-021) use 4–6 sessions."
+        "Double-length units (F5, F6, C7, C11, C12, B2-019, B2-020, B2-021, and B2-022) use 4–6 sessions."
         in standards
     )
 

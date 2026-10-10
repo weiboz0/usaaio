@@ -22,6 +22,8 @@ python_consumers:
   - tests/test_b2_020_statements.py
   - tests/test_b2_021_plan.py
   - tests/test_b2_021_statements.py
+  - tests/test_b2_022_plan.py
+  - tests/test_b2_022_statements.py
   - tests/test_blueprint.py
   - tests/test_book2_schedule.py
   - tests/test_c11_solution_regressions.py
@@ -31,6 +33,7 @@ python_consumers:
   - tests/test_integration.py
   - tests/test_layer_boundary.py
   - tests/test_language_transformer_checks.py
+  - tests/test_latent_model_checks.py
   - tests/test_model.py
   - tests/test_new_mocktest.py
   - tests/test_overlap.py
