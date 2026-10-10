@@ -531,7 +531,29 @@ Do not alter B2-022 through B2-024 coverage rows.
 
 ## Content Review
 
-Pending implementation and four-way blind review.
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`). Plan 026 (user directive 2026-10-09) replaced the four-way roster before this content gate began.
+
+### Review 1 — self (2026-10-09)
+- **Blind answers**: p01 → 6 patches / 7 tokens → 13 (C); p04 → intersection 4, union 18, IoU 2/9 (A). Both match the solutions.
+- **Verdict**: Approve with suggestions. Full CI was ALL GREEN at 31f6fed after merging post-Plan-022 `main`, which needed a `scripts/ci-local.sh` conflict resolution keeping both the B2-021 solution probe and `main`'s root handling.
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-09)
+- **Blind answers**: p01 13 (C); p09 `[0, 2]`; p13 3,125 entries, ratio 625/49; p17 approach; p22 duplicate / false positive / thresholded. All agree with the solutions except the p22 classification below.
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: `p22_solution` called row 3 a "threshold-caused false negative", but the only truth box is already matched by row 0. → Response: relabelled "thresholded candidate", with the condition under which it would be a false negative; the answer check is updated.
+2. `[FIXED]` Must Fix: Lesson 4 §3 called `(PAP^T)(PX)=PAX` mean aggregation. → Response: separates sum aggregation from mean `D^{-1}AX` with permuted degrees `PDP^T`.
+3. `[FIXED]` Should Fix: p09's "process each class independently … selection time" conflicted with the global-order lesson and solution. → Response: the statement now specifies one global descending-score visit order with same-class-only suppression.
+
+### Review 1 — Fable (2026-10-09)
+- **Blind answers**: p04 A; p11 CE 0.162926, Dice 1.0; p15 `(2,10,8,8)` and height failure; p19 held-out CE 0.730 → 0.055, Dice 0.857 (own run); p24 `invalid-padded-edge`, `heldout-optimizer-id`, `reversed-qkv`. All agree with the solutions.
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Should Fix: the fixture API used by p17–p20 was never named in a lesson. → Response: Lesson 5 §4 now names `TASK_SPLITS`, `build_task_batch(task, ids)` and `validate_actual_batch(task, features, targets)` with their return conventions.
+2. `[FIXED]` Nit: p19 Dice pooling unspecified. → Response: "batch-global … pooled over all held-out pixels".
+3. `[FIXED]` Nit: p09 phrasing (same fix as Sol 3).
+4. `[FIXED]` Nit: lesson mini-traces described as "actual" with no reproducing cell. → Response: relabelled "recorded reference-run".
+5. `[WONTFIX]` Nit: p01's "sign convention" request is shared mc-normal-form boilerplate; harmless and consistent across units.
+
+Re-verified after fixes: inventory regenerated; B2-021 focused suites 85 passed; p09/p22 solutions and Lessons 4/5 re-executed; Book 2 hygiene PASS.
 
 ## Post-execution report
 

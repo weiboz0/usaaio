@@ -5304,7 +5304,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb
   kind: notebook
-  semantic_sha256: 44599332aebde1f487099beec7e2bacc62d437edd783155cc520196eacb034b8
+  semantic_sha256: d5bdfeb68fc40fc804caaf094ec460ce7d2c1b6a8e7fa16b0820b8d4767e39af
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
       — Session 1: Image Patches and Vision Transformers :: cell 1'
@@ -5398,7 +5398,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb
   kind: notebook
-  semantic_sha256: 1a0dc124c36f109b5a33576f0b3556e273428c96450dcb87588b475c27596b53
+  semantic_sha256: b26f8bcf93411b5efbec7f560786b2160ce6de926efed4446ed586c28c10dd00
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
       Session 2: Detection Grids and Set Prediction :: cell 1'
@@ -5491,7 +5491,7 @@ notebooks:
   - torch.where
 - path: units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb
   kind: notebook
-  semantic_sha256: cbb602bae5edf51ee9b242443b35a8aa38a6f0d1c49884bf02ac5305a4887fff
+  semantic_sha256: 023400c72faea5a19a9c498b8b198ddc4fbff57e71be5f7e97a243fd4febab5a
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
       — Session 3: U-Net Segmentation and Skip Connections :: cell 1'
@@ -5587,7 +5587,7 @@ notebooks:
   - torch.randn
 - path: units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb
   kind: notebook
-  semantic_sha256: a9b7d27817bfa3ef1aac67eeabc42bafbdaa567d76ae35032cb854e073fc5729
+  semantic_sha256: 73284d18d4bade4f00afa386d136c1740a8ef604ffc9b37c46206c91d922a8e7
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
       4: Graphs and Cross-modal Attention :: cell 1'
@@ -5681,7 +5681,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb
   kind: notebook
-  semantic_sha256: 70e1f16e9777d1762d88073d7a4d26f36232d4acf71c75bfb7e5a9fa69d73f6c
+  semantic_sha256: eb8902caa2bec0644a0e4a2e46ffdfd5bae958bd30760cd2e27725fbe3d7a802
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
       5: Vision-System Design and Audit :: cell 1'
@@ -6252,7 +6252,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-021-cross-modal-transformers-vision/practice/p09.ipynb
   kind: notebook
-  semantic_sha256: 8ad99e4ef82c7c92cac12080356296f80276a28ac067f8c774db36a66bbb9eca
+  semantic_sha256: 8404e02234e29c7f0a9eeadd2f0ffe4bd7ba874e9312f000fa318979376dd256
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p09.ipynb :: B2-021 — Practice p09 > Supplied literals
       and exact probes :: cell 1'
@@ -6978,7 +6978,7 @@ notebooks:
   - vision_fixture.validate_actual_batch
 - path: units/B2-021-cross-modal-transformers-vision/practice/p19.ipynb
   kind: notebook
-  semantic_sha256: ae53a48e1a60d311f8208400d76145d9c6275949f4867d2c387c3ac1026b45bd
+  semantic_sha256: 50070189719d31215e3bc7677bd989fc5c57dda12e8c2a484fbaab3f082cc3d7
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p19.ipynb :: B2-021 — Practice p19 > Task :: cell 1'
     heading_path:
@@ -7257,7 +7257,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: 2f36fd685ccc9325db4b038d2d589beb32ba9815cec4e822ad8ae95f10d0910e
+  semantic_sha256: d6cbbaf21660b45d697ad0ca809ad0db2ca185330ef9e109bd9afeed5cd88222
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p22_solution.ipynb :: Solution to p22 :: cell 1'
     heading_path:
