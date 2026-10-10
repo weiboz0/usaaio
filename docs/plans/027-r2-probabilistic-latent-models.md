@@ -375,6 +375,10 @@ Re-verified after fixes: inventory regenerated; B2-022 statement, plan, and late
 - **Verdict**: Reject.
 1. `[FIXED]` Must Fix: p16's assumption (q > 0 wherever p > 0) still allows q mass where `p(x,z) = 0`, so the rewritten parenthetical's finiteness claim was false. → Response: p16 now assumes a common positive support; the solution's parenthetical matches; p16 re-executed.
 
+### Review 3 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: common support gives pointwise finiteness only; a Cauchy `q` against a Gaussian posterior has `KL = +∞`. → Response: p16 also assumes `KL(q‖p(z|x)) < ∞`. The ELBO is then finite because `log p(x)` is constant; the solution explains why pointwise finiteness is not enough.
+
 ## Post-execution report
 
 Pending.
