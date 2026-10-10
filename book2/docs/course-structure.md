@@ -2,8 +2,8 @@
 
 Status: live.
 
-The independent Round 2 schedule runs across local weeks 1–30 and display weeks 41–70.
-Its explicit ledger totals 8,270 minutes; the live manifests reconcile every lesson, practice ID, path, and minute.
+The independent Round 2 schedule runs across local weeks 1–37 and display weeks 41–77.
+Its explicit ledger totals 10,270 minutes; the live manifests reconcile every lesson, practice ID, path, and minute.
 
 | Local week | Display week | Allocation | Minutes |
 |---:|---:|---|---:|
@@ -37,10 +37,18 @@ Its explicit ledger totals 8,270 minutes; the live manifests reconcile every les
 | 28 | 68 | Session 4 (90 minutes); practice chunk 4: B2-023-p04, B2-023-p10, B2-023-p11, B2-023-p16, B2-023-p18, B2-023-p19 (295 minutes) | 385 |
 | 29 | 69 | Session 5 (90 minutes); practice chunk 5: B2-023-p05, B2-023-p12, B2-023-p20, B2-023-p21, B2-023-p23, B2-023-p24 (300 minutes) | 390 |
 | 30 | 70 | review (60 minutes) | 60 |
+| 31 | 71 | Book 1 bridge diagnostic (30 minutes); Session 1 (90 minutes); practice chunk 1: B2-024-p01, B2-024-p02, B2-024-p06, B2-024-p07 (140 minutes) | 260 |
+| 32 | 72 | Session 2 (90 minutes); practice chunk 2: B2-024-p03, B2-024-p12, B2-024-p16, B2-024-p23 (190 minutes) | 280 |
+| 33 | 73 | Session 3 (90 minutes); practice chunk 3: B2-024-p08, B2-024-p15, B2-024-p21, B2-024-p22, B2-024-p24 (280 minutes) | 370 |
+| 34 | 74 | Session 4 (90 minutes); practice chunk 4: B2-024-p04, B2-024-p09, B2-024-p17, B2-024-p18, B2-024-p25 (255 minutes) | 345 |
+| 35 | 75 | Session 5 (90 minutes); practice chunk 5: B2-024-p10, B2-024-p13, B2-024-p19, B2-024-p28 (215 minutes) | 305 |
+| 36 | 76 | Session 6 (90 minutes); practice chunk 6: B2-024-p05, B2-024-p11, B2-024-p14, B2-024-p20, B2-024-p26, B2-024-p27 (290 minutes) | 380 |
+| 37 | 77 | review (60 minutes) | 60 |
 
 The 255/275/420/270/380/60-minute progression for `B2-019-attention-transformers` intentionally peaks in derivation-heavy Week 3 and tapers to review instead of applying Book 1's 450–500-minute semester band.
 The 255/275/420/270/380/60-minute progression for `B2-020-language-transformers` intentionally peaks in derivation-heavy Week 9 and tapers to review instead of applying Book 1's 450–500-minute semester band.
 The 255/275/370/315/375/60-minute progression for `B2-021-cross-modal-transformers-vision` intentionally peaks in derivation-heavy Week 17 and tapers to review instead of applying Book 1's 450–500-minute semester band.
 The 255/300/340/310/385/60-minute progression for `B2-022-probabilistic-latent-models` intentionally peaks in derivation-heavy Week 23 and tapers to review instead of applying Book 1's 450–500-minute semester band.
 The 255/355/205/385/390/60-minute progression for `B2-023-generative-models-diffusion` intentionally peaks in derivation-heavy Week 29 and tapers to review instead of applying Book 1's 450–500-minute semester band.
-The planned future `r2-*` final assessment follows local Week 30.
+The 260/280/370/345/305/380/60-minute progression for `B2-024-gpu-scientific-ml-capstone` intentionally peaks in derivation-heavy Week 36 and tapers to review instead of applying Book 1's 450–500-minute semester band.
+The planned future `r2-*` final assessment follows local Week 37.

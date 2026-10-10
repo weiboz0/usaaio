@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BOOK2_ROOT = ROOT / "book2"
 UNIT_ID = "B2-023-generative-models-diffusion"
 B2_022 = "B2-022-probabilistic-latent-models"
+LATER_UNITS = ("B2-024-gpu-scientific-ml-capstone",)
 PREREQUISITES = [
     "book1:F1-scientific-python",
     "book1:F3-matrices",
@@ -221,7 +222,7 @@ def test_b2_023_double_length_standard_is_five_sessions_and_24_practices() -> No
     standards = (ROOT / "docs" / "unit-standards.md").read_text(encoding="utf-8")
     assert "use 4–6 sessions" in standards
     assert "double-length units: 24–30" in standards
-    assert "B2-022, and B2-023) use 4–6 sessions" in standards
+    assert "B2-022, B2-023, and B2-024) use 4–6 sessions" in standards
     assert "B2-023-generative-models-diffusion" in standards
     assert (
         "The B2-023 unit uses five 90-minute teaching sessions and exactly 24 practices."
@@ -295,8 +296,9 @@ def test_b2_023_promotes_exact_three_coverage_rows_with_live_primary_evidence() 
     assert "book1:convolutional-neural-network-basics" in rows[
         "generative-adversarial-network"
     ]["depends_on"]
+    # Plan 029 later promotes every B2-024 row.
     assert all(
-        row["coverage"] == "missing"
+        row["coverage"] == "covered"
         for row in raw["knowledge_points"]
         if row["destination"] == "B2-024-gpu-scientific-ml-capstone"
     )
@@ -333,10 +335,11 @@ def test_b2_023_manifest_concept_sessions_and_claims_match_live_ownership() -> N
 
 def test_b2_023_live_schedule_appends_exact_six_week_ledger() -> None:
     raw = _load_yaml(BOOK2_ROOT / "curriculum" / "course-schedule.yaml")
-    assert raw["total_book_weeks"] == TARGET_WEEKS
-    assert raw["total_minutes"] == TARGET_MINUTES
-    assert raw["final_assessment"]["after_book_week"] == TARGET_WEEKS
-    weeks = raw["weeks"][BASELINE_WEEKS:]
+    # Later units (B2-024, Plan 029) append after week 30; B2-023 keeps weeks 25-30.
+    assert raw["total_book_weeks"] >= TARGET_WEEKS
+    assert raw["total_minutes"] >= TARGET_MINUTES
+    assert raw["final_assessment"]["after_book_week"] == raw["total_book_weeks"]
+    weeks = raw["weeks"][BASELINE_WEEKS:TARGET_WEEKS]
     assert [week["book_week"] for week in weeks] == list(range(25, 31))
     assert [week["global_week"] for week in weeks] == list(range(65, 71))
     assert [
@@ -371,6 +374,8 @@ def _five_manifest_root(tmp_path: Path) -> Path:
     target = selected / "units" / UNIT_ID
     shutil.rmtree(target, ignore_errors=True)
     shutil.copytree(selected / "units" / B2_022, target)
+    for later in LATER_UNITS:
+        shutil.rmtree(selected / "units" / later, ignore_errors=True)
 
     after_sessions = {
         problem_id: session
@@ -397,6 +402,9 @@ def _five_manifest_root(tmp_path: Path) -> Path:
             re.DOTALL,
         ).group(1)
     )
+    contract["units"] = [
+        unit for unit in contract["units"] if unit["id"] not in LATER_UNITS
+    ]
     if not any(unit["id"] == UNIT_ID for unit in contract["units"]):
         new_unit = deepcopy(
             next(unit for unit in contract["units"] if unit["id"] == B2_022)
@@ -405,7 +413,7 @@ def _five_manifest_root(tmp_path: Path) -> Path:
             id=UNIT_ID, title="Generative Models and Diffusion", prereqs=list(PREREQUISITES)
         )
         contract["units"].append(new_unit)
-        _replace_syllabus_contract(syllabus_path, contract)
+    _replace_syllabus_contract(syllabus_path, contract)
 
     schedule_path = selected / "curriculum" / "course-schedule.yaml"
     schedule = _load_yaml(schedule_path)

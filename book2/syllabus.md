@@ -28,6 +28,7 @@ clusters:
 - cross-modal-vision
 - probabilistic-latent-models
 - generative-models
+- capstone
 imports:
   book: book1
   units:
@@ -39,12 +40,15 @@ imports:
   - F6-svd-spectral
   - C1-ml-fundamentals
   - C2-linear-models
+  - C3-gradient-descent
   - C5-neural-networks
   - C6-pytorch
   - C7-cnn-transfer
   - C8-embeddings
   - C9-dimensionality-reduction
+  - C10-competition-craft
   - C11-neural-training
+  - C12-classical-models
   concepts:
   - numpy-arrays
   - broadcasting
@@ -83,6 +87,25 @@ imports:
   - relu-activation
   - mlp-architecture
   - pca
+  - invertibility-via-rank
+  - sum-of-squares-gradients
+  - overfitting
+  - accuracy-precision-recall
+  - class-imbalance
+  - linear-regression
+  - l2-regularization
+  - gradient-descent
+  - learning-rate
+  - stochastic-gd
+  - parameter-counting
+  - hidden-test-protocol
+  - metric-driven-iteration
+  - writeup-quality
+  - colab-coding-submission
+  - cpu-and-gpu-round-boundary
+  - trained-mlp
+  - k-means
+  - lloyd-algorithm
 evidence_imports:
   book: book1
   concepts:
@@ -169,6 +192,18 @@ concepts:
   cluster: generative-models
 - id: stable-diffusion
   cluster: generative-models
+- id: gpu-colab-l4-workflow
+  cluster: capstone
+- id: open-ended-experiment-design
+  cluster: capstone
+- id: open-ended-model-evaluation
+  cluster: capstone
+- id: semi-supervised-pseudo-labeling
+  cluster: capstone
+- id: scientific-ml-inverse-problems
+  cluster: capstone
+- id: mixture-parameter-regression
+  cluster: capstone
 units:
 - id: B2-019-attention-transformers
   track: extension
@@ -404,5 +439,79 @@ units:
   - generative-adversarial-network
   - denoising-diffusion-probabilistic-models
   - stable-diffusion
+  length: double
+- id: B2-024-gpu-scientific-ml-capstone
+  track: extension
+  title: GPU Scientific Modeling Capstone
+  book: 2
+  layer: round-2-extension
+  round: 2
+  prereqs:
+  - book1:F1-scientific-python
+  - book1:F3-matrices
+  - book1:F4-multivar-calculus
+  - book1:F5-probability
+  - book1:C1-ml-fundamentals
+  - book1:C2-linear-models
+  - book1:C3-gradient-descent
+  - book1:C5-neural-networks
+  - book1:C6-pytorch
+  - book1:C7-cnn-transfer
+  - book1:C10-competition-craft
+  - book1:C11-neural-training
+  - book1:C12-classical-models
+  - B2-023-generative-models-diffusion
+  concept_prerequisites:
+  - book1:numpy-arrays
+  - book1:broadcasting
+  - book1:random-seeding
+  - book1:matrix-multiplication
+  - book1:invertibility-via-rank
+  - book1:gradient
+  - book1:sum-of-squares-gradients
+  - book1:expectation
+  - book1:variance
+  - book1:variance-of-sums
+  - book1:independence
+  - book1:covariance
+  - book1:gaussian-distribution
+  - book1:sampling-simulation
+  - book1:train-test-split
+  - book1:overfitting
+  - book1:accuracy-precision-recall
+  - book1:class-imbalance
+  - book1:linear-regression
+  - book1:mse-loss
+  - book1:l2-regularization
+  - book1:gradient-descent
+  - book1:learning-rate
+  - book1:stochastic-gd
+  - book1:relu-activation
+  - book1:mlp-architecture
+  - book1:torch-tensors
+  - book1:nn-module
+  - book1:requires-grad
+  - book1:parameter-counting
+  - book1:convolution
+  - book1:cnn-training
+  - book1:hidden-test-protocol
+  - book1:metric-driven-iteration
+  - book1:writeup-quality
+  - book1:colab-coding-submission
+  - book1:cpu-and-gpu-round-boundary
+  - book1:softmax
+  - book1:cross-entropy-loss
+  - book1:torch-optimizers
+  - book1:autograd-training
+  - book1:trained-mlp
+  - book1:k-means
+  - book1:lloyd-algorithm
+  teaches:
+  - gpu-colab-l4-workflow
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - semi-supervised-pseudo-labeling
+  - scientific-ml-inverse-problems
+  - mixture-parameter-regression
   length: double
 ```

@@ -13,21 +13,21 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 1261 |
+| Unit notebooks | 1326 |
 | Mock notebooks | 10 |
-| Unit practices | 557 |
-| Total inventoried notebooks | 1271 |
+| Unit practices | 585 |
+| Total inventoried notebooks | 1336 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
-| Coverage: covered | 86 |
-| Coverage: missing | 6 |
+| Coverage: covered | 92 |
+| Coverage: missing | 0 |
 | Coverage: partial | 0 |
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **26755 minutes / 445.92 hours**.
-Current scheduled baseline: **27145 minutes / 452.42 hours**.
+Current manifested baseline: **28725 minutes / 478.75 hours**.
+Current scheduled baseline: **29145 minutes / 485.75 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
@@ -40,7 +40,7 @@ Planned hours are estimates and are not manifested time.
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-Baseline plus planned-unit subtotal: **587.92–627.92 manifested-baseline hours** and **594.42–634.42 scheduled-baseline hours**.
+Baseline plus planned-unit subtotal: **620.75–660.75 manifested-baseline hours** and **627.75–667.75 scheduled-baseline hours**.
 
 ## Non-required candidates
 
@@ -1842,26 +1842,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** book1:colab-coding-submission, book1:pytorch-autograd-and-optimizer-training
-- **Shipped concepts:** —
-- **Modalities missing:** competition-workflow, implementation, model-training
-- **Practice shortfall:** 3
+- **Shipped concepts:** book2:gpu-colab-l4-workflow
+- **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** The only device teaching says the course is CPU-only; no Colab L4, device movement, memory handling, or GPU training is practiced.
 - **Consequence:** Students cannot execute the official R2 GPU workflow.
 
-- **competition-workflow lessons:** —
-- **competition-workflow practices:** —
+- **competition-workflow lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The GPU Workflow on Colab L4 > 7. The Colab L4 session plan :: cell 1
+- **competition-workflow practices:** book2:B2-024-p23
 - **competition-workflow assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The GPU Workflow on Colab L4 > 1. Devices and device-agnostic code :: cell 1
+- **implementation practices:** book2:B2-024-p06, book2:B2-024-p07
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The GPU Workflow on Colab L4 > 8. Worked laboratory: one config, two machines, an exact resume :: cell 1
+- **model-training practices:** book2:B2-024-p16
 - **model-training assessments:** —
 
-Practices: —
+Practices: book2:B2-024-p06, book2:B2-024-p07, book2:B2-024-p16, book2:B2-024-p23
 
 Assessments: —
 
@@ -1926,29 +1926,29 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** bridge
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** book1:linear-regression, book2:multivariate-gaussian, book2:open-ended-experiment-design
-- **Shipped concepts:** —
-- **Modalities missing:** competition-workflow, implementation, model-training, theory
-- **Practice shortfall:** 3
+- **Shipped concepts:** book2:mixture-parameter-regression
+- **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** No mixture-function process, parameter identifiability, regression model, or evaluation workflow exists.
 - **Consequence:** An observed R2 parameter-estimation capability is missing.
 
-- **competition-workflow lessons:** —
-- **competition-workflow practices:** —
+- **competition-workflow lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6: Mixture-Function Parameter Regression > 6. The hybrid pipeline and the open-ended workflow :: cell 1
+- **competition-workflow practices:** book2:B2-024-p27
 - **competition-workflow assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6: Mixture-Function Parameter Regression > 1. Mixture functions :: cell 1
+- **implementation practices:** book2:B2-024-p11
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6: Mixture-Function Parameter Regression > 5. A learned regressor that amortizes the fit :: cell 1
+- **model-training practices:** book2:B2-024-p20
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6: Mixture-Function Parameter Regression > 2. Identifiability, label switching, and canonical order :: cell 1
+- **theory practices:** book2:B2-024-p05, book2:B2-024-p14
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-024-p05, book2:B2-024-p11, book2:B2-024-p14, book2:B2-024-p20, book2:B2-024-p27
 
 Assessments: —
 
@@ -2178,23 +2178,23 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** bridge
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** book1:end-to-end-model-selection, book2:gpu-colab-l4-workflow
-- **Shipped concepts:** —
-- **Modalities missing:** competition-workflow, model-training
-- **Practice shortfall:** 3
+- **Shipped concepts:** book2:open-ended-experiment-design
+- **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** C10's bounded kNN campaign is useful prerequisite practice but not open-ended architecture or experiment design.
 - **Consequence:** Students cannot plan a broad R2 modeling investigation.
 
-- **competition-workflow lessons:** —
-- **competition-workflow practices:** —
+- **competition-workflow lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2: Experiment Design Under a Budget > 6. Held-out discipline and the experiment log :: cell 1
+- **competition-workflow practices:** book2:B2-024-p24
 - **competition-workflow assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2: Experiment Design Under a Budget > 7. Worked laboratory: a budgeted mini-campaign with a log :: cell 1
+- **model-training practices:** book2:B2-024-p12, book2:B2-024-p22
 - **model-training assessments:** —
 
-Practices: —
+Practices: book2:B2-024-p12, book2:B2-024-p22, book2:B2-024-p24
 
 Assessments: —
 
@@ -2203,23 +2203,23 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** bridge
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** book1:hidden-test-model-evaluation, book2:open-ended-experiment-design
-- **Shipped concepts:** —
-- **Modalities missing:** competition-workflow, model-training
-- **Practice shortfall:** 3
+- **Shipped concepts:** book2:open-ended-model-evaluation
+- **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** Existing evaluation is a pinned R1 tabular protocol without scientific diagnostics, ablations, robustness, or family comparison.
 - **Consequence:** Students cannot defend open-ended R2 model choices.
 
-- **competition-workflow lessons:** —
-- **competition-workflow practices:** —
+- **competition-workflow lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3: Evaluating Open-Ended Models > 6. Robustness, model families, and writing the evaluation section :: cell 1
+- **competition-workflow practices:** book2:B2-024-p24, book2:B2-024-p28
 - **competition-workflow assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3: Evaluating Open-Ended Models > 7. Worked laboratory: two families, intervals, a paired difference, and one test call :: cell 1
+- **model-training practices:** book2:B2-024-p21
 - **model-training assessments:** —
 
-Practices: —
+Practices: book2:B2-024-p21, book2:B2-024-p24, book2:B2-024-p28
 
 Assessments: —
 
@@ -2253,29 +2253,29 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** bridge
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** book1:end-to-end-model-selection, book1:pytorch-autograd-and-optimizer-training
-- **Shipped concepts:** —
-- **Modalities missing:** competition-workflow, implementation, model-training, theory
-- **Practice shortfall:** 3
+- **Shipped concepts:** book2:scientific-ml-inverse-problems
+- **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** No inverse-problem formulation, observation operator, learned inversion, or competition workflow exists.
 - **Consequence:** An observed R2 scientific-modeling capability is missing.
 
-- **competition-workflow lessons:** —
-- **competition-workflow practices:** —
+- **competition-workflow lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific Inverse Problems > 6. Physics residuals and the open-ended workflow :: cell 1
+- **competition-workflow practices:** book2:B2-024-p26
 - **competition-workflow assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific Inverse Problems > 3. Linearization by discretization: the grid operator :: cell 1
+- **implementation practices:** book2:B2-024-p10
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific Inverse Problems > 5. Learned inversion from simulated pairs :: cell 1
+- **model-training practices:** book2:B2-024-p19
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific Inverse Problems > 4. Tikhonov regularization is ridge regression :: cell 1
+- **theory practices:** book2:B2-024-p13
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-024-p10, book2:B2-024-p13, book2:B2-024-p19, book2:B2-024-p26
 
 Assessments: —
 
@@ -2312,29 +2312,29 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** bridge
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-024-gpu-scientific-ml-capstone
 - **Dependencies:** book1:convolutional-neural-network-basics, book1:k-means-clustering, book2:open-ended-experiment-design
-- **Shipped concepts:** —
-- **Modalities missing:** competition-workflow, implementation, model-training, theory
-- **Practice shortfall:** 3
+- **Shipped concepts:** book2:semi-supervised-pseudo-labeling
+- **Modalities missing:** —
+- **Practice shortfall:** 0
 - **Rationale:** No limited-label learning, pseudo-label selection, clustering-assisted labeling, or leakage-safe validation workflow exists.
 - **Consequence:** The observed R2 semi-supervised image-modeling capability is missing.
 
-- **competition-workflow lessons:** —
-- **competition-workflow practices:** —
+- **competition-workflow lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling > 6. Leakage-safe validation and the semi-supervised protocol :: cell 1
+- **competition-workflow practices:** book2:B2-024-p25
 - **competition-workflow assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling > 3. Class balance and deterministic selection :: cell 1
+- **implementation practices:** book2:B2-024-p09
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling > 7. Worked laboratory: a tiny shape trace :: cell 1
+- **model-training practices:** book2:B2-024-p17, book2:B2-024-p18
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling > 2. Confidence-threshold self-training :: cell 1
+- **theory practices:** book2:B2-024-p04
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-024-p04, book2:B2-024-p09, book2:B2-024-p17, book2:B2-024-p18, book2:B2-024-p25
 
 Assessments: —
 
