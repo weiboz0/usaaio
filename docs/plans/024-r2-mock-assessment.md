@@ -165,33 +165,33 @@ They are `optional-colab-l4`, with CPU reference solutions under 20 s and an `Ac
 **Layout:** flat, like `r1-001`: `test.md`, `theory/`, `problems/`, `solutions/` (with `answers.md`), `data/`, `rubric.md`, `manifest.yaml`. Days live in the manifest's `day` field and in `test.md` (Day 1 and Day 2 sections), so hygiene, answer-key, and PDF discovery work unchanged.
 
 Steps:
-- [ ] Write failing tests first:
+- [x] Write failing tests first:
   - the live Book 2 blueprint validates;
   - in a copied fixture, each new rule rejects a violating r2 manifest;
   - Book 1 `blueprint-check` output and every `r1-001` check result are byte-identical before and after;
   - `new-mocktest --book book2 r2-001` scaffolds the flat layout with default anchors;
   - the schedule marker rules hold;
   - hygiene fails on an executed output or a solution placed in an `r2-*` `problems/` notebook.
-- [ ] Implement, regenerate any generated artifacts, and commit.
+- [x] Implement, regenerate any generated artifacts, and commit.
 
 ### Task 2 — Author r2-001
 
-- [ ] An Opus subagent authors a scratch bundle:
+- [x] An Opus subagent authors a scratch bundle:
   - `test.md`, `theory/`, `problems/`, `data/` (seeded generators and `r2_001_data.py`, which follows B2-024's data-module conventions), and `rubric.md`;
   - the manifest's non-answer fields.
   Every task-specific formula is defined in the statement.
-- [ ] Every threshold, plus the B and R scores, is calibrated at `SEED=20261101` with stated margins. The calibration script asserts the R-versus-B inequality for each open-ended task, so the tiers are strictly ordered. Every CPU reference solution must run in < 20 s, with timings recorded.
-- [ ] Hash the bundle.
+- [x] Every threshold, plus the B and R scores, is calibrated at `SEED=20261101` with stated margins. The calibration script asserts the R-versus-B inequality for each open-ended task, so the tiers are strictly ordered. Every CPU reference solution must run in < 20 s, with timings recorded.
+- [x] Hash the bundle.
 
 ### Task 3 — Blind solutions, publish, verify
 
-- [ ] A separate fresh Opus session blind-solves from the hash-verified bundle only:
+- [x] A separate fresh Opus session blind-solves from the hash-verified bundle only:
   - `solutions/answers.md` for theory;
   - solution notebooks with a final `### Answer check`;
   - open-ended reference approaches with writeups.
   Ambiguities are pinned to the solver's choice and recorded.
-- [ ] Publish `book2/mocktests/r2-001/` with its final manifest and answer keys. Add an r2-001 20-second solution-timeout glob in `scripts/ci-local.sh` step 3.
-- [ ] Add `tests/test_r2_001.py`, covering:
+- [x] Publish `book2/mocktests/r2-001/` with its final manifest and answer keys. Add an r2-001 20-second solution-timeout glob in `scripts/ci-local.sh` step 3.
+- [x] Add `tests/test_r2_001.py`, covering:
   - hygiene;
   - blueprint conformance;
   - `answerkey-check` reproduction;
@@ -201,20 +201,20 @@ Steps:
 
 ### Task 4 — Answer-check integrity (lightweight)
 
-- [ ] Write `tests/test_r2_001_checks.py` with named wrong implementations:
+- [x] Write `tests/test_r2_001_checks.py` with named wrong implementations:
   - P1: causal mask omitted; targets not shifted; positional encoding sin/cos swapped.
   - P3: KL sign flipped; β applied to reconstruction instead of KL (run at the statement's β ≠ 1, where it is detectable).
   - Each open-ended task: a leakage mutant and a protocol mutant (`final_test_score` called twice), detected at named seams as in B2-024.
-- [ ] Wire the suite into `ci-local.sh` step 7. This is a correctness check, not anti-cheat.
+- [x] Wire the suite into `ci-local.sh` step 7. This is a correctness check, not anti-cheat.
 
 ### Task 5 — Verification, content gate, report, merge
 
-- [ ] Verification phase:
+- [x] Verification phase:
   - `uv run usaaio-tools --book book2` for blueprint-check, answerkey-check, overlap-scan (run against the copied local corpus), hygiene, tolerance, and layer-boundary;
   - the `--all` aggregate checks;
   - `git diff --check`.
-- [ ] `scripts/ci-local.sh`, on a clean tip with caches removed: ALL GREEN.
-- [ ] 3-way blind content gate, with fidelity judged on shape:
+- [x] `scripts/ci-local.sh`, on a clean tip with caches removed: ALL GREEN.
+- [x] 3-way blind content gate, with fidelity judged on shape:
   - Sol solves P1 entries 1–7 and P3;
   - Fable solves P1 entries 8–14 and P4;
   - Self solves P2 and P5 and does the provenance comparison against the local index and rationale.
@@ -338,4 +338,62 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`). Fidelity is judged on shape. The
 
 ## Post-execution report
 
-Pending.
+**Shipped:** Book 2's final assessment is live.
+- `book2/mocktests/blueprint.yaml` is the version-1 live Round 2 blueprint; the planned skeleton and its checker branch are removed.
+- `book2/mocktests/r2-001` is an original two-day, 300-point mock test: 5 problems and 25 entries; P1 causal-LM arc 90, P2 heat localization 70, P3 β-VAE arc 50, P4 texture SSL 40, P5 Lorentzian regression 50; 160 points open-ended.
+- `course-schedule.yaml` carries the live marker `final_assessment: {kind: r2-mock, status: live, test: r2-001, after_book_week: 37}`.
+- **Book 2 is complete:** units B2-019 through B2-024 plus its final assessment.
+
+**Tooling (Book 1 results byte-identical; verified by diffing check output against `main`):**
+- `tools/model.py` gains the mock-manifest `day`, `day_duration_minutes`, and per-day `time_budget`.
+- `tools/checks/blueprint.py` gains a Round 2 branch:
+  - day-scoped sections and kinds;
+  - section semantics;
+  - points, sub-part, and problem ranges;
+  - the open-ended share;
+  - positive per-day budgets;
+  - arc rotation derived from the test number;
+  - open-ended family closure.
+- `new_mocktest.py`: zero-choice Book 2 scaffolding.
+- `schedule.py`: the live marker requires its manifest.
+- `overlap.py`: LaTeX math spans are stripped from artifact text before shingling. This fixed four false positives on standard DDPM notation in B2-023.
+- `build-pdf.sh`: Book 2 renders its mock tests.
+- `docs/mocktest-generation.md` has a Book 2 section; `analysis.md` has structure-only Round 2 shape notes.
+
+**Dispatch:**
+- An Opus author wrote the bundle; a separate fresh Opus session blind-solved all 25 entries from student-facing files only. Every answer matched the author's keys.
+- An Opus implementer did Tasks 1, 3 and 4 (9db06af, f849068, 935874a, 36362f3).
+- The orchestrator fixed the PDF build (1127b3f) and the overlap scan (1dc54a1).
+- An Opus fixer did the content-gate round-1 fixes (e2ae9bd); the orchestrator did eee1479 and 28fd5fd.
+
+**Publication fixes from blind solving:**
+- the Lorentz generator's post-rounding separation check;
+- R taken from the published reference solutions;
+- P4 seam wording for feature pipelines;
+- `.detach()` in P1.12.
+
+**Deviations:**
+- `build-pdf.sh` needed a Book 2 mock-test branch; the plan assumed discovery worked unchanged.
+- `overlap.py` changed, as allowed by the plan's "only if a failing test shows they need it".
+- P4 was redesigned in the content gate: a scanner shift makes the pool necessary. The best labelled-only probe of seven scores 0.6475; the reference scores 0.9900.
+- A student-visible generator could reveal the shift. This is handled as a stated protocol rule (score 0), not by obfuscation, per the anti-cheat directive.
+
+**Final open-ended keys:**
+- P2: B = 0.04810, R = 0.001541, tiers 0.01318 / 0.04810 / 0.05974.
+- P4: B = 0.4850, R = 0.9900, tiers 0.8638 / 0.4850 / 0.3588.
+- P5: B = 0.01711, R = 0.005272, tiers 0.008231 / 0.01711 / 0.02007.
+
+**Verification:**
+- Focused suites: 183 + 22 + 13 passed.
+- Full pytest: 1615 passed plus two fixed or transient failures, then re-verified.
+- `overlap-scan` with the local corpora present: PASS for both books, and `git status` showed no reference paths.
+- r2-001 solutions run in 7.6–13.2 s.
+- The final authoritative CI is recorded below.
+
+**Content gate:**
+- Three-way consensus: Sol over three rounds, Fable over two, self.
+- Provenance: self compared every slot against the local 2026 index summaries, and the automated scan passed.
+
+**For r2-002:**
+- Introduce one fresh mechanism in the day-1 arc.
+- Consider a fourth scoring tier, or anchoring the 60% tier at the best labelled-only probe.

@@ -25,6 +25,7 @@
 - [x] 022 — C12 p20 K-means near-tie erratum (deterministic lowest-seed rule)
 - [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
+- [x] 024 — Round 2 live blueprint and mock test r2-001 (Book 2 final assessment) — **Book 2 complete**
 - [x] 029 — Round 2 GPU scientific-modeling capstone (B2-024) and the `optional-colab-l4` compute policy
 - [x] 028 — Round 2 generative models and diffusion (B2-023: GANs, DDPM, Stable Diffusion architecture with a CPU latent-diffusion analogue)
 - [x] 027 — Round 2 probabilistic latent models (B2-022: Gaussians, KL, AE, reparameterization, VAE)
@@ -32,7 +33,8 @@
 
 ## Deferred, with a named owner plan still to be written
 
-- [ ] **Execute the remaining Plan 015 content tranches.** The canonical owner/order now lives in
+- [x] **Execute the remaining Plan 015 content tranches.** Done: Plans 020, 021, 027, 028, 029 shipped B2-020…B2-024 and Plan 024 shipped r2-001.
+- [ ] (superseded) **Execute the remaining Plan 015 content tranches.** The canonical owner/order now lives in
       the registered book-local `curriculum/coverage-map.yaml` files and the shared
       `docs/curriculum-roadmap.md`: R2 transformers/NLP, R2 vision/generative,
       then the R2 GPU capstone. Softmax/cross-entropy are owned by
