@@ -316,6 +316,12 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`). Fidelity is judged on shape. The
 3. `[FIXED]` Nit: acknowledge that the noise-free corpus makes validation perplexity an implementation certificate. → Response: one sentence in Part 1.14.
 4. `[FIXED]` Nit: P4 tier calibration. → Response: superseded by the Sol 1 redesign.
 
+### Review 2 — Sol, `gpt-6-sol` (2026-10-10)
+- **Verdict**: Reject.
+1. `[WONTFIX]` Must Fix: the student-visible generator exposes the seeded scanner-B offset, so a reader can reconstruct it and score 0.9475 without the pool. → Response: recovering hidden generation parameters from the provided source is cheating, not a flaw in the assessed material. Anti-cheat machinery is out of scope by user directive (2026-08-28), and datasets must be produced by visible seeded generators (`AGENTS.md`). The statement and rubric now state the rule plainly: using the generator to recover scanner or generation parameters or any held-back label is a protocol violation scoring 0, like the existing bans on `simulate` and test-batch statistics. No obfuscation is added.
+2. `[FIXED]` Should Fix: "certificate" overstated what validation perplexity proves. → Response: reworded as "a useful check … not by itself a proof of correctness".
+- Confirmed closed: P1.13 key consistency; the validator Should Fixes (rotation, section forms, budgets).
+
 ## Post-execution report
 
 Pending.

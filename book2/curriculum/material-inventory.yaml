@@ -641,7 +641,7 @@ notebooks:
   - torch.tensor
 - path: mocktests/r2-001/problems/p04.ipynb
   kind: notebook
-  semantic_sha256: 28e4ea57c622630fbc40fe52a4cf8921f610c4aa0f302b18425919c17907b9ac
+  semantic_sha256: e0f01603f168176a13e7f55481621e39d05662d54c1939e3ee6b36dd334b7009
   anchors:
   - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Committed
       baseline :: cell 1'
