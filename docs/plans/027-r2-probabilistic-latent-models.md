@@ -199,25 +199,25 @@ Do not alter the B2-023 or B2-024 rows.
 
 Steps:
 
-- [ ] Write failing tests for the existing B2-022 `planned_units` row:
+- [x] Write failing tests for the existing B2-022 `planned_units` row:
   - the exact unit-prerequisite sequence above;
   - the five exact `provisional_concepts`;
   - the double-length standard (5 sessions, 24 practices);
   - the five coverage rows staying `missing` until live source paths exist.
   In a copied Book 2 fixture, also prove that appending the six-week ledger after B2-021 yields `after_book_week: 24` and the exact minute total, and that duplicate, misordered, missing-session, minute-mismatched, or before-week-19 allocations are rejected.
-- [ ] Update only the existing planned row (no duplicate):
+- [x] Update only the existing planned row (no duplicate):
   - set the prerequisites above (drop `book1:C7-cnn-transfer`; add `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:C1-ml-fundamentals`, `book1:C2-linear-models`, `book1:C5-neural-networks`, `book1:C6-pytorch`, `book1:C9-dimensionality-reduction` and `B2-021-cross-modal-transformers-vision`);
   - set `provisional_concepts` to the five owned concepts.
   Regenerate the roadmap and audit with `uv run python -m tools.render_curriculum_roadmap --root .`. Do not add B2-022 to the live syllabus, schedule, or standards roster in this task.
-- [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py tests/test_b2_022_plan.py` and commit.
+- [x] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py tests/test_b2_022_plan.py` and commit.
 
 ### Task 2 — Author lessons, statements, and the data generator
 
-- [ ] Dispatch lesson and statement authoring to an Opus subagent (`Agent`, `model: opus`) per `AGENTS.md ## Agent dispatch`. It writes, in a temporary directory outside `book2/units/`:
+- [x] Dispatch lesson and statement authoring to an Opus subagent (`Agent`, `model: opus`) per `AGENTS.md ## Agent dispatch`. It writes, in a temporary directory outside `book2/units/`:
   - the bridge, overview, five lessons, and review;
   - the 24 student statements;
   - `generate_latent_data.py`, a seeded generator for the small 2-D/8-D Gaussian-mixture and low-rank datasets. It exposes immutable `TRAIN_IDS` / `HELDOUT_IDS` index arrays and a canonical per-row SHA-256 map. It has a `--check` mode that regenerates and compares SHA-256 hashes, and it never stores trained weights or final metrics.
-- [ ] The orchestrator checks the bundle against an exact allowlist:
+- [x] The orchestrator checks the bundle against an exact allowlist:
   - regular files only;
   - unexecuted student code cells;
   - headers present;
@@ -228,14 +228,14 @@ Steps:
 
 ### Task 3 — Blind-author solutions, publish, and execute
 
-- [ ] Dispatch a separate fresh Opus subagent for solutions. It receives only the hash-verified student bundle (lessons plus statements plus generator), never the statement author's outlines, and writes one solution notebook per statement with no stored outputs and a final `### Answer check`.
+- [x] Dispatch a separate fresh Opus subagent for solutions. It receives only the hash-verified student bundle (lessons plus statements plus generator), never the statement author's outlines, and writes one solution notebook per statement with no stored outputs and a final `### Answer check`.
   - Freeze `SEED=20260927` and the canonical batch order.
   - Training practices (p17, p18, p19, p20) use Adam with `lr` and step counts stated in each statement, and expose `train_rows()` / `heldout_rows()` that return tensors drawn from the generator's split IDs (required in every training statement, including p20, even where `heldout_rows()` is otherwise unused).
   - p17 exposes `train_autoencoder(model, batch, optimizer)`; p18 exposes `train_linear_autoencoder(model, batch, optimizer)`; p20 exposes `train_vae_for_sampling(model, batch, optimizer)`.
   - p19 exposes `train_vae(model, batch, optimizer)` and `negative_elbo(x, x_hat, mu, logvar)`.
   - p11 exposes `reparameterize(mu, logvar, eps)`.
   - p09 exposes `kl_to_standard_normal(mu, logvar)`.
-- [ ] Verify the bundle digest, then publish atomically:
+- [x] Verify the bundle digest, then publish atomically:
   - add the `probabilistic-latent-models` cluster and the five concepts to the Book 2 syllabus `concepts:` registry;
   - add the live B2-022 `units:` entry with the exact prerequisite lists;
   - clear the planned row's `provisional_concepts` to `[]`;
@@ -245,13 +245,13 @@ Steps:
   - add B2-022 to the double-length roster in `docs/unit-standards.md`;
   - classify every new path-bearing test or fixture in `tests/fixtures/plan019-path-inventory.yaml` and update its guard SHA;
   - regenerate the inventory, course structure, roadmap, and audit.
-- [ ] Add a `units/B2-022-probabilistic-latent-models/practice/p??_solution.ipynb` glob alongside the existing B2-020/B2-021 globs in the 20-second solution-timeout condition of `scripts/ci-local.sh`.
-- [ ] Execute every B2-022 solution from the Book 2 root without `--inplace` and record each elapsed time; any solution over 20 s fails.
-- [ ] Commit `tests/test_b2_022_statements.py`, covering statement hygiene, the ledger, concept coverage, the generator `--check`, and the notebook headers.
+- [x] Add a `units/B2-022-probabilistic-latent-models/practice/p??_solution.ipynb` glob alongside the existing B2-020/B2-021 globs in the 20-second solution-timeout condition of `scripts/ci-local.sh`.
+- [x] Execute every B2-022 solution from the Book 2 root without `--inplace` and record each elapsed time; any solution over 20 s fails.
+- [x] Commit `tests/test_b2_022_statements.py`, covering statement hygiene, the ledger, concept coverage, the generator `--check`, and the notebook headers.
 
 ### Task 4 — Answer-check integrity (lightweight)
 
-- [ ] Write `tests/test_latent_model_checks.py` so that every pinned function has an untouched solution that passes and a named plausible wrong implementation that fails its answer check:
+- [x] Write `tests/test_latent_model_checks.py` so that every pinned function has an untouched solution that passes and a named plausible wrong implementation that fails its answer check:
   - `kl_to_standard_normal`: drop the `-1` term, or use `sigma` where `sigma^2` belongs;
   - `reparameterize`: `exp(logvar)` used as the std, or `eps` detached from the graph by sampling inside without `mu`/`logvar`;
   - `negative_elbo`: KL sign flipped, or reduction mean-over-features instead of the stated sum;
@@ -259,21 +259,21 @@ Steps:
     - The no-op check compares the parameters before and after the stated step count.
     - The leakage check wraps the model's `forward` during the training call, hashes every input row the model actually sees, and asserts none is in the held-out hash set the test builds from `HELDOUT_IDS` and the generator's canonical per-row SHA-256 map.
     - This is a plain correctness check on the shipped pipeline. It is not adversarial hardening; anti-cheat stays out of scope (user directive, 2026-08-28).
-- [ ] Implement only named-function substitutions in copied solution notebooks. Add no student-facing markers, no sandbox, and no anti-cheat policy.
-- [ ] Add the focused suite to `scripts/ci-local.sh` step 7, next to `tests/test_language_transformer_checks.py`, and commit.
+- [x] Implement only named-function substitutions in copied solution notebooks. Add no student-facing markers, no sandbox, and no anti-cheat policy.
+- [x] Add the focused suite to `scripts/ci-local.sh` step 7, next to `tests/test_language_transformer_checks.py`, and commit.
 
 ### Task 5 — Verification, content gate, report, merge
 
-- [ ] Verification phase. Run:
+- [x] Verification phase. Run:
   - the focused B2-022 suites;
   - the generator `--check`;
   - `uv run usaaio-tools --book book2` for prereq, coverage, scope, schedule, tolerance, hygiene and layer-boundary checks;
   - `python -m tools.audit_curriculum --root book2 --check`;
   - `python -m tools.render_curriculum_roadmap --root . --check`;
   - `git diff --check`.
-- [ ] Run `scripts/ci-local.sh`; it must be ALL GREEN.
-- [ ] Run the 3-way blind content gate (self, Sol, Fable). Every reviewer solves a stated sample before reading solutions: Sol takes p01, p09, p15, p19 and p23; Fable takes p03, p11, p16, p20 and p22; self takes p07, p13, p17, p21 and p24 and also reviews the ledger, coverage, and accessibility for the Calculus AB + Book 1 baseline. Resolve every `[OPEN]` finding and re-review the final head after material changes.
-- [ ] Write the verdicts and the post-execution report into this plan, and add Plan 027 to `TODO.md`.
+- [x] Run `scripts/ci-local.sh`; it must be ALL GREEN.
+- [x] Run the 3-way blind content gate (self, Sol, Fable). Every reviewer solves a stated sample before reading solutions: Sol takes p01, p09, p15, p19 and p23; Fable takes p03, p11, p16, p20 and p22; self takes p07, p13, p17, p21 and p24 and also reviews the ledger, coverage, and accessibility for the Calculus AB + Book 1 baseline. Resolve every `[OPEN]` finding and re-review the final head after material changes.
+- [x] Write the verdicts and the post-execution report into this plan, and add Plan 027 to `TODO.md`.
 - [ ] Rerun `scripts/ci-local.sh` on the clean tip, push, open the PR, run `scripts/pre-merge-guard.sh --pr`, squash-merge, and verify `main` equals `origin/main`.
 
 ## Out of scope
@@ -383,6 +383,52 @@ Re-verified after fixes: inventory regenerated; B2-022 statement, plan, and late
 - **Verdict**: Reject.
 1. `[FIXED]` Must Fix: finite `KL(q‖p(z|x))` does not make (a3)'s separate terms finite (counterexample: a Cauchy posterior with `q` equal to it). → Response: following Sol's suggestion, p16 now simply assumes every expectation in (a1)–(a3) is finite (true for the unit's Gaussian models) and no longer claims to derive finiteness from support. The solution parenthetical matches.
 
+### Review 5 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Approve. No findings.
+
+### Review 3 — Fable (2026-10-09)
+- **Verdict**: Approve. Re-checked the p16 changes (ebfa488..6ba6b55); the common-support plus finite-expectation assumptions are sound and true for the unit's models.
+
+**Gate result:** 3-way consensus on the final head (6ba6b55).
+
 ## Post-execution report
 
-Pending.
+**Shipped:** `book2/units/B2-022-probabilistic-latent-models`.
+- Double-length: bridge, overview, five 90-minute sessions, review, and 24 practices.
+- 1,650 scheduled / 1,620 manifested minutes. Book 2 is now 24 weeks / 6,620 scheduled minutes with `after_book_week: 24`.
+- Rendered hours rebaselined exactly as planned: 560.92–600.92 manifested / 566.92–606.92 scheduled.
+- `multivariate-gaussian`, `kl-divergence`, `autoencoder`, `gaussian-reparameterization` and `variational-autoencoder` are promoted to covered, with per-row modalities.
+
+**Dispatch:** per Plan 026's roster.
+- An Opus subagent authored the lessons, statements and generator in a scratch bundle.
+- The orchestrator hash-verified the bundle and pinned three statement ambiguities from blind solving: p06's probe loop, p22's thresholds, and p24's split and selection metric.
+- A separate fresh Opus session blind-wrote all 24 solutions from the hash-verified bundle only; all passed.
+- A third Opus session implemented Tasks 1, 3 and 4. Commits: 87a84c4, 4809525, b9d5892, 38f5485.
+
+**Imports added to the Book 2 allowlist:**
+- units: F4, F6, C1, C2, C5, C9;
+- concepts: gradient, covariance, gaussian-distribution, sampling-simulation, conditional-probability, bayes-rule, eigenvalues-eigenvectors, spectral-decomposition, svd, train-test-split, mse-loss, relu-activation, mlp-architecture, pca.
+
+**Checker-forced changes (accepted by the gate):**
+- p13_solution states numpy's default tolerances explicitly.
+- `kl-divergence` `depends_on`: `book1:expectation` (a concept, not a knowledge point) became `book1:probability-and-statistics-foundations`.
+- The VAE coverage claim has `first_session: 5`, while `concept_sessions` stays 4. `layer_boundary.py` requires a claim's first session to be strictly after a same-unit dependency's. A tooling follow-up allowing equal-session ordering is noted in `TODO.md`.
+
+**Verification:**
+- Full pytest: 1348 passed.
+- All per-book and `--all` checks pass.
+- Generator `--check` passes.
+- Solutions execute in 4.7–14.3 s, each under 20 s.
+- Final `scripts/ci-local.sh` on 6ba6b55: **ALL GREEN**, 9/9.
+
+**Content gate:**
+- Three-way blind consensus: Sol over five rounds, Fable over three.
+- All 15 blind-solved practices agreed with the solutions.
+- Fixes made:
+  - p23's "non-finite" wording;
+  - p19 trains through the pinned `negative_elbo`;
+  - Session 4 names prior sampling and interpolation before p21;
+  - p22's "each latent";
+  - p16 now assumes common support and finite expectations, after three rounds tightening it.
+
+**Provenance:** original synthetic data and problems; no external sources.
