@@ -285,7 +285,7 @@ Do not alter the B2-024 rows.
   - Self: p05, p11, p13, p17, p21, plus the ledger, coverage, and accessibility review.
   Resolve every `[OPEN]` finding and re-review the final head after material changes.
 - [x] Write the verdicts and the post-execution report into this plan, and add Plan 028 to `TODO.md`.
-- [ ] Rerun `scripts/ci-local.sh` on the clean tip, push, open the PR, run `scripts/pre-merge-guard.sh --pr`, squash-merge without deleting local history refs, and verify `main` equals `origin/main`.
+- [x] Rerun `scripts/ci-local.sh` on the clean tip, push, open the PR, run `scripts/pre-merge-guard.sh --pr`, squash-merge without deleting local history refs, and verify `main` equals `origin/main`.
 
 ## Out of scope
 
@@ -437,3 +437,5 @@ Re-verified after fixes: p24 solution executes with the new probe; inventory reg
   - p17's band note.
 
 **Provenance:** original synthetic data and problems.
+
+**Final authoritative CI (2026-10-10):** `scripts/ci-local.sh` on the clean tip e97fb77 (after merging post-Plan-027 `main`): **ALL GREEN**, 9/9.
