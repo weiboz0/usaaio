@@ -15866,7 +15866,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: e8960f4b42081647a5b68327470d776b6384f6de667c602a075c37ab3e2ddd79
+  semantic_sha256: 4fe2622cffb0f04436da4e93192acf506d2e8e01c3a2ee9bdd9ed652e104debb
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p07 — Solution :: cell 1'
@@ -17011,7 +17011,7 @@ notebooks:
   - torch.set_rng_state
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: 20a7e452a06b1f8ec7bf7c6275aef85d86adb4723ca37ff954609ff66b32b3d9
+  semantic_sha256: 3ad459fe5d30a3123275172e0ce1a5436a9925a6000ad56a06a907a1f061b668
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb :: B2-024 — Practice p17 > Task :: cell 1'
     heading_path:

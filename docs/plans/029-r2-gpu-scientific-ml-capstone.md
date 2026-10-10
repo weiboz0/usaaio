@@ -462,6 +462,20 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 2. `[FIXED]` Nits: p06 batch naming; p09 "row 9 paired with row 6"; p26 reports the mean physics residual (ungraded).
 3. `[WONTFIX]` Nits: p18's CI lower bound sits below the 0.84 bar, stated as frozen-seed only; p21's dummy `y_true` is clearly specified; the baseline call before the budget costs about 1 s of 15.
 
+### Review 2 — self (2026-10-10)
+- **Verdict**: Approve.
+
+### Review 2 — Fable (2026-10-10)
+- **Verdict**: Approve with nits. Re-ran p06/p07/p17/p19/p20 from scratch: outputs identical to round 1; every `L4_CONFIG` has exactly `CPU_CONFIG`'s keys.
+1. `[FIXED]` Nit: p17 "third-round" → "final-round" (L4 has four rounds).
+2. `[WONTFIX]` Nit: p19 shows the constructor signature twice; it is consistent.
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-10)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Nit: p07's answer check hard-coded `k == 20`, which would fail on an L4 rerun. → Response: it now asserts `k == CONFIG["checkpoint_every"] == N`; p07 re-executed.
+
+**Gate result:** 3-way consensus on the final head.
+
 ## Post-execution report
 
 Pending.
