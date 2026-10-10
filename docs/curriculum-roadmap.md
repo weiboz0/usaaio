@@ -13,12 +13,12 @@ This aggregate roadmap records acknowledged shipped and planned curriculum state
 
 ### Round 2 exit
 
-92 required/bridge atomic targets; 14 acknowledged gaps.
+92 required/bridge atomic targets; 6 acknowledged gaps.
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **23515 minutes / 391.92 hours**.
-Current scheduled baseline: **23845 minutes / 397.42 hours**.
+Current manifested baseline: **26755 minutes / 445.92 hours**.
+Current scheduled baseline: **27145 minutes / 452.42 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
@@ -31,7 +31,7 @@ Planned hours are estimates and are not manifested time.
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-Baseline plus planned-unit subtotal: **533.92–573.92 manifested-baseline hours** and **539.42–579.42 scheduled-baseline hours**.
+Baseline plus planned-unit subtotal: **587.92–627.92 manifested-baseline hours** and **594.42–634.42 scheduled-baseline hours**.
 
 ## Non-required candidates
 
@@ -122,16 +122,16 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | book2 | attention-complexity-analysis | required | covered | — | 0 | book2:B2-019-attention-transformers | book2:self-attention |
 | book2 | attention-from-scratch | required | covered | — | 0 | book2:B2-019-attention-transformers | book1:pytorch-autograd-and-optimizer-training, book2:multi-head-attention, book2:positional-encoding |
 | book2 | attention-mechanism-foundations | required | covered | — | 0 | book2:B2-019-attention-transformers | book1:linear-algebra-foundations, book1:softmax |
-| book2 | autoencoder | required | missing | implementation, model-training, theory | 3 | book2:B2-022-probabilistic-latent-models | book1:fully-connected-network-from-scratch, book1:loss-functions |
-| book2 | denoising-diffusion-probabilistic-models | required | missing | derivation, implementation, model-training, theory | 3 | book2:B2-023-generative-models-diffusion | book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian, book2:unet |
-| book2 | gaussian-reparameterization | bridge | missing | derivation, implementation, theory | 3 | book2:B2-022-probabilistic-latent-models | book1:pytorch-autograd-and-optimizer-training, book2:multivariate-gaussian |
-| book2 | generative-adversarial-network | required | missing | derivation, implementation, model-training, theory | 3 | book2:B2-023-generative-models-diffusion | book1:convolutional-neural-network-basics, book1:fully-connected-network-from-scratch |
+| book2 | autoencoder | required | covered | — | 0 | book2:B2-022-probabilistic-latent-models | book1:fully-connected-network-from-scratch, book1:loss-functions |
+| book2 | denoising-diffusion-probabilistic-models | required | covered | — | 0 | book2:B2-023-generative-models-diffusion | book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian, book2:unet |
+| book2 | gaussian-reparameterization | bridge | covered | — | 0 | book2:B2-022-probabilistic-latent-models | book1:pytorch-autograd-and-optimizer-training, book2:multivariate-gaussian |
+| book2 | generative-adversarial-network | required | covered | — | 0 | book2:B2-023-generative-models-diffusion | book1:convolutional-neural-network-basics, book1:fully-connected-network-from-scratch |
 | book2 | gpu-colab-l4-workflow | required | missing | competition-workflow, implementation, model-training | 3 | book2:B2-024-gpu-scientific-ml-capstone | book1:colab-coding-submission, book1:pytorch-autograd-and-optimizer-training |
 | book2 | graph-neural-network-transformer-applications | required | covered | — | 0 | book2:B2-021-cross-modal-transformers-vision | book2:transformer-architecture-foundations |
-| book2 | kl-divergence | bridge | missing | derivation, implementation, theory | 3 | book2:B2-022-probabilistic-latent-models | book1:conditional-probability, book1:expectation, book2:multivariate-gaussian |
+| book2 | kl-divergence | bridge | covered | — | 0 | book2:B2-022-probabilistic-latent-models | book1:conditional-probability, book1:probability-and-statistics-foundations, book2:multivariate-gaussian |
 | book2 | mixture-parameter-regression | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | book2:B2-024-gpu-scientific-ml-capstone | book1:linear-regression, book2:multivariate-gaussian, book2:open-ended-experiment-design |
 | book2 | multi-head-attention | required | covered | — | 0 | book2:B2-019-attention-transformers | book2:self-attention |
-| book2 | multivariate-gaussian | bridge | missing | derivation, implementation, theory | 3 | book2:B2-022-probabilistic-latent-models | book1:eigenvalues-and-eigenvectors, book1:probability-and-statistics-foundations |
+| book2 | multivariate-gaussian | bridge | covered | — | 0 | book2:B2-022-probabilistic-latent-models | book1:eigenvalues-and-eigenvectors, book1:probability-and-statistics-foundations |
 | book2 | nlp-fine-tuning | required | covered | — | 0 | book2:B2-020-language-transformers | book1:pytorch-autograd-and-optimizer-training, book2:nlp-pretraining |
 | book2 | nlp-pretraining | required | covered | — | 0 | book2:B2-020-language-transformers | book2:nlp-transformers |
 | book2 | nlp-tokenization | required | covered | — | 0 | book1:C8-embeddings | book1:python-programming |
@@ -144,11 +144,11 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | book2 | scientific-ml-inverse-problems | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | book2:B2-024-gpu-scientific-ml-capstone | book1:end-to-end-model-selection, book1:pytorch-autograd-and-optimizer-training |
 | book2 | self-attention | required | covered | — | 0 | book2:B2-019-attention-transformers | book2:attention-mechanism-foundations |
 | book2 | semi-supervised-pseudo-labeling | bridge | missing | competition-workflow, implementation, model-training, theory | 3 | book2:B2-024-gpu-scientific-ml-capstone | book1:convolutional-neural-network-basics, book1:k-means-clustering, book2:open-ended-experiment-design |
-| book2 | stable-diffusion | required | missing | implementation, model-training, theory | 3 | book2:B2-023-generative-models-diffusion | book2:denoising-diffusion-probabilistic-models, book2:transformer-nlp-applications, book2:variational-autoencoder |
+| book2 | stable-diffusion | required | covered | — | 0 | book2:B2-023-generative-models-diffusion | book2:denoising-diffusion-probabilistic-models, book2:transformer-nlp-applications, book2:variational-autoencoder |
 | book2 | transformer-architecture-foundations | required | covered | — | 0 | book2:B2-019-attention-transformers | book1:multilayer-perceptron-model, book2:attention-from-scratch |
 | book2 | transformer-nlp-applications | required | covered | — | 0 | book2:B2-020-language-transformers | book2:nlp-tokenization, book2:transformer-architecture-foundations |
 | book2 | unet | required | covered | — | 0 | book2:B2-021-cross-modal-transformers-vision | book1:convolutional-neural-network-basics |
-| book2 | variational-autoencoder | required | missing | derivation, implementation, model-training, theory | 3 | book2:B2-022-probabilistic-latent-models | book2:autoencoder, book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian |
+| book2 | variational-autoencoder | required | covered | — | 0 | book2:B2-022-probabilistic-latent-models | book2:autoencoder, book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian |
 | book2 | vision-transformers | required | covered | — | 0 | book2:B2-021-cross-modal-transformers-vision | book1:convolutional-neural-network-basics, book2:transformer-architecture-foundations |
 
 ### optional-enrichment
@@ -164,8 +164,8 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | book2 | book2:B2-019-attention-transformers | Attention and Transformer Mechanics | round-2-extension | 22–28 | extend | book1:C11-neural-training, book1:C6-pytorch, book1:C7-cnn-transfer, book1:C8-embeddings | book2:attention-complexity-analysis, book2:attention-from-scratch, book2:attention-mechanism-foundations, book2:multi-head-attention, book2:positional-encoding, book2:self-attention, book2:transformer-architecture-foundations | — |
 | book2 | book2:B2-020-language-transformers | Language Transformers | round-2-extension | 26–32 | extend | book1:C11-neural-training, book1:C6-pytorch, book1:C7-cnn-transfer, book1:F1-scientific-python, book1:F3-matrices, book2:B2-019-attention-transformers | book2:nlp-fine-tuning, book2:nlp-pretraining, book2:nlp-transformers, book2:nlp-word-embeddings, book2:transformer-nlp-applications | — |
 | book2 | book2:B2-021-cross-modal-transformers-vision | Cross-modal Transformers and Advanced Vision | round-2-extension | 22–28 | extend | book1:C11-neural-training, book1:C6-pytorch, book1:C7-cnn-transfer, book1:F1-scientific-python, book1:F3-matrices, book2:B2-019-attention-transformers, book2:B2-020-language-transformers | book2:graph-neural-network-transformer-applications, book2:object-detection, book2:unet, book2:vision-transformers | — |
-| book2 | book2:B2-022-probabilistic-latent-models | Probabilistic Latent Models | round-2-extension | 22–28 | extend | book1:C11-neural-training, book1:C7-cnn-transfer, book1:F4-multivar-calculus, book1:F5-probability, book1:F6-svd-spectral | book2:autoencoder, book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian, book2:variational-autoencoder | — |
-| book2 | book2:B2-023-generative-models-diffusion | Generative Models and Diffusion | round-2-extension | 20–26 | extend | book2:B2-020-language-transformers, book2:B2-021-cross-modal-transformers-vision, book2:B2-022-probabilistic-latent-models | book2:denoising-diffusion-probabilistic-models, book2:generative-adversarial-network, book2:stable-diffusion | — |
+| book2 | book2:B2-022-probabilistic-latent-models | Probabilistic Latent Models | round-2-extension | 22–28 | extend | book1:C1-ml-fundamentals, book1:C11-neural-training, book1:C2-linear-models, book1:C5-neural-networks, book1:C6-pytorch, book1:C9-dimensionality-reduction, book1:F1-scientific-python, book1:F3-matrices, book1:F4-multivar-calculus, book1:F5-probability, book1:F6-svd-spectral, book2:B2-021-cross-modal-transformers-vision | book2:autoencoder, book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian, book2:variational-autoencoder | — |
+| book2 | book2:B2-023-generative-models-diffusion | Generative Models and Diffusion | round-2-extension | 20–26 | extend | book1:C1-ml-fundamentals, book1:C11-neural-training, book1:C2-linear-models, book1:C5-neural-networks, book1:C6-pytorch, book1:F1-scientific-python, book1:F3-matrices, book1:F4-multivar-calculus, book1:F5-probability, book2:B2-019-attention-transformers, book2:B2-020-language-transformers, book2:B2-021-cross-modal-transformers-vision, book2:B2-022-probabilistic-latent-models | book2:denoising-diffusion-probabilistic-models, book2:generative-adversarial-network, book2:stable-diffusion | — |
 | book2 | book2:B2-024-gpu-scientific-ml-capstone | GPU Scientific Modeling Capstone | round-2-extension | 30–40 | extend | book1:C10-competition-craft, book1:C12-classical-models, book2:B2-020-language-transformers, book2:B2-021-cross-modal-transformers-vision, book2:B2-022-probabilistic-latent-models, book2:B2-023-generative-models-diffusion | book2:gpu-colab-l4-workflow, book2:mixture-parameter-regression, book2:open-ended-experiment-design, book2:open-ended-model-evaluation, book2:scientific-ml-inverse-problems, book2:semi-supervised-pseudo-labeling | — |
 
 ## Dependency-ordered content tranche queue

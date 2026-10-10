@@ -69,11 +69,18 @@ planned_units:
   title: Probabilistic Latent Models
   layer: round-2-extension
   prerequisites:
+  - book1:F1-scientific-python
+  - book1:F3-matrices
   - book1:F4-multivar-calculus
   - book1:F5-probability
   - book1:F6-svd-spectral
-  - book1:C7-cnn-transfer
+  - book1:C1-ml-fundamentals
+  - book1:C2-linear-models
+  - book1:C5-neural-networks
+  - book1:C6-pytorch
+  - book1:C9-dimensionality-reduction
   - book1:C11-neural-training
+  - B2-021-cross-modal-transformers-vision
   knowledge_points:
   - multivariate-gaussian
   - gaussian-reparameterization
@@ -89,6 +96,16 @@ planned_units:
   title: Generative Models and Diffusion
   layer: round-2-extension
   prerequisites:
+  - book1:F1-scientific-python
+  - book1:F3-matrices
+  - book1:F4-multivar-calculus
+  - book1:F5-probability
+  - book1:C1-ml-fundamentals
+  - book1:C2-linear-models
+  - book1:C5-neural-networks
+  - book1:C6-pytorch
+  - book1:C11-neural-training
+  - B2-019-attention-transformers
   - B2-020-language-transformers
   - B2-021-cross-modal-transformers-vision
   - B2-022-probabilistic-latent-models
@@ -952,39 +969,61 @@ knowledge_points:
 - id: autoencoder
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - book1:fully-connected-network-from-scratch
   - book1:loss-functions
-  shipped_concepts: []
+  shipped_concepts:
+  - autoencoder
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb
+        heading: 'B2-022 — Session 3: Autoencoders > 1. Encoder, bottleneck, decoder'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p04
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb
+        heading: 'B2-022 — Session 3: Autoencoders > 2. The MLP shape ledger'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p10
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb
+        heading: 'B2-022 — Session 3: Autoencoders > 7. Worked laboratory: a fixed-seed tiny autoencoder trace'
+        cell_ordinal: 1
+        role: primary
+      - path: units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb
+        heading: 'B2-022 — Session 3: Autoencoders > 5. The linear autoencoder and PCA'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p17
+        role: primary
+      - id: B2-022-p18
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-022-probabilistic-latent-models
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: Dimensionality reduction is PCA and SVD only; no learned encoder-decoder exists.
-  consequence: Autoencoder and VAE prerequisites are missing.
+    modalities_missing: []
+  rationale: B2-022 teaches the encoder/bottleneck/decoder shape ledger, reconstruction loss, the linear-AE/PCA subspace connection, and fixed-seed autoencoder training.
+  consequence: Students can build, train, and evaluate small autoencoders on held-out data.
 - id: variational-autoencoder
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
@@ -992,75 +1031,125 @@ knowledge_points:
   - multivariate-gaussian
   - gaussian-reparameterization
   - kl-divergence
-  shipped_concepts: []
+  shipped_concepts:
+  - variational-autoencoder
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb
+        heading: 'B2-022 — Session 4: Reparameterization and the ELBO > 1. Latent-variable models $p(x\mid z)\,p(z)$'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p21
+        role: primary
       assessments: []
     derivation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb
+        heading: 'B2-022 — Session 4: Reparameterization and the ELBO > 4. The ELBO from Jensen''s inequality'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p16
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb
+        heading: 'B2-022 — Session 4: Reparameterization and the ELBO > 7. Worked laboratory: per-example negative ELBO and a gradient-flow check'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p12
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb
+        heading: 'B2-022 — Session 5: Training and Using VAEs > 7. Worked laboratory: train, diagnose, sample, interpolate'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p19
+        role: primary
+      - id: B2-022-p20
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-022-probabilistic-latent-models
   deficits:
-    modalities_missing:
-    - theory
-    - derivation
-    - implementation
-    - model-training
-  rationale: No latent probabilistic model, ELBO, reparameterized encoder, or VAE training exists.
-  consequence: The official VAE family is wholly absent.
+    modalities_missing: []
+  rationale: B2-022 teaches the ELBO from Jensen's inequality, per-example negative-ELBO bookkeeping, beta weighting, posterior collapse, prior sampling, and latent interpolation.
+  consequence: Students can derive, implement, train, and diagnose a small VAE.
 - id: generative-adversarial-network
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - book1:fully-connected-network-from-scratch
   - book1:convolutional-neural-network-basics
-  shipped_concepts: []
+  shipped_concepts:
+  - generative-adversarial-network
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb
+        heading: 'B2-023 — Session 1: Adversarial Games > 1. Implicit generative models: the generator and the discriminator'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p02
+        role: primary
       assessments: []
     derivation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb
+        heading: 'B2-023 — Session 1: Adversarial Games > 4. Pointwise optimization and the optimal discriminator'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p13
+        role: primary
+      - id: B2-023-p14
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb
+        heading: 'B2-023 — Session 2: Training and Diagnosing GANs > 1. Alternating updates with two optimizers'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p06
+        role: primary
+      - id: B2-023-p07
+        role: primary
+      - id: B2-023-p08
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb
+        heading: 'B2-023 — Session 2: Training and Diagnosing GANs > 6. A fixed-seed tiny 2-D GAN training trace'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p17
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-023-generative-models-diffusion
   deficits:
-    modalities_missing:
-    - theory
-    - derivation
-    - implementation
-    - model-training
-  rationale: No generator-discriminator game, objective, implementation, or training exists.
-  consequence: GAN coverage is absent.
+    modalities_missing: []
+  rationale: B2-023 teaches the generator/discriminator game with BCE-with-logits, the pointwise optimal discriminator, the Jensen-Shannon global optimum, the non-saturating generator loss, detach-disciplined alternating updates, and mode-coverage diagnostics.
+  consequence: Students can derive, implement, train, and diagnose a small MLP GAN on a known mixture.
 - id: denoising-diffusion-probabilistic-models
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   - r2-2026-index-local
@@ -1069,71 +1158,120 @@ knowledge_points:
   - multivariate-gaussian
   - gaussian-reparameterization
   - kl-divergence
-  shipped_concepts: []
+  shipped_concepts:
+  - denoising-diffusion-probabilistic-models
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb
+        heading: 'B2-023 — Session 3: The Diffusion Forward Process > 1. Destroying data slowly: the idea of a diffusion model'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p04
+        role: primary
       assessments: []
     derivation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb
+        heading: 'B2-023 — Session 3: The Diffusion Forward Process > 5. The closed form $q(x_t\mid x_0)$'
+        cell_ordinal: 1
+        role: primary
+      - path: units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb
+        heading: 'B2-023 — Session 4: Denoising and Sampling > 4. From mean matching to ε-prediction'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p15
+        role: primary
+      - id: B2-023-p16
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb
+        heading: 'B2-023 — Session 4: Denoising and Sampling > 6. Ancestral sampling and a worked reverse step'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p09
+        role: primary
+      - id: B2-023-p10
+        role: primary
+      - id: B2-023-p11
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb
+        heading: 'B2-023 — Session 4: Denoising and Sampling > 7. Worked laboratory: a fixed-seed tiny 2-D DDPM'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p18
+        role: primary
+      - id: B2-023-p19
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-023-generative-models-diffusion
   deficits:
-    modalities_missing:
-    - theory
-    - derivation
-    - implementation
-    - model-training
-  rationale: No forward noising, reverse denoising, schedule, noise objective, or DDPM training exists.
-  consequence: Diffusion-model theory and practice are absent.
+    modalities_missing: []
+  rationale: B2-023 teaches the variance schedule, the closed-form forward process, the stated posterior and equal-variance KL leading to epsilon-prediction, the simplified objective, and ancestral sampling with fixed-seed DDPM training.
+  consequence: Students can derive, implement, train, and sample from a small DDPM and certify its samples against held-out data.
 - id: stable-diffusion
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - denoising-diffusion-probabilistic-models
   - variational-autoencoder
   - transformer-nlp-applications
-  shipped_concepts: []
+  shipped_concepts:
+  - stable-diffusion
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb
+        heading: 'B2-023 — Session 5: Latent and Conditional Diffusion > 6. The Stable Diffusion pipeline component map'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p05
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb
+        heading: 'B2-023 — Session 5: Latent and Conditional Diffusion > 4. Cross-attention conditioning'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p12
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb
+        heading: 'B2-023 — Session 5: Latent and Conditional Diffusion > 7. Worked laboratory: a CPU-scale class-conditional latent diffusion trace'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p20
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-023-generative-models-diffusion
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: No latent diffusion, text conditioning, pipeline use, or training exists.
-  consequence: Stable Diffusion is absent.
+    modalities_missing: []
+  rationale: B2-023 teaches latent diffusion with the latent scaling factor, cross-attention text conditioning, conditioning dropout with classifier-free guidance, and the Stable Diffusion component map through a CPU-scale class-conditional latent diffusion analogue.
+  consequence: Students can explain the Stable Diffusion pipeline and build and train a faithful CPU-scale latent conditional diffusion model.
 - id: multivariate-gaussian
   layer: round-2-extension
   requirement: bridge
-  coverage: missing
+  coverage: covered
   source_refs:
   - reference-analysis-2026-08-03
   - r2-2026-index-local
@@ -1141,33 +1279,51 @@ knowledge_points:
   depends_on:
   - book1:probability-and-statistics-foundations
   - book1:eigenvalues-and-eigenvectors
-  shipped_concepts: []
+  shipped_concepts:
+  - multivariate-gaussian
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb
+        heading: 'B2-022 — Session 1: Multivariate Gaussians > 4. Covariance eigen-geometry: ellipse axes'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p02
+        role: primary
       assessments: []
     derivation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb
+        heading: 'B2-022 — Session 1: Multivariate Gaussians > 7. Diagonal versus full covariance, and maximum likelihood'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p13
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb
+        heading: 'B2-022 — Session 1: Multivariate Gaussians > 6. Worked laboratory: 2-D density and Cholesky sampling'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p06
+        role: primary
+      - id: B2-022-p07
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-022-probabilistic-latent-models
   deficits:
-    modalities_missing:
-    - theory
-    - derivation
-    - implementation
-  rationale: F5 teaches scalar Gaussians and generic covariance but never a Gaussian vector or covariance-matrix density.
-  consequence: VAE and diffusion prerequisites are not closed.
+    modalities_missing: []
+  rationale: B2-022 teaches the Gaussian vector density, SPD determinants with slogdet, covariance eigen-geometry, Cholesky sampling, and the mean/diagonal MLE.
+  consequence: Students can derive, evaluate, and sample multivariate Gaussians for VAE and diffusion work.
 - id: gaussian-reparameterization
   layer: round-2-extension
   requirement: bridge
-  coverage: missing
+  coverage: covered
   source_refs:
   - reference-analysis-2026-08-03
   - r2-2026-index-local
@@ -1175,64 +1331,108 @@ knowledge_points:
   depends_on:
   - multivariate-gaussian
   - book1:pytorch-autograd-and-optimizer-training
-  shipped_concepts: []
+  shipped_concepts:
+  - gaussian-reparameterization
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb
+        heading: 'B2-022 — Session 4: Reparameterization and the ELBO > 5. Why sampling blocks gradients'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p05
+        role: primary
       assessments: []
     derivation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb
+        heading: 'B2-022 — Session 4: Reparameterization and the ELBO > 6. Reparameterization $z=\mu+\sigma\odot\varepsilon$ and the log-variance head'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p16
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb
+        heading: 'B2-022 — Session 4: Reparameterization and the ELBO > 7. Worked laboratory: per-example negative ELBO and a gradient-flow check'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p11
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-022-probabilistic-latent-models
   deficits:
-    modalities_missing:
-    - theory
-    - derivation
-    - implementation
-  rationale: No location-scale reparameterization or differentiable latent sampling exists.
-  consequence: Gradient-based latent-variable training is blocked.
+    modalities_missing: []
+  rationale: B2-022 teaches why sampling blocks gradients and the z = mu + sigma * eps reparameterization with a log-variance head.
+  consequence: Students can derive and implement a pathwise gradient through Gaussian sampling.
 - id: kl-divergence
   layer: round-2-extension
   requirement: bridge
-  coverage: missing
+  coverage: covered
   source_refs:
   - reference-analysis-2026-08-03
   - r2-2026-index-local
   - plan-015-preliminary-decisions
   depends_on:
   - book1:conditional-probability
-  - book1:expectation
+  - book1:probability-and-statistics-foundations
   - multivariate-gaussian
-  shipped_concepts: []
+  shipped_concepts:
+  - kl-divergence
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb
+        heading: 'B2-022 — Session 2: KL Divergence > 3. Gibbs'' inequality and asymmetry, with worked numbers'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p03
+        role: primary
       assessments: []
     derivation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb
+        heading: 'B2-022 — Session 2: KL Divergence > 2. The tangent-line lemma and Jensen''s inequality for $\log$'
+        cell_ordinal: 1
+        role: primary
+      - path: units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb
+        heading: 'B2-022 — Session 2: KL Divergence > 5. Continuous KL and the univariate Gaussian closed form'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p14
+        role: primary
+      - id: B2-022-p15
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb
+        heading: 'B2-022 — Session 2: KL Divergence > 1. Discrete KL and the $0\cdot\log 0$ convention'
+        cell_ordinal: 1
+        role: primary
+      - path: units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb
+        heading: 'B2-022 — Session 2: KL Divergence > 7. Worked laboratory: Gaussian-to-standard-normal KL'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-022-p08
+        role: primary
+      - id: B2-022-p09
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-022-probabilistic-latent-models
   deficits:
-    modalities_missing:
-    - theory
-    - derivation
-    - implementation
-  rationale: No entropy, distributional cross-entropy, KL definition, Gaussian KL derivation, or implementation exists.
-  consequence: VAE and diffusion objectives lack a prerequisite.
+    modalities_missing: []
+  rationale: B2-022 teaches discrete KL with the 0 log 0 convention, Gibbs' inequality from the tangent-line lemma, and the closed-form diagonal-Gaussian KL to N(0, I).
+  consequence: Students can derive and implement the KL term of the ELBO.
 - id: gpu-colab-l4-workflow
   layer: round-2-extension
   requirement: required

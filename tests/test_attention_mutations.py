@@ -279,6 +279,14 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
         "object-detection",
         "unet",
         "graph-neural-network-transformer-applications",
+        "multivariate-gaussian",
+        "kl-divergence",
+        "gaussian-reparameterization",
+        "autoencoder",
+        "variational-autoencoder",
+        "generative-adversarial-network",
+        "denoising-diffusion-probabilistic-models",
+        "stable-diffusion",
     }
     assert {points[point_id]["coverage"] for point_id in later} <= {"covered", "missing"}
 
@@ -298,7 +306,7 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
             ensure_ascii=False,
         ).encode()
     ).hexdigest()
-    assert unchanged_digest == "cec99b0572f588c02d7fbfaf6d6a654067129f99824eca9106e4045c61e6b69e"
+    assert unchanged_digest == "7e8fa1946be4b593e00769aa1e30b32e324ea7be704e6822a4d113a8fd3e850c"
 
 
 def test_attention_manifest_adds_only_the_exact_seven_evidence_claims() -> None:
