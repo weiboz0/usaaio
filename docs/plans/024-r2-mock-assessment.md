@@ -287,7 +287,34 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ## Content Review
 
-Pending.
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`). Fidelity is judged on shape. The local corpora were copied uncommitted for a real `overlap-scan`, and `git status` showed no reference paths.
+
+### Review 1 — self (2026-10-10)
+- **Provenance**: compared every r2-001 slot against the local 2026 index summaries; each differs in central object:
+  - P1: causal LM, not linear attention.
+  - P2: two-source scalar heat kernel, not a single-source vector field.
+  - P3: β-VAE, not diffusion.
+  - P4: grayscale texture patches with scanner shift, not RGB shapes. Same family, forced by taught closure.
+  - P5: K = 2 Lorentzian, not an 11-parameter exponential/log/trig/linear mixture.
+- **Overlap scan**: with the corpus present, it first failed on four **B2-023** notebooks. Their only shared 8-word shingles were standard DDPM formulas in LaTeX. → Fixed in `tools/checks/overlap.py` (1dc54a1): LaTeX math spans are stripped on the artifact side; a prose-detection test is added. Book 1 and Book 2 scans pass against their corpora, and Book 1 output is identical to `main`.
+- **PDF build**: Book 2's branch built units only. → `build-pdf.sh` now renders r2-* mock tests to `build/mocktests/<test>/<subdir>/` (1127b3f). This is a deviation: the plan had assumed discovery worked unchanged.
+- **Verdict**: Approve with suggestions.
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-10)
+- **Blind answers**: P1 1.1–1.7 (B/35; 73,728; C/65; 4d²+4d and 8,544; 18,712; D; 0.3456) and P3 3.1–3.6 all match the keys; 3.7/3.8 match on re-execution.
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: P4 gave full credit to a labelled-only head (0.985). → Response (e2ae9bd): P4 now has a scanner shift between the labelled rows and the pool/test. The best labelled-only probe of seven reaches 0.6475; the pool-using reference reaches 0.9900. New B = 0.4850, R = 0.9900, tiers 0.8638 / 0.4850 / 0.3588. A regression test keeps labelled-only ≤ full-credit cutoff − 0.15. Batch statistics on test/validation inside `predict` count as fitting.
+2. `[FIXED]` Must Fix: P1.13 key versus reproduction (1.130). → Response: the key stays 1.132 (Fable reproduced it exactly). The worked text records this machine's 1.130, and the answers/rubric state that the platform-dependent last digit is within the 0.03 tolerance.
+3. `[FIXED]` Should Fix: arc rotation was bypassable via manifest metadata. → Response: derived from the test number; a mismatch needs `arc_deviation_reason`; tests added.
+4. `[FIXED]` Should Fix: section semantics and negative budgets. → Response: open-ended entries must be programming/open-ended and arc entries may not be; per-day budgets must be positive ints; tests added.
+
+### Review 1 — Fable (2026-10-10)
+- **Blind answers**: P1 1.8–1.14 all match (including 1.13 = 1.132 reproduced exactly); P4 own CNN self-training scored 0.9075 (on the original data).
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Should Fix: the P1.13 worked text was stale. → Response: as Sol 2.
+2. `[WONTFIX]` Nit: inline-math stripping weakens shingle alignment across inline math. → Response: pdftotext already mangles reference math, so aligning inline symbols would re-create notation false positives; prose is still detected (test).
+3. `[FIXED]` Nit: acknowledge that the noise-free corpus makes validation perplexity an implementation certificate. → Response: one sentence in Part 1.14.
+4. `[FIXED]` Nit: P4 tier calibration. → Response: superseded by the Sol 1 redesign.
 
 ## Post-execution report
 
