@@ -55,7 +55,7 @@ B2-024 owns exactly six Book 2 concepts, matching its knowledge points:
 Unit prerequisites (`prereq_units`, in this order):
 `book1:F1-scientific-python`, `book1:F3-matrices`, `book1:F4-multivar-calculus`, `book1:F5-probability`, `book1:C1-ml-fundamentals`, `book1:C2-linear-models`, `book1:C3-gradient-descent`, `book1:C5-neural-networks`, `book1:C6-pytorch`, `book1:C7-cnn-transfer`, `book1:C10-competition-craft`, `book1:C11-neural-training`, `book1:C12-classical-models`, `B2-023-generative-models-diffusion`.
 
-B2-023 is a schedule-order predecessor; no Book 2 concept is used. The mixture bumps are one-dimensional, so `book1:gaussian-distribution` covers them, and `multivariate-gaussian` and B2-022 are not prerequisites.
+B2-023 is a schedule-order predecessor; no Book 2 concept is used. The mixture bumps are one-dimensional, so `book1:gaussian-distribution` covers them, and `multivariate-gaussian` and B2-022 are not prerequisites. The coverage-map row `mixture-parameter-regression` keeps `multivariate-gaussian` in `depends_on` unchanged: that field records the roadmap dependency, and it is satisfied transitively because B2-023 requires B2-022, which ships earlier in Book 2.
 Task 1 rewrites the planned row's `prerequisites` to exactly this 14-unit list: B2-020, B2-021 and B2-022 are dropped and C5 is added. Its test asserts the new list.
 
 The live syllabus entry, manifest, and notebook metadata use this exact ordered `concept_prerequisites` list:
@@ -139,6 +139,7 @@ Every model-building practice (p16–p22, p26, p27) uses three immutable splits 
     - `A[i, j]` is the field magnitude at sensor `i` from a unit source at grid node `j`;
     - solve for a nonnegative-clipped grid density;
     - the source estimate is the density-weighted centroid of the top-3 nodes, and its strength is their total mass.
+  - 81 grid unknowns from 8 sensors is heavily underdetermined. Session 5 says so explicitly as the motivation for regularization and for learned inversion; the p19 statement prints the baseline number it must beat.
   - The closed form `(AᵀA + λI)⁻¹Aᵀy`, derived from `book1:sum-of-squares-gradients` and `book1:invertibility-via-rank`.
   - Learned inversion trained on simulated pairs; physics-residual checks.
 - **Mixture-function parameter regression (Session 6).**
@@ -186,9 +187,9 @@ Every solution ends with `### Answer check`.
 | p15 | B | proof | core | 45 | cpu | prove `Var(mean) = σ²/n` for iid runs, and show that a paired difference has lower variance when the runs are positively correlated |
 | p16 | C | integrative | core | 65 | L4 | train a small CNN (the statement describes the 8×8 shape dataset itself) with the p06/p07 helpers: checkpoint at step k, resume, and certify the loss decrease and resume equality on CPU with `amp_dtype=None`; accelerator extension for L4 |
 | p17 | C | integrative | advanced | 65 | L4 | semi-supervised shape classification on 8×8 synthetic images with 30 labelled examples: certify that self-training beats the fixed labelled-only baseline's test accuracy by a stated margin, with selection on labelled validation only |
-| p18 | C | integrative | advanced | 65 | cpu | cluster-then-label with `k-means` (k = 3) on frozen features from a labelled-only CNN, versus threshold pseudo-labels; certify that cluster-then-label beats the fixed baseline by a stated margin, and report its comparison with the threshold method |
+| p18 | C | integrative | advanced | 65 | cpu | cluster-then-label with `k-means` (k = 3) on frozen features from a labelled-only CNN. A cluster with no labelled member takes the label of the nearest labelled-class centroid, and majority ties go to the lowest class index. Compare it with threshold pseudo-labels; certify that cluster-then-label beats the fixed baseline by a stated margin, and report its comparison with the threshold method |
 | p19 | C | integrative | advanced | 65 | L4 | learned inversion: train an MLP on simulated sensor→source pairs; certify that the final test source-position error is below the fixed grid-Tikhonov baseline score, and that the physics residual is below a stated bound |
-| p20 | C | integrative | advanced | 65 | L4 | train a regressor from 32 sampled function values to the 9 canonical parameters; certify that the final test permutation-invariant error is below the fixed least-squares baseline score |
+| p20 | C | integrative | advanced | 65 | L4 | train an amortized regressor from 32 sampled function values to the 9 canonical parameters, then refine each prediction with 100 LS steps initialized at the regressor's output. Certify that this pipeline's final test permutation-invariant error is below the fixed-init LS baseline score (500 steps). Also report the raw regressor's error, which may lose to per-sample fitting; the lesson says so honestly |
 | p21 | C | integrative | core | 65 | cpu | produce an evaluation report for two model families: bootstrap CIs, a paired comparison across shared seeds, an ablation table, and robustness to an input-noise shift |
 | p22 | C | integrative | core | 65 | cpu | run a budgeted experiment campaign (hypothesis → configs → results → decision) within a fixed total step budget and log it |
 | p23 | C | scenario | core | 55 | cpu | plan a Colab L4 session for a stated task: memory and time budget, OOM triage order, checkpoint cadence, restart procedure, submission checklist |
@@ -245,7 +246,7 @@ Each row needs evidence for exactly the modalities its coverage-map row lists, w
 | `semi-supervised-pseudo-labeling` | theory, implementation, model-training, competition-workflow | p04; p09; p17, p18; p25 |
 | `scientific-ml-inverse-problems` | theory, implementation, model-training, competition-workflow | p13; p10; p19; p26 |
 | `open-ended-experiment-design` | model-training, competition-workflow | p22, p12; p24 |
-| `open-ended-model-evaluation` | model-training, competition-workflow | p21; p28 |
+| `open-ended-model-evaluation` | model-training, competition-workflow | p21; p28, p24 |
 | `mixture-parameter-regression` | theory, implementation, model-training, competition-workflow | p14, p05; p11; p20; p27 |
 
 If a row on the merged `main` lists modalities different from this table, Task 1 updates the table to match the row before writing tests.
@@ -284,7 +285,10 @@ Steps:
   - the 28 statements;
   - `scripts/generate_capstone_data.py` with `data/capstone_data.py`.
 - [ ] The generator produces four seeded datasets:
-  - 8×8 synthetic shape images (3 classes) with noise, position jitter, and stroke-width variation, tuned so the labelled-only baseline lands at most 0.85 test accuracy at the frozen seed. Splits: 30 labelled train, 30 labelled validation, 600 unlabelled, and 300 test;
+  - 8×8 synthetic shape images (3 classes) with noise, position jitter, and stroke-width variation, in two disjoint families:
+    - `shapes_supervised` for p16: 600 labelled train, 150 validation, 150 test;
+    - `shapes_ssl` for p17/p18: 30 labelled train, 30 labelled validation, 600 unlabelled, 300 test. It is tuned so the labelled-only baseline lands at most 0.85 test accuracy at the frozen seed.
+    The unlabelled pool's labels are never exposed by any accessor.
   - inverse-problem pairs (2-D source position in `[0.1, 0.9]²` and strength → noisy field magnitudes at 8 fixed sensors): 800 train, 200 validation, and 200 test;
   - mixture-function samples (`K = 3` bumps, 32 x-values, canonical parameters): 800 train, 200 validation, and 200 test;
   - two literal results tables for p24/p28.
@@ -301,13 +305,13 @@ Steps:
   - p18: the p16 CNN trained on labelled data only (150 steps), then k-means with k = 3 and 20 Lloyd iterations.
   - p19: MLP `8→64→64→3`; 1,500 full-batch Adam steps.
   - p20: MLP `32→128→128→9`; 1,500 full-batch Adam steps.
-  - p21 and p22: MLPs no wider than 64 on generator tabular data; ≤ 2,000 total steps.
+  - p21 and p22: MLPs no wider than 64 on the inverse-problem pairs dataset; ≤ 2,000 total steps. All comparisons, bootstrap CIs, ablations and robustness checks are computed on validation. The single `final_test_score` call scores only the final selected model (p21: the chosen family; p22: the chosen configuration).
   - p26 and p27: within `StepBudget(2000)`.
   Every solution must run well under 20 s on CPU, measured in Task 3.
 - [ ] Certification margins are set from the frozen-seed run with comfortable slack. Two are pinned here:
   - p17 and p18 must beat the baseline by at least 0.03 absolute test accuracy;
   - p19, p20, p26 and p27 must beat their committed baseline scores.
-- [ ] The open-ended challenges (p26, p27) fix a held-out set, a score function, a stated baseline score, a step budget, and a required writeup (approach, alternatives considered, evaluation). Any approach that beats the baseline within budget is correct. The solution gives one reference approach plus the writeup.
+- [ ] The open-ended challenges (p26, p27) fix a held-out set, a score function, a stated baseline score, a step budget, and a required writeup following the four-part rubric (Approach, Alternatives considered, Evaluation, Limitations). Any approach that beats the baseline within budget is correct. The solution gives one reference approach plus the writeup.
 - [ ] Bundle allowlist checks (as in Plans 027/028), then a SHA-256 manifest outside the bundle.
 
 ### Task 3 — Blind-author solutions, publish, and execute
@@ -393,6 +397,22 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 9. `[FIXED]` Should Fix: p07 exact resume. → Response: global RNG for sampling; `torch.equal`.
 10. `[FIXED]` Should Fix: p01 memory model. → Response: the counted tensors are enumerated.
 11. `[FIXED]` Nits: the missing-row tests are rewritten in Task 3; autocast-omitted mutant; p16 describes its dataset; provenance compared against the local index and rationale; intro share noted.
+
+### Review 2 — self (2026-10-09)
+- **Verdict**: Approve after fixes. Checked `layer_boundary.py`: each coverage claim needs ≥ 3 qualifying primary practices across its modalities. All six rows now satisfy it, and Plans 027/028 already did.
+
+### Review 2 — Fable (2026-10-09)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Should Fix: p20 baseline may beat an amortized regressor. → Response: the certified pipeline is regressor + 100-step LS refinement against fixed-init LS; the raw regressor is reported honestly.
+2. `[FIXED]` Should Fix: p16 vs the 600-row pool. → Response: a disjoint `shapes_supervised` family for p16; pool labels are never exposed.
+3. `[FIXED]` Nits: p18 empty-cluster and tie rule; p21/p22 dataset named; p19 underdetermination motivation and printed baseline; rubric wording unified to four parts.
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: p16 had no 600-row labelled split. → Response: `shapes_supervised` (600/150/150).
+2. `[FIXED]` Must Fix: `open-ended-model-evaluation` had only 2 primary practices. → Response: p24 added under competition-workflow (p21, p28, p24).
+3. `[FIXED]` Should Fix: mixture `depends_on` on `multivariate-gaussian`. → Response: retained as roadmap metadata, satisfied transitively through B2-023 → B2-022.
+4. `[FIXED]` Should Fix: p21/p22 split usage. → Response: everything on validation; one test call for the final selected model.
 
 ## Content Review
 
