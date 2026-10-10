@@ -13,21 +13,21 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 1149 |
+| Unit notebooks | 1205 |
 | Mock notebooks | 10 |
-| Unit practices | 509 |
-| Total inventoried notebooks | 1159 |
+| Unit practices | 533 |
+| Total inventoried notebooks | 1215 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
-| Coverage: covered | 78 |
-| Coverage: missing | 14 |
+| Coverage: covered | 83 |
+| Coverage: missing | 9 |
 | Coverage: partial | 0 |
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **23515 minutes / 391.92 hours**.
-Current scheduled baseline: **23845 minutes / 397.42 hours**.
+Current manifested baseline: **25135 minutes / 418.92 hours**.
+Current scheduled baseline: **25495 minutes / 424.92 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
@@ -40,7 +40,7 @@ Planned hours are estimates and are not manifested time.
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-Baseline plus planned-unit subtotal: **533.92–573.92 manifested-baseline hours** and **539.42–579.42 scheduled-baseline hours**.
+Baseline plus planned-unit subtotal: **560.92–600.92 manifested-baseline hours** and **566.92–606.92 scheduled-baseline hours**.
 
 ## Non-required candidates
 
@@ -1724,26 +1724,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-022-probabilistic-latent-models
 - **Dependencies:** book1:fully-connected-network-from-scratch, book1:loss-functions
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** Dimensionality reduction is PCA and SVD only; no learned encoder-decoder exists.
-- **Consequence:** Autoencoder and VAE prerequisites are missing.
+- **Shipped concepts:** book2:autoencoder
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-022 teaches the encoder/bottleneck/decoder shape ledger, reconstruction loss, the linear-AE/PCA subspace connection, and fixed-seed autoencoder training.
+- **Consequence:** Students can build, train, and evaluate small autoencoders on held-out data.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders > 2. The MLP shape ledger :: cell 1
+- **implementation practices:** book2:B2-022-p10
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders > 5. The linear autoencoder and PCA :: cell 1, book2:units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders > 7. Worked laboratory: a fixed-seed tiny autoencoder trace :: cell 1
+- **model-training practices:** book2:B2-022-p17, book2:B2-022-p18
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders > 1. Encoder, bottleneck, decoder :: cell 1
+- **theory practices:** book2:B2-022-p04
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-022-p04, book2:B2-022-p10, book2:B2-022-p17, book2:B2-022-p18
 
 Assessments: —
 
@@ -1783,26 +1783,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** bridge
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-022-probabilistic-latent-models
 - **Dependencies:** book1:pytorch-autograd-and-optimizer-training, book2:multivariate-gaussian
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No location-scale reparameterization or differentiable latent sampling exists.
-- **Consequence:** Gradient-based latent-variable training is blocked.
+- **Shipped concepts:** book2:gaussian-reparameterization
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-022 teaches why sampling blocks gradients and the z = mu + sigma * eps reparameterization with a log-variance head.
+- **Consequence:** Students can derive and implement a pathwise gradient through Gaussian sampling.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session 4: Reparameterization and the ELBO > 6. Reparameterization $z=\mu+\sigma\odot\varepsilon$ and the log-variance head :: cell 1
+- **derivation practices:** book2:B2-022-p16
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session 4: Reparameterization and the ELBO > 7. Worked laboratory: per-example negative ELBO and a gradient-flow check :: cell 1
+- **implementation practices:** book2:B2-022-p11
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session 4: Reparameterization and the ELBO > 5. Why sampling blocks gradients :: cell 1
+- **theory practices:** book2:B2-022-p05
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-022-p05, book2:B2-022-p11, book2:B2-022-p16
 
 Assessments: —
 
@@ -1898,26 +1898,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** bridge
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-022-probabilistic-latent-models
-- **Dependencies:** book1:conditional-probability, book1:expectation, book2:multivariate-gaussian
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** No entropy, distributional cross-entropy, KL definition, Gaussian KL derivation, or implementation exists.
-- **Consequence:** VAE and diffusion objectives lack a prerequisite.
+- **Dependencies:** book1:conditional-probability, book1:probability-and-statistics-foundations, book2:multivariate-gaussian
+- **Shipped concepts:** book2:kl-divergence
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-022 teaches discrete KL with the 0 log 0 convention, Gibbs' inequality from the tangent-line lemma, and the closed-form diagonal-Gaussian KL to N(0, I).
+- **Consequence:** Students can derive and implement the KL term of the ELBO.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence > 2. The tangent-line lemma and Jensen's inequality for $\log$ :: cell 1, book2:units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence > 5. Continuous KL and the univariate Gaussian closed form :: cell 1
+- **derivation practices:** book2:B2-022-p14, book2:B2-022-p15
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence > 1. Discrete KL and the $0\cdot\log 0$ convention :: cell 1, book2:units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence > 7. Worked laboratory: Gaussian-to-standard-normal KL :: cell 1
+- **implementation practices:** book2:B2-022-p08, book2:B2-022-p09
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence > 3. Gibbs' inequality and asymmetry, with worked numbers :: cell 1
+- **theory practices:** book2:B2-022-p03
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-022-p03, book2:B2-022-p08, book2:B2-022-p09, book2:B2-022-p14, book2:B2-022-p15
 
 Assessments: —
 
@@ -1985,26 +1985,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** bridge
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-022-probabilistic-latent-models
 - **Dependencies:** book1:eigenvalues-and-eigenvectors, book1:probability-and-statistics-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, theory
-- **Practice shortfall:** 3
-- **Rationale:** F5 teaches scalar Gaussians and generic covariance but never a Gaussian vector or covariance-matrix density.
-- **Consequence:** VAE and diffusion prerequisites are not closed.
+- **Shipped concepts:** book2:multivariate-gaussian
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-022 teaches the Gaussian vector density, SPD determinants with slogdet, covariance eigen-geometry, Cholesky sampling, and the mean/diagonal MLE.
+- **Consequence:** Students can derive, evaluate, and sample multivariate Gaussians for VAE and diffusion work.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate Gaussians > 7. Diagonal versus full covariance, and maximum likelihood :: cell 1
+- **derivation practices:** book2:B2-022-p13
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate Gaussians > 6. Worked laboratory: 2-D density and Cholesky sampling :: cell 1
+- **implementation practices:** book2:B2-022-p06, book2:B2-022-p07
 - **implementation assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate Gaussians > 4. Covariance eigen-geometry: ellipse axes :: cell 1
+- **theory practices:** book2:B2-022-p02
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-022-p02, book2:B2-022-p06, book2:B2-022-p07, book2:B2-022-p13
 
 Assessments: —
 
@@ -2455,29 +2455,29 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-022-probabilistic-latent-models
 - **Dependencies:** book2:autoencoder, book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No latent probabilistic model, ELBO, reparameterized encoder, or VAE training exists.
-- **Consequence:** The official VAE family is wholly absent.
+- **Shipped concepts:** book2:variational-autoencoder
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-022 teaches the ELBO from Jensen's inequality, per-example negative-ELBO bookkeeping, beta weighting, posterior collapse, prior sampling, and latent interpolation.
+- **Consequence:** Students can derive, implement, train, and diagnose a small VAE.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session 4: Reparameterization and the ELBO > 4. The ELBO from Jensen's inequality :: cell 1
+- **derivation practices:** book2:B2-022-p16
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session 4: Reparameterization and the ELBO > 7. Worked laboratory: per-example negative ELBO and a gradient-flow check :: cell 1
+- **implementation practices:** book2:B2-022-p12
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training and Using VAEs > 7. Worked laboratory: train, diagnose, sample, interpolate :: cell 1
+- **model-training practices:** book2:B2-022-p19, book2:B2-022-p20
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session 4: Reparameterization and the ELBO > 1. Latent-variable models $p(x\mid z)\,p(z)$ :: cell 1
+- **theory practices:** book2:B2-022-p21
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-022-p12, book2:B2-022-p16, book2:B2-022-p19, book2:B2-022-p20, book2:B2-022-p21
 
 Assessments: —
 

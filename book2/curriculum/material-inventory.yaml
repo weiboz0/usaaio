@@ -1,15 +1,15 @@
 inventory_version: 1
 counts:
-  units: 3
-  concepts: 23
-  unit_practices: 72
-  lesson_sessions: 18
-  unit_nonpractice_notebooks: 24
-  unit_notebooks: 168
+  units: 4
+  concepts: 28
+  unit_practices: 96
+  lesson_sessions: 24
+  unit_nonpractice_notebooks: 32
+  unit_notebooks: 224
   mocktests: 0
   mock_notebooks: 0
-  manifested_minutes: 4880
-  scheduled_minutes: 4970
+  manifested_minutes: 6500
+  scheduled_minutes: 6620
 input_paths:
 - docs/course-structure.md
 - syllabus.md
@@ -184,14 +184,71 @@ input_paths:
 - units/B2-021-cross-modal-transformers-vision/practice/p24.ipynb
 - units/B2-021-cross-modal-transformers-vision/practice/p24_solution.ipynb
 - units/B2-021-cross-modal-transformers-vision/review.ipynb
+- units/B2-022-probabilistic-latent-models/lesson.ipynb
+- units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb
+- units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb
+- units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb
+- units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb
+- units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb
+- units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb
+- units/B2-022-probabilistic-latent-models/manifest.yaml
+- units/B2-022-probabilistic-latent-models/practice/p01.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p01_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p02.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p02_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p03.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p03_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p04.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p04_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p05.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p05_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p06.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p07.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p08.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p09.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p10.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p11.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p12.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p13.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p13_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p14.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p14_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p15.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p15_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p16.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p17.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p18.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p19.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p20.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p21.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p21_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p22.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p23.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p24.ipynb
+- units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb
+- units/B2-022-probabilistic-latent-models/review.ipynb
 documents:
 - path: docs/course-structure.md
   kind: document
-  semantic_sha256: af167c4ad6fca1ea5af15840e3352c2b9993094bb413e406567b121951f6b9a9
+  semantic_sha256: 476f85e5c6beec14eac546953cff390c926f402260c25c26a19b5f3b96993f87
 manifests:
 - path: syllabus.md
   kind: canonical-yaml
-  semantic_sha256: 555a0dfee006c926ea0b0384d802cd323b74a92541158081208d57e83ad9eefc
+  semantic_sha256: 30d539f94d9b8d006d1447e14e599bbc3588601dba16dfcf89710b7a93c24322
 - path: units/B2-019-attention-transformers/manifest.yaml
   kind: yaml
   semantic_sha256: e6dd52f9851fe91c1f86e8cfc45f0d1c25c7fa78f0524abd9d34322c0b19dd29
@@ -201,6 +258,9 @@ manifests:
 - path: units/B2-021-cross-modal-transformers-vision/manifest.yaml
   kind: yaml
   semantic_sha256: da19e48222921ef0e20fce7f6057fccc8104bee68bd42ec7c378a9f15df4087a
+- path: units/B2-022-probabilistic-latent-models/manifest.yaml
+  kind: yaml
+  semantic_sha256: 2fc5af2e25cec834aad4c803a64a1543497d551323d44a04a2074ef53ed3d6f0
 notebooks:
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
@@ -7422,5 +7482,3163 @@ notebooks:
   - object-detection
   - unet
   - vision-transformers
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/lesson.ipynb
+  kind: notebook
+  semantic_sha256: d1f580a893475db5f973d39b410ce9451f01166f04e2d6da6c0cac1f0b42da18
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models :: cell 1'
+    heading_path:
+    - B2-022 — Probabilistic Latent Models
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models > Learning goals
+      :: cell 1'
+    heading_path:
+    - B2-022 — Probabilistic Latent Models
+    - Learning goals
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models > Owned concepts
+      :: cell 1'
+    heading_path:
+    - B2-022 — Probabilistic Latent Models
+    - Owned concepts
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models > Study route ::
+      cell 1'
+    heading_path:
+    - B2-022 — Probabilistic Latent Models
+    - Study route
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models > Tools taught
+      inside this unit :: cell 1'
+    heading_path:
+    - B2-022 — Probabilistic Latent Models
+    - Tools taught inside this unit
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models > Reproducibility
+      contract :: cell 1'
+    heading_path:
+    - B2-022 — Probabilistic Latent Models
+    - Reproducibility contract
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models > How to study
+      :: cell 1'
+    heading_path:
+    - B2-022 — Probabilistic Latent Models
+    - How to study
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models > Boundaries ::
+      cell 1'
+    heading_path:
+    - B2-022 — Probabilistic Latent Models
+    - Boundaries
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  - gaussian-reparameterization
+  - kl-divergence
+  - multivariate-gaussian
+  - variational-autoencoder
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb
+  kind: notebook
+  semantic_sha256: f275663760c3c8db0fe27fe4b769714d4cdcb02619dc3a6d6b09bab4b6dc9bda
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb :: B2-022 — Book 1 Bridge Diagnostic ::
+      cell 1'
+    heading_path:
+    - B2-022 — Book 1 Bridge Diagnostic
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb :: B2-022 — Book 1 Bridge Diagnostic >
+      1. Arrays, broadcasting, and axis reductions :: cell 1'
+    heading_path:
+    - B2-022 — Book 1 Bridge Diagnostic
+    - 1. Arrays, broadcasting, and axis reductions
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb :: B2-022 — Book 1 Bridge Diagnostic >
+      2. Matrix multiplication and linear solves :: cell 1'
+    heading_path:
+    - B2-022 — Book 1 Bridge Diagnostic
+    - 2. Matrix multiplication and linear solves
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb :: B2-022 — Book 1 Bridge Diagnostic >
+      3. Expectation, variance, covariance, and the Gaussian :: cell 1'
+    heading_path:
+    - B2-022 — Book 1 Bridge Diagnostic
+    - 3. Expectation, variance, covariance, and the Gaussian
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb :: B2-022 — Book 1 Bridge Diagnostic >
+      4. Conditional probability and Bayes'' rule :: cell 1'
+    heading_path:
+    - B2-022 — Book 1 Bridge Diagnostic
+    - 4. Conditional probability and Bayes' rule
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb :: B2-022 — Book 1 Bridge Diagnostic >
+      5. Eigenvectors, spectral decomposition, SVD, and PCA :: cell 1'
+    heading_path:
+    - B2-022 — Book 1 Bridge Diagnostic
+    - 5. Eigenvectors, spectral decomposition, SVD, and PCA
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb :: B2-022 — Book 1 Bridge Diagnostic >
+      6. MLPs, MSE, gradients, and the PyTorch training loop :: cell 1'
+    heading_path:
+    - B2-022 — Book 1 Bridge Diagnostic
+    - 6. MLPs, MSE, gradients, and the PyTorch training loop
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb :: B2-022 — Book 1 Bridge Diagnostic >
+      7. Readiness and explicit remediation :: cell 1'
+    heading_path:
+    - B2-022 — Book 1 Bridge Diagnostic
+    - 7. Readiness and explicit remediation
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb :: B2-022 — Book 1 Bridge Diagnostic >
+      7. Readiness and explicit remediation :: cell 2'
+    heading_path:
+    - B2-022 — Book 1 Bridge Diagnostic
+    - 7. Readiness and explicit remediation
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  - gaussian-reparameterization
+  - kl-divergence
+  - multivariate-gaussian
+  - variational-autoencoder
+  declared_problem_ids: []
+  api_tokens:
+  - readiness.values
+  - torch.allclose
+  - torch.eye
+  - torch.full
+  - torch.linalg.solve
+  - torch.nn.Linear
+  - torch.ones
+- path: units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb
+  kind: notebook
+  semantic_sha256: 967bf941a96db5e12787b0e2b9b5a4b2142fd026532c49b2e115f46e576489b6
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 1. Mean vector and covariance matrix :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - 1. Mean vector and covariance matrix
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 2. Determinants of SPD matrices and `slogdet` :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - 2. Determinants of SPD matrices and `slogdet`
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 2. Determinants of SPD matrices and `slogdet` :: cell 2'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - 2. Determinants of SPD matrices and `slogdet`
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 3. Density and log-density :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - 3. Density and log-density
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 4. Covariance eigen-geometry: ellipse axes :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - '4. Covariance eigen-geometry: ellipse axes'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 5. The rule $\operatorname{Cov}(Az+b)=A\operatorname{Cov}(z)A^\top$ and Cholesky sampling :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - 5. The rule $\operatorname{Cov}(Az+b)=A\operatorname{Cov}(z)A^\top$ and Cholesky sampling
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 6. Worked laboratory: 2-D density and Cholesky sampling :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - '6. Worked laboratory: 2-D density and Cholesky sampling'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 6. Worked laboratory: 2-D density and Cholesky sampling :: cell 2'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - '6. Worked laboratory: 2-D density and Cholesky sampling'
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 6. Worked laboratory: 2-D density and Cholesky sampling :: cell 3'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - '6. Worked laboratory: 2-D density and Cholesky sampling'
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 7. Diagonal versus full covariance, and maximum likelihood :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - 7. Diagonal versus full covariance, and maximum likelihood
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 7. Diagonal versus full covariance, and maximum likelihood :: cell 2'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - 7. Diagonal versus full covariance, and maximum likelihood
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
+      Gaussians > 9. Forward-only deeper topic: Gaussian conditioning and mixtures :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 1: Multivariate Gaussians'
+    - '9. Forward-only deeper topic: Gaussian conditioning and mixtures'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  - gaussian-reparameterization
+  - kl-divergence
+  - multivariate-gaussian
+  - variational-autoencoder
+  declared_problem_ids: []
+  api_tokens:
+  - L.tolist
+  - cov.tolist
+  - diag_mle.tolist
+  - eigenvalues.prod
+  - eigenvalues.tolist
+  - log_density.item
+  - logabsdet.item
+  - math.isclose
+  - math.log
+  - mean.tolist
+  - one_sample.tolist
+  - quad.item
+  - rows.mean
+  - samples.mean
+  - sign.item
+  - torch.Generator
+  - torch.allclose
+  - torch.diag
+  - torch.diagonal
+  - torch.eye
+  - torch.linalg.cholesky
+  - torch.linalg.eigh
+  - torch.linalg.eigvalsh
+  - torch.linalg.slogdet
+  - torch.linalg.solve
+  - torch.manual_seed
+  - torch.randn
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb
+  kind: notebook
+  semantic_sha256: fa7e5c92bf45dd7c61753c5a95df8146f31ac701ca089342fc1c7116a0478f75
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 1. Discrete KL and the $0\cdot\log 0$ convention :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - 1. Discrete KL and the $0\cdot\log 0$ convention
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 2. The tangent-line lemma and Jensen''s inequality for $\log$ :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - 2. The tangent-line lemma and Jensen's inequality for $\log$
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 3. Gibbs'' inequality and asymmetry, with worked numbers :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - 3. Gibbs' inequality and asymmetry, with worked numbers
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 3. Gibbs'' inequality and asymmetry, with worked numbers :: cell 2'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - 3. Gibbs' inequality and asymmetry, with worked numbers
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 4. Forward versus reverse KL :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - 4. Forward versus reverse KL
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 5. Continuous KL and the univariate Gaussian closed form :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - 5. Continuous KL and the univariate Gaussian closed form
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 6. Diagonal Gaussians, KL to $N(0,I)$, and log-variance :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - 6. Diagonal Gaussians, KL to $N(0,I)$, and log-variance
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 7. Worked laboratory: Gaussian-to-standard-normal KL :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - '7. Worked laboratory: Gaussian-to-standard-normal KL'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 7. Worked laboratory: Gaussian-to-standard-normal KL :: cell 2'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - '7. Worked laboratory: Gaussian-to-standard-normal KL'
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 7. Worked laboratory: Gaussian-to-standard-normal KL :: cell 3'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - '7. Worked laboratory: Gaussian-to-standard-normal KL'
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
+      > 9. Forward-only deeper topic: entropy, cross-entropy, and other divergences :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 2: KL Divergence'
+    - '9. Forward-only deeper topic: entropy, cross-entropy, and other divergences'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  - gaussian-reparameterization
+  - kl-divergence
+  - multivariate-gaussian
+  - variational-autoencoder
+  declared_problem_ids: []
+  api_tokens:
+  - closed.sum
+  - closed.tolist
+  - logvar.exp
+  - math.isclose
+  - math.log
+  - math.sqrt
+  - naive.item
+  - ratio.mean
+  - ratio.numel
+  - ratio.std
+  - torch.Generator
+  - torch.exp
+  - torch.isclose
+  - torch.log
+  - torch.randn
+  - torch.tensor
+  - value.item
+- path: units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb
+  kind: notebook
+  semantic_sha256: 22782243563e252a7044b762bb513656e6f9a17c664b7ea95b8cbc8fd036685a
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders ::
+      cell 1'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      1. Encoder, bottleneck, decoder :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - 1. Encoder, bottleneck, decoder
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      2. The MLP shape ledger :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - 2. The MLP shape ledger
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      3. Reconstruction loss and held-out reconstruction error :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - 3. Reconstruction loss and held-out reconstruction error
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      4. Undercomplete versus overcomplete :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - 4. Undercomplete versus overcomplete
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      5. The linear autoencoder and PCA :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - 5. The linear autoencoder and PCA
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      6. Projection-matrix subspace distance :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - 6. Projection-matrix subspace distance
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      6. Projection-matrix subspace distance :: cell 2'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - 6. Projection-matrix subspace distance
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      7. Worked laboratory: a fixed-seed tiny autoencoder trace :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - '7. Worked laboratory: a fixed-seed tiny autoencoder trace'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      7. Worked laboratory: a fixed-seed tiny autoencoder trace :: cell 2'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - '7. Worked laboratory: a fixed-seed tiny autoencoder trace'
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      7. Worked laboratory: a fixed-seed tiny autoencoder trace :: cell 3'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - '7. Worked laboratory: a fixed-seed tiny autoencoder trace'
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders >
+      9. Forward-only deeper topic: denoising and sparse autoencoders :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 3: Autoencoders'
+    - '9. Forward-only deeper topic: denoising and sparse autoencoders'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  - gaussian-reparameterization
+  - kl-divergence
+  - multivariate-gaussian
+  - variational-autoencoder
+  declared_problem_ids: []
+  api_tokens:
+  - F.mse_loss
+  - linear_ae.parameters
+  - loss.backward
+  - model.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - rows.mean
+  - torch.allclose
+  - torch.cat
+  - torch.linalg.norm
+  - torch.linalg.solve
+  - torch.linalg.svd
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.set_num_threads
+  - torch.tensor
+  - trace.items
+  - weight.detach
+- path: units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb
+  kind: notebook
+  semantic_sha256: 525c51cf7962e0bcb92b58a2c1c4a49e238c6066a746fb67ad505340e7f74038
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 1. Latent-variable models $p(x\mid z)\,p(z)$ :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - 1. Latent-variable models $p(x\mid z)\,p(z)$
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 2. The Gaussian decoder and the reconstruction term :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - 2. The Gaussian decoder and the reconstruction term
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 3. The approximate posterior $q(z\mid x)$ :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - 3. The approximate posterior $q(z\mid x)$
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 4. The ELBO from Jensen''s inequality :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - 4. The ELBO from Jensen's inequality
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 4. The ELBO from Jensen''s inequality :: cell 2'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - 4. The ELBO from Jensen's inequality
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 5. Why sampling blocks gradients :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - 5. Why sampling blocks gradients
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 6. Reparameterization $z=\mu+\sigma\odot\varepsilon$ and the log-variance head
+      :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - 6. Reparameterization $z=\mu+\sigma\odot\varepsilon$ and the log-variance head
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 6. Reparameterization $z=\mu+\sigma\odot\varepsilon$ and the log-variance head
+      :: cell 2'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - 6. Reparameterization $z=\mu+\sigma\odot\varepsilon$ and the log-variance head
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 7. Worked laboratory: per-example negative ELBO and a gradient-flow check :: cell
+      1'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - '7. Worked laboratory: per-example negative ELBO and a gradient-flow check'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 7. Worked laboratory: per-example negative ELBO and a gradient-flow check :: cell
+      2'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - '7. Worked laboratory: per-example negative ELBO and a gradient-flow check'
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 7. Worked laboratory: per-example negative ELBO and a gradient-flow check :: cell
+      3'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - '7. Worked laboratory: per-example negative ELBO and a gradient-flow check'
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
+      4: Reparameterization and the ELBO > 9. Forward-only deeper topic: tighter bounds and diffusion as chained reparameterizations
+      :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 4: Reparameterization and the ELBO'
+    - '9. Forward-only deeper topic: tighter bounds and diffusion as chained reparameterizations'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  - gaussian-reparameterization
+  - kl-divergence
+  - multivariate-gaussian
+  - variational-autoencoder
+  declared_problem_ids: []
+  api_tokens:
+  - kl.tolist
+  - logvar.exp
+  - logvar.grad.tolist
+  - logvar_head.weight.grad.abs
+  - logvar_head.weight.grad.norm
+  - loss.item
+  - math.isclose
+  - math.log
+  - module.zero_grad
+  - mu.grad.tolist
+  - mu_head.weight.grad.abs
+  - mu_head.weight.grad.norm
+  - nn.Linear
+  - recon.mean
+  - recon.tolist
+  - torch.Generator
+  - torch.allclose
+  - torch.distributions.Normal
+  - torch.exp
+  - torch.manual_seed
+  - torch.ones
+  - torch.randn
+  - torch.relu
+  - torch.tensor
+  - wrong.item
+  - z.sum
+  - z.tolist
+- path: units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb
+  kind: notebook
+  semantic_sha256: c6b95f9b5bb7f08edbaae220e8c8feb79186852fc5e8eec32efdf4365a691a13
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 1. The VAE module and its shape ledger :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - 1. The VAE module and its shape ledger
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 2. The training loop and its loss trace :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - 2. The training loop and its loss trace
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 3. Loss-bookkeeping pitfalls: mean over features versus sum :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - '3. Loss-bookkeeping pitfalls: mean over features versus sum'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 4. $\beta$ weighting and KL warm-up :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - 4. $\beta$ weighting and KL warm-up
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 5. Posterior collapse: symptoms and diagnosis from a trace :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - '5. Posterior collapse: symptoms and diagnosis from a trace'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 6. Sampling from the prior and latent interpolation :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - 6. Sampling from the prior and latent interpolation
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 7. Worked laboratory: train, diagnose, sample, interpolate :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - '7. Worked laboratory: train, diagnose, sample, interpolate'
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 7. Worked laboratory: train, diagnose, sample, interpolate :: cell 2'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - '7. Worked laboratory: train, diagnose, sample, interpolate'
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 7. Worked laboratory: train, diagnose, sample, interpolate :: cell 3'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - '7. Worked laboratory: train, diagnose, sample, interpolate'
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
+      and Using VAEs > 9. Forward-only deeper topic: from VAEs to diffusion :: cell 1'
+    heading_path:
+    - 'B2-022 — Session 5: Training and Using VAEs'
+    - '9. Forward-only deeper topic: from VAEs to diffusion'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  - gaussian-reparameterization
+  - kl-divergence
+  - multivariate-gaussian
+  - variational-autoencoder
+  declared_problem_ids: []
+  api_tokens:
+  - F.relu
+  - kl.mean
+  - logvar.exp
+  - model.decode
+  - model.encode
+  - model.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - per_latent.tolist
+  - recon.mean
+  - rows.append
+  - samples.mean
+  - samples.std
+  - self.decode
+  - self.decoder
+  - self.encode
+  - self.hidden
+  - self.logvar_head
+  - self.mu_head
+  - torch.Generator
+  - torch.allclose
+  - torch.arange
+  - torch.exp
+  - torch.isfinite
+  - torch.linspace
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_num_threads
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p01.ipynb
+  kind: notebook
+  semantic_sha256: c78359adcbcc3246cf96403139895a0c388f43cbefdf35cde062774f54e3b250
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p01.ipynb :: B2-022 — Practice p01 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p01
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p01.ipynb :: B2-022 — Practice p01 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p01
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - multivariate-gaussian
+  declared_problem_ids:
+  - B2-022-p01
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p01_solution.ipynb
+  kind: notebook
+  semantic_sha256: df2dfaeaf636c88af8a680cc40d24543190949907665e24e9ed2caa4c65a7c62
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p01_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p01 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p01 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p01_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p01 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p01 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p01_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p01 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p01 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p01_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p01 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p01 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p01_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p01 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p01 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - multivariate-gaussian
+  declared_problem_ids:
+  - B2-022-p01
+  api_tokens:
+  - fractions.Fraction
+  - torch.linalg.solve
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p02.ipynb
+  kind: notebook
+  semantic_sha256: 33b64e00a92aff3c0c35c15330379d3c27452e3fc11c061c19811955083815aa
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p02.ipynb :: B2-022 — Practice p02 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p02
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p02.ipynb :: B2-022 — Practice p02 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p02
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - multivariate-gaussian
+  declared_problem_ids:
+  - B2-022-p02
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p02_solution.ipynb
+  kind: notebook
+  semantic_sha256: 9faf0f38aa633e112a303521f2d4004f205a321c792595c2f8be0be7c5c2acb7
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p02_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p02 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p02 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p02_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p02 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p02 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p02_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p02 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p02 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p02_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p02 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p02 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p02_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p02 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p02 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - multivariate-gaussian
+  declared_problem_ids:
+  - B2-022-p02
+  api_tokens:
+  - Sigma.trace
+  - math.sqrt
+  - torch.allclose
+  - torch.linalg.eigh
+  - torch.linalg.solve
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p03.ipynb
+  kind: notebook
+  semantic_sha256: 850e6cb2557e70df9a2c01a187c453ce156a6f444bcad6bde83ce4fba7197922
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p03.ipynb :: B2-022 — Practice p03 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p03
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p03.ipynb :: B2-022 — Practice p03 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p03
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  declared_problem_ids:
+  - B2-022-p03
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p03_solution.ipynb
+  kind: notebook
+  semantic_sha256: e3255f55e18d281defbd78c2cecd0ce8a3a6dc9fac9cd28483a8c050ea537291
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p03_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p03 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p03 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p03_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p03 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p03 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p03_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p03 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p03 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p03_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p03 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p03 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p03_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p03 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p03 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  declared_problem_ids:
+  - B2-022-p03
+  api_tokens:
+  - math.log
+  - terms.append
+- path: units/B2-022-probabilistic-latent-models/practice/p04.ipynb
+  kind: notebook
+  semantic_sha256: a70e1f4e6e3de7871433d80e8678398a4ca8695b5b27208b41ad3ec48b6670da
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p04.ipynb :: B2-022 — Practice p04 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p04
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p04.ipynb :: B2-022 — Practice p04 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p04
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  declared_problem_ids:
+  - B2-022-p04
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p04_solution.ipynb
+  kind: notebook
+  semantic_sha256: 629c51d98ba81e4990a13ea72e41fdda5eb550aa473900eecfb84a7e28b60a3e
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p04_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p04 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p04 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p04_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p04 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p04 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p04_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p04 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p04 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p04_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p04 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p04 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p04_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p04 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p04 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  declared_problem_ids:
+  - B2-022-p04
+  api_tokens:
+  - ledger.append
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - nn.functional.mse_loss
+  - torch.manual_seed
+  - torch.randn
+- path: units/B2-022-probabilistic-latent-models/practice/p05.ipynb
+  kind: notebook
+  semantic_sha256: f0051cab5080a1c190b3a51477fb86d6aef5a8518adcf06eecb5da7ca1748c71
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p05.ipynb :: B2-022 — Practice p05 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p05
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p05.ipynb :: B2-022 — Practice p05 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p05
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  declared_problem_ids:
+  - B2-022-p05
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p05_solution.ipynb
+  kind: notebook
+  semantic_sha256: c2abf9cbfc1bab6b61dbacea725b233aec831bf798c1139ed51fc35ba0bb4136
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p05_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p05 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p05 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p05_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p05 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p05 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p05_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p05 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p05 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p05_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p05 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p05 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p05_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p05 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p05 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  declared_problem_ids:
+  - B2-022-p05
+  api_tokens:
+  - logvar.detach
+  - torch.Generator
+  - torch.allclose
+  - torch.exp
+  - torch.no_grad
+  - torch.normal
+  - torch.randn
+  - torch.tensor
+  - z.detach
+- path: units/B2-022-probabilistic-latent-models/practice/p06.ipynb
+  kind: notebook
+  semantic_sha256: 3abe205d29dd0780ccafd87933b8420f8cbf082fb3330be1e9d48d4a942b29b5
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06.ipynb :: B2-022 — Practice p06 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p06
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06.ipynb :: B2-022 — Practice p06 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p06
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06.ipynb :: B2-022 — Practice p06 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p06
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06.ipynb :: B2-022 — Practice p06 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p06
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - multivariate-gaussian
+  declared_problem_ids:
+  - B2-022-p06
+  api_tokens:
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb
+  kind: notebook
+  semantic_sha256: cb50763c578ee506ee48661db9b7c02fc5ba462f4577474d4c587ba246fea2d7
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p06 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p06 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p06 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p06 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p06 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p06 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p06 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p06 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p06 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p06 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p06 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p06 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - multivariate-gaussian
+  declared_problem_ids:
+  - B2-022-p06
+  api_tokens:
+  - math.log
+  - normalizer.item
+  - sign.item
+  - torch.allclose
+  - torch.cat
+  - torch.linalg.slogdet
+  - torch.linalg.solve
+  - torch.tensor
+  - x.dim
+- path: units/B2-022-probabilistic-latent-models/practice/p07.ipynb
+  kind: notebook
+  semantic_sha256: 7657eb6121076742a0fedb0c25fe3bdcd40531af06e2ec833b86c1f99e7143c2
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07.ipynb :: B2-022 — Practice p07 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p07
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07.ipynb :: B2-022 — Practice p07 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p07
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07.ipynb :: B2-022 — Practice p07 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p07
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07.ipynb :: B2-022 — Practice p07 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p07
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - multivariate-gaussian
+  declared_problem_ids:
+  - B2-022-p07
+  api_tokens:
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb
+  kind: notebook
+  semantic_sha256: bedb0f17a688aba9f2004ee7133c822f25f5b693c4f58fa6651344bccc4c2208
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p07 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p07 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p07 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p07 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p07 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p07 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p07 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p07 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p07 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p07 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p07 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p07 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p07 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - multivariate-gaussian
+  declared_problem_ids:
+  - B2-022-p07
+  api_tokens:
+  - evals.sqrt
+  - samples.mean
+  - torch.Generator
+  - torch.allclose
+  - torch.diag
+  - torch.equal
+  - torch.linalg.cholesky
+  - torch.linalg.eigh
+  - torch.randn
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p08.ipynb
+  kind: notebook
+  semantic_sha256: 30afbc1836db8c5da3baa953428796d7a19555ef09be783a78fa0666ae0003ea
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08.ipynb :: B2-022 — Practice p08 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p08
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08.ipynb :: B2-022 — Practice p08 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p08
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08.ipynb :: B2-022 — Practice p08 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p08
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08.ipynb :: B2-022 — Practice p08 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p08
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  declared_problem_ids:
+  - B2-022-p08
+  api_tokens:
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb
+  kind: notebook
+  semantic_sha256: 87b2996b6dc787376589f27c496c425fb479374e5f76fbc36fcc4c22a5c4456d
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p08 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p08 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p08 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p08 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p08 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p08 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p08 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p08 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p08 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p08 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p08 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p08 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p08 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p08 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  declared_problem_ids:
+  - B2-022-p08
+  api_tokens:
+  - kl_2.item
+  - kl_3.item
+  - kl_4.item
+  - kl_p1q1.dim
+  - kl_p1q1.item
+  - kl_q1p1.item
+  - math.isinf
+  - math.log
+  - p.dim
+  - q.dim
+  - returned.append
+  - selfkl.abs
+  - terms.sum
+  - torch.Generator
+  - torch.allclose
+  - torch.isnan
+  - torch.log
+  - torch.ones_like
+  - torch.rand
+  - torch.stack
+  - torch.tensor
+  - torch.where
+  - torch.zeros_like
+  - v.sum
+- path: units/B2-022-probabilistic-latent-models/practice/p09.ipynb
+  kind: notebook
+  semantic_sha256: 25bc67ac8326d42e21495054932151042a5912bae4b846c9c67b884de52be1bf
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09.ipynb :: B2-022 — Practice p09 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p09
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09.ipynb :: B2-022 — Practice p09 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p09
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09.ipynb :: B2-022 — Practice p09 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p09
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09.ipynb :: B2-022 — Practice p09 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p09
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  declared_problem_ids:
+  - B2-022-p09
+  api_tokens:
+  - math.log
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb
+  kind: notebook
+  semantic_sha256: 00dbdaa9ca804df2acdf664a84a2d541512c5cadf23a1ac42d02fbe7fc6f1ed8
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p09 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p09 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p09 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p09 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p09 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p09 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p09 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p09 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p09 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p09 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p09 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p09 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p09 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p09 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p09 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p09 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  declared_problem_ids:
+  - B2-022-p09
+  api_tokens:
+  - logvar.dim
+  - logvar.exp
+  - math.log
+  - mu.dim
+  - torch.Generator
+  - torch.allclose
+  - torch.exp
+  - torch.randn
+  - torch.tensor
+  - torch.zeros_like
+- path: units/B2-022-probabilistic-latent-models/practice/p10.ipynb
+  kind: notebook
+  semantic_sha256: c9525ad339311b49ac47413bd77080e85269ab9d8ea83e8e025674ce32f69238
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10.ipynb :: B2-022 — Practice p10 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p10
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10.ipynb :: B2-022 — Practice p10 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p10
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10.ipynb :: B2-022 — Practice p10 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p10
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10.ipynb :: B2-022 — Practice p10 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p10
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  declared_problem_ids:
+  - B2-022-p10
+  api_tokens:
+  - torch.arange
+- path: units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb
+  kind: notebook
+  semantic_sha256: b65e174e6af4eeff5c5059ef24269e0ed5c345b72845d80de4cfd88ac63b7786
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p10 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p10 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p10 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p10 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p10 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p10 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p10 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p10 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p10 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p10 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p10 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p10 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p10 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p10 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  declared_problem_ids:
+  - B2-022-p10
+  api_tokens:
+  - model.decode
+  - model.encode
+  - model.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - p.numel
+  - self._check
+  - self.decode
+  - self.decoder
+  - self.encode
+  - self.encoder
+  - t.dim
+  - torch.arange
+  - torch.equal
+  - torch.manual_seed
+  - torch.zeros
+- path: units/B2-022-probabilistic-latent-models/practice/p11.ipynb
+  kind: notebook
+  semantic_sha256: 5f310b453d1d44fa024f2d469c2b391a0f6e6081264f0152fe70d5a1cd1c53bb
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11.ipynb :: B2-022 — Practice p11 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p11
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11.ipynb :: B2-022 — Practice p11 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p11
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11.ipynb :: B2-022 — Practice p11 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p11
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11.ipynb :: B2-022 — Practice p11 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p11
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  declared_problem_ids:
+  - B2-022-p11
+  api_tokens:
+  - math.log
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb
+  kind: notebook
+  semantic_sha256: 4bbf5b8210ab20a2b119003f401c08e45883d47c9dd0898f1eba9c7408b2afb9
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p11 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p11 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p11 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p11 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p11 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p11 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p11 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p11 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p11 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p11 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p11 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p11 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p11 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p11 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  declared_problem_ids:
+  - B2-022-p11
+  api_tokens:
+  - logvar.detach
+  - logvar2.detach
+  - logvar_row.exp
+  - logvar_row.expand
+  - math.log
+  - mu.detach
+  - mu_row.expand
+  - samples.mean
+  - samples.var
+  - torch.Generator
+  - torch.allclose
+  - torch.exp
+  - torch.ones_like
+  - torch.randn
+  - torch.tensor
+  - torch.zeros
+  - z.detach
+  - z.sum
+  - z_big.mean
+  - z_big.var
+  - z_wrong.var
+- path: units/B2-022-probabilistic-latent-models/practice/p12.ipynb
+  kind: notebook
+  semantic_sha256: c409418996b61bfcf4de5d2b69ec4c2268532e6b20d6d217c771f31644895e8d
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12.ipynb :: B2-022 — Practice p12 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p12
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12.ipynb :: B2-022 — Practice p12 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p12
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12.ipynb :: B2-022 — Practice p12 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p12
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12.ipynb :: B2-022 — Practice p12 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p12
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p12
+  api_tokens:
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb
+  kind: notebook
+  semantic_sha256: f5448fadaae7118ec785aa71fad3a45db761b1159ab290fae3735588abe79b27
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p12 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p12 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p12 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p12 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p12 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p12 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p12 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p12 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p12 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p12 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p12 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p12 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p12
+  api_tokens:
+  - kl.mean
+  - logvar.clone
+  - logvar.exp
+  - logvar.repeat_interleave
+  - loss.item
+  - mu.clone
+  - mu.repeat_interleave
+  - recon.mean
+  - t.dim
+  - torch.allclose
+  - torch.isfinite
+  - torch.tensor
+  - va.item
+  - vb.item
+  - x.repeat_interleave
+  - x_hat.clone
+  - x_hat.repeat_interleave
+- path: units/B2-022-probabilistic-latent-models/practice/p13.ipynb
+  kind: notebook
+  semantic_sha256: 44c96ecb60667c9898a8606d4ca836c2fa5b60bb469bd2cd11e0892b510d2b68
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p13.ipynb :: B2-022 — Practice p13 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p13
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p13.ipynb :: B2-022 — Practice p13 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p13
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - multivariate-gaussian
+  declared_problem_ids:
+  - B2-022-p13
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p13_solution.ipynb
+  kind: notebook
+  semantic_sha256: 78bb72fa283a07ca2aab21186eda2d0e6d9653e6330ba603aee4721fa768dd1f
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p13_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p13 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p13 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p13_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p13 — Solution > Solution > (d) Full covariance :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p13 — Solution
+    - Solution
+    - (d) Full covariance
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p13_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p13 — Solution > Numeric sanity check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p13 — Solution
+    - Numeric sanity check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p13_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p13 — Solution > Numeric sanity check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p13 — Solution
+    - Numeric sanity check
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p13_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p13 — Solution > Numeric sanity check > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p13 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p13_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p13 — Solution > Numeric sanity check > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p13 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - multivariate-gaussian
+  declared_problem_ids:
+  - B2-022-p13
+  api_tokens:
+  - data.mean
+  - ex.mean
+  - math.log
+  - np.all
+  - np.allclose
+  - np.array
+  - np.einsum
+  - np.eye
+  - np.linalg.det
+  - np.linalg.slogdet
+  - np.linalg.solve
+  - np.log
+  - np.random.default_rng
+  - np.sum
+  - rng.normal
+- path: units/B2-022-probabilistic-latent-models/practice/p14.ipynb
+  kind: notebook
+  semantic_sha256: 9499af7251faa159fdf0ec4e2c29c214c926e136d6bf98e72510a65eee742819
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p14.ipynb :: B2-022 — Practice p14 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p14
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p14.ipynb :: B2-022 — Practice p14 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p14
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  declared_problem_ids:
+  - B2-022-p14
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p14_solution.ipynb
+  kind: notebook
+  semantic_sha256: 2773d8bb9e83c1c2de495d9cf08d59c2995a278b299bc2da4c0ba19ad829df36
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p14_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p14 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p14 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p14_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p14 — Solution > Solution > (c) Role of the support :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p14 — Solution
+    - Solution
+    - (c) Role of the support
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p14_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p14 — Solution > Numeric sanity check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p14 — Solution
+    - Numeric sanity check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p14_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p14 — Solution > Numeric sanity check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p14 — Solution
+    - Numeric sanity check
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p14_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p14 — Solution > Numeric sanity check > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p14 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p14_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p14 — Solution > Numeric sanity check > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p14 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  declared_problem_ids:
+  - B2-022-p14
+  api_tokens:
+  - math.log
+  - np.random.default_rng
+  - p.sum
+  - q.sum
+  - rng.random
+  - sweep.append
+- path: units/B2-022-probabilistic-latent-models/practice/p15.ipynb
+  kind: notebook
+  semantic_sha256: b810e8d5da4b094170974f0c6917f70da55f2a6d8c40e5e1fbd19b0b9db8dde1
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p15.ipynb :: B2-022 — Practice p15 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p15
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p15.ipynb :: B2-022 — Practice p15 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p15
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  declared_problem_ids:
+  - B2-022-p15
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p15_solution.ipynb
+  kind: notebook
+  semantic_sha256: 9c4abf6bbb559b096e133879d19e34ed9c7e291984ac437bc508b38ac210c598
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p15_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p15 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p15 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p15_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p15 — Solution > Solution > (e) Evaluation at $\mu=1$, $\ell=1$ :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p15 — Solution
+    - Solution
+    - (e) Evaluation at $\mu=1$, $\ell=1$
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p15_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p15 — Solution > Numeric sanity check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p15 — Solution
+    - Numeric sanity check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p15_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p15 — Solution > Numeric sanity check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p15 — Solution
+    - Numeric sanity check
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p15_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p15 — Solution > Numeric sanity check > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p15 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p15_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p15 — Solution > Numeric sanity check > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p15 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  declared_problem_ids:
+  - B2-022-p15
+  api_tokens:
+  - math.exp
+  - math.log
+  - torch.Generator
+  - torch.randn
+- path: units/B2-022-probabilistic-latent-models/practice/p16.ipynb
+  kind: notebook
+  semantic_sha256: afc6b147ab6ddc6b946c59f53f771778dd156685288e919188b6dc12dc5e30d1
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16.ipynb :: B2-022 — Practice p16 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p16
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16.ipynb :: B2-022 — Practice p16 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p16
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p16
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb
+  kind: notebook
+  semantic_sha256: 34b4b0735f256f12982b8f018ec8087a78ae7e57b7f5037903b9f5739d34c8da
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p16 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p16 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p16 — Solution > Solution > (b3) Why reparameterize :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p16 — Solution
+    - Solution
+    - (b3) Why reparameterize
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p16 — Solution > Numeric sanity check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p16 — Solution
+    - Numeric sanity check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p16 — Solution > Numeric sanity check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p16 — Solution
+    - Numeric sanity check
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p16 — Solution > Numeric sanity check > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p16 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p16 — Solution > Numeric sanity check > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p16 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p16
+  api_tokens:
+  - ell.grad.item
+  - math.log
+  - math.sqrt
+  - mu.grad.item
+  - torch.Generator
+  - torch.exp
+  - torch.randn
+  - torch.tensor
+  - z.item
+- path: units/B2-022-probabilistic-latent-models/practice/p17.ipynb
+  kind: notebook
+  semantic_sha256: fc962919d9609c8f9a52a81e4c9ac44df74d492ab48916c06dfa3ec07bb76462
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17.ipynb :: B2-022 — Practice p17 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p17
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17.ipynb :: B2-022 — Practice p17 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p17
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17.ipynb :: B2-022 — Practice p17 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p17
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17.ipynb :: B2-022 — Practice p17 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p17
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  declared_problem_ids:
+  - B2-022-p17
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb
+  kind: notebook
+  semantic_sha256: 878bdc997f1d90f2e69f9544ccae290f57c4b147f8642bdef679b9b1c77c4ceb
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p17 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p17 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p17 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p17 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p17 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p17 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p17 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p17 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p17 — Solution > Solution > (D) Why the held-out comparison is the certificate :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p17 — Solution
+    - Solution
+    - (D) Why the held-out comparison is the certificate
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p17 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p17 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p17 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p17 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  declared_problem_ids:
+  - B2-022-p17
+  api_tokens:
+  - F.mse_loss
+  - copy.deepcopy
+  - guard.remove
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - latent_data.heldout_tensor
+  - latent_data.row_sha256
+  - latent_data.train_tensor
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - model.encode
+  - model.named_parameters
+  - model.parameters
+  - model.register_forward_pre_hook
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - p.detach
+  - path.is_file
+  - pathlib.Path
+  - self.decode
+  - self.decoder
+  - self.encode
+  - self.encoder
+  - torch.equal
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.set_num_threads
+  - trace.append
+- path: units/B2-022-probabilistic-latent-models/practice/p18.ipynb
+  kind: notebook
+  semantic_sha256: 48a3f37eadda4e3f9eeaf0b431981fd0e7cb546070059b9104d6ac0b1433021a
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18.ipynb :: B2-022 — Practice p18 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p18
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18.ipynb :: B2-022 — Practice p18 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p18
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18.ipynb :: B2-022 — Practice p18 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p18
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18.ipynb :: B2-022 — Practice p18 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p18
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  declared_problem_ids:
+  - B2-022-p18
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb
+  kind: notebook
+  semantic_sha256: 3fe71717f372c444415f4d6823b48430db38c5f613c2bc15aba1273b3a6f1587
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p18 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p18 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p18 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p18 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p18 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p18 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p18 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p18 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p18 — Solution > Solution > (D) Why projectors, and why centering :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p18 — Solution
+    - Solution
+    - (D) Why projectors, and why centering
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p18 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p18 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p18 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p18 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  declared_problem_ids:
+  - B2-022-p18
+  api_tokens:
+  - F.mse_loss
+  - P_pca.trace
+  - T.mean
+  - copy.deepcopy
+  - guard.remove
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - latent_data.heldout_tensor
+  - latent_data.row_sha256
+  - latent_data.train_tensor
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - model.decoder.weight.detach
+  - model.parameters
+  - model.register_forward_pre_hook
+  - nn.Linear
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - self.decoder
+  - self.encoder
+  - torch.allclose
+  - torch.equal
+  - torch.linalg.norm
+  - torch.linalg.solve
+  - torch.linalg.svd
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.set_num_threads
+  - trace.append
+- path: units/B2-022-probabilistic-latent-models/practice/p19.ipynb
+  kind: notebook
+  semantic_sha256: a7d004bf654f90c2b7f2797be9171e1965a599b0939e2aae701e782b6e901661
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19.ipynb :: B2-022 — Practice p19 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p19
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19.ipynb :: B2-022 — Practice p19 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p19
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19.ipynb :: B2-022 — Practice p19 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p19
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19.ipynb :: B2-022 — Practice p19 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p19
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p19
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb
+  kind: notebook
+  semantic_sha256: 8594ec0890b6f24c43a95b23ea0bea48c39b5d55a14acbc59e9243babf5b0953
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p19 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p19 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p19 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p19 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p19 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p19 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p19 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p19 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p19 — Solution > Solution > Interpretation :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p19 — Solution
+    - Solution
+    - Interpretation
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p19 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p19 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p19 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p19 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p19
+  api_tokens:
+  - F.relu
+  - copy.deepcopy
+  - guard.remove
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - kl.mean
+  - latent_data.heldout_tensor
+  - latent_data.row_sha256
+  - latent_data.train_tensor
+  - loader_spec.loader.exec_module
+  - logvar.exp
+  - loss.backward
+  - loss.item
+  - model.named_parameters
+  - model.parameters
+  - model.register_forward_pre_hook
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - p.detach
+  - path.is_file
+  - pathlib.Path
+  - recon.mean
+  - self.decode
+  - self.decoder
+  - self.encode
+  - self.hidden
+  - self.logvar_head
+  - self.mu_head
+  - t.dim
+  - torch.Generator
+  - torch.allclose
+  - torch.equal
+  - torch.exp
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_num_threads
+  - torch.tensor
+  - trace.append
+- path: units/B2-022-probabilistic-latent-models/practice/p20.ipynb
+  kind: notebook
+  semantic_sha256: c6d1b478b4eb7e7a2777417964dca23313d2da08a382ccc1caa6ef1c73a66031
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20.ipynb :: B2-022 — Practice p20 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p20
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20.ipynb :: B2-022 — Practice p20 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p20
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20.ipynb :: B2-022 — Practice p20 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p20
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20.ipynb :: B2-022 — Practice p20 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p20
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p20
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb
+  kind: notebook
+  semantic_sha256: 380932c5edfa3ce0fef4728fc72d7b749ed999bbc42d29e3920924f7141c3b72
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p20 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p20 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p20 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p20 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p20 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p20 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p20 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p20 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p20 — Solution > Solution > Tolerances versus exact probes :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p20 — Solution
+    - Solution
+    - Tolerances versus exact probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p20 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p20 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p20 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p20 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p20
+  api_tokens:
+  - F.relu
+  - T.mean
+  - T.std
+  - copy.deepcopy
+  - counts.tolist
+  - guard.remove
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - latent_data.heldout_tensor
+  - latent_data.row_sha256
+  - latent_data.train_tensor
+  - loader_spec.loader.exec_module
+  - logvar.exp
+  - loss.backward
+  - loss.item
+  - model.decode
+  - model.encode
+  - model.named_parameters
+  - model.parameters
+  - model.register_forward_pre_hook
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - p.detach
+  - path.is_file
+  - pathlib.Path
+  - samples.mean
+  - samples.std
+  - self.decode
+  - self.decoder
+  - self.encode
+  - self.hidden
+  - self.logvar_head
+  - self.mu_head
+  - t.dim
+  - torch.Generator
+  - torch.allclose
+  - torch.bincount
+  - torch.cdist
+  - torch.equal
+  - torch.exp
+  - torch.isfinite
+  - torch.linspace
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_num_threads
+  - torch.tensor
+  - trace.append
+- path: units/B2-022-probabilistic-latent-models/practice/p21.ipynb
+  kind: notebook
+  semantic_sha256: 86629a0c62cb245e03b2180e4fb89acbfbcdcce4c579f96da896786274d74cfb
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p21.ipynb :: B2-022 — Practice p21 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p21
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p21.ipynb :: B2-022 — Practice p21 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p21
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  - multivariate-gaussian
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p21
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p21_solution.ipynb
+  kind: notebook
+  semantic_sha256: 561278fd50043496780e0342b5fd4f5771926197313cddfcdf1a255b45ec4cad
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p21_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p21 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p21 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p21_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p21 — Solution > Solution > (V) Linear structure only :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p21 — Solution
+    - Solution
+    - (V) Linear structure only
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p21_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p21 — Solution > Solution > (V) Linear structure only :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p21 — Solution
+    - Solution
+    - (V) Linear structure only
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p21_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p21 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p21 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p21_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p21 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p21 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  - multivariate-gaussian
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p21
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p22.ipynb
+  kind: notebook
+  semantic_sha256: bcc0bf2f88bb4361f4cf0d87b79a36f3fa245911acb68284bae8982dc88c8cde
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p22.ipynb :: B2-022 — Practice p22 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p22
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p22.ipynb :: B2-022 — Practice p22 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p22
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p22
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb
+  kind: notebook
+  semantic_sha256: aafbd317fcd395191802b68ffd1bbce1084c9a9a302f84843697fe83f6328c81
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p22 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p22 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p22 — Solution > Solution > (d) Post-fix checks, and choosing $\beta$ without held-out rows :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p22 — Solution
+    - Solution
+    - (d) Post-fix checks, and choosing $\beta$ without held-out rows
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p22 — Solution > Solution > (d) Post-fix checks, and choosing $\beta$ without held-out rows :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p22 — Solution
+    - Solution
+    - (d) Post-fix checks, and choosing $\beta$ without held-out rows
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p22 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p22 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p22 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p22 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - kl-divergence
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p22
+  api_tokens: []
+- path: units/B2-022-probabilistic-latent-models/practice/p23.ipynb
+  kind: notebook
+  semantic_sha256: 7b8f1a978916dac027fa3dc5a899ef04292f8645c36cad5505955debd753be8e
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23.ipynb :: B2-022 — Practice p23 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p23
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23.ipynb :: B2-022 — Practice p23 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p23
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23.ipynb :: B2-022 — Practice p23 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p23
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23.ipynb :: B2-022 — Practice p23 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p23
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p23
+  api_tokens:
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb
+  kind: notebook
+  semantic_sha256: 2bfaa9389d611c8fa962bf936633537d3b1c0bf9d5ec7fba5edb5cf46e6be6e5
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p23 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p23 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p23 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p23 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p23 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p23 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p23 — Solution > Solution > (B) The three defects :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p23 — Solution
+    - Solution
+    - (B) The three defects
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p23 — Solution > Solution > (B) The three defects :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p23 — Solution
+    - Solution
+    - (B) The three defects
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p23 — Solution > Solution > (E) Why the variance mix-up produces `nan`, and why conventions must match :: cell
+      1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p23 — Solution
+    - Solution
+    - (E) Why the variance mix-up produces `nan`, and why conventions must match
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p23 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p23 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p23 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p23 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  - variational-autoencoder
+  declared_problem_ids:
+  - B2-022-p23
+  api_tokens:
+  - buggy_value.item
+  - logvar.clone
+  - logvar.exp
+  - mu.clone
+  - repaired.item
+  - single_defect_values.items
+  - t.dim
+  - torch.allclose
+  - torch.isfinite
+  - torch.isinf
+  - torch.isnan
+  - torch.log
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p24.ipynb
+  kind: notebook
+  semantic_sha256: 8946f5707e0f5f5511eeda64eceac21d3222931be831f51941caa7cd7d97b8ec
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24.ipynb :: B2-022 — Practice p24 > Task :: cell 1'
+    heading_path:
+    - B2-022 — Practice p24
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24.ipynb :: B2-022 — Practice p24 > Task :: cell 2'
+    heading_path:
+    - B2-022 — Practice p24
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24.ipynb :: B2-022 — Practice p24 > Task :: cell 3'
+    heading_path:
+    - B2-022 — Practice p24
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24.ipynb :: B2-022 — Practice p24 > Your response :: cell
+      1'
+    heading_path:
+    - B2-022 — Practice p24
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  declared_problem_ids:
+  - B2-022-p24
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - math.log
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+  - torch.tensor
+- path: units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb
+  kind: notebook
+  semantic_sha256: 2b2ea7d4bc0b49979de09bdf6e078ca39e9663f9a27876ef9457cce6584d5d1b
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Solution > (B) Non-differentiable sampling :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Solution
+    - (B) Non-differentiable sampling
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Solution > (B) Demonstration :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Solution
+    - (B) Demonstration
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Solution > (B) Demonstration :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Solution
+    - (B) Demonstration
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Solution > (C) Repaired pipeline :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Solution
+    - (C) Repaired pipeline
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Solution > (C) Repaired pipeline :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Solution
+    - (C) Repaired pipeline
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Solution > (D) Hash check, before normalization :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Solution
+    - (D) Hash check, before normalization
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Solution > (D) Hash check, before normalization :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Solution
+    - (D) Hash check, before normalization
+    cell_ordinal: 2
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
+      Practice p24 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-022-probabilistic-latent-models — Practice p24 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  declared_problem_ids:
+  - B2-022-p24
+  api_tokens:
+  - F.relu
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - kl.mean
+  - latent_data.load_rows
+  - latent_data.row_sha256
+  - loader_spec.loader.exec_module
+  - logvar.detach
+  - logvar.exp
+  - loss.backward
+  - math.isfinite
+  - math.log
+  - model.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - raw_fit.mean
+  - raw_fit.std
+  - recon.mean
+  - self.decode
+  - self.decoder
+  - self.encode
+  - self.hidden
+  - self.logvar_head
+  - self.mu_head
+  - t.dim
+  - torch.Generator
+  - torch.allclose
+  - torch.cat
+  - torch.distributions.Normal
+  - torch.exp
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.ones_like
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_num_threads
+  - torch.tensor
+  - validation_scores.values
+  - z.sum
+- path: units/B2-022-probabilistic-latent-models/review.ipynb
+  kind: notebook
+  semantic_sha256: 223eb5795580982329d66d08a7adf268168d497c391bc0078d0f119a4fe8c8ab
+  anchors:
+  - anchor: 'units/B2-022-probabilistic-latent-models/review.ipynb :: B2-022 — Review and Self-Quiz :: cell 1'
+    heading_path:
+    - B2-022 — Review and Self-Quiz
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/review.ipynb :: B2-022 — Review and Self-Quiz > Formula and protocol
+      sheet :: cell 1'
+    heading_path:
+    - B2-022 — Review and Self-Quiz
+    - Formula and protocol sheet
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/review.ipynb :: B2-022 — Review and Self-Quiz > Concept retrieval table
+      :: cell 1'
+    heading_path:
+    - B2-022 — Review and Self-Quiz
+    - Concept retrieval table
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/review.ipynb :: B2-022 — Review and Self-Quiz > Self-quiz :: cell 1'
+    heading_path:
+    - B2-022 — Review and Self-Quiz
+    - Self-quiz
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/review.ipynb :: B2-022 — Review and Self-Quiz > Common pitfalls, Exam
+      connections, and forward boundary :: cell 1'
+    heading_path:
+    - B2-022 — Review and Self-Quiz
+    - Common pitfalls, Exam connections, and forward boundary
+    cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/review.ipynb :: B2-022 — Review and Self-Quiz > Collected answers ::
+      cell 1'
+    heading_path:
+    - B2-022 — Review and Self-Quiz
+    - Collected answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - autoencoder
+  - gaussian-reparameterization
+  - kl-divergence
+  - multivariate-gaussian
+  - variational-autoencoder
   declared_problem_ids: []
   api_tokens: []

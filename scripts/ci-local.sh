@@ -27,7 +27,7 @@ run_solution_notebook() {
   local book_root=$1
   local relative=$2
   {
-    if [[ $relative == units/B2-020-language-transformers/practice/p??_solution.ipynb || $relative == units/B2-021-cross-modal-transformers-vision/practice/p??_solution.ipynb ]]; then
+    if [[ $relative == units/B2-020-language-transformers/practice/p??_solution.ipynb || $relative == units/B2-021-cross-modal-transformers-vision/practice/p??_solution.ipynb || $relative == units/B2-022-probabilistic-latent-models/practice/p??_solution.ipynb ]]; then
       (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" timeout 20s uv run --project .. jupyter execute "$relative")
     else
       (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" uv run --project .. jupyter execute "$relative")
@@ -152,6 +152,7 @@ uv run python -m tools.verify_training_mutations --root "$book1_root"
 uv run python -m tools.verify_classical_mutations --root "$book1_root"
 uv run python -m tools.verify_attention_mutations --root "$book2_root"
 uv run pytest -q tests/test_language_transformer_checks.py
+uv run pytest -q tests/test_latent_model_checks.py
 uv run pytest -q tests/test_vision_transformer_checks.py
 
 step "8/9 PDF build"
