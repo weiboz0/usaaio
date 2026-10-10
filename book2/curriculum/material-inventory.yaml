@@ -1,15 +1,15 @@
 inventory_version: 1
 counts:
-  units: 5
-  concepts: 31
-  unit_practices: 120
-  lesson_sessions: 30
-  unit_nonpractice_notebooks: 40
-  unit_notebooks: 280
+  units: 6
+  concepts: 37
+  unit_practices: 148
+  lesson_sessions: 37
+  unit_nonpractice_notebooks: 49
+  unit_notebooks: 345
   mocktests: 0
   mock_notebooks: 0
-  manifested_minutes: 8120
-  scheduled_minutes: 8270
+  manifested_minutes: 10090
+  scheduled_minutes: 10270
 input_paths:
 - docs/course-structure.md
 - syllabus.md
@@ -298,14 +298,80 @@ input_paths:
 - units/B2-023-generative-models-diffusion/practice/p24.ipynb
 - units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb
 - units/B2-023-generative-models-diffusion/review.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/manifest.yaml
+- units/B2-024-gpu-scientific-ml-capstone/practice/p01.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p01_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p02.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p02_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p03.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p03_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p04.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p04_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p05.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p05_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p08.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p09.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p10.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p11.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p12.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p13.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p13_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p14.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p14_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p15.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p15_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p18.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p21.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p22.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p23.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p23_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p24.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p25.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p25_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p26.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p27.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p28.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb
+- units/B2-024-gpu-scientific-ml-capstone/review.ipynb
 documents:
 - path: docs/course-structure.md
   kind: document
-  semantic_sha256: 89632bcf7efd158c47b55b95f04db7fa72bc43fbfbefa0dc2a3ecb3c88d8ca98
+  semantic_sha256: 979d330b92bef5dede79adcfeacbf7bc00f1fcb408d14c17cdd00e94fcb66cb2
 manifests:
 - path: syllabus.md
   kind: canonical-yaml
-  semantic_sha256: 39994d24f8ad1611c7fe38405c59d54ac29472813f186ebd6352407464aeab58
+  semantic_sha256: b4e37c3df747e2d8021d40e2d8178c8beb9bcc69f25e2de0bf5b559d35a371c8
 - path: units/B2-019-attention-transformers/manifest.yaml
   kind: yaml
   semantic_sha256: e6dd52f9851fe91c1f86e8cfc45f0d1c25c7fa78f0524abd9d34322c0b19dd29
@@ -321,6 +387,9 @@ manifests:
 - path: units/B2-023-generative-models-diffusion/manifest.yaml
   kind: yaml
   semantic_sha256: ad46f44175a4134ff9db979fe981a796c55c84166561600c2f44ee5e65e5c6fe
+- path: units/B2-024-gpu-scientific-ml-capstone/manifest.yaml
+  kind: yaml
+  semantic_sha256: c77f3cdeb0ad94d44d047fecb571c98b30d466bdec5d226ba2d7e3f9448019ba
 notebooks:
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
@@ -14270,5 +14339,4385 @@ notebooks:
   - denoising-diffusion-probabilistic-models
   - generative-adversarial-network
   - stable-diffusion
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb
+  kind: notebook
+  semantic_sha256: ef52320217722cb2033875548ae38cab9fc210249ae3e174540c2b8b2f868663
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone :: cell
+      1'
+    heading_path:
+    - B2-024 — GPU Workflow and Scientific-ML Capstone
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone > Learning
+      goals :: cell 1'
+    heading_path:
+    - B2-024 — GPU Workflow and Scientific-ML Capstone
+    - Learning goals
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone > Owned
+      concepts :: cell 1'
+    heading_path:
+    - B2-024 — GPU Workflow and Scientific-ML Capstone
+    - Owned concepts
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone > Study
+      route :: cell 1'
+    heading_path:
+    - B2-024 — GPU Workflow and Scientific-ML Capstone
+    - Study route
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone > Tools
+      taught inside this unit :: cell 1'
+    heading_path:
+    - B2-024 — GPU Workflow and Scientific-ML Capstone
+    - Tools taught inside this unit
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone > Data,
+      evaluation, and reproducibility contract :: cell 1'
+    heading_path:
+    - B2-024 — GPU Workflow and Scientific-ML Capstone
+    - Data, evaluation, and reproducibility contract
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone > Compute
+      contract :: cell 1'
+    heading_path:
+    - B2-024 — GPU Workflow and Scientific-ML Capstone
+    - Compute contract
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone > How
+      to study :: cell 1'
+    heading_path:
+    - B2-024 — GPU Workflow and Scientific-ML Capstone
+    - How to study
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone > Boundaries
+      :: cell 1'
+    heading_path:
+    - B2-024 — GPU Workflow and Scientific-ML Capstone
+    - Boundaries
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb
+  kind: notebook
+  semantic_sha256: e613b5fbb11bb555b5603242c43cb704d7232e3beafab39a142d280ac9dc6abf
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic ::
+      cell 1'
+    heading_path:
+    - B2-024 — Book 1 Bridge Diagnostic
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic >
+      1. Arrays, broadcasting, and seeds :: cell 1'
+    heading_path:
+    - B2-024 — Book 1 Bridge Diagnostic
+    - 1. Arrays, broadcasting, and seeds
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic >
+      2. Matrices, rank, and linear least squares :: cell 1'
+    heading_path:
+    - B2-024 — Book 1 Bridge Diagnostic
+    - 2. Matrices, rank, and linear least squares
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic >
+      3. Gradients and gradient descent :: cell 1'
+    heading_path:
+    - B2-024 — Book 1 Bridge Diagnostic
+    - 3. Gradients and gradient descent
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic >
+      4. Expectation, variance, covariance, and the Gaussian :: cell 1'
+    heading_path:
+    - B2-024 — Book 1 Bridge Diagnostic
+    - 4. Expectation, variance, covariance, and the Gaussian
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic >
+      5. Protocols, metrics, and competition craft :: cell 1'
+    heading_path:
+    - B2-024 — Book 1 Bridge Diagnostic
+    - 5. Protocols, metrics, and competition craft
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic >
+      6. Neural networks, CNNs, and the PyTorch training loop :: cell 1'
+    heading_path:
+    - B2-024 — Book 1 Bridge Diagnostic
+    - 6. Neural networks, CNNs, and the PyTorch training loop
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic >
+      7. k-means and Lloyd''s algorithm :: cell 1'
+    heading_path:
+    - B2-024 — Book 1 Bridge Diagnostic
+    - 7. k-means and Lloyd's algorithm
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic >
+      8. Readiness and explicit remediation :: cell 1'
+    heading_path:
+    - B2-024 — Book 1 Bridge Diagnostic
+    - 8. Readiness and explicit remediation
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic >
+      8. Readiness and explicit remediation :: cell 2'
+    heading_path:
+    - B2-024 — Book 1 Bridge Diagnostic
+    - 8. Readiness and explicit remediation
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids: []
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - p.is_file
+  - pathlib.Path
+  - readiness.values
+  - spec.loader.exec_module
+  - torch.cuda.is_available
+  - torch.device
+  - torch.eye
+  - torch.linalg.matrix_rank
+  - torch.ones
+  - torch.zeros
+- path: units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb
+  kind: notebook
+  semantic_sha256: e64e64c2148f173909f39df126787855e9d9a39910cfbd0c8d2fa4a224694138
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 1. Devices and device-agnostic code :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - 1. Devices and device-agnostic code
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 1. Devices and device-agnostic code :: cell 2'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - 1. Devices and device-agnostic code
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 2. Reading device-mismatch errors :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - 2. Reading device-mismatch errors
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 2. Reading device-mismatch errors :: cell 2'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - 2. Reading device-mismatch errors
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 3. Mixed precision: dtypes and autocast :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - '3. Mixed precision: dtypes and autocast'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 3. Mixed precision: dtypes and autocast :: cell 2'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - '3. Mixed precision: dtypes and autocast'
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 4. Memory arithmetic and batch sizing :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - 4. Memory arithmetic and batch sizing
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 4. Memory arithmetic and batch sizing :: cell 2'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - 4. Memory arithmetic and batch sizing
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 5. Out-of-memory triage :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - 5. Out-of-memory triage
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 6. Resumable training: checkpoints with RNG state :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - '6. Resumable training: checkpoints with RNG state'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 7. The Colab L4 session plan :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - 7. The Colab L4 session plan
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 8. Worked laboratory: one config, two machines, an exact resume :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - '8. Worked laboratory: one config, two machines, an exact resume'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 8. Worked laboratory: one config, two machines, an exact resume :: cell 2'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - '8. Worked laboratory: one config, two machines, an exact resume'
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 8. Worked laboratory: one config, two machines, an exact resume :: cell 3'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - '8. Worked laboratory: one config, two machines, an exact resume'
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 9. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - 9. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
+      GPU Workflow on Colab L4 > 10. Forward-only deeper topic: running a real latent-diffusion pipeline on a Colab L4 ::
+      cell 1'
+    heading_path:
+    - 'B2-024 — Session 1: The GPU Workflow on Colab L4'
+    - '10. Forward-only deeper topic: running a real latent-diffusion pipeline on a Colab L4'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids: []
+  api_tokens:
+  - F.cross_entropy
+  - F.relu
+  - a.to
+  - a1.numel
+  - a2.flatten
+  - a2.numel
+  - batch.to
+  - capstone_data.ShapeCNN
+  - capstone_data.train_rows
+  - h1.numel
+  - h2.numel
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - layer.to_empty
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.detach
+  - model.conv1
+  - model.conv2
+  - model.head
+  - model.load_state_dict
+  - model.parameters
+  - model.state_dict
+  - model.to
+  - model.zero_grad
+  - module.parameters
+  - nn.Linear
+  - optimizer.load_state_dict
+  - optimizer.state_dict
+  - optimizer.step
+  - optimizer.zero_grad
+  - os.path.join
+  - os.replace
+  - out.numel
+  - p.numel
+  - path.is_file
+  - pathlib.Path
+  - tempfile.TemporaryDirectory
+  - time.perf_counter
+  - torch.autocast
+  - torch.cuda.get_rng_state_all
+  - torch.cuda.is_available
+  - torch.cuda.is_bf16_supported
+  - torch.cuda.max_memory_allocated
+  - torch.cuda.reset_peak_memory_stats
+  - torch.cuda.set_rng_state_all
+  - torch.device
+  - torch.equal
+  - torch.get_rng_state
+  - torch.load
+  - torch.manual_seed
+  - torch.optim.Adam
+  - torch.randint
+  - torch.randn
+  - torch.save
+  - torch.set_num_threads
+  - torch.set_rng_state
+  - torch.zeros
+  - uninterrupted_next.item
+  - wrong_next.item
+- path: units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb
+  kind: notebook
+  semantic_sha256: c311f2951c55384c407ed297946e92dc151943765cd093b0b183b0f6cb47e4f4
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 1. From a question to a falsifiable hypothesis :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - 1. From a question to a falsifiable hypothesis
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 2. Baselines: the comparison that gives a number meaning :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - '2. Baselines: the comparison that gives a number meaning'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 3. Ablations: change one thing :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - '3. Ablations: change one thing'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 4. Fixed compute budgets :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - 4. Fixed compute budgets
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 5. Seeds and repeated runs :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - 5. Seeds and repeated runs
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 6. Held-out discipline and the experiment log :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - 6. Held-out discipline and the experiment log
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 7. Worked laboratory: a budgeted mini-campaign with a log :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - '7. Worked laboratory: a budgeted mini-campaign with a log'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 7. Worked laboratory: a budgeted mini-campaign with a log :: cell 2'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - '7. Worked laboratory: a budgeted mini-campaign with a log'
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 7. Worked laboratory: a budgeted mini-campaign with a log :: cell 3'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - '7. Worked laboratory: a budgeted mini-campaign with a log'
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
+      Experiment Design Under a Budget > 9. Forward-only deeper topic: smarter search under a budget :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 2: Experiment Design Under a Budget'
+    - '9. Forward-only deeper topic: smarter search under a budget'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids: []
+  api_tokens:
+  - CONFIGS.items
+  - F.mse_loss
+  - budget.wrap
+  - capstone_data.StepBudget
+  - capstone_data.position_error_per_example
+  - capstone_data.split_of
+  - capstone_data.test_call_count
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - feats.mean
+  - feats.std
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - log.append
+  - loss.backward
+  - means.items
+  - model.eval
+  - model.parameters
+  - model.train
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - self.net
+  - self.register_buffer
+  - time.perf_counter
+  - torch.log
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb
+  kind: notebook
+  semantic_sha256: d659ac2ed355552eb69257c22fdee3701919d0d472fba6c80a1195d162f0f745
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 1. Choosing the metric :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - 1. Choosing the metric
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 2. The variance of a mean, and why one run is not enough :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - 2. The variance of a mean, and why one run is not enough
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 3. The percentile bootstrap :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - 3. The percentile bootstrap
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 4. Paired comparisons :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - 4. Paired comparisons
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 5. Ablation tables and seed statistics :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - 5. Ablation tables and seed statistics
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 6. Robustness, model families, and writing the evaluation section :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - 6. Robustness, model families, and writing the evaluation section
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 7. Worked laboratory: two families, intervals, a paired difference, and one test call
+      :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - '7. Worked laboratory: two families, intervals, a paired difference, and one test call'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 7. Worked laboratory: two families, intervals, a paired difference, and one test call
+      :: cell 2'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - '7. Worked laboratory: two families, intervals, a paired difference, and one test call'
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 7. Worked laboratory: two families, intervals, a paired difference, and one test call
+      :: cell 3'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - '7. Worked laboratory: two families, intervals, a paired difference, and one test call'
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 7. Worked laboratory: two families, intervals, a paired difference, and one test call
+      :: cell 4'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - '7. Worked laboratory: two families, intervals, a paired difference, and one test call'
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
+      Evaluating Open-Ended Models > 9. Forward-only deeper topic: beyond the percentile bootstrap :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 3: Evaluating Open-Ended Models'
+    - '9. Forward-only deeper topic: beyond the percentile bootstrap'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids: []
+  api_tokens:
+  - F.mse_loss
+  - capstone_data.baseline_score
+  - capstone_data.final_test_score
+  - capstone_data.position_error_per_example
+  - capstone_data.test_call_count
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - err16.mean
+  - err64.mean
+  - families.items
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - log_train.mean
+  - log_train.std
+  - model.eval
+  - model.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - p.numel
+  - path.is_file
+  - pathlib.Path
+  - per_seed.items
+  - self.net
+  - self.register_buffer
+  - stats.double
+  - torch.Generator
+  - torch.log
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.quantile
+  - torch.randint
+  - torch.randn
+  - torch.set_num_threads
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb
+  kind: notebook
+  semantic_sha256: d0de4a100b5f140e7890babd44b4b3d928569cfe37e0709153b1990b7c3de931
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 1. The limited-label regime and the supervised baseline :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - 1. The limited-label regime and the supervised baseline
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 2. Confidence-threshold self-training :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - 2. Confidence-threshold self-training
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 3. Class balance and deterministic selection :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - 3. Class balance and deterministic selection
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 4. Confirmation bias and the noisy student :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - 4. Confirmation bias and the noisy student
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 5. Cluster-then-label with k-means :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - 5. Cluster-then-label with k-means
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 6. Leakage-safe validation and the semi-supervised protocol :: cell
+      1'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - 6. Leakage-safe validation and the semi-supervised protocol
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 7. Worked laboratory: a tiny shape trace :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - '7. Worked laboratory: a tiny shape trace'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 7. Worked laboratory: a tiny shape trace :: cell 2'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - '7. Worked laboratory: a tiny shape trace'
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 7. Worked laboratory: a tiny shape trace :: cell 3'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - '7. Worked laboratory: a tiny shape trace'
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 9. Forward-only deeper topic: consistency regularization and label
+      propagation :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - '9. Forward-only deeper topic: consistency regularization and label propagation'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids: []
+  api_tokens:
+  - F.cross_entropy
+  - F.softmax
+  - baseline.conv1
+  - cand.sort
+  - capstone_data.ShapeCNN
+  - capstone_data.train_rows
+  - capstone_data.unlabelled_rows
+  - capstone_data.val_rows
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - init.clone
+  - loader_spec.loader.exec_module
+  - model.eval
+  - model.parameters
+  - names.append
+  - names.tolist
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - probs.max
+  - torch.bincount
+  - torch.cat
+  - torch.cdist
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.nonzero
+  - torch.optim.Adam
+  - torch.randn_like
+  - torch.set_num_threads
+  - torch.stack
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb
+  kind: notebook
+  semantic_sha256: 4a206ec7f68a2539c38500aae06571014d842445a5f150414658816eacba0800
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 1. The forward operator :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - 1. The forward operator
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 2. Ill-posedness and noise :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - 2. Ill-posedness and noise
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 3. Linearization by discretization: the grid operator :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - '3. Linearization by discretization: the grid operator'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 4. Tikhonov regularization is ridge regression :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - 4. Tikhonov regularization is ridge regression
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 5. Learned inversion from simulated pairs :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - 5. Learned inversion from simulated pairs
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 6. Physics residuals and the open-ended workflow :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - 6. Physics residuals and the open-ended workflow
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 7. Worked laboratory: forward model, grid baseline, learned inverse, residual, and coverage :: cell
+      1'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - '7. Worked laboratory: forward model, grid baseline, learned inverse, residual, and coverage'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 7. Worked laboratory: forward model, grid baseline, learned inverse, residual, and coverage :: cell
+      2'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - '7. Worked laboratory: forward model, grid baseline, learned inverse, residual, and coverage'
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 7. Worked laboratory: forward model, grid baseline, learned inverse, residual, and coverage :: cell
+      3'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - '7. Worked laboratory: forward model, grid baseline, learned inverse, residual, and coverage'
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
+      Inverse Problems > 9. Forward-only deeper topic: Bayesian inversion, adjoints, and physics-informed networks :: cell
+      1'
+    heading_path:
+    - 'B2-024 — Session 5: Scientific Inverse Problems'
+    - '9. Forward-only deeper topic: Bayesian inversion, adjoints, and physics-informed networks'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids: []
+  api_tokens:
+  - F.mse_loss
+  - T.clamp_min
+  - capstone_data.position_error_per_example
+  - capstone_data.tikhonov_grid_predict
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - density.argmax
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - inverse.parameters
+  - loader_spec.loader.exec_module
+  - logs.mean
+  - logs.std
+  - loss.backward
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - readings.double
+  - self.net
+  - self.register_buffer
+  - strength.double
+  - torch.Generator
+  - torch.eye
+  - torch.full
+  - torch.linalg.matrix_rank
+  - torch.linalg.solve
+  - torch.log
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.rand
+  - torch.set_num_threads
+  - torch.stack
+  - val_x.double
+- path: units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb
+  kind: notebook
+  semantic_sha256: a4b6c969ad7db71627276a40758b628f3e1c6e6d050c0382d79547a3f06f885b
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 1. Mixture functions :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - 1. Mixture functions
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 2. Identifiability, label switching, and canonical order :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - 2. Identifiability, label switching, and canonical order
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 3. Permutation-invariant losses and evaluation :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - 3. Permutation-invariant losses and evaluation
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 4. A least-squares baseline by gradient descent :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - 4. A least-squares baseline by gradient descent
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 5. A learned regressor that amortizes the fit :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - 5. A learned regressor that amortizes the fit
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 6. The hybrid pipeline and the open-ended workflow :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - 6. The hybrid pipeline and the open-ended workflow
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 7. Worked laboratory: label switching, a stuck fit, and predict-then-refine
+      :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - '7. Worked laboratory: label switching, a stuck fit, and predict-then-refine'
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 7. Worked laboratory: label switching, a stuck fit, and predict-then-refine
+      :: cell 2'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - '7. Worked laboratory: label switching, a stuck fit, and predict-then-refine'
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 7. Worked laboratory: label switching, a stuck fit, and predict-then-refine
+      :: cell 3'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - '7. Worked laboratory: label switching, a stuck fit, and predict-then-refine'
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
+      Mixture-Function Parameter Regression > 9. Forward-only deeper topic: set prediction, EM, and unknown K :: cell 1'
+    heading_path:
+    - 'B2-024 — Session 6: Mixture-Function Parameter Regression'
+    - '9. Forward-only deeper topic: set prediction, EM, and unknown K'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids: []
+  api_tokens:
+  - F.mse_loss
+  - base_err.argmax
+  - base_err.mean
+  - base_err.median
+  - capstone_data.canonical_sort
+  - capstone_data.mixture_baseline_init
+  - capstone_data.mixture_ls_fit
+  - capstone_data.mixture_values
+  - capstone_data.perm_invariant_error_per_example
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - raw.reshape
+  - regressor.parameters
+  - self.net
+  - self.register_buffer
+  - start.reshape
+  - theta.reshape
+  - torch.allclose
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.set_num_threads
+  - train_f.mean
+  - train_f.std
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p01.ipynb
+  kind: notebook
+  semantic_sha256: f9a7065c5438563a90a1cffe0852ed8eb4377e609ec2c9ca40ad5bfda05f5911
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p01.ipynb :: B2-024 — Practice p01 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p01
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p01.ipynb :: B2-024 — Practice p01 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p01
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p01
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p01_solution.ipynb
+  kind: notebook
+  semantic_sha256: b2c161a5b7ea727f89603b44737e3e0a9c9bf6e82b21d1ec5019d42d9d36b824
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p01_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p01 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p01 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p01_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p01 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p01 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p01_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p01 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p01 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p01_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p01 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p01 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p01_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p01 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p01 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p01
+  api_tokens:
+  - fractions.Fraction
+  - groups_run1.values
+  - groups_run2.values
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p02.ipynb
+  kind: notebook
+  semantic_sha256: 5c17192294e11537e451e5791d37ba351306202e0556070cc23fecf4c82d0816
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p02.ipynb :: B2-024 — Practice p02 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p02
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p02.ipynb :: B2-024 — Practice p02 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p02
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p02
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p02_solution.ipynb
+  kind: notebook
+  semantic_sha256: b9188e89668a6c2d3492fd095b4817fe01621ae3fbc4de376a109002790ca616
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p02_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p02 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p02 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p02_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p02 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p02 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p02_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p02 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p02 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p02_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p02 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p02 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p02_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p02 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p02 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p02
+  api_tokens:
+  - images.to
+  - labels.to
+  - m.to
+  - model.parameters
+  - model.to
+  - nn.Conv2d
+  - nn.Flatten
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - torch.device
+  - torch.manual_seed
+  - torch.rand
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p03.ipynb
+  kind: notebook
+  semantic_sha256: 99c8cba7c5f271e6f248216a7b0faaa9619db302ccdf4d56105b12cb4248b71a
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p03.ipynb :: B2-024 — Practice p03 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p03
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p03.ipynb :: B2-024 — Practice p03 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p03
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-experiment-design
+  declared_problem_ids:
+  - B2-024-p03
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p03_solution.ipynb
+  kind: notebook
+  semantic_sha256: fe91336edc5a9cea106129d83a4f9e0997211050c29dfb1dcd41334df9e58c18
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p03_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p03 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p03 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p03_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p03 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p03 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p03_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p03 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p03 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p03_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p03 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p03 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p03_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p03 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p03 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-experiment-design
+  declared_problem_ids:
+  - B2-024-p03
+  api_tokens:
+  - OPTIONS.items
+  - v.items
+  - v.values
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p04.ipynb
+  kind: notebook
+  semantic_sha256: 7a523c4e1441f1408920cdd414ef888d57b0a682468a41d51c9656501b663fde
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p04.ipynb :: B2-024 — Practice p04 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p04
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p04.ipynb :: B2-024 — Practice p04 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p04
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - B2-024-p04
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p04_solution.ipynb
+  kind: notebook
+  semantic_sha256: daccc3fd63237d8ce9de9c7df2e359d226b1bfc281b86c48c53930fe0f5d491c
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p04_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p04 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p04 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p04_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p04 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p04 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p04_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p04 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p04 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p04_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p04 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p04 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p04_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p04 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p04 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - B2-024-p04
+  api_tokens:
+  - cand.sort
+  - keep.sort
+  - probs.max
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p05.ipynb
+  kind: notebook
+  semantic_sha256: cf78160efbfb28c2e60eee4b5ca804d418de7d199ffd8ff26bd6715036b1c502
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p05.ipynb :: B2-024 — Practice p05 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p05
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p05.ipynb :: B2-024 — Practice p05 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p05
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  declared_problem_ids:
+  - B2-024-p05
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p05_solution.ipynb
+  kind: notebook
+  semantic_sha256: 248737b8478977f78c80d14ed1c0a224f60bbc85443f197dfcad4356ec928808
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p05_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p05 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p05 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p05_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p05 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p05 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p05_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p05 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p05 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p05_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p05 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p05 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p05_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p05 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p05 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  declared_problem_ids:
+  - B2-024-p05
+  api_tokens:
+  - T_c.clone
+  - itertools.permutations
+  - p.flatten
+  - p.sum
+  - t.flatten
+  - t.sum
+  - torch.argsort
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb
+  kind: notebook
+  semantic_sha256: 1ee445dd5f12e9d2ef6b7e28d47cd7d7eaa327b5229bf2f820adc45afcb962e6
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: B2-024 — Practice p06 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p06
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: B2-024 — Practice p06 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p06
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: B2-024 — Practice p06 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p06
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: Build the larger batch from capstone_data.simulate("shapes_supervised",
+      2048, seed=1) instead of images[:64]. :: cell 1'
+    heading_path:
+    - Build the larger batch from capstone_data.simulate("shapes_supervised", 2048, seed=1) instead of images[:64].
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: Build the larger batch from capstone_data.simulate("shapes_supervised",
+      2048, seed=1) instead of images[:64]. > Your response :: cell 1'
+    heading_path:
+    - Build the larger batch from capstone_data.simulate("shapes_supervised", 2048, seed=1) instead of images[:64].
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p06
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.arange
+  - torch.ones
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.zeros
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb
+  kind: notebook
+  semantic_sha256: 4214bb0563a4d21377d4c1b05fee108463fb906304da0b613e579c99063ccdce
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Solution :: cell 5'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Solution :: cell 6'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 6
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Solution :: cell 7'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 7
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Solution :: cell 8'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 8
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: Build the larger batch from capstone_data.simulate("shapes_supervised",
+      2048, seed=1) instead of images[:64]. :: cell 1'
+    heading_path:
+    - Build the larger batch from capstone_data.simulate("shapes_supervised", 2048, seed=1) instead of images[:64].
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: Build the larger batch from capstone_data.simulate("shapes_supervised",
+      2048, seed=1) instead of images[:64]. > Answer check :: cell 1'
+    heading_path:
+    - Build the larger batch from capstone_data.simulate("shapes_supervised", 2048, seed=1) instead of images[:64].
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: Build the larger batch from capstone_data.simulate("shapes_supervised",
+      2048, seed=1) instead of images[:64]. > Answer check :: cell 2'
+    heading_path:
+    - Build the larger batch from capstone_data.simulate("shapes_supervised", 2048, seed=1) instead of images[:64].
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p06
+  api_tokens:
+  - F.cross_entropy
+  - batch.items
+  - batch.to
+  - capstone_data.ShapeCNN
+  - capstone_data.train_rows
+  - contextlib.nullcontext
+  - cpu_moved.items
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - math.isfinite
+  - model.parameters
+  - model_bf.parameters
+  - obj.values
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - torch.arange
+  - torch.autocast
+  - torch.cuda.is_available
+  - torch.device
+  - torch.equal
+  - torch.manual_seed
+  - torch.ones
+  - torch.optim.Adam
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.zeros
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb
+  kind: notebook
+  semantic_sha256: 565d472d481418dc82b7d3d6242d4ce0b6301bf6c3bd2dcce7468e20a6482208
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb :: B2-024 — Practice p07 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p07
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb :: B2-024 — Practice p07 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p07
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb :: B2-024 — Practice p07 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p07
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb :: B2-024 — Practice p07 > Accelerator extension ::
+      cell 1'
+    heading_path:
+    - B2-024 — Practice p07
+    - Accelerator extension
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb :: B2-024 — Practice p07 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p07
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p07
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb
+  kind: notebook
+  semantic_sha256: 1181b0326684ada31eedf07b16b1ef361f7930d3b0106e2c6e47f1182b3a7b8b
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution > Solution :: cell 5'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution > Accelerator extension :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    - Accelerator extension
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution > Accelerator extension > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    - Accelerator extension
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p07 — Solution > Accelerator extension > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p07 — Solution
+    - Accelerator extension
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p07
+  api_tokens:
+  - F.cross_entropy
+  - L21.item
+  - capstone_data.ShapeCNN
+  - capstone_data.train_rows
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.detach
+  - losses.append
+  - model.load_state_dict
+  - model.parameters
+  - model.state_dict
+  - model2.state_dict
+  - optimizer.load_state_dict
+  - optimizer.state_dict
+  - optimizer.step
+  - optimizer.zero_grad
+  - os.path.join
+  - path.is_file
+  - pathlib.Path
+  - resumed_loss.item
+  - tempfile.TemporaryDirectory
+  - torch.cuda.get_rng_state_all
+  - torch.cuda.is_available
+  - torch.cuda.set_rng_state_all
+  - torch.equal
+  - torch.get_rng_state
+  - torch.isfinite
+  - torch.load
+  - torch.manual_seed
+  - torch.optim.Adam
+  - torch.randint
+  - torch.save
+  - torch.set_num_threads
+  - torch.set_rng_state
+  - v.clone
+  - wrong_loss.item
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p08.ipynb
+  kind: notebook
+  semantic_sha256: 634726329af09c65dbb777aa1e88435b64b77af69b0edb4ee73155dfe3b971a4
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08.ipynb :: B2-024 — Practice p08 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p08
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08.ipynb :: B2-024 — Practice p08 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p08
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08.ipynb :: B2-024 — Practice p08 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p08
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08.ipynb :: B2-024 — Practice p08 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p08
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - B2-024-p08
+  api_tokens:
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb
+  kind: notebook
+  semantic_sha256: 4f659d978c974176cc9b127e97a0ed8ae1fef54ab9f1087b45b5e9bef08cb960
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p08 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p08 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p08 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p08 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p08 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p08 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p08 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p08 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p08 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p08 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p08 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p08 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p08 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p08 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p08 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p08 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p08 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p08 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - B2-024-p08
+  api_tokens:
+  - math.isclose
+  - torch.Generator
+  - torch.quantile
+  - torch.randint
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p09.ipynb
+  kind: notebook
+  semantic_sha256: 04450100d64ae27e4bdc7c41c4d916eab4a18883d5aadc36da77087d7fcfd767
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09.ipynb :: B2-024 — Practice p09 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p09
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09.ipynb :: B2-024 — Practice p09 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p09
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09.ipynb :: B2-024 — Practice p09 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p09
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09.ipynb :: B2-024 — Practice p09 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p09
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - B2-024-p09
+  api_tokens:
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb
+  kind: notebook
+  semantic_sha256: 6ecc063c8eb2de5d9cb4857236cf2a3fd13bf20d782a8e37f2460dc9911d149b
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p09 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p09 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p09 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p09 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p09 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p09 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p09 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p09 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p09 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p09 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p09 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p09 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p09 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p09 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p09 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p09 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - B2-024-p09
+  api_tokens:
+  - PROBS.clone
+  - kept.append
+  - probs.argmax
+  - probs.max
+  - t.tolist
+  - torch.cat
+  - torch.equal
+  - torch.nonzero
+  - torch.sort
+  - torch.tensor
+  - values.to
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p10.ipynb
+  kind: notebook
+  semantic_sha256: 7cd96f93211128eab032f2aad58e216d90b6020870ed0188ad965b808a5146e9
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10.ipynb :: B2-024 — Practice p10 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p10
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10.ipynb :: B2-024 — Practice p10 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p10
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10.ipynb :: B2-024 — Practice p10 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p10
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10.ipynb :: B2-024 — Practice p10 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p10
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - scientific-ml-inverse-problems
+  declared_problem_ids:
+  - B2-024-p10
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb
+  kind: notebook
+  semantic_sha256: 05b04788747e701020317f35ec8c01bd5cd4c77d8e3273763af9868ec2f63469
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p10 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p10 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p10 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p10 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p10 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p10 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p10 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p10 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p10 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p10 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p10 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p10 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p10 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p10 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p10 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p10 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - scientific-ml-inverse-problems
+  declared_problem_ids:
+  - B2-024-p10
+  api_tokens:
+  - A.double
+  - T.clamp_min
+  - capstone_data.tikhonov_grid_predict
+  - capstone_data.val_rows
+  - estimates.float
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - sensors_xy.double
+  - source_xy.double
+  - strength.double
+  - top.values.sum
+  - torch.allclose
+  - torch.cat
+  - torch.eye
+  - torch.isclose
+  - torch.linalg.matrix_rank
+  - torch.linalg.solve
+  - torch.linalg.vector_norm
+  - torch.ones
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.topk
+  - u_small.tolist
+  - u_wrong.tolist
+  - val_x.double
+  - y.double
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p11.ipynb
+  kind: notebook
+  semantic_sha256: d693fe291502b223ad92a6f07a84c771260f2efd4f3b3764cd6ae35c2e0e8665
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11.ipynb :: B2-024 — Practice p11 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p11
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11.ipynb :: B2-024 — Practice p11 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p11
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11.ipynb :: B2-024 — Practice p11 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p11
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11.ipynb :: B2-024 — Practice p11 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p11
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  declared_problem_ids:
+  - B2-024-p11
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb
+  kind: notebook
+  semantic_sha256: ab5749aef721f39ee1028e662ad5ac0f061694e5de1eb4c0ed9851bbe1741df6
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p11 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p11 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p11 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p11 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p11 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p11 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p11 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p11 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p11 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p11 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p11 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p11 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p11 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p11 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  declared_problem_ids:
+  - B2-024-p11
+  api_tokens:
+  - F1.tolist
+  - RAW.clone
+  - bumps.sum
+  - canon_raw.tolist
+  - capstone_data.mixture_values
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - params.reshape
+  - path.is_file
+  - pathlib.Path
+  - theta.reshape
+  - torch.allclose
+  - torch.argsort
+  - torch.equal
+  - torch.exp
+  - torch.gather
+  - torch.set_num_threads
+  - torch.tensor
+  - wrong.tolist
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p12.ipynb
+  kind: notebook
+  semantic_sha256: 17078ab498cdc96b4fbecdefa808befeeabab8f99a42112ef7f55faff1010d03
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12.ipynb :: B2-024 — Practice p12 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p12
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12.ipynb :: B2-024 — Practice p12 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p12
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12.ipynb :: B2-024 — Practice p12 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p12
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12.ipynb :: B2-024 — Practice p12 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p12
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-experiment-design
+  declared_problem_ids:
+  - B2-024-p12
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb
+  kind: notebook
+  semantic_sha256: eda67a7df249f285901f6db281ad6d4539383fce3be9600958cc0da685db0d59
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution > Solution :: cell 5'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution > Solution :: cell 6'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 6
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p12 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p12 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-experiment-design
+  declared_problem_ids:
+  - B2-024-p12
+  api_tokens:
+  - EXPECTED.items
+  - F.mse_loss
+  - budget.wrap
+  - capstone_data.StepBudget
+  - capstone_data.position_error_per_example
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - configs.items
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - math.isclose
+  - math.isfinite
+  - math.sqrt
+  - net.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - real.items
+  - real.values
+  - scores.append
+  - torch.log
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.optim.SGD
+  - torch.set_num_threads
+  - torch.tensor
+  - toy.items
+  - tr.mean
+  - tr.std
+  - w.detach
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p13.ipynb
+  kind: notebook
+  semantic_sha256: 61546458a0855af9982dd8e245a8c221ea7909d87ebf4d1b41403f5c942ce42f
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p13.ipynb :: B2-024 — Practice p13 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p13
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p13.ipynb :: B2-024 — Practice p13 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p13
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - scientific-ml-inverse-problems
+  declared_problem_ids:
+  - B2-024-p13
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p13_solution.ipynb
+  kind: notebook
+  semantic_sha256: 10eb94598c34febbee37b3b329d8c11f0d13a00ea3b67b7a0da93a76d1521873
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p13_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p13 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p13 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p13_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p13 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p13 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p13_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p13 — Solution > Numeric sanity check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p13 — Solution
+    - Numeric sanity check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p13_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p13 — Solution > Numeric sanity check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p13 — Solution
+    - Numeric sanity check
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p13_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p13 — Solution > Numeric sanity check > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p13 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p13_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p13 — Solution > Numeric sanity check > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p13 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - scientific-ml-inverse-problems
+  declared_problem_ids:
+  - B2-024-p13
+  api_tokens:
+  - capstone_data.val_rows
+  - gaps.append
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.Generator
+  - torch.allclose
+  - torch.eye
+  - torch.linalg.eigvalsh
+  - torch.linalg.matrix_rank
+  - torch.linalg.solve
+  - torch.linalg.svd
+  - torch.randn
+  - torch.set_num_threads
+  - u.detach
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p14.ipynb
+  kind: notebook
+  semantic_sha256: f204b88095ae21ddd3c1c46f589f5f8c1e0a273eb4907677166a30dd8ef9c045
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p14.ipynb :: B2-024 — Practice p14 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p14
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p14.ipynb :: B2-024 — Practice p14 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p14
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  declared_problem_ids:
+  - B2-024-p14
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p14_solution.ipynb
+  kind: notebook
+  semantic_sha256: 602c3f84215eda18decbac0545e45c67679cf8267c5c8ab61c84d7cebb0ac99d
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p14_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p14 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p14 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p14_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p14 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p14 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p14_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p14 — Solution > Numeric sanity check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p14 — Solution
+    - Numeric sanity check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p14_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p14 — Solution > Numeric sanity check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p14 — Solution
+    - Numeric sanity check
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p14_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p14 — Solution > Numeric sanity check > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p14 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p14_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p14 — Solution > Numeric sanity check > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p14 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  declared_problem_ids:
+  - B2-024-p14
+  api_tokens:
+  - capstone_data.MIXTURE_X.double
+  - capstone_data.canonical_sort
+  - capstone_data.mixture_values
+  - capstone_data.train_rows
+  - counts.unique
+  - gaps.min
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - itertools.permutations
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - rule.all
+  - theta.reshape
+  - torch.argsort
+  - torch.equal
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.zeros
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p15.ipynb
+  kind: notebook
+  semantic_sha256: a6c8556f5bddf99df91ce4ff45ec35c24bee69d1c2a87f456f731e848093f4c2
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p15.ipynb :: B2-024 — Practice p15 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p15
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p15.ipynb :: B2-024 — Practice p15 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p15
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - B2-024-p15
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p15_solution.ipynb
+  kind: notebook
+  semantic_sha256: 562676b1618fddddad8559a1f1c772354d3ae3eac65e9912542c92fbaf952a7a
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p15_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p15 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p15 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p15_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p15 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p15 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p15_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p15 — Solution > Numeric sanity check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p15 — Solution
+    - Numeric sanity check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p15_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p15 — Solution > Numeric sanity check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p15 — Solution
+    - Numeric sanity check
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p15_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p15 — Solution > Numeric sanity check > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p15 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p15_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p15 — Solution > Numeric sanity check > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p15 — Solution
+    - Numeric sanity check
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - B2-024-p15
+  api_tokens:
+  - D_bar.var
+  - math.sqrt
+  - torch.Generator
+  - torch.randn
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb
+  kind: notebook
+  semantic_sha256: 3efe3e88b46fd094d57722c0644579a27b1dba15deab1209df0b3b3a6b4bc3c6
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb :: B2-024 — Practice p16 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p16
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb :: B2-024 — Practice p16 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p16
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb :: B2-024 — Practice p16 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p16
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb :: B2-024 — Practice p16 > Accelerator extension ::
+      cell 1'
+    heading_path:
+    - B2-024 — Practice p16
+    - Accelerator extension
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb :: B2-024 — Practice p16 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p16
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p16
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb
+  kind: notebook
+  semantic_sha256: 6bcf6154c7616238bf017618a153a199c7dfe0c6f97c848a50aaef4fb4724b22
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution > Solution :: cell 5'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    - Solution
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution > Accelerator extension :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    - Accelerator extension
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution > Accelerator extension > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    - Accelerator extension
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p16 — Solution > Accelerator extension > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p16 — Solution
+    - Accelerator extension
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p16
+  api_tokens:
+  - F.cross_entropy
+  - F.relu
+  - SEAM.add
+  - batch.items
+  - batch.to
+  - capstone_data.final_test_score
+  - capstone_data.split_of
+  - capstone_data.test_call_count
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - contextlib.nullcontext
+  - images.to
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - losses.append
+  - model.eval
+  - model.load_state_dict
+  - model.parameters
+  - model.register_forward_pre_hook
+  - model.state_dict
+  - model.train
+  - model2.eval
+  - model2.state_dict
+  - nn.Conv2d
+  - nn.Linear
+  - optimizer.load_state_dict
+  - optimizer.state_dict
+  - optimizer.step
+  - optimizer.zero_grad
+  - os.path.join
+  - path.is_file
+  - pathlib.Path
+  - self.conv1
+  - self.conv2
+  - self.head
+  - tempfile.TemporaryDirectory
+  - torch.autocast
+  - torch.cuda.get_rng_state_all
+  - torch.cuda.is_available
+  - torch.cuda.set_rng_state_all
+  - torch.device
+  - torch.equal
+  - torch.get_rng_state
+  - torch.load
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randint
+  - torch.save
+  - torch.set_num_threads
+  - torch.set_rng_state
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb
+  kind: notebook
+  semantic_sha256: d8e921c18b7a428df7feb0e151df6bbb0889420768dfb235f566d5acf9ad86d4
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb :: B2-024 — Practice p17 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p17
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb :: B2-024 — Practice p17 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p17
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb :: B2-024 — Practice p17 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p17
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb :: B2-024 — Practice p17 > Accelerator extension ::
+      cell 1'
+    heading_path:
+    - B2-024 — Practice p17
+    - Accelerator extension
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb :: B2-024 — Practice p17 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p17
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - B2-024-p17
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb
+  kind: notebook
+  semantic_sha256: 5c4bb877ebe5f9a3104d906be39fc702637d32db7445be2008f02ec7eca6f6c1
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution > Solution :: cell 5'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution > Accelerator extension :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    - Accelerator extension
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution > Accelerator extension > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    - Accelerator extension
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p17 — Solution > Accelerator extension > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p17 — Solution
+    - Accelerator extension
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - B2-024-p17
+  api_tokens:
+  - ABLATIONS.items
+  - F.cross_entropy
+  - F.softmax
+  - SEAM.extend
+  - capstone_data.ShapeCNN
+  - capstone_data.baseline_score
+  - capstone_data.final_test_score
+  - capstone_data.split_of
+  - capstone_data.test_call_count
+  - capstone_data.train_rows
+  - capstone_data.unlabelled_rows
+  - capstone_data.val_rows
+  - chosen.eval
+  - final_val.values
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - kept.append
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - model.eval
+  - model.parameters
+  - model.register_forward_pre_hook
+  - model.train
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - probs.argmax
+  - probs.max
+  - rounds.append
+  - self.cnn
+  - teacher.eval
+  - torch.bincount
+  - torch.cat
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.nonzero
+  - torch.optim.Adam
+  - torch.randn_like
+  - torch.set_num_threads
+  - torch.sort
+  - values.to
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p18.ipynb
+  kind: notebook
+  semantic_sha256: 37029319c326da57db7df3c40c248414b0db4dd63bac3cbefd2da99a6e7b3cb2
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18.ipynb :: B2-024 — Practice p18 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p18
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18.ipynb :: B2-024 — Practice p18 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p18
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18.ipynb :: B2-024 — Practice p18 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p18
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18.ipynb :: B2-024 — Practice p18 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p18
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - B2-024-p18
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb
+  kind: notebook
+  semantic_sha256: 96ce79f344803f162064c9735684ab7a5c8e89f7a541906f5a6eb5b735a2eed6
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Solution :: cell 5'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Solution :: cell 6'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 6
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Solution :: cell 7'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 7
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p18 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p18 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - B2-024-p18
+  api_tokens:
+  - F.cross_entropy
+  - F.softmax
+  - SEAM.extend
+  - VAL.items
+  - capstone_data.ShapeCNN
+  - capstone_data.baseline_score
+  - capstone_data.final_test_score
+  - capstone_data.split_of
+  - capstone_data.test_call_count
+  - capstone_data.train_rows
+  - capstone_data.unlabelled_rows
+  - capstone_data.val_rows
+  - centroids.clone
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - kept.append
+  - labelled_centroids.clone
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - members.any
+  - model.conv1
+  - model.eval
+  - model.parameters
+  - names.append
+  - opt.step
+  - opt.zero_grad
+  - optimizer.step
+  - optimizer.zero_grad
+  - p.requires_grad_
+  - path.is_file
+  - pathlib.Path
+  - probs.argmax
+  - probs.max
+  - self.cnn
+  - student.eval
+  - student.parameters
+  - student.train
+  - torch.bincount
+  - torch.cat
+  - torch.cdist
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.nonzero
+  - torch.optim.Adam
+  - torch.randn_like
+  - torch.set_num_threads
+  - torch.sort
+  - torch.stack
+  - torch.tensor
+  - values.to
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb
+  kind: notebook
+  semantic_sha256: c1215e0f6c9f202dbf0e60e57af846de0a5c3e7ef3ce50fe3fa7c977f56765da
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb :: B2-024 — Practice p19 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p19
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb :: B2-024 — Practice p19 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p19
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb :: B2-024 — Practice p19 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p19
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb :: B2-024 — Practice p19 > Accelerator extension ::
+      cell 1'
+    heading_path:
+    - B2-024 — Practice p19
+    - Accelerator extension
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb :: B2-024 — Practice p19 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p19
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - scientific-ml-inverse-problems
+  declared_problem_ids:
+  - B2-024-p19
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb
+  kind: notebook
+  semantic_sha256: 898d8ea7c1ed3ce74370161d6c5c6a2a7dea3fde43a28962c7fef3e4bd2cc3ab
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution > Solution :: cell 5'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution > Accelerator extension :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    - Accelerator extension
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution > Accelerator extension > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    - Accelerator extension
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p19 — Solution > Accelerator extension > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p19 — Solution
+    - Accelerator extension
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - scientific-ml-inverse-problems
+  declared_problem_ids:
+  - B2-024-p19
+  api_tokens:
+  - F.mse_loss
+  - SEAM.update
+  - capstone_data.baseline_score
+  - capstone_data.final_test_score
+  - capstone_data.position_error_per_example
+  - capstone_data.split_of
+  - capstone_data.test_call_count
+  - capstone_data.tikhonov_grid_predict
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - logm.mean
+  - logm.std
+  - loss.backward
+  - loss.item
+  - losses.append
+  - magnitudes.double
+  - model.eval
+  - model.parameters
+  - model.register_forward_pre_hook
+  - model.train
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - self.net
+  - self.register_buffer
+  - sensors_xy.double
+  - source_xy.double
+  - strength.double
+  - torch.linalg.vector_norm
+  - torch.log
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb
+  kind: notebook
+  semantic_sha256: b4c62ce01acb2e02dd1a43e7d5fcbed89642b414dbe9adec4045c8088e5408c4
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb :: B2-024 — Practice p20 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p20
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb :: B2-024 — Practice p20 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p20
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb :: B2-024 — Practice p20 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p20
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb :: B2-024 — Practice p20 > Accelerator extension ::
+      cell 1'
+    heading_path:
+    - B2-024 — Practice p20
+    - Accelerator extension
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb :: B2-024 — Practice p20 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p20
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  declared_problem_ids:
+  - B2-024-p20
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb
+  kind: notebook
+  semantic_sha256: b949892b5028f1e807353c61f6b7ece54d182df929d7713dc7020d8371f107c7
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution > Solution :: cell 5'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution > Accelerator extension :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    - Accelerator extension
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution > Accelerator extension > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    - Accelerator extension
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p20 — Solution > Accelerator extension > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p20 — Solution
+    - Accelerator extension
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  declared_problem_ids:
+  - B2-024-p20
+  api_tokens:
+  - F.mse_loss
+  - SEAM.update
+  - VAL.items
+  - X.double
+  - capstone_data.baseline_score
+  - capstone_data.final_test_score
+  - capstone_data.mixture_baseline_init
+  - capstone_data.mixture_ls_fit
+  - capstone_data.perm_invariant_error_per_example
+  - capstone_data.split_of
+  - capstone_data.test_call_count
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - init_params.detach
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - losses.append
+  - model.eval
+  - model.parameters
+  - model.register_forward_pre_hook
+  - model.train
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - opt.step
+  - opt.zero_grad
+  - optimizer.step
+  - optimizer.zero_grad
+  - params.reshape
+  - path.is_file
+  - pathlib.Path
+  - self.net
+  - self.register_buffer
+  - torch.argsort
+  - torch.exp
+  - torch.gather
+  - torch.log
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.set_num_threads
+  - torch.stack
+  - train_values.mean
+  - train_values.std
+  - val_pipe.reshape
+  - values.detach
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p21.ipynb
+  kind: notebook
+  semantic_sha256: f6caa49fbe684daf85a3a3ac0b75b1d5402bfce0d16aa9bf3b4b5967d04bb609
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21.ipynb :: B2-024 — Practice p21 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p21
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21.ipynb :: B2-024 — Practice p21 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p21
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21.ipynb :: B2-024 — Practice p21 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p21
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21.ipynb :: B2-024 — Practice p21 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p21
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - B2-024-p21
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb
+  kind: notebook
+  semantic_sha256: db773748399674b916ac2edcf2a0c311103bbf5e507b705162ed6f6b16ec600d
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Solution :: cell 5'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Solution
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Solution :: cell 6'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Solution
+    cell_ordinal: 6
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Solution :: cell 7'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Solution
+    cell_ordinal: 7
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p21 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p21 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - B2-024-p21
+  api_tokens:
+  - ABL_TABLE.items
+  - ABL_TABLE.values
+  - CI.items
+  - CI.values
+  - F.mse_loss
+  - ROBUST.items
+  - SEAM.extend
+  - capstone_data.StepBudget
+  - capstone_data.baseline_score
+  - capstone_data.final_test_score
+  - capstone_data.position_error_per_example
+  - capstone_data.split_of
+  - capstone_data.test_call_count
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - err.mean
+  - feats.mean
+  - feats.std
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - math.sqrt
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - p.numel
+  - path.is_file
+  - pathlib.Path
+  - per.mean
+  - reg.predict
+  - report.count
+  - self._features
+  - self.budget.wrap
+  - self.net
+  - self.net.eval
+  - self.net.parameters
+  - self.net.train
+  - torch.Generator
+  - torch.log
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.quantile
+  - torch.randint
+  - torch.randn
+  - torch.set_num_threads
+  - torch.stack
+  - torch.tensor
+  - torch.zeros
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p22.ipynb
+  kind: notebook
+  semantic_sha256: 7aeae8e7e64a012dd6fe9229aaa98458b91e6ed1960797397a9e361eeea69f62
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22.ipynb :: B2-024 — Practice p22 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p22
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22.ipynb :: B2-024 — Practice p22 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p22
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22.ipynb :: B2-024 — Practice p22 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p22
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22.ipynb :: B2-024 — Practice p22 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p22
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-experiment-design
+  declared_problem_ids:
+  - B2-024-p22
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb
+  kind: notebook
+  semantic_sha256: 05053bea4ab0c48381de31153a8562245c040ec68671a5cb49fafdb0c653702b
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Solution :: cell 5'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Solution
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Solution :: cell 6'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Solution
+    cell_ordinal: 6
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Solution :: cell 7'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Solution
+    cell_ordinal: 7
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p22 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p22 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-experiment-design
+  declared_problem_ids:
+  - B2-024-p22
+  api_tokens:
+  - CONFIGS.items
+  - F.mse_loss
+  - LOG.append
+  - SEAM.extend
+  - by.items
+  - by.setdefault
+  - capstone_data.StepBudget
+  - capstone_data.baseline_score
+  - capstone_data.final_test_score
+  - capstone_data.position_error_per_example
+  - capstone_data.split_of
+  - capstone_data.test_call_count
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - f.mean
+  - f.std
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - means.items
+  - model.predict
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - opt.step
+  - opt.zero_grad
+  - order.index
+  - path.is_file
+  - pathlib.Path
+  - self._feats
+  - self.budget.wrap
+  - self.net
+  - self.net.eval
+  - self.net.parameters
+  - self.net.train
+  - time.perf_counter
+  - torch.log
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randn_like
+  - torch.set_num_threads
+  - v.values
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p23.ipynb
+  kind: notebook
+  semantic_sha256: f89e06f1bae835f816f71823a682dea44c3ec107838544b18811987d643e3ebf
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p23.ipynb :: B2-024 — Practice p23 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p23
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p23.ipynb :: B2-024 — Practice p23 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p23
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p23
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p23_solution.ipynb
+  kind: notebook
+  semantic_sha256: aae382a7fe12af15f063c35fe6d574e6edecb42a7de5a556eb071c47b3b12c88
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p23_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p23 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p23 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p23_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p23 — Solution > Solution > (f) Submission checklist :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p23 — Solution
+    - Solution
+    - (f) Submission checklist
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p23_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p23 — Solution > Arithmetic check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p23 — Solution
+    - Arithmetic check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p23_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p23 — Solution > Arithmetic check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p23 — Solution
+    - Arithmetic check
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p23_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p23 — Solution > Arithmetic check > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p23 — Solution
+    - Arithmetic check
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p23_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p23 — Solution > Arithmetic check > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p23 — Solution
+    - Arithmetic check
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  declared_problem_ids:
+  - B2-024-p23
+  api_tokens:
+  - split.values
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p24.ipynb
+  kind: notebook
+  semantic_sha256: e136e51afff8cd7401e84bd662ff0bf67921dc954d9b4385879c14d40ec362d0
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24.ipynb :: B2-024 — Practice p24 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p24
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24.ipynb :: B2-024 — Practice p24 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p24
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24.ipynb :: B2-024 — Practice p24 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p24
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24.ipynb :: B2-024 — Practice p24 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p24
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - B2-024-p24
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb
+  kind: notebook
+  semantic_sha256: 5882429412c22f5982dc22bb2738d0365851285778f349cccf42176673f7166c
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p24 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p24 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p24 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p24 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p24 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p24 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p24 — Solution > Solution > (a) Per-seed statistics and which differences are real :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p24 — Solution
+    - Solution
+    - (a) Per-seed statistics and which differences are real
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p24 — Solution > Solution > (a) Per-seed statistics and which differences are real :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p24 — Solution
+    - Solution
+    - (a) Per-seed statistics and which differences are real
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p24 — Solution > Solution > (e) Hidden-test discipline :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p24 — Solution
+    - Solution
+    - (e) Hidden-test discipline
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p24 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p24 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p24 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p24 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - B2-024-p24
+  api_tokens:
+  - DIFFS.items
+  - TABLE.items
+  - math.sqrt
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p25.ipynb
+  kind: notebook
+  semantic_sha256: d4534b5e2ade4df3cb007372611f84eb1c3cdb49ee4bcf2dc060abced4ee8ff2
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p25.ipynb :: B2-024 — Practice p25 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p25
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p25.ipynb :: B2-024 — Practice p25 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p25
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - B2-024-p25
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p25_solution.ipynb
+  kind: notebook
+  semantic_sha256: f7849a3ccbb5d9ee574c2a99aff66dd5886476a534e5f50c10c9307fee0ebd02
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p25_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p25 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p25 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p25_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p25 — Solution > Solution > (e) Verification without pool labels :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p25 — Solution
+    - Solution
+    - (e) Verification without pool labels
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p25_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p25 — Solution > Numeric support :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p25 — Solution
+    - Numeric support
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p25_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p25 — Solution > Numeric support :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p25 — Solution
+    - Numeric support
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p25_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p25 — Solution > Numeric support > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p25 — Solution
+    - Numeric support
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p25_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p25 — Solution > Numeric support > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p25 — Solution
+    - Numeric support
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - B2-024-p25
+  api_tokens:
+  - admitted.items
+  - admitted.values
+  - imbalance.items
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p26.ipynb
+  kind: notebook
+  semantic_sha256: 5b3661dc00ff6334337a08776876c1406625a54016b072dfcf1ea6099c64f543
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26.ipynb :: B2-024 — Practice p26 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p26
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26.ipynb :: B2-024 — Practice p26 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p26
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26.ipynb :: B2-024 — Practice p26 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p26
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26.ipynb :: B2-024 — Practice p26 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p26
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - scientific-ml-inverse-problems
+  declared_problem_ids:
+  - B2-024-p26
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb
+  kind: notebook
+  semantic_sha256: 1a34cf5eaf73a4ed8060583f34348f9f2974048f84fb4e22f2fafc337e973935
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p26 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p26 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p26 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p26 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p26 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p26 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p26 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p26 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p26 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p26 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p26 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p26 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p26 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p26 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p26 — Solution > Writeup :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p26 — Solution
+    - Writeup
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p26 — Solution > Writeup > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p26 — Solution
+    - Writeup
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p26 — Solution > Writeup > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p26 — Solution
+    - Writeup
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - scientific-ml-inverse-problems
+  declared_problem_ids:
+  - B2-024-p26
+  api_tokens:
+  - F.mse_loss
+  - SEAM.extend
+  - VAL.items
+  - VAL.values
+  - approach.initial
+  - approach.predict
+  - budget.elapsed
+  - budget.wrap
+  - capstone_data.StepBudget
+  - capstone_data.baseline_score
+  - capstone_data.final_test_score
+  - capstone_data.position_error_per_example
+  - capstone_data.split_of
+  - capstone_data.test_call_count
+  - capstone_data.tikhonov_grid_predict
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - log_m.mean
+  - log_m.std
+  - log_q.detach
+  - magnitudes.double
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - s.detach
+  - self.budget.wrap
+  - self.initial
+  - self.net
+  - self.net.eval
+  - self.net.parameters
+  - torch.cat
+  - torch.exp
+  - torch.log
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.set_num_threads
+  - torch.tensor
+  - x.double
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p27.ipynb
+  kind: notebook
+  semantic_sha256: d87ab2d9344a78bc174964c2571a041e1c310081d5d2ec600ef70622beb10106
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27.ipynb :: B2-024 — Practice p27 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p27
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27.ipynb :: B2-024 — Practice p27 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p27
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27.ipynb :: B2-024 — Practice p27 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p27
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27.ipynb :: B2-024 — Practice p27 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p27
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  declared_problem_ids:
+  - B2-024-p27
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb
+  kind: notebook
+  semantic_sha256: 26be37544af2c068df286d75d888ba51ddf2e2fcf57d1c6645ad78acffce46d7
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p27 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p27 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p27 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p27 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p27 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p27 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p27 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p27 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p27 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p27 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p27 — Solution > Solution :: cell 3'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p27 — Solution
+    - Solution
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p27 — Solution > Solution :: cell 4'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p27 — Solution
+    - Solution
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p27 — Solution > Writeup :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p27 — Solution
+    - Writeup
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p27 — Solution > Writeup > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p27 — Solution
+    - Writeup
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p27 — Solution > Writeup > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p27 — Solution
+    - Writeup
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  declared_problem_ids:
+  - B2-024-p27
+  api_tokens:
+  - F.mse_loss
+  - SEAM.extend
+  - VAL.items
+  - amortized.initial
+  - amortized.predict
+  - approach.initial
+  - approach.predict
+  - budget.elapsed
+  - capstone_data.StepBudget
+  - capstone_data.baseline_score
+  - capstone_data.canonical_sort
+  - capstone_data.final_test_score
+  - capstone_data.mixture_baseline_init
+  - capstone_data.mixture_ls_fit
+  - capstone_data.perm_invariant_error_per_example
+  - capstone_data.split_of
+  - capstone_data.test_call_count
+  - capstone_data.train_rows
+  - capstone_data.val_rows
+  - e.max
+  - e.mean
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - means.values
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - picks.append
+  - score.argmax
+  - score.masked_fill
+  - self.budget.wrap
+  - self.initial
+  - self.net
+  - self.net.parameters
+  - torch.arange
+  - torch.cat
+  - torch.full
+  - torch.full_like
+  - torch.gather
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.set_num_threads
+  - torch.stack
+  - torch.where
+  - train_x.mean
+  - train_x.std
+  - train_y.reshape
+  - v.mean
+  - val_pred.reshape
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p28.ipynb
+  kind: notebook
+  semantic_sha256: b89b4067a85a52168b559e42504df7ce3a14d36502c05e00a0fc18dd32197215
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28.ipynb :: B2-024 — Practice p28 > Task :: cell 1'
+    heading_path:
+    - B2-024 — Practice p28
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28.ipynb :: B2-024 — Practice p28 > Task :: cell 2'
+    heading_path:
+    - B2-024 — Practice p28
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28.ipynb :: B2-024 — Practice p28 > Task :: cell 3'
+    heading_path:
+    - B2-024 — Practice p28
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28.ipynb :: B2-024 — Practice p28 > Your response :: cell 1'
+    heading_path:
+    - B2-024 — Practice p28
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - B2-024-p28
+  api_tokens: []
+- path: units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb
+  kind: notebook
+  semantic_sha256: a4d6d73d66995e5f262f1e8149fd5ba0c1d43d67c28f9ff34fbc775d94b1e3b0
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p28 — Solution :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p28 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p28 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p28 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p28 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p28 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p28 — Solution > Solution > (B) Seed cherry-picking :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p28 — Solution
+    - Solution
+    - (B) Seed cherry-picking
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p28 — Solution > Solution > (B) Seed cherry-picking :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p28 — Solution
+    - Solution
+    - (B) Seed cherry-picking
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p28 — Solution > Solution > (C) Invalid interval :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p28 — Solution
+    - Solution
+    - (C) Invalid interval
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p28 — Solution > Solution > (C) Invalid interval :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p28 — Solution
+    - Solution
+    - (C) Invalid interval
+    cell_ordinal: 2
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p28 — Solution > Solution > (E) Corrected report :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p28 — Solution
+    - Solution
+    - (E) Corrected report
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p28 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p28 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p28 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-024-gpu-scientific-ml-capstone — Practice p28 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - B2-024-p28
+  api_tokens:
+  - math.sqrt
+  - torch.tensor
+- path: units/B2-024-gpu-scientific-ml-capstone/review.ipynb
+  kind: notebook
+  semantic_sha256: 28843d54a26fa5cbaef207617d71d4da906f7001649146bd91741f90aec1d221
+  anchors:
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/review.ipynb :: B2-024 — Review and Self-Quiz :: cell 1'
+    heading_path:
+    - B2-024 — Review and Self-Quiz
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/review.ipynb :: B2-024 — Review and Self-Quiz > Formula and protocol
+      sheet :: cell 1'
+    heading_path:
+    - B2-024 — Review and Self-Quiz
+    - Formula and protocol sheet
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/review.ipynb :: B2-024 — Review and Self-Quiz > Concept retrieval table
+      :: cell 1'
+    heading_path:
+    - B2-024 — Review and Self-Quiz
+    - Concept retrieval table
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/review.ipynb :: B2-024 — Review and Self-Quiz > Self-quiz :: cell 1'
+    heading_path:
+    - B2-024 — Review and Self-Quiz
+    - Self-quiz
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/review.ipynb :: B2-024 — Review and Self-Quiz > Common pitfalls, Exam
+      connections, and forward boundary :: cell 1'
+    heading_path:
+    - B2-024 — Review and Self-Quiz
+    - Common pitfalls, Exam connections, and forward boundary
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/review.ipynb :: B2-024 — Review and Self-Quiz > Collected answers ::
+      cell 1'
+    heading_path:
+    - B2-024 — Review and Self-Quiz
+    - Collected answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - gpu-colab-l4-workflow
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  - semi-supervised-pseudo-labeling
   declared_problem_ids: []
   api_tokens: []

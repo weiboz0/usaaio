@@ -11,7 +11,7 @@ import pytest
 import yaml
 
 from tools.checks import schedule as schedule_checker
-from tools.model import load_roadmap, load_syllabus
+from tools.model import load_roadmap, load_syllabus, load_syllabus_contract
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOK2_ROOT = ROOT / "book2"
@@ -41,6 +41,69 @@ OWNED_CONCEPTS = [
     "scientific-ml-inverse-problems",
     "mixture-parameter-regression",
 ]
+CONCEPT_PREREQUISITES = [
+    f"book1:{concept}"
+    for concept in (
+        "numpy-arrays", "broadcasting", "random-seeding", "matrix-multiplication",
+        "invertibility-via-rank", "gradient", "sum-of-squares-gradients", "expectation",
+        "variance", "variance-of-sums", "independence", "covariance", "gaussian-distribution",
+        "sampling-simulation", "train-test-split", "overfitting", "accuracy-precision-recall",
+        "class-imbalance", "linear-regression", "mse-loss", "l2-regularization",
+        "gradient-descent", "learning-rate", "stochastic-gd", "relu-activation",
+        "mlp-architecture", "torch-tensors", "nn-module", "requires-grad", "parameter-counting",
+        "convolution", "cnn-training", "hidden-test-protocol", "metric-driven-iteration",
+        "writeup-quality", "colab-coding-submission", "cpu-and-gpu-round-boundary", "softmax",
+        "cross-entropy-loss", "torch-optimizers", "autograd-training", "trained-mlp", "k-means",
+        "lloyd-algorithm",
+    )
+]
+# Book 1 units and concepts Plan 029 added to the Book 2 imports allowlist.
+IMPORT_ADDITIONS_UNITS = ["C3-gradient-descent", "C10-competition-craft", "C12-classical-models"]
+IMPORT_ADDITIONS_CONCEPTS = [
+    "invertibility-via-rank", "sum-of-squares-gradients", "overfitting",
+    "accuracy-precision-recall", "class-imbalance", "linear-regression", "l2-regularization",
+    "gradient-descent", "learning-rate", "stochastic-gd", "parameter-counting",
+    "hidden-test-protocol", "metric-driven-iteration", "writeup-quality",
+    "colab-coding-submission", "cpu-and-gpu-round-boundary", "trained-mlp", "k-means",
+    "lloyd-algorithm",
+]
+CONCEPT_SESSIONS = {
+    "gpu-colab-l4-workflow": 1,
+    "open-ended-experiment-design": 2,
+    "open-ended-model-evaluation": 3,
+    "semi-supervised-pseudo-labeling": 4,
+    "scientific-ml-inverse-problems": 5,
+    "mixture-parameter-regression": 6,
+}
+# Plan 029 per-row primary practices, in modality order.
+PRIMARY_PRACTICES = {
+    "gpu-colab-l4-workflow": {
+        "implementation": [6, 7], "model-training": [16], "competition-workflow": [23],
+    },
+    "semi-supervised-pseudo-labeling": {
+        "theory": [4], "implementation": [9], "model-training": [17, 18],
+        "competition-workflow": [25],
+    },
+    "scientific-ml-inverse-problems": {
+        "theory": [13], "implementation": [10], "model-training": [19],
+        "competition-workflow": [26],
+    },
+    "open-ended-experiment-design": {"model-training": [22, 12], "competition-workflow": [24]},
+    "open-ended-model-evaluation": {"model-training": [21], "competition-workflow": [28, 24]},
+    "mixture-parameter-regression": {
+        "theory": [14, 5], "implementation": [11], "model-training": [20],
+        "competition-workflow": [27],
+    },
+}
+# Plan 029 direct-practice table (concept tags per practice).
+DIRECT_PRACTICES = {
+    "gpu-colab-l4-workflow": [1, 2, 6, 7, 16, 23],
+    "open-ended-experiment-design": [3, 12, 22, 24],
+    "open-ended-model-evaluation": [8, 15, 21, 24, 28],
+    "semi-supervised-pseudo-labeling": [4, 9, 17, 18, 25],
+    "scientific-ml-inverse-problems": [10, 13, 19, 26],
+    "mixture-parameter-regression": [5, 11, 14, 20, 27],
+}
 KNOWLEDGE_POINTS = [
     "gpu-colab-l4-workflow",
     "semi-supervised-pseudo-labeling",
@@ -183,14 +246,14 @@ def test_ledger_and_schedule_minutes_reconcile() -> None:
     assert BASELINE_MINUTES + sum(WEEK_MINUTES) == TARGET_MINUTES
 
 
-def test_b2_024_planned_row_has_exact_registration_contract() -> None:
+def test_b2_024_planned_row_is_retained_but_no_longer_provisional() -> None:
     raw = _coverage_map()
     matches = [row for row in raw["planned_units"] if row["id"] == UNIT_ID]
 
     assert len(matches) == 1
     planned = matches[0]
     assert planned["prerequisites"] == PREREQUISITES
-    assert planned["provisional_concepts"] == OWNED_CONCEPTS
+    assert planned["provisional_concepts"] == []
     assert planned["knowledge_points"] == KNOWLEDGE_POINTS
     assert planned["estimated_hours"] == {"min": 30, "max": 40}
     assert planned["schedule_action"] == "extend"
@@ -199,40 +262,137 @@ def test_b2_024_planned_row_has_exact_registration_contract() -> None:
         unit for unit in load_roadmap(BOOK2_ROOT).planned_units if unit.id == UNIT_ID
     )
     assert loaded.prerequisites == PREREQUISITES
-    assert loaded.provisional_concepts == OWNED_CONCEPTS
+    assert loaded.provisional_concepts == []
 
 
 def test_b2_024_double_length_standard_is_six_sessions_and_28_practices() -> None:
     standards = (ROOT / "docs" / "unit-standards.md").read_text(encoding="utf-8")
     assert "use 4–6 sessions" in standards
     assert "double-length units: 24–30" in standards
+    assert "B2-023, and B2-024) use 4–6 sessions" in standards
+    assert "B2-024-gpu-scientific-ml-capstone" in standards
+    assert (
+        "The B2-024 unit uses six 90-minute teaching sessions and exactly 28 practices."
+        in standards
+    )
     assert 4 <= SESSIONS <= 6
     assert 24 <= len(LEDGER) <= 30
+    manifest = _load_yaml(BOOK2_ROOT / "units" / UNIT_ID / "manifest.yaml")
+    assert manifest["length"] == "double"
+    assert manifest["estimated_minutes"]["lesson_sessions"] == [SESSION_MINUTES] * SESSIONS
+    assert manifest["estimated_minutes"]["practice"] == PRACTICE_MINUTES
+    assert manifest["estimated_minutes"]["review"] == REVIEW_MINUTES
+    assert manifest["bridge_diagnostic"]["minutes"] == BRIDGE_MINUTES
+    assert len(manifest["practice"]) == len(LEDGER)
+    for number, (pset, ptype, difficulty, minutes, policy) in LEDGER.items():
+        problem = manifest["practice"][number - 1]
+        assert problem["id"] == f"B2-024-p{number:02}"
+        assert (problem["set"], problem["type"], problem["difficulty"], problem["minutes"]) == (
+            pset,
+            ptype,
+            difficulty,
+            minutes,
+        )
+        assert problem["compute"] == {"policy": policy, "seed": 20261022}
 
 
-def test_b2_024_coverage_stays_missing_until_live_sources_exist() -> None:
+def test_b2_024_syllabus_registers_exact_live_owner_and_import_contract() -> None:
+    syllabus = load_syllabus(BOOK2_ROOT)
+    unit = syllabus.units[UNIT_ID]
+
+    assert unit.prereqs == PREREQUISITES
+    assert unit.concept_prerequisites == CONCEPT_PREREQUISITES
+    assert unit.teaches == OWNED_CONCEPTS
+    assert unit.length == "double"
+    contract = load_syllabus_contract(BOOK2_ROOT)
+    book1_units = [p.removeprefix("book1:") for p in PREREQUISITES if p.startswith("book1:")]
+    assert set(book1_units) <= set(contract["imports"]["units"])
+    assert set(IMPORT_ADDITIONS_UNITS) <= set(contract["imports"]["units"])
+    book1_concepts = [c.removeprefix("book1:") for c in CONCEPT_PREREQUISITES]
+    assert set(book1_concepts) <= set(contract["imports"]["concepts"])
+    assert set(IMPORT_ADDITIONS_CONCEPTS) <= set(contract["imports"]["concepts"])
+    assert "book1:tensor-shape-tracing" not in CONCEPT_PREREQUISITES
+    assert "capstone" in contract["clusters"]
+    assert {concept: syllabus.concepts[concept] for concept in OWNED_CONCEPTS} == {
+        concept: "capstone" for concept in OWNED_CONCEPTS
+    }
+
+
+def test_b2_024_promotes_exact_six_coverage_rows_with_live_primary_evidence() -> None:
     raw = _coverage_map()
     rows = {row["id"]: row for row in raw["knowledge_points"]}
 
     for concept, modalities in ROW_MODALITIES.items():
         row = rows[concept]
-        assert row["coverage"] == "missing"
+        assert row["coverage"] == "covered"
         assert row["destination"] == UNIT_ID
-        assert row["shipped_concepts"] == []
+        assert row["shipped_concepts"] == [concept]
+        assert row["deficits"] == {"modalities_missing": []}
         assert list(row["evidence_by_modality"]) == modalities
-        assert row["deficits"] == {"modalities_missing": modalities}
-        assert all(
-            evidence == {"lesson_anchors": [], "practices": [], "assessments": []}
-            for evidence in row["evidence_by_modality"].values()
-        )
+        for modality, evidence in row["evidence_by_modality"].items():
+            assert evidence["lesson_anchors"], (concept, modality)
+            assert [item["id"] for item in evidence["practices"]] == [
+                f"B2-024-p{number:02}" for number in PRIMARY_PRACTICES[concept][modality]
+            ]
+            assert all(item["role"] == "primary" for item in evidence["lesson_anchors"])
+            assert all(item["role"] == "primary" for item in evidence["practices"])
+            assert all(
+                item["path"].startswith(f"units/{UNIT_ID}/lessons/")
+                for item in evidence["lesson_anchors"]
+            )
     # The mixture row keeps its roadmap dependency on B2-022's multivariate Gaussian.
     assert "multivariate-gaussian" in rows["mixture-parameter-regression"]["depends_on"]
+    assert all(row["coverage"] == "covered" for row in raw["knowledge_points"]
+               if row["destination"] == UNIT_ID)
 
-    assert UNIT_ID not in load_syllabus(BOOK2_ROOT).units
-    assert not (BOOK2_ROOT / "units" / UNIT_ID).exists()
-    assert UNIT_ID not in (
-        BOOK2_ROOT / "curriculum" / "course-schedule.yaml"
-    ).read_text(encoding="utf-8")
+
+def test_b2_024_manifest_concept_sessions_and_claims_match_live_ownership() -> None:
+    manifest = _load_yaml(BOOK2_ROOT / "units" / UNIT_ID / "manifest.yaml")
+    assert manifest["concepts_taught"] == OWNED_CONCEPTS
+    assert manifest["concept_sessions"] == CONCEPT_SESSIONS
+    assert manifest["concept_prerequisites"] == CONCEPT_PREREQUISITES
+    assert manifest["concepts_used"] == CONCEPT_PREREQUISITES
+    assert manifest["prereq_units"] == PREREQUISITES
+    claims = {claim["knowledge_point"]: claim for claim in manifest["coverage_claims"]}
+    assert list(claims) == OWNED_CONCEPTS
+    assert {kp: claim["first_session"] for kp, claim in claims.items()} == CONCEPT_SESSIONS
+    rows = {row["id"]: row for row in _coverage_map()["knowledge_points"]}
+    # Same-unit dependencies: every claim strictly follows the claims it depends on.
+    for kp, claim in claims.items():
+        assert claim["evidence_by_modality"] == rows[kp]["evidence_by_modality"]
+        for dependency in rows[kp]["depends_on"]:
+            if dependency in claims:
+                assert claim["first_session"] > claims[dependency]["first_session"], (kp, dependency)
+    tags = {
+        concept: [
+            int(problem["id"][-2:])
+            for problem in manifest["practice"]
+            if concept in problem["concepts"]
+        ]
+        for concept in OWNED_CONCEPTS
+    }
+    assert tags == DIRECT_PRACTICES
+
+
+def test_b2_024_live_schedule_appends_exact_seven_week_ledger() -> None:
+    raw = _load_yaml(BOOK2_ROOT / "curriculum" / "course-schedule.yaml")
+    assert raw["total_book_weeks"] == TARGET_WEEKS
+    assert raw["total_minutes"] == TARGET_MINUTES
+    assert raw["final_assessment"]["after_book_week"] == TARGET_WEEKS
+    weeks = raw["weeks"][BASELINE_WEEKS:]
+    assert [week["book_week"] for week in weeks] == list(range(31, 38))
+    assert [week["global_week"] for week in weeks] == list(range(71, 78))
+    assert [
+        sum(allocation["minutes"] for allocation in week["allocations"]) for week in weeks
+    ] == list(WEEK_MINUTES)
+    assert [
+        tuple(allocation["problem_ids"])
+        for week in weeks
+        for allocation in week["allocations"]
+        if allocation["kind"] == "practice"
+    ] == list(WEEK_PROBLEMS)
+    report = schedule_checker.check_schedule(BOOK2_ROOT, expected_book_number=2)
+    assert report.ok, report.errors
 
 
 def _replace_syllabus_contract(path: Path, raw: dict[str, Any]) -> None:
