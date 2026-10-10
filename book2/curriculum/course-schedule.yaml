@@ -2,12 +2,12 @@ schedule_version: 1
 book: 2
 status: live
 starts_after_global_week: 40
-total_book_weeks: 12
-total_minutes: 3320
+total_book_weeks: 18
+total_minutes: 4970
 final_assessment:
   kind: future-r2-mock
   status: planned
-  after_book_week: 12
+  after_book_week: 18
 weeks:
   - book_week: 1
     global_week: 41
@@ -147,5 +147,75 @@ weeks:
     allocations:
       - kind: review
         unit: B2-020-language-transformers
+        chunk: 1
+        minutes: 60
+  - book_week: 13
+    global_week: 53
+    allocations:
+      - kind: bridge-diagnostic
+        unit: B2-021-cross-modal-transformers-vision
+        minutes: 30
+      - kind: lesson-session
+        unit: B2-021-cross-modal-transformers-vision
+        session: 1
+        minutes: 90
+      - kind: practice
+        unit: B2-021-cross-modal-transformers-vision
+        chunk: 1
+        minutes: 135
+        problem_ids: [B2-021-p01, B2-021-p02, B2-021-p06, B2-021-p13]
+  - book_week: 14
+    global_week: 54
+    allocations:
+      - kind: lesson-session
+        unit: B2-021-cross-modal-transformers-vision
+        session: 2
+        minutes: 90
+      - kind: practice
+        unit: B2-021-cross-modal-transformers-vision
+        chunk: 2
+        minutes: 185
+        problem_ids: [B2-021-p03, B2-021-p04, B2-021-p07, B2-021-p08, B2-021-p14]
+  - book_week: 15
+    global_week: 55
+    allocations:
+      - kind: lesson-session
+        unit: B2-021-cross-modal-transformers-vision
+        session: 3
+        minutes: 90
+      - kind: practice
+        unit: B2-021-cross-modal-transformers-vision
+        chunk: 3
+        minutes: 280
+        problem_ids: [B2-021-p05, B2-021-p09, B2-021-p10, B2-021-p11, B2-021-p15, B2-021-p17]
+  - book_week: 16
+    global_week: 56
+    allocations:
+      - kind: lesson-session
+        unit: B2-021-cross-modal-transformers-vision
+        session: 4
+        minutes: 90
+      - kind: practice
+        unit: B2-021-cross-modal-transformers-vision
+        chunk: 4
+        minutes: 225
+        problem_ids: [B2-021-p12, B2-021-p16, B2-021-p18, B2-021-p20]
+  - book_week: 17
+    global_week: 57
+    allocations:
+      - kind: lesson-session
+        unit: B2-021-cross-modal-transformers-vision
+        session: 5
+        minutes: 90
+      - kind: practice
+        unit: B2-021-cross-modal-transformers-vision
+        chunk: 5
+        minutes: 285
+        problem_ids: [B2-021-p19, B2-021-p21, B2-021-p22, B2-021-p23, B2-021-p24]
+  - book_week: 18
+    global_week: 58
+    allocations:
+      - kind: review
+        unit: B2-021-cross-modal-transformers-vision
         chunk: 1
         minutes: 60

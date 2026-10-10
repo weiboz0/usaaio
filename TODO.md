@@ -21,6 +21,7 @@
 - [x] 018 — R1 classical-model breadth (follows Plan 017; user-authorized unavailable-Opus waiver)
 - [x] 019 — atomic two-book roots and the first Round 2 attention unit (merged as PR #22)
 - [x] 020 — Round 2 language Transformers (B2-020, merged as PR #24)
+- [x] 021 — Round 2 cross-modal Transformers and advanced vision (B2-021)
 - [x] 022 — C12 p20 K-means near-tie erratum (deterministic lowest-seed rule)
 - [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
@@ -61,4 +62,5 @@
       `scripts/verify-register.py` — which the gate leaned on heavily and which was edited in
       four rounds — is unlinted. Plan 014 found and fixed a SIM102 there by running ruff wider
       by hand; nothing in CI would have caught it.
+- [ ] **Make the Plan 023 Plan-022 blob witness reachability-aware.** `test_plan019_cutover_ignores_exact_plan022_three_blob_worktree_change` checks that pre-squash commit `d653fcb` exists in the source repo but then needs it reachable in a local clone; it fails once the merged branch ref is deleted. It is kept alive by the local ref `archive/plan-022-pre-squash` until the test skips on unreachable commits.
 - [ ] `book1/mocktests/r1-002` / `r1-003` via the Book 1 blueprint's arc rotation.

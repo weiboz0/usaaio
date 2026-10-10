@@ -13,21 +13,21 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 1093 |
+| Unit notebooks | 1149 |
 | Mock notebooks | 10 |
-| Unit practices | 485 |
-| Total inventoried notebooks | 1103 |
+| Unit practices | 509 |
+| Total inventoried notebooks | 1159 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
-| Coverage: covered | 74 |
-| Coverage: missing | 18 |
+| Coverage: covered | 78 |
+| Coverage: missing | 14 |
 | Coverage: partial | 0 |
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **21895 minutes / 364.92 hours**.
-Current scheduled baseline: **22195 minutes / 369.92 hours**.
+Current manifested baseline: **23515 minutes / 391.92 hours**.
+Current scheduled baseline: **23845 minutes / 397.42 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
@@ -40,7 +40,7 @@ Planned hours are estimates and are not manifested time.
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-Baseline plus planned-unit subtotal: **506.92–546.92 manifested-baseline hours** and **511.92–551.92 scheduled-baseline hours**.
+Baseline plus planned-unit subtotal: **533.92–573.92 manifested-baseline hours** and **539.42–579.42 scheduled-baseline hours**.
 
 ## Non-required candidates
 
@@ -1870,26 +1870,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-021-cross-modal-transformers-vision
 - **Dependencies:** book2:transformer-architecture-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No graph representation, message passing, graph attention, or training exists.
-- **Consequence:** The official graph-transformer application is absent.
+- **Shipped concepts:** book2:graph-neural-network-transformer-applications
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-021 teaches directed graph aggregation, cross-modal attention roles, and fixed-seed graph-token training.
+- **Consequence:** Students can reason about, implement, train, and audit graph/cross-modal Transformer applications.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session 4: Graphs and Cross-modal Attention > 2. Neighbor aggregation with explicit axes :: cell 1
+- **implementation practices:** book2:B2-021-p12
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session 4: Graphs and Cross-modal Attention > 6. Fixed-seed tiny graph-token train/eval trace :: cell 1
+- **model-training practices:** book2:B2-021-p20
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session 4: Graphs and Cross-modal Attention > 3. Permutation equivariance before positions :: cell 1
+- **theory practices:** book2:B2-021-p16
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-021-p12, book2:B2-021-p16, book2:B2-021-p20
 
 Assessments: —
 
@@ -2150,26 +2150,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-021-cross-modal-transformers-vision
 - **Dependencies:** book1:convolutional-neural-network-basics
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** Existing CNN work has no boxes, localization loss, detector, or training.
-- **Consequence:** Object detection is absent.
+- **Shipped concepts:** book2:object-detection
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-021 teaches boxes, IoU, grid targets, NMS, detector losses, and fixed-seed detector training.
+- **Consequence:** Students can derive, implement, train, and audit a tiny object detector.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 — Session 2: Detection Grids and Set Prediction > 3. A 4x4 grid target :: cell 1
+- **implementation practices:** book2:B2-021-p08
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 — Session 2: Detection Grids and Set Prediction > 6. Fixed-seed tiny detection train/eval trace :: cell 1
+- **model-training practices:** book2:B2-021-p18
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 — Session 2: Detection Grids and Set Prediction > 2. Intersection, union, and IoU derivation :: cell 1
+- **theory practices:** book2:B2-021-p14
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-021-p08, book2:B2-021-p14, book2:B2-021-p18
 
 Assessments: —
 
@@ -2427,26 +2427,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-021-cross-modal-transformers-vision
 - **Dependencies:** book1:convolutional-neural-network-basics
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No encoder-decoder, skip concatenation, segmentation, or UNet training exists.
-- **Consequence:** UNet and its diffusion prerequisite role are absent.
+- **Shipped concepts:** book2:unet
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-021 teaches encoder-decoder ledgers, skip concatenation, segmentation metrics, and fixed-seed U-Net training.
+- **Consequence:** Students can derive, implement, train, and audit a tiny U-Net segmenter.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021 — Session 3: U-Net Segmentation and Skip Connections > 3. Decoder, skip concatenation, and output alignment :: cell 1
+- **implementation practices:** book2:B2-021-p10
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021 — Session 3: U-Net Segmentation and Skip Connections > 6. Fixed-seed tiny segmentation train/eval trace :: cell 1
+- **model-training practices:** book2:B2-021-p19
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021 — Session 3: U-Net Segmentation and Skip Connections > 4. Worked skip-concat and Dice calculation :: cell 1
+- **theory practices:** book2:B2-021-p15
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-021-p10, book2:B2-021-p15, book2:B2-021-p19
 
 Assessments: —
 
@@ -2486,26 +2486,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-021-cross-modal-transformers-vision
 - **Dependencies:** book1:convolutional-neural-network-basics, book2:transformer-architecture-foundations
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No image patching, class token, ViT implementation, or training exists.
-- **Consequence:** The official vision-transformer application is missing.
+- **Shipped concepts:** book2:vision-transformers
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-021 teaches image patching, class-token ViT implementation, and fixed-seed model training.
+- **Consequence:** Students can derive, implement, train, and audit a tiny vision Transformer.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021 — Session 1: Image Patches and Vision Transformers > 1. Images become non-overlapping patch tokens :: cell 1
+- **implementation practices:** book2:B2-021-p06
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021 — Session 1: Image Patches and Vision Transformers > 6. Fixed-seed tiny classification train/eval trace :: cell 1
+- **model-training practices:** book2:B2-021-p17
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021 — Session 1: Image Patches and Vision Transformers > 5. ViT versus CNN :: cell 1
+- **theory practices:** book2:B2-021-p13
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-021-p06, book2:B2-021-p13, book2:B2-021-p17
 
 Assessments: —
 

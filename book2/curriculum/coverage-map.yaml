@@ -48,6 +48,12 @@ planned_units:
   title: Cross-modal Transformers and Advanced Vision
   layer: round-2-extension
   prerequisites:
+  - book1:F1-scientific-python
+  - book1:F3-matrices
+  - book1:C6-pytorch
+  - book1:C7-cnn-transfer
+  - book1:C11-neural-training
+  - B2-019-attention-transformers
   - B2-020-language-transformers
   knowledge_points:
   - vision-transformers
@@ -509,66 +515,98 @@ knowledge_points:
 - id: vision-transformers
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - transformer-architecture-foundations
   - book1:convolutional-neural-network-basics
-  shipped_concepts: []
+  shipped_concepts:
+  - vision-transformers
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb
+        heading: 'B2-021 — Session 1: Image Patches and Vision Transformers > 5. ViT versus CNN'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p13
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb
+        heading: 'B2-021 — Session 1: Image Patches and Vision Transformers > 1. Images become non-overlapping patch tokens'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p06
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb
+        heading: 'B2-021 — Session 1: Image Patches and Vision Transformers > 6. Fixed-seed tiny classification train/eval trace'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p17
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-021-cross-modal-transformers-vision
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: No image patching, class token, ViT implementation, or training exists.
-  consequence: The official vision-transformer application is missing.
+    modalities_missing: []
+  rationale: B2-021 teaches image patching, class-token ViT implementation, and fixed-seed model training.
+  consequence: Students can derive, implement, train, and audit a tiny vision Transformer.
 - id: graph-neural-network-transformer-applications
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - transformer-architecture-foundations
-  shipped_concepts: []
+  shipped_concepts:
+  - graph-neural-network-transformer-applications
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb
+        heading: 'B2-021 — Session 4: Graphs and Cross-modal Attention > 3. Permutation equivariance before positions'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p16
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb
+        heading: 'B2-021 — Session 4: Graphs and Cross-modal Attention > 2. Neighbor aggregation with explicit axes'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p12
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb
+        heading: 'B2-021 — Session 4: Graphs and Cross-modal Attention > 6. Fixed-seed tiny graph-token train/eval trace'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p20
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-021-cross-modal-transformers-vision
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: No graph representation, message passing, graph attention, or training exists.
-  consequence: The official graph-transformer application is absent.
+    modalities_missing: []
+  rationale: B2-021 teaches directed graph aggregation, cross-modal attention roles, and fixed-seed graph-token training.
+  consequence: Students can reason about, implement, train, and audit graph/cross-modal Transformer applications.
 - id: nlp-tokenization
   layer: round-2-extension
   requirement: required
@@ -820,65 +858,97 @@ knowledge_points:
 - id: object-detection
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - book1:convolutional-neural-network-basics
-  shipped_concepts: []
+  shipped_concepts:
+  - object-detection
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb
+        heading: 'B2-021 — Session 2: Detection Grids and Set Prediction > 2. Intersection, union, and IoU derivation'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p14
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb
+        heading: 'B2-021 — Session 2: Detection Grids and Set Prediction > 3. A 4x4 grid target'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p08
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb
+        heading: 'B2-021 — Session 2: Detection Grids and Set Prediction > 6. Fixed-seed tiny detection train/eval trace'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p18
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-021-cross-modal-transformers-vision
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: Existing CNN work has no boxes, localization loss, detector, or training.
-  consequence: Object detection is absent.
+    modalities_missing: []
+  rationale: B2-021 teaches boxes, IoU, grid targets, NMS, detector losses, and fixed-seed detector training.
+  consequence: Students can derive, implement, train, and audit a tiny object detector.
 - id: unet
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - book1:convolutional-neural-network-basics
-  shipped_concepts: []
+  shipped_concepts:
+  - unet
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb
+        heading: 'B2-021 — Session 3: U-Net Segmentation and Skip Connections > 4. Worked skip-concat and Dice calculation'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p15
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb
+        heading: 'B2-021 — Session 3: U-Net Segmentation and Skip Connections > 3. Decoder, skip concatenation, and output alignment'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p10
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb
+        heading: 'B2-021 — Session 3: U-Net Segmentation and Skip Connections > 6. Fixed-seed tiny segmentation train/eval trace'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-021-p19
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-021-cross-modal-transformers-vision
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: No encoder-decoder, skip concatenation, segmentation, or UNet training exists.
-  consequence: UNet and its diffusion prerequisite role are absent.
+    modalities_missing: []
+  rationale: B2-021 teaches encoder-decoder ledgers, skip concatenation, segmentation metrics, and fixed-seed U-Net training.
+  consequence: Students can derive, implement, train, and audit a tiny U-Net segmenter.
 - id: autoencoder
   layer: round-2-extension
   requirement: required

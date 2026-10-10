@@ -275,6 +275,10 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
         "nlp-pretraining",
         "nlp-fine-tuning",
         "transformer-nlp-applications",
+        "vision-transformers",
+        "object-detection",
+        "unet",
+        "graph-neural-network-transformer-applications",
     }
     assert {points[point_id]["coverage"] for point_id in later} <= {"covered", "missing"}
 
@@ -294,7 +298,7 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
             ensure_ascii=False,
         ).encode()
     ).hexdigest()
-    assert unchanged_digest == "67601f636753145239ec413a408ef2f308c6130459ef5ac0a0cdbf1d68ab9bd3"
+    assert unchanged_digest == "cec99b0572f588c02d7fbfaf6d6a654067129f99824eca9106e4045c61e6b69e"
 
 
 def test_attention_manifest_adds_only_the_exact_seven_evidence_claims() -> None:

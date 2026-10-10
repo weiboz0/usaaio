@@ -8,13 +8,38 @@ fi
 script_repo_root=$(cd "$(dirname "$0")/.." && pwd)
 repo_root=$script_repo_root
 registry_probe=0
+solution_probe_root=
+solution_probe_relative=
 while (($#)); do
   case "$1" in
     --root) repo_root=$2; shift 2 ;;
     --registry-probe) registry_probe=1; shift ;;
-    *) echo "usage: scripts/ci-local.sh [--root REPO] [--registry-probe]" >&2; exit 2 ;;
+    --solution-probe)
+      solution_probe_root=$2
+      solution_probe_relative=$3
+      shift 3
+      ;;
+    *) echo "usage: scripts/ci-local.sh [--root REPO] [--registry-probe] [--solution-probe BOOK_ROOT RELATIVE]" >&2; exit 2 ;;
   esac
 done
+
+run_solution_notebook() {
+  local book_root=$1
+  local relative=$2
+  {
+    if [[ $relative == units/B2-020-language-transformers/practice/p??_solution.ipynb || $relative == units/B2-021-cross-modal-transformers-vision/practice/p??_solution.ipynb ]]; then
+      (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" timeout 20s uv run --project .. jupyter execute "$relative")
+    else
+      (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" uv run --project .. jupyter execute "$relative")
+    fi
+  }
+}
+
+if [[ -n $solution_probe_root || -n $solution_probe_relative ]]; then
+  [[ -n $solution_probe_root && -n $solution_probe_relative ]] || exit 2
+  run_solution_notebook "$solution_probe_root" "$solution_probe_relative"
+  exit $?
+fi
 requested_repo_root=$repo_root
 if ! cd "$requested_repo_root"; then
   echo "FAIL: repository root is unavailable: $requested_repo_root" >&2
@@ -77,11 +102,7 @@ for index in "${!BOOK_IDS[@]}"; do
   for notebook in "${notebooks[@]}"; do
     relative=${notebook#"$book_root"/}
     echo "executing [$book]: $relative"
-    if [[ $relative == units/B2-020-language-transformers/practice/p??_solution.ipynb ]]; then
-      (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" timeout 20s uv run --project .. jupyter execute "$relative")
-    else
-      (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" uv run --project .. jupyter execute "$relative")
-    fi
+    run_solution_notebook "$book_root" "$relative"
   done
   mapfile -t lessons < <(
     find "$book_root/units" -type f -name '*.ipynb' \
@@ -131,6 +152,7 @@ uv run python -m tools.verify_training_mutations --root "$book1_root"
 uv run python -m tools.verify_classical_mutations --root "$book1_root"
 uv run python -m tools.verify_attention_mutations --root "$book2_root"
 uv run pytest -q tests/test_language_transformer_checks.py
+uv run pytest -q tests/test_vision_transformer_checks.py
 
 step "8/9 PDF build"
 for book in "${BOOK_IDS[@]}"; do

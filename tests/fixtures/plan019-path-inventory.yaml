@@ -20,6 +20,8 @@ python_consumers:
   - tests/test_audit_curriculum.py
   - tests/test_b2_019_statements.py
   - tests/test_b2_020_statements.py
+  - tests/test_b2_021_plan.py
+  - tests/test_b2_021_statements.py
   - tests/test_blueprint.py
   - tests/test_book2_schedule.py
   - tests/test_c11_solution_regressions.py
@@ -37,6 +39,7 @@ python_consumers:
   - tests/test_scope.py
   - tests/test_tolerance.py
   - tests/test_verify_register.py
+  - tests/test_vision_transformer_checks.py
 shell_consumers:
   - scripts/build-pdf.sh
   - scripts/ci-local.sh
