@@ -115,7 +115,7 @@ Task 3 extends the Book 2 `imports:` allowlist with every Book 1 unit and concep
 
 Every model-building practice (p16–p22, p26, p27) uses three immutable splits from its generator: `train_rows()`, `val_rows()`, and a locked test set.
 - Learners may iterate, tune, and select only on train and validation.
-- The test set is reachable only through `final_test_score(predict_fn)` in the unit's data module, which returns the stated metric. Each solution calls it exactly once, after all fitting and selection.
+- The test set is reachable only through `final_test_score(predict_fn, n_boot=1000, alpha=0.05)` in the unit's data module. It returns the stated metric together with its seeded percentile-bootstrap CI over test examples, computed inside the same call. Each solution calls it exactly once, after all fitting and selection.
 - The answer check asserts one call, after training, and asserts that neither validation nor test rows entered training (checked at the practice's named seam; see Task 4).
 - Baselines are fixed: each is computed by committed code in the data module (`baseline_score(task)`) at the frozen seed, and the statement prints the resulting number.
 
@@ -187,13 +187,13 @@ Every solution ends with `### Answer check`.
 | p15 | B | proof | core | 45 | cpu | prove `Var(mean) = σ²/n` for iid runs, and show that a paired difference has lower variance when the runs are positively correlated |
 | p16 | C | integrative | core | 65 | L4 | train a small CNN (the statement describes the 8×8 shape dataset itself) with the p06/p07 helpers: checkpoint at step k, resume, and certify the loss decrease and resume equality on CPU with `amp_dtype=None`; accelerator extension for L4 |
 | p17 | C | integrative | advanced | 65 | L4 | semi-supervised shape classification on 8×8 synthetic images with 30 labelled examples: certify that self-training beats the fixed labelled-only baseline's test accuracy by a stated margin, with selection on labelled validation only |
-| p18 | C | integrative | advanced | 65 | cpu | cluster-then-label with `k-means` (k = 3) on frozen features from a labelled-only CNN. A cluster with no labelled member takes the label of the nearest labelled-class centroid, and majority ties go to the lowest class index. Compare it with threshold pseudo-labels; certify that cluster-then-label beats the fixed baseline by a stated margin, and report its comparison with the threshold method |
+| p18 | C | integrative | advanced | 65 | cpu | cluster-then-label with `k-means` (k = 3) on frozen features from a labelled-only CNN. A cluster with no labelled member takes the label of the nearest labelled-class centroid in the frozen feature space, and majority ties go to the lowest class index. Compare it with threshold pseudo-labels; certify that cluster-then-label beats the fixed baseline by a stated margin, and report its comparison with the threshold method |
 | p19 | C | integrative | advanced | 65 | L4 | learned inversion: train an MLP on simulated sensor→source pairs; certify that the final test source-position error is below the fixed grid-Tikhonov baseline score, and that the physics residual is below a stated bound |
 | p20 | C | integrative | advanced | 65 | L4 | train an amortized regressor from 32 sampled function values to the 9 canonical parameters, then refine each prediction with 100 LS steps initialized at the regressor's output. Certify that this pipeline's final test permutation-invariant error is below the fixed-init LS baseline score (500 steps). Also report the raw regressor's error, which may lose to per-sample fitting; the lesson says so honestly |
 | p21 | C | integrative | core | 65 | cpu | produce an evaluation report for two model families: bootstrap CIs, a paired comparison across shared seeds, an ablation table, and robustness to an input-noise shift |
 | p22 | C | integrative | core | 65 | cpu | run a budgeted experiment campaign (hypothesis → configs → results → decision) within a fixed total step budget and log it |
 | p23 | C | scenario | core | 55 | cpu | plan a Colab L4 session for a stated task: memory and time budget, OOM triage order, checkpoint cadence, restart procedure, submission checklist |
-| p24 | C | scenario | core | 55 | cpu | choose the next experiments under a time limit while avoiding hidden-test overfitting |
+| p24 | C | scenario | core | 55 | cpu | evaluate a supplied validation results table (per-seed scores, bootstrap CIs, one ablation) to decide which differences are real, then choose the next experiments under a time limit while avoiding hidden-test overfitting |
 | p25 | C | scenario | core | 55 | cpu | diagnose when pseudo-labeling hurts (confirmation bias, imbalance) from a literal training trace, and choose a remedy |
 | p26 | C | challenge | advanced | 55 | cpu | open-ended inverse-problem mini-competition: build any valid approach within the budget (≤ 2,000 optimizer steps, counted by a provided `StepBudget` wrapper, and < 15 s wall-clock); beat the committed baseline score on the locked test set; write the rubric writeup |
 | p27 | C | challenge | advanced | 55 | cpu | open-ended mixture-parameter mini-competition with the same budget, baseline, and writeup deliverables |
@@ -310,6 +310,7 @@ Steps:
   Every solution must run well under 20 s on CPU, measured in Task 3.
 - [ ] Certification margins are set from the frozen-seed run with comfortable slack. Two are pinned here:
   - p17 and p18 must beat the baseline by at least 0.03 absolute test accuracy;
+  - p20's margin below the baseline is taken from the frozen-seed run, not assumed positive; if the refined pipeline cannot clear the baseline with slack, the LS refinement steps are adjusted before publication and the change is recorded;
   - p19, p20, p26 and p27 must beat their committed baseline scores.
 - [ ] The open-ended challenges (p26, p27) fix a held-out set, a score function, a stated baseline score, a step budget, and a required writeup following the four-part rubric (Approach, Alternatives considered, Evaluation, Limitations). Any approach that beats the baseline within budget is correct. The solution gives one reference approach plus the writeup.
 - [ ] Bundle allowlist checks (as in Plans 027/028), then a SHA-256 manifest outside the bundle.
@@ -413,6 +414,20 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 2. `[FIXED]` Must Fix: `open-ended-model-evaluation` had only 2 primary practices. → Response: p24 added under competition-workflow (p21, p28, p24).
 3. `[FIXED]` Should Fix: mixture `depends_on` on `multivariate-gaussian`. → Response: retained as roadmap metadata, satisfied transitively through B2-023 → B2-022.
 4. `[FIXED]` Should Fix: p21/p22 split usage. → Response: everything on validation; one test call for the final selected model.
+
+### Review 3 — self (2026-10-09)
+- **Verdict**: Approve after fixes.
+
+### Review 3 — Fable (2026-10-09)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Nit: a bootstrap CI is impossible from a one-call scalar. → Response: `final_test_score` returns the metric plus a seeded bootstrap CI in the same call (same as Sol 1).
+2. `[FIXED]` Nit: p20's margin comes from the frozen-seed run.
+3. `[FIXED]` Nit: the p18 centroid is computed in the frozen feature space.
+
+### Review 3 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: the locked-test API cannot produce the rubric's CI. → Response: the single call returns the metric and its CI.
+2. `[FIXED]` Must Fix: p24 is not genuinely an evaluation practice. → Response: p24 now first evaluates a supplied validation results table (per-seed scores, CIs, an ablation) to decide which differences are real.
 
 ## Content Review
 
