@@ -342,7 +342,28 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ## Content Review
 
-Pending.
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
+
+### Review 1 — self (2026-10-09)
+- **Blind answers**: p13(d) collinear `(0,0),(1,1),(2,2)` (diagonal MLE exists, full does not); p21 I full (44 vs 16 params), II diagonal (`n=30<d+1=51`), III AE, IV VAE (prior sampling + interpolation), V PCA (compare a linear AE's subspace by projection distance). Both match the solutions.
+- **Verdict**: Approve. Full pytest 1348 passed after implementation.
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-09)
+- **Blind answers**: p01 C (−4); p09 closed form 0 / 1.0965735903 / 2.3033003559; p15 `(e−1)/2`; p19 protocol; p23 −0.3981928 → 2.3068655 with single-defect values −0.932 / 1.315 / 1.849. All match.
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: p23 claimed any `logvar ≤ 0` gives `nan`; at 0 it is `-inf`. → Response: the statement now says non-finite (`-inf` at 0, `nan` below 0).
+2. `[FIXED]` Should Fix: p19's `train_vae` bypassed the pinned `negative_elbo`. → Response: training now calls `negative_elbo`.
+- Judged the three implementer-forced changes acceptable.
+
+### Review 1 — Fable (2026-10-09)
+- **Blind answers**: p03 B; p11 all probes (own run); p16 −0.7 / −1.4 / +0.7; p20 all probes (own run); p22 collapse, β = 8, option (ii). All match; lesson arithmetic re-verified by execution.
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Should Fix: p21 (IV) needs latent interpolation, taught only in Session 5. → Response: Session 4's introduction now names both downstream operations (prior sampling; interpolation between posterior means).
+2. `[FIXED]` Should Fix: p22 solution said "at least one latent" against the statement's "each latent". → Response: the solution now says "each".
+3. `[FIXED]` Nit: p16 solution parenthetical rewritten.
+4. `[WONTFIX]` Nit: the VAE claim's `first_session` is 5 while `concept_sessions` is 4. → Response: forced by `layer_boundary.py`'s strict same-unit dependency ordering (the claim must follow `gaussian-reparameterization`'s session 4). Recorded in the post-execution report as a tooling follow-up.
+
+Re-verified after fixes: inventory regenerated; B2-022 statement, plan, and latent-integrity suites 64 passed.
 
 ## Post-execution report
 

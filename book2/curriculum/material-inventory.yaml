@@ -7966,7 +7966,7 @@ notebooks:
   - weight.detach
 - path: units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb
   kind: notebook
-  semantic_sha256: 6e10a62b9b565572bd045f188230b21bb1f79d4c4cc648a70666bc16fb1cf8fe
+  semantic_sha256: 525c51cf7962e0bcb92b58a2c1c4a49e238c6066a746fb67ad505340e7f74038
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
       4: Reparameterization and the ELBO :: cell 1'
@@ -9554,7 +9554,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 410c1dd545846de6d4cc6d5a71edf63ce172085154754a745fa2ac8227b86c6b
+  semantic_sha256: 33c8725edd00a3bf92bbb32214391d7471df2a12d1807ac51e1ace860f399c31
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p16 — Solution :: cell 1'
@@ -9916,7 +9916,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: e864cbb089e27ea7b075a5879dc3b72802e63e921096d6ebde63da3d51a7521e
+  semantic_sha256: 8594ec0890b6f24c43a95b23ea0bea48c39b5d55a14acbc59e9243babf5b0953
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p19 — Solution :: cell 1'
@@ -10265,7 +10265,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: 4726906446fe02efae2e41242f6ded33c757c562829d16c79e7ff2f72d70d68e
+  semantic_sha256: aafbd317fcd395191802b68ffd1bbce1084c9a9a302f84843697fe83f6328c81
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p22 — Solution :: cell 1'
@@ -10310,7 +10310,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p23.ipynb
   kind: notebook
-  semantic_sha256: 7256790124ff8dd0bf7c13bb8fce8665a5a6be7a24d5ac7ef80876d800da242b
+  semantic_sha256: 7b8f1a978916dac027fa3dc5a899ef04292f8645c36cad5505955debd753be8e
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23.ipynb :: B2-022 — Practice p23 > Task :: cell 1'
     heading_path:
