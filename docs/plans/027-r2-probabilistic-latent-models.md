@@ -274,7 +274,7 @@ Steps:
 - [x] Run `scripts/ci-local.sh`; it must be ALL GREEN.
 - [x] Run the 3-way blind content gate (self, Sol, Fable). Every reviewer solves a stated sample before reading solutions: Sol takes p01, p09, p15, p19 and p23; Fable takes p03, p11, p16, p20 and p22; self takes p07, p13, p17, p21 and p24 and also reviews the ledger, coverage, and accessibility for the Calculus AB + Book 1 baseline. Resolve every `[OPEN]` finding and re-review the final head after material changes.
 - [x] Write the verdicts and the post-execution report into this plan, and add Plan 027 to `TODO.md`.
-- [ ] Rerun `scripts/ci-local.sh` on the clean tip, push, open the PR, run `scripts/pre-merge-guard.sh --pr`, squash-merge, and verify `main` equals `origin/main`.
+- [x] Rerun `scripts/ci-local.sh` on the clean tip, push, open the PR, run `scripts/pre-merge-guard.sh --pr`, squash-merge, and verify `main` equals `origin/main`.
 
 ## Out of scope
 
@@ -432,3 +432,5 @@ Re-verified after fixes: inventory regenerated; B2-022 statement, plan, and late
   - p16 now assumes common support and finite expectations, after three rounds tightening it.
 
 **Provenance:** original synthetic data and problems; no external sources.
+
+**Final authoritative CI (2026-10-10):** `scripts/ci-local.sh` on the clean tip e0683dd: **ALL GREEN**, 9/9. An earlier rerun in the same worktree failed two exact-inventory tests on stale `__pycache__` that the previous CI's notebook step had left behind. `ci-local.sh` is not idempotent in a dirty worktree; this is recorded in `TODO.md`.

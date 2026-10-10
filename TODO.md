@@ -25,6 +25,7 @@
 - [x] 022 — C12 p20 K-means near-tie erratum (deterministic lowest-seed rule)
 - [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
+- [x] 028 — Round 2 generative models and diffusion (B2-023: GANs, DDPM, Stable Diffusion architecture with a CPU latent-diffusion analogue)
 - [x] 027 — Round 2 probabilistic latent models (B2-022: Gaussians, KL, AE, reparameterization, VAE)
 - [x] 026 — py4kids 3-way review roster and Opus dispatch; deferred-policy test clock pinned
 
@@ -65,4 +66,5 @@
       by hand; nothing in CI would have caught it.
 - [ ] **Make the Plan 023 Plan-022 blob witness reachability-aware.** `test_plan019_cutover_ignores_exact_plan022_three_blob_worktree_change` checks that pre-squash commit `d653fcb` exists in the source repo but then needs it reachable in a local clone; it fails once the merged branch ref is deleted. It is kept alive by the local ref `archive/plan-022-pre-squash` until the test skips on unreachable commits.
 - [ ] **Allow equal-session coverage-claim dependencies.** `layer_boundary.py` requires a claim's `first_session` to be strictly after every same-unit dependency's, which forced B2-022's VAE claim to session 5 although the VAE is introduced in session 4 alongside reparameterization.
+- [ ] **Make `ci-local.sh` idempotent.** Its notebook step imports unit data modules and leaves `__pycache__` inside unit directories; a second run in the same worktree then fails the exact-file-inventory tests. Set `PYTHONDONTWRITEBYTECODE=1` for notebook execution or clean caches at the start.
 - [ ] `book1/mocktests/r1-002` / `r1-003` via the Book 1 blueprint's arc rotation.
