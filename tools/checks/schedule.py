@@ -979,6 +979,59 @@ def _validate_live_book2_ledger(
     return frozenset(covered)
 
 
+PLANNED_R2_MARKER = {"kind": "future-r2-mock", "status": "planned"}
+LIVE_R2_MARKER_KEYS = {"kind", "status", "test", "after_book_week"}
+
+
+def _check_book2_final_assessment(
+    root: Path, marker: object, declared_weeks: int | None, errors: list[str]
+) -> None:
+    """Planned marker only while no r2-* manifest exists; live marker only with its manifest."""
+    r2_manifests = sorted(
+        path.parent.name for path in (root / "mocktests").glob("r2-*/manifest.yaml")
+    )
+    if not isinstance(marker, dict):
+        errors.append(
+            "Book 2 schedule requires a planned future-r2-mock or live r2-mock "
+            "final assessment marker"
+        )
+        return
+    marker_week = marker.get("after_book_week")
+    if type(marker_week) is not int:
+        errors.append("Book 2 final_assessment.after_book_week must be an integer")
+    elif declared_weeks is not None and marker_week != declared_weeks:
+        state = "live" if marker.get("status") == "live" else "planned"
+        errors.append(f"{state} final assessment marker must follow book week {declared_weeks}")
+    marker_without_week = {key: value for key, value in marker.items() if key != "after_book_week"}
+    if marker_without_week == PLANNED_R2_MARKER:
+        if r2_manifests:
+            errors.append(
+                "planned future-r2-mock marker is forbidden once an r2-* manifest exists: "
+                + ", ".join(r2_manifests)
+            )
+        return
+    if marker.get("kind") == "r2-mock" and marker.get("status") == "live":
+        test = marker.get("test")
+        if set(marker) != LIVE_R2_MARKER_KEYS or not isinstance(test, str) or not re.fullmatch(
+            r"r2-\d{3}", test
+        ):
+            errors.append(
+                "live r2-mock final assessment marker must be exactly "
+                "{kind: r2-mock, status: live, test: r2-NNN, after_book_week}"
+            )
+            return
+        manifest = root / "mocktests" / test / "manifest.yaml"
+        if not manifest.is_file() or manifest.is_symlink():
+            errors.append(
+                f"live r2-mock final assessment {test} requires mocktests/{test}/manifest.yaml"
+            )
+        return
+    errors.append(
+        "Book 2 schedule requires a planned future-r2-mock or live r2-mock "
+        "final assessment marker"
+    )
+
+
 def _parse_book2_schedule(
     root: Path,
     errors: list[str],
@@ -1031,26 +1084,7 @@ def _parse_book2_schedule(
     )
     contracts = _discover_book2_manifest_contracts(root, errors)
 
-    marker = raw.get("final_assessment")
-    if isinstance(marker, dict):
-        marker_week = marker.get("after_book_week")
-        if type(marker_week) is not int:
-            errors.append("Book 2 final_assessment.after_book_week must be an integer")
-        elif declared_weeks is not None and marker_week != declared_weeks:
-            errors.append(
-                f"planned final assessment marker must follow book week {declared_weeks}"
-            )
-        marker_without_week = {
-            key: value for key, value in marker.items() if key != "after_book_week"
-        }
-        if marker_without_week != {"kind": "future-r2-mock", "status": "planned"}:
-            errors.append(
-                "Book 2 schedule requires the planned future-r2-mock final assessment marker"
-            )
-    else:
-        errors.append(
-            "Book 2 schedule requires the planned future-r2-mock final assessment marker"
-        )
+    _check_book2_final_assessment(root, raw.get("final_assessment"), declared_weeks, errors)
 
     raw_weeks = raw.get("weeks")
     if not isinstance(raw_weeks, list):

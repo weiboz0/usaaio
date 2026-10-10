@@ -60,6 +60,13 @@ if [[ $book_number == 1 ]]; then
     done
   done
 elif [[ $book_number == 2 ]]; then
+  for mocktest_dir in "$book_root"/mocktests/r${book_number}-*/; do
+    [[ -f "${mocktest_dir}manifest.yaml" ]] || continue
+    [[ -f "${mocktest_dir}test.md" ]] && inputs+=("${mocktest_dir}test.md")
+    for path in "${mocktest_dir}"theory/*.md "${mocktest_dir}"problems/*.ipynb; do
+      [[ -f "$path" ]] && inputs+=("$path")
+    done
+  done
   for manifest in "$book_root"/units/*/manifest.yaml; do
     [[ -f "$manifest" ]] || continue
     unit_dir=${manifest%/manifest.yaml}
@@ -110,6 +117,13 @@ for relative in "${inputs[@]}"; do
     within_book=${source#"$book_root/"}
     group=${within_book#mocktests/}; group=${group%%/*}
     output_dir="$book_root/build/$group"
+    output="$output_dir/$stem.pdf"
+  elif [[ ${source#"$book_root/"} == mocktests/* ]]; then
+    within_mocktests=${source#"$book_root/mocktests/"}
+    group=${within_mocktests%%/*}
+    parent=$(dirname "${within_mocktests#"$group/"}")
+    output_dir="$book_root/build/mocktests/$group"
+    [[ $parent == . ]] || output_dir="$output_dir/$parent"
     output="$output_dir/$stem.pdf"
   else
     within_units=${source#"$book_root/units/"}

@@ -1,8 +1,45 @@
+# Round 2 mock-test blueprint (Plan 024). Structure only: every shape value cites
+# book2/reference/analysis.md "Round 2 shape notes" (n=1 2026 paper); no 2026 topic is encoded.
+# blueprint-check enforces sections (day, kind, points, sub-part and problem counts), texture,
+# per-day time budgets, topic_distribution, difficulty_mix, provenance, arc rotation, and the
+# open-ended family rule. new-mocktest instantiates from the default_* keys with zero choices.
 blueprint_version: 1
 book: 2
 target: round-2
-status: planned
+status: live
 assessment_prefix: r2-
-derived_from:
-- book2:reference/analysis.md
-- book2:curriculum/official-topics.yaml
+derived_from: [book2:reference/analysis.md, book2:curriculum/official-topics.yaml]
+total_points: 300
+days: 2
+day_duration_minutes: 240      # external assumption; Round 2 durations are not printed
+texture:
+  problem_count: {min: 4, max: 6}
+  subparts: {min: 22, max: 32}
+  open_ended_points_share: {min: 0.45, max: 0.60}   # 2026: 160/300
+sections:                      # order fixed; each carries day and kind
+  - {id: d1-arc, day: 1, kind: scaffolded-arc, points: {min: 80, max: 100}, subparts: {min: 10, max: 16}, problems: {min: 1, max: 1}}
+  - {id: d1-open, day: 1, kind: open-ended, points: {min: 60, max: 80}, problems: {min: 1, max: 1}}
+  - {id: d2-arc, day: 2, kind: scaffolded-arc, points: {min: 40, max: 60}, subparts: {min: 6, max: 10}, problems: {min: 1, max: 1}}
+  - {id: d2-open, day: 2, kind: open-ended, points: {min: 80, max: 100}, problems: {min: 2, max: 2}}
+default_anchors: {d1-arc: 90, d1-open: 70, d2-arc: 50, d2-open: [40, 50]}
+default_time_budget:           # per day; each day sums to day_duration_minutes
+  1: {d1-arc: 120, d1-open: 120}
+  2: {d2-arc: 80, d2-open: 160}
+topic_distribution:            # points per Book 2 syllabus cluster; targets sum to 300
+  attention-transformers: {target: 50, min: 30, max: 90}
+  language-transformers: {target: 30, min: 0, max: 60}
+  cross-modal-vision: {target: 10, min: 0, max: 30}
+  probabilistic-latent-models: {target: 40, min: 20, max: 60}
+  generative-models: {target: 10, min: 0, max: 30}
+  capstone: {target: 160, min: 120, max: 180}
+difficulty_mix: {intro: {min: 0.10, max: 0.30}, core: {min: 0.35, max: 0.60}, advanced: {min: 0.20, max: 0.40}}
+default_difficulty_draw: {intro: 0.20, core: 0.45, advanced: 0.35}
+provenance_rules: {original_share_min: 0.9}
+arc_rotation:                  # r2-NNN uses index (NNN-1) mod 3
+  - {d1: [attention-transformers, language-transformers], d2: [probabilistic-latent-models]}
+  - {d1: [cross-modal-vision, attention-transformers], d2: [generative-models]}
+  - {d1: [language-transformers, attention-transformers], d2: [probabilistic-latent-models, generative-models]}
+# Open-ended families are constrained by taught closure: B2-024 teaches exactly these three.
+# This is a closure constraint, not a mirror of 2026; blueprint-check enforces that each
+# open-ended problem's concepts include one of them. Widen when Book 2 grows.
+open_ended_families: [scientific-ml-inverse-problems, semi-supervised-pseudo-labeling, mixture-parameter-regression]

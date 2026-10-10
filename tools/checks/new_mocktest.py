@@ -3,8 +3,10 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from tools.checks.blueprint import ARC_ROTATION, DEFAULT_ANCHORS, DEFAULT_TIME_BUDGET
-from tools.model import load_blueprint
+import yaml
+
+from tools.checks.blueprint import ARC_ROTATION, DEFAULT_ANCHORS, DEFAULT_TIME_BUDGET, is_round2
+from tools.model import Blueprint, load_blueprint
 
 DIFFICULTY_DRAW = {"intro": 0.23, "core": 0.45, "advanced": 0.32}
 
@@ -46,6 +48,9 @@ def scaffold_mocktest(
         raise FileExistsError(f"{test_dir} already exists")
     for child in ["theory", "problems", "solutions", "data"]:
         (test_dir / child).mkdir(parents=True, exist_ok=True)
+    if is_round2(blueprint):
+        _scaffold_round2(blueprint, test_dir, test_id, int(match.group(1)), generated_date)
+        return test_dir
     (test_dir / "test.md").write_text(
         f"---\ntest: {test_id}\nduration_minutes: {blueprint.raw['duration_minutes']}\ntotal_points: {blueprint.total_points}\n---\n"
     )
@@ -91,3 +96,41 @@ total_points: {total_points}
 time_budget: {{{time_budget}}}
 problems: []
 """
+
+
+def _scaffold_round2(
+    blueprint: Blueprint, test_dir: Path, test_id: str, number: int, generated_date: str
+) -> None:
+    """Book 2: every instantiation value comes from the blueprint's default_* keys."""
+    raw = blueprint.raw
+    rotation = raw["arc_rotation"]
+    rotation_index = (number - 1) % len(rotation)
+    (test_dir / "test.md").write_text(
+        f"---\ntest: {test_id}\ndays: {raw['days']}\n"
+        f"day_duration_minutes: {raw['day_duration_minutes']}\n"
+        f"total_points: {blueprint.total_points}\n---\n"
+    )
+    (test_dir / "rubric.md").write_text(f"# {test_id} Rubric\n\n")
+    manifest = {
+        "test": test_id,
+        "blueprint_version": raw["blueprint_version"],
+        "generated": generated_date,
+        "status": "draft",
+        "generation_parameters": {
+            "rotation_index": rotation_index,
+            "section_points": dict(raw["default_anchors"]),
+            "arc_clusters": {key: list(value) for key, value in rotation[rotation_index].items()},
+            "problem_count": sum(
+                len(value) if isinstance(value, list) else 1
+                for value in raw["default_anchors"].values()
+            ),
+            "difficulty_draw": dict(raw["default_difficulty_draw"]),
+        },
+        "day_duration_minutes": raw["day_duration_minutes"],
+        "total_points": blueprint.total_points,
+        "time_budget": {
+            str(day): dict(sections) for day, sections in raw["default_time_budget"].items()
+        },
+        "problems": [],
+    }
+    (test_dir / "manifest.yaml").write_text(yaml.safe_dump(manifest, sort_keys=False))

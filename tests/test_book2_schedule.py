@@ -23,7 +23,7 @@ BOOK2_ROOT = ROOT / "book2"
 FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "two-books-valid"
 BOOK1_SCHEDULE_SHA256 = "6c1f4f6eeb518930e5772ef0f14d8bba18be1f191114c91edfae52ef8811eb4d"
 BOOK1_STRUCTURE_SHA256 = "75518825359dd1e0ed3501c0301fbdfb1fc685d6944465f924f1f88c0d25e642"
-BOOK2_SCHEDULE_SHA256 = "fa4d3916ce2a5fdc09c05b2b9add266644ef24200a2f4ddf2e8427ac0b5eb03c"
+BOOK2_SCHEDULE_SHA256 = "fef51a85cbd652de279d60429c0a5559ba2e6a6ac6e767f2dd5293c22bf65e56"
 BOOK2_MANIFEST_SHA256 = "c50be81714b421e85f1e3e3afdf0eddd65352ae7c0f94ba5f655cb2716e9d5c1"
 B2_019 = "B2-019-attention-transformers"
 B2_020 = "B2-020-language-transformers"
@@ -350,8 +350,9 @@ def test_registered_book2_schedule_is_exact_thirty_seven_week_live_ledger() -> N
     assert raw["total_book_weeks"] == 37
     assert raw["total_minutes"] == 10270
     assert raw["final_assessment"] == {
-        "kind": "future-r2-mock",
-        "status": "planned",
+        "kind": "r2-mock",
+        "status": "live",
+        "test": "r2-001",
         "after_book_week": 37,
     }
     assert [week["book_week"] for week in raw["weeks"]] == list(range(1, 38))
@@ -1058,7 +1059,7 @@ def test_unregistered_direct_schedule_api_requires_explicit_identity(
             lambda schedule: schedule["final_assessment"].update(
                 after_book_week=5
             ),
-            "planned final assessment marker must follow book week 37",
+            "final assessment marker must follow book week 37",
             id="stale-final-marker",
         ),
         pytest.param(
@@ -1239,3 +1240,73 @@ def test_book1_bytes_remain_pinned_while_valid_book2_fixture_renders(
     mutated = bytearray(schedule_bytes)
     mutated[0] ^= 1
     assert hashlib.sha256(mutated).hexdigest() != BOOK1_SCHEDULE_SHA256
+
+
+PLANNED_R2_MARKER = {"kind": "future-r2-mock", "status": "planned", "after_book_week": 37}
+LIVE_R2_MARKER = {"kind": "r2-mock", "status": "live", "test": "r2-001", "after_book_week": 37}
+
+
+def _marker_root(tmp_path: Path, marker: dict[str, Any], manifests: tuple[str, ...]) -> Path:
+    selected = tmp_path / "book2"
+    shutil.copytree(BOOK2_ROOT, selected)
+    for existing in (selected / "mocktests").glob("r2-*"):
+        shutil.rmtree(existing)
+    for test_id in manifests:
+        test_dir = selected / "mocktests" / test_id
+        test_dir.mkdir(parents=True)
+        (test_dir / "manifest.yaml").write_text(f"test: {test_id}\n", encoding="utf-8")
+    schedule = _load_schedule(selected)
+    schedule["final_assessment"] = dict(marker)
+    _write_yaml(selected / "curriculum" / "course-schedule.yaml", schedule)
+    return selected
+
+
+def test_planned_r2_marker_is_accepted_only_without_r2_manifests(tmp_path: Path) -> None:
+    clean = _marker_root(tmp_path / "a", PLANNED_R2_MARKER, ())
+    assert schedule_checker.check_schedule(clean, expected_book_number=2).ok
+
+    stale = _marker_root(tmp_path / "b", PLANNED_R2_MARKER, ("r2-001",))
+    report = schedule_checker.check_schedule(stale, expected_book_number=2)
+    assert not report.ok
+    assert any(
+        "planned future-r2-mock marker is forbidden once an r2-* manifest exists" in error
+        for error in report.errors
+    ), report.errors
+
+
+def test_live_r2_marker_requires_the_named_manifest(tmp_path: Path) -> None:
+    live = _marker_root(tmp_path / "a", LIVE_R2_MARKER, ("r2-001",))
+    assert schedule_checker.check_schedule(live, expected_book_number=2).ok, (
+        schedule_checker.check_schedule(live, expected_book_number=2).errors
+    )
+
+    missing = _marker_root(tmp_path / "b", LIVE_R2_MARKER, ())
+    report = schedule_checker.check_schedule(missing, expected_book_number=2)
+    assert not report.ok
+    assert any(
+        "live r2-mock final assessment r2-001 requires mocktests/r2-001/manifest.yaml" in error
+        for error in report.errors
+    ), report.errors
+
+    other = _marker_root(tmp_path / "c", LIVE_R2_MARKER, ("r2-002",))
+    assert not schedule_checker.check_schedule(other, expected_book_number=2).ok
+
+
+@pytest.mark.parametrize(
+    "marker",
+    [
+        {**LIVE_R2_MARKER, "kind": "future-r2-mock"},
+        {**LIVE_R2_MARKER, "status": "planned"},
+        {**LIVE_R2_MARKER, "test": "r1-001"},
+        {**LIVE_R2_MARKER, "test": "r2-1"},
+        {**LIVE_R2_MARKER, "extra": True},
+        {key: value for key, value in LIVE_R2_MARKER.items() if key != "test"},
+        {**PLANNED_R2_MARKER, "test": "r2-001"},
+        {**LIVE_R2_MARKER, "after_book_week": 36},
+    ],
+)
+def test_malformed_final_assessment_markers_are_rejected(
+    tmp_path: Path, marker: dict[str, Any]
+) -> None:
+    selected = _marker_root(tmp_path, marker, ("r2-001",))
+    assert not schedule_checker.check_schedule(selected, expected_book_number=2).ok
