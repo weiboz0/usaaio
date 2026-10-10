@@ -382,7 +382,7 @@ documents:
 manifests:
 - path: mocktests/r2-001/manifest.yaml
   kind: yaml
-  semantic_sha256: f9b2273bb37432b3f3fb337c54a76e42c31f5a0d53bc0a4cc606427449ec0259
+  semantic_sha256: 62e7dab31d22eaf9637aa70548c7fa9b7c05e31e1ab1609688dc7656d5160d3e
 - path: syllabus.md
   kind: canonical-yaml
   semantic_sha256: b4e37c3df747e2d8021d40e2d8178c8beb9bcc69f25e2de0bf5b559d35a371c8
@@ -641,7 +641,7 @@ notebooks:
   - torch.tensor
 - path: mocktests/r2-001/problems/p04.ipynb
   kind: notebook
-  semantic_sha256: 5f05cb1092b868331725f9380be042523b77cc548d781d6f7a926163e8a7a85c
+  semantic_sha256: 28e4ea57c622630fbc40fe52a4cf8921f610c4aa0f302b18425919c17907b9ac
   anchors:
   - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Committed
       baseline :: cell 1'
@@ -1255,83 +1255,83 @@ notebooks:
   - z.sum
 - path: mocktests/r2-001/solutions/p04_solution.ipynb
   kind: notebook
-  semantic_sha256: a0829950b3e187e9b90039aa9d7e021140b2a497fa32fc525ff82691d156b175
+  semantic_sha256: fc9017b536a80c0e5bc0727d58451eac56274135d3d0fcc2deb940c12dacbd47
   anchors:
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      :: cell 1'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) :: cell 1'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     cell_ordinal: 1
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      :: cell 2'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) :: cell 2'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     cell_ordinal: 2
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > Budget and the committed baseline :: cell 1'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > Budget and the committed baseline :: cell 1'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - Budget and the committed baseline
     cell_ordinal: 1
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > Budget and the committed baseline :: cell 2'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > Budget and the committed baseline :: cell 2'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - Budget and the committed baseline
     cell_ordinal: 2
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > Approach :: cell 1'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > Approach :: cell 1'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - Approach
     cell_ordinal: 1
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > Approach :: cell 2'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > Approach :: cell 2'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - Approach
     cell_ordinal: 2
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > Validation evidence, including ablations (every choice is made here) :: cell 1'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > Validation evidence, including ablations (every choice is made here) :: cell 1'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - Validation evidence, including ablations (every choice is made here)
     cell_ordinal: 1
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > Validation evidence, including ablations (every choice is made here) :: cell 2'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > Validation evidence, including ablations (every choice is made here) :: cell 2'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - Validation evidence, including ablations (every choice is made here)
     cell_ordinal: 2
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > The single locked-test call :: cell 1'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > The single locked-test call :: cell 1'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - The single locked-test call
     cell_ordinal: 1
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > The single locked-test call :: cell 2'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > The single locked-test call :: cell 2'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - The single locked-test call
     cell_ordinal: 2
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > Writeup :: cell 1'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > Writeup :: cell 1'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - Writeup
     cell_ordinal: 1
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > Writeup > Answer check :: cell 1'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > Writeup > Answer check :: cell 1'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - Writeup
     - Answer check
     cell_ordinal: 1
-  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
-      > Writeup > Answer check :: cell 2'
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
+      scanner shift) > Writeup > Answer check :: cell 2'
     heading_path:
-    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels, scanner shift)
     - Writeup
     - Answer check
     cell_ordinal: 2
@@ -1353,6 +1353,8 @@ notebooks:
   - cnn.parameters
   - cnn_opt.step
   - cnn_opt.zero_grad
+  - f_pool_raw.mean
+  - f_pool_raw.std
   - flat.sort
   - flat.sum
   - head.eval
@@ -1361,12 +1363,16 @@ notebooks:
   - importlib.util.module_from_spec
   - importlib.util.spec_from_file_location
   - keep.sum
+  - labelled_x.mean
   - nn.Linear
+  - offset.mean
+  - offset.std
   - opt.step
   - opt.zero_grad
   - os.environ.get
   - path.resolve
   - pathlib.Path
+  - pool_x.mean
   - power.reshape
   - r2_001_data.StepBudget
   - r2_001_data.TextureCNN
@@ -1391,6 +1397,7 @@ notebooks:
   - torch.optim.Adam
   - torch.set_num_threads
   - torch.stack
+  - torch.zeros
   - z.mean
   - z.std
 - path: mocktests/r2-001/solutions/p05_solution.ipynb

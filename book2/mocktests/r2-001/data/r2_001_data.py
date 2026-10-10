@@ -16,7 +16,8 @@ Data (fresh tensors on every call; no accessor returns test rows or pool labels)
   Heat: float32 ``(N, 50)`` readings and float32 ``(N, 6)`` targets
   ``(x1, y1, q1, x2, y2, q2)`` sorted by ``x``.
   Texture: float32 ``(N, 1, 10, 10)`` patches in ``[0, 1]`` and int64 ``(N,)``
-  labels.  Lorentz: float32 ``(N, 40)`` sampled values and float32 ``(N, 6)``
+  labels; training rows come from scanner A, and validation, pool and test rows
+  from scanner B (see Problem 4).  Lorentz: float32 ``(N, 40)`` sampled values and float32 ``(N, 6)``
   canonical parameters ``(a1, c1, w1, a2, c2, w2)`` sorted by centre.
 * ``unlabelled_rows("texture")`` -- float32 ``(760, 1, 10, 10)`` patches only.
 * ``ROW_SHA256[task]`` -- tuple of per-row SHA-256 digests indexed by row ID;

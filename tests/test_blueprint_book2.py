@@ -113,7 +113,7 @@ D2_ARC = [
 
 def _entry(test: str, pid: str, *, day: int, section: str, points: int, difficulty: str,
            cluster: str, units: list[str], concepts: list[str], answer_form: str = "short-answer",
-           answer_key: Any = "A") -> dict[str, Any]:
+           answer_key: Any = "A", type_: str = "theory") -> dict[str, Any]:
     return {
         "id": f"{test}-{pid}",
         "day": day,
@@ -123,7 +123,7 @@ def _entry(test: str, pid: str, *, day: int, section: str, points: int, difficul
         "cluster": cluster,
         "points": points,
         "difficulty": difficulty,
-        "type": "theory",
+        "type": type_,
         "answer_form": answer_form,
         "provenance": "original",
         "spec": f"fixture slot {pid}",
@@ -140,17 +140,17 @@ def valid_manifest(test: str = "r2-001") -> dict[str, Any]:
     problems.append(_entry(test, "p02", day=1, section="d1-open", points=70, difficulty="advanced",
                            cluster="capstone", units=[CAP],
                            concepts=["scientific-ml-inverse-problems", "open-ended-experiment-design"],
-                           answer_form="open-ended"))
+                           answer_form="open-ended", type_="programming"))
     for suffix, points, difficulty, concepts in D2_ARC:
         problems.append(_entry(test, f"p03-{suffix}", day=2, section="d2-arc", points=points,
                                difficulty=difficulty, cluster="probabilistic-latent-models",
                                units=[LAT], concepts=concepts))
     problems.append(_entry(test, "p04", day=2, section="d2-open", points=40, difficulty="core",
                            cluster="capstone", units=[CAP],
-                           concepts=["semi-supervised-pseudo-labeling"], answer_form="open-ended"))
+                           concepts=["semi-supervised-pseudo-labeling"], answer_form="open-ended", type_="programming"))
     problems.append(_entry(test, "p05", day=2, section="d2-open", points=50, difficulty="core",
                            cluster="capstone", units=[CAP],
-                           concepts=["mixture-parameter-regression"], answer_form="open-ended"))
+                           concepts=["mixture-parameter-regression"], answer_form="open-ended", type_="programming"))
     return {
         "test": test,
         "blueprint_version": 1,
@@ -282,6 +282,30 @@ def _family(manifest):
     _problem(manifest, "p04")["concepts"] = ["open-ended-experiment-design"]
 
 
+def _open_ended_theory_type(manifest):
+    _problem(manifest, "p04")["type"] = "theory"
+
+
+def _open_ended_code_form(manifest):
+    _problem(manifest, "p05")["answer_form"] = "code"
+
+
+def _arc_open_ended_form(manifest):
+    _problem(manifest, "p01-3")["answer_form"] = "open-ended"
+
+
+def _budget_zero(manifest):
+    manifest["time_budget"]["2"] = {"d2-arc": 0, "d2-open": 240}
+
+
+def _budget_fractional(manifest):
+    manifest["time_budget"]["1"] = {"d1-arc": 120.5, "d1-open": 119.5}
+
+
+def _budget_negative(manifest):
+    manifest["time_budget"]["2"] = {"d2-arc": -40, "d2-open": 280}
+
+
 def _second_d1_arc_problem(manifest):
     _problem(manifest, "p01-14")["id"] = "r2-001-p06-1"
 
@@ -308,6 +332,18 @@ def _second_d1_arc_problem(manifest):
          "original provenance share below minimum"),
         ("dominant-cluster", lambda m: _problem(m, "p01-2").update(cluster="language-transformers"),
          "r2-001-p01-2 invalid dominant cluster language-transformers"),
+        ("open-ended-type", _open_ended_theory_type,
+         "r2-001-p04 in open-ended section d2-open has type 'theory'"),
+        ("open-ended-form", _open_ended_code_form,
+         "r2-001-p05 in open-ended section d2-open has answer_form 'code'"),
+        ("arc-open-ended-form", _arc_open_ended_form,
+         "r2-001-p01-3 in scaffolded-arc section d1-arc uses the open-ended answer_form"),
+        ("time-budget-zero", _budget_zero,
+         "time_budget day 2 section d2-arc minutes 0 must be a positive integer"),
+        ("time-budget-fractional", _budget_fractional,
+         "time_budget day 1 section d1-arc minutes 120.5 must be a positive integer"),
+        ("time-budget-negative", _budget_negative,
+         "time_budget day 2 section d2-arc minutes -40 must be a positive integer"),
     ],
 )
 def test_book2_rule_rejects_violating_manifest(tmp_path, name, mutate, expected):
@@ -331,6 +367,51 @@ def test_arc_clusters_follow_rotation_index_of_test_number(tmp_path):
     other = tmp_path / "wrap"
     write_book2(other, valid_manifest("r2-004"))
     assert check_blueprint(other).ok
+
+
+R2_001_ARC = {"d1": ["attention-transformers", "language-transformers"],
+              "d2": ["probabilistic-latent-models"]}
+
+
+def test_r2_002_reusing_r2_001_arc_clusters_without_reason_fails(tmp_path):
+    manifest = valid_manifest("r2-002")
+    manifest["generation_parameters"] = {"rotation_index": 1, "arc_clusters": copy.deepcopy(R2_001_ARC)}
+    write_book2(tmp_path, manifest)
+    report = check_blueprint(tmp_path)
+    assert not report.ok
+    assert any("generation_parameters.arc_clusters" in error and "arc_deviation_reason" in error
+               and "r2-002" in error for error in report.errors), report.errors
+
+
+def test_r2_002_arc_deviation_with_blank_reason_fails(tmp_path):
+    manifest = valid_manifest("r2-002")
+    manifest["generation_parameters"] = {"arc_clusters": copy.deepcopy(R2_001_ARC),
+                                         "arc_deviation_reason": "   "}
+    write_book2(tmp_path, manifest)
+    report = check_blueprint(tmp_path)
+    assert not report.ok
+    assert any("without a recorded arc_deviation_reason" in error for error in report.errors)
+
+
+def test_r2_002_arc_deviation_with_recorded_reason_passes(tmp_path):
+    manifest = valid_manifest("r2-002")
+    manifest["generation_parameters"] = {
+        "arc_clusters": copy.deepcopy(R2_001_ARC),
+        "arc_deviation_reason": "fixture: the plan records a deliberate repeat of the index-0 arc",
+    }
+    write_book2(tmp_path, manifest)
+    report = check_blueprint(tmp_path)
+    assert report.ok, report.errors
+
+
+def test_recorded_arc_clusters_equal_to_rotation_pass_in_any_order(tmp_path):
+    manifest = valid_manifest("r2-001")
+    manifest["generation_parameters"] = {
+        "arc_clusters": {"d1": ["language-transformers", "attention-transformers"],
+                         "d2": ["probabilistic-latent-models"]},
+    }
+    write_book2(tmp_path, manifest)
+    assert check_blueprint(tmp_path).ok
 
 
 def test_open_ended_points_share_is_enforced(tmp_path):

@@ -506,10 +506,10 @@ problems:
   type: programming
   answer_form: open-ended
   provenance: original
-  spec: '40-pt core open-ended: three-class 10x10 texture patches with 40 labels and a 760-patch unlabelled
-    pool; baseline labelled-only TextureCNN; StepBudget(1500), < 60 s; one final_test_score; four-part
+  spec: '40-pt core open-ended: three-class 10x10 texture patches with 40 scanner-A labels and a 760-patch
+    scanner-B unlabelled pool (validation and test also scanner B); baseline labelled-only TextureCNN; StepBudget(1500), < 60 s; one final_test_score; four-part
     writeup; optional-colab-l4 with Accelerator extension.'
-  answer_key: metric=accuracy; direction=higher; B=0.5550; R=0.9975; tiers=0.8869,0.5550,0.4444
+  answer_key: metric=accuracy; direction=higher; B=0.4850; R=0.9900; tiers=0.8638,0.4850,0.3588
   files:
   - problems/p04.ipynb
   data:

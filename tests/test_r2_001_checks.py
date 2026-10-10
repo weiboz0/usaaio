@@ -153,7 +153,7 @@ OPEN_ENDED_MUTANTS = {
     "p04-leak-validation-into-pool": ("p04", [
         ("history = fit(x_lab, y_lab, x_pool, rounds=ROUNDS)",
          "history = fit(x_lab, y_lab, torch.cat([x_pool, x_val]), rounds=ROUNDS)"),
-        ("assert acc_self >= acc_no_pool >= acc_cnn\n", ""),
+        ("assert acc_self >= acc_corr > acc_per_scanner > acc_no_pool\n", ""),
         ('assert seam <= {"train", "unlabelled"} and "val" not in seam and "test" not in seam\n', ""),
     ]),
     "p04-final-test-score-twice": ("p04", _second_call("texture")),

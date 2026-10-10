@@ -27,6 +27,13 @@ next to this script:
     frequency, phase, orientation, contrast and heavy pixel noise, stored as
     integers 0..255.  40 labelled train, 40 labelled validation, 760 unlabelled
     and 400 test rows.  The unlabelled pool's labels are never written.
+    Controlled shift: the labelled training rows come from "scanner A"; the
+    validation, unlabelled and test rows come from "scanner B", which adds a
+    fixed per-pixel offset pattern (fixed-pattern sensor noise: one 10x10
+    standard-normal draw from stream ``(SEED, 4, 92)`` times 0.35, identical for
+    every scanner-B patch) before the pixel noise and clipping.  The offset
+    uses no draws from the per-split streams, so every other value is drawn
+    exactly as without it.
   - ``lorentz`` (Problem 5): sums of two Lorentzian peaks
     ``a / (1 + ((x - c) / w)^2)`` sampled at the 40 midpoints
     ``x_j = (j + 0.5) / 40`` with additive N(0, 0.02^2) noise.  Targets
@@ -96,6 +103,9 @@ TEX_NOISE_STD = 0.20
 TEX_DOTS = (3, 5)                # number of dots
 TEX_DOT_RADIUS = (0.8, 1.3)
 TEX_SIZES = {"train": 40, "val": 40, "unlabelled": 760, "test": 400}
+TEX_SCANNER = {"train": "A", "val": "B", "unlabelled": "B", "test": "B"}   # labelled train vs deployment scanner
+TEX_OFFSET_SUB = 92              # sub-stream of the scanner-B fixed per-pixel offset draw
+TEX_OFFSET_STD = 0.35            # scale of the scanner-B fixed per-pixel offset
 
 # ------------------------------------------------------------ lorentz (Problem 5)
 LOR_POINTS = 40
@@ -181,7 +191,16 @@ def heat_block(n: int, rng: np.random.Generator):
 _TY, _TX = np.meshgrid(np.arange(TEX_SIZE) + 0.5, np.arange(TEX_SIZE) + 0.5, indexing="ij")
 
 
-def render_texture(label: int, rng: np.random.Generator) -> np.ndarray:
+def scanner_offset(scanner: str) -> np.ndarray:
+    """Fixed (10, 10) additive offset of a scanner: zero for A, a fixed pattern for B."""
+    if scanner == "A":
+        return np.zeros((TEX_SIZE, TEX_SIZE))
+    if scanner != "B":
+        raise ValueError(f"unknown scanner {scanner!r}")
+    return TEX_OFFSET_STD * _rng(STREAMS["texture"], TEX_OFFSET_SUB).standard_normal((TEX_SIZE, TEX_SIZE))
+
+
+def render_texture(label: int, rng: np.random.Generator, offset: np.ndarray) -> np.ndarray:
     contrast = rng.uniform(*TEX_CONTRAST)
     if label in (0, 1):
         period = rng.uniform(*TEX_PERIOD)
@@ -202,13 +221,14 @@ def render_texture(label: int, rng: np.random.Generator) -> np.ndarray:
             r = rng.uniform(*TEX_DOT_RADIUS)
             pattern = pattern + 2.2 * np.exp(-((_TX - cx) ** 2 + (_TY - cy) ** 2) / (2.0 * r * r))
         pattern = np.clip(pattern, -1.0, 1.0)
-    img = 0.5 + contrast * pattern + TEX_NOISE_STD * rng.standard_normal((TEX_SIZE, TEX_SIZE))
+    img = 0.5 + contrast * pattern + offset + TEX_NOISE_STD * rng.standard_normal((TEX_SIZE, TEX_SIZE))
     return np.rint(np.clip(img, 0.0, 1.0) * 255.0).astype(np.int64).reshape(-1)
 
 
-def texture_block(n: int, rng: np.random.Generator):
+def texture_block(n: int, rng: np.random.Generator, scanner: str = "B"):
+    offset = scanner_offset(scanner)
     labels = rng.permutation(np.arange(n) % 3)
-    images = np.stack([render_texture(int(k), rng) for k in labels])
+    images = np.stack([render_texture(int(k), rng, offset) for k in labels])
     return images, labels
 
 
@@ -265,7 +285,8 @@ MAKERS = {"heat": heat_block, "texture": texture_block, "lorentz": lorentz_block
 def _dataset(name: str) -> dict:
     inputs, targets, splits, start = [], [], {}, 0
     for sub, split in enumerate(SPLIT_ORDER[name]):
-        x, y = MAKERS[name](SIZES[name][split], _rng(STREAMS[name], sub))
+        extra = {"scanner": TEX_SCANNER[split]} if name == "texture" else {}
+        x, y = MAKERS[name](SIZES[name][split], _rng(STREAMS[name], sub), **extra)
         inputs.extend(np.asarray(x).tolist())
         if split == "unlabelled":
             targets.extend([None] * len(x))
@@ -299,6 +320,7 @@ def simulate_block(task: str, n: int, seed: int):
     """Fresh draws from a task's generative process (accelerator extensions).
 
     ``seed`` must differ from ``SEED``; these streams never touch stored rows.
+    Texture draws come from scanner B (the deployment scanner).
     """
     if int(seed) == SEED:
         raise ValueError("simulate() needs a seed different from the test seed")

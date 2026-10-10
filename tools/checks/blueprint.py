@@ -89,17 +89,61 @@ def _top_level_problem(problem_id: str) -> str:
     return match.group(1) if match else problem_id
 
 
-def round2_arc_clusters(blueprint: Blueprint, manifest: MockManifest) -> dict[str, list[str]]:
-    """Allowed arc clusters per day: the manifest's recorded choice, else rotation (NNN-1) mod n."""
-    recorded = (manifest.generation_parameters or {}).get("arc_clusters")
-    if isinstance(recorded, dict):
-        return {str(key): list(value) for key, value in recorded.items()}
+# Round 2 section semantics (values taken from r2-001): an open-ended section holds only
+# programming entries graded as open-ended tasks; a scaffolded arc never uses that form.
+ROUND2_OPEN_ENDED_TYPES = frozenset({"programming"})
+ROUND2_OPEN_ENDED_FORMS = frozenset({"open-ended"})
+ARC_DEVIATION_FIELD = "arc_deviation_reason"
+
+
+def _cluster_map(value: Any) -> dict[str, list[str]] | None:
+    if not isinstance(value, dict):
+        return None
+    return {str(key): list(clusters or []) for key, clusters in value.items()}
+
+
+def _same_clusters(left: dict[str, list[str]], right: dict[str, list[str]]) -> bool:
+    return set(left) == set(right) and all(set(left[key]) == set(right[key]) for key in left)
+
+
+def round2_derived_arc_clusters(blueprint: Blueprint, test: str) -> dict[str, list[str]] | None:
+    """The arc clusters the blueprint's rotation assigns to r2-NNN: index (NNN-1) mod n."""
     rotation = blueprint.raw.get("arc_rotation") or []
-    match = re.fullmatch(r"r\d+-(\d{3})", manifest.test)
+    match = re.fullmatch(r"r\d+-(\d{3})", test)
     if not rotation or match is None:
-        return {}
-    entry = rotation[(int(match.group(1)) - 1) % len(rotation)]
-    return {str(key): list(value) for key, value in entry.items()}
+        return None
+    return _cluster_map(rotation[(int(match.group(1)) - 1) % len(rotation)])
+
+
+def round2_arc_clusters(
+    blueprint: Blueprint, manifest: MockManifest
+) -> tuple[dict[str, list[str]], list[str]]:
+    """Allowed arc clusters per day, plus any errors about the manifest's recorded choice.
+
+    The clusters are derived from the test number through ``arc_rotation``.  A manifest's
+    ``generation_parameters.arc_clusters`` is accepted only when it equals the derived
+    clusters, or when ``generation_parameters.arc_deviation_reason`` records why it differs.
+    """
+    parameters = manifest.generation_parameters or {}
+    derived = round2_derived_arc_clusters(blueprint, manifest.test)
+    raw_recorded = parameters.get("arc_clusters")
+    recorded = _cluster_map(raw_recorded)
+    errors: list[str] = []
+    if raw_recorded is not None and recorded is None:
+        errors.append(f"{manifest.path}: generation_parameters.arc_clusters must map days to clusters")
+    if derived is None:
+        return recorded or {}, errors
+    if recorded is None or _same_clusters(recorded, derived):
+        return derived, errors
+    reason = parameters.get(ARC_DEVIATION_FIELD)
+    if isinstance(reason, str) and reason.strip():
+        return recorded, errors
+    errors.append(
+        f"{manifest.path}: generation_parameters.arc_clusters {recorded} differ from the "
+        f"arc_rotation clusters {derived} for {manifest.test} without a recorded "
+        f"{ARC_DEVIATION_FIELD}"
+    )
+    return derived, errors
 
 
 def _validate_round2_manifest(
@@ -119,7 +163,8 @@ def _validate_round2_manifest(
     original_points = 0
     open_points = 0
     families = set(blueprint.raw.get("open_ended_families") or [])
-    arc_clusters = round2_arc_clusters(blueprint, manifest)
+    arc_clusters, arc_errors = round2_arc_clusters(blueprint, manifest)
+    errors.extend(arc_errors)
 
     total = sum(problem.points for problem in manifest.problems)
     if total != blueprint.total_points:
@@ -144,7 +189,15 @@ def _validate_round2_manifest(
                 f"{where}: time_budget day {day} sections {sorted(budget)} != "
                 f"{sorted(expected_sections)}"
             )
-        if sum(budget.values()) != manifest.day_duration_minutes:
+        bad = {sid: minutes for sid, minutes in budget.items()
+               if type(minutes) is not int or minutes <= 0}
+        if bad:
+            for sid, minutes in sorted(bad.items()):
+                errors.append(
+                    f"{where}: time_budget day {day} section {sid} minutes {minutes!r} "
+                    f"must be a positive integer"
+                )
+        elif sum(budget.values()) != manifest.day_duration_minutes:
             errors.append(
                 f"{where}: time_budget day {day} sums to {sum(budget.values())}, "
                 f"not day_duration_minutes {manifest.day_duration_minutes}"
@@ -180,7 +233,22 @@ def _validate_round2_manifest(
                 errors.append(
                     f"{where}: {problem.id} open-ended problem lacks an open_ended_families concept"
                 )
-        elif section.get("kind") == "scaffolded-arc" and problem.cluster:
+            if problem.type not in ROUND2_OPEN_ENDED_TYPES:
+                errors.append(
+                    f"{where}: {problem.id} in open-ended section {problem.section} has type "
+                    f"{problem.type!r}; expected one of {sorted(ROUND2_OPEN_ENDED_TYPES)}"
+                )
+            if problem.answer_form not in ROUND2_OPEN_ENDED_FORMS:
+                errors.append(
+                    f"{where}: {problem.id} in open-ended section {problem.section} has answer_form "
+                    f"{problem.answer_form!r}; expected one of {sorted(ROUND2_OPEN_ENDED_FORMS)}"
+                )
+        elif section.get("kind") == "scaffolded-arc" and problem.answer_form in ROUND2_OPEN_ENDED_FORMS:
+            errors.append(
+                f"{where}: {problem.id} in scaffolded-arc section {problem.section} uses the "
+                f"open-ended answer_form {problem.answer_form!r}"
+            )
+        if section.get("kind") == "scaffolded-arc" and problem.cluster:
             allowed = arc_clusters.get(f"d{section.get('day')}", [])
             if problem.cluster not in allowed:
                 errors.append(

@@ -202,6 +202,67 @@ def test_lorentz_simulation_survives_rounding_for_fresh_seeds():
         assert values.shape == (2000, 40)
 
 
+def _texture_features(x):
+    """The published P4 reference's closed-form features (pixel moments, spectral peakiness,
+    radial power bands, neighbour correlations): (N, 1, 10, 10) -> (N, 23)."""
+    import torch
+
+    k = torch.fft.fftfreq(10, dtype=torch.float64) * 10
+    kx, ky = torch.meshgrid(k, k, indexing="ij")
+    radius = (kx ** 2 + ky ** 2).sqrt()
+    z = x[:, 0].double()
+    m, s = z.mean((1, 2)), z.std((1, 2))
+    zc = (z - m[:, None, None]) / (s[:, None, None] + 1e-6)
+    power = torch.fft.fft2(zc).abs() ** 2
+    power[:, 0, 0] = 0
+    flat = power.reshape(len(z), -1)
+    total = flat.sum(1)
+    top = flat.sort(dim=1, descending=True).values[:, :8] / total[:, None]
+    bands = [(power * ((radius >= lo) & (radius < hi))).sum((1, 2)) / total
+             for lo, hi in [(0, 1.5), (1.5, 2.5), (2.5, 3.5), (3.5, 4.5), (4.5, 8)]]
+    c_v = (zc[:, 1:, :] * zc[:, :-1, :]).mean((1, 2))
+    c_h = (zc[:, :, 1:] * zc[:, :, :-1]).mean((1, 2))
+    c_d = (zc[:, 1:, 1:] * zc[:, :-1, :-1]).mean((1, 2))
+    c_a = (zc[:, 1:, :-1] * zc[:, :-1, 1:]).mean((1, 2))
+    return torch.stack([m, s, (zc ** 3).mean((1, 2)), (zc ** 4).mean((1, 2)), *top.T, *bands,
+                        c_v, c_h, c_d, c_a, (c_v - c_h).abs(), (c_d - c_a).abs()], dim=1)
+
+
+P4_LABELLED_ONLY_MARGIN = 0.15
+
+
+def test_p4_labelled_only_probe_stays_well_below_full_credit():
+    """P4 must assess use of the unlabelled pool.  Stated probe: the reference's closed-form
+    features standardized on the 40 labelled rows, a logistic head (150 Adam steps, lr 0.05,
+    weight decay 0.01, seed SEED) trained on the labelled rows only, no pool statistics.  Its
+    locked-test accuracy must stay below the full-credit cutoff by at least the stated margin
+    (it scores 0.6250 at the frozen seed against the 0.8638 cutoff)."""
+    torch = pytest.importorskip("torch")
+    spec = importlib.util.spec_from_file_location("_r2_001_data_probe", TEST_DIR / "data" / "r2_001_data.py")
+    data = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(data)
+    torch.set_num_threads(1)
+    x_lab, y_lab = data.train_rows("texture")
+    features = _texture_features(x_lab)
+    mu, sd = features.mean(0), features.std(0)
+    torch.manual_seed(SEED)
+    head = torch.nn.Linear(features.shape[1], 3, dtype=torch.float32)
+    optimizer = torch.optim.Adam(head.parameters(), lr=0.05, weight_decay=1e-2)
+    standardized = ((features - mu) / sd).float()
+    for _ in range(150):
+        optimizer.zero_grad(set_to_none=True)
+        torch.nn.functional.cross_entropy(head(standardized), y_lab).backward()
+        optimizer.step()
+
+    def predict(x):
+        with torch.no_grad():
+            return head(((_texture_features(x) - mu) / sd).float()).argmax(dim=1).to(torch.int64)
+
+    score = data.final_test_score(predict, task="texture").score
+    full_credit = _marker("r2-001-p04")["tiers"][0]
+    assert score <= full_credit - P4_LABELLED_ONLY_MARGIN, (score, full_credit)
+
+
 @pytest.mark.parametrize("problem_id", sorted(OPEN_ENDED))
 def test_open_ended_marker_format_tiers_and_calibration(problem_id):
     marker = _marker(problem_id)

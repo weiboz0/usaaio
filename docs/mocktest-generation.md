@@ -191,8 +191,9 @@ problems:
 - each entry's `day` equals its section's day;
 - per-section points, sub-part (entry), and problem-count ranges;
 - texture: problem count, sub-part count, and `open_ended_points_share`;
-- each day's time budget names exactly that day's sections and sums to `day_duration_minutes`;
-- arc entries draw only on the rotation's clusters for their day;
+- each day's time budget names exactly that day's sections, every value is a positive integer, and the day sums to `day_duration_minutes`;
+- arc entries draw only on the clusters that `arc_rotation[(NNN - 1) mod 3]` assigns to their day; a manifest's `generation_parameters.arc_clusters` is accepted only if it equals those clusters or `generation_parameters.arc_deviation_reason` records why it differs;
+- every entry in an `open-ended` section has `type: programming` and `answer_form: open-ended`, and no `scaffolded-arc` entry uses `answer_form: open-ended`;
 - every open-ended entry carries one of `open_ended_families` (a taught-closure constraint);
 - the shared topic, difficulty, provenance, and per-entry rules.
 The Book 1 keys (`duration_minutes`, `five_point_atom_share`, `programming_points_share`, `draws_on_clusters`, the `integrative-arc` override) are read only for Book 1.

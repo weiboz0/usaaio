@@ -29,7 +29,7 @@ Open-ended entries carry the scoring marker `metric; direction; B; R; tiers` (4 
 - r2-001-p03-6: answer: 1.840926
 - r2-001-p03-7: answer: 2.732
 - r2-001-p03-8: answer: 1, 0
-- r2-001-p04: answer: metric=accuracy; direction=higher; B=0.5550; R=0.9975; tiers=0.8869,0.5550,0.4444
+- r2-001-p04: answer: metric=accuracy; direction=higher; B=0.4850; R=0.9900; tiers=0.8638,0.4850,0.3588
 - r2-001-p05: answer: metric=parameter_error; direction=lower; B=0.01711; R=0.005272; tiers=0.008231,0.01711,0.02007
 
 Blind solve from the student-facing bundle only (`test.md`, `theory/*.md`, `problems/*.ipynb`, `data/`).
@@ -117,9 +117,11 @@ $\mathrm{PPL}=\exp(7\ln2/4)=2^{7/4}$.
 
 `n_params = 4224` matches 1.4(a) at $d=32$; positions 0–6 are bit-for-bit unchanged by perturbing positions 7–11.
 
-### Part 1.13 (programming) — answer: **val_ppl_after = 1.130**
+### Part 1.13 (programming) — answer: **val_ppl_after = 1.132** (tolerance 0.03)
 
-`val_ppl_before = 27.188`; losses $3.3136\to0.0838$; trainable parameters $18712$; per-position validation PPL `[4.277, 1.007, 1.003, 1.001, ..., 1.001]` (position 0 largest).
+The key is `1.132`.
+The last digit depends on the CPU kernels and thread count: a run of `p01_solution.ipynb` in this repository's CI environment (AVX2 kernels, one thread) prints `val_ppl_after = 1.130` (unrounded 1.13023), and the same code with other kernel or thread settings prints values from 1.128 to 1.131; all lie well inside the stated tolerance of 0.03, so any of them earns full credit.
+From that CI run: `val_ppl_before = 27.188`; losses $3.3136\to0.0838$; trainable parameters $18712$; per-position validation PPL `[4.277, 1.007, 1.003, 1.001, 1.001, 1.001, 1.001, 1.001, 1.001, 1.001, 1.001, 1.001]` (position 0 largest).
 Explanation: at position 0 only $t_0$ is visible and $k$ is independent of $t_0$, so no predictor can beat probability $1/3$ there, while from position 1 on the next token is determined.
 
 ### Part 1.14 — answers: (a) $3^{1/12}\approx1.0959$; (b) proof; (c) two errors
@@ -198,11 +200,12 @@ Learned inverse (MLP on 800 train + 20,000 simulated rows, 1,000 steps) as initi
 Validation: fixed-start LS 0.03777, MLP alone 0.03144, MLP + LS 0.00264 (lr 0.01) / 0.00282 (lr 0.005).
 Baseline under the protocol 0.04810. Steps 2,200 / 3,000; `budget.elapsed()` ≈ 8 s. Full-credit tier (≤ 0.01318).
 
-## Problem 4 (open-ended) — test accuracy **0.9975** (95% CI [0.9925, 1.0000], n = 400)
+## Problem 4 (open-ended) — test accuracy **0.9900** (95% CI [0.9800, 0.9975], n = 400)
 
-Closed-form texture features (pixel moments, spectral peakiness, radial power bands, neighbour correlations) + logistic head + 3 rounds of confidence-thresholded self-training on the pool.
-Validation: raw-pixel CNN 0.500, features labelled-only 0.950, with self-training 1.000.
-Baseline 0.5550. Steps 900 / 1,500; `budget.elapsed()` ≈ 2 s. Full-credit tier (≥ 0.8869).
+Scanner B's fixed per-pixel offset is estimated from the pool (pool mean image minus the labelled global mean) and removed patch by patch; then closed-form texture features (pixel moments, spectral peakiness, radial power bands, neighbour correlations) + logistic head + 3 rounds of confidence-thresholded self-training on the corrected pool.
+Validation: raw-pixel CNN 0.550, features labelled-only (no pool) 0.550, per-scanner feature standardization 0.825, offset correction 0.950, with self-training 1.000.
+Baseline 0.4850. Steps 1,050 / 1,500; `budget.elapsed()` ≈ 2 s. Full-credit tier (≥ 0.8638).
+Labelled-only probes at the frozen seed (test accuracy; none reaches the full-credit tier): closed-form features + logistic head 0.6250, raw-pixel CNN (baseline) 0.4850, CNN with flip/rotation augmentation (1,000 steps) 0.6475, nearest prototype on standardized features 0.6175.
 
 ## Problem 5 (open-ended) — test score **0.005272** (95% CI [0.00484, 0.00568], n = 200)
 

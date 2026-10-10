@@ -37,6 +37,7 @@ Programming parts are graded by re-executing the notebook top to bottom in a fre
   - 3 points: `TinyCausalLM` to specification (stated construction order, pre-norm blocks, `pe` a buffer, final LayerNorm and head); trainable parameter count `18712` equals the Part 1.5 answer.
   - 3 points: training protocol exactly as stated (seed, Adam settings, 150 full-batch updates in the stated order, shifted targets) with `losses[-1] < 0.25 * losses[0]`; validation perplexity before and after, computed under `eval()` and `no_grad()`.
   - 2 points: `val_ppl_after = 1.132` (tolerance `0.03`) with `1.05 < val_ppl_after < 1.20`, position 0 the largest per-position perplexity, and an explanation that position 0 sees only $t_0$ and cannot know the step $k$ (three equally likely next tokens, the rule-aware floor of Part 1.14(a)), while later positions can read the step from two tokens.
+    Small platform-dependent variation in the third decimal (for example `1.130` or `1.128` from different CPU kernels or thread counts) is covered by the stated tolerance and earns these points.
   - A value at or below `1.05` (a leak: missing mask or unshifted targets) earns at most 3 of the 10 points.
 - **r2-001-p01-14** (5, proof):
   - 1 point: (a) $3^{1/12}$ (mean cross-entropy $\ln3/12$; $\approx1.0959$).
@@ -84,8 +85,8 @@ Programming parts are graded by re-executing the notebook top to bottom in a fre
 
 - **r2-001-p04** (40, open-ended): see "Open-ended grading" below.
   Metric: accuracy on the locked test patches (higher is better).
-  **B = 0.5550, R = 0.9975, g = 0.4425.**
-  Test-score portion (24 points): **24** if accuracy `>= 0.8869`; **14.4** if `> 0.5550`; **6** if `> 0.4444`; **0** otherwise.
+  **B = 0.4850, R = 0.9900, g = 0.5050.**
+  Test-score portion (24 points): **24** if accuracy `>= 0.8638`; **14.4** if `> 0.4850`; **6** if `> 0.3588`; **0** otherwise.
   Writeup portion: 16 points (4 per part).
 
 ## Problem 5 (Day 2, d2-open, 50 points)
@@ -106,7 +107,7 @@ With B the committed baseline score, R the reference score, and `g = |B - R|`:
 | lower is better (P2, P5) | score `<= R + 0.25 g` | score `< B` | score `< B + 0.25 g` | otherwise |
 | higher is better (P4) | score `>= R - 0.25 g` | score `> B` | score `> B - 0.25 g` | otherwise |
 
-The test-score portion is **0** for any protocol violation: `final_test_score` called more than once (or the call-count assertions missing or failing); a seam value of `"val"` or `"test"` (P2/P5), or anything other than `"train"`/`"unlabelled"` (P4); an unwrapped optimizer or more optimizer steps than the budget (P2: 3,000; P4: 1,500; P5: 2,000); `budget.elapsed() >= 60` s after the test call; fitting on validation rows, using pool labels, or calling `simulate` in P4; banned tools (web, downloads, external data, pretrained weights); a notebook that does not run top to bottom.
+The test-score portion is **0** for any protocol violation: `final_test_score` called more than once (or the call-count assertions missing or failing); a seam value of `"val"` or `"test"` (P2/P5), or anything other than `"train"`/`"unlabelled"` (P4); an unwrapped optimizer or more optimizer steps than the budget (P2: 3,000; P4: 1,500; P5: 2,000); `budget.elapsed() >= 60` s after the test call; fitting on validation rows (including statistics such as a mean image computed from them), using pool labels, statistics computed across the test batch inside `predict`, or calling `simulate` in P4; banned tools (web, downloads, external data, pretrained weights); a notebook that does not run top to bottom.
 
 **Writeup (40%, four equal parts).** Each part is scored on this scale (fractions of that part's points):
 
@@ -118,6 +119,6 @@ The test-score portion is **0** for any protocol violation: `final_test_score` c
 **Reference approaches (for graders; not the only acceptable methods).**
 The published reference solutions (`solutions/p02_solution.ipynb`, `p04_solution.ipynb`, `p05_solution.ipynb`) define R; their `final_test_score` point estimates are the R values above.
 P2: a learned inverse (MLP on the 800 training rows plus 20,000 rows from `simulate`, 1,000 steps) gives each row a start, then 300 steps of per-row least squares refine it through the forward model (learning rate 0.01 chosen on validation; 2,200 optimizer steps; validation error 0.00264).
-P4: closed-form texture features (pixel moments, spectral peakiness, radial power bands, neighbour correlations) with a logistic head, plus three rounds of confidence-thresholded self-training on the pool (900 steps; validation accuracy 1.000).
+P4: scanner B's fixed per-pixel offset estimated from the pool mean image and removed patch by patch, then closed-form texture features (pixel moments, spectral peakiness, radial power bands, neighbour correlations) with a logistic head, plus three rounds of confidence-thresholded self-training on the corrected pool (1,050 steps; validation accuracy 1.000).
 P5: two starts per signal, a learned amortized regressor and a greedy peak picker, each refined by 200 least-squares steps (learning rate 0.02 chosen on validation), keeping the fit with the smaller residual (1,900 steps; validation error 0.00504).
-Weaker approaches calibrated by the author also beat B: for P2, an MLP start plus 200 refinement steps (validation error 0.0041); for P4, noisy-student self-training from the baseline teacher (validation accuracy 0.825, partial credit); for P5, a peak-picking start plus the baseline start (validation error 0.0060).
+Weaker approaches calibrated by the author also beat B: for P2, an MLP start plus 200 refinement steps (validation error 0.0041); for P4, the labelled-only head applied with per-scanner feature standardization from pool statistics (validation accuracy 0.825, test 0.9250; full credit), while every labelled-only probe stays in the 60% tier (closed-form features + logistic head 0.6250 on test, CNN with flip/rotation augmentation 0.6475); for P5, a peak-picking start plus the baseline start (validation error 0.0060).

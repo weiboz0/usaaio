@@ -909,7 +909,8 @@ def _time_budgets(raw: dict[str, Any], path: Path) -> tuple[dict[str, int], dict
             text = str(day) if type(day) is int else day
             if not isinstance(text, str) or not re.fullmatch(r"[1-9]\d*", text):
                 raise ValueError(f"{path}: time_budget day keys must be positive integers")
-            per_day[int(text)] = {str(k): int(v) for k, v in sections.items()}
+            # Minutes are kept as written; blueprint-check requires positive integers.
+            per_day[int(text)] = {str(k): v for k, v in sections.items()}
         return {}, per_day
     if any(isinstance(value, dict) for value in budget.values()):
         raise ValueError(f"{path}: time_budget mixes flat and per-day entries")
