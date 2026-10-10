@@ -195,7 +195,7 @@ Do not alter the B2-024 rows.
 - [ ] Dispatch lesson and statement authoring to an Opus subagent (`Agent`, `model: opus`) per `AGENTS.md ## Agent dispatch`. It writes, in a temporary directory outside `book2/units/`:
   - the bridge, overview, five lessons, and review;
   - the 24 student statements;
-  - `scripts/generate_generative_data.py`, a seeded generator for small 2-D Gaussian-mixture datasets (known component centers) and a tiny class-labelled set for p20. It exposes immutable `TRAIN_IDS` / `HELDOUT_IDS` and a canonical per-row SHA-256 map, plus a loader `data/generative_data.py`. Its `--check` mode regenerates and compares hashes, and it never stores trained weights or final metrics.
+  - `scripts/generate_generative_data.py`, a seeded generator for small 2-D Gaussian-mixture datasets (known component centers) and a tiny class-labelled 4-D set for p20, together with a literal fixed orthonormal linear encoder/decoder pair (4-D ↔ 2-D latent) that serves as p20's frozen autoencoder. It exposes immutable `TRAIN_IDS` / `HELDOUT_IDS` and a canonical per-row SHA-256 map, plus a loader `data/generative_data.py`. Its `--check` mode regenerates and compares hashes, and it never stores trained weights or final metrics.
 - [ ] Every coding and training statement pins its function names:
   - p06 `discriminator_loss`, `generator_loss`; p07 `gan_step`; p08 `mode_coverage`; p09 `make_schedule`, `q_sample`; p10 `ddpm_loss`; p11 `p_sample`, `sample_loop`; p12 `cfg_combine`.
   - p17 `train_gan(G, D, opt_g, opt_d, batch)`; p18 `train_ddpm(model, batch, optimizer)`; p19 reuses p18's training protocol in-notebook; p20 `train_latent_diffusion(model, batch, optimizer)`.
