@@ -129,7 +129,7 @@ def _scaffold_round2(
         "day_duration_minutes": raw["day_duration_minutes"],
         "total_points": blueprint.total_points,
         "time_budget": {
-            int(day): dict(sections) for day, sections in raw["default_time_budget"].items()
+            str(day): dict(sections) for day, sections in raw["default_time_budget"].items()
         },
         "problems": [],
     }

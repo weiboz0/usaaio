@@ -5,8 +5,9 @@ starts_after_global_week: 40
 total_book_weeks: 37
 total_minutes: 10270
 final_assessment:
-  kind: future-r2-mock
-  status: planned
+  kind: r2-mock
+  status: live
+  test: r2-001
   after_book_week: 37
 weeks:
   - book_week: 1

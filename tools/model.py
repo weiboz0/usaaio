@@ -904,9 +904,12 @@ def _time_budgets(raw: dict[str, Any], path: Path) -> tuple[dict[str, int], dict
     if budget and all(isinstance(value, dict) for value in budget.values()):
         per_day: dict[int, dict[str, int]] = {}
         for day, sections in budget.items():
-            if type(day) is not int or day <= 0:
+            # Day keys are quoted strings ("1", "2") so manifests stay string-keyed for the
+            # material-inventory canonicalizer; bare integers are accepted too.
+            text = str(day) if type(day) is int else day
+            if not isinstance(text, str) or not re.fullmatch(r"[1-9]\d*", text):
                 raise ValueError(f"{path}: time_budget day keys must be positive integers")
-            per_day[day] = {str(k): int(v) for k, v in sections.items()}
+            per_day[int(text)] = {str(k): int(v) for k, v in sections.items()}
         return {}, per_day
     if any(isinstance(value, dict) for value in budget.values()):
         raise ValueError(f"{path}: time_budget mixes flat and per-day entries")

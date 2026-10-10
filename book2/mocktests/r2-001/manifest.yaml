@@ -1,0 +1,541 @@
+test: r2-001
+blueprint_version: 1
+generated: 2026-10-10
+status: final
+generation_parameters:
+  rotation_index: 0
+  section_points:
+    d1-arc: 90
+    d1-open: 70
+    d2-arc: 50
+    d2-open:
+    - 40
+    - 50
+  arc_clusters:
+    d1:
+    - attention-transformers
+    - language-transformers
+    d2:
+    - probabilistic-latent-models
+  problem_count: 5
+  difficulty_draw:
+    intro: 0.2
+    core: 0.45
+    advanced: 0.35
+  seed: 20261101
+  open_ended_calibration: B = committed baseline_score, R = the published reference solution's single
+    final_test_score point estimate (solutions/pNN_solution.ipynb), both at SEED 20261101, 4 significant
+    digits; lower-is-better R <= 0.8 B, P4 R >= B + 0.05; tiers gap-relative (Plan 024).
+day_duration_minutes: 240
+total_points: 300
+time_budget:
+  '1':
+    d1-arc: 120
+    d1-open: 120
+  '2':
+    d2-arc: 80
+    d2-open: 160
+problems:
+- id: r2-001-p01-1
+  day: 1
+  section: d1-arc
+  units:
+  - B2-019-attention-transformers
+  concepts:
+  - attention-mask
+  - causal-self-attention
+  cluster: attention-transformers
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '5-pt intro MC (normal form p+q): fraction of the n^2 = 144 score entries forbidden by the causal
+    mask at n = 12; five options.'
+  answer_key: B
+  files: &id001
+  - theory/p01.md
+- id: r2-001-p01-2
+  day: 1
+  section: d1-arc
+  units:
+  - B2-019-attention-transformers
+  concepts:
+  - attention-complexity
+  - multi-head-attention
+  cluster: attention-transformers
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: short-answer
+  provenance: original
+  spec: '5-pt intro short answer: dense multiply-add count of QK^T and AV over all heads of one MHA call
+    (B=8, n=12, d=32, h=4).'
+  answer_key: 73728
+  files: *id001
+- id: r2-001-p01-3
+  day: 1
+  section: d1-arc
+  units:
+  - B2-019-attention-transformers
+  concepts:
+  - attention-complexity
+  cluster: attention-transformers
+  points: 5
+  difficulty: core
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '5-pt core MC: smallest context length at which the two attention products cost strictly more
+    than the four d x d projections (d = 32); five options.'
+  answer_key: C
+  files: *id001
+- id: r2-001-p01-4
+  day: 1
+  section: d1-arc
+  units:
+  - B2-019-attention-transformers
+  concepts:
+  - multi-head-attention
+  - transformer-block
+  cluster: attention-transformers
+  points: 10
+  difficulty: core
+  type: theory
+  answer_form: proof
+  provenance: original
+  spec: '10-pt core derivation (reasoning required): MHA parameter count 4d^2+4d independent of h, pre-norm
+    block ledger 4d^2+2d d_ff+9d+d_ff, evaluation 8544, refute a heads-double-parameters claim.'
+  answer_key: 8544
+  files: *id001
+- id: r2-001-p01-5
+  day: 1
+  section: d1-arc
+  units:
+  - B2-020-language-transformers
+  - B2-019-attention-transformers
+  concepts:
+  - language-transformer
+  - learned-token-embedding
+  - transformer-block
+  cluster: language-transformers
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: short-answer
+  provenance: original
+  spec: '5-pt intro short answer: total trainable parameters of the running causal LM (embedding, two
+    blocks, final LayerNorm, head; sinusoidal buffer excluded), consuming Part 1.4.'
+  answer_key: 18712
+  files: *id001
+- id: r2-001-p01-6
+  day: 1
+  section: d1-arc
+  units:
+  - B2-019-attention-transformers
+  concepts:
+  - sinusoidal-positional-encoding
+  cluster: attention-transformers
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '5-pt intro MC (normal form a*pi): period in positions of sinusoidal coordinates (16,17) at d
+    = 32; five options.'
+  answer_key: D
+  files: *id001
+- id: r2-001-p01-7
+  day: 1
+  section: d1-arc
+  units:
+  - B2-019-attention-transformers
+  concepts:
+  - sinusoidal-positional-encoding
+  cluster: attention-transformers
+  points: 10
+  difficulty: advanced
+  type: theory
+  answer_form: proof
+  provenance: original
+  spec: '10-pt advanced proof (reasoning required): inner product of sinusoidal rows is a sum of cos((p-q)
+    w_i), norms and distances follow, exact value for d = 4 and offset 4.'
+  answer_key: cos(4) + cos(1/25) ≈ 0.3456
+  files: *id001
+- id: r2-001-p01-8
+  day: 1
+  section: d1-arc
+  units:
+  - B2-020-language-transformers
+  concepts:
+  - causal-language-modeling
+  cluster: language-transformers
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '5-pt intro MC: shifted causal-LM targets and the visible prefix at output position i; leakage
+    distractors; five options.'
+  answer_key: A
+  files: *id001
+- id: r2-001-p01-9
+  day: 1
+  section: d1-arc
+  units:
+  - B2-020-language-transformers
+  concepts:
+  - causal-language-modeling
+  cluster: language-transformers
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '5-pt intro MC: perplexity of a uniform-logit model over V = 24 (perplexity defined in the statement);
+    five options.'
+  answer_key: D
+  files: *id001
+- id: r2-001-p01-10
+  day: 1
+  section: d1-arc
+  units:
+  - B2-020-language-transformers
+  concepts:
+  - causal-language-modeling
+  cluster: language-transformers
+  points: 5
+  difficulty: core
+  type: theory
+  answer_form: short-answer
+  provenance: original
+  spec: '5-pt core short answer (normal form 2^(a/b)): perplexity of a two-row batch with padded target
+    positions excluded from the mean.'
+  answer_key: 2^(7/4)
+  files: *id001
+- id: r2-001-p01-11
+  day: 1
+  section: d1-arc
+  units:
+  - B2-019-attention-transformers
+  concepts:
+  - attention-mask
+  - causal-self-attention
+  cluster: attention-transformers
+  points: 5
+  difficulty: intro
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt intro code: causal_mask(n) and masked_softmax(scores, allowed) with -inf before softmax;
+    exact probe S[i,j] = ln(j+1); forbidden-score invariance.'
+  answer_key: 2.333333
+  answer_tolerance: 1.0e-06
+  files: &id002
+  - problems/p01.ipynb
+  data:
+    generator_script: data/gen_r2_001.py
+    seed: 20261101
+- id: r2-001-p01-12
+  day: 1
+  section: d1-arc
+  units:
+  - B2-019-attention-transformers
+  concepts:
+  - multi-head-attention
+  - causal-self-attention
+  cluster: attention-transformers
+  points: 10
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '10-pt core code: CausalSelfAttention(d_model, n_heads) with pinned construction order and head
+    split; 4224 parameters; future-perturbation certificate; seeded probe mean |out|.'
+  answer_key: 0.167092
+  answer_tolerance: 0.0001
+  files: *id002
+  data:
+    generator_script: data/gen_r2_001.py
+    seed: 20261101
+- id: r2-001-p01-13
+  day: 1
+  section: d1-arc
+  units:
+  - B2-020-language-transformers
+  - B2-019-attention-transformers
+  concepts:
+  - language-transformer
+  - learned-token-embedding
+  - causal-language-modeling
+  - sinusoidal-positional-encoding
+  - transformer-block
+  cluster: language-transformers
+  points: 10
+  difficulty: advanced
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '10-pt advanced code: sinusoidal_table, shift_for_causal_lm, TinyCausalLM (18712 parameters) trained
+    150 full-batch Adam steps on the seeded step-sequence corpus; validation perplexity before/after,
+    per-position perplexity, leak band 1.05 < ppl < 1.20.'
+  answer_key: 1.132
+  answer_tolerance: 0.03
+  files: *id002
+  data:
+    generator_script: data/gen_r2_001.py
+    seed: 20261101
+- id: r2-001-p01-14
+  day: 1
+  section: d1-arc
+  units:
+  - B2-019-attention-transformers
+  - B2-020-language-transformers
+  concepts:
+  - causal-self-attention
+  - attention-mask
+  cluster: attention-transformers
+  points: 5
+  difficulty: advanced
+  type: theory
+  answer_form: proof
+  provenance: original
+  spec: '5-pt advanced reasoning: perplexity 3^(1/12) of the rule-aware predictor, induction proof of
+    causal non-dependence through the blocks, and two leak bugs that explain a validation perplexity of
+    1.001.'
+  answer_key: 3^(1/12) ≈ 1.0959
+  files: *id001
+- id: r2-001-p02
+  day: 1
+  section: d1-open
+  units:
+  - B2-024-gpu-scientific-ml-capstone
+  - B2-022-probabilistic-latent-models
+  concepts:
+  - scientific-ml-inverse-problems
+  - multivariate-gaussian
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  cluster: capstone
+  points: 70
+  difficulty: advanced
+  type: programming
+  answer_form: open-ended
+  provenance: original
+  spec: '70-pt advanced open-ended: two-source heat localization from 25 sensors at two times through
+    the in-statement Gaussian heat kernel; baseline fixed-start least squares; StepBudget(3000), < 60
+    s; one final_test_score; four-part writeup; optional-colab-l4 with Accelerator extension.'
+  answer_key: metric=position_error; direction=lower; B=0.04810; R=0.001541; tiers=0.01318,0.04810,0.05974
+  files:
+  - problems/p02.ipynb
+  data:
+    generator_script: data/gen_r2_001.py
+    seed: 20261101
+- id: r2-001-p03-1
+  day: 2
+  section: d2-arc
+  units:
+  - B2-022-probabilistic-latent-models
+  concepts:
+  - kl-divergence
+  cluster: probabilistic-latent-models
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '5-pt intro MC (normal form a - ln b): diagonal-Gaussian KL to N(0, I) for mu = (1, 0), logvar
+    = (0, ln 4); five options.'
+  answer_key: B
+  files: &id003
+  - theory/p03.md
+- id: r2-001-p03-2
+  day: 2
+  section: d2-arc
+  units:
+  - B2-022-probabilistic-latent-models
+  concepts:
+  - variational-autoencoder
+  - kl-divergence
+  cluster: probabilistic-latent-models
+  points: 5
+  difficulty: intro
+  type: theory
+  answer_form: short-answer
+  provenance: original
+  spec: '5-pt intro short answer (normal form r - s ln 2): batch beta-weighted objective (beta = 2) for
+    a literal two-example batch; sum over features and latents, mean over batch.'
+  answer_key: 35/16 - (1/2) ln 2
+  files: *id003
+- id: r2-001-p03-3
+  day: 2
+  section: d2-arc
+  units:
+  - B2-022-probabilistic-latent-models
+  concepts:
+  - variational-autoencoder
+  - kl-divergence
+  - gaussian-reparameterization
+  cluster: probabilistic-latent-models
+  points: 10
+  difficulty: advanced
+  type: theory
+  answer_form: proof
+  provenance: original
+  spec: '10-pt advanced proof (reasoning required): 1-D identity-decoder toy beta-VAE; expectation identity,
+    global minimizer mu* = x/(1+beta), s* = beta/(1+beta), value at x = 3, beta = 2.'
+  answer_key: mu* = 1, s* = 2/3, J* = 3 + ln(3/2)
+  files: *id003
+- id: r2-001-p03-4
+  day: 2
+  section: d2-arc
+  units:
+  - B2-022-probabilistic-latent-models
+  concepts:
+  - variational-autoencoder
+  cluster: probabilistic-latent-models
+  points: 5
+  difficulty: core
+  type: theory
+  answer_form: multiple-choice
+  provenance: original
+  spec: '5-pt core MC: minimizer of the bugged objective with beta on the reconstruction term (x = 3,
+    beta = 2); five options.'
+  answer_key: B
+  files: *id003
+- id: r2-001-p03-5
+  day: 2
+  section: d2-arc
+  units:
+  - B2-022-probabilistic-latent-models
+  concepts:
+  - kl-divergence
+  - gaussian-reparameterization
+  cluster: probabilistic-latent-models
+  points: 5
+  difficulty: intro
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt intro code: kl_to_standard_normal and reparameterize(mu, logvar, eps) with literal probe
+    and gradient check; consumes Part 3.1.'
+  answer_key: 0.568147
+  answer_tolerance: 1.0e-06
+  files: &id004
+  - problems/p03.ipynb
+  data:
+    generator_script: data/gen_r2_001.py
+    seed: 20261101
+- id: r2-001-p03-6
+  day: 2
+  section: d2-arc
+  units:
+  - B2-022-probabilistic-latent-models
+  concepts:
+  - variational-autoencoder
+  - kl-divergence
+  cluster: probabilistic-latent-models
+  points: 5
+  difficulty: intro
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt intro code: beta_vae_loss returning (total, recon_mean, kl_mean) with beta on KL only; consumes
+    Part 3.2.'
+  answer_key: 1.840926
+  answer_tolerance: 1.0e-06
+  files: *id004
+  data:
+    generator_script: data/gen_r2_001.py
+    seed: 20261101
+- id: r2-001-p03-7
+  day: 2
+  section: d2-arc
+  units:
+  - B2-022-probabilistic-latent-models
+  concepts:
+  - variational-autoencoder
+  - gaussian-reparameterization
+  cluster: probabilistic-latent-models
+  points: 10
+  difficulty: core
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '10-pt core code: TinyVAE (8-16-2) trained 400 full-batch Adam steps at beta = 2 with seeded noise
+    generators; bookkeeping identity, held-out beta-objective before/after, gradient-flow probe.'
+  answer_key: 2.732
+  answer_tolerance: 0.05
+  files: *id004
+  data:
+    generator_script: data/gen_r2_001.py
+    seed: 20261101
+- id: r2-001-p03-8
+  day: 2
+  section: d2-arc
+  units:
+  - B2-022-probabilistic-latent-models
+  concepts:
+  - variational-autoencoder
+  - kl-divergence
+  cluster: probabilistic-latent-models
+  points: 5
+  difficulty: intro
+  type: programming
+  answer_form: code
+  provenance: original
+  spec: '5-pt intro code: per-latent held-out KL and active-latent counts at beta = 2 and a beta = 8 rerun;
+    name posterior collapse.'
+  answer_key: 1, 0
+  files: *id004
+  data:
+    generator_script: data/gen_r2_001.py
+    seed: 20261101
+- id: r2-001-p04
+  day: 2
+  section: d2-open
+  units:
+  - B2-024-gpu-scientific-ml-capstone
+  concepts:
+  - semi-supervised-pseudo-labeling
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  cluster: capstone
+  points: 40
+  difficulty: core
+  type: programming
+  answer_form: open-ended
+  provenance: original
+  spec: '40-pt core open-ended: three-class 10x10 texture patches with 40 labels and a 760-patch unlabelled
+    pool; baseline labelled-only TextureCNN; StepBudget(1500), < 60 s; one final_test_score; four-part
+    writeup; optional-colab-l4 with Accelerator extension.'
+  answer_key: metric=accuracy; direction=higher; B=0.5550; R=0.9975; tiers=0.8869,0.5550,0.4444
+  files:
+  - problems/p04.ipynb
+  data:
+    generator_script: data/gen_r2_001.py
+    seed: 20261101
+- id: r2-001-p05
+  day: 2
+  section: d2-open
+  units:
+  - B2-024-gpu-scientific-ml-capstone
+  concepts:
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  cluster: capstone
+  points: 50
+  difficulty: core
+  type: programming
+  answer_form: open-ended
+  provenance: original
+  spec: '50-pt core open-ended: recover (a, c, w) of K = 2 Lorentzian peaks a/(1+((x-c)/w)^2) from 40
+    noisy midpoint samples; baseline fixed-start least squares; StepBudget(2000), < 60 s; one final_test_score;
+    four-part writeup; optional-colab-l4 with Accelerator extension.'
+  answer_key: metric=parameter_error; direction=lower; B=0.01711; R=0.005272; tiers=0.008231,0.01711,0.02007
+  files:
+  - problems/p05.ipynb
+  data:
+    generator_script: data/gen_r2_001.py
+    seed: 20261101

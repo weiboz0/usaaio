@@ -159,7 +159,7 @@ def valid_manifest(test: str = "r2-001") -> dict[str, Any]:
         "generation_parameters": {},
         "day_duration_minutes": 240,
         "total_points": 300,
-        "time_budget": {1: {"d1-arc": 120, "d1-open": 120}, 2: {"d2-arc": 80, "d2-open": 160}},
+        "time_budget": {"1": {"d1-arc": 120, "d1-open": 120}, "2": {"d2-arc": 80, "d2-open": 160}},
         "problems": problems,
     }
 
@@ -266,16 +266,16 @@ def _missing_day(manifest):
 
 
 def _budget_sum(manifest):
-    manifest["time_budget"][1]["d1-open"] = 110
+    manifest["time_budget"]["1"]["d1-open"] = 110
 
 
 def _budget_sections(manifest):
-    manifest["time_budget"][1] = {"d1-arc": 120, "d2-open": 120}
+    manifest["time_budget"]["1"] = {"d1-arc": 120, "d2-open": 120}
 
 
 def _day_duration(manifest):
     manifest["day_duration_minutes"] = 180
-    manifest["time_budget"] = {1: {"d1-arc": 90, "d1-open": 90}, 2: {"d2-arc": 60, "d2-open": 120}}
+    manifest["time_budget"] = {"1": {"d1-arc": 90, "d1-open": 90}, "2": {"d2-arc": 60, "d2-open": 120}}
 
 
 def _family(manifest):
@@ -421,3 +421,13 @@ def test_overlap_scan_discovers_flat_two_day_r2_statement_files(tmp_path):
     report = check_overlap(tmp_path, book_number=2)
     assert not report.ok
     assert any("r2-001-p02 overlaps" in error for error in report.errors), report.errors
+
+
+def test_manifest_day_keys_are_strings_and_bare_integers_still_parse(tmp_path):
+    manifest = valid_manifest()
+    manifest["time_budget"] = {1: manifest["time_budget"]["1"], 2: manifest["time_budget"]["2"]}
+    write_book2(tmp_path, manifest)
+    assert load_mock_manifests(tmp_path, book_number=2)[0].day_time_budget[2] == {
+        "d2-arc": 80, "d2-open": 160}
+    raw = yaml.safe_load((BOOK2_ROOT / "mocktests" / "blueprint.yaml").read_text())
+    assert set(raw["default_time_budget"]) == {1, 2}

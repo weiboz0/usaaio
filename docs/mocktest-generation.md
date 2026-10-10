@@ -177,9 +177,9 @@ generation_parameters:
   difficulty_draw: {intro: 0.2, core: 0.45, advanced: 0.35}
 day_duration_minutes: 240        # replaces Book 1's duration_minutes
 total_points: 300
-time_budget:                     # {day: {section: minutes}}; each day sums to day_duration_minutes
-  1: {d1-arc: 120, d1-open: 120}
-  2: {d2-arc: 80, d2-open: 160}
+time_budget:                     # {"day": {section: minutes}}; each day sums to day_duration_minutes
+  '1': {d1-arc: 120, d1-open: 120}  # day keys are quoted: manifests stay string-keyed
+  '2': {d2-arc: 80, d2-open: 160}
 problems:
   - id: r2-001-p01-1
     day: 1                       # must equal the section's day

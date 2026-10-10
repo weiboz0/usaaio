@@ -43,7 +43,7 @@ def test_book2_scaffold_uses_flat_layout_and_default_anchors(tmp_path):
     assert raw["day_duration_minutes"] == 240
     assert raw["total_points"] == 300
     assert "duration_minutes" not in raw
-    assert raw["time_budget"] == {1: {"d1-arc": 120, "d1-open": 120}, 2: {"d2-arc": 80, "d2-open": 160}}
+    assert raw["time_budget"] == {"1": {"d1-arc": 120, "d1-open": 120}, "2": {"d2-arc": 80, "d2-open": 160}}
     assert raw["generation_parameters"] == {
         "rotation_index": 0,
         "section_points": {"d1-arc": 90, "d1-open": 70, "d2-arc": 50, "d2-open": [40, 50]},

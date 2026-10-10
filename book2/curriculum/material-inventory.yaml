@@ -6,12 +6,23 @@ counts:
   lesson_sessions: 37
   unit_nonpractice_notebooks: 49
   unit_notebooks: 345
-  mocktests: 0
-  mock_notebooks: 0
+  mocktests: 1
+  mock_notebooks: 10
   manifested_minutes: 10090
   scheduled_minutes: 10270
 input_paths:
 - docs/course-structure.md
+- mocktests/r2-001/manifest.yaml
+- mocktests/r2-001/problems/p01.ipynb
+- mocktests/r2-001/problems/p02.ipynb
+- mocktests/r2-001/problems/p03.ipynb
+- mocktests/r2-001/problems/p04.ipynb
+- mocktests/r2-001/problems/p05.ipynb
+- mocktests/r2-001/solutions/p01_solution.ipynb
+- mocktests/r2-001/solutions/p02_solution.ipynb
+- mocktests/r2-001/solutions/p03_solution.ipynb
+- mocktests/r2-001/solutions/p04_solution.ipynb
+- mocktests/r2-001/solutions/p05_solution.ipynb
 - syllabus.md
 - units/B2-019-attention-transformers/lesson.ipynb
 - units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb
@@ -369,6 +380,9 @@ documents:
   kind: document
   semantic_sha256: 979d330b92bef5dede79adcfeacbf7bc00f1fcb408d14c17cdd00e94fcb66cb2
 manifests:
+- path: mocktests/r2-001/manifest.yaml
+  kind: yaml
+  semantic_sha256: f9b2273bb37432b3f3fb337c54a76e42c31f5a0d53bc0a4cc606427449ec0259
 - path: syllabus.md
   kind: canonical-yaml
   semantic_sha256: b4e37c3df747e2d8021d40e2d8178c8beb9bcc69f25e2de0bf5b559d35a371c8
@@ -391,6 +405,1142 @@ manifests:
   kind: yaml
   semantic_sha256: c77f3cdeb0ad94d44d047fecb571c98b30d466bdec5d226ba2d7e3f9448019ba
 notebooks:
+- path: mocktests/r2-001/problems/p01.ipynb
+  kind: notebook
+  semantic_sha256: de036713fa94645083c6dfd92b386533657d6a07a96a6f2ef7f209a5c196b5b5
+  anchors:
+  - anchor: 'mocktests/r2-001/problems/p01.ipynb :: Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+      :: cell 1'
+    heading_path:
+    - Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p01.ipynb :: Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+      :: cell 2'
+    heading_path:
+    - Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p01.ipynb :: Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+      > Part 1.11 (5 points) :: cell 1'
+    heading_path:
+    - Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+    - Part 1.11 (5 points)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p01.ipynb :: Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+      > Part 1.11 (5 points) :: cell 2'
+    heading_path:
+    - Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+    - Part 1.11 (5 points)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p01.ipynb :: Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+      > Part 1.12 (10 points) :: cell 1'
+    heading_path:
+    - Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+    - Part 1.12 (10 points)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p01.ipynb :: Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+      > Part 1.12 (10 points) :: cell 2'
+    heading_path:
+    - Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+    - Part 1.12 (10 points)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p01.ipynb :: Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+      > Part 1.13 (10 points) :: cell 1'
+    heading_path:
+    - Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+    - Part 1.13 (10 points)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p01.ipynb :: Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+      > Part 1.13 (10 points) :: cell 2'
+    heading_path:
+    - Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+    - Part 1.13 (10 points)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p01.ipynb :: Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+      > Your explanation for Part 1.13 (at most two sentences) :: cell 1'
+    heading_path:
+    - Problem 1 (programming parts). A Tiny Causal Language Model, End to End
+    - Your explanation for Part 1.13 (at most two sentences)
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - attention-mask
+  - causal-language-modeling
+  - causal-self-attention
+  - language-transformer
+  - learned-token-embedding
+  - multi-head-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  declared_problem_ids:
+  - r2-001-p01-11
+  - r2-001-p01-12
+  - r2-001-p01-13
+  api_tokens:
+  - candidates.insert
+  - json.loads
+  - os.environ.get
+  - path.resolve
+  - pathlib.Path
+  - torch.set_num_threads
+  - torch.tensor
+- path: mocktests/r2-001/problems/p02.ipynb
+  kind: notebook
+  semantic_sha256: 2020894870bf3a02fe88a84b25bd941d9a832b1cc33df9a7cd640e67959a3f7c
+  anchors:
+  - anchor: 'mocktests/r2-001/problems/p02.ipynb :: Problem 2. Two-Source Heat Localization > Committed baseline :: cell 1'
+    heading_path:
+    - Problem 2. Two-Source Heat Localization
+    - Committed baseline
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p02.ipynb :: Problem 2. Two-Source Heat Localization > Fixed elements (all are graded)
+      :: cell 1'
+    heading_path:
+    - Problem 2. Two-Source Heat Localization
+    - Fixed elements (all are graded)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p02.ipynb :: Problem 2. Two-Source Heat Localization > Grading :: cell 1'
+    heading_path:
+    - Problem 2. Two-Source Heat Localization
+    - Grading
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p02.ipynb :: Problem 2. Two-Source Heat Localization > Grading :: cell 2'
+    heading_path:
+    - Problem 2. Two-Source Heat Localization
+    - Grading
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p02.ipynb :: Problem 2. Two-Source Heat Localization > Your work :: cell 1'
+    heading_path:
+    - Problem 2. Two-Source Heat Localization
+    - Your work
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p02.ipynb :: Problem 2. Two-Source Heat Localization > Your work :: cell 2'
+    heading_path:
+    - Problem 2. Two-Source Heat Localization
+    - Your work
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p02.ipynb :: Problem 2. Two-Source Heat Localization > Writeup :: cell 1'
+    heading_path:
+    - Problem 2. Two-Source Heat Localization
+    - Writeup
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p02.ipynb :: Problem 2. Two-Source Heat Localization > Accelerator extension :: cell
+      1'
+    heading_path:
+    - Problem 2. Two-Source Heat Localization
+    - Accelerator extension
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - multivariate-gaussian
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  declared_problem_ids:
+  - r2-001-p02
+  api_tokens:
+  - _spec.loader.exec_module
+  - candidates.insert
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - os.environ.get
+  - path.resolve
+  - pathlib.Path
+  - r2_001_data.train_rows
+  - r2_001_data.val_rows
+  - torch.set_num_threads
+- path: mocktests/r2-001/problems/p03.ipynb
+  kind: notebook
+  semantic_sha256: 88b38701fc4897c9f1fb9df4541f1095d9894241b61eed8db3da5565d4f52f30
+  anchors:
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder ::
+      cell 1'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder ::
+      cell 2'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder >
+      Part 3.5 (5 points) :: cell 1'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    - Part 3.5 (5 points)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder >
+      Part 3.5 (5 points) :: cell 2'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    - Part 3.5 (5 points)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder >
+      Part 3.6 (5 points) :: cell 1'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    - Part 3.6 (5 points)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder >
+      Part 3.6 (5 points) :: cell 2'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    - Part 3.6 (5 points)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder >
+      Part 3.7 (10 points) :: cell 1'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    - Part 3.7 (10 points)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder >
+      Part 3.7 (10 points) :: cell 2'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    - Part 3.7 (10 points)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder >
+      Part 3.8 (5 points) :: cell 1'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    - Part 3.8 (5 points)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder >
+      Part 3.8 (5 points) :: cell 2'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    - Part 3.8 (5 points)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder >
+      Your answer to Part 3.8(c) (at most two sentences) :: cell 1'
+    heading_path:
+    - Problem 3 (programming parts). A β-Weighted Variational Autoencoder
+    - Your answer to Part 3.8(c) (at most two sentences)
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  - kl-divergence
+  - variational-autoencoder
+  declared_problem_ids:
+  - r2-001-p03-5
+  - r2-001-p03-6
+  - r2-001-p03-7
+  - r2-001-p03-8
+  api_tokens:
+  - candidates.insert
+  - json.loads
+  - os.environ.get
+  - path.resolve
+  - pathlib.Path
+  - torch.set_num_threads
+  - torch.tensor
+- path: mocktests/r2-001/problems/p04.ipynb
+  kind: notebook
+  semantic_sha256: 5f05cb1092b868331725f9380be042523b77cc548d781d6f7a926163e8a7a85c
+  anchors:
+  - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Committed
+      baseline :: cell 1'
+    heading_path:
+    - Problem 4. Texture Patches with Five Percent of the Labels
+    - Committed baseline
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Fixed elements
+      (all are graded) :: cell 1'
+    heading_path:
+    - Problem 4. Texture Patches with Five Percent of the Labels
+    - Fixed elements (all are graded)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Grading ::
+      cell 1'
+    heading_path:
+    - Problem 4. Texture Patches with Five Percent of the Labels
+    - Grading
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Grading ::
+      cell 2'
+    heading_path:
+    - Problem 4. Texture Patches with Five Percent of the Labels
+    - Grading
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Your work
+      :: cell 1'
+    heading_path:
+    - Problem 4. Texture Patches with Five Percent of the Labels
+    - Your work
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Your work
+      :: cell 2'
+    heading_path:
+    - Problem 4. Texture Patches with Five Percent of the Labels
+    - Your work
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Writeup ::
+      cell 1'
+    heading_path:
+    - Problem 4. Texture Patches with Five Percent of the Labels
+    - Writeup
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Accelerator
+      extension :: cell 1'
+    heading_path:
+    - Problem 4. Texture Patches with Five Percent of the Labels
+    - Accelerator extension
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - r2-001-p04
+  api_tokens:
+  - _spec.loader.exec_module
+  - candidates.insert
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - os.environ.get
+  - path.resolve
+  - pathlib.Path
+  - r2_001_data.train_rows
+  - r2_001_data.unlabelled_rows
+  - r2_001_data.val_rows
+  - torch.bincount
+  - torch.set_num_threads
+- path: mocktests/r2-001/problems/p05.ipynb
+  kind: notebook
+  semantic_sha256: fde42f921aef08c2e3079add8a5fd4ab7b606b58dc9036cb9cc6c4968885cf9d
+  anchors:
+  - anchor: 'mocktests/r2-001/problems/p05.ipynb :: Problem 5. Reading Two Lorentzian Peaks > Committed baseline :: cell 1'
+    heading_path:
+    - Problem 5. Reading Two Lorentzian Peaks
+    - Committed baseline
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p05.ipynb :: Problem 5. Reading Two Lorentzian Peaks > Fixed elements (all are graded)
+      :: cell 1'
+    heading_path:
+    - Problem 5. Reading Two Lorentzian Peaks
+    - Fixed elements (all are graded)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p05.ipynb :: Problem 5. Reading Two Lorentzian Peaks > Grading :: cell 1'
+    heading_path:
+    - Problem 5. Reading Two Lorentzian Peaks
+    - Grading
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p05.ipynb :: Problem 5. Reading Two Lorentzian Peaks > Grading :: cell 2'
+    heading_path:
+    - Problem 5. Reading Two Lorentzian Peaks
+    - Grading
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p05.ipynb :: Problem 5. Reading Two Lorentzian Peaks > Your work :: cell 1'
+    heading_path:
+    - Problem 5. Reading Two Lorentzian Peaks
+    - Your work
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p05.ipynb :: Problem 5. Reading Two Lorentzian Peaks > Your work :: cell 2'
+    heading_path:
+    - Problem 5. Reading Two Lorentzian Peaks
+    - Your work
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/problems/p05.ipynb :: Problem 5. Reading Two Lorentzian Peaks > Writeup :: cell 1'
+    heading_path:
+    - Problem 5. Reading Two Lorentzian Peaks
+    - Writeup
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/problems/p05.ipynb :: Problem 5. Reading Two Lorentzian Peaks > Accelerator extension :: cell
+      1'
+    heading_path:
+    - Problem 5. Reading Two Lorentzian Peaks
+    - Accelerator extension
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - r2-001-p05
+  api_tokens:
+  - _spec.loader.exec_module
+  - candidates.insert
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - os.environ.get
+  - path.resolve
+  - pathlib.Path
+  - r2_001_data.train_rows
+  - r2_001_data.val_rows
+  - torch.set_num_threads
+- path: mocktests/r2-001/solutions/p01_solution.ipynb
+  kind: notebook
+  semantic_sha256: 02a466c20b5771d573d508ef90ffffc9579b447d9a8eced7a37f971f09776ef9
+  anchors:
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) ::
+      cell 1'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) ::
+      cell 2'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Part 1.11 — causal mask and masked softmax :: cell 1'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Part 1.11 — causal mask and masked softmax
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Part 1.11 — causal mask and masked softmax :: cell 2'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Part 1.11 — causal mask and masked softmax
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Part 1.11 — causal mask and masked softmax :: cell 3'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Part 1.11 — causal mask and masked softmax
+    cell_ordinal: 3
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Part 1.12 — multi-head causal self-attention :: cell 1'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Part 1.12 — multi-head causal self-attention
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Part 1.12 — multi-head causal self-attention :: cell 2'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Part 1.12 — multi-head causal self-attention
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Part 1.12 — multi-head causal self-attention :: cell 3'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Part 1.12 — multi-head causal self-attention
+    cell_ordinal: 3
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Part 1.13 — the full model, training, and perplexity :: cell 1'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Part 1.13 — the full model, training, and perplexity
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Part 1.13 — the full model, training, and perplexity :: cell 2'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Part 1.13 — the full model, training, and perplexity
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Part 1.13 — the full model, training, and perplexity :: cell 3'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Part 1.13 — the full model, training, and perplexity
+    cell_ordinal: 3
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Explanation for Part 1.13 :: cell 1'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Explanation for Part 1.13
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Explanation for Part 1.13 > Answer check :: cell 1'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Explanation for Part 1.13
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) >
+      Explanation for Part 1.13 > Answer check :: cell 2'
+    heading_path:
+    - r2-001 Problem 1 — Solution (programming Parts 1.11–1.13)
+    - Explanation for Part 1.13
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-019-attention-transformers
+  - B2-020-language-transformers
+  declared_concept_ids:
+  - attention-mask
+  - causal-language-modeling
+  - causal-self-attention
+  - language-transformer
+  - learned-token-embedding
+  - multi-head-attention
+  - sinusoidal-positional-encoding
+  - transformer-block
+  declared_problem_ids:
+  - r2-001-p01-11
+  - r2-001-p01-12
+  - r2-001-p01-13
+  api_tokens:
+  - F.cross_entropy
+  - F.relu
+  - S.clone
+  - W.sum
+  - allowed.expand_as
+  - allowed_b.any
+  - attn.parameters
+  - candidates.insert
+  - ce.view
+  - ce_after.mean
+  - ce_before.mean
+  - heads.transpose
+  - json.loads
+  - k.transpose
+  - logits.reshape
+  - loss.backward
+  - loss.item
+  - losses.append
+  - math.exp
+  - math.sqrt
+  - model.eval
+  - model.named_parameters
+  - model.parameters
+  - model.train
+  - nn.Embedding
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.ModuleList
+  - optimizer.step
+  - optimizer.zero_grad
+  - os.environ.get
+  - out.abs
+  - out.detach
+  - p.numel
+  - path.resolve
+  - pathlib.Path
+  - per_pos_ppl.argmax
+  - per_pos_ppl.tolist
+  - scores.masked_fill
+  - self.attn
+  - self.ff1
+  - self.ff2
+  - self.head
+  - self.k_proj
+  - self.ln1
+  - self.ln2
+  - self.ln_f
+  - self.o_proj
+  - self.q_proj
+  - self.register_buffer
+  - self.tok
+  - self.v_proj
+  - t.view
+  - table.float
+  - targets.reshape
+  - torch.Generator
+  - torch.allclose
+  - torch.arange
+  - torch.as_tensor
+  - torch.cos
+  - torch.equal
+  - torch.exp
+  - torch.log
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.ones
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_num_threads
+  - torch.sin
+  - torch.softmax
+  - torch.tensor
+  - torch.tril
+  - torch.zeros
+  - x.clone
+- path: mocktests/r2-001/solutions/p02_solution.ipynb
+  kind: notebook
+  semantic_sha256: 98056f4ce04cb66c71ab805d43da76e05a7db4189b584b19a745248feda7536b
+  anchors:
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      :: cell 1'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      :: cell 2'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > Budget, forward-model check, and the committed baseline :: cell 1'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - Budget, forward-model check, and the committed baseline
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > Budget, forward-model check, and the committed baseline :: cell 2'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - Budget, forward-model check, and the committed baseline
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > Approach: learned inverse + per-example least-squares refinement :: cell 1'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - 'Approach: learned inverse + per-example least-squares refinement'
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > Approach: learned inverse + per-example least-squares refinement :: cell 2'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - 'Approach: learned inverse + per-example least-squares refinement'
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > Validation evidence (every choice is made here) :: cell 1'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - Validation evidence (every choice is made here)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > Validation evidence (every choice is made here) :: cell 2'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - Validation evidence (every choice is made here)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > The single locked-test call :: cell 1'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - The single locked-test call
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > The single locked-test call :: cell 2'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - The single locked-test call
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > Writeup :: cell 1'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - Writeup
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > Writeup > Answer check :: cell 1'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - Writeup
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
+      > Writeup > Answer check :: cell 2'
+    heading_path:
+    - r2-001 Problem 2 — Reference solution (two-source heat localization)
+    - Writeup
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - multivariate-gaussian
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - scientific-ml-inverse-problems
+  declared_problem_ids:
+  - r2-001-p02
+  api_tokens:
+  - _spec.loader.exec_module
+  - budget.elapsed
+  - budget.wrap
+  - candidates.insert
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loss.backward
+  - loss.item
+  - net.eval
+  - net.parameters
+  - nn.GELU
+  - nn.Linear
+  - nn.Sequential
+  - opt.step
+  - opt.zero_grad
+  - os.environ.get
+  - path.resolve
+  - pathlib.Path
+  - r2_001_data.StepBudget
+  - r2_001_data.baseline_score
+  - r2_001_data.canonical_heat
+  - r2_001_data.final_test_score
+  - r2_001_data.heat_baseline_init
+  - r2_001_data.heat_forward
+  - r2_001_data.heat_ls_fit
+  - r2_001_data.pair_position_error_per_example
+  - r2_001_data.simulate
+  - r2_001_data.split_of
+  - r2_001_data.test_call_count
+  - r2_001_data.train_rows
+  - r2_001_data.val_rows
+  - sched.step
+  - seam.add
+  - state.update
+  - torch.Generator
+  - torch.cat
+  - torch.exp
+  - torch.log
+  - torch.manual_seed
+  - torch.minimum
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.optim.lr_scheduler.OneCycleLR
+  - torch.randint
+  - torch.set_num_threads
+  - torch.stack
+  - train_x.mean
+  - train_x.std
+  - x_train.double
+  - y_train.double
+- path: mocktests/r2-001/solutions/p03_solution.ipynb
+  kind: notebook
+  semantic_sha256: efd3dc03dca49b90dd82518fe9202db38b1f59c182bb7a2b44bde6df37735b4e
+  anchors:
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) :: cell
+      1'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) :: cell
+      2'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.5 — KL to the prior and the reparameterization :: cell 1'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.5 — KL to the prior and the reparameterization
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.5 — KL to the prior and the reparameterization :: cell 2'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.5 — KL to the prior and the reparameterization
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.5 — KL to the prior and the reparameterization :: cell 3'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.5 — KL to the prior and the reparameterization
+    cell_ordinal: 3
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.6 — the β-weighted batch objective :: cell 1'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.6 — the β-weighted batch objective
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.6 — the β-weighted batch objective :: cell 2'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.6 — the β-weighted batch objective
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.6 — the β-weighted batch objective :: cell 3'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.6 — the β-weighted batch objective
+    cell_ordinal: 3
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.7 — TinyVAE and its training protocol :: cell 1'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.7 — TinyVAE and its training protocol
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.7 — TinyVAE and its training protocol :: cell 2'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.7 — TinyVAE and its training protocol
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.7 — TinyVAE and its training protocol :: cell 3'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.7 — TinyVAE and its training protocol
+    cell_ordinal: 3
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.8 — active latents and posterior collapse at β = 8 :: cell 1'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.8 — active latents and posterior collapse at β = 8
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Part
+      3.8 — active latents and posterior collapse at β = 8 :: cell 2'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Part 3.8 — active latents and posterior collapse at β = 8
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Answer
+      to Part 3.8(c) :: cell 1'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Answer to Part 3.8(c)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Answer
+      to Part 3.8(c) > Answer check :: cell 1'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Answer to Part 3.8(c)
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) > Answer
+      to Part 3.8(c) > Answer check :: cell 2'
+    heading_path:
+    - r2-001 Problem 3 — Solution (programming Parts 3.5–3.8)
+    - Answer to Part 3.8(c)
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-022-probabilistic-latent-models
+  declared_concept_ids:
+  - gaussian-reparameterization
+  - kl-divergence
+  - variational-autoencoder
+  declared_problem_ids:
+  - r2-001-p03-5
+  - r2-001-p03-6
+  - r2-001-p03-7
+  - r2-001-p03-8
+  api_tokens:
+  - F.relu
+  - candidates.insert
+  - json.loads
+  - kl.detach
+  - kl.item
+  - kl2.tolist
+  - kl8.tolist
+  - log.append
+  - logvar.detach
+  - math.log
+  - model.encode
+  - model.parameters
+  - model2.zero_grad
+  - nn.Linear
+  - optimizer.step
+  - optimizer.zero_grad
+  - os.environ.get
+  - path.resolve
+  - pathlib.Path
+  - recon.item
+  - recon_only.backward
+  - self.dec1
+  - self.dec2
+  - self.decode
+  - self.encode
+  - self.hidden
+  - self.logvar_head
+  - self.mu_head
+  - torch.Generator
+  - torch.allclose
+  - torch.exp
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.ones_like
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_num_threads
+  - torch.tensor
+  - total.backward
+  - total.item
+  - z.sum
+- path: mocktests/r2-001/solutions/p04_solution.ipynb
+  kind: notebook
+  semantic_sha256: a0829950b3e187e9b90039aa9d7e021140b2a497fa32fc525ff82691d156b175
+  anchors:
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      :: cell 1'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      :: cell 2'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > Budget and the committed baseline :: cell 1'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - Budget and the committed baseline
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > Budget and the committed baseline :: cell 2'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - Budget and the committed baseline
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > Approach :: cell 1'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - Approach
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > Approach :: cell 2'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - Approach
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > Validation evidence, including ablations (every choice is made here) :: cell 1'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - Validation evidence, including ablations (every choice is made here)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > Validation evidence, including ablations (every choice is made here) :: cell 2'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - Validation evidence, including ablations (every choice is made here)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > The single locked-test call :: cell 1'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - The single locked-test call
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > The single locked-test call :: cell 2'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - The single locked-test call
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > Writeup :: cell 1'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - Writeup
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > Writeup > Answer check :: cell 1'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - Writeup
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+      > Writeup > Answer check :: cell 2'
+    heading_path:
+    - r2-001 Problem 4 — Reference solution (texture patches, 5% labels)
+    - Writeup
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  - semi-supervised-pseudo-labeling
+  declared_problem_ids:
+  - r2-001-p04
+  api_tokens:
+  - F.cross_entropy
+  - F.softmax
+  - _spec.loader.exec_module
+  - budget.elapsed
+  - budget.wrap
+  - candidates.insert
+  - cnn.parameters
+  - cnn_opt.step
+  - cnn_opt.zero_grad
+  - flat.sort
+  - flat.sum
+  - head.eval
+  - head.parameters
+  - history.append
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - keep.sum
+  - nn.Linear
+  - opt.step
+  - opt.zero_grad
+  - os.environ.get
+  - path.resolve
+  - pathlib.Path
+  - power.reshape
+  - r2_001_data.StepBudget
+  - r2_001_data.TextureCNN
+  - r2_001_data.accuracy_per_example
+  - r2_001_data.baseline_score
+  - r2_001_data.final_test_score
+  - r2_001_data.split_of
+  - r2_001_data.test_call_count
+  - r2_001_data.train_rows
+  - r2_001_data.unlabelled_rows
+  - r2_001_data.val_rows
+  - raw.mean
+  - raw.std
+  - seam.add
+  - torch.bincount
+  - torch.cat
+  - torch.fft.fft2
+  - torch.fft.fftfreq
+  - torch.manual_seed
+  - torch.meshgrid
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.set_num_threads
+  - torch.stack
+  - z.mean
+  - z.std
+- path: mocktests/r2-001/solutions/p05_solution.ipynb
+  kind: notebook
+  semantic_sha256: 97e473ac9e46979ec1ab8d836b9a1b4a33b11c7c51712c571cdf2d500b9ce16a
+  anchors:
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      :: cell 1'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      :: cell 2'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > Budget and the committed baseline :: cell 1'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - Budget and the committed baseline
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > Budget and the committed baseline :: cell 2'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - Budget and the committed baseline
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > Approach :: cell 1'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - Approach
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > Approach :: cell 2'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - Approach
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > Validation evidence (every choice is made here) :: cell 1'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - Validation evidence (every choice is made here)
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > Validation evidence (every choice is made here) :: cell 2'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - Validation evidence (every choice is made here)
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > The single locked-test call :: cell 1'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - The single locked-test call
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > The single locked-test call :: cell 2'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - The single locked-test call
+    cell_ordinal: 2
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > Writeup :: cell 1'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - Writeup
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > Writeup > Answer check :: cell 1'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - Writeup
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+      > Writeup > Answer check :: cell 2'
+    heading_path:
+    - r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
+    - Writeup
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-024-gpu-scientific-ml-capstone
+  declared_concept_ids:
+  - mixture-parameter-regression
+  - open-ended-experiment-design
+  - open-ended-model-evaluation
+  declared_problem_ids:
+  - r2-001-p05
+  api_tokens:
+  - _spec.loader.exec_module
+  - budget.elapsed
+  - budget.wrap
+  - candidates.insert
+  - den.abs
+  - f.double
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loss.backward
+  - loss.item
+  - net.eval
+  - net.parameters
+  - nn.GELU
+  - nn.Linear
+  - nn.Sequential
+  - opt.step
+  - opt.zero_grad
+  - os.environ.get
+  - params.double
+  - path.resolve
+  - pathlib.Path
+  - r.argmax
+  - r.gather
+  - r2_001_data.LORENTZ_X.double
+  - r2_001_data.StepBudget
+  - r2_001_data.baseline_score
+  - r2_001_data.final_test_score
+  - r2_001_data.lorentz_ls_fit
+  - r2_001_data.lorentz_values
+  - r2_001_data.pair_parameter_error_per_example
+  - r2_001_data.simulate
+  - r2_001_data.split_of
+  - r2_001_data.test_call_count
+  - r2_001_data.train_rows
+  - r2_001_data.val_rows
+  - res.argmin
+  - rows.items
+  - sched.step
+  - seam.add
+  - state.update
+  - torch.Generator
+  - torch.arange
+  - torch.cat
+  - torch.manual_seed
+  - torch.minimum
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.optim.lr_scheduler.OneCycleLR
+  - torch.randint
+  - torch.set_num_threads
+  - torch.stack
+  - torch.tensor
+  - torch.where
+  - torch.zeros
+  - torch.zeros_like
+  - train_x.mean
+  - train_x.std
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
   semantic_sha256: f87303c40ad22fec645e6c993b503dd159f3f2de0ec2d821322d5033c70ef1b6

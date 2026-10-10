@@ -23,7 +23,7 @@ BOOK2_ROOT = ROOT / "book2"
 FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "two-books-valid"
 BOOK1_SCHEDULE_SHA256 = "6c1f4f6eeb518930e5772ef0f14d8bba18be1f191114c91edfae52ef8811eb4d"
 BOOK1_STRUCTURE_SHA256 = "75518825359dd1e0ed3501c0301fbdfb1fc685d6944465f924f1f88c0d25e642"
-BOOK2_SCHEDULE_SHA256 = "fa4d3916ce2a5fdc09c05b2b9add266644ef24200a2f4ddf2e8427ac0b5eb03c"
+BOOK2_SCHEDULE_SHA256 = "fef51a85cbd652de279d60429c0a5559ba2e6a6ac6e767f2dd5293c22bf65e56"
 BOOK2_MANIFEST_SHA256 = "c50be81714b421e85f1e3e3afdf0eddd65352ae7c0f94ba5f655cb2716e9d5c1"
 B2_019 = "B2-019-attention-transformers"
 B2_020 = "B2-020-language-transformers"
@@ -350,8 +350,9 @@ def test_registered_book2_schedule_is_exact_thirty_seven_week_live_ledger() -> N
     assert raw["total_book_weeks"] == 37
     assert raw["total_minutes"] == 10270
     assert raw["final_assessment"] == {
-        "kind": "future-r2-mock",
-        "status": "planned",
+        "kind": "r2-mock",
+        "status": "live",
+        "test": "r2-001",
         "after_book_week": 37,
     }
     assert [week["book_week"] for week in raw["weeks"]] == list(range(1, 38))
@@ -1058,7 +1059,7 @@ def test_unregistered_direct_schedule_api_requires_explicit_identity(
             lambda schedule: schedule["final_assessment"].update(
                 after_book_week=5
             ),
-            "planned final assessment marker must follow book week 37",
+            "final assessment marker must follow book week 37",
             id="stale-final-marker",
         ),
         pytest.param(
