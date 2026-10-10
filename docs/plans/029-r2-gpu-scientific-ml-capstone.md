@@ -265,26 +265,26 @@ If a row on the merged `main` lists modalities different from this table, Task 1
 
 Steps:
 
-- [ ] Write failing tests for `optional-colab-l4` in a copied Book 2 fixture. The policy is accepted only when:
+- [x] Write failing tests for `optional-colab-l4` in a copied Book 2 fixture. The policy is accepted only when:
   - the practice has a local solution path (the CPU correctness path);
   - the statement contains an `Accelerator extension` heading.
   The tests also show that `gpu-required` is still rejected (unsupported here), that unknown policies are rejected, and that `cpu` behavior is unchanged byte for byte on the shipped Book 2.
-- [ ] Implement the minimal `_check_compute` change.
-- [ ] Write failing tests for the existing B2-024 `planned_units` row:
+- [x] Implement the minimal `_check_compute` change.
+- [x] Write failing tests for the existing B2-024 `planned_units` row:
   - the exact prerequisite sequence;
   - the six `provisional_concepts`;
   - the double-length standard (6 sessions, 28 practices);
   - the six rows staying `missing`.
   Also prove, in a copied fixture, the seven-week ledger after B2-023 (`after_book_week: 37`, 10,270 scheduled minutes) and that duplicate, misordered, missing-session, minute-mismatched, or before-week-31 allocations are rejected.
-- [ ] Update only the existing planned row (prerequisites rewritten to the 14-unit list; `provisional_concepts` set) and regenerate the roadmap and audit. The "rows stay `missing`" assertions are rewritten in Task 3 when the rows are promoted. Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_compute_policy.py tests/test_book2_schedule.py tests/test_b2_024_plan.py` and commit.
+- [x] Update only the existing planned row (prerequisites rewritten to the 14-unit list; `provisional_concepts` set) and regenerate the roadmap and audit. The "rows stay `missing`" assertions are rewritten in Task 3 when the rows are promoted. Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_compute_policy.py tests/test_book2_schedule.py tests/test_b2_024_plan.py` and commit.
 
 ### Task 2 — Author lessons, statements, and generators
 
-- [ ] Dispatch authoring to an Opus subagent per `AGENTS.md ## Agent dispatch`. It writes, in a temporary directory outside `book2/units/`:
+- [x] Dispatch authoring to an Opus subagent per `AGENTS.md ## Agent dispatch`. It writes, in a temporary directory outside `book2/units/`:
   - the bridge, overview, six lessons, and review;
   - the 28 statements;
   - `scripts/generate_capstone_data.py` with `data/capstone_data.py`.
-- [ ] The generator produces four seeded datasets:
+- [x] The generator produces four seeded datasets:
   - 8×8 synthetic shape images (3 classes) with noise, position jitter, and stroke-width variation, in two disjoint families:
     - `shapes_supervised` for p16: 600 labelled train, 150 validation, 150 test;
     - `shapes_ssl` for p17/p18: 30 labelled train, 30 labelled validation, 600 unlabelled, 300 test. It is tuned so the labelled-only baseline lands at most 0.85 test accuracy at the frozen seed.
@@ -293,13 +293,13 @@ Steps:
   - mixture-function samples (`K = 3` bumps, 32 x-values, canonical parameters): 800 train, 200 validation, and 200 test;
   - two literal results tables for p24/p28.
   It exposes immutable split ID tuples, a canonical per-row SHA-256 map, `final_test_score(predict_fn)`, `baseline_score(task)`, and a `StepBudget` optimizer wrapper. It has a `--check` mode, and it never stores trained weights or metrics.
-- [ ] Model-building statements (p16–p22, p26, p27) follow the evaluation protocol above and name one clean-row seam each, so leakage checks can hash clean rows there:
+- [x] Model-building statements (p16–p22, p26, p27) follow the evaluation protocol above and name one clean-row seam each, so leakage checks can hash clean rows there:
   - p16, p17, p19 and p20: the model's first `forward`;
   - p18: the frozen feature extractor's `features(x)`;
   - p21 and p22: the `fit(train_x, train_y)` call of the compared models;
   - p26 and p27: the `fit` entry point the statement requires every approach to expose.
-- [ ] Every `optional-colab-l4` statement carries an `Accelerator extension` section: the larger L4 configuration, given as a replacement config dict for the same code path.
-- [ ] CPU budgets, pinned in the statements:
+- [x] Every `optional-colab-l4` statement carries an `Accelerator extension` section: the larger L4 configuration, given as a replacement config dict for the same code path.
+- [x] CPU budgets, pinned in the statements:
   - p16: CNN `Conv(1→8,3)`, ReLU, `Conv(8→16,3)`, ReLU, linear head to 3 classes; 600 rows; 300 mini-batch steps (batch 64).
   - p17: the same CNN; 3 self-training rounds of 150 steps each.
   - p18: the p16 CNN trained on labelled data only (150 steps), then k-means with k = 3 and 20 Lloyd iterations.
@@ -308,17 +308,17 @@ Steps:
   - p21 and p22: MLPs no wider than 64 on the inverse-problem pairs dataset; ≤ 2,000 total steps. All comparisons, bootstrap CIs, ablations and robustness checks are computed on validation. The single `final_test_score` call scores only the final selected model (p21: the chosen family; p22: the chosen configuration).
   - p26 and p27: within `StepBudget(2000)`.
   Every solution must run well under 20 s on CPU, measured in Task 3.
-- [ ] Certification margins are set from the frozen-seed run with comfortable slack. Two are pinned here:
+- [x] Certification margins are set from the frozen-seed run with comfortable slack. Two are pinned here:
   - p17 and p18 must beat the baseline by at least 0.03 absolute test accuracy;
   - p20's margin below the baseline is taken from the frozen-seed run, not assumed positive; if the refined pipeline cannot clear the baseline with slack, the LS refinement steps are adjusted before publication and the change is recorded;
   - p19, p20, p26 and p27 must beat their committed baseline scores.
-- [ ] The open-ended challenges (p26, p27) fix a held-out set, a score function, a stated baseline score, a step budget, and a required writeup following the four-part rubric (Approach, Alternatives considered, Evaluation, Limitations). Any approach that beats the baseline within budget is correct. The solution gives one reference approach plus the writeup.
-- [ ] Bundle allowlist checks (as in Plans 027/028), then a SHA-256 manifest outside the bundle.
+- [x] The open-ended challenges (p26, p27) fix a held-out set, a score function, a stated baseline score, a step budget, and a required writeup following the four-part rubric (Approach, Alternatives considered, Evaluation, Limitations). Any approach that beats the baseline within budget is correct. The solution gives one reference approach plus the writeup.
+- [x] Bundle allowlist checks (as in Plans 027/028), then a SHA-256 manifest outside the bundle.
 
 ### Task 3 — Blind-author solutions, publish, and execute
 
-- [ ] Dispatch a separate fresh Opus subagent for solutions with only the hash-verified bundle. One solution per statement, no stored outputs, final `### Answer check`, `SEED=20261022`. Statement ambiguities found are fixed in the statements and listed in the report.
-- [ ] Publish atomically, mirroring Plans 027 and 028:
+- [x] Dispatch a separate fresh Opus subagent for solutions with only the hash-verified bundle. One solution per statement, no stored outputs, final `### Answer check`, `SEED=20261022`. Statement ambiguities found are fixed in the statements and listed in the report.
+- [x] Publish atomically, mirroring Plans 027 and 028:
   - the `capstone` concept cluster in the syllabus, plus the live unit entry;
   - clear `provisional_concepts`;
   - the unit tree with its manifest; each practice row declares `compute.policy` as in the ledger, with `compute.seed: 20261022`;
@@ -327,11 +327,11 @@ Steps:
   - the path inventory and its guard SHA;
   - the 20-second solution-timeout glob;
   - regenerated artifacts.
-- [ ] Execute every solution without `--inplace` and record elapsed times (<20 s each). Commit `tests/test_b2_024_statements.py`, covering hygiene, the ledger, coverage, generator `--check`, headers, an `Accelerator extension` heading in every L4 statement, and the exact file inventory.
+- [x] Execute every solution without `--inplace` and record elapsed times (<20 s each). Commit `tests/test_b2_024_statements.py`, covering hygiene, the ledger, coverage, generator `--check`, headers, an `Accelerator extension` heading in every L4 statement, and the exact file inventory.
 
 ### Task 4 — Answer-check integrity (lightweight)
 
-- [ ] Write `tests/test_capstone_checks.py`. For every listed function, the untouched solution passes and the named wrong variant fails:
+- [x] Write `tests/test_capstone_checks.py`. For every listed function, the untouched solution passes and the named wrong variant fails:
   - `move_batch`: the model moved but the batch left behind;
   - `load_checkpoint`: RNG state not restored;
   - `bootstrap_ci`: resampling predictions without the matching labels;
@@ -344,23 +344,23 @@ Steps:
   - p16, p17, p19 and p20 (whose statements require a named training function with an optimizer) get a no-op optimizer-step mutant.
   - Every model-building practice gets a leakage mutant (validation or test rows reaching training), detected at its named seam with the check armed only during fitting.
   - Every model-building practice gets a protocol mutant (`final_test_score` called twice, or before fitting).
-- [ ] This is a correctness check only; anti-cheat is out of scope. Wire the suite into `scripts/ci-local.sh` step 7 and commit.
+- [x] This is a correctness check only; anti-cheat is out of scope. Wire the suite into `scripts/ci-local.sh` step 7 and commit.
 
 ### Task 5 — Verification, content gate, report, merge
 
-- [ ] Verification phase:
+- [x] Verification phase:
   - the focused suites and the generator `--check`;
   - the per-book checks (prereq, coverage, scope, schedule, tolerance, hygiene, layer-boundary);
   - the `--all` aggregate checks;
   - the audit and roadmap `--check`;
   - `git diff --check`.
-- [ ] `scripts/ci-local.sh` ALL GREEN.
-- [ ] 3-way blind content gate:
+- [x] `scripts/ci-local.sh` ALL GREEN.
+- [x] 3-way blind content gate:
   - Sol solves p01, p10, p13, p19 and p26.
   - Fable solves p04, p08, p14, p17 and p27.
   - Self solves p07, p11, p15, p20 and p23, and also reviews the ledger, coverage, and accessibility. Self also checks provenance: the generator specifics are compared against the local reference index and rationale (where present on this machine) as well as `analysis.md`, to confirm the task families are original and not close paraphrases.
   Resolve every `[OPEN]` finding and re-review after material changes.
-- [ ] Write the verdicts and the post-execution report, and add Plan 029 to `TODO.md`.
+- [x] Write the verdicts and the post-execution report, and add Plan 029 to `TODO.md`.
 - [ ] Rerun CI on the clean tip, push, open the PR, run `pre-merge-guard --pr`, squash-merge without deleting local history refs, and verify `main` equals `origin/main`.
 
 ## Out of scope
@@ -478,4 +478,45 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ## Post-execution report
 
-Pending.
+**Shipped:** `book2/units/B2-024-gpu-scientific-ml-capstone`, the final Book 2 teaching unit.
+- Double-length: bridge, overview, six 90-minute sessions, review, and 28 practices.
+- 2,000 scheduled / 1,970 manifested minutes. Book 2 is now 37 weeks / 10,270 scheduled minutes with `after_book_week: 37`.
+- Hours: 620.75–660.75 manifested / 627.75–667.75 scheduled.
+- Six coverage rows are covered: `gpu-colab-l4-workflow`, `open-ended-experiment-design`, `open-ended-model-evaluation`, `semi-supervised-pseudo-labeling`, `scientific-ml-inverse-problems`, `mixture-parameter-regression`.
+- The `optional-colab-l4` compute policy is now accepted by `layer_boundary.py`. It requires a local solution path plus an `Accelerator extension` heading outside fenced code; `gpu-required` stays rejected.
+
+**Imports added to the Book 2 allowlist:**
+- units: C3, C10, C12;
+- concepts: invertibility-via-rank, sum-of-squares-gradients, overfitting, accuracy-precision-recall, class-imbalance, linear-regression, l2-regularization, gradient-descent, learning-rate, stochastic-gd, parameter-counting, hidden-test-protocol, metric-driven-iteration, writeup-quality, colab-coding-submission, cpu-and-gpu-round-boundary, trained-mlp, k-means, lloyd-algorithm.
+
+**Dispatch and commits:**
+- An Opus author wrote the bundle; a separate fresh Opus session blind-solved all 28 practices. Statement pins from the blind solve: p23 framing, p25 per-round counts, and the p26/p27 iterative-solver budget rule.
+- An Opus implementer: ea55c05, 44d549a, a4e9403, c7a4c57.
+- Content-gate fixes: b37aba8, f4524fa.
+
+**Deviations, recorded and accepted by the gate:**
+- p17 certifies noisy-student self-training. Plain threshold self-training gave no reliable 0.03 gain, and a noise-only ablation is required for honest attribution.
+- p18's cluster-then-label (conv1 pre-ReLU features) clears its bar at the frozen seed only, which the lesson and statement say openly.
+- Inverse targets are (x, y, q) with a position-only metric; strength is checked through the physics residual.
+- A `simulate()` helper was added for accelerator scaling.
+- `final_test_score`'s `task` argument is keyword-only.
+
+**Observed frozen-seed margins (Fable's plan-gate note):**
+- p17 +0.077 and p18 +0.063 test accuracy over the 0.81 baseline (bar 0.84).
+- p19 0.0103 against the 0.2137 baseline.
+- p20 0.0046 against 0.0091.
+- p26 about 0.007 against 0.2137.
+- p27 0.0046 against 0.0091.
+
+**Verification:**
+- Focused suites pass, including `test_capstone_checks.py` (50 passed) and `test_compute_policy.py`.
+- Full pytest: 1516 passed before the final attention-digest repair, which was then verified.
+- After the round-1 fixes, CPU outputs were byte-identical.
+- Solutions run in 3.1–13.5 s.
+- Final authoritative CI is recorded below.
+
+**Content gate:**
+- Three-way blind consensus in round 2. All 15 blind-solved practices agreed with the solutions.
+- Main fix: config-dict accelerator paths, so `L4_CONFIG` is a pure replacement for `CPU_CONFIG`. Also fixed: p10's normal-equations explanation, the fenced-heading loophole, and Lesson 6's budget arithmetic.
+
+**Provenance:** original problems and synthetic generators. They mirror the Round 2 task families structurally only (inverse problem, semi-supervised imaging, mixture regression), as the coverage map requires.
