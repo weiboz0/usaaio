@@ -7,6 +7,7 @@ from typing import Any
 
 from tools.model import (
     Blueprint,
+    ManifestProblem,
     MockManifest,
     Report,
     load_blueprint,
@@ -45,12 +46,188 @@ def _in_range(value: float, limits: dict[str, Any]) -> bool:
     )
 
 
+def _problem_errors(
+    blueprint: Blueprint,
+    concepts: dict[str, str],
+    manifest: MockManifest,
+    problem: ManifestProblem,
+) -> list[str]:
+    """Per-entry rules shared by both books (provenance tag, spec, key, data, cluster)."""
+    errors: list[str] = []
+    if problem.provenance == "adapted" and not problem.adapted_from:
+        tag = blueprint.provenance_rules.get("adapted_requires_tag", "adapted-from")
+        errors.append(f"{manifest.path}: {problem.id} adapted missing {tag}")
+    if not problem.spec:
+        errors.append(f"{manifest.path}: {problem.id} missing spec")
+    if problem.answer_key in (None, "", {}):
+        errors.append(f"{manifest.path}: {problem.id} missing answer_key")
+    if problem.data and not isinstance(problem.data, dict):
+        errors.append(f"{manifest.path}: {problem.id} data must be a mapping")
+    elif problem.data and problem.data.get("generator_script") and not (
+        manifest.path.parent / problem.data["generator_script"]
+    ).exists():
+        errors.append(f"{manifest.path}: {problem.id} missing generator_script")
+
+    folded_concept_clusters = {
+        fold_cluster(blueprint, concepts[concept])
+        for concept in problem.concepts
+        if concept in concepts
+    }
+    if problem.cluster is None:
+        errors.append(f"{manifest.path}: {problem.id} missing cluster")
+    elif folded_concept_clusters and problem.cluster not in folded_concept_clusters:
+        errors.append(f"{manifest.path}: {problem.id} invalid dominant cluster {problem.cluster}")
+    return errors
+
+
+def is_round2(blueprint: Blueprint) -> bool:
+    return blueprint.raw.get("target") == "round-2"
+
+
+def _top_level_problem(problem_id: str) -> str:
+    match = re.search(r"(?:^|-)(p\d+)", problem_id)
+    return match.group(1) if match else problem_id
+
+
+def round2_arc_clusters(blueprint: Blueprint, manifest: MockManifest) -> dict[str, list[str]]:
+    """Allowed arc clusters per day: the manifest's recorded choice, else rotation (NNN-1) mod n."""
+    recorded = (manifest.generation_parameters or {}).get("arc_clusters")
+    if isinstance(recorded, dict):
+        return {str(key): list(value) for key, value in recorded.items()}
+    rotation = blueprint.raw.get("arc_rotation") or []
+    match = re.fullmatch(r"r\d+-(\d{3})", manifest.test)
+    if not rotation or match is None:
+        return {}
+    entry = rotation[(int(match.group(1)) - 1) % len(rotation)]
+    return {str(key): list(value) for key, value in entry.items()}
+
+
+def _validate_round2_manifest(
+    blueprint: Blueprint,
+    concepts: dict[str, str],
+    manifest: MockManifest,
+) -> list[str]:
+    """Book 2 (Round 2): day-scoped sections with a kind, per-day budgets, open-ended rules."""
+    errors: list[str] = []
+    where = manifest.path
+    sections = {section["id"]: section for section in blueprint.sections}
+    section_points: Counter[str] = Counter()
+    section_entries: Counter[str] = Counter()
+    section_problems: dict[str, set[str]] = {section_id: set() for section_id in sections}
+    difficulty_points: Counter[str] = Counter()
+    cluster_points: Counter[str] = Counter()
+    original_points = 0
+    open_points = 0
+    families = set(blueprint.raw.get("open_ended_families") or [])
+    arc_clusters = round2_arc_clusters(blueprint, manifest)
+
+    total = sum(problem.points for problem in manifest.problems)
+    if total != blueprint.total_points:
+        errors.append(f"{where}: points sum {total} != {blueprint.total_points}")
+    if manifest.total_points and manifest.total_points != blueprint.total_points:
+        errors.append(f"{where}: total_points {manifest.total_points} != blueprint total")
+
+    day_minutes = int(blueprint.raw.get("day_duration_minutes", 0))
+    if manifest.day_duration_minutes != day_minutes:
+        errors.append(
+            f"{where}: day_duration_minutes {manifest.day_duration_minutes} differs from "
+            f"blueprint {day_minutes}"
+        )
+    days = list(range(1, int(blueprint.raw.get("days", 0)) + 1))
+    if sorted(manifest.day_time_budget) != days:
+        errors.append(f"{where}: time_budget days {sorted(manifest.day_time_budget)} != {days}")
+    for day in days:
+        budget = manifest.day_time_budget.get(day, {})
+        expected_sections = {sid for sid, section in sections.items() if section.get("day") == day}
+        if set(budget) != expected_sections:
+            errors.append(
+                f"{where}: time_budget day {day} sections {sorted(budget)} != "
+                f"{sorted(expected_sections)}"
+            )
+        if sum(budget.values()) != manifest.day_duration_minutes:
+            errors.append(
+                f"{where}: time_budget day {day} sums to {sum(budget.values())}, "
+                f"not day_duration_minutes {manifest.day_duration_minutes}"
+            )
+
+    for problem in manifest.problems:
+        section = sections.get(problem.section)
+        if section is None:
+            errors.append(f"{where}: {problem.id} unknown section {problem.section!r}")
+        if problem.difficulty not in blueprint.difficulty_mix:
+            errors.append(f"{where}: {problem.id} unknown difficulty {problem.difficulty!r}")
+        if problem.day is None:
+            errors.append(f"{where}: {problem.id} missing day")
+        elif section is not None and problem.day != section.get("day"):
+            errors.append(
+                f"{where}: {problem.id} day {problem.day} != section {problem.section} "
+                f"day {section.get('day')}"
+            )
+        section_points[problem.section] += problem.points
+        section_entries[problem.section] += 1
+        section_problems.setdefault(problem.section, set()).add(_top_level_problem(problem.id))
+        difficulty_points[problem.difficulty] += problem.points
+        if problem.provenance == "original":
+            original_points += problem.points
+        errors.extend(_problem_errors(blueprint, concepts, manifest, problem))
+        if problem.cluster:
+            cluster_points[problem.cluster] += problem.points
+        if section is None:
+            continue
+        if section.get("kind") == "open-ended":
+            open_points += problem.points
+            if not families & set(problem.concepts):
+                errors.append(
+                    f"{where}: {problem.id} open-ended problem lacks an open_ended_families concept"
+                )
+        elif section.get("kind") == "scaffolded-arc" and problem.cluster:
+            allowed = arc_clusters.get(f"d{section.get('day')}", [])
+            if problem.cluster not in allowed:
+                errors.append(
+                    f"{where}: {problem.id} cluster {problem.cluster} not in "
+                    f"d{section.get('day')} arc rotation {allowed}"
+                )
+
+    for section_id, section in sections.items():
+        if not _in_range(section_points[section_id], section["points"]):
+            errors.append(f"{where}: section {section_id} points out of range")
+        if "subparts" in section and not _in_range(section_entries[section_id], section["subparts"]):
+            errors.append(f"{where}: section {section_id} subparts out of range")
+        if "problems" in section and not _in_range(
+            len(section_problems[section_id]), section["problems"]
+        ):
+            errors.append(f"{where}: section {section_id} problems out of range")
+
+    if not _in_range(len(manifest.problems), blueprint.texture["subparts"]):
+        errors.append(f"{where}: subparts out of range")
+    top_level = {_top_level_problem(problem.id) for problem in manifest.problems}
+    if not _in_range(len(top_level), blueprint.texture["problem_count"]):
+        errors.append(f"{where}: problem_count out of range")
+    if total:
+        open_share = open_points / total
+        if not _in_range(open_share, blueprint.texture["open_ended_points_share"]):
+            errors.append(f"{where}: open-ended points share {open_share:.3f} out of range")
+        if original_points / total < float(blueprint.provenance_rules["original_share_min"]):
+            errors.append(f"{where}: original provenance share below minimum")
+        for difficulty, limits in blueprint.difficulty_mix.items():
+            if not _in_range(difficulty_points[difficulty] / total, limits):
+                errors.append(f"{where}: difficulty {difficulty} share out of range")
+        for cluster, limits in blueprint.topic_distribution.items():
+            if not _in_range(cluster_points[cluster], limits):
+                errors.append(f"{where}: topic {cluster} points out of range")
+    return errors
+
+
 def _validate_manifest(
     root: Path,
     blueprint: Blueprint,
     concepts: dict[str, str],
     manifest: MockManifest,
 ) -> list[str]:
+    if is_round2(blueprint):
+        return _validate_round2_manifest(blueprint, concepts, manifest)
+    # Book 1 (Round 1): the only reader of five_point_atom_share, programming_points_share,
+    # draws_on_clusters, duration_minutes, and the integrative-arc rotation special case.
     errors: list[str] = []
     section_ranges = {section["id"]: section for section in blueprint.sections}
     section_points: Counter[str] = Counter()
@@ -82,29 +259,7 @@ def _validate_manifest(
             programming_points += problem.points
         if problem.provenance == "original":
             original_points += problem.points
-        if problem.provenance == "adapted" and not problem.adapted_from:
-            tag = blueprint.provenance_rules.get("adapted_requires_tag", "adapted-from")
-            errors.append(f"{manifest.path}: {problem.id} adapted missing {tag}")
-        if not problem.spec:
-            errors.append(f"{manifest.path}: {problem.id} missing spec")
-        if problem.answer_key in (None, "", {}):
-            errors.append(f"{manifest.path}: {problem.id} missing answer_key")
-        if problem.data and not isinstance(problem.data, dict):
-            errors.append(f"{manifest.path}: {problem.id} data must be a mapping")
-        elif problem.data and problem.data.get("generator_script") and not (
-            manifest.path.parent / problem.data["generator_script"]
-        ).exists():
-            errors.append(f"{manifest.path}: {problem.id} missing generator_script")
-
-        folded_concept_clusters = {
-            fold_cluster(blueprint, concepts[concept])
-            for concept in problem.concepts
-            if concept in concepts
-        }
-        if problem.cluster is None:
-            errors.append(f"{manifest.path}: {problem.id} missing cluster")
-        elif folded_concept_clusters and problem.cluster not in folded_concept_clusters:
-            errors.append(f"{manifest.path}: {problem.id} invalid dominant cluster {problem.cluster}")
+        errors.extend(_problem_errors(blueprint, concepts, manifest, problem))
         if problem.cluster:
             cluster_points[problem.cluster] += problem.points
             section = section_ranges.get(problem.section)
@@ -168,23 +323,12 @@ def check_blueprint(root: str | Path) -> Report:
         root, book_number=book_number if type(book_number) is int else None
     )
     if blueprint.raw.get("status") == "planned":
-        expected = {
-            "blueprint_version": 1,
-            "book": 2,
-            "target": "round-2",
-            "status": "planned",
-            "assessment_prefix": "r2-",
-            "derived_from": [
-                "book2:reference/analysis.md",
-                "book2:curriculum/official-topics.yaml",
-            ],
-        }
-        errors = [] if blueprint.raw == expected else [
-            "planned Book 2 blueprint must match the exact version-1 skeleton"
-        ]
-        if manifests:
-            errors.append("planned Book 2 blueprint is forbidden once an r2-* manifest exists")
-        return Report(name="blueprint-check", ok=not errors, errors=errors)
+        # Plan 024 retired the planned Book 2 skeleton; a blueprint is live or absent.
+        return Report(
+            name="blueprint-check",
+            ok=False,
+            errors=["planned blueprints are no longer supported; Plan 024 made the Book 2 blueprint live"],
+        )
     warnings = [
         f"DRAFT manifest skipped by blueprint final gate: {manifest.path}"
         for manifest in manifests

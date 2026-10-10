@@ -104,3 +104,30 @@ def test_hygiene_accepts_solution_notebook_with_assert(tmp_path):
     )
 
     assert check_hygiene(tmp_path).ok
+
+
+def test_hygiene_flags_executed_output_in_r2_problem_notebook(tmp_path):
+    write_nb(
+        tmp_path / "mocktests" / "r2-001" / "problems" / "p02.ipynb",
+        {
+            "cell_type": "code",
+            "source": "print(1)",
+            "metadata": {},
+            "outputs": [{"output_type": "stream", "name": "stdout", "text": "1"}],
+            "execution_count": 1,
+        },
+    )
+    report = check_hygiene(tmp_path)
+    assert not report.ok
+    assert any("r2-001/problems/p02.ipynb: cell 1 has executed outputs" in e for e in report.errors)
+
+
+def test_hygiene_flags_solution_in_r2_problem_notebook(tmp_path):
+    write_nb(
+        tmp_path / "mocktests" / "r2-001" / "problems" / "p01.ipynb",
+        {"cell_type": "code", "source": "# SOLUTION\nx = 1", "metadata": {}, "outputs": [],
+         "execution_count": None},
+    )
+    report = check_hygiene(tmp_path)
+    assert not report.ok
+    assert any("r2-001/problems/p01.ipynb: cell 1 contains solution marker" in e for e in report.errors)

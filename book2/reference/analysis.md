@@ -35,3 +35,19 @@ scientific-ML inverse problems, semi-supervised/latent-variable ideas, and
 curve-fitting/mixture parameter estimation.
 These findings define Book 2's advanced curriculum surface and mock-test structure.
 The rationale document also supplies a model for Book 2 mock-test design-intent records.
+
+## Round 2 shape notes
+
+Structure only; no 2026 topic, task, or wording is carried into the blueprint.
+`book2/mocktests/blueprint.yaml` encodes these observations.
+
+- **Days and totals.** Two in-person days; 300 printed points; 5 problems; 26 gradable sub-parts.
+  No duration is printed, so the blueprint's 240 minutes per day is an external assumption.
+- **Day pattern.** Each day opens with one long scaffolded arc (non-open-ended) and then gives open-ended model-building work.
+- **Section anchors.** Day 1: a 90-point arc plus one 70-point open-ended task.
+  Day 2: a 50-point arc plus two open-ended tasks of 40 and 50 points.
+- **Open-ended share.** 160/300 (0.53); the blueprint band is 0.45–0.60.
+- **Arc texture.** Arcs are long chains of short sub-parts in which later parts consume earlier results; the day-1 arc has roughly 14 sub-parts and the day-2 arc roughly 9.
+  Round 2 arcs typically introduce one fresh mechanism inside the arc; mock tests after r2-001 should lean that way.
+- **Open-ended texture.** Each open-ended task names a metric, supplies data and a baseline, and is graded on a held-out score plus a written account.
+- **Sample size.** n = 1 fully indexed paper; every range is provisional.

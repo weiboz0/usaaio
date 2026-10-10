@@ -1,6 +1,8 @@
 # Mock-Test Generation Pipeline
 
 The repeatable procedure for producing every `book1/mocktests/r1-NNN/`.
+Book 2 (Round 2) mock tests follow the same pipeline with the extensions in
+[Book 2 (Round 2) mock tests](#book-2-round-2-mock-tests).
 Authoritative inputs: `book1/mocktests/blueprint.yaml` (test spec) and `book1/syllabus.md`
 (concept vocabulary + unit DAG).
 Design rationale: `docs/designs/000-project-design.md §2b`.
@@ -134,3 +136,77 @@ Field rules:
 | solution execution | every solutions/ notebook runs clean |
 | answer-key reproduction | answerkey-check (plan 011) |
 | PDF build | Quarto renders test.md + problems to `build/` |
+
+## Book 2 (Round 2) mock tests
+
+Authoritative inputs: `book2/mocktests/blueprint.yaml` (live since Plan 024) and `book2/syllabus.md`.
+Shape evidence is structure only: `book2/reference/analysis.md ## Round 2 shape notes`.
+
+### Pipeline
+
+1. **Blueprint** — read `book2/mocktests/blueprint.yaml` at its current `blueprint_version`.
+2. **Instantiate** — run `uv run usaaio-tools --book book2 new-mocktest r2-NNN --date YYYY-MM-DD`.
+   The layout is flat, exactly as for Book 1 (`test.md`, `theory/`, `problems/`, `solutions/` with `answers.md`, `data/`, `rubric.md`, `manifest.yaml`).
+   Days live in the manifest's per-entry `day` field and in `test.md`'s Day 1 and Day 2 sections, so hygiene, answer-key, overlap, and PDF discovery are unchanged.
+3. **Draft** — the d1 arc, the d1 open-ended task, the d2 arc, and two d2 open-ended tasks.
+   Every task-specific formula is defined in its statement.
+4. **Verify** — `bash scripts/ci-local.sh`; r2 solutions run under the 20-second solution timeout.
+5. **Gate** — the content-review gate; fidelity is judged on shape only.
+
+### Default instantiation rule (zero-choice)
+
+Unless the test's plan records a deliberate deviation, `new-mocktest` copies these blueprint keys:
+
+- section points = `default_anchors`: d1-arc 90, d1-open 70, d2-arc 50, d2-open [40, 50];
+- per-day time budget = `default_time_budget` (day 1: d1-arc 120, d1-open 120; day 2: d2-arc 80, d2-open 160), each day summing to `day_duration_minutes` (240);
+- arc clusters = `arc_rotation[(NNN - 1) mod 3]`, recorded as `{d1: [...], d2: [...]}` with its `rotation_index`;
+- difficulty draw = `default_difficulty_draw` (`{intro: 0.20, core: 0.45, advanced: 0.35}`);
+- problem count = 5 (one per anchor).
+
+### Manifest extension
+
+```yaml
+test: r2-001
+blueprint_version: 1
+status: final
+generation_parameters:
+  rotation_index: 0
+  section_points: {d1-arc: 90, d1-open: 70, d2-arc: 50, d2-open: [40, 50]}
+  arc_clusters: {d1: [attention-transformers, language-transformers], d2: [probabilistic-latent-models]}
+  problem_count: 5
+  difficulty_draw: {intro: 0.2, core: 0.45, advanced: 0.35}
+day_duration_minutes: 240        # replaces Book 1's duration_minutes
+total_points: 300
+time_budget:                     # {day: {section: minutes}}; each day sums to day_duration_minutes
+  1: {d1-arc: 120, d1-open: 120}
+  2: {d2-arc: 80, d2-open: 160}
+problems:
+  - id: r2-001-p01-1
+    day: 1                       # must equal the section's day
+    section: d1-arc
+    # ...the Book 1 entry fields...
+```
+
+`blueprint-check` applies, for Book 2 only:
+- each entry's `day` equals its section's day;
+- per-section points, sub-part (entry), and problem-count ranges;
+- texture: problem count, sub-part count, and `open_ended_points_share`;
+- each day's time budget names exactly that day's sections and sums to `day_duration_minutes`;
+- arc entries draw only on the rotation's clusters for their day;
+- every open-ended entry carries one of `open_ended_families` (a taught-closure constraint);
+- the shared topic, difficulty, provenance, and per-entry rules.
+The Book 1 keys (`duration_minutes`, `five_point_atom_share`, `programming_points_share`, `draws_on_clusters`, the `integrative-arc` override) are read only for Book 1.
+
+### Open-ended answer keys
+
+An open-ended entry's `answer_key` is the marker
+`metric=<name>; direction=<lower|higher>; B=<v>; R=<v>; tiers=<full>,<partial60>,<partial25>`,
+with every number at 4 significant digits.
+B is the committed baseline score and R the published reference solution's `final_test_score`, both at the test seed; `g = |B - R|`.
+Lower-is-better cutoffs are `R + 0.25g`, `B`, `B + 0.25g`; higher-is-better cutoffs mirror them (`R - 0.25g`, `B`, `B - 0.25g`).
+`solutions/answers.md` repeats the identical marker, so `answerkey-check` compares it like any theory key.
+
+### Final-assessment marker
+
+`book2/curriculum/course-schedule.yaml` carries `final_assessment: {kind: r2-mock, status: live, test: r2-NNN, after_book_week: <last week>}`.
+`schedule-check` accepts it only when `mocktests/r2-NNN/manifest.yaml` exists, and accepts the old planned `future-r2-mock` marker only while no `r2-*` manifest exists.

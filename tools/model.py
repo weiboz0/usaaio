@@ -198,6 +198,7 @@ class ManifestProblem:
     data: dict[str, Any] | None
     cluster: str | None
     files: list[str]
+    day: int | None = None  # Book 2 (Round 2) mock tests: the exam day of this entry
 
 
 def _validated_status(value: object, path: Path) -> str:
@@ -218,6 +219,10 @@ class MockManifest:
     time_budget: dict[str, int]
     problems: list[ManifestProblem]
     path: Path
+    # Book 2 (Round 2) two-day tests: minutes per day and {day: {section: minutes}}.
+    # Book 1 manifests leave these empty and keep the flat ``time_budget``.
+    day_duration_minutes: int = 0
+    day_time_budget: dict[int, dict[str, int]] = field(default_factory=dict)
 
 
 @dataclass
@@ -879,7 +884,33 @@ def _problem_from(item: dict[str, Any]) -> ManifestProblem:
         data=item.get("data"),
         cluster=item.get("cluster"),
         files=list(item.get("files", [])),
+        day=_optional_day(item.get("day")),
     )
+
+
+def _optional_day(value: object) -> int | None:
+    if value is None:
+        return None
+    if type(value) is not int or value <= 0:
+        raise ValueError(f"day must be a positive integer, got {value!r}")
+    return value
+
+
+def _time_budgets(raw: dict[str, Any], path: Path) -> tuple[dict[str, int], dict[int, dict[str, int]]]:
+    """Split a manifest time_budget into the Book 1 flat and Book 2 per-day forms."""
+    budget = raw.get("time_budget") or {}
+    if not isinstance(budget, dict):
+        raise ValueError(f"{path}: time_budget must be a mapping")  # noqa: TRY004
+    if budget and all(isinstance(value, dict) for value in budget.values()):
+        per_day: dict[int, dict[str, int]] = {}
+        for day, sections in budget.items():
+            if type(day) is not int or day <= 0:
+                raise ValueError(f"{path}: time_budget day keys must be positive integers")
+            per_day[day] = {str(k): int(v) for k, v in sections.items()}
+        return {}, per_day
+    if any(isinstance(value, dict) for value in budget.values()):
+        raise ValueError(f"{path}: time_budget mixes flat and per-day entries")
+    return {k: int(v) for k, v in budget.items()}, {}
 
 
 def _mock_manifest_path_is_unsafe(book_root: Path, manifest_path: Path) -> bool:
@@ -945,6 +976,7 @@ def load_mock_manifests(
                 raise ValueError(
                     f"{path}: problems[{index}] missing required field {exc}"
                 ) from exc
+        flat_budget, day_budget = _time_budgets(raw, path)
         result.append(
             MockManifest(
                 test=raw["test"],
@@ -954,9 +986,11 @@ def load_mock_manifests(
                 generation_parameters=dict(raw.get("generation_parameters", {})),
                 duration_minutes=int(raw.get("duration_minutes", 0)),
                 total_points=int(raw.get("total_points", 0)),
-                time_budget={k: int(v) for k, v in raw.get("time_budget", {}).items()},
+                time_budget=flat_budget,
                 problems=problems,
                 path=path,
+                day_duration_minutes=int(raw.get("day_duration_minutes", 0)),
+                day_time_budget=day_budget,
             )
         )
     return result
