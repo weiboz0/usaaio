@@ -34,12 +34,6 @@
 ## Deferred, with a named owner plan still to be written
 
 - [x] **Execute the remaining Plan 015 content tranches.** Done: Plans 020, 021, 027, 028, 029 shipped B2-020…B2-024 and Plan 024 shipped r2-001.
-- [ ] (superseded) **Execute the remaining Plan 015 content tranches.** The canonical owner/order now lives in
-      the registered book-local `curriculum/coverage-map.yaml` files and the shared
-      `docs/curriculum-roadmap.md`: R2 transformers/NLP, R2 vision/generative,
-      then the R2 GPU capstone. Softmax/cross-entropy are owned by
-      `P015-R1-NEURAL-TRAINING`; future work must update the shipped syllabus and roadmap
-      atomically rather than maintaining a second gap list here.
 - [x] **Unit capacity: C7 and C5.** Plan 017 resolves the decision substantively: C7 gains a
       fourth 90-minute lesson session and remains at 27 practices, satisfying both double-length
       bands. C5 remains a compliant standard-length unit with 22 practices because neural-network
