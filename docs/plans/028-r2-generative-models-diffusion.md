@@ -190,22 +190,22 @@ Do not alter the B2-024 rows.
 
 **Files:** `book2/curriculum/coverage-map.yaml`, `docs/curriculum-roadmap.md` and `docs/audits/015-coverage-audit.md` (both regenerated); create `tests/test_b2_023_plan.py`.
 
-- [ ] Write failing tests for the existing B2-023 `planned_units` row:
+- [x] Write failing tests for the existing B2-023 `planned_units` row:
   - the exact unit-prerequisite sequence;
   - the three exact `provisional_concepts`;
   - the double-length standard (5 sessions, 24 practices);
   - the three coverage rows staying `missing` until live source paths exist.
   In a copied Book 2 fixture, prove that appending the six-week ledger after B2-022 yields `after_book_week: 30` and 8,270 scheduled minutes, and that duplicate, misordered, missing-session, minute-mismatched, or before-week-25 allocations are rejected.
-- [ ] Update only the existing planned row: set the prerequisites above and set `provisional_concepts` to the three owned concepts. Regenerate the roadmap and audit. Do not add B2-023 to the live syllabus, schedule, or standards roster in this task.
-- [ ] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py tests/test_b2_023_plan.py` and commit.
+- [x] Update only the existing planned row: set the prerequisites above and set `provisional_concepts` to the three owned concepts. Regenerate the roadmap and audit. Do not add B2-023 to the live syllabus, schedule, or standards roster in this task.
+- [x] Run `PATH=/home/chris/.local/bin:$PATH uv run pytest -q tests/test_book2_schedule.py tests/test_b2_023_plan.py` and commit.
 
 ### Task 2 — Author lessons, statements, and the data generator
 
-- [ ] Dispatch lesson and statement authoring to an Opus subagent (`Agent`, `model: opus`) per `AGENTS.md ## Agent dispatch`. It writes, in a temporary directory outside `book2/units/`:
+- [x] Dispatch lesson and statement authoring to an Opus subagent (`Agent`, `model: opus`) per `AGENTS.md ## Agent dispatch`. It writes, in a temporary directory outside `book2/units/`:
   - the bridge, overview, five lessons, and review;
   - the 24 student statements;
   - `scripts/generate_generative_data.py`, a seeded generator for small 2-D Gaussian-mixture datasets (known component centers) and a tiny class-labelled 4-D set for p20, together with a literal fixed orthonormal linear encoder/decoder pair (4-D ↔ 2-D latent) that serves as p20's frozen autoencoder. It exposes immutable `TRAIN_IDS` / `HELDOUT_IDS` and a canonical per-row SHA-256 map, plus a loader `data/generative_data.py`. Its `--check` mode regenerates and compares hashes, and it never stores trained weights or final metrics.
-- [ ] Every coding and training statement pins its function names:
+- [x] Every coding and training statement pins its function names:
   - p06 `discriminator_loss`, `generator_loss`; p07 `gan_step`; p08 `mode_coverage`; p09 `make_schedule`, `q_sample`; p10 `ddpm_loss`; p11 `p_sample`, `sample_loop`; p12 `cfg_combine`.
   - p17 `train_gan(G, D, opt_g, opt_d, batch)`; p18 `train_ddpm(model, batch, optimizer)`; p19 reuses p18's training protocol in-notebook; p20 `train_latent_diffusion(model, batch, optimizer)`.
   - Every training statement (p17–p20) requires `train_rows()` / `heldout_rows()` drawn from the generator's split IDs. Clean data rows must pass unchanged through one named seam before any noising or encoding:
@@ -224,7 +224,7 @@ Do not alter the B2-024 rows.
       - conditioning dropout 0.2: a dropped example's class token is removed, so the keys/values are the null token only. Unconditional prediction `ε_uncond` for guidance uses the same null-only path;
       - Adam `lr=1e-2`, full batch, 1,500 steps, `T=50`.
     Every solution must stay under the 20 s limit, measured in Task 3.
-- [ ] The orchestrator checks the bundle against an exact allowlist:
+- [x] The orchestrator checks the bundle against an exact allowlist:
   - regular files only;
   - unexecuted student code cells;
   - headers present;
@@ -235,10 +235,10 @@ Do not alter the B2-024 rows.
 
 ### Task 3 — Blind-author solutions, publish, and execute
 
-- [ ] Dispatch a separate fresh Opus subagent for solutions. It receives only the hash-verified student bundle, and writes one solution per statement with no stored outputs and a final `### Answer check`.
+- [x] Dispatch a separate fresh Opus subagent for solutions. It receives only the hash-verified student bundle, and writes one solution per statement with no stored outputs and a final `### Answer check`.
   - Freeze `SEED=20261015`, full-batch Adam (`betas=(0.9,0.999)`, `eps=1e-8`, `weight_decay=0`), and the step counts in each statement.
   - Statement ambiguities found during blind solving are fixed in the statements so they pin the solver's choice, and are listed in the post-execution report.
-- [ ] Verify the bundle digest, then publish atomically:
+- [x] Verify the bundle digest, then publish atomically:
   - add the `generative-models` cluster and the three concepts to the Book 2 syllabus `concepts:` registry;
   - add the live B2-023 `units:` entry with the exact prerequisite lists;
   - clear the planned row's `provisional_concepts` to `[]`;
@@ -251,12 +251,12 @@ Do not alter the B2-024 rows.
   - classify new path-bearing tests and fixtures in `tests/fixtures/plan019-path-inventory.yaml` and update its guard SHA;
   - add a B2-023 glob to the 20-second solution-timeout condition in `scripts/ci-local.sh`;
   - regenerate the inventory, course structure, roadmap, and audit.
-- [ ] Execute every B2-023 solution from the Book 2 root without `--inplace` and record each elapsed time; any solution over 20 s fails.
-- [ ] Commit `tests/test_b2_023_statements.py`, covering statement hygiene, the ledger, concept coverage, the generator `--check`, headers, and the exact file inventory.
+- [x] Execute every B2-023 solution from the Book 2 root without `--inplace` and record each elapsed time; any solution over 20 s fails.
+- [x] Commit `tests/test_b2_023_statements.py`, covering statement hygiene, the ledger, concept coverage, the generator `--check`, headers, and the exact file inventory.
 
 ### Task 4 — Answer-check integrity (lightweight)
 
-- [ ] Write `tests/test_generative_model_checks.py` so that, for every pinned function, the untouched solution passes and a named plausible wrong implementation fails its answer check:
+- [x] Write `tests/test_generative_model_checks.py` so that, for every pinned function, the untouched solution passes and a named plausible wrong implementation fails its answer check:
   - `generator_loss`: the saturating `log(1−D)` form;
   - `gan_step`: a missing `detach` in the D-step. `gan_step` must call pinned helpers `d_step(G, D, opt_d, real, z)` then `g_step(G, D, opt_g, z)`, each zeroing gradients with `set_to_none=True` first. The test drives `d_step` alone and asserts every generator parameter's `.grad` is `None` afterwards;
   - `q_sample`: `α_t` used where `ᾱ_t` belongs;
@@ -268,23 +268,23 @@ Do not alter the B2-024 rows.
   - `ddpm_loss`: an `x0` target instead of `ε`;
   - `sample_loop`: the timesteps visited in ascending order.
   - All four training functions (p17–p20) also get a no-op optimizer-step mutant and a held-out-row mutant. Leakage is detected by wrapping the named clean-row seam (discriminator `forward`, `q_sample`'s `x0`, or the frozen `encode`) only for the duration of the `train_*` call — held-out evaluation legitimately uses the same seams afterwards — and hashing every clean row against the held-out hash set built from `HELDOUT_IDS` and the per-row SHA-256 map.
-- [ ] Implement only named-function substitutions in copied solution notebooks. This is a correctness check, not adversarial hardening; anti-cheat stays out of scope.
-- [ ] Add the suite to `scripts/ci-local.sh` step 7, next to the existing focused suites, and commit.
+- [x] Implement only named-function substitutions in copied solution notebooks. This is a correctness check, not adversarial hardening; anti-cheat stays out of scope.
+- [x] Add the suite to `scripts/ci-local.sh` step 7, next to the existing focused suites, and commit.
 
 ### Task 5 — Verification, content gate, report, merge
 
-- [ ] Verification phase:
+- [x] Verification phase:
   - run the focused B2-023 suites and the generator `--check`;
   - run the per-book checks `uv run usaaio-tools --book book2` for prereq, coverage, scope, schedule, tolerance, hygiene and layer-boundary;
   - run `python -m tools.audit_curriculum --root book2 --check` and `python -m tools.render_curriculum_roadmap --root . --check`;
   - run `git diff --check`.
-- [ ] Run `scripts/ci-local.sh`; it must be ALL GREEN.
-- [ ] Run the 3-way blind content gate. Each reviewer solves an assigned sample before reading any solution:
+- [x] Run `scripts/ci-local.sh`; it must be ALL GREEN.
+- [x] Run the 3-way blind content gate. Each reviewer solves an assigned sample before reading any solution:
   - Sol: p01, p10, p14, p18, p24.
   - Fable: p03, p07, p15, p20, p22.
   - Self: p05, p11, p13, p17, p21, plus the ledger, coverage, and accessibility review.
   Resolve every `[OPEN]` finding and re-review the final head after material changes.
-- [ ] Write the verdicts and the post-execution report into this plan, and add Plan 028 to `TODO.md`.
+- [x] Write the verdicts and the post-execution report into this plan, and add Plan 028 to `TODO.md`.
 - [ ] Rerun `scripts/ci-local.sh` on the clean tip, push, open the PR, run `scripts/pre-merge-guard.sh --pr`, squash-merge without deleting local history refs, and verify `main` equals `origin/main`.
 
 ## Out of scope
@@ -399,4 +399,41 @@ Re-verified after fixes: p24 solution executes with the new probe; inventory reg
 
 ## Post-execution report
 
-Pending.
+**Shipped:** `book2/units/B2-023-generative-models-diffusion`.
+- Double-length: bridge, overview, five 90-minute sessions, review, and 24 practices.
+- 1,650 scheduled / 1,620 manifested minutes. Book 2 is now 30 weeks / 8,270 scheduled minutes with `after_book_week: 30`.
+- Rendered hours rebaselined as planned: 587.92–627.92 manifested / 594.42–634.42 scheduled.
+- `generative-adversarial-network`, `denoising-diffusion-probabilistic-models` and `stable-diffusion` are covered; Round 2 acknowledged gaps went from 9 to 6.
+- Stable Diffusion is taught as an architecture and pipeline, and practised through a CPU-scale class-conditional latent-diffusion analogue. No pretrained weights are used.
+
+**Dispatch:**
+- An Opus subagent authored the bundle.
+- A separate fresh Opus session blind-solved all 24 practices from the hash-verified bundle only, and reproduced the author's calibrated values exactly.
+- The orchestrator pinned two statement points from blind solving: p24's validation carve-out and scaling lines, and the Lesson 5 overshoot wording.
+- An Opus implementer did Tasks 1, 3 and 4 (61564c5, 790f436, df0d0db, c601112).
+- No new Book 2 imports were needed.
+
+**Deviations from the gated plan, all recorded and judged acceptable by the content gate:**
+- The CFG high weight is pinned at `w=1.5`. `w=3` overshoots at the frozen seed and is reported, not asserted, per the plan-gate Fable note. The plan ledger was updated to the shipped contract.
+- GAN learning rates are G 5e-4 / D 2e-3, with a 2-of-4 mode-coverage bar. Equal rates collapsed to one mode at most seeds.
+- The DDPM learning rate is pinned at 1e-3.
+- p23's narrowest single-defect margin is 0.062 against a 0.05 bar. It is deterministic literal arithmetic.
+- Checker-forced edits only made numeric `isclose`/`allclose` defaults explicit in seven solutions.
+
+**Verification:**
+- Focused suites: 703 + 69 + 46 + 155 passed.
+- Full pytest: 1423 passed before the final attention-digest repair (c601112), which was then verified.
+- All Book 2 per-book and `--all` checks pass; generator `--check` passes.
+- B2-023 solutions run in 3.1–10.3 s.
+- After merging post-Plan-027 `main`, conflicts were resolved to this branch's side (a superset), and the generated artifacts were regenerated and re-checked.
+- Final authoritative CI is recorded below.
+
+**Content gate:**
+- Three-way blind consensus in round 2. All 15 blind-solved practices agreed with the solutions.
+- Fixes made:
+  - p24's sampler contract, plus an exercised selection probe;
+  - p22(d) wording;
+  - p20 student-facing wording;
+  - p17's band note.
+
+**Provenance:** original synthetic data and problems.
