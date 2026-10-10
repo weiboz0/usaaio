@@ -361,7 +361,7 @@ Steps:
   - Self solves p07, p11, p15, p20 and p23, and also reviews the ledger, coverage, and accessibility. Self also checks provenance: the generator specifics are compared against the local reference index and rationale (where present on this machine) as well as `analysis.md`, to confirm the task families are original and not close paraphrases.
   Resolve every `[OPEN]` finding and re-review after material changes.
 - [x] Write the verdicts and the post-execution report, and add Plan 029 to `TODO.md`.
-- [ ] Rerun CI on the clean tip, push, open the PR, run `pre-merge-guard --pr`, squash-merge without deleting local history refs, and verify `main` equals `origin/main`.
+- [x] Rerun CI on the clean tip, push, open the PR, run `pre-merge-guard --pr`, squash-merge without deleting local history refs, and verify `main` equals `origin/main`.
 
 ## Out of scope
 
@@ -520,3 +520,5 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 - Main fix: config-dict accelerator paths, so `L4_CONFIG` is a pure replacement for `CPU_CONFIG`. Also fixed: p10's normal-equations explanation, the fenced-heading loophole, and Lesson 6's budget arithmetic.
 
 **Provenance:** original problems and synthetic generators. They mirror the Round 2 task families structurally only (inverse problem, semi-supervised imaging, mixture regression), as the coverage map requires.
+
+**Final authoritative CI (2026-10-10):** `scripts/ci-local.sh` on the clean tip 043ec13 (after merging post-Plan-028 `main`): **ALL GREEN**, 9/9.
