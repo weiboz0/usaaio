@@ -5304,7 +5304,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb
   kind: notebook
-  semantic_sha256: d5bdfeb68fc40fc804caaf094ec460ce7d2c1b6a8e7fa16b0820b8d4767e39af
+  semantic_sha256: 022878fbcc82c12b29e26d93b1a999b9da1c5cbd50581223c1b8544c5e262ece
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
       — Session 1: Image Patches and Vision Transformers :: cell 1'

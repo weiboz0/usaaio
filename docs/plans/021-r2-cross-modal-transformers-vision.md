@@ -553,6 +553,19 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`). Plan 026 (user directive 2026-10
 4. `[FIXED]` Nit: lesson mini-traces described as "actual" with no reproducing cell. → Response: relabelled "recorded reference-run".
 5. `[WONTFIX]` Nit: p01's "sign convention" request is shared mc-normal-form boilerplate; harmless and consistent across units.
 
+### Review 2 — self (2026-10-09)
+- **Verdict**: Approve.
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Approve with nits. All round-1 findings resolved; in-memory probes for p09 `[0,2]` and the p22 answer check pass.
+1. `[FIXED]` Nit: Lesson 1 §6 "an recorded" → "a recorded".
+
+### Review 2 — Fable (2026-10-09)
+- **Verdict**: Approve with nits. Every change re-checked against the fixture signatures, the p16 solution, and its own p19 run.
+1. `[FIXED]` Nit: same typo as Sol 1.
+
+**Gate result:** 3-way consensus at round 2.
+
 Re-verified after fixes: inventory regenerated; B2-021 focused suites 85 passed; p09/p22 solutions and Lessons 4/5 re-executed; Book 2 hygiene PASS.
 
 ## Post-execution report
