@@ -153,6 +153,7 @@ uv run python -m tools.verify_classical_mutations --root "$book1_root"
 uv run python -m tools.verify_attention_mutations --root "$book2_root"
 uv run pytest -q tests/test_language_transformer_checks.py
 uv run pytest -q tests/test_latent_model_checks.py
+uv run pytest -q tests/test_generative_model_checks.py
 uv run pytest -q tests/test_vision_transformer_checks.py
 
 step "8/9 PDF build"
