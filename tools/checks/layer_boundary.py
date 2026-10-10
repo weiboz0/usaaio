@@ -66,6 +66,36 @@ SUPPORTED_COMPUTE_POLICIES = ("cpu", "optional-colab-l4")
 ACCELERATOR_HEADING = re.compile(
     r"^#{1,6}[ \t]+Accelerator extension[ \t]*#*[ \t]*$", re.MULTILINE
 )
+FENCE_OPEN = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+
+
+def _outside_fenced_code(source: str) -> str:
+    """Return ``source`` with fenced code blocks (``` or ~~~) blanked out.
+
+    A fence closes on a line of the same character, at least as long as the opener,
+    followed only by whitespace; an unclosed fence runs to the end of the cell.
+    """
+    kept: list[str] = []
+    fence: str | None = None
+    for line in source.splitlines():
+        if fence is None:
+            match = FENCE_OPEN.match(line)
+            if match and not (match.group(1)[0] == "`" and "`" in line[match.end():]):
+                fence = match.group(1)
+                kept.append("")
+            else:
+                kept.append(line)
+        else:
+            stripped = line.strip()
+            if (
+                len(line) - len(line.lstrip(" ")) <= 3
+                and stripped
+                and set(stripped) == {fence[0]}
+                and len(stripped) >= len(fence)
+            ):
+                fence = None
+            kept.append("")
+    return "\n".join(kept)
 
 
 def _has_accelerator_heading(statement: Path) -> bool:
@@ -82,7 +112,7 @@ def _has_accelerator_heading(statement: Path) -> bool:
         source = cell.get("source", "")
         if isinstance(source, list):
             source = "".join(str(part) for part in source)
-        if isinstance(source, str) and ACCELERATOR_HEADING.search(source):
+        if isinstance(source, str) and ACCELERATOR_HEADING.search(_outside_fenced_code(source)):
             return True
     return False
 

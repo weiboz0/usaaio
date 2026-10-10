@@ -148,42 +148,62 @@ PINNED_FUNCTIONS = {
 # --- no-op optimizer-step mutants ----------------------------------------------------
 
 TRAIN_STEP_NO_STEP = TRAIN_STEP_NO_AUTOCAST.replace("    optimizer.step()\n", "")
-TRAIN_STUDENT_NO_STEP = '''def train_student(x, y, noise_std):
+TRAIN_STUDENT_NO_STEP = '''def train_student(x, y, noise_std, config):
+    device = torch.device(config["device"])
     torch.manual_seed(SEED)
-    model = NoisyStudent(noise_std)
+    model = NoisyStudent(noise_std).to(device)
     model.register_forward_pre_hook(make_seam_hook())
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01, betas=(0.9, 0.999), eps=1e-8, weight_decay=0)
     model.train()
-    for _ in range(150):
+    x, y = x.to(device), y.to(device)
+    amp = config["amp_dtype"]
+    for _ in range(config["steps_per_round"]):
+        if config["batch_size"] is None:
+            xb, yb = x, y
+        else:
+            idx = torch.randint(0, x.shape[0], (config["batch_size"],))
+            xb, yb = x[idx], y[idx]
         optimizer.zero_grad(set_to_none=True)
-        loss = F.cross_entropy(model(x), y)
+        with nullcontext() if amp is None else torch.autocast(device_type=device.type, dtype=amp):
+            loss = F.cross_entropy(model(xb), yb)
         loss.backward()
     return model.eval()
 '''
-TRAIN_INVERSE_NO_STEP = '''def train_inverse(model, x, y, optimizer, steps):
+TRAIN_INVERSE_NO_STEP = '''def train_inverse(model, x, y, optimizer, config):
+    device = torch.device(config["device"])
+    x, y = x.to(device), y.to(device)
+    amp = config["amp_dtype"]
     model.train()
     losses = []
-    for _ in range(steps):
+    for _ in range(config["steps"]):
+        if config["batch_size"] is None:
+            xb, yb = x, y
+        else:
+            idx = torch.randint(0, x.shape[0], (config["batch_size"],))
+            xb, yb = x[idx], y[idx]
         optimizer.zero_grad(set_to_none=True)
-        loss = F.mse_loss(model(x), y)
+        with nullcontext() if amp is None else torch.autocast(device_type=device.type, dtype=amp):
+            loss = F.mse_loss(model(xb), yb)
         loss.backward()
         losses.append(loss.item())
     return losses
 '''
-P20_LOOP = "    loss.backward()\n    optimizer.step()\n    losses.append(loss.item())\n"
+P20_LOOP = "        loss.backward()\n        optimizer.step()\n        losses.append(loss.item())\n"
 
 # practice -> ("function", name, source) or ("text", old, new)
 NO_OP_STEP = {
     "p16": ("function", "train_step", TRAIN_STEP_NO_STEP),
     "p17": ("function", "train_student", TRAIN_STUDENT_NO_STEP),
     "p19": ("function", "train_inverse", TRAIN_INVERSE_NO_STEP),
-    "p20": ("text", P20_LOOP, "    loss.backward()\n    losses.append(loss.item())\n"),
+    "p20": ("text", P20_LOOP, "        loss.backward()\n        losses.append(loss.item())\n"),
 }
 
 # --- leakage mutants (validation rows reach fitting) ---------------------------------
 
 P16_TRAIN_WITH_VAL = '''def train(config, model, optimizer, start_step, checkpoint_path):
-    pool_x, pool_y = torch.cat([x, xv]), torch.cat([y, yv])
+    device = torch.device(config["device"])
+    pool_x, pool_y = training_pool(config)
+    pool_x, pool_y = torch.cat([pool_x, xv]), torch.cat([pool_y, yv])
     losses = []
     for step in range(start_step + 1, config["steps"] + 1):
         idx = torch.randint(0, pool_x.shape[0], (config["batch_size"],))
@@ -193,16 +213,25 @@ P16_TRAIN_WITH_VAL = '''def train(config, model, optimizer, start_step, checkpoi
             save_checkpoint(checkpoint_path, model, optimizer, step)
     return losses
 '''
-P17_STUDENT_WITH_VAL = '''def train_student(x, y, noise_std):
+P17_STUDENT_WITH_VAL = '''def train_student(x, y, noise_std, config):
     x, y = torch.cat([x, xv]), torch.cat([y, yv])
+    device = torch.device(config["device"])
     torch.manual_seed(SEED)
-    model = NoisyStudent(noise_std)
+    model = NoisyStudent(noise_std).to(device)
     model.register_forward_pre_hook(make_seam_hook())
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01, betas=(0.9, 0.999), eps=1e-8, weight_decay=0)
     model.train()
-    for _ in range(150):
+    x, y = x.to(device), y.to(device)
+    amp = config["amp_dtype"]
+    for _ in range(config["steps_per_round"]):
+        if config["batch_size"] is None:
+            xb, yb = x, y
+        else:
+            idx = torch.randint(0, x.shape[0], (config["batch_size"],))
+            xb, yb = x[idx], y[idx]
         optimizer.zero_grad(set_to_none=True)
-        loss = F.cross_entropy(model(x), y)
+        with nullcontext() if amp is None else torch.autocast(device_type=device.type, dtype=amp):
+            loss = F.cross_entropy(model(xb), yb)
         loss.backward()
         optimizer.step()
     return model.eval()
@@ -216,11 +245,12 @@ LEAKAGE = {
         "Z = torch.cat([features(xl), features(pool)])",
         "Z = torch.cat([features(xl), features(pool), features(xv)])")),
     "p19": ("model forward (pre-hook)", ("text",
-        "losses = train_inverse(model, x, y, optimizer, STEPS)",
-        "losses = train_inverse(model, torch.cat([x, xv]), torch.cat([y, yv]), optimizer, STEPS)")),
+        "losses = train_inverse(model, x_fit, y_fit, optimizer, CONFIG)",
+        "losses = train_inverse(model, torch.cat([x_fit, xv]), torch.cat([y_fit, yv]), optimizer, CONFIG)")),
     "p20": ("model forward (pre-hook)", ("text",
-        "loss = F.mse_loss(model(f), theta)",
-        "loss = F.mse_loss(model(torch.cat([f, fv])), torch.cat([theta, theta_v]))")),
+        "losses = train_regressor(model, f_fit, theta_fit, optimizer, CONFIG)",
+        ("losses = train_regressor(model, torch.cat([f_fit, fv]), torch.cat([theta_fit, theta_v]), "
+         "optimizer, CONFIG)"))),
     "p21": ("InverseRegressor.fit", ("text",
         "reg = InverseRegressor(family, True, seed, STEPS_PER_RUN, budget).fit(train_x, train_y)",
         ("reg = InverseRegressor(family, True, seed, STEPS_PER_RUN, budget).fit("

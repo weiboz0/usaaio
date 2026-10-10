@@ -154,6 +154,34 @@ def test_optional_colab_l4_heading_must_be_in_markdown(tmp_path: Path) -> None:
     assert _errors(book2) == [f"{_label(book2)} {message}"]
 
 
+@pytest.mark.parametrize(
+    "source",
+    [
+        pytest.param("```markdown\n## Accelerator extension\n```", id="backtick-fence"),
+        pytest.param("~~~\n## Accelerator extension\n~~~", id="tilde-fence"),
+        pytest.param("````\n```\n## Accelerator extension\n```\n````", id="nested-fence"),
+    ],
+)
+def test_optional_colab_l4_heading_inside_fenced_code_is_rejected(
+    tmp_path: Path, source: str
+) -> None:
+    book2 = _copied_repo(tmp_path)
+    _set_policy(book2, "optional-colab-l4")
+    _add_markdown(book2, source)
+    message = "optional-colab-l4 task requires an 'Accelerator extension' statement heading"
+    assert _errors(book2) == [f"{_label(book2)} {message}"]
+
+
+def test_optional_colab_l4_heading_after_closed_fence_is_accepted(tmp_path: Path) -> None:
+    book2 = _copied_repo(tmp_path)
+    _set_policy(book2, "optional-colab-l4")
+    _add_markdown(
+        book2,
+        "```python\nprint('## Accelerator extension')\n```\n\n## Accelerator extension\n\nDetails.",
+    )
+    assert _errors(book2) == []
+
+
 @pytest.mark.parametrize("policy", ["gpu-required", "tpu", "optional-colab-a100"])
 def test_gpu_required_and_unknown_policies_stay_rejected(tmp_path: Path, policy: str) -> None:
     book2 = _copied_repo(tmp_path)

@@ -15178,7 +15178,7 @@ notebooks:
   - val_x.double
 - path: units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb
   kind: notebook
-  semantic_sha256: a4b6c969ad7db71627276a40758b628f3e1c6e6d050c0382d79547a3f06f885b
+  semantic_sha256: b9696d35fe052edd55d4982f3eac0d24706a09ead2965a6273b2cfe523206375
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
       Mixture-Function Parameter Regression :: cell 1'
@@ -15648,7 +15648,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb
   kind: notebook
-  semantic_sha256: 1ee445dd5f12e9d2ef6b7e28d47cd7d7eaa327b5229bf2f820adc45afcb962e6
+  semantic_sha256: 4d0613c1587bcf14449bf46792cbb29e77043e6d545a5be55f95cffedd42b32a
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: B2-024 — Practice p06 > Task :: cell 1'
     heading_path:
@@ -15665,15 +15665,15 @@ notebooks:
     - B2-024 — Practice p06
     - Task
     cell_ordinal: 3
-  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: Build the larger batch from capstone_data.simulate("shapes_supervised",
-      2048, seed=1) instead of images[:64]. :: cell 1'
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: B2-024 — Practice p06 > Accelerator extension ::
+      cell 1'
     heading_path:
-    - Build the larger batch from capstone_data.simulate("shapes_supervised", 2048, seed=1) instead of images[:64].
+    - B2-024 — Practice p06
+    - Accelerator extension
     cell_ordinal: 1
-  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: Build the larger batch from capstone_data.simulate("shapes_supervised",
-      2048, seed=1) instead of images[:64]. > Your response :: cell 1'
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: B2-024 — Practice p06 > Your response :: cell 1'
     heading_path:
-    - Build the larger batch from capstone_data.simulate("shapes_supervised", 2048, seed=1) instead of images[:64].
+    - B2-024 — Practice p06
     - Your response
     cell_ordinal: 1
   declared_unit_ids:
@@ -15695,7 +15695,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb
   kind: notebook
-  semantic_sha256: 4214bb0563a4d21377d4c1b05fee108463fb906304da0b613e579c99063ccdce
+  semantic_sha256: 01dbf37e24740b46f64d050699db8cdae1f57cd29c9ece1aa0990badd9e0bb8e
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p06 — Solution :: cell 1'
@@ -15762,21 +15762,24 @@ notebooks:
     - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
     - Solution
     cell_ordinal: 8
-  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: Build the larger batch from capstone_data.simulate("shapes_supervised",
-      2048, seed=1) instead of images[:64]. :: cell 1'
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Accelerator extension :: cell 1'
     heading_path:
-    - Build the larger batch from capstone_data.simulate("shapes_supervised", 2048, seed=1) instead of images[:64].
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Accelerator extension
     cell_ordinal: 1
-  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: Build the larger batch from capstone_data.simulate("shapes_supervised",
-      2048, seed=1) instead of images[:64]. > Answer check :: cell 1'
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Accelerator extension > Answer check :: cell 1'
     heading_path:
-    - Build the larger batch from capstone_data.simulate("shapes_supervised", 2048, seed=1) instead of images[:64].
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Accelerator extension
     - Answer check
     cell_ordinal: 1
-  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: Build the larger batch from capstone_data.simulate("shapes_supervised",
-      2048, seed=1) instead of images[:64]. > Answer check :: cell 2'
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
+      p06 — Solution > Accelerator extension > Answer check :: cell 2'
     heading_path:
-    - Build the larger batch from capstone_data.simulate("shapes_supervised", 2048, seed=1) instead of images[:64].
+    - B2-024-gpu-scientific-ml-capstone — Practice p06 — Solution
+    - Accelerator extension
     - Answer check
     cell_ordinal: 2
   declared_unit_ids:
@@ -15790,6 +15793,7 @@ notebooks:
   - batch.items
   - batch.to
   - capstone_data.ShapeCNN
+  - capstone_data.simulate
   - capstone_data.train_rows
   - contextlib.nullcontext
   - cpu_moved.items
@@ -15819,7 +15823,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb
   kind: notebook
-  semantic_sha256: 565d472d481418dc82b7d3d6242d4ce0b6301bf6c3bd2dcce7468e20a6482208
+  semantic_sha256: f8e2c1a9829b9447acf8128b90db5a740db932a8c9633823f877a5115c8c87a6
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb :: B2-024 — Practice p07 > Task :: cell 1'
     heading_path:
@@ -15862,7 +15866,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: 1181b0326684ada31eedf07b16b1ef361f7930d3b0106e2c6e47f1182b3a7b8b
+  semantic_sha256: e8960f4b42081647a5b68327470d776b6384f6de667c602a075c37ab3e2ddd79
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p07 — Solution :: cell 1'
@@ -15941,7 +15945,9 @@ notebooks:
   - F.cross_entropy
   - L21.item
   - capstone_data.ShapeCNN
+  - capstone_data.simulate
   - capstone_data.train_rows
+  - contextlib.nullcontext
   - importlib.util.module_from_spec
   - importlib.util.spec_from_file_location
   - loader_spec.loader.exec_module
@@ -15961,9 +15967,12 @@ notebooks:
   - pathlib.Path
   - resumed_loss.item
   - tempfile.TemporaryDirectory
+  - torch.autocast
+  - torch.cat
   - torch.cuda.get_rng_state_all
   - torch.cuda.is_available
   - torch.cuda.set_rng_state_all
+  - torch.device
   - torch.equal
   - torch.get_rng_state
   - torch.isfinite
@@ -16081,7 +16090,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p09.ipynb
   kind: notebook
-  semantic_sha256: 04450100d64ae27e4bdc7c41c4d916eab4a18883d5aadc36da77087d7fcfd767
+  semantic_sha256: 14297c4f9c61736ac5b79a1d33e176a454619f211250d3404fc00ac7182f12c5
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09.ipynb :: B2-024 — Practice p09 > Task :: cell 1'
     heading_path:
@@ -16113,7 +16122,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb
   kind: notebook
-  semantic_sha256: 6ecc063c8eb2de5d9cb4857236cf2a3fd13bf20d782a8e37f2460dc9911d149b
+  semantic_sha256: bf84ffb13df05945cd8d61d7bbe1ba74f4439ef39b783fd61cf309d417674a2f
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p09 — Solution :: cell 1'
@@ -16222,7 +16231,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: 05b04788747e701020317f35ec8c01bd5cd4c77d8e3273763af9868ec2f63469
+  semantic_sha256: 4d714fc053a00271e8a284adc1acf5b1abd66cde38c7c6f28e631eb1e791491b
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p10 — Solution :: cell 1'
@@ -16824,7 +16833,7 @@ notebooks:
   - torch.randn
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb
   kind: notebook
-  semantic_sha256: 3efe3e88b46fd094d57722c0644579a27b1dba15deab1209df0b3b3a6b4bc3c6
+  semantic_sha256: 54920aa2df7a87b022d501570bff706198d5067b147004054f372d3e93a58aaa
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb :: B2-024 — Practice p16 > Task :: cell 1'
     heading_path:
@@ -16867,7 +16876,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 6bcf6154c7616238bf017618a153a199c7dfe0c6f97c848a50aaef4fb4724b22
+  semantic_sha256: 8f9b69c4d0001acc466221096171dc55c70cde2816452b4a96c98b9846371a88
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p16 — Solution :: cell 1'
@@ -16949,6 +16958,7 @@ notebooks:
   - batch.items
   - batch.to
   - capstone_data.final_test_score
+  - capstone_data.simulate
   - capstone_data.split_of
   - capstone_data.test_call_count
   - capstone_data.train_rows
@@ -16968,6 +16978,7 @@ notebooks:
   - model.state_dict
   - model.train
   - model2.eval
+  - model2.parameters
   - model2.state_dict
   - nn.Conv2d
   - nn.Linear
@@ -16983,6 +16994,7 @@ notebooks:
   - self.head
   - tempfile.TemporaryDirectory
   - torch.autocast
+  - torch.cat
   - torch.cuda.get_rng_state_all
   - torch.cuda.is_available
   - torch.cuda.set_rng_state_all
@@ -16999,7 +17011,7 @@ notebooks:
   - torch.set_rng_state
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: d8e921c18b7a428df7feb0e151df6bbb0889420768dfb235f566d5acf9ad86d4
+  semantic_sha256: 20a7e452a06b1f8ec7bf7c6275aef85d86adb4723ca37ff954609ff66b32b3d9
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb :: B2-024 — Practice p17 > Task :: cell 1'
     heading_path:
@@ -17042,7 +17054,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: 5c4bb877ebe5f9a3104d906be39fc702637d32db7445be2008f02ec7eca6f6c1
+  semantic_sha256: 4236995fe8b5d9381d260a3a51775be106b6e224dfe9a3dbf74b9a9b521b72e4
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p17 — Solution :: cell 1'
@@ -17125,13 +17137,17 @@ notebooks:
   - capstone_data.ShapeCNN
   - capstone_data.baseline_score
   - capstone_data.final_test_score
+  - capstone_data.simulate
   - capstone_data.split_of
   - capstone_data.test_call_count
   - capstone_data.train_rows
   - capstone_data.unlabelled_rows
   - capstone_data.val_rows
   - chosen.eval
+  - chosen.parameters
+  - contextlib.nullcontext
   - final_val.values
+  - images.to
   - importlib.util.module_from_spec
   - importlib.util.spec_from_file_location
   - kept.append
@@ -17145,21 +17161,29 @@ notebooks:
   - optimizer.zero_grad
   - path.is_file
   - pathlib.Path
+  - pool.to
   - probs.argmax
   - probs.max
   - rounds.append
   - self.cnn
   - teacher.eval
+  - teacher.parameters
+  - torch.autocast
   - torch.bincount
   - torch.cat
+  - torch.device
   - torch.manual_seed
   - torch.no_grad
   - torch.nonzero
   - torch.optim.Adam
+  - torch.randint
   - torch.randn_like
   - torch.set_num_threads
   - torch.sort
   - values.to
+  - x.to
+  - xv.to
+  - y.to
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p18.ipynb
   kind: notebook
   semantic_sha256: 37029319c326da57db7df3c40c248414b0db4dd63bac3cbefd2da99a6e7b3cb2
@@ -17333,7 +17357,7 @@ notebooks:
   - values.to
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb
   kind: notebook
-  semantic_sha256: c1215e0f6c9f202dbf0e60e57af846de0a5c3e7ef3ce50fe3fa7c977f56765da
+  semantic_sha256: 38eca3f06c9473b60ca9a83ebee50fbe81f9d31487e5b460a04dd27b33ec4ed1
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb :: B2-024 — Practice p19 > Task :: cell 1'
     heading_path:
@@ -17376,7 +17400,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: 898d8ea7c1ed3ce74370161d6c5c6a2a7dea3fde43a28962c7fef3e4bd2cc3ab
+  semantic_sha256: 1ff3a321291dd3cacd63cb2ab66d5032b61195fa5ae3677e56e722bedea54e86
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p19 — Solution :: cell 1'
@@ -17457,11 +17481,13 @@ notebooks:
   - capstone_data.baseline_score
   - capstone_data.final_test_score
   - capstone_data.position_error_per_example
+  - capstone_data.simulate
   - capstone_data.split_of
   - capstone_data.test_call_count
   - capstone_data.tikhonov_grid_predict
   - capstone_data.train_rows
   - capstone_data.val_rows
+  - contextlib.nullcontext
   - importlib.util.module_from_spec
   - importlib.util.spec_from_file_location
   - loader_spec.loader.exec_module
@@ -17471,6 +17497,7 @@ notebooks:
   - loss.item
   - losses.append
   - magnitudes.double
+  - magnitudes.to
   - model.eval
   - model.parameters
   - model.register_forward_pre_hook
@@ -17487,15 +17514,22 @@ notebooks:
   - sensors_xy.double
   - source_xy.double
   - strength.double
+  - torch.autocast
+  - torch.cat
+  - torch.device
   - torch.linalg.vector_norm
   - torch.log
   - torch.manual_seed
   - torch.no_grad
   - torch.optim.Adam
+  - torch.randint
   - torch.set_num_threads
+  - x.to
+  - xv.to
+  - y.to
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb
   kind: notebook
-  semantic_sha256: b4c62ce01acb2e02dd1a43e7d5fcbed89642b414dbe9adec4045c8088e5408c4
+  semantic_sha256: c9360b9de898981450d853fbcdca8114bf30bffc392ac8617bc36f735e410c40
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb :: B2-024 — Practice p20 > Task :: cell 1'
     heading_path:
@@ -17538,7 +17572,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: b949892b5028f1e807353c61f6b7ece54d182df929d7713dc7020d8371f107c7
+  semantic_sha256: bc81a9b55cc85565f1b8c949106004d458e00fa8907fb44d551ee0fa38e73ce5
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p20 — Solution :: cell 1'
@@ -17617,16 +17651,18 @@ notebooks:
   - F.mse_loss
   - SEAM.update
   - VAL.items
-  - X.double
+  - X.to
   - capstone_data.baseline_score
   - capstone_data.final_test_score
   - capstone_data.mixture_baseline_init
   - capstone_data.mixture_ls_fit
   - capstone_data.perm_invariant_error_per_example
+  - capstone_data.simulate
   - capstone_data.split_of
   - capstone_data.test_call_count
   - capstone_data.train_rows
   - capstone_data.val_rows
+  - contextlib.nullcontext
   - importlib.util.module_from_spec
   - importlib.util.spec_from_file_location
   - init_params.detach
@@ -17646,23 +17682,29 @@ notebooks:
   - optimizer.step
   - optimizer.zero_grad
   - params.reshape
+  - params.to
   - path.is_file
   - pathlib.Path
   - self.net
   - self.register_buffer
   - torch.argsort
+  - torch.autocast
+  - torch.cat
+  - torch.device
   - torch.exp
   - torch.gather
   - torch.log
   - torch.manual_seed
   - torch.no_grad
   - torch.optim.Adam
+  - torch.randint
   - torch.set_num_threads
   - torch.stack
   - train_values.mean
   - train_values.std
   - val_pipe.reshape
   - values.detach
+  - values.to
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p21.ipynb
   kind: notebook
   semantic_sha256: f6caa49fbe684daf85a3a3ac0b75b1d5402bfce0d16aa9bf3b4b5967d04bb609
@@ -18246,7 +18288,7 @@ notebooks:
   - imbalance.items
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p26.ipynb
   kind: notebook
-  semantic_sha256: 5b3661dc00ff6334337a08776876c1406625a54016b072dfcf1ea6099c64f543
+  semantic_sha256: a3b9d2acaed774a3b1dc91e11ccfc72bb95b8dfe68060f6bc95742363ccb7ee6
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26.ipynb :: B2-024 — Practice p26 > Task :: cell 1'
     heading_path:
@@ -18283,7 +18325,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb
   kind: notebook
-  semantic_sha256: 1a34cf5eaf73a4ed8060583f34348f9f2974048f84fb4e22f2fafc337e973935
+  semantic_sha256: 01940884a427c81df2837729d4f7c2e8d8954436ba30ad5e8953e0f5b083fb3d
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p26 — Solution :: cell 1'
@@ -18392,6 +18434,7 @@ notebooks:
   - self.net.parameters
   - torch.cat
   - torch.exp
+  - torch.linalg.vector_norm
   - torch.log
   - torch.manual_seed
   - torch.no_grad
@@ -18401,7 +18444,7 @@ notebooks:
   - x.double
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p27.ipynb
   kind: notebook
-  semantic_sha256: d87ab2d9344a78bc174964c2571a041e1c310081d5d2ec600ef70622beb10106
+  semantic_sha256: 098c1b46ee89262c8147bfae5d092e8adaf6cd2a6e28e21cee211d85b70b207d
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27.ipynb :: B2-024 — Practice p27 > Task :: cell 1'
     heading_path:
