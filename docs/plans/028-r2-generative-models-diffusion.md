@@ -138,7 +138,7 @@ Every solution ends with `### Answer check`.
 | p17 | C | integrative | core | 65 | train a tiny MLP GAN on a 2-D mixture; certify that the last-50-step mean discriminator loss lies in a stated band around `2·log 2` and the generator loss stays finite below a stated bound (both set from the frozen-seed run with margin), and that at least a stated number of modes are covered |
 | p18 | C | integrative | advanced | 65 | train a tiny ε-prediction MLP DDPM (`T=50`) on a 2-D mixture; certify the training-loss decrease and the held-out denoising loss |
 | p19 | C | integrative | core | 65 | sample from the trained DDPM with fixed noise; certify sample mean/covariance against held-out data and mode coverage |
-| p20 | C | integrative | advanced | 65 | train a CPU-scale class-conditional latent diffusion model (frozen tiny autoencoder latent, label-token cross-attention, conditioning dropout); certify that the mean distance from decoded samples to the target class center strictly decreases from `w=0` to `w=1` to `w=3`, and report the nearest-center hit rate (p08's rule) with `hit(w=3) ≥ hit(w=1) > hit(w=0)`; thresholds set from the frozen-seed run |
+| p20 | C | integrative | advanced | 65 | train a CPU-scale class-conditional latent diffusion model (frozen tiny autoencoder latent, label-token cross-attention, conditioning dropout); certify that the mean distance from decoded samples to the target class center strictly decreases from `w=0` to `w=1` to `w=1.5`, and report the nearest-center hit rate (p08's rule) with `hit(w=1.5) ≥ hit(w=1) > hit(w=0)`; `w=3` is reported but not asserted because it overshoots in the frozen-seed run (shipped contract, per the Plan-review Fable note); thresholds set from the frozen-seed run |
 | p21 | C | scenario | core | 55 | choose among a GAN, a VAE, and diffusion under stated sample-quality, likelihood, speed, and coverage constraints |
 | p22 | C | scenario | core | 55 | diagnose mode collapse versus discriminator overpowering from literal loss and coverage traces, and choose a remedy |
 | p23 | C | challenge | advanced | 55 | repair a DDPM implementation with `α`/`ᾱ` confusion, a wrong sampling `σ_t`, and an off-by-one timestep index |
@@ -362,7 +362,29 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ## Content Review
 
-Pending.
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
+
+### Review 1 — self (2026-10-10)
+- **Blind answers**: p13(e) `D*(x) = 2x/(2x+1)`, 1/3 at ¼, 2/3 at 1, `D*(0) = 0` (case a=0<b); p21 GAN / VAE / DDPM / latent diffusion / DDPM. Both match the solutions.
+- **Verdict**: Approve.
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-10)
+- **Blind answers**: p01 C (7); p10 toy 1.1080242395; p14 `C(G) = −log 4 + 2·JS`, discrete −1.318650; p18 protocol; p24 leakage lines 3–6 / selection line 12 / sign line 10 / scaling lines 4 and 13. All agree with the solutions.
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: p24's repair called a 3-argument `sample` that the statement never defined, and its answer check never exercised the repaired selection. → Response: the statement defines `sample(guide, w, targets)` (the audited listing's calls read as `targets = labels[heldout][:48]`). The solution listing passes `targets` explicitly. A stub-driven answer-check probe asserts that every candidate `w` is scored on validation labels only and held-out labels are used exactly once.
+2. `[FIXED]` Should Fix: the plan's p20 ledger still said `w=3`. → Response: the ledger row now records the shipped `w=1.5` contract.
+- The GAN lrs, 2-of-4 bar, DDPM lr, p23 margin, and explicit tolerances were judged acceptable.
+
+### Review 1 — Fable (2026-10-10)
+- **Blind answers**: p03 C; p07 (1.4075340033, 0.6521407962); p15 induction, reused-noise 0.659828; p20 all probes (own run, matching w-table); p22 A = mode collapse, B = overpowering, remedies (v)/(ii). All match.
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Should Fix: p22(d) "the three certificates from p17" was ambiguous. → Response: "choose three of p17's certificates (A)–(G) … say why"; the solution's chosen trio stands.
+2. `[FIXED]` Should Fix: p20 referred to "the plan". → Response: reworded for students.
+3. `[WONTFIX]` Nit: p22 Run B reuses the lesson 02 §7 worked example. → Response: deliberate reinforcement; Run A is new and carries the diagnostic load.
+4. `[FIXED]` Nit: p17's band is now stated as deliberately wide.
+5. `[WONTFIX]` Nit: p03 option B has two readings; the solution names both, and both give the same wrong value.
+
+Re-verified after fixes: p24 solution executes with the new probe; inventory regenerated; B2-023 statement suite 17 passed.
 
 ## Post-execution report
 

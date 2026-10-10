@@ -13100,7 +13100,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-023-generative-models-diffusion/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: c4bcf3d2c4cba1f02bdcf0280d4d7e28494b01acb8f738acfbc75d13c6992e87
+  semantic_sha256: 06d6558b1c7dbfc94ba59e25836838a90cdfbac1cf11d9a4be4095f09979f881
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p17.ipynb :: B2-023 — Practice p17 > Task :: cell 1'
     heading_path:
@@ -13601,7 +13601,7 @@ notebooks:
   - x0.dim
 - path: units/B2-023-generative-models-diffusion/practice/p20.ipynb
   kind: notebook
-  semantic_sha256: 42c8d7043996d200d769686d98732162125d7236928bfaa45049882e4368d885
+  semantic_sha256: cd8356305861f1665031ff4a150369daa9265839d4e8efd73f4513c434e56415
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p20.ipynb :: B2-023 — Practice p20 > Task :: cell 1'
     heading_path:
@@ -13860,7 +13860,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p22.ipynb
   kind: notebook
-  semantic_sha256: b49c710e7b2b7db66c601181f232f720a2c2f0eeeb4c91264a94224ce44a7ed9
+  semantic_sha256: e38b50ef41664b38a0c2ce21872076882d231e50a88fba07636d00e133bb7f10
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p22.ipynb :: B2-023 — Practice p22 > Task :: cell 1'
     heading_path:
@@ -14072,7 +14072,7 @@ notebooks:
   - torch.zeros_like
 - path: units/B2-023-generative-models-diffusion/practice/p24.ipynb
   kind: notebook
-  semantic_sha256: 0cc0c95876ee062e277e84e4ee8f7df4ebe61dfac62ec633d176233df15d5514
+  semantic_sha256: e5e92133f5850e50ca63f0a556094daab5e35d485bdce1ac3a62cfb9771cb403
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p24.ipynb :: B2-023 — Practice p24 > Task :: cell 1'
     heading_path:
@@ -14111,7 +14111,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: 2dd64516f696782b1a5629fb02fbf3bd484164fb5ec3e80f855bb6f4fdb882dd
+  semantic_sha256: 46f712efd1e4b0fcc92c64e779d9292f4b1913a7d7f85430d3051dfc08f3652f
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p24 — Solution :: cell 1'
@@ -14194,6 +14194,7 @@ notebooks:
   - B2-023-p24
   api_tokens:
   - C3.abs
+  - _calls.append
   - cfg_w0.tolist
   - cfg_w1.tolist
   - flip_w0.tolist
@@ -14221,6 +14222,7 @@ notebooks:
   - torch.set_num_threads
   - torch.tensor
   - torch.zeros
+  - torch.zeros_like
   - train_labels_all.tolist
   - val_ids.extend
   - x.detach
