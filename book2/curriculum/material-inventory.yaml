@@ -1,15 +1,15 @@
 inventory_version: 1
 counts:
-  units: 4
-  concepts: 28
-  unit_practices: 96
-  lesson_sessions: 24
-  unit_nonpractice_notebooks: 32
-  unit_notebooks: 224
+  units: 5
+  concepts: 31
+  unit_practices: 120
+  lesson_sessions: 30
+  unit_nonpractice_notebooks: 40
+  unit_notebooks: 280
   mocktests: 0
   mock_notebooks: 0
-  manifested_minutes: 6500
-  scheduled_minutes: 6620
+  manifested_minutes: 8120
+  scheduled_minutes: 8270
 input_paths:
 - docs/course-structure.md
 - syllabus.md
@@ -241,14 +241,71 @@ input_paths:
 - units/B2-022-probabilistic-latent-models/practice/p24.ipynb
 - units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb
 - units/B2-022-probabilistic-latent-models/review.ipynb
+- units/B2-023-generative-models-diffusion/lesson.ipynb
+- units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb
+- units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb
+- units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb
+- units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb
+- units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb
+- units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb
+- units/B2-023-generative-models-diffusion/manifest.yaml
+- units/B2-023-generative-models-diffusion/practice/p01.ipynb
+- units/B2-023-generative-models-diffusion/practice/p01_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p02.ipynb
+- units/B2-023-generative-models-diffusion/practice/p02_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p03.ipynb
+- units/B2-023-generative-models-diffusion/practice/p03_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p04.ipynb
+- units/B2-023-generative-models-diffusion/practice/p04_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p05.ipynb
+- units/B2-023-generative-models-diffusion/practice/p05_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p06.ipynb
+- units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p07.ipynb
+- units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p08.ipynb
+- units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p09.ipynb
+- units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p10.ipynb
+- units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p11.ipynb
+- units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p12.ipynb
+- units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p13.ipynb
+- units/B2-023-generative-models-diffusion/practice/p13_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p14.ipynb
+- units/B2-023-generative-models-diffusion/practice/p14_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p15.ipynb
+- units/B2-023-generative-models-diffusion/practice/p15_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p16.ipynb
+- units/B2-023-generative-models-diffusion/practice/p16_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p17.ipynb
+- units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p18.ipynb
+- units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p19.ipynb
+- units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p20.ipynb
+- units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p21.ipynb
+- units/B2-023-generative-models-diffusion/practice/p21_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p22.ipynb
+- units/B2-023-generative-models-diffusion/practice/p22_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p23.ipynb
+- units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb
+- units/B2-023-generative-models-diffusion/practice/p24.ipynb
+- units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb
+- units/B2-023-generative-models-diffusion/review.ipynb
 documents:
 - path: docs/course-structure.md
   kind: document
-  semantic_sha256: 476f85e5c6beec14eac546953cff390c926f402260c25c26a19b5f3b96993f87
+  semantic_sha256: 89632bcf7efd158c47b55b95f04db7fa72bc43fbfbefa0dc2a3ecb3c88d8ca98
 manifests:
 - path: syllabus.md
   kind: canonical-yaml
-  semantic_sha256: 30d539f94d9b8d006d1447e14e599bbc3588601dba16dfcf89710b7a93c24322
+  semantic_sha256: 39994d24f8ad1611c7fe38405c59d54ac29472813f186ebd6352407464aeab58
 - path: units/B2-019-attention-transformers/manifest.yaml
   kind: yaml
   semantic_sha256: e6dd52f9851fe91c1f86e8cfc45f0d1c25c7fa78f0524abd9d34322c0b19dd29
@@ -261,6 +318,9 @@ manifests:
 - path: units/B2-022-probabilistic-latent-models/manifest.yaml
   kind: yaml
   semantic_sha256: 2fc5af2e25cec834aad4c803a64a1543497d551323d44a04a2074ef53ed3d6f0
+- path: units/B2-023-generative-models-diffusion/manifest.yaml
+  kind: yaml
+  semantic_sha256: ad46f44175a4134ff9db979fe981a796c55c84166561600c2f44ee5e65e5c6fe
 notebooks:
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
@@ -10640,5 +10700,3573 @@ notebooks:
   - kl-divergence
   - multivariate-gaussian
   - variational-autoencoder
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/lesson.ipynb
+  kind: notebook
+  semantic_sha256: 78cb7c0920b993479a1e82eecd95989f33d66d6e9e8fad1f16899f6fb3b97fcb
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion :: cell 1'
+    heading_path:
+    - B2-023 — Generative Models and Diffusion
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion > Learning
+      goals :: cell 1'
+    heading_path:
+    - B2-023 — Generative Models and Diffusion
+    - Learning goals
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion > Owned concepts
+      :: cell 1'
+    heading_path:
+    - B2-023 — Generative Models and Diffusion
+    - Owned concepts
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion > Study route
+      :: cell 1'
+    heading_path:
+    - B2-023 — Generative Models and Diffusion
+    - Study route
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion > Tools taught
+      inside this unit :: cell 1'
+    heading_path:
+    - B2-023 — Generative Models and Diffusion
+    - Tools taught inside this unit
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion > Reproducibility
+      contract :: cell 1'
+    heading_path:
+    - B2-023 — Generative Models and Diffusion
+    - Reproducibility contract
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion > How to study
+      :: cell 1'
+    heading_path:
+    - B2-023 — Generative Models and Diffusion
+    - How to study
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion > Boundaries
+      :: cell 1'
+    heading_path:
+    - B2-023 — Generative Models and Diffusion
+    - Boundaries
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  - generative-adversarial-network
+  - stable-diffusion
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb
+  kind: notebook
+  semantic_sha256: 2aaf53cba465645d24c14d5b41f55796e485715276b8d1ad06c9ea2ffc499b78
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
+      :: cell 1'
+    heading_path:
+    - B2-023 — Book 1 and Book 2 Bridge Diagnostic
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
+      > 1. Arrays, broadcasting, and seeded randomness :: cell 1'
+    heading_path:
+    - B2-023 — Book 1 and Book 2 Bridge Diagnostic
+    - 1. Arrays, broadcasting, and seeded randomness
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
+      > 2. Matrix multiplication and orthonormal rows :: cell 1'
+    heading_path:
+    - B2-023 — Book 1 and Book 2 Bridge Diagnostic
+    - 2. Matrix multiplication and orthonormal rows
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
+      > 3. Expectation, variance, independence, and covariance :: cell 1'
+    heading_path:
+    - B2-023 — Book 1 and Book 2 Bridge Diagnostic
+    - 3. Expectation, variance, independence, and covariance
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
+      > 4. Gaussians and simulation :: cell 1'
+    heading_path:
+    - B2-023 — Book 1 and Book 2 Bridge Diagnostic
+    - 4. Gaussians and simulation
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
+      > 5. Gradients, MLPs, and the PyTorch training loop :: cell 1'
+    heading_path:
+    - B2-023 — Book 1 and Book 2 Bridge Diagnostic
+    - 5. Gradients, MLPs, and the PyTorch training loop
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
+      > 6. Softmax and cross-entropy :: cell 1'
+    heading_path:
+    - B2-023 — Book 1 and Book 2 Bridge Diagnostic
+    - 6. Softmax and cross-entropy
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
+      > 7. Book 2 imports: attention, embeddings, U-Net, Gaussians, KL, and VAEs :: cell 1'
+    heading_path:
+    - B2-023 — Book 1 and Book 2 Bridge Diagnostic
+    - '7. Book 2 imports: attention, embeddings, U-Net, Gaussians, KL, and VAEs'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
+      > 8. Readiness and explicit remediation :: cell 1'
+    heading_path:
+    - B2-023 — Book 1 and Book 2 Bridge Diagnostic
+    - 8. Readiness and explicit remediation
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
+      > 8. Readiness and explicit remediation :: cell 2'
+    heading_path:
+    - B2-023 — Book 1 and Book 2 Bridge Diagnostic
+    - 8. Readiness and explicit remediation
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  - generative-adversarial-network
+  - stable-diffusion
+  declared_problem_ids: []
+  api_tokens:
+  - p.numel
+  - readiness.values
+  - torch.allclose
+  - torch.log
+  - torch.nn.Linear
+  - torch.nn.ReLU
+  - torch.nn.Sequential
+  - torch.ones
+  - torch.softmax
+  - torch.tensor
+- path: units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb
+  kind: notebook
+  semantic_sha256: 1a9c2701452712afd2ad03f64ae943f7d3bb00a61842e495ed4593f34653de44
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 1. Implicit generative models: the generator and the discriminator :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - '1. Implicit generative models: the generator and the discriminator'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 2. The sigmoid and binary cross-entropy with logits :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - 2. The sigmoid and binary cross-entropy with logits
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 2. The sigmoid and binary cross-entropy with logits :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - 2. The sigmoid and binary cross-entropy with logits
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 3. The minimax value function :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - 3. The minimax value function
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 4. Pointwise optimization and the optimal discriminator :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - 4. Pointwise optimization and the optimal discriminator
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 5. Continuous KL and the Jensen–Shannon divergence :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - 5. Continuous KL and the Jensen–Shannon divergence
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 5. Continuous KL and the Jensen–Shannon divergence :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - 5. Continuous KL and the Jensen–Shannon divergence
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 6. The global optimum of the game :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - 6. The global optimum of the game
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 6. The global optimum of the game :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - 6. The global optimum of the game
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 7. Worked laboratory: the non-saturating generator loss :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - '7. Worked laboratory: the non-saturating generator loss'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 7. Worked laboratory: the non-saturating generator loss :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - '7. Worked laboratory: the non-saturating generator loss'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 7. Worked laboratory: the non-saturating generator loss :: cell 3'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - '7. Worked laboratory: the non-saturating generator loss'
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
+      Games > 9. Forward-only deeper topic: other divergences and Wasserstein GANs :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 1: Adversarial Games'
+    - '9. Forward-only deeper topic: other divergences and Wasserstein GANs'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  - generative-adversarial-network
+  - stable-diffusion
+  declared_problem_ids: []
+  api_tokens:
+  - F.binary_cross_entropy_with_logits
+  - grad_ns.item
+  - grad_sat.item
+  - loss_d.item
+  - loss_g.item
+  - math.isclose
+  - math.log
+  - naive.tolist
+  - stable.tolist
+  - torch.allclose
+  - torch.autograd.grad
+  - torch.isfinite
+  - torch.isinf
+  - torch.log
+  - torch.log1p
+  - torch.ones_like
+  - torch.sigmoid
+  - torch.tensor
+  - torch.zeros
+  - torch.zeros_like
+- path: units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb
+  kind: notebook
+  semantic_sha256: 6c802dbed0d84ad83811519f34415b39ae17cb33718fb7f6396ae9e480285266
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 1. Alternating updates with two optimizers :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - 1. Alternating updates with two optimizers
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 2. `detach` discipline :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - 2. `detach` discipline
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 2. `detach` discipline :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - 2. `detach` discipline
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 3. Loss traces are not sample quality :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - 3. Loss traces are not sample quality
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 4. Mode collapse and the mode-coverage diagnostic :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - 4. Mode collapse and the mode-coverage diagnostic
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 5. Discriminator overpowering :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - 5. Discriminator overpowering
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 6. A fixed-seed tiny 2-D GAN training trace :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - 6. A fixed-seed tiny 2-D GAN training trace
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 6. A fixed-seed tiny 2-D GAN training trace :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - 6. A fixed-seed tiny 2-D GAN training trace
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 7. Worked laboratory: diagnosing an overpowering discriminator :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - '7. Worked laboratory: diagnosing an overpowering discriminator'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 7. Worked laboratory: diagnosing an overpowering discriminator :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - '7. Worked laboratory: diagnosing an overpowering discriminator'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
+      Training and Diagnosing GANs > 9. Forward-only deeper topic: convolutional GANs (DCGAN) :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 2: Training and Diagnosing GANs'
+    - '9. Forward-only deeper topic: convolutional GANs (DCGAN)'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  - generative-adversarial-network
+  - stable-diffusion
+  declared_problem_ids: []
+  api_tokens:
+  - D.parameters
+  - F.binary_cross_entropy_with_logits
+  - G.parameters
+  - counts.tolist
+  - d2.argmin
+  - d2.min
+  - d_value.backward
+  - d_value.item
+  - g_value.backward
+  - g_value.item
+  - generative_data.mixture_centers
+  - generative_data.train_tensor
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - opt_d.step
+  - opt_d.zero_grad
+  - opt_g.step
+  - opt_g.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - torch.Generator
+  - torch.bincount
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.ones_like
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_num_threads
+  - torch.sigmoid
+  - torch.zeros_like
+  - trace.append
+- path: units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb
+  kind: notebook
+  semantic_sha256: bfb232ed6741f79d5708add99382f6ba1414d1cb6df3cd56ebf40ab5e4ac03b5
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 1. Destroying data slowly: the idea of a diffusion model :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - '1. Destroying data slowly: the idea of a diffusion model'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 2. The variance schedule and its storage convention :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - 2. The variance schedule and its storage convention
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 3. One forward step by reparameterization :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - 3. One forward step by reparameterization
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 4. A new tool: sums of independent Gaussians :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - '4. A new tool: sums of independent Gaussians'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 4. A new tool: sums of independent Gaussians :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - '4. A new tool: sums of independent Gaussians'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 5. The closed form $q(x_t\mid x_0)$ :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - 5. The closed form $q(x_t\mid x_0)$
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 6. Signal-to-noise and why $\bar\alpha_T\approx0$ :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - 6. Signal-to-noise and why $\bar\alpha_T\approx0$
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 7. Worked laboratory: an $\bar\alpha_t$ table and a Monte Carlo check :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - '7. Worked laboratory: an $\bar\alpha_t$ table and a Monte Carlo check'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 7. Worked laboratory: an $\bar\alpha_t$ table and a Monte Carlo check :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - '7. Worked laboratory: an $\bar\alpha_t$ table and a Monte Carlo check'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 7. Worked laboratory: an $\bar\alpha_t$ table and a Monte Carlo check :: cell 3'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - '7. Worked laboratory: an $\bar\alpha_t$ table and a Monte Carlo check'
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
+      Diffusion Forward Process > 9. Forward-only deeper topic: continuous time, scores, and other schedules :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 3: The Diffusion Forward Process'
+    - '9. Forward-only deeper topic: continuous time, scores, and other schedules'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  - generative-adversarial-network
+  - stable-diffusion
+  declared_problem_ids: []
+  api_tokens:
+  - independent.mean
+  - independent.var
+  - same_noise.mean
+  - same_noise.var
+  - snr.item
+  - torch.Generator
+  - torch.allclose
+  - torch.cumprod
+  - torch.full
+  - torch.linspace
+  - torch.randn
+  - torch.tensor
+  - torch.zeros
+  - x.mean
+  - x.var
+  - x3.mean
+  - x3.var
+- path: units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb
+  kind: notebook
+  semantic_sha256: 6a2746507752d3e27bad95802af779ece789cf6d9f0c30083d649aeddbb074f7
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 1. The reverse process :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - 1. The reverse process
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 2. The forward-process posterior (stated) :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - 2. The forward-process posterior (stated)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 3. KL between Gaussians with equal variance :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - 3. KL between Gaussians with equal variance
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 4. From mean matching to ε-prediction :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - 4. From mean matching to ε-prediction
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 5. The simplified training objective :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - 5. The simplified training objective
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 6. Ancestral sampling and a worked reverse step :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - 6. Ancestral sampling and a worked reverse step
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 6. Ancestral sampling and a worked reverse step :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - 6. Ancestral sampling and a worked reverse step
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 7. Worked laboratory: a fixed-seed tiny 2-D DDPM :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - '7. Worked laboratory: a fixed-seed tiny 2-D DDPM'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 7. Worked laboratory: a fixed-seed tiny 2-D DDPM :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - '7. Worked laboratory: a fixed-seed tiny 2-D DDPM'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
+      and Sampling > 9. Forward-only deeper topic: faster samplers and learned variances :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 4: Denoising and Sampling'
+    - '9. Forward-only deeper topic: faster samplers and learned variances'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  - generative-adversarial-network
+  - stable-diffusion
+  declared_problem_ids: []
+  api_tokens:
+  - ab.sqrt
+  - beta_tilde.tolist
+  - coef.item
+  - generative_data.mixture_centers
+  - generative_data.train_tensor
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - math.sqrt
+  - mean.tolist
+  - model.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - self.net
+  - t.to
+  - torch.Generator
+  - torch.allclose
+  - torch.bincount
+  - torch.cat
+  - torch.cov
+  - torch.cumprod
+  - torch.full
+  - torch.linspace
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randint
+  - torch.randn
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.zeros
+  - trace.append
+  - x.mean
+  - x_prev.tolist
+- path: units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb
+  kind: notebook
+  semantic_sha256: d1b93064b2d109b9ad8c55ee13cf08b3323366392d413f7644edf08b66f3358e
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 1. Why diffuse in a latent space :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - 1. Why diffuse in a latent space
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 2. The latent scaling factor :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - 2. The latent scaling factor
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 2. The latent scaling factor :: cell 2'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - 2. The latent scaling factor
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 3. Conditioning signals become tokens :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - 3. Conditioning signals become tokens
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 4. Cross-attention conditioning :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - 4. Cross-attention conditioning
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 5. Conditioning dropout and classifier-free guidance :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - 5. Conditioning dropout and classifier-free guidance
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 6. The Stable Diffusion pipeline component map :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - 6. The Stable Diffusion pipeline component map
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 7. Worked laboratory: a CPU-scale class-conditional latent diffusion trace ::
+      cell 1'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - '7. Worked laboratory: a CPU-scale class-conditional latent diffusion trace'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 7. Worked laboratory: a CPU-scale class-conditional latent diffusion trace ::
+      cell 2'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - '7. Worked laboratory: a CPU-scale class-conditional latent diffusion trace'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
+      5: Latent and Conditional Diffusion > 9. Forward-only deeper topic: real Stable Diffusion on a GPU :: cell 1'
+    heading_path:
+    - 'B2-023 — Session 5: Latent and Conditional Diffusion'
+    - '9. Forward-only deeper topic: real Stable Diffusion on a GPU'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  - generative-adversarial-network
+  - stable-diffusion
+  declared_problem_ids: []
+  api_tokens:
+  - F.mse_loss
+  - ab.sqrt
+  - generative_data.class_centers
+  - generative_data.encoder_matrix
+  - generative_data.train_label_tensor
+  - generative_data.train_tensor
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - math.sqrt
+  - model.parameters
+  - nn.Embedding
+  - nn.Linear
+  - nn.Parameter
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - scores.masked_fill
+  - self.class_tokens
+  - self.cond
+  - self.k_proj
+  - self.mlp
+  - self.null_token.expand
+  - self.q_proj
+  - self.v_proj
+  - t.to
+  - torch.Generator
+  - torch.arange
+  - torch.cat
+  - torch.cumprod
+  - torch.equal
+  - torch.full
+  - torch.linspace
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.ones
+  - torch.optim.Adam
+  - torch.rand
+  - torch.randint
+  - torch.randn
+  - torch.set_num_threads
+  - torch.softmax
+  - torch.stack
+  - torch.zeros
+  - torch.zeros_like
+  - trace.append
+- path: units/B2-023-generative-models-diffusion/practice/p01.ipynb
+  kind: notebook
+  semantic_sha256: f55b6c89abbe18da0c8f4418401c7d722c86ed3d9f2747d2eccd265db1ab0561
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p01.ipynb :: B2-023 — Practice p01 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p01
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p01.ipynb :: B2-023 — Practice p01 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p01
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p01
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p01_solution.ipynb
+  kind: notebook
+  semantic_sha256: aaf2615c74fbbbe4efbb6d0345594492fa109668c27c08262ca6171a4be78cb7
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p01_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p01 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p01 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p01_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p01 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p01 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p01_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p01 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p01 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p01_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p01 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p01 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p01_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p01 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p01 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p01
+  api_tokens:
+  - fractions.Fraction
+- path: units/B2-023-generative-models-diffusion/practice/p02.ipynb
+  kind: notebook
+  semantic_sha256: 26a828121433ea6ae8c0c969aea51d75f30e27d60d2cbf50f268d38d7b86d699
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p02.ipynb :: B2-023 — Practice p02 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p02
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p02.ipynb :: B2-023 — Practice p02 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p02
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p02
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p02_solution.ipynb
+  kind: notebook
+  semantic_sha256: 4fe1bb1da4e6e8bad394de10b23c83355014f61e55d375cf32f5854aa037868d
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p02_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p02 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p02 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p02_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p02 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p02 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p02_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p02 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p02 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p02_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p02 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p02 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p02_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p02 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p02 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p02
+  api_tokens:
+  - F.binary_cross_entropy_with_logits
+  - grad_ns.item
+  - grad_sat.item
+  - math.exp
+  - math.isclose
+  - torch.autograd.grad
+  - torch.ones_like
+  - torch.tensor
+  - torch.zeros_like
+- path: units/B2-023-generative-models-diffusion/practice/p03.ipynb
+  kind: notebook
+  semantic_sha256: 8b2f69473cba8653ee9b5dd2e2028980a1f668a83eb6b3e6a6a6a72bff3f4c97
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p03.ipynb :: B2-023 — Practice p03 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p03
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p03.ipynb :: B2-023 — Practice p03 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p03
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p03
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p03_solution.ipynb
+  kind: notebook
+  semantic_sha256: cfae60597799e02d37dc12c7ae64de64cff16c61d29f1441201c0e11380781b5
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p03_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p03 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p03 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p03_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p03 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p03 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p03_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p03 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p03 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p03_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p03 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p03 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p03_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p03 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p03 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p03
+  api_tokens:
+  - alpha_bar.append
+  - math.isclose
+  - math.sqrt
+  - options.items
+- path: units/B2-023-generative-models-diffusion/practice/p04.ipynb
+  kind: notebook
+  semantic_sha256: 01e1b8cff9d2b8395d8ad7b8d5e6b8c802e567d6fc79bb8612f3a9dfa0c30135
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p04.ipynb :: B2-023 — Practice p04 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p04
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p04.ipynb :: B2-023 — Practice p04 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p04
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p04
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p04_solution.ipynb
+  kind: notebook
+  semantic_sha256: cf0665269ab65022b669bfae8e647e9bfdcfb02372a4702a4af404a4d54fc5c7
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p04_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p04 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p04 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p04_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p04 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p04 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p04_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p04 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p04 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p04_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p04 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p04 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p04_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p04 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p04 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p04
+  api_tokens:
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - t.to
+  - t_scaled.max
+  - t_scaled.min
+  - torch.Generator
+  - torch.cat
+  - torch.manual_seed
+  - torch.randint
+  - torch.randn
+- path: units/B2-023-generative-models-diffusion/practice/p05.ipynb
+  kind: notebook
+  semantic_sha256: 1a8319fd6d9ad1266443d8669d1cebf0255b3a7c6bc940fc034a4e18bc245561
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p05.ipynb :: B2-023 — Practice p05 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p05
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p05.ipynb :: B2-023 — Practice p05 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p05
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - stable-diffusion
+  declared_problem_ids:
+  - B2-023-p05
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p05_solution.ipynb
+  kind: notebook
+  semantic_sha256: 64c36b82f59b41f66ba3b7547300f320be53e737b962f1aa06348429aa6b23f0
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p05_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p05 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p05 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p05_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p05 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p05 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p05_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p05 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p05 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p05_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p05 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p05 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p05_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p05 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p05 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - stable-diffusion
+  declared_problem_ids:
+  - B2-023-p05
+  api_tokens:
+  - roles.items
+- path: units/B2-023-generative-models-diffusion/practice/p06.ipynb
+  kind: notebook
+  semantic_sha256: 8b5d1c94740fe75c1338ec2c727c6fcfee0f920e25209f25c2d479699c4f3686
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06.ipynb :: B2-023 — Practice p06 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p06
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06.ipynb :: B2-023 — Practice p06 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p06
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06.ipynb :: B2-023 — Practice p06 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p06
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06.ipynb :: B2-023 — Practice p06 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p06
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p06
+  api_tokens:
+  - torch.tensor
+- path: units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb
+  kind: notebook
+  semantic_sha256: 8102766750af73ef861fe1a09eaed3fc206e773b116227294bf17acedd9bd52d
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p06 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p06 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p06 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p06 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p06 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p06 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p06 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p06 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p06 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p06 — Solution > Solution > Probes :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p06 — Solution
+    - Solution
+    - Probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p06 — Solution > Solution > Probes :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p06 — Solution
+    - Solution
+    - Probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p06 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p06 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p06 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p06 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p06
+  api_tokens:
+  - F.binary_cross_entropy_with_logits
+  - bad_shape_errors.append
+  - d0.dim
+  - d0.item
+  - d1.dim
+  - d1.item
+  - d_stable.item
+  - d_swapped.item
+  - g0.dim
+  - g0.item
+  - g1.dim
+  - g1.item
+  - g_stable.item
+  - grad_ns.item
+  - grad_sat.item
+  - math.exp
+  - math.isclose
+  - math.log
+  - torch.autograd.grad
+  - torch.is_floating_point
+  - torch.isfinite
+  - torch.ones_like
+  - torch.tensor
+  - torch.zeros
+  - torch.zeros_like
+  - x.dim
+- path: units/B2-023-generative-models-diffusion/practice/p07.ipynb
+  kind: notebook
+  semantic_sha256: be89c7044a6bbdef9434874a62b9955ff8f7e25b0356de569a00f0b779e0ad0c
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07.ipynb :: B2-023 — Practice p07 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p07
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07.ipynb :: B2-023 — Practice p07 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p07
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07.ipynb :: B2-023 — Practice p07 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p07
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07.ipynb :: B2-023 — Practice p07 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p07
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p07
+  api_tokens:
+  - torch.set_num_threads
+  - torch.tensor
+- path: units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb
+  kind: notebook
+  semantic_sha256: aa9ee63a950ded09a45d59cbe6dc8eaf9b62e33993f02d694ee653f278f756cb
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution > Solution > Probes 1–3 :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    - Solution
+    - Probes 1–3
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution > Solution > Probes 1–3 :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    - Solution
+    - Probes 1–3
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution > Solution > Probe 4: the missing-detach variant :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    - Solution
+    - 'Probe 4: the missing-detach variant'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution > Solution > Probe 4: the missing-detach variant :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    - Solution
+    - 'Probe 4: the missing-detach variant'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p07 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p07 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p07
+  api_tokens:
+  - D.parameters
+  - F.binary_cross_entropy_with_logits
+  - G.parameters
+  - G4.parameters
+  - G5.parameters
+  - copy.deepcopy
+  - loss.backward
+  - loss.item
+  - math.isclose
+  - net_a.parameters
+  - net_b.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - opt_d.step
+  - opt_d.zero_grad
+  - opt_g.step
+  - opt_g.zero_grad
+  - torch.Generator
+  - torch.equal
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.ones_like
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.zeros_like
+  - x.dim
+- path: units/B2-023-generative-models-diffusion/practice/p08.ipynb
+  kind: notebook
+  semantic_sha256: 0464ae7e404a3aab6877def50acefe3c74fdd23f3a2da9296aa35562ff5bb169
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08.ipynb :: B2-023 — Practice p08 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p08
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08.ipynb :: B2-023 — Practice p08 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p08
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08.ipynb :: B2-023 — Practice p08 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p08
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08.ipynb :: B2-023 — Practice p08 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p08
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p08
+  api_tokens:
+  - torch.cat
+  - torch.tensor
+- path: units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb
+  kind: notebook
+  semantic_sha256: e3d1ddd8838eaac7ea1ae5ebd42ce7c8eedd7dc75fcf6c8da11693942d016c67
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p08 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p08 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p08 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p08 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p08 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p08 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p08 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p08 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p08 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p08 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p08 — Solution > Solution > Probes :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p08 — Solution
+    - Solution
+    - Probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p08 — Solution > Solution > Probes :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p08 — Solution
+    - Solution
+    - Probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p08 — Solution > Solution > What the count vector reveals :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p08 — Solution
+    - Solution
+    - What the count vector reveals
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p08 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p08 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p08 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p08 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p08
+  api_tokens:
+  - centers.dim
+  - counts1.tolist
+  - counts3.tolist
+  - counts_perm.tolist
+  - counts_strict.tolist
+  - d2.argmin
+  - d2.gather
+  - math.ceil
+  - raised.append
+  - samples.dim
+  - tie_counts.tolist
+  - torch.Generator
+  - torch.bincount
+  - torch.cat
+  - torch.equal
+  - torch.randperm
+  - torch.tensor
+  - torch.zeros
+- path: units/B2-023-generative-models-diffusion/practice/p09.ipynb
+  kind: notebook
+  semantic_sha256: d806e513deeebf0e9d043febbf56b31fc9e5b59459bba0afd6505b1de47ccb03
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09.ipynb :: B2-023 — Practice p09 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p09
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09.ipynb :: B2-023 — Practice p09 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p09
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09.ipynb :: B2-023 — Practice p09 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p09
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09.ipynb :: B2-023 — Practice p09 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p09
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p09
+  api_tokens:
+  - torch.tensor
+- path: units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb
+  kind: notebook
+  semantic_sha256: d9d1361ecd0cf221cccd86aef6340bbf18707481e88dbb6853acea729ce8cad0
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Solution > Probes 1–3 and the two defective variants :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Solution
+    - Probes 1–3 and the two defective variants
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Solution > Probes 1–3 and the two defective variants :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Solution
+    - Probes 1–3 and the two defective variants
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Solution > Probe 4: statistical check of the closed form :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Solution
+    - 'Probe 4: statistical check of the closed form'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Solution > Probe 4: statistical check of the closed form :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Solution
+    - 'Probe 4: statistical check of the closed form'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Solution > Probe 5: invalid inputs :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Solution
+    - 'Probe 5: invalid inputs'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Solution > Probe 5: invalid inputs :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Solution
+    - 'Probe 5: invalid inputs'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p09 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p09 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p09
+  api_tokens:
+  - T_IDX.to
+  - a.sqrt
+  - ab.sqrt
+  - ab25.item
+  - ab25.sqrt
+  - expected5.items
+  - probe1.values
+  - row_diff.tolist
+  - t.dim
+  - torch.Generator
+  - torch.allclose
+  - torch.cumprod
+  - torch.full
+  - torch.linspace
+  - torch.randn
+  - torch.tensor
+  - torch.zeros
+  - x0.dim
+  - x25.mean
+  - x25.var
+  - xt.tolist
+- path: units/B2-023-generative-models-diffusion/practice/p10.ipynb
+  kind: notebook
+  semantic_sha256: 256e1397f7723424184ed4d9b3cc9f7204431c45b17727ff55f08339e18ec8cf
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10.ipynb :: B2-023 — Practice p10 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p10
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10.ipynb :: B2-023 — Practice p10 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p10
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10.ipynb :: B2-023 — Practice p10 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p10
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10.ipynb :: B2-023 — Practice p10 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p10
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p10
+  api_tokens:
+  - torch.tensor
+  - torch.zeros_like
+- path: units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb
+  kind: notebook
+  semantic_sha256: 402b231edf476b38979f3e4abb7a5935b078d5259687e8097eadeae8bfb04cb7
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p10 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p10 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p10 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p10 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p10 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p10 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p10 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p10 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p10 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p10 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p10 — Solution > Solution > Probes :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p10 — Solution
+    - Solution
+    - Probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p10 — Solution > Solution > Probes :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p10 — Solution
+    - Solution
+    - Probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p10 — Solution > Solution > Why the reduction must be stated :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p10 — Solution
+    - Solution
+    - Why the reduction must be stated
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p10 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p10 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p10 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p10 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p10
+  api_tokens:
+  - EPS.pow
+  - ab.sqrt
+  - loss_net.backward
+  - loss_net.item
+  - loss_sum_variant.item
+  - loss_toy.item
+  - loss_x0_variant.item
+  - loss_zero.item
+  - model.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - self.net
+  - self.seen.append
+  - spy_t.flatten
+  - t.dim
+  - t.to
+  - t_scaled.detach
+  - torch.allclose
+  - torch.cat
+  - torch.cumprod
+  - torch.equal
+  - torch.isfinite
+  - torch.linspace
+  - torch.manual_seed
+  - torch.tensor
+  - torch.zeros
+  - torch.zeros_like
+  - x0.dim
+  - x_t.detach
+- path: units/B2-023-generative-models-diffusion/practice/p11.ipynb
+  kind: notebook
+  semantic_sha256: b64419d80fead7f800a8729ae48c40b05bf638e04393f833c54cad79176cf46d
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11.ipynb :: B2-023 — Practice p11 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p11
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11.ipynb :: B2-023 — Practice p11 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p11
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11.ipynb :: B2-023 — Practice p11 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p11
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11.ipynb :: B2-023 — Practice p11 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p11
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p11
+  api_tokens:
+  - torch.tensor
+- path: units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb
+  kind: notebook
+  semantic_sha256: 63663742d491c191a628c5b57a3a375169257ce4b6e041e151e0601946ea9a37
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Solution > Probes 1–2: single steps :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Solution
+    - 'Probes 1–2: single steps'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Solution > Probes 1–2: single steps :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Solution
+    - 'Probes 1–2: single steps'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Solution > Probes 3–5: the loop :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Solution
+    - 'Probes 3–5: the loop'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Solution > Probes 3–5: the loop :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Solution
+    - 'Probes 3–5: the loop'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Solution > Why the final step is noiseless :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Solution
+    - Why the final step is noiseless
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p11 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p11 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p11
+  api_tokens:
+  - NOISES.clone
+  - X_T.clone
+  - final.tolist
+  - math.sqrt
+  - self.visited.append
+  - step1.tolist
+  - step2.tolist
+  - step5.tolist
+  - torch.allclose
+  - torch.cumprod
+  - torch.equal
+  - torch.full
+  - torch.linspace
+  - torch.ones
+  - torch.tensor
+  - torch.zeros
+  - torch.zeros_like
+- path: units/B2-023-generative-models-diffusion/practice/p12.ipynb
+  kind: notebook
+  semantic_sha256: 093c3f29c2c05b44bafa195d0bd5cc716f3684c0454e4749e0b946c0f50913f3
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12.ipynb :: B2-023 — Practice p12 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p12
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12.ipynb :: B2-023 — Practice p12 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p12
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12.ipynb :: B2-023 — Practice p12 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p12
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12.ipynb :: B2-023 — Practice p12 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p12
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - stable-diffusion
+  declared_problem_ids:
+  - B2-023-p12
+  api_tokens:
+  - block.class_tokens.weight.copy_
+  - block.k_proj.weight.copy_
+  - block.null_token.copy_
+  - block.q_proj.bias.copy_
+  - block.q_proj.weight.copy_
+  - block.v_proj.weight.copy_
+  - torch.eye
+  - torch.no_grad
+  - torch.tensor
+- path: units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb
+  kind: notebook
+  semantic_sha256: 28541372eaea9d4f06e48af7ee7abec9915cb7b27ec3925e9e1f56df1dc3b94d
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Solution > Probes 1–2 :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Solution
+    - Probes 1–2
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Solution > Probes 1–2 :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Solution
+    - Probes 1–2
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Solution > Probe 3: literal block :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Solution
+    - 'Probe 3: literal block'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Solution > Probe 3: literal block :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Solution
+    - 'Probe 3: literal block'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Solution > Probes 4–6 :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Solution
+    - Probes 4–6
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Solution > Probes 4–6 :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Solution
+    - Probes 4–6
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p12 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p12 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - stable-diffusion
+  declared_problem_ids:
+  - B2-023-p12
+  api_tokens:
+  - LABELS5.clone
+  - block._attend
+  - block.attention_weights
+  - block.class_tokens.weight.copy_
+  - block.k_proj.weight.copy_
+  - block.null_token.copy_
+  - block.q_proj.bias.copy_
+  - block.q_proj.weight.copy_
+  - block.v_proj.weight.copy_
+  - block.zero_grad
+  - class_grad.norm
+  - g15.tolist
+  - k.transpose
+  - lit._attend
+  - lit.v_proj
+  - lit_out.tolist
+  - math.sqrt
+  - nn.Embedding
+  - nn.Linear
+  - nn.Parameter
+  - scores.masked_fill
+  - self._attend
+  - self.class_tokens
+  - self.k_proj
+  - self.null_token.expand
+  - self.q_proj
+  - self.v_proj
+  - torch.Generator
+  - torch.allclose
+  - torch.equal
+  - torch.eye
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.nonzero
+  - torch.ones
+  - torch.randn
+  - torch.softmax
+  - torch.stack
+  - torch.tensor
+  - torch.zeros
+  - torch.zeros_like
+  - weights5.squeeze
+  - weights5.sum
+- path: units/B2-023-generative-models-diffusion/practice/p13.ipynb
+  kind: notebook
+  semantic_sha256: 8c5344f80e2911101d45348f8dee5f81ca7a44a5161610952624763d3dce2ad5
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p13.ipynb :: B2-023 — Practice p13 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p13
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p13.ipynb :: B2-023 — Practice p13 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p13
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p13
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p13_solution.ipynb
+  kind: notebook
+  semantic_sha256: dbe1b39839065b98890696abad4d4d849c58dcb42f66a146fff224366e4e00b2
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p13_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p13 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p13 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p13_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p13 — Solution > Solution > (e) A worked pair :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p13 — Solution
+    - Solution
+    - (e) A worked pair
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p13_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p13 — Solution > Solution > (e) A worked pair :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p13 — Solution
+    - Solution
+    - (e) A worked pair
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p13_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p13 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p13 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p13_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p13 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p13 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p13
+  api_tokens:
+  - checks.append
+  - f.argmax
+  - fractions.Fraction
+  - torch.Generator
+  - torch.arange
+  - torch.full_like
+  - torch.linspace
+  - torch.log
+  - torch.log1p
+  - torch.ones_like
+  - torch.rand
+- path: units/B2-023-generative-models-diffusion/practice/p14.ipynb
+  kind: notebook
+  semantic_sha256: 6fbc0ec132421ba535235744c36e29c1c96ff60bf17494d1da8717ffed8688eb
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p14.ipynb :: B2-023 — Practice p14 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p14
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p14.ipynb :: B2-023 — Practice p14 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p14
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p14
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p14_solution.ipynb
+  kind: notebook
+  semantic_sha256: a3336212f9b6bfa60c546ca4491e48af8b94c6046661b0f9a821ab05e2d163b1
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p14_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p14 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p14 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p14_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p14 — Solution > Solution > (f) A discrete check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p14 — Solution
+    - Solution
+    - (f) A discrete check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p14_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p14 — Solution > Solution > (f) A discrete check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p14 — Solution
+    - Solution
+    - (f) A discrete check
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p14_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p14 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p14 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p14_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p14 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p14 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p14
+  api_tokens:
+  - math.isclose
+  - math.log
+- path: units/B2-023-generative-models-diffusion/practice/p15.ipynb
+  kind: notebook
+  semantic_sha256: b5c7dda4835ec97a004135846d609059dde37e018e9862097977ab570b563f06
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p15.ipynb :: B2-023 — Practice p15 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p15
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p15.ipynb :: B2-023 — Practice p15 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p15
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p15
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p15_solution.ipynb
+  kind: notebook
+  semantic_sha256: 9de58d17989b658e83c139605f9ea3bcc76b3abbea1f19db535b63c2c38db65d
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p15_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p15 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p15 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p15_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p15 — Solution > Solution > (e) Numbers for $\beta=(0.1,0.3)$ :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p15 — Solution
+    - Solution
+    - (e) Numbers for $\beta=(0.1,0.3)$
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p15_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p15 — Solution > Solution > (e) Numbers for $\beta=(0.1,0.3)$ :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p15 — Solution
+    - Solution
+    - (e) Numbers for $\beta=(0.1,0.3)$
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p15_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p15 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p15 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p15_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p15 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p15 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p15
+  api_tokens:
+  - math.isclose
+  - math.sqrt
+  - torch.Generator
+  - torch.full
+  - torch.randn
+  - x2_indep.mean
+  - x2_indep.var
+  - x2_reused.var
+- path: units/B2-023-generative-models-diffusion/practice/p16.ipynb
+  kind: notebook
+  semantic_sha256: daaa07f34f1485f418eec1a2938a75dd058924d9c4a02b0012d52160b4fb8a6f
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p16.ipynb :: B2-023 — Practice p16 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p16
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p16.ipynb :: B2-023 — Practice p16 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p16
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p16
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p16_solution.ipynb
+  kind: notebook
+  semantic_sha256: 8c969d1796b2b4acac216e9ba11fc38821fe8b43312ac6339f252d7414cfb844
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p16_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p16 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p16 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p16_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p16 — Solution > Solution > (e) Numbers: $T=4$, linear from $0.05$ to $0.35$ :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p16 — Solution
+    - Solution
+    - '(e) Numbers: $T=4$, linear from $0.05$ to $0.35$'
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p16_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p16 — Solution > Solution > (e) Numbers: $T=4$, linear from $0.05$ to $0.35$ :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p16 — Solution
+    - Solution
+    - '(e) Numbers: $T=4$, linear from $0.05$ to $0.35$'
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p16_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p16 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p16 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p16_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p16 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p16 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p16
+  api_tokens:
+  - math.isclose
+  - torch.Generator
+  - torch.allclose
+  - torch.cumprod
+  - torch.linspace
+  - torch.log
+  - torch.randn
+  - torch.zeros
+- path: units/B2-023-generative-models-diffusion/practice/p17.ipynb
+  kind: notebook
+  semantic_sha256: c4bcf3d2c4cba1f02bdcf0280d4d7e28494b01acb8f738acfbc75d13c6992e87
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17.ipynb :: B2-023 — Practice p17 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p17
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17.ipynb :: B2-023 — Practice p17 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p17
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17.ipynb :: B2-023 — Practice p17 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p17
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17.ipynb :: B2-023 — Practice p17 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p17
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p17
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb
+  kind: notebook
+  semantic_sha256: 7a77264642daa89618b03d76e56121ff85a272f4f0a0f2b2ec386c17fa4df89e
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p17 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p17 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p17 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p17 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p17 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p17 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p17 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p17 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p17 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p17 — Solution > Solution > Training with the clean-row seam recorded :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p17 — Solution
+    - Solution
+    - Training with the clean-row seam recorded
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p17 — Solution > Solution > Training with the clean-row seam recorded :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p17 — Solution
+    - Solution
+    - Training with the clean-row seam recorded
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p17 — Solution > Solution > Interpretation :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p17 — Solution
+    - Solution
+    - Interpretation
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p17 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p17 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p17 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p17 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p17
+  api_tokens:
+  - D.parameters
+  - D_init.parameters
+  - F.binary_cross_entropy_with_logits
+  - G.parameters
+  - G_init.parameters
+  - centers.dim
+  - copy.deepcopy
+  - counts.tolist
+  - d2.argmin
+  - d2.gather
+  - generative_data.heldout_tensor
+  - generative_data.mixture_centers
+  - generative_data.row_sha256
+  - generative_data.train_tensor
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - math.ceil
+  - math.isfinite
+  - math.log
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - opt_d.step
+  - opt_d.zero_grad
+  - opt_g.step
+  - opt_g.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - recorded.append
+  - samples.dim
+  - torch.Generator
+  - torch.bincount
+  - torch.cat
+  - torch.equal
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.ones_like
+  - torch.optim.Adam
+  - torch.randn
+  - torch.set_num_threads
+  - torch.sigmoid
+  - torch.unique
+  - torch.zeros_like
+  - trace.append
+  - x.detach
+  - x.dim
+- path: units/B2-023-generative-models-diffusion/practice/p18.ipynb
+  kind: notebook
+  semantic_sha256: 666b45d4bf5fa4d2522f7a22f9fb39fecdc17d288dffc3f5409686ff2a8af42c
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18.ipynb :: B2-023 — Practice p18 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p18
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18.ipynb :: B2-023 — Practice p18 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p18
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18.ipynb :: B2-023 — Practice p18 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p18
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18.ipynb :: B2-023 — Practice p18 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p18
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p18
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb
+  kind: notebook
+  semantic_sha256: b04d0c253b5c32a30f3f07ce6abd04e47376e118ff150cb9ee1fe0060f2684d9
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p18 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p18 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p18 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p18 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p18 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p18 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p18 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p18 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p18 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p18 — Solution > Solution > Held-out loss before training, training with the seam recorded, held-out loss after
+      :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p18 — Solution
+    - Solution
+    - Held-out loss before training, training with the seam recorded, held-out loss after
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p18 — Solution > Solution > Held-out loss before training, training with the seam recorded, held-out loss after
+      :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p18 — Solution
+    - Solution
+    - Held-out loss before training, training with the seam recorded, held-out loss after
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p18 — Solution > Solution > Interpretation :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p18 — Solution
+    - Solution
+    - Interpretation
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p18 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p18 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p18 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p18 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p18
+  api_tokens:
+  - ab.sqrt
+  - copy.deepcopy
+  - eps_eval.pow
+  - generative_data.heldout_tensor
+  - generative_data.row_sha256
+  - generative_data.train_tensor
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - math.isfinite
+  - model.parameters
+  - model_init.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - recorded.append
+  - self.net
+  - t.dim
+  - t.to
+  - torch.Generator
+  - torch.cat
+  - torch.cumprod
+  - torch.equal
+  - torch.linspace
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randint
+  - torch.randn
+  - torch.set_num_threads
+  - torch.unique
+  - torch.zeros
+  - trace.append
+  - x0.detach
+  - x0.dim
+- path: units/B2-023-generative-models-diffusion/practice/p19.ipynb
+  kind: notebook
+  semantic_sha256: 04d8015b2210e0f222247f63f5988a1cc9b86a906cb302f9112cd16af0fbcde4
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19.ipynb :: B2-023 — Practice p19 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p19
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19.ipynb :: B2-023 — Practice p19 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p19
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19.ipynb :: B2-023 — Practice p19 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p19
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19.ipynb :: B2-023 — Practice p19 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p19
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p19
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb
+  kind: notebook
+  semantic_sha256: 0ab0ec584da1787a70ce74dc11b26cbfafd56330914f21a407bfafdbaf3c92e1
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Solution > Training (p18 protocol) with the seam recorded :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Solution
+    - Training (p18 protocol) with the seam recorded
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Solution > Training (p18 protocol) with the seam recorded :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Solution
+    - Training (p18 protocol) with the seam recorded
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Solution > Fixed-noise sampling and the statistics :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Solution
+    - Fixed-noise sampling and the statistics
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Solution > Fixed-noise sampling and the statistics :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Solution
+    - Fixed-noise sampling and the statistics
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Solution > Interpretation :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Solution
+    - Interpretation
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p19 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p19 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p19
+  api_tokens:
+  - H.mean
+  - ab.sqrt
+  - centers.dim
+  - counts.tolist
+  - cov_gap.max
+  - d2.argmin
+  - d2.gather
+  - d2.min
+  - generative_data.heldout_tensor
+  - generative_data.mixture_centers
+  - generative_data.row_sha256
+  - generative_data.train_tensor
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - math.ceil
+  - math.isfinite
+  - math.sqrt
+  - mean_gap.max
+  - model.parameters
+  - nn.Linear
+  - nn.ReLU
+  - nn.Sequential
+  - noise_counts.tolist
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - recorded.append
+  - samples.dim
+  - samples.mean
+  - self.net
+  - t.dim
+  - t.to
+  - torch.Generator
+  - torch.bincount
+  - torch.cat
+  - torch.cov
+  - torch.cumprod
+  - torch.equal
+  - torch.full
+  - torch.isfinite
+  - torch.linspace
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.Adam
+  - torch.randint
+  - torch.randn
+  - torch.set_num_threads
+  - torch.unique
+  - torch.zeros
+  - trace.append
+  - x0.detach
+  - x0.dim
+- path: units/B2-023-generative-models-diffusion/practice/p20.ipynb
+  kind: notebook
+  semantic_sha256: 42c8d7043996d200d769686d98732162125d7236928bfaa45049882e4368d885
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20.ipynb :: B2-023 — Practice p20 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p20
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20.ipynb :: B2-023 — Practice p20 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p20
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20.ipynb :: B2-023 — Practice p20 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p20
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20.ipynb :: B2-023 — Practice p20 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p20
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - stable-diffusion
+  declared_problem_ids:
+  - B2-023-p20
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+- path: units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb
+  kind: notebook
+  semantic_sha256: a6f5d5af6d5a0378ed2fa9fd8c83eb24ae6ca01ca9b92925dfce537b18cc36ba
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Solution :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Solution
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Solution > Training with the `encode` seam recorded :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Solution
+    - Training with the `encode` seam recorded
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Solution > Training with the `encode` seam recorded :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Solution
+    - Training with the `encode` seam recorded
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Solution > Held-out denoising, guided sampling, and the metrics :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Solution
+    - Held-out denoising, guided sampling, and the metrics
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Solution > Held-out denoising, guided sampling, and the metrics :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Solution
+    - Held-out denoising, guided sampling, and the metrics
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Solution > Interpretation :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Solution
+    - Interpretation
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p20 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p20 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - stable-diffusion
+  declared_problem_ids:
+  - B2-023-p20
+  api_tokens:
+  - ab.sqrt
+  - generative_data.class_centers
+  - generative_data.encoder_matrix
+  - generative_data.heldout_label_tensor
+  - generative_data.heldout_tensor
+  - generative_data.row_sha256
+  - generative_data.train_label_tensor
+  - generative_data.train_tensor
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - k.transpose
+  - loader_spec.loader.exec_module
+  - loss.backward
+  - loss.item
+  - math.isfinite
+  - math.sqrt
+  - model.parameters
+  - nn.Embedding
+  - nn.Linear
+  - nn.Parameter
+  - nn.ReLU
+  - nn.Sequential
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - recorded.append
+  - scores.masked_fill
+  - self.class_tokens
+  - self.cond
+  - self.k_proj
+  - self.mlp
+  - self.null_token.expand
+  - self.q_proj
+  - self.v_proj
+  - t.dim
+  - t.to
+  - t_eval.to
+  - torch.Generator
+  - torch.arange
+  - torch.cat
+  - torch.cumprod
+  - torch.equal
+  - torch.full
+  - torch.linspace
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.ones
+  - torch.optim.Adam
+  - torch.rand
+  - torch.randint
+  - torch.randn
+  - torch.set_num_threads
+  - torch.softmax
+  - torch.stack
+  - torch.zeros
+  - torch.zeros_like
+  - trace.append
+  - x.detach
+  - x0.dim
+- path: units/B2-023-generative-models-diffusion/practice/p21.ipynb
+  kind: notebook
+  semantic_sha256: cf98d31d29e4f2f55d90292cabc6644b98367d45205256d1f4d75e23c1b7fbf8
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p21.ipynb :: B2-023 — Practice p21 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p21
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p21.ipynb :: B2-023 — Practice p21 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p21
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  - generative-adversarial-network
+  - stable-diffusion
+  declared_problem_ids:
+  - B2-023-p21
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p21_solution.ipynb
+  kind: notebook
+  semantic_sha256: 81e1d5a718e38db7685ce237730214155c7bbba59a8545dc9b9bee1f9c87009d
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p21_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p21 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p21 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p21_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p21 — Solution > Solution > (V) CPU prototype with a certificate — **DDPM (tiny 2-D, as in p18–p19)** :: cell
+      1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p21 — Solution
+    - Solution
+    - (V) CPU prototype with a certificate — **DDPM (tiny 2-D, as in p18–p19)**
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p21_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p21 — Solution > Solution > (V) CPU prototype with a certificate — **DDPM (tiny 2-D, as in p18–p19)** :: cell
+      2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p21 — Solution
+    - Solution
+    - (V) CPU prototype with a certificate — **DDPM (tiny 2-D, as in p18–p19)**
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p21_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p21 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p21 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p21_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p21 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p21 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  - generative-adversarial-network
+  - stable-diffusion
+  declared_problem_ids:
+  - B2-023-p21
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p22.ipynb
+  kind: notebook
+  semantic_sha256: b49c710e7b2b7db66c601181f232f720a2c2f0eeeb4c91264a94224ce44a7ed9
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p22.ipynb :: B2-023 — Practice p22 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p22
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p22.ipynb :: B2-023 — Practice p22 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p22
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p22
+  api_tokens: []
+- path: units/B2-023-generative-models-diffusion/practice/p22_solution.ipynb
+  kind: notebook
+  semantic_sha256: 69e0dc724594ca209f86c9b4373cc835e18cd48323b0ab562569bf19d4c3f21b
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p22_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p22 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p22 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p22_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p22 — Solution > Solution > (d) Certificates to re-run :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p22 — Solution
+    - Solution
+    - (d) Certificates to re-run
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p22_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p22 — Solution > Solution > (d) Certificates to re-run :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p22 — Solution
+    - Solution
+    - (d) Certificates to re-run
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p22_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p22 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p22 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p22_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p22 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p22 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - generative-adversarial-network
+  declared_problem_ids:
+  - B2-023-p22
+  api_tokens:
+  - math.ceil
+  - math.log
+  - rows.items
+- path: units/B2-023-generative-models-diffusion/practice/p23.ipynb
+  kind: notebook
+  semantic_sha256: 316d82b9fc608a3f33f6887d9878d20ea1515418c810533123a0a1068651b6ae
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23.ipynb :: B2-023 — Practice p23 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p23
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23.ipynb :: B2-023 — Practice p23 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p23
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23.ipynb :: B2-023 — Practice p23 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p23
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23.ipynb :: B2-023 — Practice p23 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p23
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p23
+  api_tokens:
+  - torch.tensor
+- path: units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb
+  kind: notebook
+  semantic_sha256: 7878b47094360245c57280684fa09f68e8ca356ec56589343e742199666aa058
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Solution > (A) Running the code as given :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Solution
+    - (A) Running the code as given
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Solution > (A) Running the code as given :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Solution
+    - (A) Running the code as given
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Solution > (C) Repaired implementation (same signatures) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Solution
+    - (C) Repaired implementation (same signatures)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Solution > (C) Repaired implementation (same signatures) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Solution
+    - (C) Repaired implementation (same signatures)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Solution > (D) One defect at a time :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Solution
+    - (D) One defect at a time
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Solution > (D) One defect at a time :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Solution
+    - (D) One defect at a time
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Solution > (E) Explanations :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Solution
+    - (E) Explanations
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p23 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p23 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  declared_problem_ids:
+  - B2-023-p23
+  api_tokens:
+  - a.sqrt
+  - ab.sqrt
+  - buggy_loop.tolist
+  - buggy_q.tolist
+  - fixed_loop.tolist
+  - fixed_q.tolist
+  - math.sqrt
+  - only_alpha_q.tolist
+  - only_range_loop.tolist
+  - only_sigma_loop.tolist
+  - self.visited.append
+  - torch.allclose
+  - torch.cumprod
+  - torch.equal
+  - torch.full
+  - torch.linspace
+  - torch.tensor
+  - torch.zeros
+  - torch.zeros_like
+- path: units/B2-023-generative-models-diffusion/practice/p24.ipynb
+  kind: notebook
+  semantic_sha256: 0cc0c95876ee062e277e84e4ee8f7df4ebe61dfac62ec633d176233df15d5514
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24.ipynb :: B2-023 — Practice p24 > Task :: cell 1'
+    heading_path:
+    - B2-023 — Practice p24
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24.ipynb :: B2-023 — Practice p24 > Task :: cell 2'
+    heading_path:
+    - B2-023 — Practice p24
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24.ipynb :: B2-023 — Practice p24 > Task :: cell 3'
+    heading_path:
+    - B2-023 — Practice p24
+    - Task
+    cell_ordinal: 3
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24.ipynb :: B2-023 — Practice p24 > Your response :: cell
+      1'
+    heading_path:
+    - B2-023 — Practice p24
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - stable-diffusion
+  declared_problem_ids:
+  - B2-023-p24
+  api_tokens:
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - torch.set_num_threads
+  - torch.tensor
+- path: units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb
+  kind: notebook
+  semantic_sha256: 2dd64516f696782b1a5629fb02fbf3bd484164fb5ec3e80f855bb6f4fdb882dd
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution > Supplied cell (copied verbatim from the statement) :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution > Supplied cell (copied verbatim from the statement) :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    - Supplied cell (copied verbatim from the statement)
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution > Solution > (B) Guidance sign :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    - Solution
+    - (B) Guidance sign
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution > Solution > (B) Guidance sign :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    - Solution
+    - (B) Guidance sign
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution > Solution > (C) Latent scaling factor :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    - Solution
+    - (C) Latent scaling factor
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution > Solution > (C) Latent scaling factor :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    - Solution
+    - (C) Latent scaling factor
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution > Solution > (D) Repair :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    - Solution
+    - (D) Repair
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution > Solution > (D) Repair :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    - Solution
+    - (D) Repair
+    cell_ordinal: 2
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution > Solution > Answer check :: cell 1'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
+      Practice p24 — Solution > Solution > Answer check :: cell 2'
+    heading_path:
+    - B2-023-generative-models-diffusion — Practice p24 — Solution
+    - Solution
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - stable-diffusion
+  declared_problem_ids:
+  - B2-023-p24
+  api_tokens:
+  - C3.abs
+  - cfg_w0.tolist
+  - cfg_w1.tolist
+  - flip_w0.tolist
+  - flip_w1.tolist
+  - generative_data.class_centers
+  - generative_data.encoder_matrix
+  - generative_data.heldout_label_tensor
+  - generative_data.load_labels
+  - generative_data.load_rows
+  - generative_data.row_sha256
+  - generative_data.train_tensor
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loader_spec.loader.exec_module
+  - path.is_file
+  - pathlib.Path
+  - raw_std.tolist
+  - recorded.append
+  - scaled_std.tolist
+  - torch.allclose
+  - torch.bincount
+  - torch.cat
+  - torch.equal
+  - torch.ones
+  - torch.set_num_threads
+  - torch.tensor
+  - torch.zeros
+  - train_labels_all.tolist
+  - val_ids.extend
+  - x.detach
+  - z0_repaired.std
+- path: units/B2-023-generative-models-diffusion/review.ipynb
+  kind: notebook
+  semantic_sha256: 52469a1e3ca6fe8ec41cc9083524705e54bf4c3295fd7aa2a99e8120bb2b697d
+  anchors:
+  - anchor: 'units/B2-023-generative-models-diffusion/review.ipynb :: B2-023 — Review and Self-Quiz :: cell 1'
+    heading_path:
+    - B2-023 — Review and Self-Quiz
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/review.ipynb :: B2-023 — Review and Self-Quiz > Formula and protocol
+      sheet :: cell 1'
+    heading_path:
+    - B2-023 — Review and Self-Quiz
+    - Formula and protocol sheet
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/review.ipynb :: B2-023 — Review and Self-Quiz > Concept retrieval table
+      :: cell 1'
+    heading_path:
+    - B2-023 — Review and Self-Quiz
+    - Concept retrieval table
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/review.ipynb :: B2-023 — Review and Self-Quiz > Self-quiz :: cell 1'
+    heading_path:
+    - B2-023 — Review and Self-Quiz
+    - Self-quiz
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/review.ipynb :: B2-023 — Review and Self-Quiz > Common pitfalls, Exam
+      connections, and forward boundary :: cell 1'
+    heading_path:
+    - B2-023 — Review and Self-Quiz
+    - Common pitfalls, Exam connections, and forward boundary
+    cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/review.ipynb :: B2-023 — Review and Self-Quiz > Collected answers ::
+      cell 1'
+    heading_path:
+    - B2-023 — Review and Self-Quiz
+    - Collected answers
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-023-generative-models-diffusion
+  declared_concept_ids:
+  - denoising-diffusion-probabilistic-models
+  - generative-adversarial-network
+  - stable-diffusion
   declared_problem_ids: []
   api_tokens: []

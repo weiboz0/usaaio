@@ -113,10 +113,7 @@ planned_units:
   - generative-adversarial-network
   - denoising-diffusion-probabilistic-models
   - stable-diffusion
-  provisional_concepts:
-  - generative-adversarial-network
-  - denoising-diffusion-probabilistic-models
-  - stable-diffusion
+  provisional_concepts: []
   estimated_hours:
     min: 20
     max: 26
@@ -1088,44 +1085,71 @@ knowledge_points:
 - id: generative-adversarial-network
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - book1:fully-connected-network-from-scratch
   - book1:convolutional-neural-network-basics
-  shipped_concepts: []
+  shipped_concepts:
+  - generative-adversarial-network
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb
+        heading: 'B2-023 — Session 1: Adversarial Games > 1. Implicit generative models: the generator and the discriminator'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p02
+        role: primary
       assessments: []
     derivation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb
+        heading: 'B2-023 — Session 1: Adversarial Games > 4. Pointwise optimization and the optimal discriminator'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p13
+        role: primary
+      - id: B2-023-p14
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb
+        heading: 'B2-023 — Session 2: Training and Diagnosing GANs > 1. Alternating updates with two optimizers'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p06
+        role: primary
+      - id: B2-023-p07
+        role: primary
+      - id: B2-023-p08
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb
+        heading: 'B2-023 — Session 2: Training and Diagnosing GANs > 6. A fixed-seed tiny 2-D GAN training trace'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p17
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-023-generative-models-diffusion
   deficits:
-    modalities_missing:
-    - theory
-    - derivation
-    - implementation
-    - model-training
-  rationale: No generator-discriminator game, objective, implementation, or training exists.
-  consequence: GAN coverage is absent.
+    modalities_missing: []
+  rationale: B2-023 teaches the generator/discriminator game with BCE-with-logits, the pointwise optimal discriminator, the Jensen-Shannon global optimum, the non-saturating generator loss, detach-disciplined alternating updates, and mode-coverage diagnostics.
+  consequence: Students can derive, implement, train, and diagnose a small MLP GAN on a known mixture.
 - id: denoising-diffusion-probabilistic-models
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   - r2-2026-index-local
@@ -1134,67 +1158,116 @@ knowledge_points:
   - multivariate-gaussian
   - gaussian-reparameterization
   - kl-divergence
-  shipped_concepts: []
+  shipped_concepts:
+  - denoising-diffusion-probabilistic-models
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb
+        heading: 'B2-023 — Session 3: The Diffusion Forward Process > 1. Destroying data slowly: the idea of a diffusion model'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p04
+        role: primary
       assessments: []
     derivation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb
+        heading: 'B2-023 — Session 3: The Diffusion Forward Process > 5. The closed form $q(x_t\mid x_0)$'
+        cell_ordinal: 1
+        role: primary
+      - path: units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb
+        heading: 'B2-023 — Session 4: Denoising and Sampling > 4. From mean matching to ε-prediction'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p15
+        role: primary
+      - id: B2-023-p16
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb
+        heading: 'B2-023 — Session 4: Denoising and Sampling > 6. Ancestral sampling and a worked reverse step'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p09
+        role: primary
+      - id: B2-023-p10
+        role: primary
+      - id: B2-023-p11
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb
+        heading: 'B2-023 — Session 4: Denoising and Sampling > 7. Worked laboratory: a fixed-seed tiny 2-D DDPM'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p18
+        role: primary
+      - id: B2-023-p19
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-023-generative-models-diffusion
   deficits:
-    modalities_missing:
-    - theory
-    - derivation
-    - implementation
-    - model-training
-  rationale: No forward noising, reverse denoising, schedule, noise objective, or DDPM training exists.
-  consequence: Diffusion-model theory and practice are absent.
+    modalities_missing: []
+  rationale: B2-023 teaches the variance schedule, the closed-form forward process, the stated posterior and equal-variance KL leading to epsilon-prediction, the simplified objective, and ancestral sampling with fixed-seed DDPM training.
+  consequence: Students can derive, implement, train, and sample from a small DDPM and certify its samples against held-out data.
 - id: stable-diffusion
   layer: round-2-extension
   requirement: required
-  coverage: missing
+  coverage: covered
   source_refs:
   - official-syllabus-2026-08-06
   depends_on:
   - denoising-diffusion-probabilistic-models
   - variational-autoencoder
   - transformer-nlp-applications
-  shipped_concepts: []
+  shipped_concepts:
+  - stable-diffusion
   evidence_by_modality:
     theory:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb
+        heading: 'B2-023 — Session 5: Latent and Conditional Diffusion > 6. The Stable Diffusion pipeline component map'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p05
+        role: primary
       assessments: []
     implementation:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb
+        heading: 'B2-023 — Session 5: Latent and Conditional Diffusion > 4. Cross-attention conditioning'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p12
+        role: primary
       assessments: []
     model-training:
-      lesson_anchors: []
-      practices: []
+      lesson_anchors:
+      - path: units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb
+        heading: 'B2-023 — Session 5: Latent and Conditional Diffusion > 7. Worked laboratory: a CPU-scale class-conditional latent diffusion trace'
+        cell_ordinal: 1
+        role: primary
+      practices:
+      - id: B2-023-p20
+        role: primary
       assessments: []
   disposition: new-unit
   destination: B2-023-generative-models-diffusion
   deficits:
-    modalities_missing:
-    - theory
-    - implementation
-    - model-training
-  rationale: No latent diffusion, text conditioning, pipeline use, or training exists.
-  consequence: Stable Diffusion is absent.
+    modalities_missing: []
+  rationale: B2-023 teaches latent diffusion with the latent scaling factor, cross-attention text conditioning, conditioning dropout with classifier-free guidance, and the Stable Diffusion component map through a CPU-scale class-conditional latent diffusion analogue.
+  consequence: Students can explain the Stable Diffusion pipeline and build and train a faithful CPU-scale latent conditional diffusion model.
 - id: multivariate-gaussian
   layer: round-2-extension
   requirement: bridge
