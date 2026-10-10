@@ -1934,8 +1934,8 @@ def test_renderer_recomputes_the_design019_book2_planned_delta() -> None:
         assert "C6 and C8 are not yet estimated" not in document
         assert "C8" in document
         assert "so this is not a complete roadmap total" not in document
-        assert "**560.92–600.92 manifested-baseline hours**" in document
-        assert "**566.92–606.92 scheduled-baseline hours**" in document
+        assert "**620.75–660.75 manifested-baseline hours**" in document
+        assert "**627.75–667.75 scheduled-baseline hours**" in document
         assert "Total roadmap delta" not in document
 
 
@@ -2665,14 +2665,15 @@ def test_active_book2_roadmap_dependency_requires_persisted_import_destination(
         row for row in roadmap["knowledge_points"]
         if row["id"] == "attention-mechanism-foundations"
     )
-    point["depends_on"][0] = "book1:colab-markdown-solution-authoring"
+    # C4 stays outside the Book 2 imports allowlist (C10 joined it in Plan 029).
+    point["depends_on"][0] = "book1:pandas-programming"
     _write_yaml(book2 / "curriculum/coverage-map.yaml", roadmap)
 
     report = check_scope(book2)
 
     assert not report.ok
     assert any(
-        "active import book1:colab-markdown-solution-authoring" in error
+        "active import book1:pandas-programming" in error
         and "imports.units" in error
         for error in report.errors
     ), report.errors
@@ -2771,7 +2772,7 @@ def test_imported_taught_closure_authorized_subset_is_exact() -> None:
 @pytest.mark.parametrize(
     ("requested", "message"),
     [
-        pytest.param("book1:C12-classical-models", "allowlist", id="nonallowlisted-unit"),
+        pytest.param("book1:C4-classical-ml-practice", "allowlist", id="nonallowlisted-unit"),
         pytest.param("F1-scientific-python", "qualified", id="unqualified-unit"),
         pytest.param("book2:F1-scientific-python", "owner", id="wrong-owner-unit"),
     ],

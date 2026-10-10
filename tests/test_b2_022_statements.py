@@ -451,6 +451,8 @@ def test_solution_notebooks_are_complete_answer_checked_and_output_free() -> Non
 def test_ci_bounds_b2_022_solutions_at_twenty_seconds() -> None:
     script = (ROOT / "scripts/ci-local.sh").read_text(encoding="utf-8")
     assert (
-        "|| $relative == units/B2-022-probabilistic-latent-models/practice/p??_solution.ipynb ]]"
+        "|| $relative == units/B2-022-probabilistic-latent-models/practice/p??_solution.ipynb "
+        "|| $relative == units/B2-023-generative-models-diffusion/practice/p??_solution.ipynb "
+        "|| $relative == units/B2-024-gpu-scientific-ml-capstone/practice/p??_solution.ipynb ]]"
         in script
     )

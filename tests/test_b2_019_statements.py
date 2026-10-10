@@ -1188,10 +1188,12 @@ def test_generator_is_deterministic_cpu_only_and_uses_no_network(tmp_path: Path)
 def test_unit_standards_names_b2_019_in_double_length_roster() -> None:
     standards = (ROOT / "docs/unit-standards.md").read_text(encoding="utf-8")
     assert "B2-019-attention-transformers" in standards
-    assert "F5, F6, C7, C11, C12, B2-019, B2-020, B2-021, and B2-022" in standards
+    assert "F5, F6, C7, C11, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024" in standards
     assert "B2-020-language-transformers" in standards
     assert "B2-021-cross-modal-transformers-vision" in standards
     assert "B2-022-probabilistic-latent-models" in standards
+    assert "B2-023-generative-models-diffusion" in standards
+    assert "B2-024-gpu-scientific-ml-capstone" in standards
 
 
 def _copy_registered_statement_repo(

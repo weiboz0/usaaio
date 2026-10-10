@@ -284,6 +284,15 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
         "gaussian-reparameterization",
         "autoencoder",
         "variational-autoencoder",
+        "generative-adversarial-network",
+        "denoising-diffusion-probabilistic-models",
+        "stable-diffusion",
+        "gpu-colab-l4-workflow",
+        "semi-supervised-pseudo-labeling",
+        "scientific-ml-inverse-problems",
+        "open-ended-experiment-design",
+        "open-ended-model-evaluation",
+        "mixture-parameter-regression",
     }
     assert {points[point_id]["coverage"] for point_id in later} <= {"covered", "missing"}
 
@@ -303,7 +312,7 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
             ensure_ascii=False,
         ).encode()
     ).hexdigest()
-    assert unchanged_digest == "470f590c82ab5b64e67369345d2b18bc9dc3c68db05c0615b4dd639f4eb7141a"
+    assert unchanged_digest == "d7d2857ec4ec0a970117d8a8e330e2ba1277e52ac2b434784ac6e15e2eabe215"
 
 
 def test_attention_manifest_adds_only_the_exact_seven_evidence_claims() -> None:

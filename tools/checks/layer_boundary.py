@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from collections import Counter
 from pathlib import Path
@@ -61,6 +62,61 @@ def _check_bridge(
             )
 
 
+SUPPORTED_COMPUTE_POLICIES = ("cpu", "optional-colab-l4")
+ACCELERATOR_HEADING = re.compile(
+    r"^#{1,6}[ \t]+Accelerator extension[ \t]*#*[ \t]*$", re.MULTILINE
+)
+FENCE_OPEN = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+
+
+def _outside_fenced_code(source: str) -> str:
+    """Return ``source`` with fenced code blocks (``` or ~~~) blanked out.
+
+    A fence closes on a line of the same character, at least as long as the opener,
+    followed only by whitespace; an unclosed fence runs to the end of the cell.
+    """
+    kept: list[str] = []
+    fence: str | None = None
+    for line in source.splitlines():
+        if fence is None:
+            match = FENCE_OPEN.match(line)
+            if match and not (match.group(1)[0] == "`" and "`" in line[match.end():]):
+                fence = match.group(1)
+                kept.append("")
+            else:
+                kept.append(line)
+        else:
+            stripped = line.strip()
+            if (
+                len(line) - len(line.lstrip(" ")) <= 3
+                and stripped
+                and set(stripped) == {fence[0]}
+                and len(stripped) >= len(fence)
+            ):
+                fence = None
+            kept.append("")
+    return "\n".join(kept)
+
+
+def _has_accelerator_heading(statement: Path) -> bool:
+    try:
+        notebook = json.loads(statement.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return False
+    cells = notebook.get("cells") if isinstance(notebook, dict) else None
+    if not isinstance(cells, list):
+        return False
+    for cell in cells:
+        if not isinstance(cell, dict) or cell.get("cell_type") != "markdown":
+            continue
+        source = cell.get("source", "")
+        if isinstance(source, list):
+            source = "".join(str(part) for part in source)
+        if isinstance(source, str) and ACCELERATOR_HEADING.search(_outside_fenced_code(source)):
+            return True
+    return False
+
+
 def _check_compute(root: Path, manifest: UnitManifest, errors: list[str]) -> None:
     unit_dir = manifest.path.parent
     declared_solutions = [unit_dir / problem.solution_path for problem in manifest.practice]
@@ -69,23 +125,40 @@ def _check_compute(root: Path, manifest: UnitManifest, errors: list[str]) -> Non
     ) and manifest.solution_policy == "deferred"
     for problem in manifest.practice:
         label = f"{manifest.path}: practice {problem.id}"
+        policy = problem.compute.policy
         if problem.compute.seed is None:
             errors.append(f"{label} compute.seed is required")
-        if problem.compute.policy != "cpu":
-            errors.append(f"{label} unsupported compute.policy {problem.compute.policy!r}")
-        if problem.compute.policy == "cpu":
+        if policy not in SUPPORTED_COMPUTE_POLICIES:
+            errors.append(f"{label} unsupported compute.policy {policy!r}")
+            continue
+        try:
+            solution = resolve_contained_path(
+                root,
+                manifest.path.parent.relative_to(root) / problem.solution_path,
+                label=f"{label} solution",
+            )
+        except ValueError:
+            if not statement_only:
+                errors.append(f"{label} {policy} task requires a local solution path")
+        else:
+            if not solution.is_file() and not statement_only:
+                errors.append(f"{label} {policy} task requires a local solution path")
+        if policy == "optional-colab-l4":
             try:
-                solution = resolve_contained_path(
+                statement = resolve_contained_path(
                     root,
-                    manifest.path.parent.relative_to(root) / problem.solution_path,
-                    label=f"{label} solution",
+                    manifest.path.parent.relative_to(root) / problem.path,
+                    label=f"{label} statement",
                 )
             except ValueError:
-                if not statement_only:
-                    errors.append(f"{label} cpu task requires a local solution path")
+                has_heading = False
             else:
-                if not solution.is_file() and not statement_only:
-                    errors.append(f"{label} cpu task requires a local solution path")
+                has_heading = statement.is_file() and _has_accelerator_heading(statement)
+            if not has_heading:
+                errors.append(
+                    f"{label} optional-colab-l4 task requires an 'Accelerator extension' "
+                    "statement heading"
+                )
 
 
 def _check_claims(
