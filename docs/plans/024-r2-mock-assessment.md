@@ -322,6 +322,20 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`). Fidelity is judged on shape. The
 2. `[FIXED]` Should Fix: "certificate" overstated what validation perplexity proves. → Response: reworded as "a useful check … not by itself a proof of correctness".
 - Confirmed closed: P1.13 key consistency; the validator Should Fixes (rotation, section forms, budgets).
 
+### Review 3 — Sol, `gpt-6-sol` (2026-10-10)
+- **Verdict**: Approve. Under the stated rule, honest solvers need the pool (a labelled-only probe scores 0.5675; the best recorded is 0.6475; full-credit cutoff 0.8638). The p01 wording fix was verified.
+
+### Review 2 — Fable (2026-10-10)
+- **Verdict**: Approve with nits. Its own P4 attempts on the redesigned data scored 0.3575 (naive self-training, 0 tier), 0.7975 and 0.8025 (60% tier), against the reference 0.9900 (100%). The tiers discriminate, and validation tracks the test ordering.
+1. `[FIXED]` Nit: `day_time_budget` holds raw YAML values. → Response: a field comment says blueprint-check validates them.
+2. `[WONTFIX]` Nit: the 60% tier spans labelled-only and weakly pool-using scores. → Response: a property of the gated gap-relative scheme; recorded as a consideration for r2-002 (a fourth tier or a labelled-only anchor).
+3. `[WONTFIX]` Nit: rubric wording for the weaker alternative already labels 0.9250 as the test score.
+
+### Review 2 — self (2026-10-10)
+- **Verdict**: Approve.
+
+**Gate result:** 3-way consensus (Sol round 3, Fable round 2, self).
+
 ## Post-execution report
 
 Pending.

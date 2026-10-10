@@ -222,6 +222,7 @@ class MockManifest:
     # Book 2 (Round 2) two-day tests: minutes per day and {day: {section: minutes}}.
     # Book 1 manifests leave these empty and keep the flat ``time_budget``.
     day_duration_minutes: int = 0
+    # Raw YAML values: blueprint-check validates them as positive ints; do not assume ints elsewhere.
     day_time_budget: dict[int, dict[str, int]] = field(default_factory=dict)
 
 
