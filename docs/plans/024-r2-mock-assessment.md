@@ -136,7 +136,7 @@ The writeup is 10% each for Approach, Alternatives considered, Evaluation (with 
 All three open-ended tasks follow B2-024's protocol: train/validation/locked test, one `final_test_score`, `baseline_score`, and `StepBudget`.
 They are `optional-colab-l4`, with CPU reference solutions under 20 s and an `Accelerator extension`.
 
-**Open-ended answer keys.** Each P2/P4/P5 manifest entry's `answer_key` is a string `metric=<name>; B=<value>; R=<value>; tiers=<four cutoffs>`. `solutions/answers.md` carries the identical marker, so `answerkey-check` compares them as it does for theory items. `tests/test_r2_001.py` also verifies the numbers: it re-executes each reference solution and asserts that its single `final_test_score` point estimate equals R and that `baseline_score(task)` equals B, both to a stated tolerance.
+**Open-ended answer keys.** Each P2/P4/P5 manifest entry's `answer_key` is a string `metric=<name>; direction=<lower|higher>; B=<value>; R=<value>; tiers=<full>,<partial60>,<partial25>`. The three cutoffs are the tier thresholds defined above in that order (the otherwise-zero tier needs no cutoff), and every number is written with 4 significant digits. `tests/test_r2_001.py` also checks that the three cutoffs equal the formulas evaluated at the marker's B and R. `solutions/answers.md` carries the identical marker, so `answerkey-check` compares them as it does for theory items. `tests/test_r2_001.py` also verifies the numbers: it re-executes each reference solution and asserts that its single `final_test_score` point estimate equals R and that `baseline_score(task)` equals B, both to a stated tolerance.
 
 ## Implementation tasks
 
@@ -275,6 +275,15 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 2. `[FIXED]` Should Fix: open-ended answer-key representation. → Response: a `metric/B/R/tiers` marker in both the manifest and `answers.md`; `test_r2_001.py` re-executes the reference solutions and verifies R and B.
 3. `[FIXED]` Nit: "All four tasks" → "All three open-ended tasks".
 - Open dependency noted: B2-024's taught closure is re-checked after Plan 029 merges (Task 1 baseline).
+
+### Review 3 — Sol, `gpt-6-sol` (2026-10-10)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Nit: the `tiers=<four cutoffs>` marker was ambiguous. → Response: field order, direction, three cutoffs, 4-significant-digit precision, and a test check against the formulas.
+
+### Review 3 — self (2026-10-10)
+- **Verdict**: Approve.
+
+**Gate result:** 3-way consensus (Fable approved at round 2; Sol at round 3; self). Implementation is authorized once Plan 029 merges and this branch merges that `main`; B2-024's taught closure is re-checked at Task 1.
 
 ## Content Review
 
