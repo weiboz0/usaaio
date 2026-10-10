@@ -349,6 +349,17 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 1. `[FIXED]` Must Fix: with `σ_t² = β_t` the mean-error weight changes to `1/(2β_t)`, not only a constant. → Response: reworded.
 2. `[FIXED]` Should Fix: the `t = 1` endpoint is not a likelihood with `β̃_1 = 0`. → Response: described as an ε-MSE surrogate; the true decoder likelihood is noted as out of computation scope.
 
+### Review 4 — self (2026-10-09)
+- **Verdict**: Approve.
+
+### Review 4 — Fable (2026-10-09)
+- **Verdict**: Approve. Optional implementer note: if the frozen-seed run shows `w=3` overshooting, lower the pinned guidance weight (for example to `w=2`) rather than loosening the criterion.
+
+### Review 4 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Approve. No findings.
+
+**Gate result:** 3-way consensus at round 4 (a630ab9); implementation authorized after Plan 027 merges and this branch merges that `main`.
+
 ## Content Review
 
 Pending.
