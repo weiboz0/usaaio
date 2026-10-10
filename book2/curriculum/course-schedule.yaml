@@ -2,12 +2,12 @@ schedule_version: 1
 book: 2
 status: live
 starts_after_global_week: 40
-total_book_weeks: 18
-total_minutes: 4970
+total_book_weeks: 24
+total_minutes: 6620
 final_assessment:
   kind: future-r2-mock
   status: planned
-  after_book_week: 18
+  after_book_week: 24
 weeks:
   - book_week: 1
     global_week: 41
@@ -217,5 +217,75 @@ weeks:
     allocations:
       - kind: review
         unit: B2-021-cross-modal-transformers-vision
+        chunk: 1
+        minutes: 60
+  - book_week: 19
+    global_week: 59
+    allocations:
+      - kind: bridge-diagnostic
+        unit: B2-022-probabilistic-latent-models
+        minutes: 30
+      - kind: lesson-session
+        unit: B2-022-probabilistic-latent-models
+        session: 1
+        minutes: 90
+      - kind: practice
+        unit: B2-022-probabilistic-latent-models
+        chunk: 1
+        minutes: 135
+        problem_ids: [B2-022-p01, B2-022-p02, B2-022-p06, B2-022-p13]
+  - book_week: 20
+    global_week: 60
+    allocations:
+      - kind: lesson-session
+        unit: B2-022-probabilistic-latent-models
+        session: 2
+        minutes: 90
+      - kind: practice
+        unit: B2-022-probabilistic-latent-models
+        chunk: 2
+        minutes: 210
+        problem_ids: [B2-022-p03, B2-022-p07, B2-022-p08, B2-022-p14, B2-022-p15]
+  - book_week: 21
+    global_week: 61
+    allocations:
+      - kind: lesson-session
+        unit: B2-022-probabilistic-latent-models
+        session: 3
+        minutes: 90
+      - kind: practice
+        unit: B2-022-probabilistic-latent-models
+        chunk: 3
+        minutes: 250
+        problem_ids: [B2-022-p04, B2-022-p09, B2-022-p10, B2-022-p17, B2-022-p18]
+  - book_week: 22
+    global_week: 62
+    allocations:
+      - kind: lesson-session
+        unit: B2-022-probabilistic-latent-models
+        session: 4
+        minutes: 90
+      - kind: practice
+        unit: B2-022-probabilistic-latent-models
+        chunk: 4
+        minutes: 220
+        problem_ids: [B2-022-p05, B2-022-p11, B2-022-p12, B2-022-p16, B2-022-p21]
+  - book_week: 23
+    global_week: 63
+    allocations:
+      - kind: lesson-session
+        unit: B2-022-probabilistic-latent-models
+        session: 5
+        minutes: 90
+      - kind: practice
+        unit: B2-022-probabilistic-latent-models
+        chunk: 5
+        minutes: 295
+        problem_ids: [B2-022-p19, B2-022-p20, B2-022-p22, B2-022-p23, B2-022-p24]
+  - book_week: 24
+    global_week: 64
+    allocations:
+      - kind: review
+        unit: B2-022-probabilistic-latent-models
         chunk: 1
         minutes: 60

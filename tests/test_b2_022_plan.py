@@ -11,7 +11,7 @@ import pytest
 import yaml
 
 from tools.checks import schedule as schedule_checker
-from tools.model import load_roadmap, load_syllabus
+from tools.model import load_roadmap, load_syllabus, load_syllabus_contract
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOK2_ROOT = ROOT / "book2"
@@ -38,6 +38,38 @@ OWNED_CONCEPTS = [
     "gaussian-reparameterization",
     "variational-autoencoder",
 ]
+CONCEPT_PREREQUISITES = [
+    f"book1:{concept}"
+    for concept in (
+        "numpy-arrays", "broadcasting", "aggregation-axis", "random-seeding",
+        "matrix-multiplication", "gradient", "expectation", "variance", "covariance",
+        "gaussian-distribution", "sampling-simulation", "conditional-probability",
+        "bayes-rule", "eigenvalues-eigenvectors", "spectral-decomposition", "svd",
+        "train-test-split", "mse-loss", "relu-activation", "mlp-architecture",
+        "torch-tensors", "nn-module", "requires-grad", "torch-optimizers",
+        "autograd-training", "pca",
+    )
+]
+CONCEPT_SESSIONS = {
+    "multivariate-gaussian": 1,
+    "kl-divergence": 2,
+    "autoencoder": 3,
+    "gaussian-reparameterization": 4,
+    "variational-autoencoder": 4,
+}
+# Plan 027 per-row primary practices, in modality order.
+PRIMARY_PRACTICES = {
+    "multivariate-gaussian": {"theory": [2], "derivation": [13], "implementation": [6, 7]},
+    "kl-divergence": {"theory": [3], "derivation": [14, 15], "implementation": [8, 9]},
+    "gaussian-reparameterization": {"theory": [5], "derivation": [16], "implementation": [11]},
+    "autoencoder": {"theory": [4], "implementation": [10], "model-training": [17, 18]},
+    "variational-autoencoder": {
+        "theory": [21],
+        "derivation": [16],
+        "implementation": [12],
+        "model-training": [19, 20],
+    },
+}
 KNOWLEDGE_POINTS = [
     "multivariate-gaussian",
     "gaussian-reparameterization",
@@ -148,7 +180,7 @@ def test_ledger_and_schedule_minutes_reconcile() -> None:
     assert BASELINE_MINUTES + sum(WEEK_MINUTES) == TARGET_MINUTES
 
 
-def test_b2_022_planned_row_has_exact_registration_contract() -> None:
+def test_b2_022_planned_row_is_retained_but_no_longer_provisional() -> None:
     raw = _coverage_map()
     matches = [row for row in raw["planned_units"] if row["id"] == UNIT_ID]
 
@@ -156,7 +188,7 @@ def test_b2_022_planned_row_has_exact_registration_contract() -> None:
     planned = matches[0]
     assert planned["prerequisites"] == PREREQUISITES
     assert "book1:C7-cnn-transfer" not in planned["prerequisites"]
-    assert planned["provisional_concepts"] == OWNED_CONCEPTS
+    assert planned["provisional_concepts"] == []
     assert planned["knowledge_points"] == KNOWLEDGE_POINTS
     assert planned["estimated_hours"] == {"min": 22, "max": 28}
     assert planned["schedule_action"] == "extend"
@@ -165,41 +197,106 @@ def test_b2_022_planned_row_has_exact_registration_contract() -> None:
         unit for unit in load_roadmap(BOOK2_ROOT).planned_units if unit.id == UNIT_ID
     )
     assert loaded.prerequisites == PREREQUISITES
-    assert loaded.provisional_concepts == OWNED_CONCEPTS
+    assert loaded.provisional_concepts == []
 
 
 def test_b2_022_double_length_standard_is_five_sessions_and_24_practices() -> None:
     standards = (ROOT / "docs" / "unit-standards.md").read_text(encoding="utf-8")
     assert "use 4–6 sessions" in standards
     assert "double-length units: 24–30" in standards
+    assert "B2-021, and B2-022) use 4–6 sessions" in standards
+    assert "B2-022-probabilistic-latent-models" in standards
+    assert (
+        "The B2-022 unit uses five 90-minute teaching sessions and exactly 24 practices."
+        in standards
+    )
     assert 4 <= SESSIONS <= 6
     assert 24 <= len(LEDGER) <= 30
+    manifest = _load_yaml(BOOK2_ROOT / "units" / UNIT_ID / "manifest.yaml")
+    assert manifest["length"] == "double"
+    assert manifest["estimated_minutes"]["lesson_sessions"] == [SESSION_MINUTES] * SESSIONS
+    assert len(manifest["practice"]) == len(LEDGER)
 
 
-def test_b2_022_coverage_stays_missing_until_live_sources_exist() -> None:
+def test_b2_022_syllabus_registers_exact_live_owner_and_import_contract() -> None:
+    syllabus = load_syllabus(BOOK2_ROOT)
+    unit = syllabus.units[UNIT_ID]
+
+    assert unit.prereqs == PREREQUISITES
+    assert unit.concept_prerequisites == CONCEPT_PREREQUISITES
+    assert unit.teaches == OWNED_CONCEPTS
+    assert unit.length == "double"
+    contract = load_syllabus_contract(BOOK2_ROOT)
+    assert {prereq.removeprefix("book1:") for prereq in PREREQUISITES[:-1]} <= set(
+        contract["imports"]["units"]
+    )
+    assert {
+        concept.removeprefix("book1:") for concept in CONCEPT_PREREQUISITES
+    } <= set(contract["imports"]["concepts"])
+    assert "probabilistic-latent-models" in contract["clusters"]
+    assert {concept: syllabus.concepts[concept] for concept in OWNED_CONCEPTS} == {
+        concept: "probabilistic-latent-models" for concept in OWNED_CONCEPTS
+    }
+
+
+def test_b2_022_promotes_exact_five_coverage_rows_with_live_primary_evidence() -> None:
     raw = _coverage_map()
     rows = {row["id"]: row for row in raw["knowledge_points"]}
 
     for concept, modalities in ROW_MODALITIES.items():
         row = rows[concept]
-        assert row["coverage"] == "missing"
+        assert row["coverage"] == "covered"
         assert row["destination"] == UNIT_ID
-        assert row["shipped_concepts"] == []
+        assert row["shipped_concepts"] == [concept]
+        assert row["deficits"] == {"modalities_missing": []}
         assert list(row["evidence_by_modality"]) == modalities
-        assert row["deficits"] == {"modalities_missing": modalities}
+        for modality, evidence in row["evidence_by_modality"].items():
+            assert evidence["lesson_anchors"], (concept, modality)
+            assert [item["id"] for item in evidence["practices"]] == [
+                f"B2-022-p{number:02}" for number in PRIMARY_PRACTICES[concept][modality]
+            ]
+            assert all(item["role"] == "primary" for item in evidence["lesson_anchors"])
+            assert all(item["role"] == "primary" for item in evidence["practices"])
+            assert all(
+                item["path"].startswith(f"units/{UNIT_ID}/lessons/")
+                for item in evidence["lesson_anchors"]
+            )
+    for other in ("B2-023-generative-models-diffusion", "B2-024-gpu-scientific-ml-capstone"):
         assert all(
-            evidence == {"lesson_anchors": [], "practices": [], "assessments": []}
-            for evidence in row["evidence_by_modality"].values()
+            row["coverage"] == "missing"
+            for row in raw["knowledge_points"]
+            if row["destination"] == other
         )
+    assert (BOOK2_ROOT / "units" / UNIT_ID / "manifest.yaml").is_file()
 
-    assert UNIT_ID not in load_syllabus(BOOK2_ROOT).units
-    assert not (BOOK2_ROOT / "units" / UNIT_ID).exists()
-    assert UNIT_ID not in (
-        BOOK2_ROOT / "curriculum" / "course-schedule.yaml"
-    ).read_text(encoding="utf-8")
-    assert "B2-022" not in (ROOT / "docs" / "unit-standards.md").read_text(
-        encoding="utf-8"
-    )
+
+def test_b2_022_manifest_concept_sessions_match_live_ownership() -> None:
+    manifest = _load_yaml(BOOK2_ROOT / "units" / UNIT_ID / "manifest.yaml")
+    assert manifest["concepts_taught"] == OWNED_CONCEPTS
+    assert manifest["concept_sessions"] == CONCEPT_SESSIONS
+    assert manifest["concept_prerequisites"] == CONCEPT_PREREQUISITES
+    assert manifest["prereq_units"] == PREREQUISITES
+
+
+def test_b2_022_live_schedule_appends_exact_six_week_ledger() -> None:
+    raw = _load_yaml(BOOK2_ROOT / "curriculum" / "course-schedule.yaml")
+    assert raw["total_book_weeks"] == TARGET_WEEKS
+    assert raw["total_minutes"] == TARGET_MINUTES
+    assert raw["final_assessment"]["after_book_week"] == TARGET_WEEKS
+    weeks = raw["weeks"][BASELINE_WEEKS:]
+    assert [week["book_week"] for week in weeks] == list(range(19, 25))
+    assert [week["global_week"] for week in weeks] == list(range(59, 65))
+    assert [
+        sum(allocation["minutes"] for allocation in week["allocations"]) for week in weeks
+    ] == list(WEEK_MINUTES)
+    assert [
+        tuple(allocation["problem_ids"])
+        for week in weeks
+        for allocation in week["allocations"]
+        if allocation["kind"] == "practice"
+    ] == list(WEEK_PROBLEMS)
+    report = schedule_checker.check_schedule(BOOK2_ROOT, expected_book_number=2)
+    assert report.ok, report.errors
 
 
 def _replace_syllabus_contract(path: Path, raw: dict[str, Any]) -> None:

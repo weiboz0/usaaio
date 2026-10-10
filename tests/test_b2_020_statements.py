@@ -240,6 +240,7 @@ def test_ci_bounds_b2_020_and_b2_021_and_preserves_other_solution_execution() ->
     assert (
         "if [[ $relative == units/B2-020-language-transformers/practice/"
         "p??_solution.ipynb || $relative == units/B2-021-cross-modal-transformers-vision/"
+        "practice/p??_solution.ipynb || $relative == units/B2-022-probabilistic-latent-models/"
         "practice/p??_solution.ipynb ]]; then"
     ) in script
     assert (
@@ -469,8 +470,10 @@ def test_syllabus_and_standards_publish_b2_020_as_double_length() -> None:
     assert set(unit.concept_prerequisites) == IMPORTED
     assert unit.length == "double"
     standards = (ROOT / "docs/unit-standards.md").read_text(encoding="utf-8")
-    assert "F5, F6, C7, C11, C12, B2-019, B2-020, and B2-021" in standards
-    assert all(standards.count(unit) >= 2 for unit in ("B2-019", "B2-020", "B2-021"))
+    assert "F5, F6, C7, C11, C12, B2-019, B2-020, B2-021, and B2-022" in standards
+    assert all(
+        standards.count(unit) >= 2 for unit in ("B2-019", "B2-020", "B2-021", "B2-022")
+    )
 
 
 def test_generator_exports_protocol_and_tracked_state_contract() -> None:
@@ -627,9 +630,9 @@ def test_coverage_promotes_exact_five_rows_without_book1_embedding_evidence() ->
 
 def test_live_schedule_appends_exact_second_six_week_ledger() -> None:
     schedule = yaml.safe_load((BOOK2_ROOT / "curriculum/course-schedule.yaml").read_text())
-    assert schedule["total_book_weeks"] == 18
-    assert schedule["total_minutes"] == 4970
-    assert schedule["final_assessment"]["after_book_week"] == 18
+    assert schedule["total_book_weeks"] == 24
+    assert schedule["total_minutes"] == 6620
+    assert schedule["final_assessment"]["after_book_week"] == 24
     weeks = schedule["weeks"][6:12]
     assert [row["book_week"] for row in weeks] == list(range(7, 13))
     assert [row["global_week"] for row in weeks] == list(range(47, 53))

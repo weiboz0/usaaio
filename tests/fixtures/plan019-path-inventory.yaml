@@ -22,6 +22,8 @@ python_consumers:
   - tests/test_b2_020_statements.py
   - tests/test_b2_021_plan.py
   - tests/test_b2_021_statements.py
+  - tests/test_b2_022_plan.py
+  - tests/test_b2_022_statements.py
   - tests/test_blueprint.py
   - tests/test_book2_schedule.py
   - tests/test_c11_solution_regressions.py
