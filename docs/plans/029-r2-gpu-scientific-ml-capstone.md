@@ -429,6 +429,17 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 1. `[FIXED]` Must Fix: the locked-test API cannot produce the rubric's CI. → Response: the single call returns the metric and its CI.
 2. `[FIXED]` Must Fix: p24 is not genuinely an evaluation practice. → Response: p24 now first evaluates a supplied validation results table (per-seed scores, CIs, an ablation) to decide which differences are real.
 
+### Review 4 — self (2026-10-09)
+- **Verdict**: Approve.
+
+### Review 4 — Fable (2026-10-09)
+- **Verdict**: Approve. Implementer note: record the observed frozen-seed margins (p17/p18 accuracy gaps; p19/p20/p26/p27 baseline gaps) in the post-execution report.
+
+### Review 4 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Approve. No findings.
+
+**Gate result:** 3-way consensus at round 4 (b99e1c4); implementation authorized after Plan 028 merges and this branch merges that `main`.
+
 ## Content Review
 
 Pending.
