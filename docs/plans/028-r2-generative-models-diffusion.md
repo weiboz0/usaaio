@@ -92,8 +92,8 @@ Visible notebook headers keep the Book 2 convention (`Qualified prerequisites`, 
 - **Pointwise optimization of an integral objective (Session 1).** For the optimal discriminator: maximizing `a·log y + b·log(1−y)` over `y ∈ (0,1)` for each point separately, using single-variable calculus, under the stated assumption that both densities are positive at the point. Where one density is zero the supremum sits at the boundary `y ∈ {0, 1}`; the lesson states this convention, and p13–p14 assume positive densities.
 - **Sum of independent Gaussians (Session 3).** `N(0, s²) + N(0, r²)` independent is `N(0, s² + r²)`. Gaussianity is stated; the variance follows from `book1:independence` and `book1:variance-of-sums`. It is used to collapse the forward process.
 - **Gaussian posterior of the forward process (Session 4).** The formula for `q(x_{t−1} | x_t, x_0)`, its mean `μ̃_t` and variance `β̃_t`, is stated, not derived. The unit derives only the consequence for `t ≥ 2`: KL between two equal-variance Gaussians is a scaled squared mean difference, which becomes the ε-prediction objective (from B2-022's Gaussian KL).
-At `t = 1` the posterior variance `β̃_1 = 0`, so that KL argument does not apply. The endpoint is the decoder term `−log p(x_0 | x_1)`, and the lesson states that the simplified objective treats it with the same ε-MSE.
-- **Sampling variance (Session 4).** The reverse step uses `σ_t² = β̃_t`, the posterior variance (the choice pinned for p11 and graded in p23). With the model's reverse variance equal to the posterior variance, the `t ≥ 2` KL is exactly the equal-variance case, so the derivation and the sampler agree. `β_t` is mentioned as the other common choice; with it, the KL gains only a model-independent constant and the same weighted ε-MSE mean term.
+At `t = 1` the posterior variance `β̃_1 = 0`, so that KL argument does not apply. The lesson describes the `t = 1` term of the simplified objective honestly: it is an ε-MSE surrogate, not a likelihood. The full ELBO's endpoint is a separate decoder likelihood with its own nonzero variance, and the unit does not compute it. Sampling's final step stays noiseless because `β̃_1 = 0`.
+- **Sampling variance (Session 4).** The reverse step uses `σ_t² = β̃_t`, the posterior variance (the choice pinned for p11 and graded in p23). With the model's reverse variance equal to the posterior variance, the `t ≥ 2` KL is exactly the equal-variance case, so the derivation and the sampler agree. `β_t` is mentioned as the other common choice. With it, the KL gains a model-independent constant, and the mean-error coefficient changes from `1/(2β̃_t)` to `1/(2β_t)`, so the loss is still an ε-MSE but with a different per-`t` weight.
 - **Classifier-free guidance (Session 5).** `ε̂ = ε_uncond + w·(ε_cond − ε_uncond)` with conditioning dropout during training.
 - **Cross-attention conditioning (Session 5).** Image/latent tokens are queries; text tokens are keys and values. This is B2-019's Q/K/V with B2-021's modal-ownership rule.
 
@@ -138,7 +138,7 @@ Every solution ends with `### Answer check`.
 | p17 | C | integrative | core | 65 | train a tiny MLP GAN on a 2-D mixture; certify that the last-50-step mean discriminator loss lies in a stated band around `2·log 2` and the generator loss stays finite below a stated bound (both set from the frozen-seed run with margin), and that at least a stated number of modes are covered |
 | p18 | C | integrative | advanced | 65 | train a tiny ε-prediction MLP DDPM (`T=50`) on a 2-D mixture; certify the training-loss decrease and the held-out denoising loss |
 | p19 | C | integrative | core | 65 | sample from the trained DDPM with fixed noise; certify sample mean/covariance against held-out data and mode coverage |
-| p20 | C | integrative | advanced | 65 | train a CPU-scale class-conditional latent diffusion model (frozen tiny autoencoder latent, label-token cross-attention, conditioning dropout); certify that the conditional-class hit rate at `w=3` exceeds both `w=1` and `w=0`; a sample's class is its nearest known class center in data space after decoding (p08's rule); thresholds set from the frozen-seed run |
+| p20 | C | integrative | advanced | 65 | train a CPU-scale class-conditional latent diffusion model (frozen tiny autoencoder latent, label-token cross-attention, conditioning dropout); certify that the mean distance from decoded samples to the target class center strictly decreases from `w=0` to `w=1` to `w=3`, and report the nearest-center hit rate (p08's rule) with `hit(w=3) ≥ hit(w=1) > hit(w=0)`; thresholds set from the frozen-seed run |
 | p21 | C | scenario | core | 55 | choose among a GAN, a VAE, and diffusion under stated sample-quality, likelihood, speed, and coverage constraints |
 | p22 | C | scenario | core | 55 | diagnose mode collapse versus discriminator overpowering from literal loss and coverage traces, and choose a remedy |
 | p23 | C | challenge | advanced | 55 | repair a DDPM implementation with `α`/`ᾱ` confusion, a wrong sampling `σ_t`, and an off-by-one timestep index |
@@ -220,8 +220,8 @@ Do not alter the B2-024 rows.
     - p19 reruns p18's protocol in-notebook;
     - p20:
       - data: 3 classes, 64 train / 16 held-out rows per class, generated as `decode(z)` from 2-D latents drawn around class centers at least 4 standard deviations apart, so they lie in the decoder's column space and `decode(encode(x)) = x` on data;
-      - denoiser: an MLP on `(z_t, t/T, c)`, where `c` is the output of one single-head cross-attention block (dimension 16) whose query is the latent token and whose keys/values are the class token plus a learned null token;
-      - conditioning dropout 0.2;
+      - denoiser: an MLP on `(z_t, t/T, c)`, where `c` is the output of one single-head cross-attention block (dimension 16). Its query is the latent token, a linear projection of `(z_t, t/T)` to dimension 16. Its keys/values are the learned class-token embedding plus a learned null token;
+      - conditioning dropout 0.2: a dropped example's class token is removed, so the keys/values are the null token only. Unconditional prediction `ε_uncond` for guidance uses the same null-only path;
       - Adam `lr=1e-2`, full batch, 1,500 steps, `T=50`.
     Every solution must stay under the 20 s limit, measured in Task 3.
 - [ ] The orchestrator checks the bundle against an exact allowlist:
@@ -333,6 +333,21 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 1. `[FIXED]` Must Fix: `σ_t² = β_t` contradicts the equal-variance KL with posterior variance `β̃_t`. → Response: `σ_t² = β̃_t` is pinned everywhere, and the `β_t` alternative is explained as adding only a constant.
 2. `[FIXED]` Should Fix: p20 CPU contract underspecified. → Response: data construction, denoiser, cross-attention size, dropout, optimizer, and steps are pinned.
 3. `[FIXED]` Nit: optimal-discriminator boundary. → Response: positive-density assumption plus a boundary convention.
+
+### Review 3 — self (2026-10-09)
+- **Verdict**: Approve after fixes.
+
+### Review 3 — Fable (2026-10-09)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Should Fix: strict `hit(w=3) > hit(w=1)` can tie at 100%. → Response: the continuous mean-distance margin strictly decreases from `w=0` to `w=1` to `w=3`; hit rates use `≥ … >`.
+2. `[FIXED]` Nit: what conditioning dropout does to the keys/values. → Response: null-only path, shared with `ε_uncond`.
+3. `[FIXED]` Nit: define the latent query token. → Response: a linear projection of `(z_t, t/T)` to dimension 16.
+4. `[FIXED]` Nit: the `β_t` weight wording (same as Sol 1).
+
+### Review 3 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: with `σ_t² = β_t` the mean-error weight changes to `1/(2β_t)`, not only a constant. → Response: reworded.
+2. `[FIXED]` Should Fix: the `t = 1` endpoint is not a likelihood with `β̃_1 = 0`. → Response: described as an ε-MSE surrogate; the true decoder likelihood is noted as out of computation scope.
 
 ## Content Review
 
