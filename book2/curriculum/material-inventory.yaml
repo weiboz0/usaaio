@@ -9531,7 +9531,7 @@ notebooks:
   - torch.randn
 - path: units/B2-022-probabilistic-latent-models/practice/p16.ipynb
   kind: notebook
-  semantic_sha256: 380bc85c1705fafdc705f2d26880d2deae17be7437589f154763446189eaa677
+  semantic_sha256: afc6b147ab6ddc6b946c59f53f771778dd156685288e919188b6dc12dc5e30d1
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16.ipynb :: B2-022 — Practice p16 > Task :: cell 1'
     heading_path:
@@ -9554,7 +9554,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 95069587d0d5ed04a5c88aaf284b4f96f65b0c526e5cc9b75ccf29a965e5e6e5
+  semantic_sha256: 34b4b0735f256f12982b8f018ec8087a78ae7e57b7f5037903b9f5739d34c8da
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p16 — Solution :: cell 1'

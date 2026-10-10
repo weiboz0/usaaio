@@ -379,6 +379,10 @@ Re-verified after fixes: inventory regenerated; B2-022 statement, plan, and late
 - **Verdict**: Reject.
 1. `[FIXED]` Must Fix: common support gives pointwise finiteness only; a Cauchy `q` against a Gaussian posterior has `KL = +∞`. → Response: p16 also assumes `KL(q‖p(z|x)) < ∞`. The ELBO is then finite because `log p(x)` is constant; the solution explains why pointwise finiteness is not enough.
 
+### Review 4 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: finite `KL(q‖p(z|x))` does not make (a3)'s separate terms finite (counterexample: a Cauchy posterior with `q` equal to it). → Response: following Sol's suggestion, p16 now simply assumes every expectation in (a1)–(a3) is finite (true for the unit's Gaussian models) and no longer claims to derive finiteness from support. The solution parenthetical matches.
+
 ## Post-execution report
 
 Pending.
