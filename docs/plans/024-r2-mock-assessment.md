@@ -218,7 +218,7 @@ Steps:
   - Sol solves P1 entries 1–7 and P3;
   - Fable solves P1 entries 8–14 and P4;
   - Self solves P2 and P5 and does the provenance comparison against the local index and rationale.
-- [ ] Post-execution report, `TODO.md` (Plan 024 shipped; Book 2 complete), push, PR, `pre-merge-guard --pr`, squash-merge without deleting local history refs, and `main` equals `origin/main`.
+- [x] Post-execution report, `TODO.md` (Plan 024 shipped; Book 2 complete), push, PR, `pre-merge-guard --pr`, squash-merge without deleting local history refs, and `main` equals `origin/main`.
 
 ## Out of scope
 
@@ -397,3 +397,5 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`). Fidelity is judged on shape. The
 **For r2-002:**
 - Introduce one fresh mechanism in the day-1 arc.
 - Consider a fourth scoring tier, or anchoring the 60% tier at the best labelled-only probe.
+
+**Final authoritative CI (2026-10-10):** `scripts/ci-local.sh` on clean tip 46261e7 — ci-local: ALL GREEN.
