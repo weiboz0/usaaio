@@ -319,7 +319,10 @@ def _run_training_harness(
 @pytest.fixture
 def single_thread_torch():
     threads = torch.get_num_threads()
+    dtype = torch.get_default_dtype()
+    torch.set_default_dtype(torch.float32)  # notebook kernels start with float32 defaults
     yield
+    torch.set_default_dtype(dtype)
     torch.set_num_threads(threads)
 
 
