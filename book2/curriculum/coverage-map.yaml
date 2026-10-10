@@ -69,18 +69,30 @@ planned_units:
   title: Probabilistic Latent Models
   layer: round-2-extension
   prerequisites:
+  - book1:F1-scientific-python
+  - book1:F3-matrices
   - book1:F4-multivar-calculus
   - book1:F5-probability
   - book1:F6-svd-spectral
-  - book1:C7-cnn-transfer
+  - book1:C1-ml-fundamentals
+  - book1:C2-linear-models
+  - book1:C5-neural-networks
+  - book1:C6-pytorch
+  - book1:C9-dimensionality-reduction
   - book1:C11-neural-training
+  - B2-021-cross-modal-transformers-vision
   knowledge_points:
   - multivariate-gaussian
   - gaussian-reparameterization
   - kl-divergence
   - autoencoder
   - variational-autoencoder
-  provisional_concepts: []
+  provisional_concepts:
+  - multivariate-gaussian
+  - kl-divergence
+  - autoencoder
+  - gaussian-reparameterization
+  - variational-autoencoder
   estimated_hours:
     min: 22
     max: 28
