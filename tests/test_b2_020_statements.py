@@ -243,7 +243,8 @@ def test_ci_bounds_b2_020_and_b2_021_and_preserves_other_solution_execution() ->
         "practice/p??_solution.ipynb || $relative == units/B2-022-probabilistic-latent-models/"
         "practice/p??_solution.ipynb || $relative == units/B2-023-generative-models-diffusion/"
         "practice/p??_solution.ipynb || $relative == units/B2-024-gpu-scientific-ml-capstone/"
-        "practice/p??_solution.ipynb ]]; then"
+        "practice/p??_solution.ipynb || $relative == mocktests/r2-001/solutions/"
+        "p??_solution.ipynb ]]; then"
     ) in script
     assert (
         'timeout 20s uv run --project .. jupyter execute "$relative"'
