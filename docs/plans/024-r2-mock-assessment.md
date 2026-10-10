@@ -25,7 +25,8 @@ Plan 019 reserved Plan 024 for this ("must be replaced by Plan 024 before an R2 
 - open-ended work carries 160/300.
 
 The blueprint encodes this structure, not the 2026 topics.
-Fidelity review judges shape only: analysis.md has no Round 2 style notes, and Task 1 adds a short structure-only "Round 2 shape notes" section to it.
+Fidelity review judges shape only. r2-001's day-1 arc is a fully taught synthesis; the gate record should note that Round 2 arcs typically introduce one fresh mechanism, so r2-002 and later should lean that way.
+In particular, analysis.md has no Round 2 style notes, and Task 1 adds a short structure-only "Round 2 shape notes" section to it.
 
 **Provenance (public repo).** Every r2-001 problem is original and differs from its 2026 counterpart in its central object:
 
@@ -41,7 +42,7 @@ The pre-committed resemblance test is that each slot differs in basis function, 
 P5 is the closest sibling of a 2026 task. A different basis family (Lorentzian, not Gaussian), a different `K`, and different sampling are judged sufficient now, not deferred to the gate.
 
 Provenance is executable:
-- Before the content gate, the gitignored local corpus `book2/reference/r2-2026/` is copied from the main checkout into the worktree, uncommitted, so `overlap-scan` runs for real.
+- Before the content gate, the gitignored local corpus `book2/reference/r2-2026/` is copied from the main checkout into the worktree, uncommitted, so `overlap-scan` runs for real. Immediately after the copy, `git status --porcelain --untracked-files=all` must show no `book2/reference/r2-2026/` path (a hard check in a public repo), and the copy is deleted after the gate.
 - The self reviewer compares every statement and generator against the local index and rationale.
 - A skipped automated scan is reported separately; it is never treated as a pass.
 
@@ -122,17 +123,20 @@ Difficulty draw (intro 0.20 / core 0.45 / advanced 0.35):
 **Open-ended scoring (gradable).** Grading re-executes the notebook under `SEED=20261101` and reads the single `final_test_score` output (the point estimate).
 Each task's points split 60% test score and 40% writeup.
 
-Test-score tiers use B = the committed baseline score and R = the committed reference-solution score, both printed in the statement:
+Test-score tiers use B = the committed baseline score and R = the committed reference-solution score, both printed in the statement. Calibration must establish that R beats B by a stated margin at the frozen seed: for lower-is-better metrics `R ≤ 0.8·B`, and for P4 `R ≥ B + 0.05`.
+Let `g = |B − R|`. The tiers are gap-relative, so they stay strictly ordered whenever R beats B:
 - **Lower-is-better metrics** (P2 position error, P5 parameter error):
-  - 100% of the 60% when the score is ≤ R × 1.25;
-  - 60% when < B;
-  - 25% when < 1.25 × B;
+  - 100% of the 60% when the score is ≤ `R + 0.25g`;
+  - 60% when < `B`;
+  - 25% when < `B + 0.25g`;
   - otherwise 0.
-- **Higher-is-better** (P4 accuracy): the mirrored tiers, with full credit at ≥ R − 0.02, then > B, then > B − 0.05.
+- **Higher-is-better** (P4 accuracy): the mirrored tiers: 100% when ≥ `R − 0.25g`, 60% when > `B`, 25% when > `B − 0.25g`, otherwise 0.
 
 The writeup is 10% each for Approach, Alternatives considered, Evaluation (with the bootstrap CI), and Limitations, graded against the B2-024 rubric descriptors.
-All four tasks follow B2-024's protocol: train/validation/locked test, one `final_test_score`, `baseline_score`, and `StepBudget`.
+All three open-ended tasks follow B2-024's protocol: train/validation/locked test, one `final_test_score`, `baseline_score`, and `StepBudget`.
 They are `optional-colab-l4`, with CPU reference solutions under 20 s and an `Accelerator extension`.
+
+**Open-ended answer keys.** Each P2/P4/P5 manifest entry's `answer_key` is a string `metric=<name>; B=<value>; R=<value>; tiers=<four cutoffs>`. `solutions/answers.md` carries the identical marker, so `answerkey-check` compares them as it does for theory items. `tests/test_r2_001.py` also verifies the numbers: it re-executes each reference solution and asserts that its single `final_test_score` point estimate equals R and that `baseline_score(task)` equals B, both to a stated tolerance.
 
 ## Implementation tasks
 
@@ -176,7 +180,7 @@ Steps:
   - `test.md`, `theory/`, `problems/`, `data/` (seeded generators and `r2_001_data.py`, which follows B2-024's data-module conventions), and `rubric.md`;
   - the manifest's non-answer fields.
   Every task-specific formula is defined in the statement.
-- [ ] Every threshold, plus the B and R scores, is calibrated at `SEED=20261101` with stated margins, and every CPU reference solution must run in < 20 s with timings recorded.
+- [ ] Every threshold, plus the B and R scores, is calibrated at `SEED=20261101` with stated margins. The calibration script asserts the R-versus-B inequality for each open-ended task, so the tiers are strictly ordered. Every CPU reference solution must run in < 20 s, with timings recorded.
 - [ ] Hash the bundle.
 
 ### Task 3 — Blind solutions, publish, verify
@@ -199,7 +203,7 @@ Steps:
 
 - [ ] Write `tests/test_r2_001_checks.py` with named wrong implementations:
   - P1: causal mask omitted; targets not shifted; positional encoding sin/cos swapped.
-  - P3: KL sign flipped; β applied to reconstruction instead of KL.
+  - P3: KL sign flipped; β applied to reconstruction instead of KL (run at the statement's β ≠ 1, where it is detectable).
   - Each open-ended task: a leakage mutant and a protocol mutant (`final_test_score` called twice), detected at named seams as in B2-024.
 - [ ] Wire the suite into `ci-local.sh` step 7. This is a correctness check, not anti-cheat.
 
@@ -254,6 +258,23 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 11. `[WONTFIX]` Nit: dispatch should be codex. → Response: same evidence; Plan 026 routes statements, solutions, and tooling to Opus.
 12. `[FIXED]` Nit: pre-commit the resemblance test. → Response: stated under "Provenance".
 13. `[FIXED]` Nit: GQA mutant. → Response: GQA is removed; P1 mutants are replaced.
+
+### Review 2 — self (2026-10-10)
+- **Verdict**: Approve after fixes.
+
+### Review 2 — Fable (2026-10-10)
+- **Verdict**: Approve with nits. Withdrew round-1 nits 10–11 after checking `AGENTS.md`.
+1. `[FIXED]` Nit: tier ordering needs calibration inequalities. → Response: gap-relative tiers plus an asserted R-versus-B margin.
+2. `[FIXED]` Nit: the β mutant must run at β ≠ 1.
+3. `[FIXED]` Nit: arc-novelty note recorded for later mock tests.
+4. `[FIXED]` Nit: an explicit `git status` check after the corpus copy; the copy is deleted after the gate.
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-10)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: the 1.25× tiers can overlap. → Response: gap-relative tiers `R + 0.25g`, `B`, `B + 0.25g` (mirrored for P4), strictly ordered whenever R beats B; calibration asserts `R ≤ 0.8·B` (P4: `R ≥ B + 0.05`).
+2. `[FIXED]` Should Fix: open-ended answer-key representation. → Response: a `metric/B/R/tiers` marker in both the manifest and `answers.md`; `test_r2_001.py` re-executes the reference solutions and verifies R and B.
+3. `[FIXED]` Nit: "All four tasks" → "All three open-ended tasks".
+- Open dependency noted: B2-024's taught closure is re-checked after Plan 029 merges (Task 1 baseline).
 
 ## Content Review
 
