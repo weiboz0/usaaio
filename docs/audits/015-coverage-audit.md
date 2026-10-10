@@ -13,21 +13,21 @@ Assessment ids are reported separately and never satisfy the unit-practice rule.
 
 | Measure | Count |
 |---|---:|
-| Unit notebooks | 1205 |
+| Unit notebooks | 1261 |
 | Mock notebooks | 10 |
-| Unit practices | 533 |
-| Total inventoried notebooks | 1215 |
+| Unit practices | 557 |
+| Total inventoried notebooks | 1271 |
 | Requirement: bridge | 12 |
 | Requirement: optional | 0 |
 | Requirement: required | 80 |
-| Coverage: covered | 83 |
-| Coverage: missing | 9 |
+| Coverage: covered | 86 |
+| Coverage: missing | 6 |
 | Coverage: partial | 0 |
 
 ## Time baseline and planned deltas
 
-Current manifested baseline: **25135 minutes / 418.92 hours**.
-Current scheduled baseline: **25495 minutes / 424.92 hours**.
+Current manifested baseline: **26755 minutes / 445.92 hours**.
+Current scheduled baseline: **27145 minutes / 452.42 hours**.
 Planned hours are estimates and are not manifested time.
 
 | Layer | Planned minimum hours | Planned maximum hours |
@@ -40,7 +40,7 @@ Planned hours are estimates and are not manifested time.
 
 This range is a renderer-owned editorial estimate, not a field in the canonical coverage map.
 
-Baseline plus planned-unit subtotal: **560.92–600.92 manifested-baseline hours** and **566.92–606.92 scheduled-baseline hours**.
+Baseline plus planned-unit subtotal: **587.92–627.92 manifested-baseline hours** and **594.42–634.42 scheduled-baseline hours**.
 
 ## Non-required candidates
 
@@ -1752,29 +1752,29 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-023-generative-models-diffusion
 - **Dependencies:** book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian, book2:unet
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No forward noising, reverse denoising, schedule, noise objective, or DDPM training exists.
-- **Consequence:** Diffusion-model theory and practice are absent.
+- **Shipped concepts:** book2:denoising-diffusion-probabilistic-models
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-023 teaches the variance schedule, the closed-form forward process, the stated posterior and equal-variance KL leading to epsilon-prediction, the simplified objective, and ancestral sampling with fixed-seed DDPM training.
+- **Consequence:** Students can derive, implement, train, and sample from a small DDPM and certify its samples against held-out data.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The Diffusion Forward Process > 5. The closed form $q(x_t\mid x_0)$ :: cell 1, book2:units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising and Sampling > 4. From mean matching to ε-prediction :: cell 1
+- **derivation practices:** book2:B2-023-p15, book2:B2-023-p16
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising and Sampling > 6. Ancestral sampling and a worked reverse step :: cell 1
+- **implementation practices:** book2:B2-023-p09, book2:B2-023-p10, book2:B2-023-p11
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising and Sampling > 7. Worked laboratory: a fixed-seed tiny 2-D DDPM :: cell 1
+- **model-training practices:** book2:B2-023-p18, book2:B2-023-p19
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The Diffusion Forward Process > 1. Destroying data slowly: the idea of a diffusion model :: cell 1
+- **theory practices:** book2:B2-023-p04
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-023-p04, book2:B2-023-p09, book2:B2-023-p10, book2:B2-023-p11, book2:B2-023-p15, book2:B2-023-p16, book2:B2-023-p18, book2:B2-023-p19
 
 Assessments: —
 
@@ -1811,29 +1811,29 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-023-generative-models-diffusion
 - **Dependencies:** book1:convolutional-neural-network-basics, book1:fully-connected-network-from-scratch
-- **Shipped concepts:** —
-- **Modalities missing:** derivation, implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No generator-discriminator game, objective, implementation, or training exists.
-- **Consequence:** GAN coverage is absent.
+- **Shipped concepts:** book2:generative-adversarial-network
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-023 teaches the generator/discriminator game with BCE-with-logits, the pointwise optimal discriminator, the Jensen-Shannon global optimum, the non-saturating generator loss, detach-disciplined alternating updates, and mode-coverage diagnostics.
+- **Consequence:** Students can derive, implement, train, and diagnose a small MLP GAN on a known mixture.
 
-- **derivation lessons:** —
-- **derivation practices:** —
+- **derivation lessons:** book2:units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial Games > 4. Pointwise optimization and the optimal discriminator :: cell 1
+- **derivation practices:** book2:B2-023-p13, book2:B2-023-p14
 - **derivation assessments:** —
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2: Training and Diagnosing GANs > 1. Alternating updates with two optimizers :: cell 1
+- **implementation practices:** book2:B2-023-p06, book2:B2-023-p07, book2:B2-023-p08
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2: Training and Diagnosing GANs > 6. A fixed-seed tiny 2-D GAN training trace :: cell 1
+- **model-training practices:** book2:B2-023-p17
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial Games > 1. Implicit generative models: the generator and the discriminator :: cell 1
+- **theory practices:** book2:B2-023-p02
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-023-p02, book2:B2-023-p06, book2:B2-023-p07, book2:B2-023-p08, book2:B2-023-p13, book2:B2-023-p14, book2:B2-023-p17
 
 Assessments: —
 
@@ -2343,26 +2343,26 @@ Assessments: —
 - **Book:** book2
 - **Layer:** round-2-extension
 - **Requirement:** required
-- **Coverage:** missing
+- **Coverage:** covered
 - **Destination:** book2:B2-023-generative-models-diffusion
 - **Dependencies:** book2:denoising-diffusion-probabilistic-models, book2:transformer-nlp-applications, book2:variational-autoencoder
-- **Shipped concepts:** —
-- **Modalities missing:** implementation, model-training, theory
-- **Practice shortfall:** 3
-- **Rationale:** No latent diffusion, text conditioning, pipeline use, or training exists.
-- **Consequence:** Stable Diffusion is absent.
+- **Shipped concepts:** book2:stable-diffusion
+- **Modalities missing:** —
+- **Practice shortfall:** 0
+- **Rationale:** B2-023 teaches latent diffusion with the latent scaling factor, cross-attention text conditioning, conditioning dropout with classifier-free guidance, and the Stable Diffusion component map through a CPU-scale class-conditional latent diffusion analogue.
+- **Consequence:** Students can explain the Stable Diffusion pipeline and build and train a faithful CPU-scale latent conditional diffusion model.
 
-- **implementation lessons:** —
-- **implementation practices:** —
+- **implementation lessons:** book2:units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session 5: Latent and Conditional Diffusion > 4. Cross-attention conditioning :: cell 1
+- **implementation practices:** book2:B2-023-p12
 - **implementation assessments:** —
-- **model-training lessons:** —
-- **model-training practices:** —
+- **model-training lessons:** book2:units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session 5: Latent and Conditional Diffusion > 7. Worked laboratory: a CPU-scale class-conditional latent diffusion trace :: cell 1
+- **model-training practices:** book2:B2-023-p20
 - **model-training assessments:** —
-- **theory lessons:** —
-- **theory practices:** —
+- **theory lessons:** book2:units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session 5: Latent and Conditional Diffusion > 6. The Stable Diffusion pipeline component map :: cell 1
+- **theory practices:** book2:B2-023-p05
 - **theory assessments:** —
 
-Practices: —
+Practices: book2:B2-023-p05, book2:B2-023-p12, book2:B2-023-p20
 
 Assessments: —
 

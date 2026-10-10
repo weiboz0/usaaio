@@ -1934,8 +1934,8 @@ def test_renderer_recomputes_the_design019_book2_planned_delta() -> None:
         assert "C6 and C8 are not yet estimated" not in document
         assert "C8" in document
         assert "so this is not a complete roadmap total" not in document
-        assert "**560.92–600.92 manifested-baseline hours**" in document
-        assert "**566.92–606.92 scheduled-baseline hours**" in document
+        assert "**587.92–627.92 manifested-baseline hours**" in document
+        assert "**594.42–634.42 scheduled-baseline hours**" in document
         assert "Total roadmap delta" not in document
 
 

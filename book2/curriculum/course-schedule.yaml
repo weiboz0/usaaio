@@ -2,12 +2,12 @@ schedule_version: 1
 book: 2
 status: live
 starts_after_global_week: 40
-total_book_weeks: 24
-total_minutes: 6620
+total_book_weeks: 30
+total_minutes: 8270
 final_assessment:
   kind: future-r2-mock
   status: planned
-  after_book_week: 24
+  after_book_week: 30
 weeks:
   - book_week: 1
     global_week: 41
@@ -287,5 +287,75 @@ weeks:
     allocations:
       - kind: review
         unit: B2-022-probabilistic-latent-models
+        chunk: 1
+        minutes: 60
+  - book_week: 25
+    global_week: 65
+    allocations:
+      - kind: bridge-diagnostic
+        unit: B2-023-generative-models-diffusion
+        minutes: 30
+      - kind: lesson-session
+        unit: B2-023-generative-models-diffusion
+        session: 1
+        minutes: 90
+      - kind: practice
+        unit: B2-023-generative-models-diffusion
+        chunk: 1
+        minutes: 135
+        problem_ids: [B2-023-p01, B2-023-p02, B2-023-p06, B2-023-p13]
+  - book_week: 26
+    global_week: 66
+    allocations:
+      - kind: lesson-session
+        unit: B2-023-generative-models-diffusion
+        session: 2
+        minutes: 90
+      - kind: practice
+        unit: B2-023-generative-models-diffusion
+        chunk: 2
+        minutes: 265
+        problem_ids: [B2-023-p07, B2-023-p08, B2-023-p14, B2-023-p17, B2-023-p22]
+  - book_week: 27
+    global_week: 67
+    allocations:
+      - kind: lesson-session
+        unit: B2-023-generative-models-diffusion
+        session: 3
+        minutes: 90
+      - kind: practice
+        unit: B2-023-generative-models-diffusion
+        chunk: 3
+        minutes: 115
+        problem_ids: [B2-023-p03, B2-023-p09, B2-023-p15]
+  - book_week: 28
+    global_week: 68
+    allocations:
+      - kind: lesson-session
+        unit: B2-023-generative-models-diffusion
+        session: 4
+        minutes: 90
+      - kind: practice
+        unit: B2-023-generative-models-diffusion
+        chunk: 4
+        minutes: 295
+        problem_ids: [B2-023-p04, B2-023-p10, B2-023-p11, B2-023-p16, B2-023-p18, B2-023-p19]
+  - book_week: 29
+    global_week: 69
+    allocations:
+      - kind: lesson-session
+        unit: B2-023-generative-models-diffusion
+        session: 5
+        minutes: 90
+      - kind: practice
+        unit: B2-023-generative-models-diffusion
+        chunk: 5
+        minutes: 300
+        problem_ids: [B2-023-p05, B2-023-p12, B2-023-p20, B2-023-p21, B2-023-p23, B2-023-p24]
+  - book_week: 30
+    global_week: 70
+    allocations:
+      - kind: review
+        unit: B2-023-generative-models-diffusion
         chunk: 1
         minutes: 60

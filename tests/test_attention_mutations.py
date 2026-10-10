@@ -284,6 +284,9 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
         "gaussian-reparameterization",
         "autoencoder",
         "variational-autoencoder",
+        "generative-adversarial-network",
+        "denoising-diffusion-probabilistic-models",
+        "stable-diffusion",
     }
     assert {points[point_id]["coverage"] for point_id in later} <= {"covered", "missing"}
 
@@ -303,7 +306,7 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
             ensure_ascii=False,
         ).encode()
     ).hexdigest()
-    assert unchanged_digest == "470f590c82ab5b64e67369345d2b18bc9dc3c68db05c0615b4dd639f4eb7141a"
+    assert unchanged_digest == "7e8fa1946be4b593e00769aa1e30b32e324ea7be704e6822a4d113a8fd3e850c"
 
 
 def test_attention_manifest_adds_only_the_exact_seven_evidence_claims() -> None:

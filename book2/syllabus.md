@@ -27,6 +27,7 @@ clusters:
 - language-transformers
 - cross-modal-vision
 - probabilistic-latent-models
+- generative-models
 imports:
   book: book1
   units:
@@ -162,6 +163,12 @@ concepts:
   cluster: probabilistic-latent-models
 - id: variational-autoencoder
   cluster: probabilistic-latent-models
+- id: generative-adversarial-network
+  cluster: generative-models
+- id: denoising-diffusion-probabilistic-models
+  cluster: generative-models
+- id: stable-diffusion
+  cluster: generative-models
 units:
 - id: B2-019-attention-transformers
   track: extension
@@ -340,5 +347,62 @@ units:
   - autoencoder
   - gaussian-reparameterization
   - variational-autoencoder
+  length: double
+- id: B2-023-generative-models-diffusion
+  track: extension
+  title: Generative Models and Diffusion
+  book: 2
+  layer: round-2-extension
+  round: 2
+  prereqs:
+  - book1:F1-scientific-python
+  - book1:F3-matrices
+  - book1:F4-multivar-calculus
+  - book1:F5-probability
+  - book1:C1-ml-fundamentals
+  - book1:C2-linear-models
+  - book1:C5-neural-networks
+  - book1:C6-pytorch
+  - book1:C11-neural-training
+  - B2-019-attention-transformers
+  - B2-020-language-transformers
+  - B2-021-cross-modal-transformers-vision
+  - B2-022-probabilistic-latent-models
+  concept_prerequisites:
+  - query-key-value-attention
+  - learned-token-embedding
+  - unet
+  - multivariate-gaussian
+  - gaussian-reparameterization
+  - kl-divergence
+  - autoencoder
+  - variational-autoencoder
+  - book1:numpy-arrays
+  - book1:broadcasting
+  - book1:random-seeding
+  - book1:matrix-multiplication
+  - book1:gradient
+  - book1:expectation
+  - book1:variance
+  - book1:independence
+  - book1:variance-of-sums
+  - book1:covariance
+  - book1:gaussian-distribution
+  - book1:sampling-simulation
+  - book1:train-test-split
+  - book1:mse-loss
+  - book1:relu-activation
+  - book1:mlp-architecture
+  - book1:torch-tensors
+  - book1:nn-module
+  - book1:requires-grad
+  - book1:softmax
+  - book1:cross-entropy-loss
+  - book1:torch-optimizers
+  - book1:autograd-training
+  teaches:
+  - generative-adversarial-network
+  - denoising-diffusion-probabilistic-models
+  - stable-diffusion
   length: double
 ```

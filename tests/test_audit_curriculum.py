@@ -522,7 +522,7 @@ def test_plan019_cutover_real_book1_inventory_and_book2_ownership_are_partitione
         "manifested_minutes": 18_635,
         "scheduled_minutes": 18_875,
     }
-    assert len(book2_concepts) == 28
+    assert len(book2_concepts) == 31
     assert set(syllabus.concepts).isdisjoint(book2_concepts)
     material_paths = {
         row["path"]
@@ -591,8 +591,8 @@ def test_plan019_task3_aggregate_renderer_assigns_embedding_completion_to_b2_020
         assert "book2:B2-020-language-transformers" in document
         assert "nlp-word-embeddings" in document
         assert (
-            "Baseline plus planned-unit subtotal: **560.92–600.92 manifested-baseline hours** "
-            "and **566.92–606.92 scheduled-baseline hours**."
+            "Baseline plus planned-unit subtotal: **587.92–627.92 manifested-baseline hours** "
+            "and **594.42–634.42 scheduled-baseline hours**."
         ) in document
 
 
