@@ -41,13 +41,12 @@ B2-023 owns exactly three Book 2 concepts, matching its knowledge points:
 ### Direct prerequisites
 
 Unit prerequisites (`prereq_units`, in this order):
-`book1:F1-scientific-python`, `book1:F4-multivar-calculus`, `book1:F5-probability`, `book1:C1-ml-fundamentals`, `book1:C2-linear-models`, `book1:C5-neural-networks`, `book1:C6-pytorch`, `book1:C11-neural-training`, `B2-019-attention-transformers`, `B2-020-language-transformers`, `B2-021-cross-modal-transformers-vision`, `B2-022-probabilistic-latent-models`.
+`book1:F1-scientific-python`, `book1:F3-matrices`, `book1:F4-multivar-calculus`, `book1:F5-probability`, `book1:C1-ml-fundamentals`, `book1:C2-linear-models`, `book1:C5-neural-networks`, `book1:C6-pytorch`, `book1:C11-neural-training`, `B2-019-attention-transformers`, `B2-020-language-transformers`, `B2-021-cross-modal-transformers-vision`, `B2-022-probabilistic-latent-models`.
 
 The live syllabus entry, manifest, and notebook metadata use this exact ordered `concept_prerequisites` list:
 
 ```text
 query-key-value-attention
-multi-head-attention
 learned-token-embedding
 unet
 multivariate-gaussian
@@ -58,9 +57,13 @@ variational-autoencoder
 book1:numpy-arrays
 book1:broadcasting
 book1:random-seeding
+book1:matrix-multiplication
 book1:gradient
 book1:expectation
 book1:variance
+book1:independence
+book1:variance-of-sums
+book1:covariance
 book1:gaussian-distribution
 book1:sampling-simulation
 book1:train-test-split
@@ -76,16 +79,21 @@ book1:torch-optimizers
 book1:autograd-training
 ```
 
-No notebook or practice may carry a concept tag outside this list or the three owned concepts.
+No notebook or practice may carry a concept tag outside this list or the three owned concepts; in particular `book1:tensor-shape-tracing` (C7) is forbidden, and "shape ledger" is prose only.
+Lessons must actually reference every listed concept (for example, `unet` appears as the denoiser in the Session 5 component map), so `concepts_used` stays honest.
+
+**Book 2 import allowlist.** `book2/syllabus.md` has an `imports:` block (`units`, `concepts`) that `tools/checks/prereq.py` enforces. Task 3 adds to it every Book 1 unit and concept above that is not already imported after Plan 027 merges, and lists the exact additions in the post-execution report.
 Visible notebook headers keep the Book 2 convention (`Qualified prerequisites`, `Remediation links actually used`).
 
 ### Taught in this unit (not in the baseline, Book 1, or earlier Book 2 units)
 
-- **Binary cross-entropy with logits (Session 1).** Taught as the two-class special case of `book1:cross-entropy-loss`, with the sigmoid written out and `torch.nn.functional.binary_cross_entropy_with_logits` as the stable API.
-- **Jensen–Shannon divergence (Session 1).** Defined from B2-022's KL divergence through the mixture `M = (P+Q)/2`. Nonnegativity, with equality iff `P = Q`, follows from B2-022's `KL ≥ 0`.
+- **Sigmoid and binary cross-entropy with logits (Session 1).** Book 1 never teaches the sigmoid, so it is defined here, and BCE is taught as the two-class special case of `book1:cross-entropy-loss`, with `torch.nn.functional.binary_cross_entropy_with_logits` as the stable API.
+- **Continuous-density KL and Jensen–Shannon divergence (Session 1).** First the integral form `KL(p‖q) = ∫ p log(p/q)` is stated, with `KL ≥ 0` carrying over from B2-022's `log x ≤ x − 1` argument. JS is then defined from it through the mixture `M = (P+Q)/2`. Nonnegativity, with equality iff `P = Q`, follows from B2-022's `KL ≥ 0`.
 - **Pointwise optimization of an integral objective (Session 1).** For the optimal discriminator: maximizing `a·log y + b·log(1−y)` over `y ∈ (0,1)` for each point separately, using single-variable calculus.
-- **Sum of independent Gaussians (Session 3).** `N(0, s²) + N(0, r²)` independent is `N(0, s² + r²)`. It is stated with a variance check from `book1:variance`, and used to collapse the forward process.
-- **Gaussian posterior of the forward process (Session 4).** The formula for `q(x_{t−1} | x_t, x_0)`, its mean `μ̃_t` and variance `β̃_t`, is stated, not derived. The unit derives only the consequence: KL between two equal-variance Gaussians is a scaled squared mean difference, which becomes the ε-prediction objective (from B2-022's Gaussian KL).
+- **Sum of independent Gaussians (Session 3).** `N(0, s²) + N(0, r²)` independent is `N(0, s² + r²)`. Gaussianity is stated; the variance follows from `book1:independence` and `book1:variance-of-sums`. It is used to collapse the forward process.
+- **Gaussian posterior of the forward process (Session 4).** The formula for `q(x_{t−1} | x_t, x_0)`, its mean `μ̃_t` and variance `β̃_t`, is stated, not derived. The unit derives only the consequence for `t ≥ 2`: KL between two equal-variance Gaussians is a scaled squared mean difference, which becomes the ε-prediction objective (from B2-022's Gaussian KL).
+At `t = 1` the posterior variance `β̃_1 = 0`, so that KL argument does not apply. The endpoint is the decoder term `−log p(x_0 | x_1)`, and the lesson states that the simplified objective treats it with the same ε-MSE.
+- **Sampling variance (Session 4).** The reverse step uses `σ_t² = β_t` (the choice pinned for p11 and graded in p23). `β̃_t` is mentioned as the other standard choice.
 - **Classifier-free guidance (Session 5).** `ε̂ = ε_uncond + w·(ε_cond − ε_uncond)` with conditioning dropout during training.
 - **Cross-attention conditioning (Session 5).** Image/latent tokens are queries; text tokens are keys and values. This is B2-019's Q/K/V with B2-021's modal-ownership rule.
 
@@ -121,22 +129,23 @@ Every solution ends with `### Answer check`.
 | p08 | B | constrained-coding | core | 50 | implement `mode_coverage(samples, centers, radius)` returning per-component counts and the number of covered modes |
 | p09 | B | constrained-coding | intro | 50 | implement `make_schedule(T, beta_1, beta_T)` (linear) and `q_sample(x0, t, eps, alpha_bar)` with exact probes |
 | p10 | B | constrained-coding | core | 50 | implement `ddpm_loss(model, x0, t, eps, alpha_bar)` for ε-prediction with explicit mean reduction |
-| p11 | B | constrained-coding | core | 50 | implement `p_sample(model, x_t, t, z, schedule)` and `sample_loop(model, x_T, noises, schedule)` with fixed noise and no noise at the final step |
+| p11 | B | constrained-coding | core | 50 | implement `p_sample(model, x_t, t, z, schedule)` with `σ_t² = β_t`, and `sample_loop(model, x_T, noises, schedule)` with fixed noise and no noise at the final step |
 | p12 | B | constrained-coding | advanced | 50 | implement `cfg_combine(eps_uncond, eps_cond, w)` and a cross-attention conditioning block with an exact Q/K/V shape ledger |
 | p13 | B | proof | core | 45 | derive the optimal discriminator for fixed `G` |
-| p14 | B | proof | advanced | 45 | show that at `D*` the generator objective equals `−log 4 + 2·JS(p_data‖p_g)`, and that its minimum is reached iff `p_g = p_data` |
+| p14 | B | proof | advanced | 45 | show that the minimax value at the optimal discriminator, `C(G) = max_D V(D, G)`, equals `−log 4 + 2·JS(p_data‖p_g)`, and that its minimum is reached iff `p_g = p_data`; note why the non-saturating loss is not this quantity |
 | p15 | B | proof | core | 45 | derive `q(x_t | x_0) = N(√ᾱ_t·x_0, (1−ᾱ_t)I)` by induction, using the sum-of-Gaussians rule |
-| p16 | B | proof | advanced | 45 | show that the KL between two Gaussians with equal variance `σ²I` is `‖μ₁−μ₂‖²/(2σ²)`, then show how the stated posterior-mean parameterization turns it into a weighted ε-prediction squared error |
-| p17 | C | integrative | core | 65 | train a tiny MLP GAN on a 2-D mixture; certify the loss traces and that at least a stated number of modes are covered |
+| p16 | B | proof | advanced | 45 | show that the KL between two Gaussians with equal variance `σ²I` is `‖μ₁−μ₂‖²/(2σ²)`, then show for `t ≥ 2` how the stated posterior-mean parameterization turns it into a weighted ε-prediction squared error, and explain why `t = 1` is excluded |
+| p17 | C | integrative | core | 65 | train a tiny MLP GAN on a 2-D mixture; certify that the last-50-step mean discriminator loss lies in a stated band around `2·log 2` and the generator loss stays finite below a stated bound (both set from the frozen-seed run with margin), and that at least a stated number of modes are covered |
 | p18 | C | integrative | advanced | 65 | train a tiny ε-prediction MLP DDPM (`T=50`) on a 2-D mixture; certify the training-loss decrease and the held-out denoising loss |
-| p19 | C | integrative | advanced | 65 | sample from the trained DDPM with fixed noise; certify sample mean/covariance against held-out data and mode coverage |
-| p20 | C | integrative | advanced | 65 | train a CPU-scale class-conditional latent diffusion model (frozen tiny autoencoder latent, label-token cross-attention, conditioning dropout); certify that guidance `w>1` raises the conditional-class hit rate over `w=0` |
+| p19 | C | integrative | core | 65 | sample from the trained DDPM with fixed noise; certify sample mean/covariance against held-out data and mode coverage |
+| p20 | C | integrative | advanced | 65 | train a CPU-scale class-conditional latent diffusion model (frozen tiny autoencoder latent, label-token cross-attention, conditioning dropout); certify that the conditional-class hit rate at `w=3` exceeds both `w=1` and `w=0`; a sample's class is its nearest known class center in data space after decoding (p08's rule); thresholds set from the frozen-seed run |
 | p21 | C | scenario | core | 55 | choose among a GAN, a VAE, and diffusion under stated sample-quality, likelihood, speed, and coverage constraints |
 | p22 | C | scenario | core | 55 | diagnose mode collapse versus discriminator overpowering from literal loss and coverage traces, and choose a remedy |
 | p23 | C | challenge | advanced | 55 | repair a DDPM implementation with `α`/`ᾱ` confusion, a wrong sampling `σ_t`, and an off-by-one timestep index |
 | p24 | C | challenge | advanced | 55 | audit a latent conditional-diffusion pipeline for a sign-flipped guidance term, a missing latent scaling factor, and train/held-out leakage in its conditioning set |
 
 The ledger has 24 practices: 5 MC, 7 constrained coding, 4 proof, 4 integrative, 2 scenario, and 2 challenge (1,110 practice minutes).
+The difficulty spread is 5 intro / 12 core / 7 advanced.
 Every owned concept has at least three direct practices:
 
 | Concept | Direct practices |
@@ -199,7 +208,18 @@ Do not alter the B2-024 rows.
 - [ ] Every coding and training statement pins its function names:
   - p06 `discriminator_loss`, `generator_loss`; p07 `gan_step`; p08 `mode_coverage`; p09 `make_schedule`, `q_sample`; p10 `ddpm_loss`; p11 `p_sample`, `sample_loop`; p12 `cfg_combine`.
   - p17 `train_gan(G, D, opt_g, opt_d, batch)`; p18 `train_ddpm(model, batch, optimizer)`; p19 reuses p18's training protocol in-notebook; p20 `train_latent_diffusion(model, batch, optimizer)`.
-  - Every training statement (p17–p20) requires `train_rows()` / `heldout_rows()` drawn from the generator's split IDs, and passes training rows unchanged to the model's `forward` (noise is supplied as an explicit seeded argument).
+  - Every training statement (p17–p20) requires `train_rows()` / `heldout_rows()` drawn from the generator's split IDs. Clean data rows must pass unchanged through one named seam before any noising or encoding:
+    - GANs: the discriminator's `forward` (real rows);
+    - DDPMs: the `x0` argument of `q_sample`;
+    - p20: the frozen encoder's `encode`.
+    Noise is always an explicit seeded argument.
+  - CPU budget, pinned in the statements:
+    - 2-D mixtures of 4 known components, 256 train / 64 held-out rows;
+    - GAN: generator `2→32→32→2`, discriminator `2→32→32→1`, 600 alternating steps;
+    - DDPM: an MLP on `(x, t/T)`, `3→64→64→2`, `T=50`, 1,500 full-batch steps;
+    - p19 reruns p18's protocol in-notebook;
+    - p20: 1,500 steps in the 2-D latent.
+    Every solution must stay under the 20 s limit, measured in Task 3.
 - [ ] The orchestrator checks the bundle against an exact allowlist:
   - regular files only;
   - unexecuted student code cells;
@@ -221,6 +241,8 @@ Do not alter the B2-024 rows.
   - copy the unit tree, including `manifest.yaml`;
   - append the schedule;
   - promote the three coverage rows per the table;
+  - extend the Book 2 `imports:` allowlist as described above;
+  - leave the coverage-map row metadata (`depends_on`, including GAN's `book1:convolutional-neural-network-basics`) unchanged, since it records roadmap dependencies rather than this unit's tags;
   - add B2-023 to the double-length roster in `docs/unit-standards.md`;
   - classify new path-bearing tests and fixtures in `tests/fixtures/plan019-path-inventory.yaml` and update its guard SHA;
   - add a B2-023 glob to the 20-second solution-timeout condition in `scripts/ci-local.sh`;
@@ -232,11 +254,16 @@ Do not alter the B2-024 rows.
 
 - [ ] Write `tests/test_generative_model_checks.py` so that, for every pinned function, the untouched solution passes and a named plausible wrong implementation fails its answer check:
   - `generator_loss`: the saturating `log(1−D)` form;
-  - `gan_step`: a missing `detach` that lets the D-step update G;
+  - `gan_step`: a missing `detach` in the D-step. Detected at the gradient boundary: `gan_step` zeroes gradients with `set_to_none=True` before each sub-step, and the check asserts every generator parameter's `.grad` is `None` right after the D-step backward;
   - `q_sample`: `α_t` used where `ᾱ_t` belongs;
   - `p_sample`: noise added at the final step;
-  - `cfg_combine`: the guidance sign flipped.
-  - All four training functions (p17–p20) also get a no-op optimizer-step mutant and a held-out-row mutant. Leakage is detected by wrapping the model's `forward` during training and hashing every input row against the held-out hash set built from `HELDOUT_IDS` and the per-row SHA-256 map.
+  - `cfg_combine`: the guidance sign flipped;
+  - `discriminator_loss`: real and fake labels swapped;
+  - `mode_coverage`: `<` versus `<=` at the radius;
+  - `make_schedule`: an off-by-one `linspace` endpoint;
+  - `ddpm_loss`: an `x0` target instead of `ε`;
+  - `sample_loop`: the timesteps visited in ascending order.
+  - All four training functions (p17–p20) also get a no-op optimizer-step mutant and a held-out-row mutant. Leakage is detected by wrapping the named clean-row seam (discriminator `forward`, `q_sample`'s `x0`, or the frozen `encode`) during training and hashing every clean row against the held-out hash set built from `HELDOUT_IDS` and the per-row SHA-256 map.
 - [ ] Implement only named-function substitutions in copied solution notebooks. This is a correctness check, not adversarial hardening; anti-cheat stays out of scope.
 - [ ] Add the suite to `scripts/ci-local.sh` step 7, next to the existing focused suites, and commit.
 
@@ -265,7 +292,28 @@ Do not alter the B2-024 rows.
 
 ## Plan Review
 
-Pending.
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
+
+### Review 1 — self (2026-10-09)
+- **Verdict**: Approve with suggestions. I applied Plan 027's review lessons up front: per-row modalities, in-unit teaching of non-baseline maths, blind solving for all reviewers, and integrity checks on every training practice.
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: the equal-variance KL argument fails at `t = 1` (`β̃_1 = 0`). → Response: the derivation is limited to `t ≥ 2`; the endpoint decoder term is stated; p16 explains the exclusion.
+2. `[FIXED]` Must Fix: hashing a denoiser's `forward` input cannot match raw rows. → Response: leakage is observed at named clean-row seams (D `forward`, `q_sample` `x0`, frozen `encode`).
+3. `[FIXED]` Must Fix: a missing `detach` is invisible to a "G unchanged" probe with separate optimizers. → Response: G's `.grad` must be `None` right after the D-step backward.
+4. `[FIXED]` Should Fix: name the minimax value in p14; add `independence` and `covariance`. → Response: p14 names `C(G) = max_D V`; concepts added.
+5. `[FIXED]` Should Fix: pin model and data sizes, step counts, and p20's frozen autoencoder. → Response: the CPU budget is pinned; p20 uses a literal orthonormal encoder/decoder from the generator.
+
+### Review 1 — Fable (2026-10-09)
+- **Verdict**: Approve with nits (conditional on Must Fix 1).
+1. `[FIXED]` Must Fix: the Book 2 `imports:` allowlist must be extended. → Response: stated in scope and Task 3. Plan 027's implementer was alerted about the same dependency.
+2. `[FIXED]` Should Fix: add F3/`matrix-multiplication`, `covariance`, and `variance-of-sums`/`independence`; sigmoid is taught in-unit; forbid the `tensor-shape-tracing` tag. → Response: all applied.
+3. `[FIXED]` Should Fix: continuous-density KL must be stated before JS. → Response: Session 1 states it.
+4. `[FIXED]` Should Fix: pin the sampling variance. → Response: `σ_t² = β_t` in Session 4, p11, and p23.
+5. `[FIXED]` Should Fix: p20's autoencoder source and class rule. → Response: literal encoder/decoder, nearest-center rule, thresholds from the frozen seed.
+6. `[FIXED]` Should Fix: GAN loss contract. → Response: a D-loss band around `2·log 2` plus a finite G-loss bound.
+7. `[FIXED]` Nit: mutants for all ten pinned functions. 8. `[FIXED]` Nit: p19 downgraded to core (5/12/7). 9. `[FIXED]` Nit: CFG compares `w=3` with both `w=1` and `w=0`. 10. `[FIXED]` Nit: the GAN row's `depends_on` is left unchanged, as stated. 11. `[FIXED]` Nit: `multi-head-attention` dropped; lessons must reference every listed concept.
 
 ## Content Review
 
