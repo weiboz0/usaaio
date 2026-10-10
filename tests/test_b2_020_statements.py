@@ -235,14 +235,21 @@ def test_task4_policy_and_solution_set_fail_closed(tmp_path: Path) -> None:
     )
 
 
-def test_task4_ci_executes_b2_020_solutions_with_twenty_second_timeout() -> None:
+def test_ci_bounds_b2_020_and_b2_021_and_preserves_other_solution_execution() -> None:
     script = (ROOT / "scripts/ci-local.sh").read_text(encoding="utf-8")
     assert (
         "if [[ $relative == units/B2-020-language-transformers/practice/"
-        "p??_solution.ipynb ]]; then"
+        "p??_solution.ipynb || $relative == units/B2-021-cross-modal-transformers-vision/"
+        "practice/p??_solution.ipynb ]]; then"
     ) in script
     assert (
         'timeout 20s uv run --project .. jupyter execute "$relative"'
+    ) in script
+    assert (
+        'else\n'
+        '      (cd "$book_root" && USAAIO_BOOK_ROOT="$book_root" '
+        'uv run --project .. jupyter execute "$relative")\n'
+        '    fi'
     ) in script
 
 
@@ -462,8 +469,8 @@ def test_syllabus_and_standards_publish_b2_020_as_double_length() -> None:
     assert set(unit.concept_prerequisites) == IMPORTED
     assert unit.length == "double"
     standards = (ROOT / "docs/unit-standards.md").read_text(encoding="utf-8")
-    assert "F5, F6, C7, C11, C12, B2-019, and B2-020" in standards
-    assert standards.count("B2-019") >= 2 and standards.count("B2-020") >= 2
+    assert "F5, F6, C7, C11, C12, B2-019, B2-020, and B2-021" in standards
+    assert all(standards.count(unit) >= 2 for unit in ("B2-019", "B2-020", "B2-021"))
 
 
 def test_generator_exports_protocol_and_tracked_state_contract() -> None:
@@ -620,10 +627,10 @@ def test_coverage_promotes_exact_five_rows_without_book1_embedding_evidence() ->
 
 def test_live_schedule_appends_exact_second_six_week_ledger() -> None:
     schedule = yaml.safe_load((BOOK2_ROOT / "curriculum/course-schedule.yaml").read_text())
-    assert schedule["total_book_weeks"] == 12
-    assert schedule["total_minutes"] == 3320
-    assert schedule["final_assessment"]["after_book_week"] == 12
-    weeks = schedule["weeks"][6:]
+    assert schedule["total_book_weeks"] == 18
+    assert schedule["total_minutes"] == 4970
+    assert schedule["final_assessment"]["after_book_week"] == 18
+    weeks = schedule["weeks"][6:12]
     assert [row["book_week"] for row in weeks] == list(range(7, 13))
     assert [row["global_week"] for row in weeks] == list(range(47, 53))
     assert [sum(item["minutes"] for item in row["allocations"]) for row in weeks] == [255, 275, 420, 270, 380, 60]

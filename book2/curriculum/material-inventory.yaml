@@ -1,15 +1,15 @@
 inventory_version: 1
 counts:
-  units: 2
-  concepts: 19
-  unit_practices: 48
-  lesson_sessions: 12
-  unit_nonpractice_notebooks: 16
-  unit_notebooks: 112
+  units: 3
+  concepts: 23
+  unit_practices: 72
+  lesson_sessions: 18
+  unit_nonpractice_notebooks: 24
+  unit_notebooks: 168
   mocktests: 0
   mock_notebooks: 0
-  manifested_minutes: 3260
-  scheduled_minutes: 3320
+  manifested_minutes: 4880
+  scheduled_minutes: 4970
 input_paths:
 - docs/course-structure.md
 - syllabus.md
@@ -127,20 +127,80 @@ input_paths:
 - units/B2-020-language-transformers/practice/p24.ipynb
 - units/B2-020-language-transformers/practice/p24_solution.ipynb
 - units/B2-020-language-transformers/review.ipynb
+- units/B2-021-cross-modal-transformers-vision/lesson.ipynb
+- units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb
+- units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb
+- units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb
+- units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb
+- units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb
+- units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb
+- units/B2-021-cross-modal-transformers-vision/manifest.yaml
+- units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p01_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p02.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p02_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p03.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p03_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p04.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p04_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p05.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p05_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p06.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p06_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p07.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p07_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p08.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p08_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p09.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p09_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p10.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p10_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p11.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p11_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p12.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p12_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p13.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p13_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p14.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p14_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p15.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p15_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p16.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p16_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p17.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p17_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p18.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p18_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p19.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p19_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p20.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p20_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p21.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p21_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p22.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p22_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p23.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p23_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p24.ipynb
+- units/B2-021-cross-modal-transformers-vision/practice/p24_solution.ipynb
+- units/B2-021-cross-modal-transformers-vision/review.ipynb
 documents:
 - path: docs/course-structure.md
   kind: document
-  semantic_sha256: 2dbea89ba82c001e206ae2228718b9b4947af928951cbf7e23adee64d1021945
+  semantic_sha256: af167c4ad6fca1ea5af15840e3352c2b9993094bb413e406567b121951f6b9a9
 manifests:
 - path: syllabus.md
   kind: canonical-yaml
-  semantic_sha256: 4edd5bf8d69267ecfd09298855b260d5681a62c2e50ad601bd32c7245b3ecb8d
+  semantic_sha256: 555a0dfee006c926ea0b0384d802cd323b74a92541158081208d57e83ad9eefc
 - path: units/B2-019-attention-transformers/manifest.yaml
   kind: yaml
   semantic_sha256: e6dd52f9851fe91c1f86e8cfc45f0d1c25c7fa78f0524abd9d34322c0b19dd29
 - path: units/B2-020-language-transformers/manifest.yaml
   kind: yaml
   semantic_sha256: bfa3ac777af9115966af3008168fa11b392334f7eb02837bf66bd6e092fe7327
+- path: units/B2-021-cross-modal-transformers-vision/manifest.yaml
+  kind: yaml
+  semantic_sha256: da19e48222921ef0e20fce7f6057fccc8104bee68bd42ec7c378a9f15df4087a
 notebooks:
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
@@ -5161,5 +5221,2206 @@ notebooks:
   - nlp-fine-tuning-protocol
   - nlp-pretraining-objectives
   - transformer-nlp-task-design
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/lesson.ipynb
+  kind: notebook
+  semantic_sha256: 7e8a1f50012611b5d1044dd50eb42ada3a680d2b08402d47ed517c6db577ec0f
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lesson.ipynb :: B2-021 — Cross-modal Transformers and Advanced Vision
+      > Reproducibility contract :: cell 1'
+    heading_path:
+    - B2-021 — Cross-modal Transformers and Advanced Vision
+    - Reproducibility contract
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  - object-detection
+  - unet
+  - vision-transformers
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb
+  kind: notebook
+  semantic_sha256: 96ba60f85fd94ca0eea97ceb7cbec957e7b7623e76fb47642e54cf248d74d6ce
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb :: B2-021 — Book 1, B2-019, and B2-020
+      Bridge Diagnostic :: cell 1'
+    heading_path:
+    - B2-021 — Book 1, B2-019, and B2-020 Bridge Diagnostic
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb :: B2-021 — Book 1, B2-019, and B2-020
+      Bridge Diagnostic > 1. Arrays, axes, and matrix multiplication :: cell 1'
+    heading_path:
+    - B2-021 — Book 1, B2-019, and B2-020 Bridge Diagnostic
+    - 1. Arrays, axes, and matrix multiplication
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb :: B2-021 — Book 1, B2-019, and B2-020
+      Bridge Diagnostic > 2. PyTorch modules and shape tracing :: cell 1'
+    heading_path:
+    - B2-021 — Book 1, B2-019, and B2-020 Bridge Diagnostic
+    - 2. PyTorch modules and shape tracing
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb :: B2-021 — Book 1, B2-019, and B2-020
+      Bridge Diagnostic > 3. Training order and split discipline :: cell 1'
+    heading_path:
+    - B2-021 — Book 1, B2-019, and B2-020 Bridge Diagnostic
+    - 3. Training order and split discipline
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb :: B2-021 — Book 1, B2-019, and B2-020
+      Bridge Diagnostic > 4. CNN locality and feature maps :: cell 1'
+    heading_path:
+    - B2-021 — Book 1, B2-019, and B2-020 Bridge Diagnostic
+    - 4. CNN locality and feature maps
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb :: B2-021 — Book 1, B2-019, and B2-020
+      Bridge Diagnostic > 5. Attention roles from B2-019 :: cell 1'
+    heading_path:
+    - B2-021 — Book 1, B2-019, and B2-020 Bridge Diagnostic
+    - 5. Attention roles from B2-019
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb :: B2-021 — Book 1, B2-019, and B2-020
+      Bridge Diagnostic > 6. Transformer blocks from B2-020 :: cell 1'
+    heading_path:
+    - B2-021 — Book 1, B2-019, and B2-020 Bridge Diagnostic
+    - 6. Transformer blocks from B2-020
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/00-book1-bridge.ipynb :: B2-021 — Book 1, B2-019, and B2-020
+      Bridge Diagnostic > 7. Readiness and explicit remediation :: cell 1'
+    heading_path:
+    - B2-021 — Book 1, B2-019, and B2-020 Bridge Diagnostic
+    - 7. Readiness and explicit remediation
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  - object-detection
+  - unet
+  - vision-transformers
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb
+  kind: notebook
+  semantic_sha256: 022878fbcc82c12b29e26d93b1a999b9da1c5cbd50581223c1b8544c5e262ece
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 1. Images become non-overlapping patch tokens :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - 1. Images become non-overlapping patch tokens
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 2. Linear patch projection :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - 2. Linear patch projection
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 3. Class token and learned positions :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - 3. Class token and learned positions
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 4. Worked patchification-to-logit shape ledger :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - 4. Worked patchification-to-logit shape ledger
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 5. ViT versus CNN :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - 5. ViT versus CNN
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 6. Fixed-seed tiny classification train/eval trace :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - 6. Fixed-seed tiny classification train/eval trace
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 7. Worked laboratory: trace values, not only shapes :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - '7. Worked laboratory: trace values, not only shapes'
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 7. Worked laboratory: trace values, not only shapes :: cell 2'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - '7. Worked laboratory: trace values, not only shapes'
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 7. Worked laboratory: trace values, not only shapes :: cell 3'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - '7. Worked laboratory: trace values, not only shapes'
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
+      — Session 1: Image Patches and Vision Transformers > 9. Forward-only deeper topic: hierarchical vision Transformers
+      :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 1: Image Patches and Vision Transformers'
+    - '9. Forward-only deeper topic: hierarchical vision Transformers'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  - object-detection
+  - unet
+  - vision-transformers
+  declared_problem_ids: []
+  api_tokens:
+  - encoded.mean
+  - encoded.var
+  - image.reshape
+  - nn.LayerNorm
+  - nn.MultiheadAttention
+  - torch.arange
+  - torch.equal
+  - torch.manual_seed
+  - torch.tensor
+- path: units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb
+  kind: notebook
+  semantic_sha256: b26f8bcf93411b5efbec7f560786b2160ce6de926efed4446ed586c28c10dd00
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 1. Box coordinates and valid geometry :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - 1. Box coordinates and valid geometry
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 2. Intersection, union, and IoU derivation :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - 2. Intersection, union, and IoU derivation
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 3. A 4x4 grid target :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - 3. A 4x4 grid target
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 4. Detection heads and three losses :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - 4. Detection heads and three losses
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 5. Thresholding and class-aware NMS :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - 5. Thresholding and class-aware NMS
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 6. Fixed-seed tiny detection train/eval trace :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - 6. Fixed-seed tiny detection train/eval trace
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 7. Worked laboratory: one object through all three heads :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - '7. Worked laboratory: one object through all three heads'
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 7. Worked laboratory: one object through all three heads :: cell 2'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - '7. Worked laboratory: one object through all three heads'
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 7. Worked laboratory: one object through all three heads :: cell 3'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - '7. Worked laboratory: one object through all three heads'
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
+      Session 2: Detection Grids and Set Prediction > 9. Forward-only deeper topic: set prediction :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 2: Detection Grids and Set Prediction'
+    - '9. Forward-only deeper topic: set prediction'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  - object-detection
+  - unet
+  - vision-transformers
+  declared_problem_ids: []
+  api_tokens:
+  - kept.append
+  - nms_kept.tolist
+  - nms_threshold_order.tolist
+  - torch.allclose
+  - torch.floor
+  - torch.maximum
+  - torch.minimum
+  - torch.tensor
+  - torch.where
+- path: units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb
+  kind: notebook
+  semantic_sha256: 023400c72faea5a19a9c498b8b198ddc4fbff57e71be5f7e97a243fd4febab5a
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 1. Dense prediction and mask contract :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - 1. Dense prediction and mask contract
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 2. Encoder resolution ledger :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - 2. Encoder resolution ledger
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 3. Decoder, skip concatenation, and output alignment :: cell
+      1'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - 3. Decoder, skip concatenation, and output alignment
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 4. Worked skip-concat and Dice calculation :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - 4. Worked skip-concat and Dice calculation
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 5. Masked pixel cross-entropy :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - 5. Masked pixel cross-entropy
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 6. Fixed-seed tiny segmentation train/eval trace :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - 6. Fixed-seed tiny segmentation train/eval trace
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 7. Worked laboratory: prove every activation and alignment ::
+      cell 1'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - '7. Worked laboratory: prove every activation and alignment'
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 7. Worked laboratory: prove every activation and alignment ::
+      cell 2'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - '7. Worked laboratory: prove every activation and alignment'
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 7. Worked laboratory: prove every activation and alignment ::
+      cell 3'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - '7. Worked laboratory: prove every activation and alignment'
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
+      — Session 3: U-Net Segmentation and Skip Connections > 9. Forward-only deeper topic: multiscale segmentation :: cell
+      1'
+    heading_path:
+    - 'B2-021 — Session 3: U-Net Segmentation and Skip Connections'
+    - '9. Forward-only deeper topic: multiscale segmentation'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  - object-detection
+  - unet
+  - vision-transformers
+  declared_problem_ids: []
+  api_tokens:
+  - F.max_pool2d
+  - F.relu
+  - nn.Conv2d
+  - nn.ConvTranspose2d
+  - torch.cat
+  - torch.manual_seed
+  - torch.randn
+- path: units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb
+  kind: notebook
+  semantic_sha256: 73284d18d4bade4f00afa386d136c1740a8ef604ffc9b37c46206c91d922a8e7
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 1. Graphs, nodes, edges, and adjacency :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - 1. Graphs, nodes, edges, and adjacency
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 2. Neighbor aggregation with explicit axes :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - 2. Neighbor aggregation with explicit axes
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 3. Permutation equivariance before positions :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - 3. Permutation equivariance before positions
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 4. Graph tokens and a classifier :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - 4. Graph tokens and a classifier
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 5. Cross-modal attention ownership :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - 5. Cross-modal attention ownership
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 6. Fixed-seed tiny graph-token train/eval trace :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - 6. Fixed-seed tiny graph-token train/eval trace
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 7. Worked laboratory: directed messages and modal ownership :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - '7. Worked laboratory: directed messages and modal ownership'
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 7. Worked laboratory: directed messages and modal ownership :: cell 2'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - '7. Worked laboratory: directed messages and modal ownership'
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 7. Worked laboratory: directed messages and modal ownership :: cell 3'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - '7. Worked laboratory: directed messages and modal ownership'
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
+      4: Graphs and Cross-modal Attention > 9. Forward-only deeper topic: sparse and geometric graph Transformers :: cell
+      1'
+    heading_path:
+    - 'B2-021 — Session 4: Graphs and Cross-modal Attention'
+    - '9. Forward-only deeper topic: sparse and geometric graph Transformers'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  - object-detection
+  - unet
+  - vision-transformers
+  declared_problem_ids: []
+  api_tokens:
+  - a.float
+  - a.sum
+  - a.transpose
+  - graph_kv.transpose
+  - scores.softmax
+  - torch.allclose
+  - torch.bmm
+  - torch.randn
+  - torch.tensor
+- path: units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb
+  kind: notebook
+  semantic_sha256: eb8902caa2bec0644a0e4a2e46ffdfd5bae958bd30760cd2e27725fbe3d7a802
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 1. Choose the prediction object before the architecture :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - 1. Choose the prediction object before the architecture
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 2. Match heads, losses, and metrics :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - 2. Match heads, losses, and metrics
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 3. Compare CNN and ViT constraints :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - 3. Compare CNN and ViT constraints
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 4. Split and feature-identity audit :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - 4. Split and feature-identity audit
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 5. End-to-end architecture review :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - 5. End-to-end architecture review
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 6. Failure analysis across four systems :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - 6. Failure analysis across four systems
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 7. Worked laboratory: end-to-end design and leakage audit :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - '7. Worked laboratory: end-to-end design and leakage audit'
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 7. Worked laboratory: end-to-end design and leakage audit :: cell 2'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - '7. Worked laboratory: end-to-end design and leakage audit'
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 7. Worked laboratory: end-to-end design and leakage audit :: cell 3'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - '7. Worked laboratory: end-to-end design and leakage audit'
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 8. Common pitfalls and Exam connections :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - 8. Common pitfalls and Exam connections
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
+      5: Vision-System Design and Audit > 9. Forward-only deeper topic: open-world multimodal systems :: cell 1'
+    heading_path:
+    - 'B2-021 — Session 5: Vision-System Design and Audit'
+    - '9. Forward-only deeper topic: open-world multimodal systems'
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  - object-detection
+  - unet
+  - vision-transformers
+  declared_problem_ids: []
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb
+  kind: notebook
+  semantic_sha256: 73f6be1f809526e5e3ed5b0a0b3b114ced143579e4ff3a58ecda49cd045e55d3
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb :: B2-021 — Practice p01 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p01
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb :: B2-021 — Practice p01 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p01
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p01
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p01_solution.ipynb
+  kind: notebook
+  semantic_sha256: 5c9a37afabc96742f4d79aa332c196749069f6bdddc579c937c018870a24e779
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p01_solution.ipynb :: Solution to p01 :: cell 1'
+    heading_path:
+    - Solution to p01
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p01_solution.ipynb :: Solution to p01 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p01
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p01_solution.ipynb :: Solution to p01 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p01
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p01
+  api_tokens:
+  - math.gcd
+- path: units/B2-021-cross-modal-transformers-vision/practice/p02.ipynb
+  kind: notebook
+  semantic_sha256: 3cbc2e098f1a099bdfbd9340b79d853e843bdd410d65b9576d4aa6061ae473fe
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p02.ipynb :: B2-021 — Practice p02 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p02
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p02.ipynb :: B2-021 — Practice p02 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p02
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p02
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p02_solution.ipynb
+  kind: notebook
+  semantic_sha256: dd70a027d5e2cce7602f7d542e3ec2793b8a13a12e6468ff92642e6f5322491d
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p02_solution.ipynb :: Solution to p02 :: cell 1'
+    heading_path:
+    - Solution to p02
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p02_solution.ipynb :: Solution to p02 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p02
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p02_solution.ipynb :: Solution to p02 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p02
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p02
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p03.ipynb
+  kind: notebook
+  semantic_sha256: 5e3b761384cd20150424f6f051b7eb4650a7b82003a1490222553b0b52002962
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p03.ipynb :: B2-021 — Practice p03 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p03
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p03.ipynb :: B2-021 — Practice p03 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p03
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p03
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p03_solution.ipynb
+  kind: notebook
+  semantic_sha256: c37899b85ecde91b5861a11c2370b0c4dcd5536cc0ad2e91d083988bb546ae00
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p03_solution.ipynb :: Solution to p03 :: cell 1'
+    heading_path:
+    - Solution to p03
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p03_solution.ipynb :: Solution to p03 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p03
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p03_solution.ipynb :: Solution to p03 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p03
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p03
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p04.ipynb
+  kind: notebook
+  semantic_sha256: 0efa17db1297b1f99bdb2718e81f687702ed3cd2ecc7406a0e8ca82036990205
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p04.ipynb :: B2-021 — Practice p04 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p04
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p04.ipynb :: B2-021 — Practice p04 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p04
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p04
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p04_solution.ipynb
+  kind: notebook
+  semantic_sha256: 0bd8f9333f1efb97cfcd3d2470fb076a5ea4b76902cf72953969f16e23d0d66c
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p04_solution.ipynb :: Solution to p04 :: cell 1'
+    heading_path:
+    - Solution to p04
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p04_solution.ipynb :: Solution to p04 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p04
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p04_solution.ipynb :: Solution to p04 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p04
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p04
+  api_tokens:
+  - fractions.Fraction
+- path: units/B2-021-cross-modal-transformers-vision/practice/p05.ipynb
+  kind: notebook
+  semantic_sha256: 8a4bff39735d7d9073a606828bcee51e354bdbb29fdbbe1fed2b119405386ed3
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p05.ipynb :: B2-021 — Practice p05 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p05
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p05.ipynb :: B2-021 — Practice p05 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p05
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p05
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p05_solution.ipynb
+  kind: notebook
+  semantic_sha256: a4c64922b5da5c1fb1ed91883c1b37b8484e890c4d715a9b0103d125fb65ea2b
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p05_solution.ipynb :: Solution to p05 :: cell 1'
+    heading_path:
+    - Solution to p05
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p05_solution.ipynb :: Solution to p05 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p05
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p05_solution.ipynb :: Solution to p05 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p05
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p05
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p06.ipynb
+  kind: notebook
+  semantic_sha256: 852e5104092ada8c0f322c7a3df5a4a72e70cd2bf597c19b9da13559e07867f2
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p06.ipynb :: B2-021 — Practice p06 > Supplied literals
+      and exact probes :: cell 1'
+    heading_path:
+    - B2-021 — Practice p06
+    - Supplied literals and exact probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p06.ipynb :: B2-021 — Practice p06 > Supplied literals
+      and exact probes :: cell 2'
+    heading_path:
+    - B2-021 — Practice p06
+    - Supplied literals and exact probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p06.ipynb :: B2-021 — Practice p06 > Supplied literals
+      and exact probes :: cell 3'
+    heading_path:
+    - B2-021 — Practice p06
+    - Supplied literals and exact probes
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p06.ipynb :: B2-021 — Practice p06 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p06
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p06
+  api_tokens:
+  - torch.tensor
+- path: units/B2-021-cross-modal-transformers-vision/practice/p06_solution.ipynb
+  kind: notebook
+  semantic_sha256: 549713f6b9511e1158bb6794d4941e396332eda1727e32a95e7b6abc0704c0d3
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p06_solution.ipynb :: Solution to p06 :: cell 1'
+    heading_path:
+    - Solution to p06
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p06_solution.ipynb :: Solution to p06 :: cell 2'
+    heading_path:
+    - Solution to p06
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p06_solution.ipynb :: Solution to p06 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p06
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p06_solution.ipynb :: Solution to p06 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p06
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p06
+  api_tokens:
+  - images.reshape
+  - ordered.reshape
+  - separated.permute
+  - torch.tensor
+  - torch.testing.assert_close
+  - torch.zeros
+- path: units/B2-021-cross-modal-transformers-vision/practice/p07.ipynb
+  kind: notebook
+  semantic_sha256: c85c1e04eca0d1e1a2d465c03c1151f0d3ae83323e032fe214aa8403a23fc200
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p07.ipynb :: B2-021 — Practice p07 > Supplied literals
+      and exact probes :: cell 1'
+    heading_path:
+    - B2-021 — Practice p07
+    - Supplied literals and exact probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p07.ipynb :: B2-021 — Practice p07 > Supplied literals
+      and exact probes :: cell 2'
+    heading_path:
+    - B2-021 — Practice p07
+    - Supplied literals and exact probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p07.ipynb :: B2-021 — Practice p07 > Supplied literals
+      and exact probes :: cell 3'
+    heading_path:
+    - B2-021 — Practice p07
+    - Supplied literals and exact probes
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p07.ipynb :: B2-021 — Practice p07 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p07
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p07
+  api_tokens:
+  - nn.Linear
+  - nn.Parameter
+  - positions.copy_
+  - projection.bias.copy_
+  - projection.weight.copy_
+  - torch.arange
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.tensor
+  - torch.zeros
+- path: units/B2-021-cross-modal-transformers-vision/practice/p07_solution.ipynb
+  kind: notebook
+  semantic_sha256: cd6e0f6bbedd70beb43af7b188c7dbab7ea0e42dddc7388aedbe3e0e96718fe7
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p07_solution.ipynb :: Solution to p07 :: cell 1'
+    heading_path:
+    - Solution to p07
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p07_solution.ipynb :: Solution to p07 :: cell 2'
+    heading_path:
+    - Solution to p07
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p07_solution.ipynb :: Solution to p07 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p07
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p07_solution.ipynb :: Solution to p07 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p07
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p07
+  api_tokens:
+  - cls_token.expand
+  - expanded_cls.stride
+  - nn.Linear
+  - nn.Parameter
+  - positions.copy_
+  - projection.bias.copy_
+  - projection.weight.copy_
+  - torch.arange
+  - torch.cat
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.tensor
+  - torch.testing.assert_close
+  - torch.zeros
+- path: units/B2-021-cross-modal-transformers-vision/practice/p08.ipynb
+  kind: notebook
+  semantic_sha256: dd010f4d3cd4dc599131891092f2ee977011882b64f61c02e66be8aaa18bd34d
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p08.ipynb :: B2-021 — Practice p08 > Supplied literals
+      and exact probes :: cell 1'
+    heading_path:
+    - B2-021 — Practice p08
+    - Supplied literals and exact probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p08.ipynb :: B2-021 — Practice p08 > Supplied literals
+      and exact probes :: cell 2'
+    heading_path:
+    - B2-021 — Practice p08
+    - Supplied literals and exact probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p08.ipynb :: B2-021 — Practice p08 > Supplied literals
+      and exact probes :: cell 3'
+    heading_path:
+    - B2-021 — Practice p08
+    - Supplied literals and exact probes
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p08.ipynb :: B2-021 — Practice p08 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p08
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p08
+  api_tokens:
+  - torch.tensor
+- path: units/B2-021-cross-modal-transformers-vision/practice/p08_solution.ipynb
+  kind: notebook
+  semantic_sha256: 8e2c4a46d10c775609cbc664ae8e30c89aaef3f95c6ec39337d5d709b602f2a0
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p08_solution.ipynb :: Solution to p08 :: cell 1'
+    heading_path:
+    - Solution to p08
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p08_solution.ipynb :: Solution to p08 :: cell 2'
+    heading_path:
+    - Solution to p08
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p08_solution.ipynb :: Solution to p08 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p08
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p08_solution.ipynb :: Solution to p08 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p08
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p08
+  api_tokens:
+  - math.floor
+  - torch.all
+  - torch.any
+  - torch.full
+  - torch.maximum
+  - torch.minimum
+  - torch.nonzero
+  - torch.tensor
+  - torch.testing.assert_close
+  - torch.zeros
+- path: units/B2-021-cross-modal-transformers-vision/practice/p09.ipynb
+  kind: notebook
+  semantic_sha256: 8404e02234e29c7f0a9eeadd2f0ffe4bd7ba874e9312f000fa318979376dd256
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p09.ipynb :: B2-021 — Practice p09 > Supplied literals
+      and exact probes :: cell 1'
+    heading_path:
+    - B2-021 — Practice p09
+    - Supplied literals and exact probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p09.ipynb :: B2-021 — Practice p09 > Supplied literals
+      and exact probes :: cell 2'
+    heading_path:
+    - B2-021 — Practice p09
+    - Supplied literals and exact probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p09.ipynb :: B2-021 — Practice p09 > Supplied literals
+      and exact probes :: cell 3'
+    heading_path:
+    - B2-021 — Practice p09
+    - Supplied literals and exact probes
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p09.ipynb :: B2-021 — Practice p09 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p09
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p09
+  api_tokens:
+  - torch.tensor
+- path: units/B2-021-cross-modal-transformers-vision/practice/p09_solution.ipynb
+  kind: notebook
+  semantic_sha256: df2bd7ed385f992eea6b61fcfbcd7b7d0fb6f67f3ee36348be47a358bc3ac5f7
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p09_solution.ipynb :: Solution to p09 :: cell 1'
+    heading_path:
+    - Solution to p09
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p09_solution.ipynb :: Solution to p09 :: cell 2'
+    heading_path:
+    - Solution to p09
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p09_solution.ipynb :: Solution to p09 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p09
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p09_solution.ipynb :: Solution to p09 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p09
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p09
+  api_tokens:
+  - kept.append
+  - kept.tolist
+  - pending.pop
+  - survivors.append
+  - torch.maximum
+  - torch.minimum
+  - torch.tensor
+- path: units/B2-021-cross-modal-transformers-vision/practice/p10.ipynb
+  kind: notebook
+  semantic_sha256: eb1a2a5e230142cc224bbcc5b91454b3b10f8a3fd4ccb530be678512eb9bf969
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p10.ipynb :: B2-021 — Practice p10 > Supplied literals
+      and exact probes :: cell 1'
+    heading_path:
+    - B2-021 — Practice p10
+    - Supplied literals and exact probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p10.ipynb :: B2-021 — Practice p10 > Supplied literals
+      and exact probes :: cell 2'
+    heading_path:
+    - B2-021 — Practice p10
+    - Supplied literals and exact probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p10.ipynb :: B2-021 — Practice p10 > Supplied literals
+      and exact probes :: cell 3'
+    heading_path:
+    - B2-021 — Practice p10
+    - Supplied literals and exact probes
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p10.ipynb :: B2-021 — Practice p10 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p10
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p10
+  api_tokens:
+  - module.bias.zero_
+  - module.weight.fill_
+  - nn.Conv2d
+  - nn.ConvTranspose2d
+  - torch.arange
+  - torch.no_grad
+- path: units/B2-021-cross-modal-transformers-vision/practice/p10_solution.ipynb
+  kind: notebook
+  semantic_sha256: 4e7ffb10129d9b590f201df07cb4090d6471348cd0099823d4d0145c567c14f2
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p10_solution.ipynb :: Solution to p10 :: cell 1'
+    heading_path:
+    - Solution to p10
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p10_solution.ipynb :: Solution to p10 :: cell 2'
+    heading_path:
+    - Solution to p10
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p10_solution.ipynb :: Solution to p10 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p10
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p10_solution.ipynb :: Solution to p10 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p10
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p10
+  api_tokens:
+  - module.bias.zero_
+  - module.weight.fill_
+  - nn.Conv2d
+  - nn.ConvTranspose2d
+  - torch.arange
+  - torch.cat
+  - torch.no_grad
+  - torch.testing.assert_close
+- path: units/B2-021-cross-modal-transformers-vision/practice/p11.ipynb
+  kind: notebook
+  semantic_sha256: 052a2fa31b1cd1cb6b82197706e193e82aca707dd2949692a72fd3b1431f3879
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p11.ipynb :: B2-021 — Practice p11 > Supplied literals
+      and exact probes :: cell 1'
+    heading_path:
+    - B2-021 — Practice p11
+    - Supplied literals and exact probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p11.ipynb :: B2-021 — Practice p11 > Supplied literals
+      and exact probes :: cell 2'
+    heading_path:
+    - B2-021 — Practice p11
+    - Supplied literals and exact probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p11.ipynb :: B2-021 — Practice p11 > Supplied literals
+      and exact probes :: cell 3'
+    heading_path:
+    - B2-021 — Practice p11
+    - Supplied literals and exact probes
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p11.ipynb :: B2-021 — Practice p11 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p11
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p11
+  api_tokens:
+  - torch.tensor
+- path: units/B2-021-cross-modal-transformers-vision/practice/p11_solution.ipynb
+  kind: notebook
+  semantic_sha256: 711a1b1bb28148255aa364a010a98ea93271c41f458b6f1488ce754f8298ed35
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p11_solution.ipynb :: Solution to p11 :: cell 1'
+    heading_path:
+    - Solution to p11
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p11_solution.ipynb :: Solution to p11 :: cell 2'
+    heading_path:
+    - Solution to p11
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p11_solution.ipynb :: Solution to p11 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p11
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p11_solution.ipynb :: Solution to p11 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p11
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p11
+  api_tokens:
+  - F.cross_entropy
+  - logits.argmax
+  - pred_fg.sum
+  - torch.tensor
+  - torch.testing.assert_close
+  - torch.zeros_like
+  - true_fg.sum
+  - valid.any
+- path: units/B2-021-cross-modal-transformers-vision/practice/p12.ipynb
+  kind: notebook
+  semantic_sha256: 86a8e25e5fda09546e95a5f34aaae62f98543c27271a16f7b1529e2c254ec721
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p12.ipynb :: B2-021 — Practice p12 > Supplied literals
+      and exact probes :: cell 1'
+    heading_path:
+    - B2-021 — Practice p12
+    - Supplied literals and exact probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p12.ipynb :: B2-021 — Practice p12 > Supplied literals
+      and exact probes :: cell 2'
+    heading_path:
+    - B2-021 — Practice p12
+    - Supplied literals and exact probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p12.ipynb :: B2-021 — Practice p12 > Supplied literals
+      and exact probes :: cell 3'
+    heading_path:
+    - B2-021 — Practice p12
+    - Supplied literals and exact probes
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p12.ipynb :: B2-021 — Practice p12 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p12
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  declared_problem_ids:
+  - B2-021-p12
+  api_tokens:
+  - torch.tensor
+- path: units/B2-021-cross-modal-transformers-vision/practice/p12_solution.ipynb
+  kind: notebook
+  semantic_sha256: 5fa8e1ed67ab4c49576492f8245c81b248dfaa42d8da894d6a6a19cc8caf8d21
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p12_solution.ipynb :: Solution to p12 :: cell 1'
+    heading_path:
+    - Solution to p12
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p12_solution.ipynb :: Solution to p12 :: cell 2'
+    heading_path:
+    - Solution to p12
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p12_solution.ipynb :: Solution to p12 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p12
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p12_solution.ipynb :: Solution to p12 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p12
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  declared_problem_ids:
+  - B2-021-p12
+  api_tokens:
+  - adjacency.sum
+  - adjacency.to
+  - adjacency_float.sum
+  - degree.squeeze
+  - torch.all
+  - torch.any
+  - torch.bmm
+  - torch.tensor
+  - torch.testing.assert_close
+- path: units/B2-021-cross-modal-transformers-vision/practice/p13.ipynb
+  kind: notebook
+  semantic_sha256: ebafcb0a8230baa461bfeb45c309165d02d8e4300a6686e436e959717d01c60a
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p13.ipynb :: B2-021 — Practice p13 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p13
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p13.ipynb :: B2-021 — Practice p13 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p13
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p13
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p13_solution.ipynb
+  kind: notebook
+  semantic_sha256: 12fb23841285a4edcc513eb54a74e8b64b61601f63f61a9e2054ecccbe2092e9
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p13_solution.ipynb :: Solution to p13 :: cell 1'
+    heading_path:
+    - Solution to p13
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p13_solution.ipynb :: Solution to p13 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p13
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p13_solution.ipynb :: Solution to p13 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p13
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p13
+  api_tokens:
+  - fractions.Fraction
+- path: units/B2-021-cross-modal-transformers-vision/practice/p14.ipynb
+  kind: notebook
+  semantic_sha256: 108b909ba4f9dc9147edc938f303a359d1af2b6d5c2dad02e2a157f5bee41b16
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p14.ipynb :: B2-021 — Practice p14 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p14
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p14.ipynb :: B2-021 — Practice p14 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p14
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p14
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p14_solution.ipynb
+  kind: notebook
+  semantic_sha256: 034c904ad66c32556552f5f007f2a4a0dce3b7a0bc3bb0922b3463cb30302356
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p14_solution.ipynb :: Solution to p14 :: cell 1'
+    heading_path:
+    - Solution to p14
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p14_solution.ipynb :: Solution to p14 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p14
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p14_solution.ipynb :: Solution to p14 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p14
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p14
+  api_tokens:
+  - fractions.Fraction
+- path: units/B2-021-cross-modal-transformers-vision/practice/p15.ipynb
+  kind: notebook
+  semantic_sha256: 316a2701ec8419bdc6117b120bdc0aa491ca311e01280d9ff56f9ed73111e877
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p15.ipynb :: B2-021 — Practice p15 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p15
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p15.ipynb :: B2-021 — Practice p15 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p15
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p15
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p15_solution.ipynb
+  kind: notebook
+  semantic_sha256: 37fe9e5dff7aaeffc6c9d8eac807f084e659a9011bf28b88142e10be3ac7fe49
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p15_solution.ipynb :: Solution to p15 :: cell 1'
+    heading_path:
+    - Solution to p15
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p15_solution.ipynb :: Solution to p15 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p15
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p15_solution.ipynb :: Solution to p15 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p15
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p15
+  api_tokens:
+  - torch.cat
+  - torch.zeros
+- path: units/B2-021-cross-modal-transformers-vision/practice/p16.ipynb
+  kind: notebook
+  semantic_sha256: 831096d9c5afc5cf387d2b20931017d2954befead1e789deb09f1a77cce4388e
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p16.ipynb :: B2-021 — Practice p16 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p16
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p16.ipynb :: B2-021 — Practice p16 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p16
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  declared_problem_ids:
+  - B2-021-p16
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p16_solution.ipynb
+  kind: notebook
+  semantic_sha256: 872bd63388f1f78510cf51fb51d944c3cad752f045d73df5dabfab32f6b439e2
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p16_solution.ipynb :: Solution to p16 :: cell 1'
+    heading_path:
+    - Solution to p16
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p16_solution.ipynb :: Solution to p16 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p16
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p16_solution.ipynb :: Solution to p16 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p16
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  declared_problem_ids:
+  - B2-021-p16
+  api_tokens:
+  - A.sum
+  - Ap.sum
+  - torch.allclose
+  - torch.diag
+  - torch.linalg.solve
+  - torch.tensor
+  - torch.testing.assert_close
+- path: units/B2-021-cross-modal-transformers-vision/practice/p17.ipynb
+  kind: notebook
+  semantic_sha256: 26fa405ba4e0154d6ccea75ee43fda554cfab7303eaf1465bccafac9c051a2de
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p17.ipynb :: B2-021 — Practice p17 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p17
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p17.ipynb :: B2-021 — Practice p17 > Task :: cell 2'
+    heading_path:
+    - B2-021 — Practice p17
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p17.ipynb :: B2-021 — Practice p17 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p17
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p17
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p17_solution.ipynb
+  kind: notebook
+  semantic_sha256: bf4f7fee28cc4bcbe7c875aa9cd729082b2a5c36cb4e35fb5263559ee220db71
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p17_solution.ipynb :: Solution to p17 :: cell 1'
+    heading_path:
+    - Solution to p17
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p17_solution.ipynb :: Solution to p17 :: cell 2'
+    heading_path:
+    - Solution to p17
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p17_solution.ipynb :: Solution to p17 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p17
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p17_solution.ipynb :: Solution to p17 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p17
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p17
+  api_tokens:
+  - F.cross_entropy
+  - features.get
+  - fields.items
+  - fixture_spec.loader.exec_module
+  - heldout_logits.argmax
+  - images.reshape
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loss.backward
+  - loss.detach
+  - model.eval
+  - model.parameters
+  - model.train
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.MultiheadAttention
+  - nn.Parameter
+  - np.random.seed
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - random.seed
+  - self.attention
+  - self.class_token.expand
+  - self.head
+  - self.norm
+  - self.patch_projection
+  - separated.permute
+  - targets.get
+  - torch.cat
+  - torch.from_numpy
+  - torch.isfinite
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.AdamW
+  - torch.set_num_threads
+  - torch.use_deterministic_algorithms
+  - torch.zeros
+  - trace.append
+  - value.copy
+  - value.detach
+  - vision_fixture.build_task_batch
+  - vision_fixture.validate_actual_batch
+- path: units/B2-021-cross-modal-transformers-vision/practice/p18.ipynb
+  kind: notebook
+  semantic_sha256: 9c4588fd10808e11d74934eeb3378fd2d92ed5f4a28af42e3131f0d2351578ce
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p18.ipynb :: B2-021 — Practice p18 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p18
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p18.ipynb :: B2-021 — Practice p18 > Task :: cell 2'
+    heading_path:
+    - B2-021 — Practice p18
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p18.ipynb :: B2-021 — Practice p18 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p18
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p18
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p18_solution.ipynb
+  kind: notebook
+  semantic_sha256: cdd7e2691dd69fba0c28dce94ef56f21fe2e788dd1f4223b3b15a818a8f97ec1
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p18_solution.ipynb :: Solution to p18 :: cell 1'
+    heading_path:
+    - Solution to p18
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p18_solution.ipynb :: Solution to p18 :: cell 2'
+    heading_path:
+    - Solution to p18
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p18_solution.ipynb :: Solution to p18 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p18
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p18_solution.ipynb :: Solution to p18 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p18
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p18
+  api_tokens:
+  - F.binary_cross_entropy_with_logits
+  - F.cross_entropy
+  - F.relu
+  - F.smooth_l1_loss
+  - bce.detach
+  - box_logits.permute
+  - box_target.permute
+  - ce.detach
+  - class_logits.permute
+  - features.get
+  - fields.items
+  - fixture_spec.loader.exec_module
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - ious.append
+  - loss.backward
+  - loss.detach
+  - math.floor
+  - model.eval
+  - model.parameters
+  - model.train
+  - nn.Conv2d
+  - np.random.seed
+  - objectness_target.bool
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - random.seed
+  - self.backbone
+  - self.box_head
+  - self.class_head
+  - self.objectness_head
+  - smooth.detach
+  - targets.get
+  - torch.from_numpy
+  - torch.full
+  - torch.isfinite
+  - torch.manual_seed
+  - torch.maximum
+  - torch.minimum
+  - torch.no_grad
+  - torch.optim.AdamW
+  - torch.set_num_threads
+  - torch.sigmoid
+  - torch.stack
+  - torch.tensor
+  - torch.use_deterministic_algorithms
+  - torch.zeros
+  - trace.append
+  - value.copy
+  - value.detach
+  - vision_fixture.build_task_batch
+  - vision_fixture.validate_actual_batch
+- path: units/B2-021-cross-modal-transformers-vision/practice/p19.ipynb
+  kind: notebook
+  semantic_sha256: 50070189719d31215e3bc7677bd989fc5c57dda12e8c2a484fbaab3f082cc3d7
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p19.ipynb :: B2-021 — Practice p19 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p19
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p19.ipynb :: B2-021 — Practice p19 > Task :: cell 2'
+    heading_path:
+    - B2-021 — Practice p19
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p19.ipynb :: B2-021 — Practice p19 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p19
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p19
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p19_solution.ipynb
+  kind: notebook
+  semantic_sha256: 53835ec8a7657b7765cde90881fe46c7bea072a36751144167f394ca996d59ad
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p19_solution.ipynb :: Solution to p19 :: cell 1'
+    heading_path:
+    - Solution to p19
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p19_solution.ipynb :: Solution to p19 :: cell 2'
+    heading_path:
+    - Solution to p19
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p19_solution.ipynb :: Solution to p19 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p19
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p19_solution.ipynb :: Solution to p19 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p19
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p19
+  api_tokens:
+  - F.cross_entropy
+  - F.relu
+  - features.get
+  - fields.items
+  - fixture_spec.loader.exec_module
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - logits.argmax
+  - loss.backward
+  - loss.detach
+  - model.eval
+  - model.parameters
+  - model.train
+  - nn.Conv2d
+  - nn.ConvTranspose2d
+  - nn.MaxPool2d
+  - np.random.seed
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - predicted_fg.sum
+  - random.seed
+  - self.bottleneck
+  - self.decoder
+  - self.encoder
+  - self.fuse
+  - self.head
+  - self.pool
+  - targets.get
+  - torch.cat
+  - torch.from_numpy
+  - torch.isfinite
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.AdamW
+  - torch.set_num_threads
+  - torch.use_deterministic_algorithms
+  - trace.append
+  - true_fg.sum
+  - value.copy
+  - value.detach
+  - vision_fixture.build_task_batch
+  - vision_fixture.validate_actual_batch
+- path: units/B2-021-cross-modal-transformers-vision/practice/p20.ipynb
+  kind: notebook
+  semantic_sha256: 19ac3c6d014256aca0f249e0a1fc24f5b61666172ebae4770aac136aa559ef81
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p20.ipynb :: B2-021 — Practice p20 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p20
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p20.ipynb :: B2-021 — Practice p20 > Task :: cell 2'
+    heading_path:
+    - B2-021 — Practice p20
+    - Task
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p20.ipynb :: B2-021 — Practice p20 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p20
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  declared_problem_ids:
+  - B2-021-p20
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p20_solution.ipynb
+  kind: notebook
+  semantic_sha256: 622e70a221787b5b7cd472ed9302b5de33958ce562b6faa3837dfc1afec4152e
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p20_solution.ipynb :: Solution to p20 :: cell 1'
+    heading_path:
+    - Solution to p20
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p20_solution.ipynb :: Solution to p20 :: cell 2'
+    heading_path:
+    - Solution to p20
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p20_solution.ipynb :: Solution to p20 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p20
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p20_solution.ipynb :: Solution to p20 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p20
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  declared_problem_ids:
+  - B2-021-p20
+  api_tokens:
+  - F.cross_entropy
+  - adjacency.sum
+  - adjacency.to
+  - adjacency_float.sum
+  - features.get
+  - fields.items
+  - fixture_spec.loader.exec_module
+  - heldout_logits.argmax
+  - importlib.util.module_from_spec
+  - importlib.util.spec_from_file_location
+  - loss.backward
+  - loss.detach
+  - model.eval
+  - model.parameters
+  - model.train
+  - nn.LayerNorm
+  - nn.Linear
+  - nn.MultiheadAttention
+  - nn.Parameter
+  - np.random.seed
+  - optimizer.step
+  - optimizer.zero_grad
+  - path.is_file
+  - pathlib.Path
+  - random.seed
+  - self.attention
+  - self.class_token.expand
+  - self.head
+  - self.norm
+  - self.projection
+  - targets.get
+  - torch.all
+  - torch.any
+  - torch.bmm
+  - torch.cat
+  - torch.from_numpy
+  - torch.isfinite
+  - torch.manual_seed
+  - torch.no_grad
+  - torch.optim.AdamW
+  - torch.set_num_threads
+  - torch.use_deterministic_algorithms
+  - torch.zeros
+  - trace.append
+  - value.copy
+  - value.detach
+  - vision_fixture.build_task_batch
+  - vision_fixture.validate_actual_batch
+- path: units/B2-021-cross-modal-transformers-vision/practice/p21.ipynb
+  kind: notebook
+  semantic_sha256: 004697236f972620031a09ce35d37df9b89b4f105c5cc3a7089c36eca60cc883
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p21.ipynb :: B2-021 — Practice p21 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p21
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p21.ipynb :: B2-021 — Practice p21 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p21
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p21
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p21_solution.ipynb
+  kind: notebook
+  semantic_sha256: cab6f7003c5faebcdfb012da7c29f59278e0e599673ace5acc76dacbb6ebe13d
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p21_solution.ipynb :: Solution to p21 :: cell 1'
+    heading_path:
+    - Solution to p21
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p21_solution.ipynb :: Solution to p21 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p21
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p21_solution.ipynb :: Solution to p21 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p21
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - vision-transformers
+  declared_problem_ids:
+  - B2-021-p21
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p22.ipynb
+  kind: notebook
+  semantic_sha256: 9d8a45107201d02868c62f332f08303ce26902a41ee2637c27ba71a29e1ad7f5
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p22.ipynb :: B2-021 — Practice p22 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p22
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p22.ipynb :: B2-021 — Practice p22 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p22
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p22
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p22_solution.ipynb
+  kind: notebook
+  semantic_sha256: d6cbbaf21660b45d697ad0ca809ad0db2ca185330ef9e109bd9afeed5cd88222
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p22_solution.ipynb :: Solution to p22 :: cell 1'
+    heading_path:
+    - Solution to p22
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p22_solution.ipynb :: Solution to p22 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p22
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p22_solution.ipynb :: Solution to p22 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p22
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - object-detection
+  declared_problem_ids:
+  - B2-021-p22
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p23.ipynb
+  kind: notebook
+  semantic_sha256: a5efb5c4f58b631e2221296ccb394cfef7b8c1d015057b42e8ca042bd4a32434
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p23.ipynb :: B2-021 — Practice p23 > Task :: cell 1'
+    heading_path:
+    - B2-021 — Practice p23
+    - Task
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p23.ipynb :: B2-021 — Practice p23 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p23
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p23
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p23_solution.ipynb
+  kind: notebook
+  semantic_sha256: 2961583e46242d762f76e7d51524ce01e0b2011baacfd077a1221e903310d664
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p23_solution.ipynb :: Solution to p23 :: cell 1'
+    heading_path:
+    - Solution to p23
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p23_solution.ipynb :: Solution to p23 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p23
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p23_solution.ipynb :: Solution to p23 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p23
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - unet
+  declared_problem_ids:
+  - B2-021-p23
+  api_tokens:
+  - nn.Conv2d
+  - nn.ConvTranspose2d
+  - torch.cat
+  - torch.zeros
+  - train_ids.isdisjoint
+- path: units/B2-021-cross-modal-transformers-vision/practice/p24.ipynb
+  kind: notebook
+  semantic_sha256: d03f9c78951b35d7c3a33a4b6a9cf7bd21cc937a5ab564c9bb55064ea3b37859
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p24.ipynb :: B2-021 — Practice p24 > Supplied literals
+      and exact probes :: cell 1'
+    heading_path:
+    - B2-021 — Practice p24
+    - Supplied literals and exact probes
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p24.ipynb :: B2-021 — Practice p24 > Supplied literals
+      and exact probes :: cell 2'
+    heading_path:
+    - B2-021 — Practice p24
+    - Supplied literals and exact probes
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p24.ipynb :: B2-021 — Practice p24 > Supplied literals
+      and exact probes :: cell 3'
+    heading_path:
+    - B2-021 — Practice p24
+    - Supplied literals and exact probes
+    cell_ordinal: 3
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p24.ipynb :: B2-021 — Practice p24 > Your response :: cell
+      1'
+    heading_path:
+    - B2-021 — Practice p24
+    - Your response
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  declared_problem_ids:
+  - B2-021-p24
+  api_tokens: []
+- path: units/B2-021-cross-modal-transformers-vision/practice/p24_solution.ipynb
+  kind: notebook
+  semantic_sha256: ac0647fc7cade1c08e55f6c17815bcee4f462d692fdee3dda2f00474401d9d8c
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p24_solution.ipynb :: Solution to p24 :: cell 1'
+    heading_path:
+    - Solution to p24
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p24_solution.ipynb :: Solution to p24 :: cell 2'
+    heading_path:
+    - Solution to p24
+    cell_ordinal: 2
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p24_solution.ipynb :: Solution to p24 > Answer check ::
+      cell 1'
+    heading_path:
+    - Solution to p24
+    - Answer check
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p24_solution.ipynb :: Solution to p24 > Answer check ::
+      cell 2'
+    heading_path:
+    - Solution to p24
+    - Answer check
+    cell_ordinal: 2
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  declared_problem_ids:
+  - B2-021-p24
+  api_tokens:
+  - copy.deepcopy
+  - trace.get
+  - violations.append
+- path: units/B2-021-cross-modal-transformers-vision/review.ipynb
+  kind: notebook
+  semantic_sha256: 6211f6ac6e370c6ee61cfae79546d1f7063dde2b22427f8beac17fbb3e0153c7
+  anchors:
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/review.ipynb :: B2-021 — Review and Self-Quiz > Common pitfalls,
+      Exam connections, and forward boundary :: cell 1'
+    heading_path:
+    - B2-021 — Review and Self-Quiz
+    - Common pitfalls, Exam connections, and forward boundary
+    cell_ordinal: 1
+  declared_unit_ids:
+  - B2-021-cross-modal-transformers-vision
+  declared_concept_ids:
+  - graph-neural-network-transformer-applications
+  - object-detection
+  - unet
+  - vision-transformers
   declared_problem_ids: []
   api_tokens: []
