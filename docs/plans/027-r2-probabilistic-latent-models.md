@@ -365,6 +365,16 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 Re-verified after fixes: inventory regenerated; B2-022 statement, plan, and latent-integrity suites 64 passed.
 
+### Review 2 — self (2026-10-09)
+- **Verdict**: Approve.
+
+### Review 2 — Fable (2026-10-09)
+- **Verdict**: Approve. Every fix was re-checked, and the updated p19/p22/p23 solutions executed from a scratch copy.
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-09)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: p16's assumption (q > 0 wherever p > 0) still allows q mass where `p(x,z) = 0`, so the rewritten parenthetical's finiteness claim was false. → Response: p16 now assumes a common positive support; the solution's parenthetical matches; p16 re-executed.
+
 ## Post-execution report
 
 Pending.
