@@ -603,3 +603,5 @@ Re-verified after fixes: inventory regenerated; B2-021 focused suites 85 passed;
 **Content gate:** 3-way blind consensus in round 2. All 12 blind-solved practices agreed with the solutions, except Sol's correct objection to p22's row-3 label, which was fixed.
 
 **Provenance:** original synthetic fixtures; no external data or past-paper text.
+
+**Final authoritative CI (2026-10-09):** `scripts/ci-local.sh` on the clean tip 6dc2ce7: **ALL GREEN**, 9/9.
