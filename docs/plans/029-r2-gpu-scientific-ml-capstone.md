@@ -442,7 +442,25 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ## Content Review
 
-Pending.
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
+
+### Review 1 — self (2026-10-10)
+- **Blind answer**: p15 pairing ratio `1 − ρ = 0.25`; sd(D̄) = 8.165e-4, so 0.0015 is 1.84 sd, not beyond 2 sd. Matches the solution.
+- **Verdict**: Approve.
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-10)
+- **Blind answers**: p01 E (13/18 → 31); p10 grid operator plus one solve; p13 PD and completed square; p19 and p26 approaches. All agree.
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: the L4 extensions were not pure config-dict replacements. → Response: p06, p07, p16, p17, p19 and p20 solutions read every device/precision/size/data knob from one config dict. Each supplied cell defines `CPU_CONFIG` with exactly `L4_CONFIG`'s keys. CPU outputs are byte-identical before and after (b37aba8), and non-default branches were smoke-run on CPU.
+2. `[FIXED]` Should Fix: p10 said the unregularized normal equations may have no solution. → Response: they are always consistent, with infinitely many solutions.
+3. `[FIXED]` Should Fix: the heading check accepted a fenced example. → Response: `_outside_fenced_code` follows CommonMark fences; failing-first tests added.
+
+### Review 1 — Fable (2026-10-10)
+- **Blind answers**: p04 B; p08 all four probes exact; p14 permutation/canonicalization proof; p17 test 0.8867 (identical trace); p27 a different valid approach (0.00431 < 0.00907). All agree.
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Should Fix: Lesson 6 undercounted p27's budget (validation `predict` also spends steps). → Response: 1,500 + 100 + 100 = 1,700; Checkpoint 6B reworked; p27's Budget bullet updated.
+2. `[FIXED]` Nits: p06 batch naming; p09 "row 9 paired with row 6"; p26 reports the mean physics residual (ungraded).
+3. `[WONTFIX]` Nits: p18's CI lower bound sits below the 0.84 bar, stated as frozen-seed only; p21's dummy `y_true` is clearly specified; the baseline call before the budget costs about 1 s of 15.
 
 ## Post-execution report
 
