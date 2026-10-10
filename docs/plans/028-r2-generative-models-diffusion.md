@@ -386,6 +386,17 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 Re-verified after fixes: p24 solution executes with the new probe; inventory regenerated; B2-023 statement suite 17 passed.
 
+### Review 2 — self (2026-10-10)
+- **Verdict**: Approve.
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-10)
+- **Verdict**: Approve. No findings; p24 code cells and answer checks pass.
+
+### Review 2 — Fable (2026-10-10)
+- **Verdict**: Approve. p17/p20/p22/p24 re-executed from a scratch copy; the stub probe's arithmetic was checked. Optional nit (not taken): p22(d)'s "why" for each chosen certificate is implicit in (c).
+
+**Gate result:** 3-way consensus at 730b373.
+
 ## Post-execution report
 
 Pending.
