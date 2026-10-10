@@ -314,7 +314,7 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 1. `[FIXED]` Must Fix: the Book 2 `imports:` allowlist must be extended. → Response: stated in scope and Task 3. Plan 027's implementer was alerted about the same dependency.
 2. `[FIXED]` Should Fix: add F3/`matrix-multiplication`, `covariance`, and `variance-of-sums`/`independence`; sigmoid is taught in-unit; forbid the `tensor-shape-tracing` tag. → Response: all applied.
 3. `[FIXED]` Should Fix: continuous-density KL must be stated before JS. → Response: Session 1 states it.
-4. `[FIXED]` Should Fix: pin the sampling variance. → Response: `σ_t² = β_t` in Session 4, p11, and p23.
+4. `[FIXED]` Should Fix: pin the sampling variance. → Response: `σ_t² = β_t` in Session 4, p11, and p23 (superseded in round 2 by `σ_t² = β̃_t`).
 5. `[FIXED]` Should Fix: p20's autoencoder source and class rule. → Response: literal encoder/decoder, nearest-center rule, thresholds from the frozen seed.
 6. `[FIXED]` Should Fix: GAN loss contract. → Response: a D-loss band around `2·log 2` plus a finite G-loss bound.
 7. `[FIXED]` Nit: mutants for all ten pinned functions. 8. `[FIXED]` Nit: p19 downgraded to core (5/12/7). 9. `[FIXED]` Nit: CFG compares `w=3` with both `w=1` and `w=0`. 10. `[FIXED]` Nit: the GAN row's `depends_on` is left unchanged, as stated. 11. `[FIXED]` Nit: `multi-head-attention` dropped; lessons must reference every listed concept.
