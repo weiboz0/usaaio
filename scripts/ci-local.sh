@@ -156,6 +156,7 @@ uv run pytest -q tests/test_latent_model_checks.py
 uv run pytest -q tests/test_generative_model_checks.py
 uv run pytest -q tests/test_capstone_checks.py
 uv run pytest -q tests/test_vision_transformer_checks.py
+uv run pytest -q tests/test_r2_001_checks.py
 
 step "8/9 PDF build"
 for book in "${BOOK_IDS[@]}"; do
