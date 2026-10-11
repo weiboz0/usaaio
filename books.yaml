@@ -4,8 +4,14 @@ books:
   number: 1
   root: book1
   depends_on: []
+  title: Machine Learning for the AI Olympiad
+  subtitle: 'Round 1: Foundations, Models, and Practice'
+  publication: true
 - id: book2
   number: 2
   root: book2
   depends_on:
   - book1
+  title: Deep Learning for the AI Olympiad
+  subtitle: 'Round 2: Transformers, Generative Models, and Open-Ended Modeling'
+  publication: true

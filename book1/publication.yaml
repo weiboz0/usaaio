@@ -1,0 +1,39 @@
+# Publication config for "Machine Learning for the AI Olympiad" (Plan 030 D1).
+# Read and validated by tools/books.py (publication_config_errors); tools/publish.py and
+# scripts/build-book.sh refuse a `publication: true` book without a valid one.
+
+publication_version: 1
+
+# The answers printed outside the Teacher's Edition: a manifest practice-row selector.
+# Set A (fundamentals) only; Sets B and C stay answer-free (docs/unit-standards.md).
+student_answers: {set: A}
+
+# Chapter order (curriculum order) and titles. A title over 32 characters needs a `head:`,
+# the running head printed at the top of its pages.
+chapters:
+- {unit: F1-scientific-python, title: Scientific Python and NumPy}
+- {unit: F2-vectors, title: 'Vectors, Norms, and Projections'}
+- {unit: F3-matrices, title: 'Matrices as Maps, Products, and Rank', head: Matrices as Maps and Rank}
+- {unit: F4-multivar-calculus, title: 'Partials, Gradients, and the Chain Rule', head: Partials and the Chain Rule}
+- {unit: F5-probability, title: Probability and Concentration}
+- {unit: F6-svd-spectral, title: 'Eigenvalues, SVD, and Low-Rank Approximation', head: 'Eigenvalues, SVD, and Low Rank'}
+- {unit: F7-kernels-convex-optimization, title: 'Kernels, Convexity, and Certificates', head: Kernels and Convexity}
+- {unit: C1-ml-fundamentals, title: Machine Learning Fundamentals}
+- {unit: C2-linear-models, title: 'Linear Models, Closed-Form OLS, and Regularization', head: Linear Models and Regularization}
+- {unit: C3-gradient-descent, title: Optimization by Gradient Descent}
+- {unit: C4-classical-ml-practice, title: Classical ML Practice with sklearn and pandas, head: Classical ML Practice}
+- {unit: C5-neural-networks, title: Neural Networks by Hand}
+- {unit: C6-pytorch, title: 'PyTorch: Tensors, Modules, and Manual-Weight Networks', head: PyTorch Tensors and Modules}
+- {unit: C11-neural-training, title: 'Losses, Gradients, and Training'}
+- {unit: C7-cnn-transfer, title: 'CNNs, Transfer Learning, and CNN Training', head: CNNs and Transfer Learning}
+- {unit: C8-embeddings, title: 'Word Embeddings, Similarity, and Retrieval', head: Embeddings and Retrieval}
+- {unit: C9-dimensionality-reduction, title: Dimensionality Reduction}
+- {unit: C10-competition-craft, title: Competition Craft}
+- {unit: C12-classical-models, title: Classical Supervised and Unsupervised Models, head: Classical Models}
+
+# The mock tests printed in the Teacher's Edition's final part.
+mocktests: [r1-001]
+
+audit:
+  # Page counts are recorded; an edition PDF over this many pages is a warning only.
+  page_warning: 1200

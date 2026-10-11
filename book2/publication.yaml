@@ -1,0 +1,26 @@
+# Publication config for "Deep Learning for the AI Olympiad" (Plan 030 D1).
+# Read and validated by tools/books.py (publication_config_errors); tools/publish.py and
+# scripts/build-book.sh refuse a `publication: true` book without a valid one.
+
+publication_version: 1
+
+# The answers printed outside the Teacher's Edition: a manifest practice-row selector.
+# Set A (fundamentals) only; Sets B and C stay answer-free (docs/unit-standards.md).
+student_answers: {set: A}
+
+# Chapter order (curriculum order) and titles. A title over 32 characters needs a `head:`,
+# the running head printed at the top of its pages.
+chapters:
+- {unit: B2-019-attention-transformers, title: Attention and Transformer Mechanics, head: Attention and Transformers}
+- {unit: B2-020-language-transformers, title: Language Transformers}
+- {unit: B2-021-cross-modal-transformers-vision, title: Cross-Modal Transformers and Advanced Vision, head: Cross-Modal Transformers}
+- {unit: B2-022-probabilistic-latent-models, title: Probabilistic Latent Models}
+- {unit: B2-023-generative-models-diffusion, title: Generative Models and Diffusion}
+- {unit: B2-024-gpu-scientific-ml-capstone, title: GPU Workflow and Scientific-ML Capstone, head: GPU and Scientific-ML Capstone}
+
+# The mock tests printed in the Teacher's Edition's final part.
+mocktests: [r2-001]
+
+audit:
+  # Page counts are recorded; an edition PDF over this many pages is a warning only.
+  page_warning: 1200
