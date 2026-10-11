@@ -146,7 +146,7 @@ A unit-content change does not trigger the full multi-thousand-page renders. Ins
 
 - `build-book.sh --book <id> --units <changed units>` generates all four editions restricted to the changed units, plus front and back matter. It renders them into `<book>/build/publish-check/` and runs the full audit (D5 rules 1–6, in scoped form).
 - A unit-content change means a change to anything under `<book>/units/<unit>/`.
-- A change to `<book>/curriculum/coverage-map.yaml` (the source of index placement and glossary coverage) routes to a scoped check of every unit whose introduced concepts changed, plus the glossary audit. If the changed rows cannot be attributed to units, the full edition build runs. The routing tests cover a coverage-map-only change.
+- A change to `<book>/curriculum/coverage-map.yaml` (the source of index placement and glossary coverage) routes to a scoped check of every unit whose introduced concepts changed, plus the glossary audit. If the changed rows cannot be attributed to units, the full edition build runs. A change that alters no unit's introduced concepts (for example, prerequisite rows only) runs the glossary audit alone. The routing tests cover a coverage-map-only change.
 - A mock-test change (anything under `<book>/mocktests/<test>/`) adds `--mocktests <changed tests>`. The scoped check then generates the teacher's mock part for exactly those tests, which can be zero units plus one or more mock tests. It audits that part and confirms that no student edition contains it. A test covers a mock-only change set.
 - The check uses the same publisher code path, so a changed lesson's rendering, glyphs and leak isolation are validated before shipping. It costs about the pilot's per-unit time.
 
@@ -322,6 +322,10 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 ### Review 4 — Fable (2026-10-10)
 - **Verdict**: Approve with nits. All round-3 fixes were confirmed.
 1. `[FIXED]` Nits 1–4: the "own rule table" wording; the sidecar sentence was moved; the scoped audit is "D5 rules 1–6 in scoped form"; a scope-disagreement test was added.
+
+### Review 5 — Fable (2026-10-10)
+- **Verdict**: Approve.
+1. `[FIXED]` Nit: a coverage-map change that alters no introductions runs the glossary audit alone.
 
 ## Content Review
 
