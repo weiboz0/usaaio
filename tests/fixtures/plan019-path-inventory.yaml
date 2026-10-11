@@ -15,6 +15,9 @@ python_consumers:
   - tools/render_course_structure.py
   - tools/render_curriculum_roadmap.py
   - tools/publish.py
+  - tools/publish_audit.py
+  - tools/publish_pdf.py
+  - tools/ci_scope.py
   - scripts/verify-register.py
   - tests/test_answerkey.py
   - tests/test_attention_mutations.py
@@ -50,6 +53,9 @@ python_consumers:
   - tests/test_prereq_coverage.py
   - tests/test_publication_config.py
   - tests/test_publish.py
+  - tests/test_publish_audit.py
+  - tests/test_ci_scope.py
+  - tests/publication_fixture.py
   - tests/test_r2_001.py
   - tests/test_r2_001_checks.py
   - tests/test_schedule.py

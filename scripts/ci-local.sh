@@ -8,18 +8,20 @@ fi
 script_repo_root=$(cd "$(dirname "$0")/.." && pwd)
 repo_root=$script_repo_root
 registry_probe=0
+all_books=0
 solution_probe_root=
 solution_probe_relative=
 while (($#)); do
   case "$1" in
     --root) repo_root=$2; shift 2 ;;
     --registry-probe) registry_probe=1; shift ;;
+    --all-books) all_books=1; shift ;;
     --solution-probe)
       solution_probe_root=$2
       solution_probe_relative=$3
       shift 3
       ;;
-    *) echo "usage: scripts/ci-local.sh [--root REPO] [--registry-probe] [--solution-probe BOOK_ROOT RELATIVE]" >&2; exit 2 ;;
+    *) echo "usage: scripts/ci-local.sh [--root REPO] [--all-books] [--registry-probe] [--solution-probe BOOK_ROOT RELATIVE]" >&2; exit 2 ;;
   esac
 done
 
@@ -162,6 +164,31 @@ step "8/9 PDF build"
 for book in "${BOOK_IDS[@]}"; do
   bash scripts/build-pdf.sh --book "$book" || { rc=$?; [[ $rc -eq 3 ]] || exit "$rc"; }
 done
+
+# Edition PDFs (Plan 030 D6): rendered and audited only where the change set touches a book's
+# publication inputs (tools/ci_scope.py); --all-books renders every edition (the release gate).
+route_args=(--root "$repo_root")
+((all_books)) && route_args+=(--all-books)
+edition_routes=$(uv run python -m tools.ci_scope "${route_args[@]}")
+while read -r route_mode route_book route_rest; do
+  [[ -n ${route_mode:-} ]] || continue
+  read -r -a route_scope <<<"${route_rest:-}"
+  case $route_mode in
+    full)
+      bash scripts/build-book.sh --book "$route_book"
+      uv run python -m tools.publish_audit --root "$repo_root" --book "$route_book"
+      ;;
+    scoped)
+      bash scripts/build-book.sh --book "$route_book" "${route_scope[@]}"
+      uv run python -m tools.publish_audit --root "$repo_root" --book "$route_book" "${route_scope[@]}"
+      ;;
+    glossary)
+      uv run python -m tools.publish_audit --root "$repo_root" --book "$route_book" --glossary-only
+      ;;
+    none) echo "INFO build-book: $route_book unchanged (change-routed)" ;;
+    *) echo "FAIL: unknown edition route: $route_mode $route_book" >&2; exit 1 ;;
+  esac
+done <<<"$edition_routes"
 
 step "9/9 pre-merge guard"
 git_metadata=$repo_root/.git

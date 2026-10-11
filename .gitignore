@@ -11,6 +11,11 @@ book2/build/
 book1/**/build/
 book2/**/build/
 
+# Rendered PDFs (Plan 030 D7): output/README.md is committed, the PDFs and logs are not.
+output/**/*.pdf
+output/**/*.log
+output/**/*.tex
+
 # OS / editor
 .DS_Store
 

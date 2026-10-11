@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from publication_fixture import fixture_book, write_notebook, write_yaml
 
 from tools import publish
 from tools.publish import (
@@ -23,133 +24,13 @@ from tools.publish import (
 from tools.publish_output import refresh_output
 
 
-def _yaml(path: Path, value: object) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.safe_dump(value, sort_keys=False), encoding="utf-8")
-
-
-def _nb(path: Path, cells: list[tuple[str, str]], *, output: str | None = None) -> None:
-    raw_cells = []
-    for kind, source in cells:
-        cell: dict[str, object] = {"cell_type": kind, "metadata": {}, "source": source}
-        if kind == "code":
-            cell["execution_count"] = 1 if output else None
-            cell["outputs"] = (
-                [{"output_type": "stream", "name": "stdout", "text": output}] if output else []
-            )
-        raw_cells.append(cell)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps({"cells": raw_cells, "metadata": {}, "nbformat": 4,
-                                "nbformat_minor": 5}), encoding="utf-8")
-
-
-LESSON_DETAILS = (
-    "## Checkpoint 1\n\nWhat is 2 + 2?\n\n"
-    "<details><summary><b>Checkpoint 1</b></summary>\n\nDETAILSBODY four\n\n</details>\n"
-)
-OPEN_ANSWERS = "## Collected answers\n\nOPENANSWER the answer is seven\n"
-
-
-def _fixture(tmp_path: Path, *, selector: object = None, volumes: object = None) -> Path:
-    repo = tmp_path / "repo"
-    book = repo / "book1"
-    _yaml(repo / "books.yaml", {"books_version": 1, "books": [{
-        "id": "book1", "number": 1, "root": "book1", "depends_on": [],
-        "title": "Fixture Book", "subtitle": "Round 1: Fixtures", "publication": True}]})
-    # Unit U1: lesson with a <details> block, a session notebook with an open answer section
-    # and a planted output, a review, one Set A and one Set B practice.
-    u1 = book / "units" / "U1-alpha"
-    _yaml(u1 / "manifest.yaml", {
-        "unit": "U1-alpha", "concepts_taught": ["alpha-idea"], "concepts_used": [],
-        "practice": [
-            {"id": "U1-p01", "set": "A", "path": "practice/p01.ipynb",
-             "solution_path": "practice/p01_solution.ipynb"},
-            {"id": "U1-p02", "set": "B", "path": "practice/p02.ipynb",
-             "solution_path": "practice/p02_solution.ipynb"},
-        ]})
-    _nb(u1 / "lesson.ipynb", [("markdown", "# U1-alpha — Alpha (Unit Overview)\n\nOVERVIEW text.\n\n"
-                                           + LESSON_DETAILS)])
-    _nb(u1 / "lessons" / "01-first.ipynb", [
-        ("markdown", "# U1-alpha — Session 01: First Steps\n\nLESSONPROSE about $x$.\n"),
-        ("code", "print('LESSONCODE')"),
-        ("markdown", OPEN_ANSWERS),
-        ("code", "ANSWERCODE = 7"),
-        ("markdown", "## Next topic\n\nAFTERSECTION prose.\n"),
-    ], output="PLANTEDOUTPUT\n")
-    _nb(u1 / "review.ipynb", [("markdown", "# U1-alpha — Review\n\nREVIEWTEXT\n")])
-    _nb(u1 / "practice" / "p01.ipynb", [
-        ("markdown", "# U1-alpha — Practice p01\n\nSTATEMENT1 compute it.\n"),
-        ("code", "STARTER1 = ...")])
-    _nb(u1 / "practice" / "p01_solution.ipynb", [
-        ("markdown", "# U1-alpha — Practice p01 — Solution\n"),
-        ("code", "SOLUTION1 = 42")])
-    _nb(u1 / "practice" / "p02.ipynb", [
-        ("markdown", "# U1-alpha — Practice p02\n\nSTATEMENT2 prove it.\n"),
-        ("code", "STARTER2 = ...")])
-    _nb(u1 / "practice" / "p02_solution.ipynb", [
-        ("markdown", "# U1-alpha — Practice p02 — Solution\n\nSOLUTIONPROSE2\n"),
-        ("code", "return_42 = 42")])
-    # Unit U2: lesson only plus one Set C practice.
-    u2 = book / "units" / "U2-beta"
-    _yaml(u2 / "manifest.yaml", {
-        "unit": "U2-beta", "concepts_taught": ["beta-idea"], "concepts_used": ["alpha-idea"],
-        "practice": [{"id": "U2-p01", "set": "C", "path": "practice/p01.ipynb",
-                      "solution_path": "practice/p01_solution.ipynb"}]})
-    _nb(u2 / "lesson.ipynb", [("markdown", "# U2-beta — Beta (Unit Overview)\n\nBETATEXT\n")])
-    _nb(u2 / "practice" / "p01.ipynb", [("markdown", "# U2-beta — Practice p01\n\nSTATEMENTU2\n")])
-    _nb(u2 / "practice" / "p01_solution.ipynb", [("markdown", "# U2-beta — Practice p01 — Solution\n\nSOLUTIONU2\n")])
-    # Mock test with the interleaved r2-001 layout and a repeated file reference.
-    mock = book / "mocktests" / "r1-001"
-    _yaml(mock / "manifest.yaml", {"test": "r1-001", "problems": [
-        {"id": "r1-001-p01-1", "files": ["theory/p01.md"]},
-        {"id": "r1-001-p01-2", "files": ["problems/p01.ipynb"]},
-        {"id": "r1-001-p01-3", "files": ["theory/p01.md"]},
-        {"id": "r1-001-p02", "files": ["problems/p02.ipynb"]},
-    ]})
-    (mock / "theory").mkdir(parents=True)
-    (mock / "solutions").mkdir(parents=True)
-    (mock / "test.md").write_text("---\ntest: r1-001\n---\n\n# Mock r1-001\n\nMOCKINTRO\n")
-    (mock / "theory" / "p01.md").write_text("# Problem 1.\n\nMOCKTHEORY1\n")
-    _nb(mock / "problems" / "p01.ipynb", [("markdown", "# Problem 1 (code)\n\nMOCKPROBLEM1\n")])
-    _nb(mock / "problems" / "p02.ipynb", [("markdown", "# Problem 2\n\nMOCKPROBLEM2\n")])
-    (mock / "solutions" / "answers.md").write_text("# Answers\n\nMOCKANSWERS\n")
-    (mock / "rubric.md").write_text("# Rubric\n\nMOCKRUBRIC\n")
-    _nb(mock / "solutions" / "p01_solution.ipynb", [("markdown", "# Sol 1\n\nMOCKSOL1\n")])
-    _nb(mock / "solutions" / "p02_solution.ipynb", [("markdown", "# Sol 2\n\nMOCKSOL2\n")])
-    # Front and back matter.
-    front = book / "front-matter"
-    front.mkdir(parents=True)
-    for name in ("preface", "how-to-use", "for-teachers", "answer-key-intro"):
-        (front / f"{name}.md").write_text(
-            f"# {name}\n\nFRONT {name}.\n\n<!-- edition: teacher -->\nTEACHERONLYLINE\n"
-            "<!-- /edition -->\n")
-    back = book / "back-matter"
-    back.mkdir(parents=True)
-    (back / "notation.md").write_text("# Notation\n\nNOTATIONTEXT $\\eta$\n")
-    (back / "glossary.md").write_text(
-        "# Glossary\n\n**Alpha idea** — The first idea. *(U1)*\n<!-- concept: alpha-idea -->\n\n"
-        "**Beta idea** — The second idea. *(U2)*\n<!-- concept: beta-idea -->\n")
-    config: dict[str, object] = {
-        "publication_version": 1,
-        "student_answers": selector if selector is not None else {"set": "A"},
-        "chapters": [{"unit": "U1-alpha", "title": "Alpha Unit"},
-                     {"unit": "U2-beta", "title": "Beta Unit"}],
-        "mocktests": ["r1-001"],
-        "audit": {"page_warning": 1200},
-    }
-    if volumes is not None:
-        config["volumes"] = volumes
-    _yaml(book / "publication.yaml", config)
-    return repo
-
-
 def _project_text(project: Path) -> str:
     return "\n".join(path.read_text(encoding="utf-8") for path in sorted(project.glob("*.qmd")))
 
 
 @pytest.fixture
 def repo(tmp_path: Path) -> Path:
-    return _fixture(tmp_path)
+    return fixture_book(tmp_path)
 
 
 # --- edition markers (ported from py4kids' tests) ------------------------------------------
@@ -245,7 +126,7 @@ def test_student_answers_selector(repo: Path, tmp_path: Path) -> None:
     key = _project_text(build(repo, "book1", "answer-key").path)
     assert "SOLUTION1 = 42" in key and "STATEMENT1" not in key
 
-    wider = _fixture(tmp_path / "wide", selector={"set": ["A", "B"]})
+    wider = fixture_book(tmp_path / "wide", selector={"set": ["A", "B"]})
     key = _project_text(build(wider, "book1", "answer-key").path)
     assert "SOLUTION1 = 42" in key and "return_42 = 42" in key and "SOLUTIONU2" not in key
 
@@ -323,7 +204,7 @@ def test_malformed_details_fail(text: str, message: str) -> None:
 
 
 def test_malformed_details_fails_the_build(repo: Path) -> None:
-    _nb(repo / "book1/units/U2-beta/lesson.ipynb",
+    write_notebook(repo / "book1/units/U2-beta/lesson.ipynb",
         [("markdown", "# U2-beta — Beta\n\n<details><summary>x</summary>\n\nopen\n")])
     with pytest.raises(PublishError, match="unclosed <details>"):
         build(repo, "book1", "student")
@@ -425,7 +306,7 @@ def test_scoped_build_writes_publish_check_and_scope(repo: Path) -> None:
 
 
 def test_volumes_split_configured_editions(tmp_path: Path) -> None:
-    repo = _fixture(tmp_path, volumes={"editions": ["teacher"], "parts": [
+    repo = fixture_book(tmp_path, volumes={"editions": ["teacher"], "parts": [
         {"title": "First", "first": "U1-alpha", "last": "U1-alpha"},
         {"title": "Second", "first": "U2-beta", "last": "U2-beta"}]})
     projects = build_all(repo, "book1")
@@ -443,7 +324,7 @@ def test_volumes_split_configured_editions(tmp_path: Path) -> None:
 def test_non_publication_book_is_refused(repo: Path) -> None:
     registry = yaml.safe_load((repo / "books.yaml").read_text())
     registry["books"][0]["publication"] = False
-    _yaml(repo / "books.yaml", registry)
+    write_yaml(repo / "books.yaml", registry)
     with pytest.raises(ValueError, match="not a publication book"):
         build(repo, "book1", "student")
 
