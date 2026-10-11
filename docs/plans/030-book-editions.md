@@ -83,6 +83,11 @@ The deviations from py4kids:
   - in `teacher`, it renders the body inline in an "Answers" panel.
 
   An unclosed or nested `<details>` fails the build.
+- **Open answer sections** get the same three-edition treatment as `<details>` bodies (amendment, 2026-10-10; Task 2 author finding). Many lessons print checkpoint answers openly under a heading, so the rule also covers:
+  - any markdown heading matching `(?i)^#+\s*(collected\s+)?((checkpoint|self-quiz|quiz)\s*\d*\s+)?answers\b`, which includes "Answers (open only when done)";
+  - the section under such a heading, up to the next heading of the same or higher level, or the end of the notebook.
+
+  The audit's fingerprint and provenance rules treat these bodies like `<details>` bodies.
   Each block gets a stable label of the form `<unit>-<notebook stem>-d<ordinal>`, so the appendix cross-references are deterministic.
 
 The publisher strips every cell output during conversion. Twenty-three notebooks (8 lessons, 15 solutions) carry committed outputs; none are printed. The PDFs show code without outputs, and a converter test plants an output cell.
@@ -131,7 +136,7 @@ Design 000 is not a governance file.
      - Tests plant a short solution cell and a short `<details>` body.
 3. **Glyphs.** A "Missing character" entry in any LaTeX log is an error (py4kids' `pdf_glyphs.py` rule). This covers every PDF either script builds: editions, syllabus, handouts, and mock papers and solutions.
 4. **References.** Undefined references or labels in the draft-mode log are errors.
-5. **Glossary.** The glossary is a superset of the concepts the book introduces. A scoped check limits this to the concepts the in-scope units introduce.
+5. **Glossary.** The glossary is a superset of the concepts the book introduces. "Introduced" means the union of the live manifests' `concepts_taught`, excluding `book1:`-qualified ids; this is a superset of the coverage map's `shipped_concepts`. Each glossary entry carries `<!-- concept: <id> -->`. A scoped check limits this to the concepts the in-scope units introduce.
 6. **Page counts** are recorded and produce warnings only.
 
 **D6. CI routing (py4kids `ci_scope.py`, narrowed for cost).**
@@ -331,6 +336,10 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 - **Verdict**: Approve. No findings.
 
 **Gate result:** 3-way consensus at round 5 (self, Sol and Fable all approve; no open blockers). Implementation is authorized.
+
+### Implementation amendments (self, 2026-10-10)
+- The Task 2 author found that many lessons, and most Book 2 lessons, print checkpoint answers openly under answer headings. D3 now covers these open answer sections exactly like `<details>` bodies; the D2 rule "no answers in `student-print`" holds unchanged. This is within the existing D2/D3 intent, not a scope expansion.
+- The glossary's source of introduced concepts is pinned to the manifests' `concepts_taught`.
 
 ## Content Review
 
