@@ -363,3 +363,24 @@ def test_publish_output_owners(tmp_path: Path) -> None:
     assert (tmp_path / "output/book1/book1-student.pdf").exists()
     with pytest.raises(ValueError, match="build-book owns only"):
         refresh_output(tmp_path, "book1", "book", [keep])
+
+
+def test_inline_collected_answer_paragraphs_are_answer_bodies(repo: Path) -> None:
+    printed = (build(repo, "book1", "student-print").path / "U1-alpha.qmd").read_text()
+    assert "PARAANSWER" not in printed
+    assert "PARAQUESTION" in printed and "WORKEDANSWER stays printed" in printed
+    assert "What is PARAQUESTION?\n\n*Answers: open this notebook" in printed
+
+    student = build(repo, "book1", "student").path
+    unit = (student / "U1-alpha.qmd").read_text()
+    assert "PARAANSWER" not in unit and "WORKEDANSWER stays printed" in unit
+    assert "*Answers: page `\\pageref{U1-alpha-01-first-d2}`{=latex}.*" in unit
+    appendix = (student / "answers.qmd").read_text()
+    assert ("### Session 01: First Steps — Collected answers {#U1-alpha-01-first-d2}\n\n"
+            "**Collected answers.** PARAANSWER is nine,\nas computed.") in appendix
+    sidecar = json.loads((student / "provenance" / "answers.json").read_text())
+    assert any(seg["kind"] == "answer-body" and "PARAANSWER" in seg["text"]
+               for seg in sidecar["segments"])
+
+    teacher = (build(repo, "book1", "teacher").path / "U1-alpha.qmd").read_text()
+    assert "::: {.answers}\n\n**Collected answers.** PARAANSWER is nine" in teacher

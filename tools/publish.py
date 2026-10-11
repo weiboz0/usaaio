@@ -101,6 +101,8 @@ ANSWER_HEADING = re.compile(
 OLD_FONT_GROUP = re.compile(r"\{\s*\\(rm|bf|it|tt|sf|cal)(?![A-Za-z])\s*([^{}]*)\}")
 OLD_FONT_IN_MATH = re.compile(r"\\(rm|bf|it|tt|sf|cal)(?![A-Za-z])(\s*)")
 TEXT_IN_MATH = re.compile(r"(\\text(?:tt|rm|it|bf|sf)?\{)([^{}]*)\}")
+# An inline answer paragraph (Book 2 lessons): `**Collected answers.** ...` at a paragraph start.
+ANSWER_PARAGRAPH = re.compile(r"^\*\*Collected (?:checkpoint )?answers\.\*\*")
 FRONT_MATTER = re.compile(r"\A---\n.*?\n---\n", re.DOTALL)
 
 # Fixed scaffolding text (the audit matches these exactly).
@@ -499,7 +501,43 @@ def answer_regions(cells: list[dict[str, Any]]) -> list[AnswerRegion]:
             offset += len(line)
     if current is not None:
         regions.append(AnswerRegion(current[0], (len(cells), 0), current[1], current[2]))
-    return regions
+    # Inline answer paragraphs (`**Collected answers.** ...`) outside sections and <details>.
+    for index, cell in enumerate(cells):
+        if cell["cell_type"] != "markdown":
+            continue
+        text = cell["source"]
+        details = [(block.start, block.end) for block in parse_details(text, f"cell {index}")]
+        for start, end in answer_paragraphs(text):
+            if any(region.start <= (index, start) < region.end for region in regions):
+                continue
+            if any(a <= start < b for a, b in details):
+                continue
+            regions.append(AnswerRegion((index, start), (index, end), "Collected answers", 7))
+    return sorted(regions, key=lambda region: region.start)
+
+
+def answer_paragraphs(text: str) -> list[tuple[int, int]]:
+    """`(start, end)` of each paragraph whose first line opens with ANSWER_PARAGRAPH."""
+    spans: list[tuple[int, int]] = []
+    fence: str | None = None
+    offset = 0
+    previous_blank = True
+    start: int | None = None
+    for line in text.splitlines(keepends=True):
+        is_fence, fence_after = fence_step(line, fence)
+        inside = is_fence or fence is not None
+        fence = fence_after
+        blank = not line.strip()
+        if start is not None and (blank or inside):
+            spans.append((start, offset))
+            start = None
+        if start is None and not inside and previous_blank and ANSWER_PARAGRAPH.match(line):
+            start = offset
+        previous_blank = blank and not inside
+        offset += len(line)
+    if start is not None:
+        spans.append((start, len(text)))
+    return spans
 
 
 def read_notebook(path: Path) -> list[dict[str, Any]]:

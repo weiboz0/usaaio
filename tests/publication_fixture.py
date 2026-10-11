@@ -60,6 +60,9 @@ def fixture_book(tmp_path: Path, *, selector: object = None, volumes: object = N
         ("markdown", OPEN_ANSWERS),
         ("code", "ANSWERCODE = 7"),
         ("markdown", "## Next topic\n\nAFTERSECTION prose.\n"),
+        ("markdown", ("**Checkpoint 2.** What is PARAQUESTION?\n\n"
+                      "**Collected answers.** PARAANSWER is nine,\nas computed.\n\n"
+                      "**Answer C.** WORKEDANSWER stays printed.\n")),
     ], output="PLANTEDOUTPUT\n")
     write_notebook(u1 / "review.ipynb", [("markdown", "# U1-alpha — Review\n\nREVIEWTEXT\n")])
     write_notebook(u1 / "practice" / "p01.ipynb", [

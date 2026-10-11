@@ -241,3 +241,26 @@ def test_page_count_warning(tmp_path: Path) -> None:
     result = audit(repo, "book1")
     assert result.errors == []
     assert any("12 pages is over 10" in warning for warning in result.warnings)
+
+
+def test_inline_answer_paragraph_planted_as_plain_markdown(built: Path) -> None:
+    notebook = json.loads((built / "book1/units/U1-alpha/lessons/01-first.ipynb").read_text())
+    cell = notebook["cells"][5]["source"]
+    start = cell.index("**Collected answers.**")
+    end = cell.index("\n\n**Answer C.**")
+    project = _project(built, "student-print")
+    _append_segment(project, "U1-alpha", {
+        "kind": "markdown", "sep": "\n\n", "source": "units/U1-alpha/lessons/01-first.ipynb",
+        "cell": 5, "span": [start, end], "text": cell[start:end], "shift": 1})
+    _strip_final_newline_join(project, "U1-alpha")
+    errors = _errors(built)
+    assert any("overlaps an answer body" in error for error in errors)
+    assert any("printed answer lead-in" in error for error in errors)
+
+
+def test_answer_lead_in_safety_net(built: Path) -> None:
+    project = _project(built, "student")
+    _append_segment(project, "U2-beta", {
+        "kind": "scaffold", "sep": "\n\n", "text": "Collected checkpoint answers: x = 2"})
+    _strip_final_newline_join(project, "U2-beta")
+    assert any("U2-beta.qmd: printed answer lead-in" in error for error in _errors(built))

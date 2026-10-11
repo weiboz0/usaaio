@@ -77,6 +77,9 @@ AUDIT_DETAILS = re.compile(r"<details\b[^>]*>|</details\s*>", re.IGNORECASE)
 AUDIT_SUMMARY = re.compile(r"\s*<summary\b[^>]*>(.*?)</summary\s*>", re.IGNORECASE | re.DOTALL)
 AUDIT_ANSWER_HEADING = re.compile(
     r"(?i)^#+\s*(collected\s+)?((checkpoint|self-quiz|quiz)\s*\d*\s+)?answers\b")
+AUDIT_ANSWER_PARAGRAPH = re.compile(r"\*\*Collected (checkpoint )?answers\.\*\*")
+# Safety net (student editions outside the answers appendix): a printed answer lead-in.
+ANSWER_LEAD = re.compile(r"(?i)^\**collected (checkpoint )?answers\b")
 AUDIT_HEADING = re.compile(r"^(#{1,6})(?=\s|$)")
 CONCEPT_NOTE = re.compile(r"<!--\s*concepts?:\s*([^;>]*?)\s*(?:;[^>]*)?-->")
 GLOSSARY_ENTRY = re.compile(r"^\*\*(.+?)\*\*\s*[—–:-]")
@@ -252,6 +255,23 @@ def notebook_answers(cells: list[dict[str, Any]], *, sections: bool) -> SourceAn
                 open_level, section_start = level, offset + len(line)
         if open_level is not None:
             answers.add(index, section_start or 0, len(text))
+    # Inline answer paragraphs: a paragraph whose first line opens `**Collected answers.**`.
+    for index, cell in enumerate(cells):
+        if cell["cell_type"] != "markdown":
+            continue
+        start: int | None = None
+        previous_blank = True
+        text = cell["source"]
+        for offset, line, inside in _fence_lines(text):
+            blank = not line.strip()
+            if start is not None and (blank or inside):
+                answers.add(index, start, offset)
+                start = None
+            if start is None and not inside and previous_blank and AUDIT_ANSWER_PARAGRAPH.match(line):
+                start = offset
+            previous_blank = blank and not inside
+        if start is not None:
+            answers.add(index, start, len(text))
     return answers
 
 
@@ -688,6 +708,12 @@ def check_fingerprints(result: AuditResult, project: Path, edition: str,
         path = project / file
         if not path.is_file():
             continue
+        if edition != "answer-key" and not (edition == "student" and file == "answers.qmd"):
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if ANSWER_LEAD.match(line.strip()):
+                    result.error(f"{project.name}/{file}: printed answer lead-in "
+                                 f"{line.strip()[:60]!r}")
+                    break
         lines = _lines(path.read_text(encoding="utf-8"))
         forbidden = {"solution": prints["solution"], "mock": prints["mock"]}
         if not (edition == "student" and file == "answers.qmd") and edition != "answer-key":
