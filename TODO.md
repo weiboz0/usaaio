@@ -25,6 +25,7 @@
 - [x] 022 — C12 p20 K-means near-tie erratum (deterministic lowest-seed rule)
 - [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
+- [x] 030 — py4kids-style book editions: student-print, student, answer key and teacher PDFs, plus syllabus, handouts and mock-test papers and solutions, for both books
 - [x] 024 — Round 2 live blueprint and mock test r2-001 (Book 2 final assessment) — **Book 2 complete**
 - [x] 029 — Round 2 GPU scientific-modeling capstone (B2-024) and the `optional-colab-l4` compute policy
 - [x] 028 — Round 2 generative models and diffusion (B2-023: GANs, DDPM, Stable Diffusion architecture with a CPU latent-diffusion analogue)

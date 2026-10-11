@@ -180,7 +180,7 @@ The audit and `output/README.md` follow the split.
 All tooling goes to Opus subagents (`AGENTS.md` dispatch); front and back matter goes to an Opus author.
 Tests go in `tests/`, failing first where practical.
 
-- [ ] **Task 1 — Registry and publication config.**
+- [x] **Task 1 — Registry and publication config.**
   - `tools/books.py` requires exact registry keys. The new keys are added to the accepted set, and the old-format registries built in test fixtures (`tests/test_book_isolation.py`, `tests/test_books.py`, and the others found by grep) are migrated or stay valid. The noncanonical-root and symlink protections are kept.
   - `books.yaml` gets `title`, `subtitle`, and `publication: true`.
   - Add `<book>/publication.yaml` for both books.
@@ -190,7 +190,7 @@ Tests go in `tests/`, failing first where practical.
     - a chapter list that differs from the live units;
     - a running head missing for a title over 32 characters;
     - a mock test listed but absent.
-- [ ] **Task 2 — Front and back matter (Opus author).** Write four front-matter files and two back-matter files per book.
+- [x] **Task 2 — Front and back matter (Opus author).** Write four front-matter files and two back-matter files per book.
   - `how-to-use.md` maps the course folders: unit lessons, practice, solutions only for teachers, and mock tests.
   - `how-to-use.md` names the reading-page conventions of these notebooks.
   - Edition markers apply where the editions differ.
@@ -198,7 +198,7 @@ Tests go in `tests/`, failing first where practical.
   - Notation follows the lessons' symbols.
   - No past-paper text.
   - Semantic line breaks.
-- [ ] **Task 3 — Publisher, theme, and `build-book.sh`.** It begins with the D8 pilot (C3, all four editions). The pilot's build input (a fixture, not an edit to C3) adds a scratch code cell containing `−`, `≈`, and `½` to prove the DejaVu fallback. The pilot also times one handout (C3) and extrapolates to all 25 units. If the always-on handouts would cost more than 5 minutes per CI run, handouts are routed like editions (changed units only, all under `--all-books`). The plan records the pilot numbers and the volume decision before the full build.
+- [x] **Task 3 — Publisher, theme, and `build-book.sh`.** It begins with the D8 pilot (C3, all four editions). The pilot's build input (a fixture, not an edit to C3) adds a scratch code cell containing `−`, `≈`, and `½` to prove the DejaVu fallback. The pilot also times one handout (C3) and extrapolates to all 25 units. If the always-on handouts would cost more than 5 minutes per CI run, handouts are routed like editions (changed units only, all under `--all-books`). The plan records the pilot numbers and the volume decision before the full build.
   - Build `tools/publish.py` (`EDITIONS`, `output_stem`, `filter_edition_blocks`, notebook-to-chapter conversion, project generation for each edition), `tools/publish_theme/`, `tools/publish_output.py`, and `scripts/build-book.sh`.
   - Unit tests cover:
     - edition-marker filtering, ported from py4kids' tests;
@@ -209,7 +209,7 @@ Tests go in `tests/`, failing first where practical.
     - the mock-paper order against `manifest.yaml`, using the interleaved r2-001 layout;
     - the index entries;
     - the teacher's mock-test part.
-- [ ] **Task 4 — `build-pdf.sh` rework.** Produce the syllabus, handouts, and mock-test paper and solutions PDFs into `output/<book>/` (D4). Migrate every test that pins the old contract in the same commit:
+- [x] **Task 4 — `build-pdf.sh` rework.** Produce the syllabus, handouts, and mock-test paper and solutions PDFs into `output/<book>/` (D4). Migrate every test that pins the old contract in the same commit:
   - the `--list-inputs` set pinned in `tests/test_integration.py`;
   - the `build-pdf.sh` cases in `tests/test_book_isolation.py` and `tests/test_clean_checkout.py`.
 
@@ -217,10 +217,10 @@ Tests go in `tests/`, failing first where practical.
   - Add a failing-log glyph test for one handout render.
   - Rewrite `tests/test_integration.py::test_plan019_task3_book1_pdf_sources_match_the_pinned_r1_set` (Book 1 now has handouts), the `--list-inputs` fingerprints and fake-quarto cardinality tests in `tests/test_book_isolation.py`, and the exact `ci-local.sh` line in `tests/test_integration.py`.
   - Update design 000 §3.8 (D4).
-- [ ] **Task 5 — Audit, CI routing, `output/README.md`, and `.gitignore`.** Implement D5–D7. Add tests for:
+- [x] **Task 5 — Audit, CI routing, `output/README.md`, and `.gitignore`.** Implement D5–D7. Add tests for:
   - each audit rule, with a planted solution chapter in a student edition, solution code planted inside an ordinary student unit chapter, a planted `<details>` body, a planted `rubric.md` line, a `scope.json` that disagrees with the invocation scope, and a planted "Missing character" log line;
   - the CI routing decision, as a pure function over a list of changed paths. It must cover staged, unstaged, and untracked changes, and fall back to rendering everything when `origin/main` is missing. It also covers a unit-content change that routes to a unit-scoped check of exactly the changed units.
-- [ ] **Task 6 — Verification phase.**
+- [x] **Task 6 — Verification phase.**
   - Run `scripts/ci-local.sh --all-books` on a clean tip, and run it once more without `--all-books` after cleaning `__pycache__`.
   - For each book, record in the post-execution report:
     - each edition's page count and render time;
@@ -412,12 +412,78 @@ Blind solving does not apply: this plan adds no problems. The reviewers instead 
 
 ### Review 2 — Sol, `gpt-6-sol` (2026-10-11)
 - **Verdict**: Reject. Every round-1 fix was verified (index, pointer, KL, answer-location wording); the leak scan is clean.
-1. `[OPEN]` Should Fix: narrow table columns still break inside words (Book 1 syllabus page 2; r2-001 paper pages 1–2). → Response: each column's minimum width is set by its longest word.
+1. `[FIXED]` Should Fix: narrow table columns still break inside words (Book 1 syllabus page 2; r2-001 paper pages 1–2). → Response: each column's minimum width is set by its longest word (6fb15e7).
 
 ### Review 2 — Fable (2026-10-11)
 - **Verdict**: Approve with nits. The index is present in all 10 editions, with no raw TeX in any of the 44 PDFs; the pointer, edition blocks, KL wording and tables were verified.
 1. `[FIXED]` Should Fix: the plan's KL record was wrong. → Response: the record above is corrected and a `TODO.md` erratum entry added.
-2. `[OPEN]` Nit: the r2-001 Section column hyphenates. → Response: the same fix as Sol 1.
+2. `[FIXED]` Nit: the r2-001 Section column hyphenates. → Response: the same fix as Sol 1.
 3. `[WONTFIX]` Nit: the index points to unit level only, by design (D3: indexed at the introducing unit chapter); a finer index is a possible later improvement.
 
+### Review 3 — Sol, `gpt-6-sol` (2026-10-11)
+- **Verdict**: Approve. The table fix was verified with `pdftotext -layout`; no regression across 43 PDFs.
+
+### Review 3 — Fable (2026-10-11)
+- **Verdict**: Approve with nits. Page images of the table pages and spot-checks of handouts and solutions are clean.
+1. `[FIXED]` Nit: the round-2 tags are flipped to `[FIXED]`.
+2. `[WONTFIX]` Nit: the long syllabus rows wrap over several lines, by design (the text column absorbs the spare width).
+
+**Gate result:** 3-way consensus at round 3 (self, Sol and Fable approve; no `[OPEN]` findings).
+
 ## Post-execution report
+
+**Shipped.** Book 1 and Book 2 now publish py4kids-style editions:
+- **Editions:** `student-print`, `student`, `answer-key` and `teacher`. The Book 1 Student Book and Teacher's Edition come in three volumes.
+- **Other PDFs:** a syllabus, one practice handout per unit, and a paper and a solutions PDF per mock test.
+- **Location:** everything lands in gitignored `output/<book>/`, documented by `output/README.md`.
+
+**Tasks.**
+
+| Task | What it delivered | Commit(s) |
+|---|---|---|
+| 1 | Registry and `publication.yaml` | fcb3c75 |
+| 2 | Front and back matter | 3e3afd0, 0c12bb8 |
+| 3 | Publisher, theme, `build-book.sh`, scoped mode | df9825a + rendering fixes; f4d8a89 (paragraph answers); 4a79fde (index) |
+| 4 | `build-pdf.sh` through `tools/publish_pdf.py` | dad44d1, 6fb15e7 |
+| 5 | `tools/publish_audit.py`, `tools/ci_scope.py`, `ci-local.sh --all-books`, `output/README.md`, `.gitignore` | 1407e80 |
+| 6 | Verification | this report |
+
+**Also in this branch.** The Book 2 course-structure document now states the live r2-001 assessment (d788353, e669717, 9106143).
+
+**Final page counts.**
+
+| Book | Edition | Pages |
+|---|---|---|
+| Book 1 | `student-print` | 984 |
+| Book 1 | `student` vol 1 / 2 / 3 | 514 / 490 / 450 |
+| Book 1 | `answer-key` | 122 |
+| Book 1 | `teacher` vol 1 / 2 / 3 | 660 / 650 / 688 |
+| Book 2 | `student-print` | 426 |
+| Book 2 | `student` | 534 |
+| Book 2 | `answer-key` | 46 |
+| Book 2 | `teacher` | 912 |
+
+- **Other PDFs:**
+  - syllabus: 23 pages (Book 1) and 7 (Book 2);
+  - 19 + 6 handouts;
+  - r1-001: paper 20 pages, solutions 31;
+  - r2-001: paper 25 pages, solutions 33.
+- **Render times:** the slowest single PDF took about 15 minutes, the Book 2 teacher edition at 894–961 s.
+- **Full builds (all projects in parallel):** about 14 minutes for Book 1 and 15 minutes for Book 2.
+- **Handouts:** under 2 minutes per book, so they stay always-on.
+
+**Deviations from the plan**, all recorded above:
+- Markdown is read with `-raw_tex`, and all publisher LaTeX is emitted in `{=latex}` blocks.
+- Open answer sections and `Collected answers` paragraphs are treated like `<details>`.
+- The glossary concept source is pinned to the manifests' `concepts_taught`.
+- The index locates each term only at the unit that introduces it.
+- The audit reuses only the publisher's pure span-to-text transforms; it holds its own rule table.
+- Fingerprints subtract lines that print anyway.
+- Book 1 chapter order follows the syllabus order.
+- `pre-merge-guard.sh` re-pins the path-inventory digest.
+
+**Follow-ups (`TODO.md`):**
+- the C10 `p12_solution` delimiter erratum;
+- the B2-022 KL wording review;
+- overfull lines (C9 longtables; small boxes in Book 2's Teacher's Edition).
+
