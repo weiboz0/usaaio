@@ -186,10 +186,11 @@ def test_running_head_itself_is_limited(tmp_path: Path) -> None:
 def test_listed_but_absent_mock_test_is_an_error(tmp_path: Path) -> None:
     config = _config(mocktests=["r1-001", "r1-002"])
     errors = publication_config_errors(_repo(tmp_path, config), "book1")
-    assert errors == [
+    expected = (
         "book1/publication.yaml: mock test r1-002 is listed but absent "
         "(mocktests/r1-002/manifest.yaml)"
-    ]
+    )
+    assert errors == [expected]
 
 
 def test_student_answer_selector_is_validated(tmp_path: Path) -> None:

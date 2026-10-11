@@ -34,6 +34,17 @@ chapters:
 # The mock tests printed in the Teacher's Edition's final part.
 mocktests: [r1-001]
 
+# Volumes (Plan 030 D8). The C3 pilot projects the full Student Book at about 1,330 pages and
+# the Teacher's Edition at about 1,860, over the 1,200-page budget per PDF, so both are split
+# into three contiguous volumes along the curriculum parts. The print edition (about 975 pages)
+# and the Answer Key stay single PDFs.
+volumes:
+  editions: [student, teacher]
+  parts:
+  - {title: Foundations, first: F1-scientific-python, last: F7-kernels-convex-optimization}
+  - {title: Core Machine Learning and Neural Networks, first: C1-ml-fundamentals, last: C11-neural-training}
+  - {title: Applied Models and Competition Practice, first: C7-cnn-transfer, last: C12-classical-models}
+
 audit:
   # Page counts are recorded; an edition PDF over this many pages is a warning only.
   page_warning: 1200

@@ -1,0 +1,65 @@
+% Plan 030 theme (ported from py4kids' tools/publish_theme/theme.tex).
+\usepackage[most]{tcolorbox}
+\usepackage[svgnames]{xcolor}
+\usepackage{fontspec}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\usepackage{needspace}
+\usepackage{scrlayer-scrpage}
+\usepackage{imakeidx}
+\makeindex[intoc]
+\uppertitleback{@TITLE@\\@SUBTITLE@\\First edition, 2026}
+\lowertitleback{Copyright © 2026 Weibo Zhou\\Written for Python 3.12 or newer\\Course files: https://github.com/weiboz0/usaaio (folder @FOLDER@/)}
+% Font fallback: a glyph the primary fonts lack (− ≈ ½ arrows, Greek, box drawing ...) comes from
+% DejaVu Sans / DejaVu Sans Mono, resolved from TeX Live by luaotfload (font names, no fontconfig).
+\directlua{
+  luaotfload.add_fallback("pubfallback", {"DejaVu Sans:mode=node;", "DejaVu Sans Mono:mode=node;"})
+  luaotfload.add_fallback("pubfallbackbold", {"DejaVu Sans/B:mode=node;", "DejaVu Sans Mono/B:mode=node;"})
+  luaotfload.add_fallback("pubfallbackmono", {"DejaVu Sans Mono:mode=node;", "DejaVu Sans:mode=node;"})
+  luaotfload.add_fallback("pubfallbackmonobold", {"DejaVu Sans Mono/B:mode=node;", "DejaVu Sans/B:mode=node;"})
+}
+\setmainfont{Atkinson Hyperlegible}[RawFeature={fallback=pubfallback},
+  BoldFeatures={RawFeature={fallback=pubfallbackbold}},BoldItalicFeatures={RawFeature={fallback=pubfallbackbold}}]
+\setmonofont{Fira Mono}[RawFeature={fallback=pubfallbackmono},
+  BoldFeatures={RawFeature={fallback=pubfallbackmonobold}},BoldItalicFeatures={RawFeature={fallback=pubfallbackmonobold}}]
+\newfontfamily\fallbackfont{DejaVu Sans}[Scale=MatchLowercase]
+\setsansfont{Atkinson Hyperlegible}[RawFeature={fallback=pubfallback},
+  BoldFeatures={RawFeature={fallback=pubfallbackbold}},BoldItalicFeatures={RawFeature={fallback=pubfallbackbold}}]
+\setkomafont{disposition}{\normalfont\sffamily\bfseries}
+\AtBeginDocument{\hypersetup{bookmarksdepth=2}}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,breaksymbolleft=\tiny\ensuremath{\hookrightarrow},commandchars=\\\{\},fontsize=\small}
+% Quarto's snugshade protrudes beyond the text block. The code box supplies the frame.
+\AtBeginDocument{\ifcsname Shaded\endcsname\RenewDocumentEnvironment{Shaded}{}{}{}\fi}
+\newcommand{\pubchapterlabel}[1]{\gdef\thepubchapterlabel{#1}}
+\pubchapterlabel{}
+% Quarto's automatic mainmatter starts before index.qmd. Keep the front chapters in roman pages,
+% then let the explicit call on the first unit start arabic pages.
+\newif\ifpubmainstarted
+\let\puboriginalmainmatter\mainmatter
+\makeatletter
+\renewcommand{\mainmatter}{\ifpubmainstarted
+    \if@openright\puboriginalmainmatter\else\clearpage\@mainmattertrue\pagenumbering{arabic}\fi
+  \else\global\pubmainstartedtrue\fi}
+\makeatother
+\renewcommand*{\chapterlinesformat}[3]{%
+  \ifx\thepubchapterlabel\empty\else
+    {\normalfont\small\bfseries\color{SteelBlue}\thepubchapterlabel\par\vspace{.45em}}%
+  \fi
+  #3}
+\tcbset{pubbase/.style={enhanced,breakable,lines before break=4,width=\linewidth,boxrule=.45pt,arc=1pt,
+  left=7pt,right=7pt,top=6pt,bottom=6pt,before skip=8pt,after skip=8pt,
+  before={\par\needspace{4\baselineskip}}}}
+\newtcolorbox{pubcode}{pubbase,colback=black!2,colframe=black!22}
+\newtcolorbox{pubanswers}{pubbase,colback=blue!3,colframe=blue!14,
+  borderline west={1.5pt}{0pt}{SteelBlue},
+  before upper={\textbf{\scriptsize\color{SteelBlue}Answers}\par\smallskip}}
+\clearpairofpagestyles
+\ihead{\headmark}
+\ohead{\pagemark}
+\automark[section]{chapter}
+\emergencystretch=3em
+\DeclareTOCStyleEntries[pagenumberwidth=4em,rightindent=5em]{tocline}{chapter,section}
+\sloppy
+% Long display equations: let amsmath break them across pages rather than overflow.
+\allowdisplaybreaks
+\AtBeginDocument{\date{@EDITION@}}
