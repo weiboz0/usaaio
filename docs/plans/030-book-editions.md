@@ -46,7 +46,7 @@ If D8 splits an edition into volumes, the PDFs are `<book>-<edition>-vol<N>.pdf`
 
 **Selected answers** are defined by `publication.yaml` `student_answers:`, a manifest selector.
 The default for both books is `{set: A}`: the Set A fundamentals practices (`docs/unit-standards.md`).
-Set B, the exam register, stays answer-free outside the Teacher's Edition.
+Sets B (exam register) and C (integration and challenge) stay answer-free outside the Teacher's Edition.
 This replaces py4kids' odd-numbered rule, which has no meaning here.
 
 | Edition | Label | Body |
@@ -76,14 +76,16 @@ The deviations from py4kids:
 
 - **Math:** `tex_math_dollars` stays on, because every lesson uses `$…$`. Raw `\begin{align}` blocks in markdown are passed through and spot-checked.
 - **Index:** the index entries are the glossary terms. Each term is indexed at the start of the unit chapter that introduces its concept (coverage map). The editions with an index are `student-print`, `student`, and `teacher`.
+- **Unit titles:** `publication.yaml` `chapters:` entries carry an explicit `title` and an optional `head`, for example `- {unit: C3-gradient-descent, title: "Optimization by Gradient Descent"}`. Manifests have no titles, and the overview H1s are inconsistent. The audit checks that the unit set matches the live units; titles come only from the config.
 - **`<details>` answers:** 74 lesson and review notebooks hide checkpoint and self-quiz answers in `<details><summary>…</summary>…</details>`. Pandoc would print their bodies inline. The publisher therefore parses every `<details>` block in a markdown cell:
   - in `student-print`, it replaces the block with one line: "Answers: open this notebook, or see the Teacher's Edition";
   - in `student`, it replaces it with a reference, and the body moves to the answers appendix;
   - in `teacher`, it renders the body inline in an "Answers" panel.
 
   An unclosed or nested `<details>` fails the build.
+  Each block gets a stable label of the form `<unit>-<notebook stem>-d<ordinal>`, so the appendix cross-references are deterministic.
 
-Notebooks are committed without outputs, so the PDFs show code without outputs.
+The publisher strips every cell output during conversion. Twenty-three notebooks (8 lessons, 15 solutions) carry committed outputs; none are printed. The PDFs show code without outputs, and a converter test plants an output cell.
 Executing notebooks for the PDFs is out of scope.
 Figures referenced by relative path are copied into the Quarto project.
 
@@ -99,7 +101,8 @@ It compiles through lualatex with a kept log, as py4kids does, and writes:
 Each script owns and replaces only its own files in `output/<book>/`, as in py4kids.
 `<book>/build/` keeps the intermediate files.
 The per-source build outputs and the exact-cardinality check are replaced by this contract.
-`docs/designs/000-project-design.md` §3.8, the Book 2 "book-local collection" sentence, and the line on what Quarto writes under `<book>/build/` are updated to say this.
+`docs/designs/000-project-design.md` §3.8 ("Book 1 mock tests and every live Book 2 unit's student-facing collection") and the line on what Quarto writes under `<book>/build/` are updated to say this.
+The current Quarto/typst path in `build-pdf.sh` is removed, along with its `.gitignore` cleanup and `test_book2_pdf_build_removes_only_new_quarto_gitignores`, so only one renderer remains. That renderer is pandoc to `.tex` to lualatex, as in py4kids.
 Design 000 is not a governance file.
 
 **D5. The audit.**
@@ -111,10 +114,10 @@ Design 000 is not a governance file.
      - no student edition lists a solution notebook outside the selected answers;
      - no student edition lists any mock-test material;
      - the `answer-key` lists only selected solutions.
-   - Content check (py4kids' `publish_audit.py` approach): every student edition's generated chapter files are scanned for fingerprints. The fingerprints are normalized lines of 40 or more characters that do not occur in the matching statement source. They come from:
+   - Content check (this plan's own design; py4kids' `solution_leak` compares whole hidden cells instead): every student edition's generated chapter files are scanned for fingerprints. The fingerprints are normalized lines of 40 or more characters that do not occur in the matching statement source. They come from:
      - (a) every solution notebook's cells;
      - (b) every mock `solutions/` file and every `rubric.md`;
-     - (c) every `<details>` body.
+     - (c) every `<details>` body. These are fingerprinted against the source notebook with its `<details>` bodies removed; otherwise every body line would match its own source.
 
      A fingerprint found anywhere in `student-print`, or outside the answers appendix in `student`, is an error.
      This is defense in depth.
@@ -184,7 +187,7 @@ Tests go in `tests/`, failing first where practical.
   - Notation follows the lessons' symbols.
   - No past-paper text.
   - Semantic line breaks.
-- [ ] **Task 3 — Publisher, theme, and `build-book.sh`.** It begins with the D8 pilot (C3, all four editions). The pilot includes a code cell containing `−`, `≈`, and `½` to prove the DejaVu fallback. The plan records the pilot numbers and the volume decision before the full build.
+- [ ] **Task 3 — Publisher, theme, and `build-book.sh`.** It begins with the D8 pilot (C3, all four editions). The pilot's build input (a fixture, not an edit to C3) adds a scratch code cell containing `−`, `≈`, and `½` to prove the DejaVu fallback. The pilot also times one handout (C3) and extrapolates to all 25 units. If the always-on handouts would cost more than 5 minutes per CI run, handouts are routed like editions (changed units only, all under `--all-books`). The plan records the pilot numbers and the volume decision before the full build.
   - Build `tools/publish.py` (`EDITIONS`, `output_stem`, `filter_edition_blocks`, notebook-to-chapter conversion, project generation for each edition), `tools/publish_theme/`, `tools/publish_output.py`, and `scripts/build-book.sh`.
   - Unit tests cover:
     - edition-marker filtering, ported from py4kids' tests;
@@ -268,6 +271,21 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
   - protected-path avoidance is now a constraint on every new committed path, and the Task 1–5 implementers are told so;
   - D8 handles scale;
   - Task 4 names the test migrations.
+
+### Review 2 — Fable (2026-10-10)
+- **Verdict**: Approve with nits. All round-1 fixes were verified against the tree.
+1. `[FIXED]` Should Fix: rule 2(c) was vacuous. → Response: `<details>` bodies are fingerprinted against the source with its bodies removed; the provenance check (Sol round 2) is primary.
+2. `[FIXED]` Should Fix: unit titles had no source. → Response: `chapters:` entries carry `title` and `head`.
+3. `[FIXED]` Should Fix: mock deduplication. → Response: first occurrence wins (same as Sol round 2, finding 3).
+4. `[FIXED]` Should Fix: 23 notebooks carry outputs. → Response: the publisher strips all outputs, with a test.
+5. `[FIXED]` Nits 5–11:
+   - Set C is named.
+   - The fingerprint design is attributed to this plan.
+   - The design-000 quote is exact.
+   - The pilot glyph cell is a fixture.
+   - Handout cost is measured, with routing if it runs over 5 minutes.
+   - `<details>` labels are stable.
+   - Only one renderer remains (the typst path is removed).
 
 ### Review 2 — Sol, `gpt-6-sol` (2026-10-10)
 - **Verdict**: Reject.
