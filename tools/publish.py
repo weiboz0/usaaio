@@ -88,7 +88,9 @@ BACK_MATTER = (("notation", "Notation"), ("glossary", "Glossary"))
 ANSWERS_APPENDIX_TITLE = "Answers to Checkpoints and Selected Practice"
 EDITION_MARK = re.compile(r"<!--\s*/?\s*edition\b")
 UNIT_LABEL = re.compile(r"^([A-Z][0-9]+(?:-[0-9]{3})?)")
-FENCE = re.compile(r"^\s{0,3}(`{3,}|~{3,})")
+# A fence opener may follow list markers (`2. ```python`); a closer is the fence alone on its line.
+FENCE = re.compile(r"^\s*(?:(?:[-*+]|\d+[.)])\s+)*(`{3,}|~{3,})")
+FENCE_CLOSE = re.compile(r"^\s*(`{3,}|~{3,})\s*$")
 HEADING = re.compile(r"^(#{1,6})(?=\s|$)")
 DETAILS_TOKEN = re.compile(r"<details\b[^>]*>|</details\s*>", re.IGNORECASE)
 SUMMARY = re.compile(r"\s*<summary\b[^>]*>(.*?)</summary\s*>", re.IGNORECASE | re.DOTALL)
@@ -189,6 +191,19 @@ def filter_edition_blocks(text: str, edition: str, source: str = "front matter")
 # --- markdown transforms (each one is re-derivable by the audit) ----------------------------
 
 
+def fence_step(line: str, fence: str | None) -> tuple[bool, str | None]:
+    """Track fenced code line by line: `(is a fence line, the open fence after this line)`."""
+    if fence is None:
+        match = FENCE.match(line)
+        if match:
+            return True, match[1]
+        return False, None
+    match = FENCE_CLOSE.match(line)
+    if match and match[1][0] == fence[0] and len(match[1]) >= len(fence):
+        return True, None
+    return False, fence
+
+
 def shift_headings(text: str, shift: int) -> str:
     """Move every ATX heading outside fenced code down by `shift` levels (capped at level 6)."""
     if shift == 0:
@@ -196,13 +211,9 @@ def shift_headings(text: str, shift: int) -> str:
     out: list[str] = []
     fence: str | None = None
     for line in text.splitlines(keepends=True):
-        match = FENCE.match(line)
-        if match:
-            marker = match[1]
-            if fence is None:
-                fence = marker[0] * len(marker)
-            elif marker.startswith(fence):
-                fence = None
+        is_fence, fence_after = fence_step(line, fence)
+        if is_fence or fence is not None:
+            fence = fence_after
             out.append(line)
             continue
         if fence is None:
@@ -222,16 +233,9 @@ def normalize_math(text: str) -> str:
     out: list[str] = []
     fence: str | None = None
     for line in text.splitlines(keepends=True):
-        match = FENCE.match(line)
-        if match:
-            marker = match[1]
-            if fence is None:
-                fence = marker[0] * len(marker)
-            elif marker.startswith(fence):
-                fence = None
-            out.append(("\x00", line))
-            continue
-        out.append(("\x00", line) if fence is not None else ("", line))
+        is_fence, fence_after = fence_step(line, fence)
+        out.append(("\x00", line) if is_fence or fence is not None else ("", line))
+        fence = fence_after
     # Re-join the prose runs so inline math may span lines; keep fenced lines verbatim.
     result: list[str] = []
     run: list[str] = []
@@ -342,14 +346,12 @@ def parse_details(text: str, where: str) -> list[Details]:
     fence: str | None = None
     fence_start = 0
     for line in text.splitlines(keepends=True):
-        match = FENCE.match(line)
-        if match:
-            marker = match[1]
-            if fence is None:
-                fence, fence_start = marker[0] * len(marker), position
-            elif marker.startswith(fence):
-                fenced.append((fence_start, position + len(line)))
-                fence = None
+        is_fence, fence_after = fence_step(line, fence)
+        if is_fence and fence is None:
+            fence_start = position
+        elif is_fence:
+            fenced.append((fence_start, position + len(line)))
+        fence = fence_after
         position += len(line)
     if fence is not None:
         fenced.append((fence_start, len(text)))
@@ -457,14 +459,10 @@ def answer_regions(cells: list[dict[str, Any]]) -> list[AnswerRegion]:
         fence: str | None = None
         offset = 0
         for line in cell["source"].splitlines(keepends=True):
-            match = FENCE.match(line)
-            if match:
-                marker = match[1]
-                if fence is None:
-                    fence = marker[0] * len(marker)
-                elif marker.startswith(fence):
-                    fence = None
-            elif fence is None:
+            is_fence, fence_after = fence_step(line, fence)
+            inside = is_fence or fence is not None
+            fence = fence_after
+            if not inside:
                 heading = HEADING.match(line)
                 if heading:
                     level = len(heading[1])

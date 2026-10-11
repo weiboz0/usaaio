@@ -5,6 +5,7 @@
 \usepackage{fancyvrb}
 \usepackage{fvextra}
 \usepackage{needspace}
+\usepackage{adjustbox}
 \usepackage{scrlayer-scrpage}
 \usepackage{imakeidx}
 \makeindex[intoc]
@@ -27,7 +28,7 @@
   BoldFeatures={RawFeature={fallback=pubfallbackbold}},BoldItalicFeatures={RawFeature={fallback=pubfallbackbold}}]
 \setkomafont{disposition}{\normalfont\sffamily\bfseries}
 \AtBeginDocument{\hypersetup{bookmarksdepth=2}}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,breaksymbolleft=\tiny\ensuremath{\hookrightarrow},commandchars=\\\{\},fontsize=\small}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,breaknonspaceingroup,breaksymbolleft=\tiny\ensuremath{\hookrightarrow},commandchars=\\\{\},fontsize=\small}
 % Quarto's snugshade protrudes beyond the text block. The code box supplies the frame.
 \AtBeginDocument{\ifcsname Shaded\endcsname\RenewDocumentEnvironment{Shaded}{}{}{}\fi}
 \newcommand{\pubchapterlabel}[1]{\gdef\thepubchapterlabel{#1}}

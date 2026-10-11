@@ -333,6 +333,16 @@ def test_details_inside_fenced_code_are_ignored() -> None:
     assert parse_details("```\n<details>\n```\n", "fixture") == []
 
 
+def test_fences_opened_after_list_markers_are_tracked() -> None:
+    text = (
+        "<details><summary>A</summary>\n\n2. ```python\n   x = 1\n   ```\n\n</details>\n"
+        "<details><summary>B</summary>\n\n   ```python\n   y = 2\n   ```\n</details>\n"
+    )
+    assert [block.summary for block in parse_details(text, "fixture")] == ["A", "B"]
+    assert publish.shift_headings("1. ```\n# not a heading\n   ```\n# H\n", 1) == (
+        "1. ```\n# not a heading\n   ```\n## H\n")
+
+
 # --- mock tests ---------------------------------------------------------------------------
 
 

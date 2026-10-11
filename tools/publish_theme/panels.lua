@@ -90,4 +90,10 @@ function Code(el)
   end
   return pandoc.RawInline('latex', '\\texttt{' .. table.concat(parts) .. '}')
 end
-return {{Header = Header, Div = Div, CodeBlock = CodeBlock, Str = Str, Code = Code}}
+-- A display equation wider than the line is scaled down to fit (never overflows the margin).
+function Math(el)
+  if not FORMAT:match('latex') or el.mathtype ~= 'DisplayMath' then return nil end
+  return pandoc.RawInline('latex', '\\[\\adjustbox{max width=\\linewidth}{$\\displaystyle ' ..
+    el.text .. '$}\\]')
+end
+return {{Header = Header, Div = Div, CodeBlock = CodeBlock, Str = Str, Code = Code, Math = Math}}
