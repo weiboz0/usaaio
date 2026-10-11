@@ -388,4 +388,26 @@ Blind solving does not apply: this plan adds no problems. The reviewers instead 
 1. `[FIXED]` Must Fix: the paragraph-form answer leak. → Response: f4d8a89 updates the publisher and the audit and adds a safety net; `grep -c` now returns 0 and the audits pass.
 2. `[WONTFIX]` Nit: Atkinson Hyperlegible's distinctive zero looks slashed in the TOC. This is the py4kids font choice and is kept for consistency.
 
+### Review 1 — Sol, `gpt-6-sol` (2026-10-11)
+- **Leak hunt:** no solution or rubric text in the print editions, the student unit chapters, sampled handouts, or the papers. Both audits are OK.
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: the KL direction wording in the Book 2 notation and glossary. → Response: rephrased as "the extra expected log loss from using Q when the data follow P" (0c12bb8). A search of the B2-022 notebooks found no matching "of Q from P" wording, so no lesson erratum is needed.
+2. `[FIXED]` Should Fix: how-to-use said answers print openly in the student books. → Response: the edition blocks of both books now describe the pointers, the appendix, and the panels (0c12bb8).
+
+### Review 1 — Fable (2026-10-11)
+- **Verified:**
+  - front-matter facts and the glossary's coverage and attribution (scripted);
+  - edition markers;
+  - the leak hunt across all student-facing PDFs;
+  - 47 page images: math, overflow, glyphs, appendix cross-references;
+  - the volume semantics.
+- **Verdict**: Reject.
+1. `[OPEN]` Must Fix: the Index is missing and raw `\printindex` prints in 10 editions (`-raw_tex` escapes the bare TeX). → Response: a raw `{=latex}` block, a regression test, and an audit rule; the glossary entries are no longer indexed.
+2. `[OPEN]` Should Fix: the print pointer names the Teacher's Edition. → Response: it now says "the answers appendix of the full Student Book".
+3. `[FIXED]` Should Fix: the false publication claim. → Response: "The course files are at github.com/weiboz0/usaaio; ask your teacher for the Answer Key and the full Student Book." (0c12bb8).
+4. `[OPEN]` Should Fix: cramped syllabus and paper tables. → Response: relative column widths in `publish_pdf.py`.
+5. `[OPEN]` Nit: every index entry also listed the glossary page. → Response: covered by fix 1.
+6. `[FIXED]` Nit: the practice-file path prefix. → Response: how-to-use says the paths are relative to the book folder.
+7. `[FIXED]` Nit: the practice-header example. → Response: a real header (`constrained coding`).
+
 ## Post-execution report
