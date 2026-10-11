@@ -108,7 +108,11 @@ Design 000 is not a governance file.
 **D5. The audit.**
 `tools/publish_audit.py` (`python -m tools.publish_audit --book <id>`) checks each built edition's generated project, `.tex`, and log:
 
-1. **Chapters.** Every live unit (a `manifest.yaml` is present) appears as a chapter, in `publication.yaml` order. In the answer key, every unit with a selected practice appears.
+1. **Chapters.** The publisher writes `scope.json` into each generated project: `full`, or the explicit unit and mock-test lists of a scoped check. The audit takes the expected set from the build invocation, never from `scope.json` alone, and fails if the two disagree.
+   - In a full build, every live unit (a `manifest.yaml` is present) appears as a chapter, in `publication.yaml` order. The teacher's mock part lists every mock test in `publication.yaml`.
+   - In a scoped check, exactly the requested units and mock tests appear, in config order.
+   - In either case, every unit in scope with a selected practice appears in the answer key.
+   - A test covers a scoped project that is missing a requested unit, and a full build that is missing a live unit.
 2. **Source isolation.**
    - Chapter lists:
      - no student edition lists a solution notebook outside the selected answers;
@@ -141,7 +145,8 @@ It runs `build-book.sh` plus the audit for a book only when the change set touch
 A unit-content change does not trigger the full multi-thousand-page renders. Instead it triggers a **unit-scoped edition check**:
 
 - `build-book.sh --book <id> --units <changed units>` generates all four editions restricted to the changed units, plus front and back matter. It renders them into `<book>/build/publish-check/` and runs the full audit: provenance, fingerprints, glyphs, references.
-- A unit-content change means a change to anything under `<book>/units/<unit>/`, or a mock-test change for the teacher's mock part.
+- A unit-content change means a change to anything under `<book>/units/<unit>/`.
+- A mock-test change (anything under `<book>/mocktests/<test>/`) adds `--mocktests <changed tests>`. The scoped check then generates the teacher's mock part for exactly those tests, which can be zero units plus one or more mock tests. It audits that part and confirms that no student edition contains it. A test covers a mock-only change set.
 - The check uses the same publisher code path, so a changed lesson's rendering, glyphs and leak isolation are validated before shipping. It costs about the pilot's per-unit time.
 
 The full edition PDFs in `output/` are rebuilt by `--all-books` before any release. Between releases they can lag content, as py4kids' gitignored PDFs do; `output/README.md` says so.
@@ -292,6 +297,11 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 1. `[FIXED]` Must Fix: content edits never re-render the editions. → Response: D6 adds a unit-scoped edition check (`build-book.sh --units`) that renders and audits all four editions for exactly the changed units on every run that touches them.
 2. `[FIXED]` Must Fix: the ≥ 40-character fingerprints miss short leaks. → Response: D5 adds a structural provenance check (a sidecar `provenance.json`, re-derived allowed blocks, exact-concatenation check); the fingerprints remain as defense in depth; tests plant short leaks.
 3. `[FIXED]` Should Fix: mock file deduplication. → Response: each file is rendered once, at its first occurrence in manifest order, in the paper, the solutions and the teacher part; a test was added.
+
+### Review 3 — Sol, `gpt-6-sol` (2026-10-10)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: mock-test edits had no edition check. → Response: D6 adds `--mocktests` to the scoped check, so a mock-only change renders and audits the teacher's mock part; a test was added.
+2. `[FIXED]` Should Fix: the chapter audit ignored scope. → Response: D5 rule 1 uses an invocation-supplied scope cross-checked against `scope.json`, with distinct full and scoped expectations and tests for both.
 
 ## Content Review
 
