@@ -372,4 +372,20 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ## Content Review
 
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
+Blind solving does not apply: this plan adds no problems. The reviewers instead fact-check the front and back matter, hunt for leaks in the student-facing PDFs, and inspect sampled page images.
+
+### Review 1 — self (2026-10-11)
+- **Spot-check:**
+  - Book 2 print: title page, practice pages, self-quiz pointer.
+  - Book 1: TOC.
+  - Book 1 student vol 2: answers appendix.
+  - Book 1 teacher vol 2: lesson page.
+  - Book 1 answer key: a page.
+  - Book 2 teacher: the r2-001 rubric with math.
+- **Leak scan:** a `pdftotext` scan of both print editions found 220 `Collected answers.` paragraphs printed in Book 2.
+- **Verdict**: Approve after the fix.
+1. `[FIXED]` Must Fix: the paragraph-form answer leak. → Response: f4d8a89 updates the publisher and the audit and adds a safety net; `grep -c` now returns 0 and the audits pass.
+2. `[WONTFIX]` Nit: Atkinson Hyperlegible's distinctive zero looks slashed in the TOC. This is the py4kids font choice and is kept for consistency.
+
 ## Post-execution report
