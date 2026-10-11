@@ -1165,9 +1165,34 @@ def test_plan019_task3_book1_pdf_sources_match_the_pinned_r1_set() -> None:
         check=False,
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    current = tuple(
+    listed = tuple(
         path.removeprefix("book1/") for path in proc.stdout.splitlines() if path.strip()
     )
+    # Plan 030 D4: build-pdf also reads the syllabus, every live unit's practice statements
+    # (handouts), and the mock solutions. The r1-001 paper sources stay the pinned set.
+    current = tuple(
+        path for path in listed
+        if path == "mocktests/r1-001/test.md"
+        or (path.startswith("mocktests/r1-001/theory/") and path.endswith(".md"))
+        or (path.startswith("mocktests/r1-001/problems/") and path.endswith(".ipynb"))
+    )
+    assert "docs/course-structure.md" in listed
+    statements = {
+        path for path in listed if path.startswith("units/") and "/practice/" in path
+    }
+    expected_statements = {
+        path.relative_to(ROOT / "book1").as_posix()
+        for path in (ROOT / "book1" / "units").glob("*/practice/p*.ipynb")
+        if not path.name.endswith("_solution.ipynb")
+    }
+    assert statements == expected_statements
+    assert not any(path.startswith("units/") and path.endswith("_solution.ipynb") for path in listed)
+    assert {
+        "mocktests/r1-001/solutions/answers.md",
+        "mocktests/r1-001/rubric.md",
+        "mocktests/r1-001/solutions/p05_solution.ipynb",
+        "mocktests/r1-001/solutions/p09_solution.ipynb",
+    } <= set(listed)
     if _plan019_commit_available(ROOT, PLAN019_PRE_CUTOVER_COMMIT):
         pinned = tuple(
             path

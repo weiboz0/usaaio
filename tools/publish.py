@@ -1121,7 +1121,8 @@ def build(repo_root: Path, book_id: str, edition: str, *, units: list[str] | Non
     if volume_spec is not None:
         subtitle = f"{book.subtitle} · Volume {volume_spec.number}: {volume_spec.title}"
     theme_tex = project / "theme" / "theme.tex"
-    theme_text = theme_tex.read_text(encoding="utf-8")
+    theme_text = theme_tex.read_text(encoding="utf-8").replace(
+        "@SHARED@", (THEME / "fonts.tex").read_text(encoding="utf-8").rstrip("\n"))
     for placeholder, value in (("@EDITION@", edition_profile["label"]),
                                ("@TITLE@", tex_escape(book.title)),
                                ("@SUBTITLE@", tex_escape(subtitle)),

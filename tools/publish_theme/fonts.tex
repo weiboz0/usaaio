@@ -1,0 +1,39 @@
+% Plan 030 shared typesetting: fonts with the DejaVu fallback, code and answer boxes, math.
+% Used by the edition theme (theme.tex, @SHARED@) and by build-pdf.sh (tools/publish_pdf.py).
+\usepackage[most]{tcolorbox}
+\usepackage[svgnames]{xcolor}
+\usepackage{fontspec}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\usepackage{needspace}
+\usepackage{adjustbox}
+% Font fallback: a glyph the primary fonts lack (− ≈ ½ arrows, Greek, box drawing ...) comes from
+% DejaVu Sans / DejaVu Sans Mono, resolved from TeX Live by luaotfload (font names, no fontconfig).
+\directlua{
+  luaotfload.add_fallback("pubfallback", {"DejaVu Sans:mode=node;", "DejaVu Sans Mono:mode=node;"})
+  luaotfload.add_fallback("pubfallbackbold", {"DejaVu Sans/B:mode=node;", "DejaVu Sans Mono/B:mode=node;"})
+  luaotfload.add_fallback("pubfallbackmono", {"DejaVu Sans Mono:mode=node;", "DejaVu Sans:mode=node;"})
+  luaotfload.add_fallback("pubfallbackmonobold", {"DejaVu Sans Mono/B:mode=node;", "DejaVu Sans/B:mode=node;"})
+}
+\setmainfont{Atkinson Hyperlegible}[RawFeature={fallback=pubfallback},
+  BoldFeatures={RawFeature={fallback=pubfallbackbold}},BoldItalicFeatures={RawFeature={fallback=pubfallbackbold}}]
+\setmonofont{Fira Mono}[RawFeature={fallback=pubfallbackmono},
+  BoldFeatures={RawFeature={fallback=pubfallbackmonobold}},BoldItalicFeatures={RawFeature={fallback=pubfallbackmonobold}}]
+\newfontfamily\fallbackfont{DejaVu Sans}[Scale=MatchLowercase]
+\setsansfont{Atkinson Hyperlegible}[RawFeature={fallback=pubfallback},
+  BoldFeatures={RawFeature={fallback=pubfallbackbold}},BoldItalicFeatures={RawFeature={fallback=pubfallbackbold}}]
+\AtBeginDocument{\hypersetup{bookmarksdepth=2}}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,breaknonspaceingroup,breaksymbolleft=\tiny\ensuremath{\hookrightarrow},commandchars=\\\{\},fontsize=\small}
+% Quarto's snugshade protrudes beyond the text block. The code box supplies the frame.
+\AtBeginDocument{\ifcsname Shaded\endcsname\RenewDocumentEnvironment{Shaded}{}{}{}\fi}
+\tcbset{pubbase/.style={enhanced,breakable,lines before break=4,width=\linewidth,boxrule=.45pt,arc=1pt,
+  left=7pt,right=7pt,top=6pt,bottom=6pt,before skip=8pt,after skip=8pt,
+  before={\par\needspace{4\baselineskip}}}}
+\newtcolorbox{pubcode}{pubbase,colback=black!2,colframe=black!22}
+\newtcolorbox{pubanswers}{pubbase,colback=blue!3,colframe=blue!14,
+  borderline west={1.5pt}{0pt}{SteelBlue},
+  before upper={\textbf{\scriptsize\color{SteelBlue}Answers}\par\smallskip}}
+% Long display equations: let amsmath break them across pages rather than overflow.
+\allowdisplaybreaks
+% Latin Modern Math has no U+29F5, unicode-math's \setminus; use the small set minus (U+2216).
+\AtBeginDocument{\renewcommand{\setminus}{\smallsetminus}}
