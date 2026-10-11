@@ -1173,7 +1173,7 @@ def test_shared_renderer_supports_live_book2_manifest_coverage() -> None:
     assert "Status: live." in rendered
     assert "live manifests reconcile every lesson, practice ID, path, and minute" in rendered
     assert "derivation-heavy Week 3" in rendered
-    assert "planned future `r2-*` final assessment follows local Week 37" in rendered
+    assert "live `r2-001` final assessment follows local Week 37" in rendered
 
 
 def test_two_manifest_renderer_derives_ranges_cadences_and_final_week(
@@ -1188,7 +1188,7 @@ def test_two_manifest_renderer_derives_ranges_cadences_and_final_week(
     assert "local weeks 1–12" in rendered
     assert "display weeks 41–52" in rendered
     assert rendered.count("255/275/420/270/380/60-minute progression") == 2
-    assert "planned future `r2-*` final assessment follows local Week 12" in rendered
+    assert "live `r2-001` final assessment follows local Week 12" in rendered
 
 
 def test_live_book2_ledger_bytes_and_presence_of_all_units_are_pinned() -> None:

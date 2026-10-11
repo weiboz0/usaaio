@@ -144,6 +144,14 @@ def _seed_book1_temp_root_inputs(repo: Path) -> None:
     pdf_sentinel = book1 / "mocktests" / "r1-001" / "theory" / f"{TEMP_BOOK1_SENTINEL}.md"
     pdf_sentinel.parent.mkdir(exist_ok=True)
     pdf_sentinel.write_text(TEMP_BOOK1_SENTINEL + "\n", encoding="utf-8")
+    # Plan 030 D4: the paper's sources are the manifest's item files, so the sentinel joins the
+    # first problem's file list (first occurrence in manifest order).
+    manifest_path = book1 / "mocktests" / "r1-001" / "manifest.yaml"
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    manifest["problems"][0]["files"] = [
+        f"theory/{TEMP_BOOK1_SENTINEL}.md", *manifest["problems"][0]["files"]
+    ]
+    manifest_path.write_text(yaml.safe_dump(manifest, sort_keys=False), encoding="utf-8")
 
 
 def _seed_book2_collision(repo: Path) -> None:
@@ -242,8 +250,16 @@ def test_book1_pdf_inputs_follow_noncanonical_registered_root(tmp_path: Path) ->
 
     assert proc.returncode == 0, proc.stdout + proc.stderr
     inputs = proc.stdout.splitlines()
-    assert len(inputs) == 10
-    assert all(path.startswith("round1/mocktests/r1-001/") for path in inputs)
+    assert all(path.startswith("round1/") for path in inputs)
+    paper = [
+        path for path in inputs
+        if path.startswith("round1/mocktests/r1-001/")
+        and "/solutions/" not in path and not path.endswith("rubric.md")
+    ]
+    assert len(paper) == 10
+    assert "round1/docs/course-structure.md" in inputs
+    assert "round1/units/C3-gradient-descent/practice/p01.ipynb" in inputs
+    assert not any(path.endswith("_solution.ipynb") and "/units/" in path for path in inputs)
 
 
 def test_fetch_reference_follows_noncanonical_registered_book1_root(
@@ -287,32 +303,38 @@ def test_fetch_reference_follows_noncanonical_registered_book1_root(
     assert not (repo / "book1").exists()
 
 
-def _write_fake_quarto(bin_dir: Path) -> None:
-    quarto = bin_dir / "quarto"
-    quarto.parent.mkdir(parents=True)
-    quarto.write_text(
+def _write_fake_lualatex(bin_dir: Path) -> None:
+    """A stand-in lualatex: writes <stem>.pdf and <stem>.log in the working directory."""
+    lualatex = bin_dir / "lualatex"
+    lualatex.parent.mkdir(parents=True)
+    lualatex.write_text(
         """#!/usr/bin/env bash
 set -euo pipefail
-source=$2
-output_dir=
-while (($#)); do
-  if [[ $1 == --output-dir ]]; then output_dir=$2; shift 2; else shift; fi
-done
-mkdir -p "$output_dir"
-output="$output_dir/${source%.*}.pdf"
-if [[ ${FAKE_QUARTO_MODE:-pass} == gitignore && ! -e .gitignore ]]; then
-  printf '/.quarto/\n' > .gitignore
-fi
-if [[ ${FAKE_QUARTO_MODE:-pass} == omit && $source == p01.ipynb ]]; then exit 0; fi
-if [[ ${FAKE_QUARTO_MODE:-pass} == zero && $source == p01.ipynb ]]; then
-  : > "$output"
+tex=${@: -1}
+stem=${tex%.tex}
+printf 'This is a fake LuaHBTeX log\\n' > "$stem.log"
+case ${FAKE_LUALATEX_MODE:-pass} in
+  glyph) printf 'Missing character: There is no X (U+2192) in font Fake!\\n' >> "$stem.log" ;;
+  fail) exit 1 ;;
+esac
+if [[ ${FAKE_LUALATEX_MODE:-pass} == zero && $stem == B2-019-attention-transformers ]]; then
+  : > "$stem.pdf"
+elif [[ ${FAKE_LUALATEX_MODE:-pass} == omit && $stem == B2-019-attention-transformers ]]; then
+  rm -f "$stem.pdf"
 else
-  printf '%%PDF-1.4 fixture\n%%%%EOF\n' > "$output"
+  printf '%%PDF-1.4 fixture\\n%%%%EOF\\n' > "$stem.pdf"
 fi
 """,
         encoding="utf-8",
     )
-    quarto.chmod(0o755)
+    lualatex.chmod(0o755)
+
+
+def _notebook_json(text: str) -> str:
+    return json.dumps({
+        "cells": [{"cell_type": "markdown", "metadata": {}, "source": text}],
+        "metadata": {}, "nbformat": 4, "nbformat_minor": 5,
+    })
 
 
 def _live_noncanonical_book2_pdf_fixture(tmp_path: Path) -> tuple[Path, Path]:
@@ -328,7 +350,7 @@ def _live_noncanonical_book2_pdf_fixture(tmp_path: Path) -> tuple[Path, Path]:
     ):
         path = unit / relative
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text("{}\n", encoding="utf-8")
+        path.write_text(_notebook_json(f"# {relative}\n\nText of {relative}.\n"), encoding="utf-8")
     (unit / "manifest.yaml").write_text(
         "unit: B2-019-attention-transformers\nbook: 2\nstatus: live\n",
         encoding="utf-8",
@@ -340,81 +362,93 @@ def _live_noncanonical_book2_pdf_fixture(tmp_path: Path) -> tuple[Path, Path]:
         encoding="utf-8",
     )
     bin_dir = tmp_path / "bin"
-    _write_fake_quarto(bin_dir)
+    _write_fake_lualatex(bin_dir)
     return repo, bin_dir
+
+
+def _run_fixture_pdf_build(repo: Path, bin_dir: Path, mode: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["bash", str(ROOT / "scripts" / "build-pdf.sh"), "--root", str(repo), "--book", "book2"],
+        cwd=repo,
+        env={
+            **os.environ,
+            "PATH": f"{bin_dir}:{os.environ['PATH']}",
+            "FAKE_LUALATEX_MODE": mode,
+            "USAAIO_PYTHON": sys.executable,
+        },
+        capture_output=True,
+        text=True,
+        check=False,
+    )
 
 
 @pytest.mark.parametrize(
     ("mode", "expected_fragment"),
     [
-        pytest.param("pass", "rendered 4 source(s)", id="exact-cardinality"),
+        pytest.param("pass", "rendered 1 PDF(s)", id="one-handout"),
         pytest.param("omit", "missing PDF output", id="omitted-output"),
         pytest.param("zero", "zero-byte PDF output", id="zero-byte-output"),
+        pytest.param("glyph", "Missing character", id="missing-glyph-log"),
+        pytest.param("fail", "lualatex failed", id="render-error"),
     ],
 )
-def test_book2_pdf_build_uses_registered_root_and_enforces_one_output_per_source(
+def test_book2_pdf_build_uses_registered_root_and_owns_its_output_files(
     tmp_path: Path, mode: str, expected_fragment: str
 ) -> None:
     repo, bin_dir = _live_noncanonical_book2_pdf_fixture(tmp_path)
-    script = ROOT / "scripts" / "build-pdf.sh"
-
-    proc = subprocess.run(
-        ["bash", str(script), "--root", str(repo), "--book", "book2"],
-        cwd=repo,
-        env={
-            **os.environ,
-            "PATH": f"{bin_dir}:{os.environ['PATH']}",
-            "FAKE_QUARTO_MODE": mode,
-            "USAAIO_PYTHON": sys.executable,
-        },
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+    proc = _run_fixture_pdf_build(repo, bin_dir, mode)
     output = proc.stdout + proc.stderr
 
     if mode == "pass":
         assert proc.returncode == 0, output
-        expected = {
-            "units/B2-019-attention-transformers/lesson.pdf",
-            "units/B2-019-attention-transformers/lessons/01-attention.pdf",
-            "units/B2-019-attention-transformers/review.pdf",
-            "units/B2-019-attention-transformers/practice/p01.pdf",
-        }
-        actual = {
-            path.relative_to(repo / "advanced" / "build").as_posix()
-            for path in (repo / "advanced" / "build").rglob("*.pdf")
-        }
-        assert actual == expected
+        handout = repo / "output" / "book2" / "handouts" / "B2-019-attention-transformers.pdf"
+        assert handout.read_bytes().startswith(b"%PDF")
+        build = repo / "advanced" / "build" / "pdf" / "handouts"
+        # The handout is the practice statement only, through the shared converter, and the
+        # LaTeX log is kept next to the PDF.
+        markdown = (build / "B2-019-attention-transformers.md").read_text(encoding="utf-8")
+        assert "Text of practice/p01.ipynb." in markdown
+        assert "p01_solution" not in markdown and "lessons/01-attention" not in markdown
+        assert (build / "B2-019-attention-transformers.log").is_file()
+        assert not any(path.name == ".gitignore" for path in (repo / "advanced").rglob("*"))
     else:
-        assert proc.returncode != 0
+        assert proc.returncode == 1, output
     assert expected_fragment in output
 
 
-def test_book2_pdf_build_removes_only_new_quarto_gitignores(tmp_path: Path) -> None:
+def test_pdf_build_refreshes_only_its_own_output_files(tmp_path: Path) -> None:
     repo, bin_dir = _live_noncanonical_book2_pdf_fixture(tmp_path)
-    unit = repo / "advanced/units/B2-019-attention-transformers"
-    existing = unit / ".gitignore"
-    existing.write_text("keep-this-file\n", encoding="utf-8")
+    target = repo / "output" / "book2"
+    (target / "handouts").mkdir(parents=True)
+    stale = target / "handouts" / "B2-000-removed.pdf"
+    stale.write_bytes(b"%PDF stale")
+    edition = target / "book2-student.pdf"
+    edition.write_bytes(b"%PDF edition")
+    proc = _run_fixture_pdf_build(repo, bin_dir, "pass")
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert not stale.exists()
+    assert edition.read_bytes() == b"%PDF edition"
 
+
+def test_pdf_build_skips_with_exit_3_without_lualatex(tmp_path: Path) -> None:
+    repo, _ = _live_noncanonical_book2_pdf_fixture(tmp_path)
+    empty_bin = tmp_path / "empty-bin"
+    empty_bin.mkdir()
+    for tool in ("bash", "env", "dirname", "pwd"):
+        located = shutil.which(tool)
+        if located:
+            (empty_bin / tool).symlink_to(located)
     proc = subprocess.run(
-        ["bash", str(ROOT / "scripts/build-pdf.sh"), "--root", str(repo), "--book", "book2"],
+        ["bash", str(ROOT / "scripts" / "build-pdf.sh"), "--root", str(repo), "--book", "book2"],
         cwd=repo,
-        env={
-            **os.environ,
-            "PATH": f"{bin_dir}:{os.environ['PATH']}",
-            "FAKE_QUARTO_MODE": "gitignore",
-            "USAAIO_PYTHON": sys.executable,
-        },
+        env={**os.environ, "PATH": str(empty_bin), "HOME": str(tmp_path),
+             "USAAIO_PYTHON": sys.executable},
         capture_output=True,
         text=True,
         check=False,
     )
-
-    assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert existing.read_text(encoding="utf-8") == "keep-this-file\n"
-    assert not (unit / "lessons/.gitignore").exists()
-    assert not (unit / "practice/.gitignore").exists()
+    assert proc.returncode == 3, proc.stdout + proc.stderr
+    assert "SKIP build-pdf" in proc.stderr
 
 
 def test_book2_pdf_rejects_student_source_symlink_outside_registered_root(

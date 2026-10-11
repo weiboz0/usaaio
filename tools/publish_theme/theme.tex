@@ -1,0 +1,32 @@
+% Plan 030 theme (ported from py4kids' tools/publish_theme/theme.tex).
+@SHARED@
+\usepackage{scrlayer-scrpage}
+\usepackage{imakeidx}
+\makeindex[intoc]
+\uppertitleback{@TITLE@\\@SUBTITLE@\\First edition, 2026}
+\lowertitleback{Copyright © 2026 Weibo Zhou\\Written for Python 3.12 or newer\\Course files: https://github.com/weiboz0/usaaio (folder @FOLDER@/)}
+\setkomafont{disposition}{\normalfont\sffamily\bfseries}
+\newcommand{\pubchapterlabel}[1]{\gdef\thepubchapterlabel{#1}}
+\pubchapterlabel{}
+% Quarto's automatic mainmatter starts before index.qmd. Keep the front chapters in roman pages,
+% then let the explicit call on the first unit start arabic pages.
+\newif\ifpubmainstarted
+\let\puboriginalmainmatter\mainmatter
+\makeatletter
+\renewcommand{\mainmatter}{\ifpubmainstarted
+    \if@openright\puboriginalmainmatter\else\clearpage\@mainmattertrue\pagenumbering{arabic}\fi
+  \else\global\pubmainstartedtrue\fi}
+\makeatother
+\renewcommand*{\chapterlinesformat}[3]{%
+  \ifx\thepubchapterlabel\empty\else
+    {\normalfont\small\bfseries\color{SteelBlue}\thepubchapterlabel\par\vspace{.45em}}%
+  \fi
+  #3}
+\clearpairofpagestyles
+\ihead{\headmark}
+\ohead{\pagemark}
+\automark[section]{chapter}
+\emergencystretch=3em
+\DeclareTOCStyleEntries[pagenumberwidth=4em,rightindent=5em]{tocline}{chapter,section}
+\sloppy
+\AtBeginDocument{\date{@EDITION@}}

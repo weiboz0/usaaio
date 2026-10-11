@@ -56,7 +56,7 @@ require_enforcement_file "$scope_verifier" \
   9153dc4396799356c6d77fe19b439d742d6d31a75c388624374f0bb0eb5129ef
 require_enforcement_file "$scope_inventory" \
   100644 \
-  9d19b79f2ef31d1fcc51c5955fae484be1bd5d38545095d74a2df2c0a3eef1e2
+  9e3448476a116737001189a13758021773a169484ce0f38a950bf54ad7c5afe8
 
 uv run python "$scope_verifier" --protected-cached "$scope_inventory"
 uv run python "$scope_verifier" --protected-diff "$scope_inventory"

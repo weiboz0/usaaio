@@ -13,6 +13,9 @@ from tools.model import load_syllabus_contract
 
 _REGISTRY_KEYS = frozenset({"books_version", "books"})
 _BOOK_KEYS = frozenset({"id", "number", "root", "depends_on"})
+# Optional publication keys (Plan 030 D1). A `publication: true` book must carry a title and a
+# subtitle; tools key on the `publication` flag, never on book ids.
+_BOOK_OPTIONAL_KEYS = frozenset({"title", "subtitle", "publication"})
 _IMPORT_KEYS = frozenset({"book", "units", "concepts"})
 _EVIDENCE_IMPORT_KEYS = frozenset({"book", "concepts", "lesson_paths", "practices", "assessments"})
 _FORBIDDEN_LEGACY_ROOTS = (
@@ -42,6 +45,9 @@ class BookSpec:
     number: int
     root: Path
     depends_on: tuple[str, ...]
+    title: str = ""
+    subtitle: str = ""
+    publication: bool = False
 
 
 @dataclass(frozen=True)
@@ -133,6 +139,32 @@ def _require_exact_keys(raw: dict[str, Any], expected: frozenset[str], *, label:
             f"{label} must contain exactly {sorted(expected)}; "
             f"missing={missing}, unexpected={unexpected}"
         )
+
+
+def _require_book_keys(raw: dict[str, Any], *, label: str) -> None:
+    actual = set(raw)
+    missing = sorted(repr(key) for key in _BOOK_KEYS - actual)
+    unexpected = sorted(repr(key) for key in actual - _BOOK_KEYS - _BOOK_OPTIONAL_KEYS)
+    if missing or unexpected:
+        raise ValueError(
+            f"{label} must contain exactly {sorted(_BOOK_KEYS)} plus optional "
+            f"{sorted(_BOOK_OPTIONAL_KEYS)}; missing={missing}, unexpected={unexpected}"
+        )
+
+
+def _publication_fields(raw: dict[str, Any], *, label: str) -> tuple[str, str, bool]:
+    publication = raw.get("publication", False)
+    if type(publication) is not bool:
+        raise ValueError(f"{label}.publication must be a boolean")
+    texts: list[str] = []
+    for key in ("title", "subtitle"):
+        value = raw.get(key, "")
+        if not isinstance(value, str) or value.strip() != value or "\n" in value:
+            raise ValueError(f"{label}.{key} must be a single-line string without edge spaces")
+        if publication and not value:
+            raise ValueError(f"{label}: a publication book needs a nonempty {key}")
+        texts.append(value)
+    return texts[0], texts[1], publication
 
 
 def _validated_book_id(value: object, *, label: str) -> str:
@@ -242,7 +274,8 @@ def load_book_catalog(repo_root: str | Path) -> BookCatalog:
         label = f"{registry_path}: books[{index}]"
         if not isinstance(record, dict):
             raise ValueError(f"{label} must be a mapping")  # noqa: TRY004
-        _require_exact_keys(record, _BOOK_KEYS, label=label)
+        _require_book_keys(record, label=label)
+        title, subtitle, publication = _publication_fields(record, label=label)
         book_id = _validated_book_id(record["id"], label=f"{label}.id")
         number = record["number"]
         if type(number) is not int or number <= 0:
@@ -264,6 +297,9 @@ def load_book_catalog(repo_root: str | Path) -> BookCatalog:
                 number=number,
                 root=book_root,
                 depends_on=dependencies,
+                title=title,
+                subtitle=subtitle,
+                publication=publication,
             )
         )
 
@@ -627,3 +663,312 @@ def resolve_qualified_import(catalog: BookCatalog, importer: BookSpec, identity:
         if category == "assessment":
             return _resolve_assessment(owner, local_id)
     raise AssertionError("unreachable import category")
+
+
+# --- per-book publication config (Plan 030 D1; py4kids `publication_config_errors`) ----------
+
+PUBLICATION_CONFIG = "publication.yaml"
+RUNNING_HEAD_MAX = 32
+_PUBLICATION_KEYS = frozenset({"publication_version", "student_answers", "chapters", "mocktests", "audit"})
+_PUBLICATION_OPTIONAL_KEYS = frozenset({"volumes"})
+_CHAPTER_KEYS = frozenset({"unit", "title"})
+_CHAPTER_OPTIONAL_KEYS = frozenset({"head"})
+_SELECTOR_KEYS = frozenset({"set", "type", "difficulty"})
+_VOLUME_KEYS = frozenset({"title", "first", "last"})
+_VOLUMES_KEYS = frozenset({"editions", "parts"})
+_AUDIT_KEYS = frozenset({"page_warning"})
+_MOCKTEST_ID = re.compile(r"r\d+-\d{3}\Z")
+# The edition names (tools.publish.EDITIONS holds their profiles and must use exactly these).
+EDITION_NAMES = ("student-print", "student", "answer-key", "teacher")
+
+
+@dataclass(frozen=True)
+class ChapterSpec:
+    unit: str
+    title: str
+    head: str
+
+
+@dataclass(frozen=True)
+class VolumeSpec:
+    number: int
+    title: str
+    units: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class PublicationConfig:
+    """Everything book-specific the publisher and the audit need (`<book>/publication.yaml`)."""
+
+    chapters: tuple[ChapterSpec, ...]
+    student_answers: dict[str, tuple[str, ...]]
+    mocktests: tuple[str, ...]
+    volume_editions: tuple[str, ...]
+    volumes: tuple[VolumeSpec, ...]
+    audit: dict[str, Any]
+
+    def chapter(self, unit: str) -> ChapterSpec:
+        for chapter in self.chapters:
+            if chapter.unit == unit:
+                return chapter
+        raise KeyError(unit)
+
+    @property
+    def units(self) -> tuple[str, ...]:
+        return tuple(chapter.unit for chapter in self.chapters)
+
+
+def output_pdf_name(book_id: str, edition: str, volume: int | None = None) -> str:
+    """An edition PDF's file name: `<book>-<edition>.pdf` or `<book>-<edition>-vol<N>.pdf`."""
+    suffix = "" if volume is None else f"-vol{volume}"
+    return f"{book_id}-{edition}{suffix}.pdf"
+
+
+def live_units(book: BookSpec) -> tuple[str, ...]:
+    """The book's live units: `units/<unit>/` directories that hold a `manifest.yaml`."""
+    _require_book_root(book)
+    return tuple(
+        manifest.parent.name
+        for manifest in sorted(book.root.glob("units/*/manifest.yaml"))
+        if not _path_has_symlink_component(book.root, manifest)
+    )
+
+
+def live_mocktests(book: BookSpec) -> tuple[str, ...]:
+    _require_book_root(book)
+    return tuple(
+        manifest.parent.name
+        for manifest in sorted(book.root.glob("mocktests/*/manifest.yaml"))
+        if not _path_has_symlink_component(book.root, manifest)
+    )
+
+
+def _key_errors(raw: dict[str, Any], required: frozenset[str], optional: frozenset[str],
+                label: str) -> list[str]:
+    errors: list[str] = []
+    missing = sorted(required - set(raw))
+    unexpected = sorted(set(raw) - required - optional)
+    if missing:
+        errors.append(f"{label}: missing key(s) {missing}")
+    if unexpected:
+        errors.append(f"{label}: unknown key(s) {unexpected}")
+    return errors
+
+
+def _single_line(value: object) -> bool:
+    return isinstance(value, str) and bool(value) and value.strip() == value and "\n" not in value
+
+
+def _parse_publication_config(
+    book: BookSpec,
+) -> tuple[PublicationConfig | None, list[str]]:
+    where = f"{book.id}/{PUBLICATION_CONFIG}"
+    if not book.publication:
+        return None, [f"{book.id}: not a publication book (books.yaml publication: true)"]
+    diagnostic = _book_root_diagnostic(book)
+    if diagnostic is not None:
+        return None, [diagnostic]
+    path = book.root / PUBLICATION_CONFIG
+    if not path.is_file() or _path_has_symlink_component(book.root, path):
+        return None, [f"{where}: missing (every publication book needs one; Plan 030 D1)"]
+    try:
+        raw = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError) as exc:
+        return None, [f"{where}: cannot load: {exc}"]
+    if not isinstance(raw, dict):
+        return None, [f"{where}: must be a mapping"]
+    errors = _key_errors(raw, _PUBLICATION_KEYS, _PUBLICATION_OPTIONAL_KEYS, where)
+    if errors:
+        return None, errors
+
+    if raw["publication_version"] != 1 or type(raw["publication_version"]) is not int:
+        errors.append(f"{where}: publication_version must be integer 1")
+
+    # chapters: the unit order, explicit titles, and running heads for long titles.
+    chapters: list[ChapterSpec] = []
+    raw_chapters = raw["chapters"]
+    if not isinstance(raw_chapters, list) or not raw_chapters:
+        errors.append(f"{where}: chapters must be a nonempty list")
+        raw_chapters = []
+    seen_units: set[str] = set()
+    for index, entry in enumerate(raw_chapters):
+        label = f"{where}: chapters[{index}]"
+        if not isinstance(entry, dict):
+            errors.append(f"{label}: must be a mapping")
+            continue
+        entry_errors = _key_errors(entry, _CHAPTER_KEYS, _CHAPTER_OPTIONAL_KEYS, label)
+        if entry_errors:
+            errors.extend(entry_errors)
+            continue
+        unit, title, head = entry["unit"], entry["title"], entry.get("head")
+        if not _single_line(unit) or not _single_line(title):
+            errors.append(f"{label}: unit and title must be nonempty single-line strings")
+            continue
+        if unit in seen_units:
+            errors.append(f"{label}: duplicate unit {unit}")
+            continue
+        seen_units.add(unit)
+        if head is None:
+            if len(title) > RUNNING_HEAD_MAX:
+                errors.append(
+                    f"{label}: title of {unit} is over {RUNNING_HEAD_MAX} characters and "
+                    "needs a running head (head:)"
+                )
+                continue
+            head = title
+        elif not _single_line(head) or len(head) > RUNNING_HEAD_MAX:
+            errors.append(
+                f"{label}: head must be a single-line string of at most {RUNNING_HEAD_MAX} characters"
+            )
+            continue
+        chapters.append(ChapterSpec(unit=unit, title=title, head=head))
+    live = live_units(book)
+    missing_units = sorted(set(live) - seen_units)
+    extra_units = sorted(seen_units - set(live))
+    if missing_units:
+        errors.append(f"{where}: chapters omit live unit(s) {missing_units}")
+    if extra_units:
+        errors.append(f"{where}: chapters list unit(s) that are not live {extra_units}")
+
+    # student_answers: a manifest practice-row selector (default {set: A}).
+    selector: dict[str, tuple[str, ...]] = {}
+    raw_selector = raw["student_answers"]
+    if not isinstance(raw_selector, dict) or not raw_selector:
+        errors.append(f"{where}: student_answers must be a nonempty mapping")
+    else:
+        unknown = sorted(set(raw_selector) - _SELECTOR_KEYS)
+        if unknown:
+            errors.append(f"{where}: student_answers has unknown key(s) {unknown}")
+        for key, value in raw_selector.items():
+            if key not in _SELECTOR_KEYS:
+                continue
+            values = [value] if isinstance(value, str) else value
+            if not isinstance(values, list) or not values or not all(
+                _single_line(item) for item in values
+            ):
+                errors.append(f"{where}: student_answers.{key} must be a string or list of strings")
+                continue
+            selector[key] = tuple(values)
+
+    # mocktests: the Teacher's Edition mock part.
+    mocktests: list[str] = []
+    raw_mocktests = raw["mocktests"]
+    if not isinstance(raw_mocktests, list):
+        errors.append(f"{where}: mocktests must be a list")
+        raw_mocktests = []
+    present = set(live_mocktests(book))
+    for test in raw_mocktests:
+        if not isinstance(test, str) or _MOCKTEST_ID.fullmatch(test) is None:
+            errors.append(f"{where}: mocktests entry {test!r} is not a mock-test id")
+            continue
+        if test in mocktests:
+            errors.append(f"{where}: duplicate mock test {test}")
+            continue
+        if test not in present:
+            errors.append(f"{where}: mock test {test} is listed but absent (mocktests/{test}/manifest.yaml)")
+            continue
+        mocktests.append(test)
+
+    # volumes (optional, D8): contiguous unit ranges covering every chapter, in order.
+    volume_editions: tuple[str, ...] = ()
+    volumes: list[VolumeSpec] = []
+    if "volumes" in raw:
+        raw_volumes = raw["volumes"]
+        if not isinstance(raw_volumes, dict):
+            errors.append(f"{where}: volumes must be a mapping")
+        else:
+            volume_errors = _key_errors(raw_volumes, _VOLUMES_KEYS, frozenset(), f"{where}: volumes")
+            errors.extend(volume_errors)
+            if not volume_errors:
+                editions = raw_volumes["editions"]
+                if not isinstance(editions, list) or not editions or not all(
+                    _single_line(item) for item in editions
+                ):
+                    errors.append(f"{where}: volumes.editions must be a nonempty list of edition names")
+                elif sorted(set(editions) - set(EDITION_NAMES)) or len(set(editions)) != len(editions):
+                    errors.append(
+                        f"{where}: volumes.editions must be distinct names from {list(EDITION_NAMES)}"
+                    )
+                else:
+                    volume_editions = tuple(editions)
+                volumes, part_errors = _parse_volumes(raw_volumes["parts"], chapters, where)
+                errors.extend(part_errors)
+
+    audit = raw["audit"]
+    if not isinstance(audit, dict):
+        errors.append(f"{where}: audit must be a mapping")
+        audit = {}
+    else:
+        errors.extend(_key_errors(audit, frozenset(), _AUDIT_KEYS, f"{where}: audit"))
+        page_warning = audit.get("page_warning")
+        if page_warning is not None and (type(page_warning) is not int or page_warning <= 0):
+            errors.append(f"{where}: audit.page_warning must be a positive integer")
+
+    if errors:
+        return None, errors
+    return (
+        PublicationConfig(
+            chapters=tuple(chapters),
+            student_answers=selector,
+            mocktests=tuple(mocktests),
+            volume_editions=volume_editions,
+            volumes=tuple(volumes),
+            audit=dict(audit),
+        ),
+        [],
+    )
+
+
+def _parse_volumes(
+    raw_parts: object, chapters: list[ChapterSpec], where: str
+) -> tuple[list[VolumeSpec], list[str]]:
+    if not isinstance(raw_parts, list) or len(raw_parts) < 2:
+        return [], [f"{where}: volumes.parts must list at least two volumes"]
+    order = [chapter.unit for chapter in chapters]
+    errors: list[str] = []
+    volumes: list[VolumeSpec] = []
+    expected_start = 0
+    for index, part in enumerate(raw_parts):
+        label = f"{where}: volumes.parts[{index}]"
+        if not isinstance(part, dict):
+            errors.append(f"{label}: must be a mapping")
+            return [], errors
+        part_errors = _key_errors(part, _VOLUME_KEYS, frozenset(), label)
+        if part_errors:
+            return [], errors + part_errors
+        if not _single_line(part["title"]):
+            errors.append(f"{label}: title must be a nonempty single-line string")
+        first, last = part["first"], part["last"]
+        if first not in order or last not in order:
+            errors.append(f"{label}: first/last must be configured chapter units")
+            return [], errors
+        start, stop = order.index(first), order.index(last)
+        if start != expected_start or stop < start:
+            errors.append(
+                f"{label}: volumes must be contiguous chapter ranges in config order "
+                f"(expected to start at {order[expected_start] if expected_start < len(order) else 'end'})"
+            )
+            return [], errors
+        volumes.append(VolumeSpec(number=index + 1, title=str(part["title"]),
+                                  units=tuple(order[start:stop + 1])))
+        expected_start = stop + 1
+    if expected_start != len(order):
+        errors.append(f"{where}: volumes leave chapter(s) {order[expected_start:]} uncovered")
+    return volumes, errors
+
+
+def publication_config_errors(repo_root: str | Path, book_id: str) -> list[str]:
+    """Every problem with a book's `publication.yaml` (empty when it is valid)."""
+    try:
+        book = load_book_catalog(repo_root).by_id(book_id)
+    except (KeyError, ValueError) as exc:
+        return [str(exc)]
+    return _parse_publication_config(book)[1]
+
+
+def load_publication_config(book: BookSpec) -> PublicationConfig:
+    """Load and validate a publication book's `publication.yaml`; fail loudly when it is bad."""
+    config, errors = _parse_publication_config(book)
+    if config is None:
+        raise ValueError("; ".join(errors))
+    return config

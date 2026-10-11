@@ -25,6 +25,7 @@
 - [x] 022 — C12 p20 K-means near-tie erratum (deterministic lowest-seed rule)
 - [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
+- [x] 030 — py4kids-style book editions: student-print, student, answer key and teacher PDFs, plus syllabus, handouts and mock-test papers and solutions, for both books
 - [x] 024 — Round 2 live blueprint and mock test r2-001 (Book 2 final assessment) — **Book 2 complete**
 - [x] 029 — Round 2 GPU scientific-modeling capstone (B2-024) and the `optional-colab-l4` compute policy
 - [x] 028 — Round 2 generative models and diffusion (B2-023: GANs, DDPM, Stable Diffusion architecture with a CPU latent-diffusion analogue)
@@ -32,6 +33,10 @@
 - [x] 026 — py4kids 3-way review roster and Opus dispatch; deferred-policy test clock pinned
 
 ## Deferred, with a named owner plan still to be written
+
+- [ ] **Erratum: C10 `p12_solution.ipynb` lost math delimiters.** Its prose has `(A_j=\frac1{50}\sum…)` where `\(…\)` was intended, so the Plan 030 editions print the LaTeX literally (they are read with `-raw_tex`). Fix the delimiters through the errata lifecycle.
+- [ ] **Erratum review: KL direction wording in B2-022 `lessons/02-kl-divergence.ipynb`.** It says "divergence of $Q$ from $P$" for $\mathrm{KL}(P\|Q)$. Align it with the back-matter wording ("extra expected log loss from using $Q$ when the data follow $P$").
+- [ ] **Overfull lines in the editions (Plan 030).** Three `lll` longtables in one C9 practice are about 51 pt too wide. Book 2's Teacher's Edition has 47 small overfull boxes (≤ 40 pt), mostly inline code in narrow table cells.
 
 - [x] **Execute the remaining Plan 015 content tranches.** Done: Plans 020, 021, 027, 028, 029 shipped B2-020…B2-024 and Plan 024 shipped r2-001.
 - [x] **Unit capacity: C7 and C5.** Plan 017 resolves the decision substantively: C7 gains a

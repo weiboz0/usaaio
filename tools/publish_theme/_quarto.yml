@@ -1,0 +1,34 @@
+project:
+  type: book
+  output-dir: _book
+book:
+  title: @TITLE@
+  subtitle: @SUBTITLE@
+  author: "Weibo Zhou"
+  output-file: "@OUTPUT@"
+  chapters:
+@FRONT@
+@CHAPTERS@
+format:
+  pdf:
+    from: markdown+tex_math_single_backslash-raw_tex
+    pdf-engine: lualatex
+    latex-auto-install: false
+    latex-max-runs: 3
+    documentclass: scrbook
+    classoption: [@CLASSOPTION@, headings=normal]
+    papersize: custom
+    geometry: [paperwidth=7in, paperheight=10in, inner=0.85in, outer=0.7in, top=0.8in, bottom=0.8in]
+    mainfont: "Atkinson Hyperlegible"
+    monofont: "Fira Mono"
+    fontsize: 10pt
+    colorlinks: true
+    toc: true
+    toc-depth: 2
+    number-sections: false
+    keep-tex: true
+    include-in-header: theme/theme.tex
+    filters: [theme/panels.lua]
+    code-overflow: wrap
+execute:
+  enabled: false

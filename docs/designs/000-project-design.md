@@ -19,7 +19,7 @@ tailored for content development rather than software.
   semesters on the post-tranche roadmap). Delivery remains notebooks + printable PDFs.
 - **Target stage:** Book 1 is the complete Round 1 course for the 3-hour proctored exam;
   Book 2 is the complete Round 2 course and declares Book 1 as its prerequisite book.
-- **Format:** notebooks as the source of truth, with a build step rendering printable PDF test papers (Quarto).
+- **Format:** notebooks as the source of truth, with build steps rendering printable PDFs: book editions (Quarto) and syllabus, handouts and mock-test papers (pandoc and lualatex).
 - **Curriculum:** syllabus-driven units derived from the official USAAIO scope and past problems;
   each unit = lesson notebook + practice problems; mock tests sample across units via topic tags.
 - **Self-contained at a Calculus AB baseline:** the assumed background is a high schooler with
@@ -220,8 +220,15 @@ Trivial errata (typos) skip diagnosis and go straight to fix + content-review ga
    every mock test draws only on concepts taught by existing units (merge blocker).
 7. **Practice coverage** — `tools coverage-check` verifies every concept in a unit's
    `concepts-taught` is exercised by at least one tagged practice problem (merge blocker).
-8. **PDF build** — Quarto writes only under the selected book's `build/` (gitignored):
-   Book 1 mock tests and every live Book 2 unit's student-facing collection.
+8. **PDF build** — `scripts/build-pdf.sh --book <id>` writes each book's syllabus
+   (`docs/course-structure.md`), one practice handout per live unit, and each mock test's
+   paper and solutions into the gitignored `output/<book>/` (Plan 030 D4).
+   It renders from the edition publisher's shared converter through pandoc and lualatex,
+   keeps intermediate files and LaTeX logs under the selected book's `build/` (gitignored),
+   and fails on a missing glyph.
+   The four edition PDFs per book (`scripts/build-book.sh`, Quarto) are change-routed:
+   publication inputs trigger a full render plus `tools/publish_audit.py`, unit or mock-test
+   changes trigger a scoped check, and `scripts/ci-local.sh --all-books` renders everything.
 9. **Lint** — `ruff` on `tools/`, plus the collision guards.
 
 ## 4. Agent dispatch
