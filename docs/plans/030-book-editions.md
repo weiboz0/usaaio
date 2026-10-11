@@ -42,76 +42,117 @@ The tools key on the `publication` flag, never on book ids.
 **D2. Four editions, with py4kids names and usaaio semantics.**
 `tools/publish.py` defines `EDITIONS` with the same four names.
 Each PDF is `output/<book>/<book>-<edition>.pdf`.
+If D8 splits an edition into volumes, the PDFs are `<book>-<edition>-vol<N>.pdf` instead.
+
+**Selected answers** are defined by `publication.yaml` `student_answers:`, a manifest selector.
+The default for both books is `{set: A}`: the Set A fundamentals practices (`docs/unit-standards.md`).
+Set B, the exam register, stays answer-free outside the Teacher's Edition.
+This replaces py4kids' odd-numbered rule, which has no meaning here.
 
 | Edition | Label | Body |
 |---|---|---|
-| `student-print` | Student Book — Print Edition | Front matter, then each unit's overview (`lesson.ipynb`), lessons (`lessons/*.ipynb`), review (`review.ipynb`), and practice statements. Practice notebooks print their markdown cells only, plus a one-line "Practice file: `units/<unit>/practice/pNN.ipynb`" pointer. Back matter. No answers. |
-| `student` | Student Book — Full Edition | Like print, but practice notebooks print every cell, including starter code. Adds an "Answers to Selected Practice" appendix with the odd-numbered practice solutions. Each odd practice carries a reference to its answer. |
-| `answer-key` | Answer Key | Short intro, then one chapter per unit with the odd-numbered practice solutions (the statement title, then the solution notebook's cells). |
-| `teacher` | Teacher's Edition | The full student book, plus `for-teachers.md`. Each practice is followed by its full solution. A final part has every mock test from `publication.yaml`: the paper, then `solutions/answers.md`, `rubric.md`, and `solutions/*_solution.ipynb`. |
+| `student-print` | Student Book — Print Edition | Front matter, then for each unit: the overview (`lesson.ipynb`), the lessons (`lessons/*.ipynb`), the review (`review.ipynb`), and the practice statements. Practice notebooks print their markdown cells only, plus a one-line "Practice file: `units/<unit>/practice/pNN.ipynb`" pointer. Back matter. No answers of any kind (see D3 on `<details>`). |
+| `student` | Student Book — Full Edition | Like print, but practice notebooks print every cell, including starter code. Adds an appendix, "Answers to Checkpoints and Selected Practice". For each unit it has the `<details>` checkpoint and review answers, then the selected-answer solutions. Each selected practice and each checkpoint points to its answer. |
+| `answer-key` | Answer Key | A short intro, then one chapter per unit: the selected-answer solutions (the practice title, then the solution notebook's cells). |
+| `teacher` | Teacher's Edition | The full student book plus `for-teachers.md`. `<details>` answers appear inline as a labelled "Answers" panel. Every practice is followed by its full solution. A final part holds every mock test listed in `publication.yaml`: the paper (D4 order), then `solutions/answers.md`, `rubric.md`, and `solutions/pNN_solution.ipynb` in problem order. |
 
-Student editions never read a `*_solution.ipynb` file except through the odd-numbered answers path.
-They never read mock-test `solutions/` or `rubric.md`.
-Edition-specific front-matter text uses py4kids' `<!-- edition: NAME -->` … `<!-- /edition -->` markers, filtered by the same rules (unknown, nested, stray or unclosed markers fail the build).
+Student editions read a `*_solution.ipynb` file only through the selected-answers path.
+They never read mock-test material.
+Edition-specific front-matter text uses py4kids' `<!-- edition: NAME -->` … `<!-- /edition -->` markers, filtered by the same rules: an unknown, nested, stray or unclosed marker fails the build.
 
 **D3. Rendering follows the py4kids engine, with math enabled.**
-The pipeline:
+`tools/publish.py` converts notebooks to Quarto chapters without executing them (`execute: enabled: false`).
+It generates one Quarto book project per edition (and per volume) under `<book>/build/publish/<edition>/`.
+`scripts/build-book.sh --book <id>` renders the editions in parallel, each with its own TeX and Quarto caches.
+`BOOK_BUILD_PARALLEL=0` makes the renders sequential.
+It runs two LaTeX draft-mode audit passes, then copies the PDFs to `output/<book>/`.
 
-- `tools/publish.py` converts notebooks to Quarto chapters without executing them (`execute: enabled: false`). It generates one Quarto book project per edition under `<book>/build/publish/<edition>/`.
-- `scripts/build-book.sh --book <id>` renders the editions in parallel, each with its own TeX and Quarto caches. `BOOK_BUILD_PARALLEL=0` makes the renders sequential. It runs two LaTeX draft-mode audit passes, then copies the PDFs to `output/<book>/`.
+The theme copies py4kids':
 
-The theme copies py4kids': lualatex, `scrbook`, a 7 × 10 in page, Atkinson Hyperlegible and Fira Mono with DejaVu fallback, wrapped code, a TOC to depth 2, and an index in the book editions.
-One deliberate deviation: py4kids turns off `tex_math_dollars`; usaaio keeps it on, because every lesson uses `$…$` math.
+- lualatex and `scrbook` on a 7 × 10 in page, with wrapped code and a TOC to depth 2;
+- Atkinson Hyperlegible and Fira Mono with DejaVu fallback. Here they resolve from TeX Live through luaotfload by font name, not through fontconfig; Task 3 verifies this.
+
+The deviations from py4kids:
+
+- **Math:** `tex_math_dollars` stays on, because every lesson uses `$…$`. Raw `\begin{align}` blocks in markdown are passed through and spot-checked.
+- **Index:** the index entries are the glossary terms. Each term is indexed at the start of the unit chapter that introduces its concept (coverage map). The editions with an index are `student-print`, `student`, and `teacher`.
+- **`<details>` answers:** 74 lesson and review notebooks hide checkpoint and self-quiz answers in `<details><summary>…</summary>…</details>`. Pandoc would print their bodies inline. The publisher therefore parses every `<details>` block in a markdown cell:
+  - in `student-print`, it replaces the block with one line: "Answers: open this notebook, or see the Teacher's Edition";
+  - in `student`, it replaces it with a reference, and the body moves to the answers appendix;
+  - in `teacher`, it renders the body inline in an "Answers" panel.
+
+  An unclosed or nested `<details>` fails the build.
+
 Notebooks are committed without outputs, so the PDFs show code without outputs.
 Executing notebooks for the PDFs is out of scope.
 Figures referenced by relative path are copied into the Quarto project.
-Lesson and practice cells keep their order; a cell tagged `hide-in-print`, if any exists, is dropped in `student-print` only.
 
 **D4. Handouts, syllabus, and mock-test PDFs follow py4kids' `build-pdf.sh` role.**
-`scripts/build-pdf.sh --book <id>` keeps the per-source rendering role and its `--list-inputs` contract. It writes:
+`scripts/build-pdf.sh --book <id>` keeps its `--list-inputs` contract and the containment protections: the noncanonical root and symlinks.
+It compiles through lualatex with a kept log, as py4kids does, and writes:
 
-- `output/<book>/syllabus.pdf`, from `<book>/docs/course-structure.md` (the readable course structure; `syllabus.md`'s canonical YAML block is not reader-facing).
-- `output/<book>/handouts/<unit>.pdf`: one handout per unit, with that unit's practice statement notebooks concatenated in order (no solutions).
-- `output/<book>/mocktests/<test>-paper.pdf`: `test.md`, the theory items, and the problem notebooks.
-- `output/<book>/mocktests/<test>-solutions.pdf`: `solutions/answers.md`, `rubric.md`, and `solutions/*_solution.ipynb` (the real layout of both `r1-001` and `r2-001`; tests use both).
+- `output/<book>/syllabus.pdf` from `<book>/docs/course-structure.md`, the readable course structure. `syllabus.md`'s canonical YAML block is not reader-facing.
+- `output/<book>/handouts/<unit>.pdf`: one handout per unit, with that unit's practice statement notebooks in order, and `<details>` handled as in `student-print`. Book 1 gains these per-unit handouts.
+- `output/<book>/mocktests/<test>-paper.pdf`: `test.md`, then the items in `manifest.yaml` problem order. Each item's `theory/pNN.md` precedes its `problems/pNN.ipynb` (r2-001 interleaves them).
+- `output/<book>/mocktests/<test>-solutions.pdf`: `solutions/answers.md`, `rubric.md` (root), and `solutions/pNN_solution.ipynb` in problem order. This is the real layout of both `r1-001` and `r2-001`, and the tests use both.
 
 Each script owns and replaces only its own files in `output/<book>/`, as in py4kids.
 `<book>/build/` keeps the intermediate files.
-The existing per-source build outputs and their exact-cardinality check may be replaced; their tests are updated to the new contract in the same task.
+The per-source build outputs and the exact-cardinality check are replaced by this contract.
+`docs/designs/000-project-design.md` §3.8, the Book 2 "book-local collection" sentence, and the line on what Quarto writes under `<book>/build/` are updated to say this.
+Design 000 is not a governance file.
 
 **D5. The audit.**
 `tools/publish_audit.py` (`python -m tools.publish_audit --book <id>`) checks each built edition's generated project, `.tex`, and log:
 
-1. Every live unit (`manifest.yaml` present) appears as a chapter, in `publication.yaml` order. In the answer key, every unit with an odd practice appears.
-2. Source isolation:
-   - No student edition's chapter list contains a solution notebook, except the odd-numbered answers in the `student` appendix.
-   - No student edition contains mock-test material.
-   - The `answer-key` contains only odd-numbered solutions.
-   - Content check (the py4kids `publish_audit.py` approach): each student edition's generated chapter files are scanned for solution content. A fingerprint is built from every solution notebook's code cells and from every mock `solutions/` and `rubric.md` file: normalized lines of 40 characters or more that do not occur in the matching statement notebook. Any fingerprint found outside the `student` odd-answers appendix is an error.
-3. A "Missing character" entry in the LaTeX log is an error. This is the py4kids `pdf_glyphs.py` rule. It applies to every PDF either script builds: editions, syllabus, handouts, and mock papers and solutions. `build-pdf.sh` therefore compiles through lualatex with a kept log, as py4kids does.
-4. Undefined references or labels in the draft-mode log are errors.
-5. Page counts are recorded, but they produce warnings only.
+1. **Chapters.** Every live unit (a `manifest.yaml` is present) appears as a chapter, in `publication.yaml` order. In the answer key, every unit with a selected practice appears.
+2. **Source isolation.**
+   - Chapter lists:
+     - no student edition lists a solution notebook outside the selected answers;
+     - no student edition lists any mock-test material;
+     - the `answer-key` lists only selected solutions.
+   - Content check (py4kids' `publish_audit.py` approach): every student edition's generated chapter files are scanned for fingerprints. The fingerprints are normalized lines of 40 or more characters that do not occur in the matching statement source. They come from:
+     - (a) every solution notebook's cells;
+     - (b) every mock `solutions/` file and every `rubric.md`;
+     - (c) every `<details>` body.
 
-**D6. CI routing follows py4kids.**
-`scripts/ci-local.sh` step "PDF build" runs `build-pdf.sh` for every book on every run.
-It runs `build-book.sh` plus the audit only for a book whose change set touches one of:
+     A fingerprint found anywhere in `student-print`, or outside the answers appendix in `student`, is an error.
+3. **Glyphs.** A "Missing character" entry in any LaTeX log is an error (py4kids' `pdf_glyphs.py` rule). This covers every PDF either script builds: editions, syllabus, handouts, and mock papers and solutions.
+4. **References.** Undefined references or labels in the draft-mode log are errors.
+5. **Glossary.** The glossary is a superset of the concepts the book introduces.
+6. **Page counts** are recorded and produce warnings only.
 
-- that book root;
-- `tools/`, `scripts/`, `books.yaml`, `pyproject.toml`, or `uv.lock`.
+**D6. CI routing (py4kids `ci_scope.py`, narrowed for cost).**
+`scripts/ci-local.sh` runs `build-pdf.sh` for every book on every run.
+It runs `build-book.sh` plus the audit for a book only when the change set touches that book's publication inputs:
 
-The change set is the union of:
-- the committed diff against the merge-base with `origin/main`;
-- staged, unstaged, and untracked files.
+- `<book>/publication.yaml`, `<book>/front-matter/`, or `<book>/back-matter/`;
+- `tools/publish*.py`, `tools/publish_theme/`, `tools/books.py`, or `scripts/build-book.sh`;
+- `books.yaml`, `pyproject.toml`, or `uv.lock`.
 
-The routing is fail-safe: if `origin/main` or the merge-base is unavailable, every book renders. This follows py4kids `tools/ci_scope.py`.
-Otherwise CI prints `SKIP build-book: <book> unchanged`.
-`scripts/ci-local.sh --all-books` forces every edition to render.
-This SKIP is a permanent, change-routed skip, not a "plan unshipped" skip, and `output/README.md` says so.
+Ordinary unit content changes do not trigger the multi-thousand-page renders.
+Their leak and glyph risks are still covered:
+
+- `build-pdf.sh` renders every unit's handouts on every run;
+- the publisher's source-isolation unit tests run on every run.
+
+`scripts/ci-local.sh --all-books` renders every edition and is the release gate. Task 6 runs it.
+The change set is the union of the committed diff against the merge-base with `origin/main` and the staged, unstaged, and untracked files.
+If `origin/main` or the merge-base is unavailable, every book renders (fail-safe).
+An unrouted book prints `INFO build-book: <book> unchanged (change-routed)`, not `SKIP`, so `SKIP` keeps its AGENTS.md meaning.
 
 **D7. `output/`.**
-`.gitignore` gains `output/**/*.pdf`.
-`output/README.md` is committed and follows the py4kids table format: each book's files, what each file is, and the script that makes it.
-It has no GitHub-release section; publishing a release stays out of scope.
+`.gitignore` gains `output/**/*.pdf`, `output/**/*.log`, and `output/**/*.tex`.
+`output/README.md` is committed in the py4kids table format: the files of each book, what each is, and the script that makes it.
+It lists PDFs only and has no GitHub-release section; a release stays out of scope.
+
+**D8. Scale: the pilot, the budget, and volumes.**
+py4kids' largest book is 32 notebooks and about 430K characters of source. Its editions run 410 to 922 pages and build in about 20 minutes.
+usaaio Book 1 has 544 student-facing notebooks (about 2.3M characters) plus 437 solutions; Book 2 has 197 plus 148.
+Before the full build, Task 3 runs a pilot: one Book 1 unit (C3) through all four editions. It records pages and seconds per edition and extrapolates to both books, and the numbers go in this plan.
+The budget per edition PDF is at most 1,200 pages and at most 30 minutes of render time.
+An edition projected over budget is split into volumes along `publication.yaml` `volumes:`. These are contiguous unit ranges along curriculum parts; Book 1 splits naturally into Foundations (F1–F7) and Core (C1–C12).
+The audit and `output/README.md` follow the split.
 
 ## Implementation tasks
 
@@ -132,34 +173,40 @@ Tests go in `tests/`, failing first where practical.
   - `how-to-use.md` maps the course folders: unit lessons, practice, solutions only for teachers, and mock tests.
   - `how-to-use.md` names the reading-page conventions of these notebooks.
   - Edition markers apply where the editions differ.
-  - The glossary covers each concept the book introduces (`<book>/curriculum/coverage-map.yaml`), one definition per line.
+  - The glossary covers each concept the book introduces (`<book>/curriculum/coverage-map.yaml`); each entry is a bold term plus a definition of 2 lines or fewer.
   - Notation follows the lessons' symbols.
   - No past-paper text.
   - Semantic line breaks.
-- [ ] **Task 3 — Publisher, theme, and `build-book.sh`.**
+- [ ] **Task 3 — Publisher, theme, and `build-book.sh`.** It begins with the D8 pilot (C3, all four editions). The pilot includes a code cell containing `−`, `≈`, and `½` to prove the DejaVu fallback. The plan records the pilot numbers and the volume decision before the full build.
   - Build `tools/publish.py` (`EDITIONS`, `output_stem`, `filter_edition_blocks`, notebook-to-chapter conversion, project generation for each edition), `tools/publish_theme/`, `tools/publish_output.py`, and `scripts/build-book.sh`.
   - Unit tests cover:
     - edition-marker filtering, ported from py4kids' tests;
     - each edition's chapter list for a fixture book;
     - print practice cells being markdown-only;
-    - the odd-only answer selection;
+    - the `student_answers` selector;
+    - the `<details>` handling in each edition, using a planted `<details>` cell, plus unclosed and nested failures;
+    - the mock-paper order against `manifest.yaml`, using the interleaved r2-001 layout;
+    - the index entries;
     - the teacher's mock-test part.
 - [ ] **Task 4 — `build-pdf.sh` rework.** Produce the syllabus, handouts, and mock-test paper and solutions PDFs into `output/<book>/` (D4). Migrate every test that pins the old contract in the same commit:
   - the `--list-inputs` set pinned in `tests/test_integration.py`;
   - the `build-pdf.sh` cases in `tests/test_book_isolation.py` and `tests/test_clean_checkout.py`.
 
-  Keep `--list-inputs` and the noncanonical-root and symlink containment protections.
-  Add a failing-log glyph test for one handout render.
+  - Keep `--list-inputs` and the noncanonical-root and symlink containment protections.
+  - Add a failing-log glyph test for one handout render.
+  - Rewrite `tests/test_integration.py::test_plan019_task3_book1_pdf_sources_match_the_pinned_r1_set` (Book 1 now has handouts), the `--list-inputs` fingerprints and fake-quarto cardinality tests in `tests/test_book_isolation.py`, and the exact `ci-local.sh` line in `tests/test_integration.py`.
+  - Update design 000 §3.8 (D4).
 - [ ] **Task 5 — Audit, CI routing, `output/README.md`, and `.gitignore`.** Implement D5–D7. Add tests for:
-  - each audit rule, with a planted solution chapter in a student edition, solution code planted inside an ordinary student unit chapter, and a planted "Missing character" log line;
-  - the CI routing decision, as a pure function over a list of changed paths. It must cover staged, unstaged, and untracked changes, and fall back to rendering everything when `origin/main` is missing.
+  - each audit rule, with a planted solution chapter in a student edition, solution code planted inside an ordinary student unit chapter, a planted `<details>` body, a planted `rubric.md` line, and a planted "Missing character" log line;
+  - the CI routing decision, as a pure function over a list of changed paths. It must cover staged, unstaged, and untracked changes, and fall back to rendering everything when `origin/main` is missing. It also covers an ordinary unit-content change that does not trigger the editions.
 - [ ] **Task 6 — Verification phase.**
   - Run `scripts/ci-local.sh --all-books` on a clean tip, and run it once more without `--all-books` after cleaning `__pycache__`.
   - For each book, record in the post-execution report:
     - each edition's page count and render time;
     - the handout, syllabus, and mock PDFs produced.
   - Visually spot-check rendered pages with `pdftoppm -png -r 60`:
-    - the title page, a TOC page, and a math-heavy lesson page per book;
+    - the title page, a TOC page, and a math-heavy lesson page per book, including one raw `\begin{align}` block;
+    - a `<details>` checkpoint in `student-print`, `student` (appendix), and `teacher` (panel);
     - a practice page in `student-print` versus `student`;
     - an answer-key page;
     - a Teacher's Edition mock-test page.
@@ -182,9 +229,9 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ### Review 1 — self (2026-10-10)
 - **Verdict**: Approve with suggestions.
-1. `[OPEN]` Should Fix: `scripts/verify-staged-scope.py` (`pre-merge-guard`) rejects committed paths in its protected categories. These include any path containing `token`, `/build/` or `/students/`. → Every new committed path (test fixtures in particular) must avoid them. Fixture books are built under `tmp_path`, never under a committed `build/` directory.
-2. `[OPEN]` Should Fix: scale. 1,326 unit notebooks feed the editions, so the Teacher's Edition may run to thousands of pages. → Task 6 records each edition's render time and page count. If an edition fails a LaTeX capacity limit, the publisher may split it into volumes (`<book>-<edition>-vol<N>.pdf`), and the audit and `output/README.md` follow the split.
-3. `[OPEN]` Nit: `tests/test_integration.py` asserts the exact `ci-local.sh` build-pdf line, and `tests/test_book_isolation.py` and `tests/test_clean_checkout.py` exercise `build-pdf.sh`. → Tasks 4 and 5 update them to the new contract in the same commit as the script change.
+1. `[FIXED]` Should Fix: `scripts/verify-staged-scope.py` (`pre-merge-guard`) rejects committed paths in its protected categories. These include any path containing `token`, `/build/` or `/students/`. → Every new committed path (test fixtures in particular) must avoid them. Fixture books are built under `tmp_path`, never under a committed `build/` directory.
+2. `[FIXED]` Should Fix: scale. 1,326 unit notebooks feed the editions, so the Teacher's Edition may run to thousands of pages. → Task 6 records each edition's render time and page count. If an edition fails a LaTeX capacity limit, the publisher may split it into volumes (`<book>-<edition>-vol<N>.pdf`), and the audit and `output/README.md` follow the split.
+3. `[FIXED]` Nit: `tests/test_integration.py` asserts the exact `ci-local.sh` build-pdf line, and `tests/test_book_isolation.py` and `tests/test_clean_checkout.py` exercise `build-pdf.sh`. → Tasks 4 and 5 update them to the new contract in the same commit as the script change.
 
 ### Review 1 — Sol, `gpt-6-sol` (2026-10-10)
 - **Verdict**: Reject.
@@ -193,6 +240,27 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 3. `[FIXED]` Must Fix: the registry and PDF contract tests need a wider migration. → Response: Tasks 1 and 4 name the fixture registries, the pinned `--list-inputs` set, and the isolation and clean-checkout cases; root and symlink protections are kept.
 4. `[FIXED]` Should Fix: glyph checks on every PDF. → Response: D5 rule 3 covers every PDF; build-pdf compiles through lualatex with a kept log; a failing-log test was added.
 5. `[FIXED]` Should Fix: fail-safe routing. → Response: D6 takes the union of the committed diff and staged, unstaged and untracked changes, and renders everything when `origin/main` is missing; tests cover these cases.
+
+### Review 1 — Fable (2026-10-10)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: `<details>` answers would leak into the student editions. → Response: D3 adds a `<details>` policy for each edition; D5 adds a fingerprint check on `<details>` bodies; tests were added.
+2. `[FIXED]` Must Fix: scale and CI time were unmeasured. → Response: D8 adds the C3 pilot, a budget of ≤ 1,200 pages and ≤ 30 min per PDF, and volume splitting. D6 narrows the routing to publication inputs, and `--all-books` is the release gate.
+3. `[FIXED]` Must Fix: design 000 §3.8 and the pinned tests. → Response: D4 and Task 4 name the design edits and every test that gets rewritten.
+4. `[FIXED]` Should Fix: mock paths and order. → Response: `solutions/answers.md` and `solutions/pNN_solution.ipynb`; the paper follows manifest problem order with theory interleaved; a test was added.
+5. `[FIXED]` Should Fix: odd-numbered answers are meaningless here. → Response: the `student_answers: {set: A}` selector in `publication.yaml`.
+6. `[FIXED]` Should Fix: the index had no source. → Response: glossary terms, indexed at the introducing unit.
+7. `[FIXED]` Should Fix: font resolution. → Response: fonts come from TeX Live through luaotfload; the pilot includes a glyph-fallback cell.
+8. `[FIXED]` Should Fix: audit tests. → Response: planted `<details>` and `rubric.md` cases were added.
+9. `[FIXED]` Nit: the change-routed message is `INFO`, not `SKIP`.
+10. `[FIXED]` Nit: `.gitignore` covers `output/**/*.log` and `*.tex`; the README lists PDFs only.
+11. `[FIXED]` Nit: glossary entries are 2 lines or fewer, and the audit checks that the glossary covers the introduced concepts.
+12. `[FIXED]` Nit: a raw `align` block was added to the spot-check list.
+
+### Review 1 — self, follow-up
+- Self findings 1–3 are `[FIXED]`:
+  - protected-path avoidance is now a constraint on every new committed path, and the Task 1–5 implementers are told so;
+  - D8 handles scale;
+  - Task 4 names the test migrations.
 
 ## Content Review
 
