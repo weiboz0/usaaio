@@ -340,6 +340,10 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 ### Implementation amendments (self, 2026-10-10)
 - The Task 2 author found that many lessons, and most Book 2 lessons, print checkpoint answers openly under answer headings. D3 now covers these open answer sections exactly like `<details>` bodies; the D2 rule "no answers in `student-print`" holds unchanged. This is within the existing D2/D3 intent, not a scope expansion.
 - The glossary's source of introduced concepts is pinned to the manifests' `concepts_taught`.
+- Task 6 spot-check (self, 2026-10-11): `book2-student-print` printed 220 inline checkpoint answers from B2-021–024. They are paragraphs beginning `**Collected answers.**`, which neither the heading rule nor the audit recognized.
+  - The answer-region rule now also covers paragraphs beginning `**Collected answers.**` or `**Collected checkpoint answers.**`, in both the publisher and the audit.
+  - The audit also fails on any unexplained `Collected answers` line in `student-print`.
+  - Book 1 `**Answer C.**`-style lines are worked-example solutions, which are taught content, and are left unchanged.
 
 ### D8 pilot and volume decision (Task 3, 2026-10-11)
 - **Pilot:** C3 fixture plus the glyph cell, sequential, warm caches.
