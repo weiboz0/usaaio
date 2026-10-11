@@ -233,7 +233,7 @@ Tests go in `tests/`, failing first where practical.
     - a Teacher's Edition mock-test page.
   - Fix any overflow, broken math, or missing glyph found.
   - The gate reviewers receive these page images.
-- [ ] **Task 7 — Post-execution report, `TODO.md`, PR, `pre-merge-guard --pr`, and squash-merge.**
+- [x] **Task 7 — Post-execution report, `TODO.md`, PR, `pre-merge-guard --pr`, and squash-merge.**
 
 ## Out of scope
 
@@ -487,3 +487,5 @@ Blind solving does not apply: this plan adds no problems. The reviewers instead 
 - the B2-022 KL wording review;
 - overfull lines (C9 longtables; small boxes in Book 2's Teacher's Edition).
 
+
+**Final authoritative CI (2026-10-11):** `scripts/ci-local.sh --all-books` on clean tip 7a46b72 — ci-local: ALL GREEN. Every edition was rendered and audited, and `pre-merge-guard` passed. The overlap scan printed `SKIP` because the gitignored reference corpus is absent from this worktree. This plan changes no mock-test or practice statement that the scan covers.
