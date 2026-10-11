@@ -22,6 +22,7 @@ are refused (`tools.books.resolve_contained_path`).
 from __future__ import annotations
 
 import argparse
+import math
 import os
 import re
 import shutil
@@ -176,8 +177,11 @@ def target_markdown(repo_root: Path, book: BookSpec, target: Target) -> str:
 
 TABLE_SEPARATOR = re.compile(r"^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$")
 TABLE_WRAP_AT = 72  # pandoc's default --columns: a longer row makes a pipe table wrap
-LONGEST_SHARE = 0.55
-MIN_SHARE = 0.07
+# Line capacity of the letter-page text block (6.7 in at 10 pt, about 110 characters, less a margin for wide glyphs), and the
+# per-column padding (two \tabcolsep) in characters. Code characters (Fira Mono) are wider.
+LINE_CHARACTERS = 95
+CELL_PADDING = 3
+CODE_WIDTH = 1.2
 
 
 def _cells(row: str) -> list[str]:
@@ -187,19 +191,44 @@ def _cells(row: str) -> list[str]:
     return [cell.strip() for cell in re.split(r"(?<!\\)\|", inner)]
 
 
+def longest_token(cell: str) -> float:
+    """The width, in average characters, of a cell's longest unbreakable token.
+
+    Text breaks at spaces and after hyphens and slashes; inline code also after `_ ( ) , : = +`
+    (the theme's break points, panels.lua). Markdown emphasis markers are not printed.
+    """
+    widest = 0.0
+    for index, part in enumerate(re.split(r"`", cell)):
+        is_code = index % 2 == 1
+        text = part if is_code else part.replace("**", "").replace("*", "")
+        pieces = re.split(r"[\s]+|(?<=[-/])" + (r"|(?<=[_(),:=+])" if is_code else ""), text)
+        for piece in pieces:
+            if piece:
+                widest = max(widest, len(piece) * (CODE_WIDTH if is_code else 1.0))
+    return widest
+
+
 def column_shares(rows: list[list[str]], columns: int) -> list[float]:
-    """Relative widths from each column's longest cell; the widest column gets >= 55%."""
-    weights = [max([len(row[i]) for row in rows if i < len(row)] or [1]) or 1
-               for i in range(columns)]
-    total = sum(weights)
-    shares = [max(MIN_SHARE, weight / total) for weight in weights]
-    widest = max(range(columns), key=lambda i: shares[i])
-    if columns > 1 and shares[widest] < LONGEST_SHARE:
-        others = sum(share for i, share in enumerate(shares) if i != widest)
-        shares = [LONGEST_SHARE if i == widest else share * (1 - LONGEST_SHARE) / others
-                  for i, share in enumerate(shares)]
-    total = sum(shares)
-    return [share / total for share in shares]
+    """Relative column widths: each column at least as wide as its longest token (header cells
+    included), so no word breaks; the rest goes to the columns with the most text. When the
+    minimums exceed the line, the shares are proportional to the longest tokens instead."""
+    minimums = []
+    lengths = []
+    for i in range(columns):
+        cells = [row[i] for row in rows if i < len(row)]
+        token = max([longest_token(cell) for cell in cells] or [1.0])
+        minimums.append((token + CELL_PADDING) / LINE_CHARACTERS)
+        lengths.append(max([len(cell) for cell in cells] or [1]))
+    if sum(minimums) >= 1:
+        total = sum(minimums)
+        return [minimum / total for minimum in minimums]
+    spare = 1 - sum(minimums)
+    # Squared, so the long-text column takes most of the spare width.
+    extra = [max(0.0, length - (minimum * LINE_CHARACTERS)) ** 2 for length, minimum
+             in zip(lengths, minimums, strict=True)]
+    total_extra = sum(extra) or 1.0
+    return [minimum + spare * part / total_extra for minimum, part
+            in zip(minimums, extra, strict=True)]
 
 
 def widen_tables(markdown: str) -> str:
@@ -230,10 +259,10 @@ def widen_tables(markdown: str) -> str:
             out.extend(block)
             index = end
             continue
-        shares = column_shares(rows or [header], len(header))
+        shares = column_shares([header, *rows], len(header))
         parts = []
         for align, share in zip(aligns, shares, strict=True):
-            dashes = "-" * max(3, round(share * 100))
+            dashes = "-" * max(3, math.ceil(share * 200))
             left = ":" if align.startswith(":") else ""
             right = ":" if align.endswith(":") else ""
             parts.append(left + dashes + right)

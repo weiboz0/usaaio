@@ -402,15 +402,33 @@ def test_index_chapter_reaches_latex_as_a_command(repo: Path) -> None:
 
 
 def test_build_pdf_gives_wide_tables_relative_widths() -> None:
-    from tools.publish_pdf import widen_tables
+    from tools.publish_pdf import (
+        CELL_PADDING,
+        LINE_CHARACTERS,
+        _cells,
+        longest_token,
+        widen_tables,
+    )
 
-    long_text = "F1-scientific-python (prereqs: none): sessions 1, 2, 330 practice minutes."
-    table = (f"| Week | Units and sessions covered | Gate |\n|---:|---|---|\n"
-             f"| 1 | {long_text} | No gate. |\n")
-    separator = widen_tables(table).splitlines()[1]
-    widths = [len(part.strip(":")) for part in separator.strip("|").split("|")]
-    assert separator.startswith("|") and separator.split("|")[1].endswith(":")
-    assert widths[1] >= 55 and sum(widths) >= 95
+    long_text = ("F1-scientific-python (prereqs: none): sessions 1, 2, 330 practice minutes; "
+                 "then F2-vectors (prereqs: F1-scientific-python): session 1.")
+    table = (f"| Week | Semester | Units and sessions covered | Independent minutes | Gate |\n"
+             f"|---:|:---:|---|---:|---|\n"
+             f"| 1 | S1 | {long_text} | 330 | No unit-review gate. |\n"
+             f"| 2 | S1 | short | 275 | F1-scientific-python review gate. |\n")
+    lines = widen_tables(table).splitlines()
+    separator = lines[1]
+    dashes = [len(part.strip(":")) for part in separator.strip("|").split("|")]
+    shares = [count / sum(dashes) for count in dashes]
+    rows = [_cells(line) for line in (lines[0], *lines[2:])]
+    for column, share in enumerate(shares):
+        token = max(longest_token(row[column]) for row in rows)
+        # No column is narrower than its longest unbreakable token (header cells included).
+        assert share >= (token + CELL_PADDING) / LINE_CHARACTERS * 0.98, (column, share, token)
+    assert shares[2] == max(shares)  # the spare width goes to the long-text column
+    assert separator.split("|")[1].endswith(":") and separator.split("|")[2].startswith(":")
+    assert longest_token("`problems/p01.ipynb` (Parts 1.11-1.13)") == pytest.approx(
+        len("p01.ipynb") * 1.2)
     narrow = "| a | b |\n|---|---|\n| 1 | 2 |\n"
     assert widen_tables(narrow) == narrow
     fenced = "```\n" + table + "```\n"
