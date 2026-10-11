@@ -64,3 +64,5 @@
 % Long display equations: let amsmath break them across pages rather than overflow.
 \allowdisplaybreaks
 \AtBeginDocument{\date{@EDITION@}}
+% Latin Modern Math has no U+29F5, unicode-math's \setminus; use the small set minus (U+2216).
+\AtBeginDocument{\renewcommand{\setminus}{\smallsetminus}}

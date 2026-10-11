@@ -11,7 +11,7 @@ book:
 @CHAPTERS@
 format:
   pdf:
-    from: markdown+tex_math_single_backslash
+    from: markdown+tex_math_single_backslash-raw_tex
     pdf-engine: lualatex
     latex-auto-install: false
     latex-max-runs: 3

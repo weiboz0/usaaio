@@ -237,7 +237,7 @@ def test_student_answers_selector(repo: Path, tmp_path: Path) -> None:
     assert "SOLUTION1 = 42" in appendix
     assert "return_42" not in appendix and "SOLUTIONU2" not in appendix
     unit = (student / "U1-alpha.qmd").read_text()
-    assert "*Answer: see page \\pageref{ans-U1-p01}.*" in unit
+    assert "*Answer: see page `\\pageref{ans-U1-p01}`{=latex}.*" in unit
     assert "ans-U1-p02" not in unit
     for edition in ("student-print", "student", "answer-key"):
         text = _project_text(build(repo, "book1", edition).path)
@@ -270,7 +270,7 @@ def test_details_handling_per_edition(repo: Path) -> None:
     unit = (student / "U1-alpha.qmd").read_text()
     label = "U1-alpha-lesson-d1"
     assert "DETAILSBODY" not in unit
-    assert f"*Answers: Checkpoint 1 (page \\pageref{{{label}}}).*" in unit
+    assert f"*Answers: Checkpoint 1 (page `\\pageref{{{label}}}`{{=latex}}).*" in unit
     appendix = (student / "answers.qmd").read_text()
     assert f"### Unit Overview — Checkpoint 1 {{#{label}}}" in appendix
     assert "DETAILSBODY four" in appendix
@@ -289,7 +289,7 @@ def test_open_answer_sections_are_handled_like_details(repo: Path) -> None:
     student = build(repo, "book1", "student").path
     unit = (student / "U1-alpha.qmd").read_text()
     assert "OPENANSWER" not in unit and "ANSWERCODE" not in unit
-    assert "*Answers: page \\pageref{U1-alpha-01-first-d1}.*" in unit
+    assert "*Answers: page `\\pageref{U1-alpha-01-first-d1}`{=latex}.*" in unit
     appendix = (student / "answers.qmd").read_text()
     assert "### Session 01: First Steps — Collected answers {#U1-alpha-01-first-d1}" in appendix
     assert "OPENANSWER the answer is seven" in appendix and "ANSWERCODE = 7" in appendix
@@ -458,6 +458,8 @@ def test_jupyter_only_math_is_made_latex_safe() -> None:
     assert publish.normalize_math(r"$Q\'(w)$") == r"$Q'(w)$"
     assert publish.normalize_math(r"$C=\texttt{components_}$") == r"$C=\texttt{components\_}$"
     assert publish.normalize_math(r"$Q_{\rm svd}$") == r"$Q_{\mathrm{svd}}$"
+    assert publish.normalize_math(r"\(K_{\rm bad}\) and \[x^\*\]") == (
+        r"\(K_{\mathrm{bad}}\) and \[x^*\]")
     # Inline code is never touched.
     assert publish.normalize_math(r"`x^\*` and `{\rm a}`") == r"`x^\*` and `{\rm a}`"
 

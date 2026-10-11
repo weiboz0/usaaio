@@ -107,7 +107,7 @@ FRONT_MATTER = re.compile(r"\A---\n.*?\n---\n", re.DOTALL)
 POINTER_OPEN = "*Answers"
 POINTER_CLOSE = ": open this notebook, or see the Teacher's Edition.*"
 PRACTICE_FILE = "*Practice file:* `{path}`"
-SELECTED_ANSWER_REF = "*Answer: see page \\pageref{{{label}}}.*"
+SELECTED_ANSWER_REF = "*Answer: see page `\\pageref{{{label}}}`{{=latex}}.*"
 
 
 class PublishError(ValueError):
@@ -262,6 +262,13 @@ def _normalize_inline_math(text: str) -> str:
     length = len(text)
     while index < length:
         char = text[index]
+        if char == "\\" and index + 1 < length and text[index + 1] in "([":
+            closer = "\\)" if text[index + 1] == "(" else "\\]"
+            close = text.find(closer, index + 2)
+            if close >= 0:
+                out.append(text[index:index + 2] + _math_escapes(text[index + 2:close]) + closer)
+                index = close + 2
+                continue
         if char == "\\" and index + 1 < length:
             out.append(text[index:index + 2])
             index += 2
@@ -643,7 +650,7 @@ class Publisher:
                     if index:
                         chapter.scaffold(", ", sep="")
                     self._emit_piece(chapter, name, 0, sep="")
-                reference = f"page \\pageref{{{label}}}"
+                reference = f"page `\\pageref{{{label}}}`{{=latex}}"
                 chapter.scaffold(f" ({reference})" if unit.names else reference, sep="")
                 self.answers.append(AnswerEntry(
                     unit=ctx["unit"], heading=f"{ctx['section']} — {unit.heading}", label=label,
