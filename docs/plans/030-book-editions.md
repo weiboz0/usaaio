@@ -48,7 +48,7 @@ Each PDF is `output/<book>/<book>-<edition>.pdf`.
 | `student-print` | Student Book — Print Edition | Front matter, then each unit's overview (`lesson.ipynb`), lessons (`lessons/*.ipynb`), review (`review.ipynb`), and practice statements. Practice notebooks print their markdown cells only, plus a one-line "Practice file: `units/<unit>/practice/pNN.ipynb`" pointer. Back matter. No answers. |
 | `student` | Student Book — Full Edition | Like print, but practice notebooks print every cell, including starter code. Adds an "Answers to Selected Practice" appendix with the odd-numbered practice solutions. Each odd practice carries a reference to its answer. |
 | `answer-key` | Answer Key | Short intro, then one chapter per unit with the odd-numbered practice solutions (the statement title, then the solution notebook's cells). |
-| `teacher` | Teacher's Edition | The full student book, plus `for-teachers.md`. Each practice is followed by its full solution. A final part has every mock test from `publication.yaml`: the paper, then `answers.md`, `rubric.md`, and the solution notebooks. |
+| `teacher` | Teacher's Edition | The full student book, plus `for-teachers.md`. Each practice is followed by its full solution. A final part has every mock test from `publication.yaml`: the paper, then `solutions/answers.md`, `rubric.md`, and `solutions/*_solution.ipynb`. |
 
 Student editions never read a `*_solution.ipynb` file except through the odd-numbered answers path.
 They never read mock-test `solutions/` or `rubric.md`.
@@ -73,7 +73,7 @@ Lesson and practice cells keep their order; a cell tagged `hide-in-print`, if an
 - `output/<book>/syllabus.pdf`, from `<book>/docs/course-structure.md` (the readable course structure; `syllabus.md`'s canonical YAML block is not reader-facing).
 - `output/<book>/handouts/<unit>.pdf`: one handout per unit, with that unit's practice statement notebooks concatenated in order (no solutions).
 - `output/<book>/mocktests/<test>-paper.pdf`: `test.md`, the theory items, and the problem notebooks.
-- `output/<book>/mocktests/<test>-solutions.pdf`: `answers.md`, `rubric.md`, and the solution notebooks.
+- `output/<book>/mocktests/<test>-solutions.pdf`: `solutions/answers.md`, `rubric.md`, and `solutions/*_solution.ipynb` (the real layout of both `r1-001` and `r2-001`; tests use both).
 
 Each script owns and replaces only its own files in `output/<book>/`, as in py4kids.
 `<book>/build/` keeps the intermediate files.
@@ -87,7 +87,8 @@ The existing per-source build outputs and their exact-cardinality check may be r
    - No student edition's chapter list contains a solution notebook, except the odd-numbered answers in the `student` appendix.
    - No student edition contains mock-test material.
    - The `answer-key` contains only odd-numbered solutions.
-3. A "Missing character" entry in the LaTeX log is an error. This is the py4kids `pdf_glyphs.py` rule.
+   - Content check (the py4kids `publish_audit.py` approach): each student edition's generated chapter files are scanned for solution content. A fingerprint is built from every solution notebook's code cells and from every mock `solutions/` and `rubric.md` file: normalized lines of 40 characters or more that do not occur in the matching statement notebook. Any fingerprint found outside the `student` odd-answers appendix is an error.
+3. A "Missing character" entry in the LaTeX log is an error. This is the py4kids `pdf_glyphs.py` rule. It applies to every PDF either script builds: editions, syllabus, handouts, and mock papers and solutions. `build-pdf.sh` therefore compiles through lualatex with a kept log, as py4kids does.
 4. Undefined references or labels in the draft-mode log are errors.
 5. Page counts are recorded, but they produce warnings only.
 
@@ -98,7 +99,11 @@ It runs `build-book.sh` plus the audit only for a book whose change set touches 
 - that book root;
 - `tools/`, `scripts/`, `books.yaml`, `pyproject.toml`, or `uv.lock`.
 
-The change set is measured against `origin/main` (merge-base).
+The change set is the union of:
+- the committed diff against the merge-base with `origin/main`;
+- staged, unstaged, and untracked files.
+
+The routing is fail-safe: if `origin/main` or the merge-base is unavailable, every book renders. This follows py4kids `tools/ci_scope.py`.
 Otherwise CI prints `SKIP build-book: <book> unchanged`.
 `scripts/ci-local.sh --all-books` forces every edition to render.
 This SKIP is a permanent, change-routed skip, not a "plan unshipped" skip, and `output/README.md` says so.
@@ -114,6 +119,7 @@ All tooling goes to Opus subagents (`AGENTS.md` dispatch); front and back matter
 Tests go in `tests/`, failing first where practical.
 
 - [ ] **Task 1 — Registry and publication config.**
+  - `tools/books.py` requires exact registry keys. The new keys are added to the accepted set, and the old-format registries built in test fixtures (`tests/test_book_isolation.py`, `tests/test_books.py`, and the others found by grep) are migrated or stay valid. The noncanonical-root and symlink protections are kept.
   - `books.yaml` gets `title`, `subtitle`, and `publication: true`.
   - Add `<book>/publication.yaml` for both books.
   - Add the `tools/books.py` loader and validation (`publication_config_errors`).
@@ -138,10 +144,15 @@ Tests go in `tests/`, failing first where practical.
     - print practice cells being markdown-only;
     - the odd-only answer selection;
     - the teacher's mock-test part.
-- [ ] **Task 4 — `build-pdf.sh` rework.** Produce the syllabus, handouts, and mock-test paper and solutions PDFs into `output/<book>/` (D4). Update the existing build-pdf tests to the new contract, and keep `--list-inputs`.
+- [ ] **Task 4 — `build-pdf.sh` rework.** Produce the syllabus, handouts, and mock-test paper and solutions PDFs into `output/<book>/` (D4). Migrate every test that pins the old contract in the same commit:
+  - the `--list-inputs` set pinned in `tests/test_integration.py`;
+  - the `build-pdf.sh` cases in `tests/test_book_isolation.py` and `tests/test_clean_checkout.py`.
+
+  Keep `--list-inputs` and the noncanonical-root and symlink containment protections.
+  Add a failing-log glyph test for one handout render.
 - [ ] **Task 5 — Audit, CI routing, `output/README.md`, and `.gitignore`.** Implement D5–D7. Add tests for:
-  - each audit rule, with a planted solution chapter in a student edition and a planted "Missing character" log line;
-  - the CI routing decision, as a pure function over a list of changed paths.
+  - each audit rule, with a planted solution chapter in a student edition, solution code planted inside an ordinary student unit chapter, and a planted "Missing character" log line;
+  - the CI routing decision, as a pure function over a list of changed paths. It must cover staged, unstaged, and untracked changes, and fall back to rendering everything when `origin/main` is missing.
 - [ ] **Task 6 — Verification phase.**
   - Run `scripts/ci-local.sh --all-books` on a clean tip, and run it once more without `--all-books` after cleaning `__pycache__`.
   - For each book, record in the post-execution report:
@@ -168,6 +179,20 @@ Tests go in `tests/`, failing first where practical.
 ## Plan Review
 
 Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
+
+### Review 1 — self (2026-10-10)
+- **Verdict**: Approve with suggestions.
+1. `[OPEN]` Should Fix: `scripts/verify-staged-scope.py` (`pre-merge-guard`) rejects committed paths in its protected categories. These include any path containing `token`, `/build/` or `/students/`. → Every new committed path (test fixtures in particular) must avoid them. Fixture books are built under `tmp_path`, never under a committed `build/` directory.
+2. `[OPEN]` Should Fix: scale. 1,326 unit notebooks feed the editions, so the Teacher's Edition may run to thousands of pages. → Task 6 records each edition's render time and page count. If an edition fails a LaTeX capacity limit, the publisher may split it into volumes (`<book>-<edition>-vol<N>.pdf`), and the audit and `output/README.md` follow the split.
+3. `[OPEN]` Nit: `tests/test_integration.py` asserts the exact `ci-local.sh` build-pdf line, and `tests/test_book_isolation.py` and `tests/test_clean_checkout.py` exercise `build-pdf.sh`. → Tasks 4 and 5 update them to the new contract in the same commit as the script change.
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-10)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: mock answers live at `solutions/answers.md`. → Response: D2 and D4 corrected; tests use both real layouts.
+2. `[FIXED]` Must Fix: a chapter-list leak audit is too narrow. → Response: D5 adds a generated-content fingerprint check; a test plants solution code in a student chapter.
+3. `[FIXED]` Must Fix: the registry and PDF contract tests need a wider migration. → Response: Tasks 1 and 4 name the fixture registries, the pinned `--list-inputs` set, and the isolation and clean-checkout cases; root and symlink protections are kept.
+4. `[FIXED]` Should Fix: glyph checks on every PDF. → Response: D5 rule 3 covers every PDF; build-pdf compiles through lualatex with a kept log; a failing-log test was added.
+5. `[FIXED]` Should Fix: fail-safe routing. → Response: D6 takes the union of the committed diff and staged, unstaged and untracked changes, and renders everything when `origin/main` is missing; tests cover these cases.
 
 ## Content Review
 
