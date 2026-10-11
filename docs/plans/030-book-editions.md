@@ -93,7 +93,7 @@ It compiles through lualatex with a kept log, as py4kids does, and writes:
 
 - `output/<book>/syllabus.pdf` from `<book>/docs/course-structure.md`, the readable course structure. `syllabus.md`'s canonical YAML block is not reader-facing.
 - `output/<book>/handouts/<unit>.pdf`: one handout per unit, with that unit's practice statement notebooks in order, and `<details>` handled as in `student-print`. Book 1 gains these per-unit handouts.
-- `output/<book>/mocktests/<test>-paper.pdf`: `test.md`, then the items in `manifest.yaml` problem order. Each item's `theory/pNN.md` precedes its `problems/pNN.ipynb` (r2-001 interleaves them).
+- `output/<book>/mocktests/<test>-paper.pdf`: `test.md`, then the items in `manifest.yaml` problem order. Each item's `theory/pNN.md` precedes its `problems/pNN.ipynb` (r2-001 interleaves them). Several items share a file, so each source is rendered once, at its first occurrence in manifest order. The same rule applies to the solutions PDF and to the teacher's mock part. A test covers repeated file references.
 - `output/<book>/mocktests/<test>-solutions.pdf`: `solutions/answers.md`, `rubric.md` (root), and `solutions/pNN_solution.ipynb` in problem order. This is the real layout of both `r1-001` and `r2-001`, and the tests use both.
 
 Each script owns and replaces only its own files in `output/<book>/`, as in py4kids.
@@ -117,6 +117,11 @@ Design 000 is not a governance file.
      - (c) every `<details>` body.
 
      A fingerprint found anywhere in `student-print`, or outside the answers appendix in `student`, is an error.
+     This is defense in depth.
+   - Structural provenance check (primary): the publisher writes a sidecar `provenance.json` for each generated chapter. It lists every emitted block's source (file, cell index, and kind: markdown, code, or `<details>` body).
+     - The audit re-derives, from the sources and the edition rules, which blocks each edition may emit. Any other emitted block is an error, whatever its length.
+     - It then checks that each chapter's text is exactly the concatenation of its declared blocks plus the publisher's fixed scaffolding (headings, pointers, panel wrappers). This catches short leaks such as `return 42` or a one-letter `<details>` answer.
+     - Tests plant a short solution cell and a short `<details>` body.
 3. **Glyphs.** A "Missing character" entry in any LaTeX log is an error (py4kids' `pdf_glyphs.py` rule). This covers every PDF either script builds: editions, syllabus, handouts, and mock papers and solutions.
 4. **References.** Undefined references or labels in the draft-mode log are errors.
 5. **Glossary.** The glossary is a superset of the concepts the book introduces.
@@ -130,11 +135,13 @@ It runs `build-book.sh` plus the audit for a book only when the change set touch
 - `tools/publish*.py`, `tools/publish_theme/`, `tools/books.py`, or `scripts/build-book.sh`;
 - `books.yaml`, `pyproject.toml`, or `uv.lock`.
 
-Ordinary unit content changes do not trigger the multi-thousand-page renders.
-Their leak and glyph risks are still covered:
+A unit-content change does not trigger the full multi-thousand-page renders. Instead it triggers a **unit-scoped edition check**:
 
-- `build-pdf.sh` renders every unit's handouts on every run;
-- the publisher's source-isolation unit tests run on every run.
+- `build-book.sh --book <id> --units <changed units>` generates all four editions restricted to the changed units, plus front and back matter. It renders them into `<book>/build/publish-check/` and runs the full audit: provenance, fingerprints, glyphs, references.
+- A unit-content change means a change to anything under `<book>/units/<unit>/`, or a mock-test change for the teacher's mock part.
+- The check uses the same publisher code path, so a changed lesson's rendering, glyphs and leak isolation are validated before shipping. It costs about the pilot's per-unit time.
+
+The full edition PDFs in `output/` are rebuilt by `--all-books` before any release. Between releases they can lag content, as py4kids' gitignored PDFs do; `output/README.md` says so.
 
 `scripts/ci-local.sh --all-books` renders every edition and is the release gate. Task 6 runs it.
 The change set is the union of the committed diff against the merge-base with `origin/main` and the staged, unstaged, and untracked files.
@@ -198,7 +205,7 @@ Tests go in `tests/`, failing first where practical.
   - Update design 000 §3.8 (D4).
 - [ ] **Task 5 — Audit, CI routing, `output/README.md`, and `.gitignore`.** Implement D5–D7. Add tests for:
   - each audit rule, with a planted solution chapter in a student edition, solution code planted inside an ordinary student unit chapter, a planted `<details>` body, a planted `rubric.md` line, and a planted "Missing character" log line;
-  - the CI routing decision, as a pure function over a list of changed paths. It must cover staged, unstaged, and untracked changes, and fall back to rendering everything when `origin/main` is missing. It also covers an ordinary unit-content change that does not trigger the editions.
+  - the CI routing decision, as a pure function over a list of changed paths. It must cover staged, unstaged, and untracked changes, and fall back to rendering everything when `origin/main` is missing. It also covers a unit-content change that routes to a unit-scoped check of exactly the changed units.
 - [ ] **Task 6 — Verification phase.**
   - Run `scripts/ci-local.sh --all-books` on a clean tip, and run it once more without `--all-books` after cleaning `__pycache__`.
   - For each book, record in the post-execution report:
@@ -261,6 +268,12 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
   - protected-path avoidance is now a constraint on every new committed path, and the Task 1–5 implementers are told so;
   - D8 handles scale;
   - Task 4 names the test migrations.
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-10)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: content edits never re-render the editions. → Response: D6 adds a unit-scoped edition check (`build-book.sh --units`) that renders and audits all four editions for exactly the changed units on every run that touches them.
+2. `[FIXED]` Must Fix: the ≥ 40-character fingerprints miss short leaks. → Response: D5 adds a structural provenance check (a sidecar `provenance.json`, re-derived allowed blocks, exact-concatenation check); the fingerprints remain as defense in depth; tests plant short leaks.
+3. `[FIXED]` Should Fix: mock file deduplication. → Response: each file is rendered once, at its first occurrence in manifest order, in the paper, the solutions and the teacher part; a test was added.
 
 ## Content Review
 
