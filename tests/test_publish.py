@@ -453,6 +453,15 @@ def test_math_spaces_inside_inline_dollars_are_trimmed() -> None:
     assert publish.normalize_math("`$ a $` and $$ a $$") == "`$ a $` and $$ a $$"
 
 
+def test_jupyter_only_math_is_made_latex_safe() -> None:
+    assert publish.normalize_math(r"$x^\*$ and $$w^\* = 1$$") == r"$x^*$ and $$w^* = 1$$"
+    assert publish.normalize_math(r"$Q\'(w)$") == r"$Q'(w)$"
+    assert publish.normalize_math(r"$C=\texttt{components_}$") == r"$C=\texttt{components\_}$"
+    assert publish.normalize_math(r"$Q_{\rm svd}$") == r"$Q_{\mathrm{svd}}$"
+    # Inline code is never touched.
+    assert publish.normalize_math(r"`x^\*` and `{\rm a}`") == r"`x^\*` and `{\rm a}`"
+
+
 # --- output folder ------------------------------------------------------------------------
 
 

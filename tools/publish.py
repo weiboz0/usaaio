@@ -98,6 +98,9 @@ TAG = re.compile(r"<[^>]+>")
 DETAILS_NAME = re.compile(r"^(Checkpoint \d+|Answers \d+[–-]\d+)$")
 ANSWER_HEADING = re.compile(
     r"(?i)^#+\s*(collected\s+)?((checkpoint|self-quiz|quiz)\s*\d*\s+)?answers\b")
+OLD_FONT_GROUP = re.compile(r"\{\s*\\(rm|bf|it|tt|sf|cal)(?![A-Za-z])\s*([^{}]*)\}")
+OLD_FONT_IN_MATH = re.compile(r"\\(rm|bf|it|tt|sf|cal)(?![A-Za-z])(\s*)")
+TEXT_IN_MATH = re.compile(r"(\\text(?:tt|rm|it|bf|sf)?\{)([^{}]*)\}")
 FRONT_MATTER = re.compile(r"\A---\n.*?\n---\n", re.DOTALL)
 
 # Fixed scaffolding text (the audit matches these exactly).
@@ -226,7 +229,8 @@ def shift_headings(text: str, shift: int) -> str:
 
 
 def normalize_math(text: str) -> str:
-    """Trim spaces just inside inline `$...$` math, which Jupyter accepts and pandoc does not.
+    """Trim spaces just inside inline `$...$` math, which Jupyter accepts and pandoc does not,
+    and turn the Markdown escape `\\*` inside math into `*`.
 
     Fenced code, inline code spans, `$$...$$` display math and escaped `\\$` are left alone.
     """
@@ -276,7 +280,7 @@ def _normalize_inline_math(text: str) -> str:
             if text.startswith("$$", index):
                 close = text.find("$$", index + 2)
                 stop = length if close < 0 else close + 2
-                out.append(text[index:stop])
+                out.append(_math_escapes(text[index:stop]))
                 index = stop
                 continue
             close = index + 1
@@ -290,7 +294,7 @@ def _normalize_inline_math(text: str) -> str:
             if close < length and text[close] == "$" and not text.startswith("$$", close):
                 inner = text[index + 1:close]
                 if inner.strip():
-                    out.append("$" + inner.strip() + "$")
+                    out.append("$" + _math_escapes(inner.strip()) + "$")
                     index = close + 1
                     continue
             out.append(char)
@@ -299,6 +303,19 @@ def _normalize_inline_math(text: str) -> str:
         out.append(char)
         index += 1
     return "".join(out)
+
+
+def _math_escapes(math: str) -> str:
+    """Markdown escapes inside math (`x^\\*`, written so Jupyter's Markdown keeps the star) are
+    plain characters to MathJax but TeX commands to LaTeX; `\\*` after `^`/`_` breaks LaTeX."""
+    math = math.replace("\\*", "*").replace("\\'", "'")
+    # Plain-TeX font switches (`Q_{\\rm svd}`), which KOMA-Script classes reject.
+    math = OLD_FONT_GROUP.sub(lambda match: "{\\math" + match[1] + "{" + match[2] + "}}", math)
+    math = OLD_FONT_IN_MATH.sub(lambda match: "\\math" + match[1] + match[2], math)
+    # A bare `_` inside a text-mode argument (`\\texttt{components_}`) is a subscript error in
+    # LaTeX but a literal underscore in MathJax.
+    return TEXT_IN_MATH.sub(
+        lambda match: match[1] + re.sub(r"(?<!\\)_", r"\\_", match[2]) + "}", math)
 
 
 def markdown_text(piece: str, shift: int) -> str:
