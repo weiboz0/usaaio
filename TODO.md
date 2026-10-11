@@ -33,6 +33,9 @@
 
 ## Deferred, with a named owner plan still to be written
 
+- [ ] **Erratum: C10 `p12_solution.ipynb` lost math delimiters.** Its prose has `(A_j=\frac1{50}\sum…)` where `\(…\)` was intended, so the Plan 030 editions print the LaTeX literally (they are read with `-raw_tex`). Fix the delimiters through the errata lifecycle.
+- [ ] **Overfull lines in the editions (Plan 030).** Three `lll` longtables in one C9 practice are about 51 pt too wide. Book 2's Teacher's Edition has 47 small overfull boxes (≤ 40 pt), mostly inline code in narrow table cells.
+
 - [x] **Execute the remaining Plan 015 content tranches.** Done: Plans 020, 021, 027, 028, 029 shipped B2-020…B2-024 and Plan 024 shipped r2-001.
 - [x] **Unit capacity: C7 and C5.** Plan 017 resolves the decision substantively: C7 gains a
       fourth 90-minute lesson session and remains at 27 practices, satisfying both double-length

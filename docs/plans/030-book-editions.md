@@ -341,6 +341,31 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 - The Task 2 author found that many lessons, and most Book 2 lessons, print checkpoint answers openly under answer headings. D3 now covers these open answer sections exactly like `<details>` bodies; the D2 rule "no answers in `student-print`" holds unchanged. This is within the existing D2/D3 intent, not a scope expansion.
 - The glossary's source of introduced concepts is pinned to the manifests' `concepts_taught`.
 
+### D8 pilot and volume decision (Task 3, 2026-10-11)
+- **Pilot:** C3 fixture plus the glyph cell, sequential, warm caches.
+
+  | Edition | Pages | Seconds |
+  |---|---|---|
+  | `student-print` | 59 | 54 |
+  | `student` | 76 | 62 |
+  | `answer-key` | 8 | 32 |
+  | `teacher` | 96 | 81 |
+
+  The `−`, `≈` and `½` glyph cell rendered with 0 missing characters.
+- **Projection:**
+  - Book 1: print about 975 pages, Student about 1,330, Teacher about 1,860.
+  - Book 2: print about 400, Student about 480, Teacher about 850.
+  - All under 30 minutes at about 0.5 s per page.
+- **Handout:** C3 renders in about 7 s, so 25 handouts take about 3–4 minutes, under the 5-minute threshold. Handouts stay always-on. Task 4 must reuse the theme's DejaVu fallback (`→` is missing in the plain template).
+- **Volumes:** the Book 1 Student Book and Teacher's Edition split into three volumes:
+  - F1–F7: Foundations.
+  - C1–C6 + C11: Core Machine Learning and Neural Networks.
+  - C7–C10 + C12: Applied Models and Competition Practice.
+
+  The Book 1 print edition (981 pages) and Answer Key stay single PDFs, and Book 2 is unsplit.
+- **First full builds:** every PDF is under 1,200 pages and 30 minutes. The largest are Book 2 teacher (900 pages, 961 s) and Book 1 print (981 pages, 837 s).
+- **Deviation:** markdown is read with `-raw_tex`. C10 `p12_solution.ipynb` lost its `\(` delimiters, so its `\frac` prints literally. That is recorded in `TODO.md` as an erratum and not fixed here (content is out of scope).
+
 ## Content Review
 
 ## Post-execution report
