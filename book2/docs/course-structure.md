@@ -51,4 +51,4 @@ The 255/275/370/315/375/60-minute progression for `B2-021-cross-modal-transforme
 The 255/300/340/310/385/60-minute progression for `B2-022-probabilistic-latent-models` intentionally peaks in derivation-heavy Week 23 and tapers to review instead of applying Book 1's 450–500-minute semester band.
 The 255/355/205/385/390/60-minute progression for `B2-023-generative-models-diffusion` intentionally peaks in derivation-heavy Week 29 and tapers to review instead of applying Book 1's 450–500-minute semester band.
 The 260/280/370/345/305/380/60-minute progression for `B2-024-gpu-scientific-ml-capstone` intentionally peaks in derivation-heavy Week 36 and tapers to review instead of applying Book 1's 450–500-minute semester band.
-The planned future `r2-*` final assessment follows local Week 37.
+The live `r2-001` final assessment follows local Week 37.

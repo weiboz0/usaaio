@@ -316,7 +316,9 @@ def _book2_allocation_description(week) -> str:
     return "; ".join(parts)
 
 
-def _render_book2_document(schedule: Book2CourseSchedule) -> str:
+def _render_book2_document(
+    schedule: Book2CourseSchedule, final_assessment: dict | None = None
+) -> str:
     weekly_totals = [
         sum(allocation.minutes for allocation in week.allocations)
         for week in schedule.weeks
@@ -390,7 +392,12 @@ def _render_book2_document(schedule: Book2CourseSchedule) -> str:
         )
     lines.extend(
         [
-            f"The planned future `r2-*` final assessment follows local Week {last_local}.",
+            (
+                f"The live `{final_assessment['test']}` final assessment follows local Week "
+                f"{last_local}."
+                if final_assessment and final_assessment.get("status") == "live"
+                else f"The planned future `r2-*` final assessment follows local Week {last_local}."
+            ),
             "",
         ]
     )
@@ -467,7 +474,8 @@ def render_document(
         expected_book_number=expected_book_number,
     )
     if isinstance(schedule, Book2CourseSchedule):
-        return _render_book2_document(schedule)
+        marker = _yaml(root / "curriculum" / "course-schedule.yaml").get("final_assessment")
+        return _render_book2_document(schedule, marker if isinstance(marker, dict) else None)
     manifests = _manifest_contracts(root)
     syllabus = load_syllabus(root)
     path = root / DOCUMENT
