@@ -47,6 +47,7 @@ from tools.publish import (
     THEME,
     Chapter,
     Publisher,
+    fence_step,
     mock_paper_sources,
     mock_solution_sources,
 )
@@ -173,6 +174,76 @@ def target_markdown(repo_root: Path, book: BookSpec, target: Target) -> str:
     return chapter.text()
 
 
+TABLE_SEPARATOR = re.compile(r"^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$")
+TABLE_WRAP_AT = 72  # pandoc's default --columns: a longer row makes a pipe table wrap
+LONGEST_SHARE = 0.55
+MIN_SHARE = 0.07
+
+
+def _cells(row: str) -> list[str]:
+    inner = row.strip()
+    inner = inner.removeprefix("|")
+    inner = inner[:-1] if inner.endswith("|") and not inner.endswith("\\|") else inner
+    return [cell.strip() for cell in re.split(r"(?<!\\)\|", inner)]
+
+
+def column_shares(rows: list[list[str]], columns: int) -> list[float]:
+    """Relative widths from each column's longest cell; the widest column gets >= 55%."""
+    weights = [max([len(row[i]) for row in rows if i < len(row)] or [1]) or 1
+               for i in range(columns)]
+    total = sum(weights)
+    shares = [max(MIN_SHARE, weight / total) for weight in weights]
+    widest = max(range(columns), key=lambda i: shares[i])
+    if columns > 1 and shares[widest] < LONGEST_SHARE:
+        others = sum(share for i, share in enumerate(shares) if i != widest)
+        shares = [LONGEST_SHARE if i == widest else share * (1 - LONGEST_SHARE) / others
+                  for i, share in enumerate(shares)]
+    total = sum(shares)
+    return [share / total for share in shares]
+
+
+def widen_tables(markdown: str) -> str:
+    """Give each wide pipe table relative column widths (its separator's dash counts), so the
+    text-heavy column is not squeezed to the width of its header (Plan 030 D4)."""
+    lines = markdown.splitlines(keepends=True)
+    out: list[str] = []
+    fence: str | None = None
+    index = 0
+    while index < len(lines):
+        line = lines[index]
+        is_fence, fence_after = fence_step(line, fence)
+        inside = is_fence or fence is not None
+        fence = fence_after
+        separator = lines[index + 1] if index + 1 < len(lines) else ""
+        if inside or "|" not in line or not TABLE_SEPARATOR.match(separator):
+            out.append(line)
+            index += 1
+            continue
+        end = index + 2
+        while end < len(lines) and lines[end].strip().startswith("|"):
+            end += 1
+        block = lines[index:end]
+        rows = [_cells(row) for row in block[2:]]
+        header = _cells(line)
+        aligns = _cells(separator)
+        if max(len(row.rstrip("\n")) for row in block) <= TABLE_WRAP_AT or len(aligns) != len(header):
+            out.extend(block)
+            index = end
+            continue
+        shares = column_shares(rows or [header], len(header))
+        parts = []
+        for align, share in zip(aligns, shares, strict=True):
+            dashes = "-" * max(3, round(share * 100))
+            left = ":" if align.startswith(":") else ""
+            right = ":" if align.endswith(":") else ""
+            parts.append(left + dashes + right)
+        out.append(line)
+        out.append("|" + "|".join(parts) + "|\n")
+        out.extend(block[2:])
+        index = end
+    return "".join(out)
+
+
 def pandoc_command() -> list[str]:
     configured = os.environ.get("USAAIO_PANDOC")
     if configured:
@@ -252,7 +323,8 @@ def build(repo_root: Path, book_id: str, *, jobs: int | None = None) -> list[Pat
         print(f"rendering: {target.name}", flush=True)
         subtitle = {"syllabus": "Course Structure", "handout": "Practice handout",
                     "paper": "Mock test paper", "solutions": "Mock test answers and solutions"}
-        return render(book, target, target_markdown(repo_root, book, target), build_root,
+        markdown = widen_tables(target_markdown(repo_root, book, target))
+        return render(book, target, markdown, build_root,
                       title=title, subtitle=subtitle[target.kind], env=env)
 
     pdfs: list[Path] = []

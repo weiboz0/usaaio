@@ -107,7 +107,7 @@ FRONT_MATTER = re.compile(r"\A---\n.*?\n---\n", re.DOTALL)
 
 # Fixed scaffolding text (the audit matches these exactly).
 POINTER_OPEN = "*Answers"
-POINTER_CLOSE = ": open this notebook, or see the Teacher's Edition.*"
+POINTER_CLOSE = ": open this notebook, or see the answers appendix of the full Student Book.*"
 PRACTICE_FILE = "*Practice file:* `{path}`"
 SELECTED_ANSWER_REF = "*Answer: see page `\\pageref{{{label}}}`{{=latex}}.*"
 
@@ -1045,18 +1045,12 @@ def index_terms_by_unit(book: BookSpec, glossary_text: str) -> dict[str, list[st
     return by_unit
 
 
-def index_glossary(text: str) -> str:
-    """Append `\\index{term}` to each glossary entry line (py4kids)."""
-    def repl(match: re.Match[str]) -> str:
-        return match[0] + "`\\index{" + index_entry(match[2]) + "}`{=latex}"
-    return re.sub(r"(?m)^(\*\*(.+?)\*\*\s*[—–:-].*)$", repl, text)
-
-
 def yaml_string(text: str) -> str:
     return json.dumps(text, ensure_ascii=False)
 
 
-INDEX_BODY = "\\pubchapterlabel{}\n\n\\printindex\n"
+# A raw LaTeX block: Markdown is read without raw_tex, so bare TeX would print as text.
+INDEX_BODY = "```{=latex}\n\\pubchapterlabel{}\n\n\\printindex\n```\n"
 
 
 def reset_kicker(text: str) -> str:
@@ -1206,7 +1200,8 @@ def build(repo_root: Path, book_id: str, edition: str, *, units: list[str] | Non
             text = filter_edition_blocks(source.read_text(encoding="utf-8"), edition, relative)
             if name == "glossary":
                 glossary_text = text
-                rendered = index_glossary(reset_kicker(text)) if edition_profile["index"] else reset_kicker(text)
+                # Index entries sit only at each concept's introducing unit chapter, not here.
+                rendered = reset_kicker(text)
             else:
                 rendered = reset_kicker(text)
             chapter = Chapter(file=f"{name}.qmd", kind="back", title=title)

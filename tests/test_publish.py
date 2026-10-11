@@ -144,7 +144,8 @@ def test_teacher_prints_every_solution(repo: Path) -> None:
 def test_details_handling_per_edition(repo: Path) -> None:
     printed = (build(repo, "book1", "student-print").path / "U1-alpha.qmd").read_text()
     assert "DETAILSBODY" not in printed
-    assert ("*Answers (Checkpoint 1): open this notebook, or see the Teacher's Edition.*"
+    assert (("*Answers (Checkpoint 1): open this notebook, or see the answers appendix of the full "
+             "Student Book.*")
             in printed)
 
     student = build(repo, "book1", "student").path
@@ -258,7 +259,7 @@ def test_index_entries_at_introducing_unit_and_in_glossary(repo: Path) -> None:
     assert "\\index{alpha idea@Alpha idea}" in u1 and "beta idea" not in u1
     assert "\\index{beta idea@Beta idea}" in u2
     glossary = (project / "glossary.qmd").read_text()
-    assert "`\\index{alpha idea@Alpha idea}`{=latex}" in glossary
+    assert "\\index" not in glossary  # entries index only at the introducing unit
     assert (project / "the-index.qmd").is_file()
     key = build(repo, "book1", "answer-key").path
     assert "\\index" not in _project_text(key)
@@ -384,3 +385,33 @@ def test_inline_collected_answer_paragraphs_are_answer_bodies(repo: Path) -> Non
 
     teacher = (build(repo, "book1", "teacher").path / "U1-alpha.qmd").read_text()
     assert "::: {.answers}\n\n**Collected answers.** PARAANSWER is nine" in teacher
+
+
+def test_index_chapter_reaches_latex_as_a_command(repo: Path) -> None:
+    import subprocess
+
+    from tools.publish_pdf import pandoc_command
+
+    index = (build(repo, "book1", "student").path / "the-index.qmd").read_text()
+    assert index.startswith("```{=latex}\n\\pubchapterlabel{}")
+    proc = subprocess.run(
+        [*pandoc_command(), "-f", "markdown+tex_math_single_backslash-raw_tex", "-t", "latex"],
+        input=index, capture_output=True, text=True, check=True)
+    assert "\\printindex" in proc.stdout
+    assert "textbackslash" not in proc.stdout
+
+
+def test_build_pdf_gives_wide_tables_relative_widths() -> None:
+    from tools.publish_pdf import widen_tables
+
+    long_text = "F1-scientific-python (prereqs: none): sessions 1, 2, 330 practice minutes."
+    table = (f"| Week | Units and sessions covered | Gate |\n|---:|---|---|\n"
+             f"| 1 | {long_text} | No gate. |\n")
+    separator = widen_tables(table).splitlines()[1]
+    widths = [len(part.strip(":")) for part in separator.strip("|").split("|")]
+    assert separator.startswith("|") and separator.split("|")[1].endswith(":")
+    assert widths[1] >= 55 and sum(widths) >= 95
+    narrow = "| a | b |\n|---|---|\n| 1 | 2 |\n"
+    assert widen_tables(narrow) == narrow
+    fenced = "```\n" + table + "```\n"
+    assert widen_tables(fenced) == fenced

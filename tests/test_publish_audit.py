@@ -17,6 +17,12 @@ def _render_stub(projects) -> None:
     """Stand in for the LaTeX render: a clean draft-mode log and a page count per project."""
     for project in projects:
         (project.path / f"{project.output_stem}.log").write_text("clean log\n", encoding="utf-8")
+        tex = "\\begin{document}\n"
+        if project.index:
+            tex += "\\printindex\n"
+            (project.path / f"{project.output_stem}.ind").write_text(
+                "\\begin{theindex}\n\\end{theindex}\n", encoding="utf-8")
+        (project.path / f"{project.output_stem}.tex").write_text(tex, encoding="utf-8")
         (project.path / "pages.txt").write_text("12\n", encoding="utf-8")
 
 
@@ -264,3 +270,13 @@ def test_answer_lead_in_safety_net(built: Path) -> None:
         "kind": "scaffold", "sep": "\n\n", "text": "Collected checkpoint answers: x = 2"})
     _strip_final_newline_join(project, "U2-beta")
     assert any("U2-beta.qmd: printed answer lead-in" in error for error in _errors(built))
+
+
+def test_publisher_command_printed_as_text_and_missing_index(built: Path) -> None:
+    project = _project(built, "student-print")
+    (project / "book1-student-print.tex").write_text("\\textbackslash{}printindex\n")
+    errors = _errors(built)
+    assert any("publisher command printed as text" in error for error in errors)
+    assert any("index edition has no \\printindex" in error for error in errors)
+    (project / "book1-student-print.ind").unlink()
+    assert any("has no Index chapter" in error for error in _errors(built))

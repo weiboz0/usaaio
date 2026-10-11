@@ -91,8 +91,8 @@ LABEL = r"[\w.-]+"
 SCAFFOLD_EXACT = frozenset({
     "## Practice", "#### Solution", "## Answers", "*Answers", " (", ", ", "; ", ")", ".*", "**",
     "*Answers: ", "::: {.answers}", ":::",
-    ": open this notebook, or see the Teacher's Edition.*",
-    "\\pubchapterlabel{}\n\n\\printindex",
+    ": open this notebook, or see the answers appendix of the full Student Book.*",
+    "```{=latex}\n\\pubchapterlabel{}\n\n\\printindex\n```",
     '# Answers to Checkpoints and Selected Practice {pub-label=""}',
 })
 SCAFFOLD_PATTERNS = (
@@ -738,6 +738,38 @@ def check_logs(result: AuditResult, logs: Iterable[Path]) -> None:
                 break
 
 
+LEAKED_COMMAND = re.compile(
+    r"\\textbackslash(?:\{\})?\s*(printindex|pubchapterlabel|chaptermark|pageref|index)\b")
+PDF_COMMAND = re.compile(r"\\(printindex|pubchapterlabel|chaptermark|pageref)\b")
+
+
+def check_scaffold_tex(result: AuditResult, project: Path, stem: str, has_index: bool) -> None:
+    """Publisher LaTeX must reach LaTeX as commands, never as printed text; an index-bearing
+    edition must print its Index."""
+    tex = project / f"{stem}.tex"
+    if not tex.is_file():
+        result.error(f"{project.name}: {tex.name} missing")
+        return
+    text = tex.read_text(encoding="utf-8", errors="replace")
+    leaked = LEAKED_COMMAND.search(text)
+    if leaked:
+        result.error(f"{project.name}/{tex.name}: publisher command printed as text: "
+                     f"\\{leaked[1]}")
+    if has_index:
+        if not re.search(r"(?m)^\\printindex\b", text):
+            result.error(f"{project.name}: index edition has no \\printindex")
+        ind = project / f"{stem}.ind"
+        if not ind.is_file() or "\\begin{theindex}" not in ind.read_text(errors="replace"):
+            result.error(f"{project.name}: index edition has no Index chapter ({ind.name})")
+    pdf = project / "_book" / f"{stem}.pdf"
+    if pdf.is_file():
+        proc = subprocess.run(["pdftotext", str(pdf), "-"], capture_output=True, text=True,
+                              check=False)
+        printed = PDF_COMMAND.search(proc.stdout)
+        if printed:
+            result.error(f"{project.name}: PDF text contains the literal command \\{printed[1]}")
+
+
 def check_references(result: AuditResult, log: Path) -> None:
     if not log.is_file():
         result.error(f"{log}: draft-mode LaTeX log missing")
@@ -855,6 +887,7 @@ def audit(repo_root: Path, book_id: str, *, units: list[str] | None = None,
         stem = output_stem_of(project)
         check_logs(result, sorted(project.glob("*.log")))
         if stem:
+            check_scaffold_tex(result, project, stem, AUDIT_EDITIONS[edition]["index"])
             check_references(result, project / f"{stem}.log")
             pages = page_count(project, stem)
             result.info.append(f"{name}: {pages} pages")
