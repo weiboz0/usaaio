@@ -146,6 +146,7 @@ A unit-content change does not trigger the full multi-thousand-page renders. Ins
 
 - `build-book.sh --book <id> --units <changed units>` generates all four editions restricted to the changed units, plus front and back matter. It renders them into `<book>/build/publish-check/` and runs the full audit: provenance, fingerprints, glyphs, references.
 - A unit-content change means a change to anything under `<book>/units/<unit>/`.
+- A change to `<book>/curriculum/coverage-map.yaml` (the source of index placement and glossary coverage) routes to a scoped check of every unit whose introduced concepts changed, plus the glossary audit. If the changed rows cannot be attributed to units, the full edition build runs. The routing tests cover a coverage-map-only change.
 - A mock-test change (anything under `<book>/mocktests/<test>/`) adds `--mocktests <changed tests>`. The scoped check then generates the teacher's mock part for exactly those tests, which can be zero units plus one or more mock tests. It audits that part and confirms that no student edition contains it. A test covers a mock-only change set.
 - The check uses the same publisher code path, so a changed lesson's rendering, glyphs and leak isolation are validated before shipping. It costs about the pilot's per-unit time.
 
@@ -313,6 +314,10 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
    - Handouts use the shared converter.
    - The renderer wording is clarified.
    - Allowed blocks are derived per (edition, chapter).
+
+### Review 4 — Sol, `gpt-6-sol` (2026-10-10)
+- **Verdict**: Reject. Round-3 findings were confirmed as fixed.
+1. `[FIXED]` Must Fix: coverage-map edits were unrouted. → Response: D6 routes `coverage-map.yaml` changes to a scoped check of the affected units plus the glossary audit (full build if unattributable); a routing test was added.
 
 ## Content Review
 
