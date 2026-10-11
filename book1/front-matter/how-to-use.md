@@ -18,7 +18,7 @@ Then work the unit's practice problems.
   Nothing later in the book depends on it.
 - **Review:** The unit's last section.
   It has a concept summary, a sheet of formulas and code idioms, a self-quiz, and a list of practice problems to redo for each weak spot.
-- **Practice header:** Each practice problem opens with a line such as **Type:** multiple choice · **Difficulty:** intro · **Concepts:** gradient-descent.
+- **Practice header:** Each practice problem opens with a line such as **Type:** constrained coding · **Difficulty:** intro · **Concepts:** gradient-descent.
   The concepts are the course's names for the ideas being tested; the glossary at the back gives each one in plain words.
 - **Multiple choice:** Exactly five options, A to E, with one correct.
   Record your choice in the code cell, for example `answer_p01 = "B"`.
@@ -36,7 +36,7 @@ Then work the unit's practice problems.
 <!-- /edition -->
 <!-- edition: student-print -->
 - **Practice file:** In this print edition a practice problem shows its statement only.
-  The line "Practice file:" under it names the notebook that holds the starter code, such as `units/C3-gradient-descent/practice/p05.ipynb`.
+  The line "Practice file:" under it names the notebook that holds the starter code, such as `units/C3-gradient-descent/practice/p05.ipynb` (relative to the `book1` folder).
   Open that file to write and run your answer.
 <!-- /edition -->
 
@@ -98,21 +98,20 @@ Do Set A, then Set B, then Set C.
 <!-- edition: student -->
 Most checkpoint answers in the notebooks are hidden in a collapsed block that you click to open.
 In this book, each of those places shows a short reference instead, and the answers are collected at the back in **Answers to Checkpoints and Selected Practice**.
+Some sessions print their checkpoint answers openly at the end of the notebook; this book moves those to the appendix too.
 That appendix gives the checkpoint and self-quiz answers for every unit, then worked solutions to the Set A practice problems.
-A few sessions print their checkpoint answers openly at the end of the session; cover them until you have answered.
 Sets B and C have no printed answers.
 <!-- /edition -->
 <!-- edition: student-print -->
 Most checkpoint answers in the notebooks are hidden in a collapsed block that you click to open.
 This print edition does not reproduce them.
-Where a notebook hides an answer, this book prints a one-line note telling you to open the notebook.
-A few sessions print their checkpoint answers openly at the end of the session; cover them until you have answered.
+Where a notebook has checkpoint or self-quiz answers, hidden or printed openly, this book prints a one-line note instead.
 Worked solutions to the Set A practice problems are in the separate Answer Key, and the full Student Book collects the checkpoint answers in an appendix.
-The course files and both of those books are published at github.com/weiboz0/usaaio.
+The course files are at github.com/weiboz0/usaaio; ask your teacher for the Answer Key and the full Student Book.
 <!-- /edition -->
 <!-- edition: teacher -->
 In this Teacher's Edition, the checkpoint and self-quiz answers that the notebooks hide in a collapsed block appear in place, in a panel labelled **Answers**.
-A few sessions print their checkpoint answers openly at the end of the session, as they do in the student books.
+Answers that a notebook prints openly appear in the same panels.
 Every practice problem is followed by its full solution, and the final part of the book holds the mock test with its answer key and rubric.
 The student books give worked solutions to the Set A practice problems only; Sets B and C have none.
 <!-- /edition -->

@@ -36,7 +36,7 @@ Terms that Book 1 introduces, such as gradient descent, softmax, or tokenization
 **Graph and cross-modal Transformers** — Attention over a graph's neighbors, or across modalities with queries from one input and keys and values from another. *(B2-021)*
 <!-- concept: graph-neural-network-transformer-applications -->
 
-**KL divergence** — $\mathrm{KL}(P\|Q)=E_P[\log(P/Q)]\ge0$: how much $Q$ differs from $P$, in nats; it is not symmetric. *(B2-022)*
+**KL divergence** — $\mathrm{KL}(P\|Q)=E_P[\log(P/Q)]\ge0$: the extra expected log loss, in nats, from modeling data drawn from $P$ with $Q$; it is not symmetric. *(B2-022)*
 <!-- concept: kl-divergence -->
 
 **Language Transformer** — A Transformer that maps token IDs, through embeddings and blocks, to logits over the vocabulary. *(B2-020)*

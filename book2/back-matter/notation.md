@@ -57,7 +57,7 @@ When a lesson defines a symbol differently for a moment, the lesson's definition
 | $\Sigma_{ij} = \operatorname{Cov}(x_i, x_j)$ | covariance entries; $\Sigma = E[(x-\mu)(x-\mu)^\top]$ |
 | $\det\Sigma$, $\Sigma^{-1}$ | determinant and inverse of the covariance matrix |
 | $\operatorname{diag}(\sigma_1^2, \dots, \sigma_d^2)$ | a diagonal covariance |
-| $\mathrm{KL}(P\,\|\,Q)$ | Kullback–Leibler divergence of $Q$ from $P$ |
+| $\mathrm{KL}(P\,\|\,Q)$ | Kullback–Leibler divergence: the extra expected log loss from using $Q$ when the data follow $P$ |
 | $H(P)$, $H(P, Q)$ | entropy; cross-entropy |
 | $x$, $z$ | an observation; its latent code |
 | $q(z \mid x)$ | the encoder's distribution over codes for input $x$ |

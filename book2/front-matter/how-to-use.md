@@ -47,7 +47,7 @@ If a bridge diagnostic shows a gap, follow the named link and review that Book 1
 
 <!-- edition: student-print -->
 - **Practice file:** In this print edition a practice problem shows its statement only.
-  The line "Practice file:" under it names the notebook that holds its code cells, such as `units/B2-022-probabilistic-latent-models/practice/p05.ipynb`.
+  The line "Practice file:" under it names the notebook that holds its code cells, such as `units/B2-022-probabilistic-latent-models/practice/p05.ipynb` (relative to the `book2` folder).
   Open that file to write and run your answer.
 <!-- /edition -->
 
@@ -113,20 +113,20 @@ Do Set A, then Set B, then Set C.
 
 ## Check your work
 
-Most checkpoint answers in this book are printed in the notebooks, under **Collected answers**.
+Most checkpoint answers are printed in the notebooks, in a paragraph or section headed **Collected answers**.
 Answer each checkpoint first, then read the answer, then go back to the text if you missed.
 
 <!-- edition: student -->
-At the back, **Answers to Checkpoints and Selected Practice** gives worked solutions to the Set A practice problems of every unit, together with any checkpoint or self-quiz answers that a notebook hides in a collapsed block.
+At the back, **Answers to Checkpoints and Selected Practice** gives worked solutions to the Set A practice problems of every unit, together with every unit's checkpoint and self-quiz answers; where a notebook prints those answers, this book shows a page reference instead.
 Sets B and C have no printed answers.
 <!-- /edition -->
 <!-- edition: student-print -->
-Where a notebook hides an answer in a collapsed block, this print edition shows a one-line note telling you to open the notebook instead.
+Where a notebook has checkpoint or self-quiz answers, this print edition shows a one-line note instead; open the notebook to read them.
 Worked solutions to the Set A practice problems are in the separate Answer Key.
-The course files, the Answer Key, and the full Student Book are published at github.com/weiboz0/usaaio.
+The course files are at github.com/weiboz0/usaaio; ask your teacher for the Answer Key and the full Student Book.
 <!-- /edition -->
 <!-- edition: teacher -->
-In this Teacher's Edition, any answer that a notebook hides in a collapsed block appears in place, in a panel labelled **Answers**.
+In this Teacher's Edition, every checkpoint and self-quiz answer appears in place, in a panel labelled **Answers**.
 Every practice problem is followed by its full solution, and the final part of the book holds the mock test with its answer key and rubric.
 The student books give worked solutions to the Set A practice problems only; Sets B and C have none.
 <!-- /edition -->
