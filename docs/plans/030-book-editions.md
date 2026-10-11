@@ -391,7 +391,7 @@ Blind solving does not apply: this plan adds no problems. The reviewers instead 
 ### Review 1 — Sol, `gpt-6-sol` (2026-10-11)
 - **Leak hunt:** no solution or rubric text in the print editions, the student unit chapters, sampled handouts, or the papers. Both audits are OK.
 - **Verdict**: Reject.
-1. `[FIXED]` Must Fix: the KL direction wording in the Book 2 notation and glossary. → Response: rephrased as "the extra expected log loss from using Q when the data follow P" (0c12bb8). A search of the B2-022 notebooks found no matching "of Q from P" wording, so no lesson erratum is needed.
+1. `[FIXED]` Must Fix: the KL direction wording in the Book 2 notation and glossary. → Response: rephrased as "the extra expected log loss from using Q when the data follow P" (0c12bb8). Correction (Fable, round 2): the B2-022 lesson `02-kl-divergence.ipynb` does say "divergence of $Q$ from $P$"; the formula next to it disambiguates. Lesson content is out of scope here, so this is recorded in `TODO.md` for an erratum review.
 2. `[FIXED]` Should Fix: how-to-use said answers print openly in the student books. → Response: the edition blocks of both books now describe the pointers, the appendix, and the panels (0c12bb8).
 
 ### Review 1 — Fable (2026-10-11)
@@ -409,5 +409,15 @@ Blind solving does not apply: this plan adds no problems. The reviewers instead 
 5. `[FIXED]` Nit: every index entry also listed the glossary page. → Response: covered by fix 1. (4a79fde: the index prints, audit rule `check_scaffold_tex`, `widen_tables`, and both books rebuilt with the audits OK.)
 6. `[FIXED]` Nit: the practice-file path prefix. → Response: how-to-use says the paths are relative to the book folder.
 7. `[FIXED]` Nit: the practice-header example. → Response: a real header (`constrained coding`).
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-11)
+- **Verdict**: Reject. Every round-1 fix was verified (index, pointer, KL, answer-location wording); the leak scan is clean.
+1. `[OPEN]` Should Fix: narrow table columns still break inside words (Book 1 syllabus page 2; r2-001 paper pages 1–2). → Response: each column's minimum width is set by its longest word.
+
+### Review 2 — Fable (2026-10-11)
+- **Verdict**: Approve with nits. The index is present in all 10 editions, with no raw TeX in any of the 44 PDFs; the pointer, edition blocks, KL wording and tables were verified.
+1. `[FIXED]` Should Fix: the plan's KL record was wrong. → Response: the record above is corrected and a `TODO.md` erratum entry added.
+2. `[OPEN]` Nit: the r2-001 Section column hyphenates. → Response: the same fix as Sol 1.
+3. `[WONTFIX]` Nit: the index points to unit level only, by design (D3: indexed at the introducing unit chapter); a finer index is a possible later improvement.
 
 ## Post-execution report
