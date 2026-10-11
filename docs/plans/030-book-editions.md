@@ -125,8 +125,8 @@ Design 000 is not a governance file.
 
      A fingerprint found anywhere in `student-print`, or outside the answers appendix in `student`, is an error.
      This is defense in depth.
-   - Structural provenance check (primary): the publisher writes a sidecar `provenance.json` for each generated chapter. The audit holds its own rule table of allowed blocks per (edition, chapter); it never imports the publisher's edition rules. A `<details>` body, for example, is allowed in `student` only in the answers-appendix chapter. Tests plant both a forged sidecar entry (a disallowed block that is declared) and an undeclared block in the chapter text. It lists every emitted block's source (file, cell index, and kind: markdown, code, or `<details>` body).
-     - The audit re-derives, from the sources and the edition rules, which blocks each edition may emit. Any other emitted block is an error, whatever its length.
+   - Structural provenance check (primary): the publisher writes a sidecar `provenance.json` for each generated chapter. It lists every emitted block's source (file, cell index, and kind: markdown, code, or `<details>` body). The audit holds its own rule table of allowed blocks per (edition, chapter); it never imports the publisher's edition rules. A `<details>` body, for example, is allowed in `student` only in the answers-appendix chapter. Tests plant both a forged sidecar entry (a disallowed block that is declared) and an undeclared block in the chapter text.
+     - The audit re-derives, from the sources and its own rule table, which blocks each edition may emit. Any other emitted block is an error, whatever its length.
      - It then checks that each chapter's text is exactly the concatenation of its declared blocks plus the publisher's fixed scaffolding (headings, pointers, panel wrappers). This catches short leaks such as `return 42` or a one-letter `<details>` answer.
      - Tests plant a short solution cell and a short `<details>` body.
 3. **Glyphs.** A "Missing character" entry in any LaTeX log is an error (py4kids' `pdf_glyphs.py` rule). This covers every PDF either script builds: editions, syllabus, handouts, and mock papers and solutions.
@@ -144,7 +144,7 @@ It runs `build-book.sh` plus the audit for a book only when the change set touch
 
 A unit-content change does not trigger the full multi-thousand-page renders. Instead it triggers a **unit-scoped edition check**:
 
-- `build-book.sh --book <id> --units <changed units>` generates all four editions restricted to the changed units, plus front and back matter. It renders them into `<book>/build/publish-check/` and runs the full audit: provenance, fingerprints, glyphs, references.
+- `build-book.sh --book <id> --units <changed units>` generates all four editions restricted to the changed units, plus front and back matter. It renders them into `<book>/build/publish-check/` and runs the full audit (D5 rules 1–6, in scoped form).
 - A unit-content change means a change to anything under `<book>/units/<unit>/`.
 - A change to `<book>/curriculum/coverage-map.yaml` (the source of index placement and glossary coverage) routes to a scoped check of every unit whose introduced concepts changed, plus the glossary audit. If the changed rows cannot be attributed to units, the full edition build runs. The routing tests cover a coverage-map-only change.
 - A mock-test change (anything under `<book>/mocktests/<test>/`) adds `--mocktests <changed tests>`. The scoped check then generates the teacher's mock part for exactly those tests, which can be zero units plus one or more mock tests. It audits that part and confirms that no student edition contains it. A test covers a mock-only change set.
@@ -213,7 +213,7 @@ Tests go in `tests/`, failing first where practical.
   - Rewrite `tests/test_integration.py::test_plan019_task3_book1_pdf_sources_match_the_pinned_r1_set` (Book 1 now has handouts), the `--list-inputs` fingerprints and fake-quarto cardinality tests in `tests/test_book_isolation.py`, and the exact `ci-local.sh` line in `tests/test_integration.py`.
   - Update design 000 §3.8 (D4).
 - [ ] **Task 5 — Audit, CI routing, `output/README.md`, and `.gitignore`.** Implement D5–D7. Add tests for:
-  - each audit rule, with a planted solution chapter in a student edition, solution code planted inside an ordinary student unit chapter, a planted `<details>` body, a planted `rubric.md` line, and a planted "Missing character" log line;
+  - each audit rule, with a planted solution chapter in a student edition, solution code planted inside an ordinary student unit chapter, a planted `<details>` body, a planted `rubric.md` line, a `scope.json` that disagrees with the invocation scope, and a planted "Missing character" log line;
   - the CI routing decision, as a pure function over a list of changed paths. It must cover staged, unstaged, and untracked changes, and fall back to rendering everything when `origin/main` is missing. It also covers a unit-content change that routes to a unit-scoped check of exactly the changed units.
 - [ ] **Task 6 — Verification phase.**
   - Run `scripts/ci-local.sh --all-books` on a clean tip, and run it once more without `--all-books` after cleaning `__pycache__`.
@@ -318,6 +318,10 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 ### Review 4 — Sol, `gpt-6-sol` (2026-10-10)
 - **Verdict**: Reject. Round-3 findings were confirmed as fixed.
 1. `[FIXED]` Must Fix: coverage-map edits were unrouted. → Response: D6 routes `coverage-map.yaml` changes to a scoped check of the affected units plus the glossary audit (full build if unattributable); a routing test was added.
+
+### Review 4 — Fable (2026-10-10)
+- **Verdict**: Approve with nits. All round-3 fixes were confirmed.
+1. `[FIXED]` Nits 1–4: the "own rule table" wording; the sidecar sentence was moved; the scoped audit is "D5 rules 1–6 in scoped form"; a scope-disagreement test was added.
 
 ## Content Review
 
