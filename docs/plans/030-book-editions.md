@@ -91,7 +91,7 @@ Figures referenced by relative path are copied into the Quarto project.
 
 **D4. Handouts, syllabus, and mock-test PDFs follow py4kids' `build-pdf.sh` role.**
 `scripts/build-pdf.sh --book <id>` keeps its `--list-inputs` contract and the containment protections: the noncanonical root and symlinks.
-It compiles through lualatex with a kept log, as py4kids does, and writes:
+It renders from the publisher's shared converter output, so D3's `<details>` handling and output stripping apply; it never uses pandoc's native ipynb reader. It compiles through lualatex with a kept log, as py4kids does, and writes:
 
 - `output/<book>/syllabus.pdf` from `<book>/docs/course-structure.md`, the readable course structure. `syllabus.md`'s canonical YAML block is not reader-facing.
 - `output/<book>/handouts/<unit>.pdf`: one handout per unit, with that unit's practice statement notebooks in order, and `<details>` handled as in `student-print`. Book 1 gains these per-unit handouts.
@@ -102,7 +102,7 @@ Each script owns and replaces only its own files in `output/<book>/`, as in py4k
 `<book>/build/` keeps the intermediate files.
 The per-source build outputs and the exact-cardinality check are replaced by this contract.
 `docs/designs/000-project-design.md` §3.8 ("Book 1 mock tests and every live Book 2 unit's student-facing collection") and the line on what Quarto writes under `<book>/build/` are updated to say this.
-The current Quarto/typst path in `build-pdf.sh` is removed, along with its `.gitignore` cleanup and `test_book2_pdf_build_removes_only_new_quarto_gitignores`, so only one renderer remains. That renderer is pandoc to `.tex` to lualatex, as in py4kids.
+The current Quarto/typst path in `build-pdf.sh` is removed, along with its `.gitignore` cleanup and `test_book2_pdf_build_removes_only_new_quarto_gitignores`, so `build-pdf.sh` keeps a single renderer (the editions still render through Quarto, as in py4kids). That renderer is pandoc to `.tex` to lualatex, as in py4kids.
 Design 000 is not a governance file.
 
 **D5. The audit.**
@@ -125,20 +125,20 @@ Design 000 is not a governance file.
 
      A fingerprint found anywhere in `student-print`, or outside the answers appendix in `student`, is an error.
      This is defense in depth.
-   - Structural provenance check (primary): the publisher writes a sidecar `provenance.json` for each generated chapter. It lists every emitted block's source (file, cell index, and kind: markdown, code, or `<details>` body).
+   - Structural provenance check (primary): the publisher writes a sidecar `provenance.json` for each generated chapter. The audit holds its own rule table of allowed blocks per (edition, chapter); it never imports the publisher's edition rules. A `<details>` body, for example, is allowed in `student` only in the answers-appendix chapter. Tests plant both a forged sidecar entry (a disallowed block that is declared) and an undeclared block in the chapter text. It lists every emitted block's source (file, cell index, and kind: markdown, code, or `<details>` body).
      - The audit re-derives, from the sources and the edition rules, which blocks each edition may emit. Any other emitted block is an error, whatever its length.
      - It then checks that each chapter's text is exactly the concatenation of its declared blocks plus the publisher's fixed scaffolding (headings, pointers, panel wrappers). This catches short leaks such as `return 42` or a one-letter `<details>` answer.
      - Tests plant a short solution cell and a short `<details>` body.
 3. **Glyphs.** A "Missing character" entry in any LaTeX log is an error (py4kids' `pdf_glyphs.py` rule). This covers every PDF either script builds: editions, syllabus, handouts, and mock papers and solutions.
 4. **References.** Undefined references or labels in the draft-mode log are errors.
-5. **Glossary.** The glossary is a superset of the concepts the book introduces.
+5. **Glossary.** The glossary is a superset of the concepts the book introduces. A scoped check limits this to the concepts the in-scope units introduce.
 6. **Page counts** are recorded and produce warnings only.
 
 **D6. CI routing (py4kids `ci_scope.py`, narrowed for cost).**
 `scripts/ci-local.sh` runs `build-pdf.sh` for every book on every run.
 It runs `build-book.sh` plus the audit for a book only when the change set touches that book's publication inputs:
 
-- `<book>/publication.yaml`, `<book>/front-matter/`, or `<book>/back-matter/`;
+- `<book>/publication.yaml` (except a change that only adds `chapters:` entries, which routes to the scoped check of the added units), `<book>/front-matter/`, or `<book>/back-matter/`;
 - `tools/publish*.py`, `tools/publish_theme/`, `tools/books.py`, or `scripts/build-book.sh`;
 - `books.yaml`, `pyproject.toml`, or `uv.lock`.
 
@@ -302,6 +302,17 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 - **Verdict**: Reject.
 1. `[FIXED]` Must Fix: mock-test edits had no edition check. → Response: D6 adds `--mocktests` to the scoped check, so a mock-only change renders and audits the teacher's mock part; a test was added.
 2. `[FIXED]` Should Fix: the chapter audit ignored scope. → Response: D5 rule 1 uses an invocation-supplied scope cross-checked against `scope.json`, with distinct full and scoped expectations and tests for both.
+
+### Review 3 — Fable (2026-10-10)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Should Fix: scoped runs vs. whole-book rules. → Response: rule 1 is scope-aware (Sol round 3, finding 2); rule 5 is limited to the in-scope units' concepts.
+2. `[FIXED]` Should Fix: mock-only interface. → Response: `--mocktests` with zero units; a routing test (Sol round 3, finding 1).
+3. `[FIXED]` Should Fix: new-unit plans would pay full renders. → Response: a change that only adds `chapters:` entries routes to the scoped check of the added units.
+4. `[FIXED]` Nits 4–7:
+   - The audit holds its own rule table, with forged-sidecar and undeclared-block tests.
+   - Handouts use the shared converter.
+   - The renderer wording is clarified.
+   - Allowed blocks are derived per (edition, chapter).
 
 ## Content Review
 
