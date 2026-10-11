@@ -402,11 +402,11 @@ Blind solving does not apply: this plan adds no problems. The reviewers instead 
   - 47 page images: math, overflow, glyphs, appendix cross-references;
   - the volume semantics.
 - **Verdict**: Reject.
-1. `[OPEN]` Must Fix: the Index is missing and raw `\printindex` prints in 10 editions (`-raw_tex` escapes the bare TeX). → Response: a raw `{=latex}` block, a regression test, and an audit rule; the glossary entries are no longer indexed.
-2. `[OPEN]` Should Fix: the print pointer names the Teacher's Edition. → Response: it now says "the answers appendix of the full Student Book".
+1. `[FIXED]` Must Fix: the Index is missing and raw `\printindex` prints in 10 editions (`-raw_tex` escapes the bare TeX). → Response: a raw `{=latex}` block, a regression test, and an audit rule; the glossary entries are no longer indexed.
+2. `[FIXED]` Should Fix: the print pointer names the Teacher's Edition. → Response: it now says "the answers appendix of the full Student Book".
 3. `[FIXED]` Should Fix: the false publication claim. → Response: "The course files are at github.com/weiboz0/usaaio; ask your teacher for the Answer Key and the full Student Book." (0c12bb8).
-4. `[OPEN]` Should Fix: cramped syllabus and paper tables. → Response: relative column widths in `publish_pdf.py`.
-5. `[OPEN]` Nit: every index entry also listed the glossary page. → Response: covered by fix 1.
+4. `[FIXED]` Should Fix: cramped syllabus and paper tables. → Response: relative column widths in `publish_pdf.py`.
+5. `[FIXED]` Nit: every index entry also listed the glossary page. → Response: covered by fix 1. (4a79fde: the index prints, audit rule `check_scaffold_tex`, `widen_tables`, and both books rebuilt with the audits OK.)
 6. `[FIXED]` Nit: the practice-file path prefix. → Response: how-to-use says the paths are relative to the book folder.
 7. `[FIXED]` Nit: the practice-header example. → Response: a real header (`constrained coding`).
 
