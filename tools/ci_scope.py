@@ -29,6 +29,8 @@ from typing import Any
 
 import yaml
 
+from tools.books import unit_id_of
+
 GLOBAL_EXACT = frozenset({
     "tools/books.py", "scripts/build-book.sh", "books.yaml", "pyproject.toml", "uv.lock",
 })
@@ -198,7 +200,7 @@ def route_books(books: Iterable[BookInfo], changed: Iterable[str], *, all_books:
             elif parts[0] in ("front-matter", "back-matter"):
                 route.escalate("full", f"{path} changed")
             elif parts[0] == "units" and len(parts) > 2:
-                unit = parts[1]
+                unit = unit_id_of(parts[1])
                 if unit in book.configured_units:
                     route.add_unit(unit, f"{path} changed")
                 else:

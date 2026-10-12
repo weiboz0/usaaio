@@ -43,6 +43,7 @@ from tools.books import (
     load_book_catalog,
     load_publication_config,
     resolve_contained_path,
+    unit_dir,
 )
 from tools.publish import (
     THEME,
@@ -105,7 +106,7 @@ def _manifest(path: Path) -> dict[str, Any]:
 
 def handout_statements(book: BookSpec, unit: str) -> list[Path]:
     """A unit's practice statement notebooks: manifest `practice:` order, else `pNN.ipynb` order."""
-    unit_root = book.root / "units" / unit
+    unit_root = unit_dir(book.root, unit)
     rows = _manifest(unit_root / "manifest.yaml").get("practice") or []
     statements = [unit_root / str(row["path"]) for row in rows
                   if isinstance(row, dict) and isinstance(row.get("path"), str)]

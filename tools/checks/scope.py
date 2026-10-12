@@ -14,6 +14,7 @@ from typing import Any
 
 import yaml
 
+from tools.books import unit_id_of
 from tools.model import Report, load_syllabus, load_unit_manifests
 
 LAYERS = [
@@ -894,7 +895,8 @@ def _check_point_evidence(
                     "is not a unit lesson-session notebook"
                 )
                 continue
-            unit_id = f"{qualified_owner}:{parts[1]}" if qualified_owner else parts[1]
+            folder_unit = unit_id_of(parts[1])
+            unit_id = f"{qualified_owner}:{folder_unit}" if qualified_owner else folder_unit
             if not (unit_teaches.get(unit_id, set()) & shipped):
                 errors.append(
                     f"knowledge point {point_id}/{modality}: lesson {key[0]} "

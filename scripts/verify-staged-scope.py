@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 """Verify that Plan 019's atomic cutover contains only inventoried paths.
 
-The cached check also enforces public-repository protected-path rules.  Its one
-exception is the historical C8 tokenization lesson, whose migration may change
-only the inventoried root-resolution cell.
+The cached check also enforces public-repository protected-path rules.  Its only
+exception is the historical C8 tokenization lesson, as a typed chain of entries in
+`token_path_exception`:
+
+* `plan019-cell1` - the Plan 019 move, which may change only the inventoried
+  root-resolution cell;
+* `plan031-rename` - the Plan 031 unit renumbering (C8-embeddings -> 10-C5-embeddings),
+  which may change only what the pinned renumbering rewrite produces from the base
+  notebook (byte equality), and must keep the pinned root-resolution cell.
 """
 
 from __future__ import annotations
@@ -125,14 +131,54 @@ def blob(ref: str, path: str) -> bytes:
     return proc.stdout
 
 
+EXCEPTION_KINDS = ("plan019-cell1", "plan031-rename")
+
+
+def token_exceptions(inventory: dict) -> list[dict]:
+    """The typed `token_path_exception` entries (a list; Plan 031 D3)."""
+    raw = inventory.get("token_path_exception", [])
+    if not isinstance(raw, list):
+        raise ValueError("token_path_exception must be a list of typed entries")
+    entries = []
+    for entry in raw:
+        if not isinstance(entry, dict) or entry.get("kind") not in EXCEPTION_KINDS:
+            raise ValueError(f"token_path_exception entry has an unknown kind: {entry!r}")
+        entries.append(entry)
+    return entries
+
+
+def _cell_source_sha256(cell: dict) -> str:
+    return hashlib.sha256(
+        json.dumps(cell.get("source", []), ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
+def _load_renumber_rewrite(exception: dict):
+    """The pinned Plan 031 forward rewrite (scripts/renumber-book1-units.py)."""
+    import importlib.util
+
+    script = Path(__file__).resolve().with_name("renumber-book1-units.py")
+    if not script.is_file() or script.is_symlink():
+        raise ValueError("plan031-rename exception needs scripts/renumber-book1-units.py")
+    if hashlib.sha256(script.read_bytes()).hexdigest() != exception.get("rewrite_sha256"):
+        raise ValueError("plan031-rename exception: renumbering script does not match its pin")
+    spec = importlib.util.spec_from_file_location("renumber_book1_units", script)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module.rewrite_text
+
+
 def validate_token_exception(
     path: str, inventory: dict, *, old_ref: str, new_ref: str, status: str
 ) -> None:
-    exception = inventory.get("token_path_exception", {})
+    matches = [entry for entry in token_exceptions(inventory) if entry.get("new_path") == path]
+    if len(matches) != 1:
+        raise ValueError(f"protected token path: {path}")
+    exception = matches[0]
     old_path = exception.get("old_path")
-    new_path = exception.get("new_path")
     cells = exception.get("path_resolution_cells")
-    if path != new_path or not isinstance(old_path, str) or cells != [1]:
+    if not isinstance(old_path, str) or cells != [1]:
         raise ValueError(f"protected token path: {path}")
     old_deleted = old_path in git(
         "diff", "--cached" if new_ref == ":" else f"{old_ref}..{new_ref}",
@@ -140,18 +186,16 @@ def validate_token_exception(
     ).stdout.splitlines()
     if not (status.startswith("R") or (status == "A" and old_deleted)):
         raise ValueError(f"protected token exception must be a rename with scoped cell rewrite: {path}")
+    if exception["kind"] == "plan031-rename":
+        validate_plan031_rename(path, exception, old_ref=old_ref, new_ref=new_ref)
+        return
     old = json.loads(blob(old_ref, old_path))
     new = json.loads(blob(new_ref, path))
     if len(old.get("cells", [])) != len(new.get("cells", [])):
         raise ValueError(f"protected token notebook cell count changed: {path}")
     for index, (before, after) in enumerate(zip(old["cells"], new["cells"], strict=True)):
         if index == 1:
-            source_hash = hashlib.sha256(
-                json.dumps(
-                    after.get("source", []), ensure_ascii=False, separators=(",", ":")
-                ).encode("utf-8")
-            ).hexdigest()
-            if source_hash != exception.get("path_resolution_source_sha256"):
+            if _cell_source_sha256(after) != exception.get("path_resolution_source_sha256"):
                 raise ValueError(f"protected token notebook path cell is not the expected rewrite: {path}")
             candidate_before = dict(before)
             candidate_after = dict(after)
@@ -164,6 +208,22 @@ def validate_token_exception(
     for key in set(old) | set(new):
         if key != "cells" and old.get(key) != new.get(key):
             raise ValueError(f"protected token notebook metadata changed: {path}")
+
+
+def validate_plan031_rename(path: str, exception: dict, *, old_ref: str, new_ref: str) -> None:
+    """Accept only the mapped rename: forward-map the base notebook, require byte equality."""
+    rewrite = _load_renumber_rewrite(exception)
+    old_bytes = blob(old_ref, exception["old_path"])
+    new_bytes = blob(new_ref, path)
+    expected = rewrite(old_bytes.decode("utf-8"), exception["old_path"]).encode("utf-8")
+    if new_bytes != expected:
+        raise ValueError(
+            f"protected token notebook changed beyond the Plan 031 renumbering in some cell: {path}"
+        )
+    new = json.loads(new_bytes)
+    cells = new.get("cells", [])
+    if len(cells) < 2 or _cell_source_sha256(cells[1]) != exception.get("path_resolution_source_sha256"):
+        raise ValueError(f"protected token notebook path cell is not the expected rewrite: {path}")
 
 
 def main() -> int:
@@ -195,9 +255,17 @@ def main() -> int:
     if args.mode in {
         "--cached", "--protected-cached", "--protected-diff", "--protected-range"
     }:
-        token_exception = inventory.get("token_path_exception", {})
-        exception_path = token_exception.get("new_path")
-        exception_old_path = token_exception.get("old_path")
+        try:
+            exceptions = token_exceptions(inventory)
+        except ValueError as exc:
+            print(str(exc), file=sys.stderr)
+            return 1
+        exception_paths = {entry.get("new_path") for entry in exceptions}
+        # In range/diff modes without -M a rename shows its old path as deleted: skip each
+        # entry's deleted old path when that entry's new path is part of the same change.
+        exception_old_paths = {
+            entry.get("old_path"): entry.get("new_path") for entry in exceptions
+        }
         if args.mode in {"--cached", "--protected-cached"}:
             deleted_paths = set(
                 git("diff", "--cached", "--name-only", "--diff-filter=D").stdout.splitlines()
@@ -216,9 +284,13 @@ def main() -> int:
             category = protected_category(path)
             if category is None:
                 continue
-            if path == exception_old_path and path in deleted_paths and exception_path in paths:
+            if (
+                path in exception_old_paths
+                and path in deleted_paths
+                and exception_old_paths[path] in paths
+            ):
                 continue
-            if path == exception_path:
+            if path in exception_paths:
                 try:
                     if args.mode in {"--cached", "--protected-cached"}:
                         status = staged_status().get(path, "")

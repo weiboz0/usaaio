@@ -22,7 +22,13 @@ from pathlib import Path
 
 import yaml
 
-from tools.books import load_book_catalog, resolve_contained_path
+from tools.books import (
+    load_book_catalog,
+    resolve_contained_path,
+    unit_dir,
+    unit_id_of,
+    unit_relpath,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOK_ROOT: Path | None = None
@@ -126,7 +132,7 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
         return [f"{problem['id']}: solution_path is missing"]
     try:
         path = resolve_contained_path(
-            _content_root(), Path("units") / unit / relative,
+            _content_root(), Path(unit_relpath(_content_root(), unit)) / relative,
             label=f"{problem['id']}: solution_path",
         )
     except ValueError as exc:
@@ -183,7 +189,7 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
         return [f"{problem['id']}: statement path is missing"]
     try:
         path = resolve_contained_path(
-            _content_root(), Path("units") / unit / relative,
+            _content_root(), Path(unit_relpath(_content_root(), unit)) / relative,
             label=f"{problem['id']}: statement path",
         )
     except ValueError as exc:
@@ -305,10 +311,11 @@ def main(argv: list[str] | None = None) -> int:
     checked = 0
     failures: list[str] = []
     units = UNITS or tuple(
-        path.parent.name for path in sorted((_content_root() / "units").glob("*/manifest.yaml"))
+        unit_id_of(path.parent.name)
+        for path in sorted((_content_root() / "units").glob("*/manifest.yaml"))
     )
     for unit in units:
-        manifest_path = _content_root() / "units" / unit / "manifest.yaml"
+        manifest_path = unit_dir(_content_root(), unit) / "manifest.yaml"
         manifest = yaml.safe_load(manifest_path.read_text())
         if unit == "C7-cnn-transfer":
             manifest_ids = [problem.get("id") for problem in manifest.get("practice", [])]

@@ -170,6 +170,8 @@ class CourseSchedule:
     declared_week_count: int | None = None
     semester_minutes: tuple[int, int] | None = None
     declared_total_minutes: int | None = None
+    # Plan 031 D8: Book 1's declared teaching order (unit ids in folder order), if present.
+    teaching_order: tuple[str, ...] | None = None
 
     @property
     def total_minutes(self) -> int:

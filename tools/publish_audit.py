@@ -46,7 +46,15 @@ from typing import Any
 
 import yaml
 
-from tools.books import BookSpec, PublicationConfig, load_book_catalog, load_publication_config
+from tools.books import (
+    BookSpec,
+    PublicationConfig,
+    load_book_catalog,
+    load_publication_config,
+    unit_dir,
+    unit_id_of,
+    unit_relpath,
+)
 from tools.publish import fence_code, markdown_text, title_text
 
 # --- the audit's own edition table -----------------------------------------------------------
@@ -286,7 +294,7 @@ def classify(source: str) -> tuple[str, str]:
     if parts[0] == "back-matter" and len(parts) == 2:
         return "back", parts[1]
     if parts[0] == "units" and len(parts) >= 3:
-        unit = parts[1]
+        unit = unit_id_of(parts[1])
         if parts[2] == "practice" and len(parts) == 4:
             if parts[3].endswith("_solution.ipynb"):
                 return "solution", unit
@@ -306,18 +314,18 @@ def selected_solutions(book: BookSpec, config: PublicationConfig) -> set[str]:
     result = set()
     for unit in config.units:
         manifest = yaml.safe_load(
-            (book.root / "units" / unit / "manifest.yaml").read_text(encoding="utf-8")) or {}
+            (unit_dir(book.root, unit) / "manifest.yaml").read_text(encoding="utf-8")) or {}
         for row in manifest.get("practice") or []:
             if not isinstance(row, dict):
                 continue
             if all(str(row.get(key)) in values for key, values in config.student_answers.items()):
-                result.add(f"units/{unit}/{row['solution_path']}")
+                result.add(f"{unit_relpath(book.root, unit)}/{row['solution_path']}")
     return result
 
 
 def unit_rows(book: BookSpec, unit: str) -> list[dict[str, Any]]:
     manifest = yaml.safe_load(
-        (book.root / "units" / unit / "manifest.yaml").read_text(encoding="utf-8")) or {}
+        (unit_dir(book.root, unit) / "manifest.yaml").read_text(encoding="utf-8")) or {}
     return [row for row in manifest.get("practice") or [] if isinstance(row, dict)]
 
 
@@ -383,9 +391,9 @@ def chapter_kind(file: str, units: Iterable[str]) -> tuple[str, str]:
 
 
 def has_answer_units(book: BookSpec, unit: str, selected: set[str]) -> bool:
-    if any(f"units/{unit}/{row['solution_path']}" in selected for row in unit_rows(book, unit)):
+    if any(f"{unit_relpath(book.root, unit)}/{row['solution_path']}" in selected for row in unit_rows(book, unit)):
         return True
-    unit_root = book.root / "units" / unit
+    unit_root = unit_dir(book.root, unit)
     sources = [unit_root / "lesson.ipynb", *sorted((unit_root / "lessons").glob("*.ipynb")),
                unit_root / "review.ipynb",
                *(unit_root / str(row["path"]) for row in unit_rows(book, unit))]
@@ -418,7 +426,7 @@ def expected_chapters(book: BookSpec, edition: str, units: tuple[str, ...],
     chapters = [f"{name}.qmd" for name in profile["front"]]
     if profile["body"] == "answers":
         for unit in units:
-            if any(f"units/{unit}/{row['solution_path']}" in selected
+            if any(f"{unit_relpath(book.root, unit)}/{row['solution_path']}" in selected
                    for row in unit_rows(book, unit)):
                 chapters.append(f"answers-{unit}.qmd")
         return chapters
@@ -620,8 +628,8 @@ def fingerprints(book: BookSpec, config: PublicationConfig, selected: set[str],
 
     for unit in config.units:
         for row in unit_rows(book, unit):
-            statement = f"units/{unit}/{row['path']}"
-            solution = f"units/{unit}/{row['solution_path']}"
+            statement = f"{unit_relpath(book.root, unit)}/{row['path']}"
+            solution = f"{unit_relpath(book.root, unit)}/{row['solution_path']}"
             if not (book.root / solution).is_file():
                 continue
             minus = set()
@@ -630,7 +638,7 @@ def fingerprints(book: BookSpec, config: PublicationConfig, selected: set[str],
             text = "\n".join(cell["source"] for cell in cache.cells(solution))
             key = "selected" if solution in selected else "solution"
             result[key] |= long_lines(text, minus)
-        unit_root = book.root / "units" / unit
+        unit_root = unit_dir(book.root, unit)
         for path in [unit_root / "lesson.ipynb", *sorted((unit_root / "lessons").glob("*.ipynb")),
                      unit_root / "review.ipynb"]:
             if not path.is_file():
@@ -653,7 +661,7 @@ def fingerprints(book: BookSpec, config: PublicationConfig, selected: set[str],
             result["details"] |= long_lines("\n".join(bodies), minus)
     public: set[str] = set()  # lines any student edition may print anyway
     for unit in config.units:
-        unit_root = book.root / "units" / unit
+        unit_root = unit_dir(book.root, unit)
         sources = [unit_root / "lesson.ipynb", *sorted((unit_root / "lessons").glob("*.ipynb")),
                    unit_root / "review.ipynb",
                    *(unit_root / str(row["path"]) for row in unit_rows(book, unit))]
@@ -821,7 +829,7 @@ def check_glossary(result: AuditResult, book: BookSpec, units: Iterable[str]) ->
     introduced: set[str] = set()
     for unit in units:
         manifest = yaml.safe_load(
-            (book.root / "units" / unit / "manifest.yaml").read_text(encoding="utf-8")) or {}
+            (unit_dir(book.root, unit) / "manifest.yaml").read_text(encoding="utf-8")) or {}
         introduced |= {str(c) for c in manifest.get("concepts_taught") or [] if ":" not in str(c)}
     missing = sorted(introduced - covered)
     if missing:

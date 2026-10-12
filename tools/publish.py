@@ -40,6 +40,8 @@ from tools.books import (
     load_book_catalog,
     load_publication_config,
     output_pdf_name,
+    unit_dir,
+    unit_id_of,
 )
 
 THEME = Path(__file__).with_name("publish_theme")
@@ -569,7 +571,7 @@ class Publisher:
 
     def manifest(self, unit: str) -> dict[str, Any]:
         if unit not in self._manifests:
-            path = self.book.root / "units" / unit / "manifest.yaml"
+            path = unit_dir(self.book.root, unit) / "manifest.yaml"
             self._manifests[unit] = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
         return self._manifests[unit]
 
@@ -583,7 +585,7 @@ class Publisher:
         return True
 
     def session_notebooks(self, unit: str) -> list[Path]:
-        unit_root = self.book.root / "units" / unit
+        unit_root = unit_dir(self.book.root, unit)
         notebooks = [unit_root / "lesson.ipynb"]
         notebooks += sorted((unit_root / "lessons").glob("*.ipynb"))
         if (unit_root / "review.ipynb").is_file():
@@ -858,7 +860,7 @@ class Publisher:
         if practices:
             chapter.scaffold("## Practice")
         for row in practices:
-            statement = self.book.root / "units" / unit / str(row["path"])
+            statement = unit_dir(self.book.root, unit) / str(row["path"])
             markdown_only = self.profile["practice_cells"] == "markdown"
             self.emit_notebook(chapter, statement, level=3, unit=unit,
                                markdown_only=markdown_only)
@@ -867,12 +869,12 @@ class Publisher:
             if self.profile["selected_answers"] and self.selected(row):
                 label = answer_label(str(row["id"]))
                 chapter.scaffold(SELECTED_ANSWER_REF.format(label=label))
-                solution = self.book.root / "units" / unit / str(row["solution_path"])
+                solution = unit_dir(self.book.root, unit) / str(row["solution_path"])
                 self.answers.append(AnswerEntry(
                     unit=unit, heading=practice_title(statement, unit), label=label,
                     emit=self._solution_emitter(solution, unit, level=3)))
             if self.profile["full_solutions"]:
-                solution = self.book.root / "units" / unit / str(row["solution_path"])
+                solution = unit_dir(self.book.root, unit) / str(row["solution_path"])
                 chapter.scaffold("#### Solution")
                 self.emit_notebook(chapter, solution, level=4, unit=unit, drop_title=True,
                                    details="panel")
@@ -892,8 +894,8 @@ class Publisher:
         chapter = Chapter(file=f"answers-{unit}.qmd", kind="answers", title=spec.title, unit=unit)
         self.unit_heading(chapter, unit, mainmatter=mainmatter)
         for row in rows:
-            statement = self.book.root / "units" / unit / str(row["path"])
-            solution = self.book.root / "units" / unit / str(row["solution_path"])
+            statement = unit_dir(self.book.root, unit) / str(row["path"])
+            solution = unit_dir(self.book.root, unit) / str(row["solution_path"])
             chapter.scaffold(f"## {practice_title(statement, unit)} {{#{answer_label(str(row['id']))}}}")
             self.emit_notebook(chapter, solution, level=2, unit=unit, drop_title=True,
                                details="panel")
@@ -1030,7 +1032,7 @@ def concept_units(book: BookSpec) -> dict[str, str]:
         for concept in raw.get("concepts_taught") or []:
             if ":" in str(concept):  # a qualified import (book1:...) is not introduced here
                 continue
-            owners.setdefault(str(concept), manifest.parent.name)
+            owners.setdefault(str(concept), unit_id_of(manifest.parent.name))
     return owners
 
 

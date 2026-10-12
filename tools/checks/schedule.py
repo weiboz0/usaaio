@@ -217,14 +217,15 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
     raw = _mapping(_read_yaml(path), "course-schedule.yaml", errors)
     if raw is None:
         return None
-    allowed_keys = {"schedule_version", "calendar", "weeks", "totals"}
+    allowed_keys = {"schedule_version", "calendar", "weeks", "totals", "teaching_order"}
     if not {"schedule_version", "calendar", "weeks"} <= set(raw) or not set(
         raw
     ) <= allowed_keys:
         errors.append(
             "course-schedule.yaml keys must be schedule_version, calendar, weeks, "
-            "and optional totals"
+            "and optional totals and teaching_order"
         )
+    teaching_order = _teaching_order(raw.get("teaching_order"), errors)
     version = raw.get("schedule_version")
     if type(version) is not int or version != 1:
         errors.append("schedule_version must be integer 1")
@@ -363,6 +364,20 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
                 )
         if week is not None and semester is not None:
             weeks.append(ScheduleWeek(week, semester, allocations))
+    if teaching_order is not None:
+        scheduled_units = {
+            allocation.unit
+            for week in weeks
+            for allocation in week.allocations
+            if allocation.unit is not None
+        }
+        if set(teaching_order) != scheduled_units:
+            missing = sorted(scheduled_units - set(teaching_order))
+            extra = sorted(set(teaching_order) - scheduled_units)
+            errors.append(
+                "teaching_order must list exactly the scheduled units "
+                f"(missing {missing}, not scheduled {extra})"
+            )
     return CourseSchedule(
         schedule_version=1,
         weeks=weeks,
@@ -370,7 +385,23 @@ def _parse_schedule(root: Path, errors: list[str]) -> CourseSchedule | None:
         declared_week_count=declared_week_count,
         semester_minutes=semester_minutes,
         declared_total_minutes=declared_total,
+        teaching_order=teaching_order,
     )
+
+
+def _teaching_order(value: object, errors: list[str]) -> tuple[str, ...] | None:
+    """Plan 031 D8: optional Book 1 `teaching_order:`, a list of unique unit ids."""
+    if value is None:
+        return None
+    if not isinstance(value, list) or not value or not all(
+        isinstance(item, str) and item and item.strip() == item for item in value
+    ):
+        errors.append("teaching_order must be a nonempty list of unit ids")
+        return None
+    if len(set(value)) != len(value):
+        errors.append("teaching_order must not repeat a unit")
+        return None
+    return tuple(value)
 
 
 def _require_book2_manifest_path(

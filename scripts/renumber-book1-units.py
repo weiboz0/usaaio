@@ -91,6 +91,13 @@ EXCLUDED_FILES = frozenset(
         "tests/test_renumber_book1_units.py",
         "docs/unit-renumbering.md",
         "tests/fixtures/plan019-path-inventory.yaml",
+        # The Plan 019 enforcement verifier and its tests hold historical pre-rename paths
+        # (D3); they are migrated by hand.
+        "scripts/verify-staged-scope.py",
+        "tests/test_clean_checkout.py",
+        # Plan 031's own guard tests use base-side (old) unit folders as fixtures.
+        "tests/test_plan031_guard.py",
+        "tests/test_unit_order.py",
     }
 )
 EXCLUDED_NAMES = frozenset({"ERRATA.md"})
