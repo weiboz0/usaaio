@@ -93,7 +93,8 @@ The pass:
 - Tests prove that a second run is a no-op and that a half-migrated tree (some prefixed folders, no `teaching_order`) exits non-zero without writing anything. They also cover each swap and cycle member (`F3`↔`F4`, and `C5…C11`), and check that `C11-p16` and `C11-neural-training` each map exactly once. The script lists every bare-code hit with its context before applying. Ambiguous hits are excluded by an explicit allow/deny list kept in the script, and any hit outside a unit-reference context is reviewed by hand. The review list goes in the post-execution report.
 - Renames `test_c11_solution_regressions.py` to `test_c8_solution_regressions.py`. That is the only test whose name carries a changed code; `test_c12_*` keeps its name.
 
-`docs/plans/`, earlier `ERRATA.md` entries, and `TODO.md` history keep the old ids as written, since they are historical records.
+The script has an explicit exclusion list: `docs/plans/`, `TODO.md` and `**/ERRATA.md`. These are historical records and keep the old ids as written.
+The live, still-open `TODO.md` items that name changed units are updated by hand, with the old code in parentheses. Examples are the C10 `p12_solution` erratum (now C11) and the C7/C5 capacity note.
 A new `docs/unit-renumbering.md` holds the mapping table, and `TODO.md` and `docs/README.md` point to it.
 
 **D3. Content and answers must not change.**
@@ -116,7 +117,9 @@ Concretely, `validate_token_exception` changes in three ways:
 - Entry 2 is kind `plan031-rename`. Its `old_path` is the C8 lesson path (entry 1's `new_path`, which makes a deliberate chain) and its `new_path` is the `10-C5-embeddings` path. It allows only differences that vanish once the D2 mapping is undone, in any cell, and also requires the pinned cell-1 hash.
 - In `--protected-range`, which runs without `-M`, the old path shows as deleted. Each entry's `old_path` is added to the skipped deleted paths.
 
-The `tests/test_integration.py` verifier cases (about lines 1964–2038) are extended to cover a list of entries and the chained entry. The renamed `book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb` therefore needs a second exception entry in `token_path_exception`, with its cell hash unchanged, accepted by `validate_token_exception`.
+The token-exception tests in `tests/test_clean_checkout.py` (about lines 2011–2106) are extended to cover a list of entries and the chained entry.
+They also cover how `test_permanent_protected_mode_rejects_future_token_path_change` is reconciled: only the mapped rename, judged at the merge base, is accepted. Any later edit to `10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb` is still rejected in `--protected-cached` and `--protected-diff` modes, and an explicit test shows it.
+The `plan031-rename` check forward-maps the base notebook's cells with the script's own rewrite function and requires byte equality; it never inverts the branch side. The renamed `book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb` therefore needs a second exception entry in `token_path_exception`, with its cell hash unchanged, accepted by `validate_token_exception`.
 Both the verifier and the inventory are re-pinned (two sha256 values) in `scripts/pre-merge-guard.sh`. The fixtures read by `tests/test_integration.py` (about lines 838, 907, 1950) are updated to match.
 In more detail: `tests/fixtures/plan019-path-inventory.yaml` is pinned by digest in `scripts/pre-merge-guard.sh`. It also holds the token-notebook exception (its old and current paths plus a cell hash), which `scripts/verify-staged-scope.py` checks. The historical cutover tests in `tests/test_integration.py` (about 849–873) read the live tree through those paths.
 Task 3 handles it as follows:
@@ -198,14 +201,14 @@ A later schedule change no longer forces a rename unless it changes this declare
   - `git diff --stat -M main` must show the 19 folder renames as renames.
   - Content-invariance checks, with the comparison defined exactly:
   - **What is compared:** every file under `book1/` and `book2/` on `main` against its counterpart on the branch, paired through the folder mapping.
-  - **Transformation:** undo the D2 mapping on the branch side. The changed folder paths and the `NN-` prefixes disappear in the pairing.
+  - **Transformation:** apply the D2 forward rewrite to the `main` side; files are paired through the folder mapping.
   - **Declared structural exceptions** (excluded, then reviewed by hand):
     - the `teaching_order:` key;
     - `book1/publication.yaml` `chapters:`/`volumes:`;
     - generated artifacts (`course-structure.md`, the roadmap, material inventories), which are regenerated and checked by `--check`;
     - the front-matter volume names.
   - `tools/`, `scripts/` and `tests/` are code changes, reviewed in the gate, not by this check.
-  - (a) For every compared file, the diff after the transformation is exactly the D6 deny-list residue, which is listed.
+  - (a) Round trip: applying the script's own forward rewrite to each `main` file gives exactly the branch file, byte for byte, apart from the declared structural exceptions. The diff is empty, with no residue; deny contexts are handled because the forward function never touches them.
   - (b) The diff with every `(F|C)\d+` token masked is empty.
   - (c) The sha256 of every `data/` file and every generated dataset is unchanged.
   - (d) The practice-id multiset check (D5) passes.
@@ -272,6 +275,15 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 ### Review 3 — Sol, `gpt-6-sol` (2026-10-12)
 - **Verdict**: Approve with nits.
 1. `[FIXED]` Nit: a test for the half-migrated failure was added to D2.
+
+### Review 3 — Fable (2026-10-12)
+- **Verdict**: Approve with nits. The round-2 blocker was verified as resolved against the verifier code.
+1. `[FIXED]` Should Fix: wrong test citation, and reconciling the permanent-protection test. → Response: the tests are in `test_clean_checkout.py`; later edits stay rejected, with an explicit test; the check forward-maps the base.
+2. `[FIXED]` Should Fix: the exclusion-list contradiction. → Response: an explicit exclusion list, plus a hand update of the live `TODO.md` items.
+3. `[FIXED]` Nit: the invariance direction. → Response: (a) is a forward round trip with byte equality and no residue.
+4. `[WONTFIX]` Nits 4–5: informational; Book 2 has its own parser; `publish_audit`'s `LABEL` already accepts prefixes.
+
+**Gate result:** 3-way consensus at round 3 (self, Sol and Fable approve; the remaining edits are text clarifications of their own nits). Implementation is authorized.
 
 ## Content Review
 
