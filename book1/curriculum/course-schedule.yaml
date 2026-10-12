@@ -7,6 +7,26 @@ totals:
   semester_1: 7915
   semester_2: 10960
   scheduled: 18875
+teaching_order:
+- F1-scientific-python
+- F2-vectors
+- F3-multivar-calculus
+- F4-matrices
+- F5-probability
+- C1-ml-fundamentals
+- C2-linear-models
+- C3-gradient-descent
+- C4-classical-ml-practice
+- C5-embeddings
+- C6-neural-networks
+- F6-svd-spectral
+- C7-pytorch
+- F7-kernels-convex-optimization
+- C8-neural-training
+- C9-dimensionality-reduction
+- C10-cnn-transfer
+- C11-competition-craft
+- C12-classical-models
 weeks:
 - week: 1
   semester: 1
@@ -77,53 +97,53 @@ weeks:
     chunk: 1
     minutes: 45
   - kind: lesson-session
-    unit: F4-multivar-calculus
+    unit: F3-multivar-calculus
     session: 1
     minutes: 80
   - kind: lesson-session
-    unit: F4-multivar-calculus
+    unit: F3-multivar-calculus
     session: 2
     minutes: 90
   - kind: practice
-    unit: F4-multivar-calculus
+    unit: F3-multivar-calculus
     chunk: 1
     minutes: 270
 - week: 5
   semester: 1
   allocations:
   - kind: practice
-    unit: F4-multivar-calculus
+    unit: F3-multivar-calculus
     chunk: 2
     minutes: 130
   - kind: review
-    unit: F4-multivar-calculus
+    unit: F3-multivar-calculus
     chunk: 1
     minutes: 40
   - kind: lesson-session
-    unit: F3-matrices
+    unit: F4-matrices
     session: 1
     minutes: 80
   - kind: lesson-session
-    unit: F3-matrices
+    unit: F4-matrices
     session: 2
     minutes: 85
   - kind: practice
-    unit: F3-matrices
+    unit: F4-matrices
     chunk: 1
     minutes: 160
 - week: 6
   semester: 1
   allocations:
   - kind: lesson-session
-    unit: F3-matrices
+    unit: F4-matrices
     session: 3
     minutes: 85
   - kind: practice
-    unit: F3-matrices
+    unit: F4-matrices
     chunk: 2
     minutes: 290
   - kind: review
-    unit: F3-matrices
+    unit: F4-matrices
     chunk: 1
     minutes: 45
   - kind: lesson-session
@@ -286,37 +306,37 @@ weeks:
     chunk: 1
     minutes: 45
   - kind: lesson-session
-    unit: C8-embeddings
+    unit: C5-embeddings
     session: 1
     minutes: 80
   - kind: lesson-session
-    unit: C8-embeddings
+    unit: C5-embeddings
     session: 2
     minutes: 85
   - kind: practice
-    unit: C8-embeddings
+    unit: C5-embeddings
     chunk: 1
     minutes: 140
 - week: 16
   semester: 1
   allocations:
   - kind: lesson-session
-    unit: C8-embeddings
+    unit: C5-embeddings
     session: 3
     minutes: 85
   - kind: practice
-    unit: C8-embeddings
+    unit: C5-embeddings
     chunk: 2
     minutes: 360
   - kind: review
-    unit: C8-embeddings
+    unit: C5-embeddings
     chunk: 1
     minutes: 45
 - week: 17
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C5-neural-networks
+    unit: C6-neural-networks
     session: 1
     minutes: 80
   - kind: lesson-session
@@ -324,7 +344,7 @@ weeks:
     session: 1
     minutes: 85
   - kind: practice
-    unit: C5-neural-networks
+    unit: C6-neural-networks
     chunk: 1
     minutes: 200
   - kind: practice
@@ -335,7 +355,7 @@ weeks:
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C5-neural-networks
+    unit: C6-neural-networks
     session: 2
     minutes: 85
   - kind: lesson-session
@@ -343,7 +363,7 @@ weeks:
     session: 2
     minutes: 85
   - kind: practice
-    unit: C5-neural-networks
+    unit: C6-neural-networks
     chunk: 2
     minutes: 77
   - kind: practice
@@ -354,26 +374,26 @@ weeks:
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C5-neural-networks
+    unit: C6-neural-networks
     session: 3
     minutes: 85
   - kind: practice
-    unit: C5-neural-networks
+    unit: C6-neural-networks
     chunk: 3
     minutes: 273
   - kind: review
-    unit: C5-neural-networks
+    unit: C6-neural-networks
     chunk: 1
     minutes: 45
   - kind: lesson-session
-    unit: C6-pytorch
+    unit: C7-pytorch
     session: 1
     minutes: 80
 - week: 20
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C6-pytorch
+    unit: C7-pytorch
     session: 2
     minutes: 85
   - kind: lesson-session
@@ -385,14 +405,14 @@ weeks:
     chunk: 3
     minutes: 167
   - kind: practice
-    unit: C6-pytorch
+    unit: C7-pytorch
     chunk: 1
     minutes: 113
 - week: 21
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C6-pytorch
+    unit: C7-pytorch
     session: 3
     minutes: 85
   - kind: lesson-session
@@ -404,7 +424,7 @@ weeks:
     chunk: 4
     minutes: 51
   - kind: practice
-    unit: C6-pytorch
+    unit: C7-pytorch
     chunk: 2
     minutes: 229
 - week: 22
@@ -423,7 +443,7 @@ weeks:
     chunk: 1
     minutes: 45
   - kind: practice
-    unit: C6-pytorch
+    unit: C7-pytorch
     chunk: 3
     minutes: 112
   - kind: lesson-session
@@ -442,11 +462,11 @@ weeks:
   semester: 2
   allocations:
   - kind: practice
-    unit: C6-pytorch
+    unit: C7-pytorch
     chunk: 4
     minutes: 66
   - kind: review
-    unit: C6-pytorch
+    unit: C7-pytorch
     chunk: 1
     minutes: 45
   - kind: lesson-session
@@ -465,15 +485,15 @@ weeks:
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C11-neural-training
+    unit: C8-neural-training
     session: 1
     minutes: 90
   - kind: lesson-session
-    unit: C11-neural-training
+    unit: C8-neural-training
     session: 2
     minutes: 90
   - kind: practice
-    unit: C11-neural-training
+    unit: C8-neural-training
     chunk: 1
     minutes: 58
   - kind: practice
@@ -484,15 +504,15 @@ weeks:
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C11-neural-training
+    unit: C8-neural-training
     session: 3
     minutes: 90
   - kind: lesson-session
-    unit: C11-neural-training
+    unit: C8-neural-training
     session: 4
     minutes: 90
   - kind: practice
-    unit: C11-neural-training
+    unit: C8-neural-training
     chunk: 2
     minutes: 129
   - kind: practice
@@ -503,11 +523,11 @@ weeks:
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C11-neural-training
+    unit: C8-neural-training
     session: 5
     minutes: 90
   - kind: practice
-    unit: C11-neural-training
+    unit: C8-neural-training
     chunk: 3
     minutes: 233
   - kind: practice
@@ -526,7 +546,7 @@ weeks:
     session: 1
     minutes: 80
   - kind: practice
-    unit: C11-neural-training
+    unit: C8-neural-training
     chunk: 4
     minutes: 370
 - week: 28
@@ -537,11 +557,11 @@ weeks:
     session: 2
     minutes: 90
   - kind: practice
-    unit: C11-neural-training
+    unit: C8-neural-training
     chunk: 5
     minutes: 250
   - kind: review
-    unit: C11-neural-training
+    unit: C8-neural-training
     chunk: 1
     minutes: 60
   - kind: practice
@@ -552,7 +572,7 @@ weeks:
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C7-cnn-transfer
+    unit: C10-cnn-transfer
     session: 1
     minutes: 85
   - kind: lesson-session
@@ -560,7 +580,7 @@ weeks:
     session: 3
     minutes: 85
   - kind: practice
-    unit: C7-cnn-transfer
+    unit: C10-cnn-transfer
     chunk: 1
     minutes: 195
   - kind: practice
@@ -571,7 +591,7 @@ weeks:
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C7-cnn-transfer
+    unit: C10-cnn-transfer
     session: 2
     minutes: 85
   - kind: lesson-session
@@ -579,7 +599,7 @@ weeks:
     session: 4
     minutes: 85
   - kind: practice
-    unit: C7-cnn-transfer
+    unit: C10-cnn-transfer
     chunk: 2
     minutes: 195
   - kind: practice
@@ -590,11 +610,11 @@ weeks:
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C7-cnn-transfer
+    unit: C10-cnn-transfer
     session: 3
     minutes: 85
   - kind: practice
-    unit: C7-cnn-transfer
+    unit: C10-cnn-transfer
     chunk: 3
     minutes: 195
   - kind: practice
@@ -605,15 +625,15 @@ weeks:
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C7-cnn-transfer
+    unit: C10-cnn-transfer
     session: 4
     minutes: 90
   - kind: lesson-session
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     session: 1
     minutes: 80
   - kind: practice
-    unit: C7-cnn-transfer
+    unit: C10-cnn-transfer
     chunk: 4
     minutes: 175
   - kind: practice
@@ -621,18 +641,18 @@ weeks:
     chunk: 5
     minutes: 45
   - kind: practice
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     chunk: 1
     minutes: 60
 - week: 33
   semester: 2
   allocations:
   - kind: lesson-session
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     session: 2
     minutes: 85
   - kind: lesson-session
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     session: 3
     minutes: 85
   - kind: practice
@@ -652,22 +672,22 @@ weeks:
     chunk: 1
     minutes: 60
   - kind: practice
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     chunk: 2
     minutes: 55
 - week: 34
   semester: 2
   allocations:
   - kind: practice
-    unit: C7-cnn-transfer
+    unit: C10-cnn-transfer
     chunk: 5
     minutes: 115
   - kind: review
-    unit: C7-cnn-transfer
+    unit: C10-cnn-transfer
     chunk: 1
     minutes: 60
   - kind: lesson-session
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     session: 4
     minutes: 85
   - kind: lesson-session
@@ -692,7 +712,7 @@ weeks:
     minutes: 225
     problem_ids: [C12-p01, C12-p07, C12-p08, C12-p22, C12-p26]
   - kind: practice
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     chunk: 3
     minutes: 165
 - week: 36
@@ -708,7 +728,7 @@ weeks:
     minutes: 150
     problem_ids: [C12-p09, C12-p15, C12-p27]
   - kind: practice
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     chunk: 4
     minutes: 210
 - week: 37
@@ -724,7 +744,7 @@ weeks:
     minutes: 270
     problem_ids: [C12-p03, C12-p10, C12-p11, C12-p16, C12-p23, C12-p28]
   - kind: practice
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     chunk: 5
     minutes: 90
 - week: 38
@@ -740,7 +760,7 @@ weeks:
     minutes: 235
     problem_ids: [C12-p04, C12-p12, C12-p19, C12-p24, C12-p29]
   - kind: practice
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     chunk: 6
     minutes: 125
 - week: 39
@@ -756,11 +776,11 @@ weeks:
     minutes: 280
     problem_ids: [C12-p02, C12-p05, C12-p18, C12-p20, C12-p21, C12-p25]
   - kind: practice
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     chunk: 7
     minutes: 25
   - kind: review
-    unit: C10-competition-craft
+    unit: C11-competition-craft
     chunk: 1
     minutes: 55
 - week: 40

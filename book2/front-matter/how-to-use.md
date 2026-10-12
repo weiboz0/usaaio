@@ -11,7 +11,7 @@ Then work the unit's practice problems.
 
 This book assumes everything in *Machine Learning for the AI Olympiad* (Book 1).
 Book 2 does not reteach those ideas; instead it names them and links back to them.
-A Book 1 unit or concept is written with the prefix `book1:`, for example `book1:C6-pytorch` or `book1:softmax`.
+A Book 1 unit or concept is written with the prefix `book1:`, for example `book1:C7-pytorch` or `book1:softmax`.
 If a bridge diagnostic shows a gap, follow the named link and review that Book 1 unit before Session 1.
 
 ## Reading the page

@@ -36,7 +36,7 @@ Then work the unit's practice problems.
 <!-- /edition -->
 <!-- edition: student-print -->
 - **Practice file:** In this print edition a practice problem shows its statement only.
-  The line "Practice file:" under it names the notebook that holds the starter code, such as `units/C3-gradient-descent/practice/p05.ipynb` (relative to the `book1` folder).
+  The line "Practice file:" under it names the notebook that holds the starter code, such as `units/08-C3-gradient-descent/practice/p05.ipynb` (relative to the `book1` folder).
   Open that file to write and run your answer.
 <!-- /edition -->
 

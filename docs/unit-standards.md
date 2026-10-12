@@ -17,7 +17,7 @@ the content gate's reviewers enforce the qualitative parts against this document
   ~6–10 sections with worked examples and checkpoints).
   A root `lesson.ipynb` remains as the unit overview/index (goals, session map,
   prerequisites recap, how-to-study guidance).
-- Double-length units (F5, F6, C7, C11, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024) use 4–6 sessions.
+- Double-length units (F5, F6, C8, C10, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024) use 4–6 sessions.
 - `estimated_minutes` in the manifest lists per-session lesson minutes plus practice.
 
 ## Practice sets
@@ -43,15 +43,15 @@ the content gate's reviewers enforce the qualitative parts against this document
 
 ### Recorded non-conformance
 
-**At the Plan 014 gate, `C7-cnn-transfer` shipped 27 problems against a 24 ceiling.
+**At the Plan 014 gate, `C10-cnn-transfer` shipped 27 problems against a 24 ceiling.
 It was over the band, and that was recorded here rather than legalized.**
-C7 was not double-length: it ran three lesson sessions where the rule above required 4–6.
+C10 was not double-length: it ran three lesson sessions where the rule above required 4–6.
 At that gate, its 10 taught concepts and 672 practice minutes were both corpus maxima, which
 explained the overflow without excusing it.
-The required resolution was a unit *capacity* decision — split C7, rehome concepts such as
+The required resolution was a unit *capacity* decision — split C10, rehome concepts such as
 `feature-hierarchy`, `receptive-field`, or `tensor-shape-tracing`, or trim — and it was deferred
 to a dedicated plan; see `TODO.md`.
-`C5-neural-networks` carried the same open question.
+`C6-neural-networks` carried the same open question.
 
 This entry exists because plan 014 tried twice to make the overflow legal and its content gate
 rejected both attempts.
@@ -59,20 +59,20 @@ rejected both attempts.
 The first proposed a ceiling scaling at +2 problems per taught concept beyond 7, on the argument
 that the ≥3 rule forces a 10-concept unit past 24 problems.
 It does not.
-Measured on C7 as shipped: 27 problems, 65 tag instances, of which **33 are C7's own concepts**
+Measured on C10 as shipped: 27 problems, 65 tag instances, of which **33 are C10's own concepts**
 (1.22 per problem; the other 32 are foreign tags that earn no coverage credit).
 Seven of its ten concepts sit at exactly 3, and 8 of its 27 problems tag no floor-critical
 concept at all.
 Those eight are each *individually* droppable but not *jointly* so — removing all eight would
 take `tensor-shape-tracing` to 0, `convolution` to 1 and `layer-freezing` to 2.
 The largest subset that can go while every concept stays at ≥3 is **three** (for example
-C7-p01, C7-p10 and C7-p23), and that lands C7 at exactly 24.
+C10-p01, C10-p10 and C10-p23), and that lands C10 at exactly 24.
 So a trim to the band exists without touching coverage, and the coverage rule was never the
 binding constraint — which is the whole basis on which the amendment was rejected.
 
-The second attempt marked C7 `length: double`, which a reviewer rejected as an unenforced label
-that contradicts the session rule above — C7 runs three sessions where double-length means 4–6,
-so the flag would have meant one thing on F6 and another on C7 with nothing recording the
+The second attempt marked C10 `length: double`, which a reviewer rejected as an unenforced label
+that contradicts the session rule above — C10 runs three sessions where double-length means 4–6,
+so the flag would have meant one thing on F6 and another on C10 with nothing recording the
 difference.
 The generalizable lesson, and the reason this is written down: **when a unit overflows a
 standard, record the non-conformance and fix the unit — do not reshape the standard, and do not
@@ -81,20 +81,20 @@ A standard that moves to accommodate its own artifacts has stopped being one.
 
 **Plan 017 resolution.**
 The capacity issue is now resolved by changing the unit rather than relabeling the old artifact.
-C7 now has a substantive fourth 90-minute lesson session and keeps 27 practices, so it satisfies
+C10 now has a substantive fourth 90-minute lesson session and keeps 27 practices, so it satisfies
 both double-length bands.
 Its final 1,280 minutes exceed the pre-Plan-017 corpus maximum of 1,120 minutes.
 Its lesson load of 345 minutes over four sessions is lighter than F5's 415/5, F6's 425/5, and
-C11's 450/5; F7 shows why four sessions alone are not sufficient, because its 20 practices remain
+C8's 450/5; F7 shows why four sessions alone are not sufficient, because its 20 practices remain
 inside the standard-length band.
-C5 remains a compliant standard-length unit with 22 practices because neural-network training
-moved to C11 instead of being crowded into C5.
-The current double-length roster is therefore F5, F6, C7, C11, C12, B2-019-attention-transformers, B2-020-language-transformers, B2-021-cross-modal-transformers-vision, B2-022-probabilistic-latent-models, B2-023-generative-models-diffusion, and B2-024-gpu-scientific-ml-capstone.
+C6 remains a compliant standard-length unit with 22 practices because neural-network training
+moved to C8 instead of being crowded into C6.
+The current double-length roster is therefore F5, F6, C8, C10, C12, B2-019-attention-transformers, B2-020-language-transformers, B2-021-cross-modal-transformers-vision, B2-022-probabilistic-latent-models, B2-023-generative-models-diffusion, and B2-024-gpu-scientific-ml-capstone.
 The B2-021 unit uses five 90-minute teaching sessions and exactly 24 practices.
 The B2-022 unit uses five 90-minute teaching sessions and exactly 24 practices.
 The B2-023 unit uses five 90-minute teaching sessions and exactly 24 practices.
 The B2-024 unit uses six 90-minute teaching sessions and exactly 28 practices.
-Across the shipped roster, C10 has the concept maximum at 12 taught concepts, while C12 has the
+Across the shipped roster, C11 has the concept maximum at 12 taught concepts, while C12 has the
 practice-time maximum at 1,410 minutes.
 
 ## Per-unit review material

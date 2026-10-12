@@ -7,9 +7,13 @@ from pathlib import Path
 import numpy as np
 import pytest
 
+from tools.books import unit_dir
+
 ROOT = Path(__file__).resolve().parents[1]
 BOOK1_ROOT = ROOT / "book1"
-PRACTICE = BOOK1_ROOT / "units" / "C12-classical-models" / "practice"
+PRACTICE = unit_dir(BOOK1_ROOT, "C12-classical-models") / "practice"
+# Plan 031: the folder is resolved by id; it still lives under the book's units tree.
+assert PRACTICE.parent.parent == BOOK1_ROOT / "units"
 PROBLEMS = tuple(f"p{index:02d}" for index in range(1, 31))
 
 P20_ASCENDING_SEEDS = np.array([20260804, 20260805, 20260806], dtype=np.int64)

@@ -15,6 +15,7 @@ from pathlib import Path
 import pytest
 import yaml
 
+from tools.books import unit_dir
 from tools.checks.blueprint import check_blueprint
 from tools.checks.coverage import check_coverage
 from tools.checks.hygiene import check_hygiene
@@ -26,6 +27,22 @@ from tools.model import load_syllabus, load_unit_manifests
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOK1_ROOT = ROOT / "book1"
+
+
+def _load_renumber():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "renumber_book1_units_integration", ROOT / "scripts" / "renumber-book1-units.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+# Plan 031 mapping: resolves historical (pre-renumbering) unit paths in the live tree.
+_RENUMBER = _load_renumber()
 BOOK2_ROOT = ROOT / "book2"
 
 PLAN019_PRE_CUTOVER_COMMIT = "4cc38946548f618ac131d246bfd4191d20e4e7d8"
@@ -63,13 +80,13 @@ NEW_CONCEPT_CLUSTERS = {
 
 EXPECTED_UNIT_SHAPES = {
     "F1-scientific-python": ([75, 90, 75, 70], 24, (310, 515, 50)),
-    "C10-competition-craft": ([80, 85, 85, 85], 24, (335, 730, 55)),
+    "C11-competition-craft": ([80, 85, 85, 85], 24, (335, 730, 55)),
     "F5-probability": ([80, 85, 85, 85, 80], 25, (415, 650, 55)),
     "C2-linear-models": ([85, 90, 85], 24, (260, 590, 55)),
     "C9-dimensionality-reduction": ([80, 90, 85, 85], 24, (340, 600, 60)),
     "F7-kernels-convex-optimization": ([85, 85, 85, 85], 20, (340, 640, 45)),
-    "C11-neural-training": ([90, 90, 90, 90, 90], 24, (450, 1040, 60)),
-    "C7-cnn-transfer": ([85, 85, 85, 90], 27, (345, 875, 60)),
+    "C8-neural-training": ([90, 90, 90, 90, 90], 24, (450, 1040, 60)),
+    "C10-cnn-transfer": ([85, 85, 85, 90], 27, (345, 875, 60)),
 }
 
 PLAN016_C10_PROMOTED_CONCEPTS = (
@@ -205,14 +222,14 @@ PLAN017_C11_CONCEPTS_USED = [
 ]
 
 PLAN017_C11_PRACTICE_ROWS = [
-    ("C11-p01", "A", "mc", "intro", ["softmax"], 15),
-    ("C11-p02", "A", "mc", "intro", ["cross-entropy-loss"], 15),
-    ("C11-p03", "A", "mc", "intro", ["manual-backpropagation"], 15),
-    ("C11-p04", "B", "mc-normal-form", "intro", ["dropout"], 15),
-    ("C11-p05", "A", "constrained-coding", "intro", ["softmax"], 25),
-    ("C11-p06", "B", "constrained-coding", "intro", ["cross-entropy-loss"], 25),
+    ("C8-p01", "A", "mc", "intro", ["softmax"], 15),
+    ("C8-p02", "A", "mc", "intro", ["cross-entropy-loss"], 15),
+    ("C8-p03", "A", "mc", "intro", ["manual-backpropagation"], 15),
+    ("C8-p04", "B", "mc-normal-form", "intro", ["dropout"], 15),
+    ("C8-p05", "A", "constrained-coding", "intro", ["softmax"], 25),
+    ("C8-p06", "B", "constrained-coding", "intro", ["cross-entropy-loss"], 25),
     (
-        "C11-p07",
+        "C8-p07",
         "A",
         "constrained-coding",
         "core",
@@ -220,27 +237,27 @@ PLAN017_C11_PRACTICE_ROWS = [
         35,
     ),
     (
-        "C11-p08",
+        "C8-p08",
         "A",
         "constrained-coding",
         "core",
         ["autograd-training", "torch-optimizers"],
         35,
     ),
-    ("C11-p09", "A", "constrained-coding", "core", ["batch-normalization"], 35),
-    ("C11-p10", "A", "constrained-coding", "core", ["dropout"], 35),
+    ("C8-p09", "A", "constrained-coding", "core", ["batch-normalization"], 35),
+    ("C8-p10", "A", "constrained-coding", "core", ["dropout"], 35),
     (
-        "C11-p11",
+        "C8-p11",
         "B",
         "proof",
         "core",
         ["softmax", "cross-entropy-loss"],
         40,
     ),
-    ("C11-p12", "B", "proof", "core", ["manual-backpropagation"], 40),
-    ("C11-p13", "B", "proof", "core", ["batch-normalization"], 40),
+    ("C8-p12", "B", "proof", "core", ["manual-backpropagation"], 40),
+    ("C8-p13", "B", "proof", "core", ["batch-normalization"], 40),
     (
-        "C11-p14",
+        "C8-p14",
         "C",
         "integrative",
         "core",
@@ -248,7 +265,7 @@ PLAN017_C11_PRACTICE_ROWS = [
         60,
     ),
     (
-        "C11-p15",
+        "C8-p15",
         "C",
         "integrative",
         "core",
@@ -256,16 +273,16 @@ PLAN017_C11_PRACTICE_ROWS = [
         60,
     ),
     (
-        "C11-p16",
+        "C8-p16",
         "C",
         "integrative",
         "core",
         ["autograd-training", "torch-optimizers"],
         60,
     ),
-    ("C11-p17", "C", "scenario", "core", ["trained-mlp"], 50),
+    ("C8-p17", "C", "scenario", "core", ["trained-mlp"], 50),
     (
-        "C11-p18",
+        "C8-p18",
         "C",
         "scenario",
         "core",
@@ -273,7 +290,7 @@ PLAN017_C11_PRACTICE_ROWS = [
         50,
     ),
     (
-        "C11-p19",
+        "C8-p19",
         "C",
         "scenario",
         "advanced",
@@ -281,7 +298,7 @@ PLAN017_C11_PRACTICE_ROWS = [
         50,
     ),
     (
-        "C11-p20",
+        "C8-p20",
         "C",
         "scenario",
         "advanced",
@@ -289,7 +306,7 @@ PLAN017_C11_PRACTICE_ROWS = [
         50,
     ),
     (
-        "C11-p21",
+        "C8-p21",
         "C",
         "challenge",
         "advanced",
@@ -297,7 +314,7 @@ PLAN017_C11_PRACTICE_ROWS = [
         70,
     ),
     (
-        "C11-p22",
+        "C8-p22",
         "C",
         "challenge",
         "advanced",
@@ -305,7 +322,7 @@ PLAN017_C11_PRACTICE_ROWS = [
         70,
     ),
     (
-        "C11-p23",
+        "C8-p23",
         "C",
         "challenge",
         "advanced",
@@ -313,7 +330,7 @@ PLAN017_C11_PRACTICE_ROWS = [
         75,
     ),
     (
-        "C11-p24",
+        "C8-p24",
         "C",
         "challenge",
         "advanced",
@@ -323,10 +340,10 @@ PLAN017_C11_PRACTICE_ROWS = [
 ]
 
 PLAN017_C7_PRESERVED_CONCEPTS = {
-    "C7-p10": {"layer-freezing", "nn-module", "requires-grad", "parameter-counting"},
-    "C7-p24": {"tensor-shape-tracing"},
-    "C7-p26": {"convolution", "tensor-shape-tracing"},
-    "C7-p27": {"layer-freezing", "requires-grad"},
+    "C10-p10": {"layer-freezing", "nn-module", "requires-grad", "parameter-counting"},
+    "C10-p24": {"tensor-shape-tracing"},
+    "C10-p26": {"convolution", "tensor-shape-tracing"},
+    "C10-p27": {"layer-freezing", "requires-grad"},
 }
 
 PLAN018_C12_CONCEPTS = [
@@ -390,7 +407,7 @@ PLAN018_C12_CONCEPT_COVERAGE = {
 
 
 def _manifest(unit_id: str) -> dict[str, object]:
-    return yaml.safe_load((BOOK1_ROOT / "units" / unit_id / "manifest.yaml").read_text())
+    return yaml.safe_load((unit_dir(BOOK1_ROOT, unit_id) / "manifest.yaml").read_text())
 
 
 def _notebook_cell_source(relative_path: str, cell_id: str) -> str:
@@ -458,7 +475,7 @@ def seed_repo(root: Path, *, registered: bool = False) -> Path:
 
 
 def test_plan016_c9_changed_markdown_has_no_decoded_tex_control_characters():
-    unit = BOOK1_ROOT / "units" / "C9-dimensionality-reduction"
+    unit = unit_dir(BOOK1_ROOT, "C9-dimensionality-reduction")
     forbidden = {"\t", "\f", "\r"}
     failures = []
     for relative in C9_PLAN016_CHANGED_NOTEBOOKS:
@@ -622,13 +639,13 @@ def test_concepts_have_manifest_owners_for_live_b2_019():
 
 
 def test_plan017_c11_manifest_is_the_exact_pinned_training_contract():
-    manifest = _manifest("C11-neural-training")
+    manifest = _manifest("C8-neural-training")
 
     assert manifest["prereq_units"] == [
-        "F4-multivar-calculus",
+        "F3-multivar-calculus",
         "C3-gradient-descent",
-        "C5-neural-networks",
-        "C6-pytorch",
+        "C6-neural-networks",
+        "C7-pytorch",
     ]
     assert manifest["concepts_taught"] == [
         "softmax",
@@ -779,13 +796,13 @@ def test_plan019_phase1_exact_live_corpus_counts_and_double_length_roster():
     assert double_units == {
         "F5-probability",
         "F6-svd-spectral",
-        "C7-cnn-transfer",
-        "C11-neural-training",
+        "C10-cnn-transfer",
+        "C8-neural-training",
         "C12-classical-models",
     }
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
     assert (
-        "Double-length units (F5, F6, C7, C11, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024) use 4–6 sessions."
+        "Double-length units (F5, F6, C8, C10, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024) use 4–6 sessions."
         in standards
     )
 
@@ -833,6 +850,16 @@ def _plan019_pre_cutover_paths(root: Path) -> list[str]:
     ]
 
 
+def _plan019_live(root: Path, historical: str) -> Path:
+    """A historical `units/<old id>/...` path (Plan 019 inventory, Plan 022 commit) in the
+    live tree: Plan 031 renamed the folders, so map the old id and resolve it by id."""
+    parts = historical.split("/")
+    if parts[0] != "units":
+        return root / "book1" / historical
+    new_id = _RENUMBER.OLD_TO_NEW_ID[parts[1]]
+    return unit_dir(root / "book1", new_id).joinpath(*parts[2:])
+
+
 def _plan019_inventory(root: Path) -> tuple[dict[str, object], dict[str, set[int]]]:
     inventory = yaml.safe_load(
         (root / "tests/fixtures/plan019-path-inventory.yaml").read_text(encoding="utf-8")
@@ -860,7 +887,7 @@ def _plan019_assert_live_migration_cells(
     assert len(changed_cells) == 67
 
     for path, indices in changed_cells.items():
-        destination = root / "book1" / path
+        destination = _plan019_live(root, path)
         assert destination.is_file(), path
         notebook = json.loads(destination.read_bytes())
         for index in indices:
@@ -899,7 +926,7 @@ def _plan019_clone_with_plan022_notebooks(source: Path, destination: Path) -> Pa
             capture_output=True,
             check=True,
         ).stdout
-        (destination / "book1" / relative_path).write_bytes(blob)
+        _plan019_live(destination, relative_path).write_bytes(blob)
     return destination
 
 
@@ -909,9 +936,10 @@ def _plan019_historyless_fixture(source: Path, destination: Path) -> Path:
     shutil.copy2(source / fixture_path, destination / fixture_path)
     _, changed_cells = _plan019_inventory(destination)
     for relative_path in changed_cells:
-        target = destination / "book1" / relative_path
+        live = _plan019_live(source, relative_path)
+        target = destination / live.relative_to(source)
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source / "book1" / relative_path, target)
+        shutil.copy2(live, target)
     decoy = destination / "book1/units/not-in-plan019/manifest.yaml"
     decoy.parent.mkdir(parents=True)
     decoy.write_text("not: [a, valid, manifest\n", encoding="utf-8")
@@ -958,7 +986,7 @@ def test_plan019_cutover_ignores_exact_plan022_three_blob_worktree_change(
         )
         assert plan022_blob is not None, relative_path
         assert post_cutover_blob is not None, relative_path
-        assert (fixture_root / "book1" / relative_path).read_bytes() == plan022_blob
+        assert _plan019_live(fixture_root, relative_path).read_bytes() == plan022_blob
         assert plan022_blob != post_cutover_blob, relative_path
 
     _assert_plan019_cutover(fixture_root)
@@ -1007,7 +1035,7 @@ def test_plan019_historyless_mode_rejects_live_inventory_mutations(
     fixture_root = _plan019_historyless_fixture(ROOT, tmp_path / "archive")
     _, changed_cells = _plan019_inventory(fixture_root)
     first_path, indices = next(iter(changed_cells.items()))
-    destination = fixture_root / "book1" / first_path
+    destination = _plan019_live(fixture_root, first_path)
     if mutation == "delete-destination":
         destination.unlink()
     else:
@@ -1252,13 +1280,13 @@ def test_plan019_task3_r1_mock_solution_executes_from_book1_cwd(tmp_path: Path) 
 def test_plan017_c7_manifest_is_double_length_and_preserves_capstone_contracts():
     syllabus = _canonical_syllabus_yaml()
     syllabus_units = {unit["id"]: unit for unit in syllabus["units"]}
-    syllabus_c7 = syllabus_units["C7-cnn-transfer"]
-    manifest = _manifest("C7-cnn-transfer")
+    syllabus_c7 = syllabus_units["C10-cnn-transfer"]
+    manifest = _manifest("C10-cnn-transfer")
 
     assert syllabus_c7["length"] == "double"
-    assert syllabus_c7["prereqs"] == ["C6-pytorch", "C11-neural-training"]
+    assert syllabus_c7["prereqs"] == ["C7-pytorch", "C8-neural-training"]
     assert "cnn-training" in syllabus_c7["teaches"]
-    assert manifest["prereq_units"] == ["C6-pytorch", "C11-neural-training"]
+    assert manifest["prereq_units"] == ["C7-pytorch", "C8-neural-training"]
     assert "cnn-training" in manifest["concepts_taught"]
     assert manifest["estimated_minutes"] == {
         "lesson": 345,
@@ -1282,7 +1310,7 @@ def test_plan017_c7_manifest_is_double_length_and_preserves_capstone_contracts()
 
 def test_plan017_c11_p04_inverted_dropout_scaling_changes_the_answer():
     statement = _notebook_cell_source(
-        "units/C11-neural-training/practice/p04.ipynb", "p04-m1"
+        "units/15-C8-neural-training/practice/p04.ipynb", "p04-m1"
     )
 
     assert "E[h_tilde_1^2] / E[h_tilde_2 + h_tilde_3]" in statement
@@ -1295,7 +1323,7 @@ def test_plan017_c11_p04_inverted_dropout_scaling_changes_the_answer():
 
 def test_plan017_c7_p26_pins_construction_to_reference_draw_order():
     statement = _notebook_cell_source(
-        "units/C7-cnn-transfer/practice/p26.ipynb", "p26-00"
+        "units/17-C10-cnn-transfer/practice/p26.ipynb", "p26-00"
     )
 
     assert (
@@ -1308,7 +1336,7 @@ def test_plan017_c7_p26_pins_construction_to_reference_draw_order():
 
 def test_plan017_c11_p10_replaces_effectively_zero_linspace_coordinate():
     setup = _notebook_cell_source(
-        "units/C11-neural-training/practice/p10.ipynb", "p10-c2"
+        "units/15-C8-neural-training/practice/p10.ipynb", "p10-c2"
     )
 
     assert "x_p10[torch.abs(x_p10) < 1e-9] = 0.125" in setup
@@ -1317,7 +1345,7 @@ def test_plan017_c11_p10_replaces_effectively_zero_linspace_coordinate():
 
 def test_plan017_c11_lessons_cover_lambda_rng_and_optimizer_state_contracts():
     lesson_03 = _notebook_cell_source(
-        "units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb",
+        "units/15-C8-neural-training/lessons/03-numpy-mlp-training.ipynb",
         "c11s3015",
     )
     assert "$\\lambda/2$" in lesson_03
@@ -1325,7 +1353,7 @@ def test_plan017_c11_lessons_cover_lambda_rng_and_optimizer_state_contracts():
     assert "$lambda/2$" not in lesson_03
     assert "$lambda W$" not in lesson_03
 
-    lesson_04_path = BOOK1_ROOT / "units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb"
+    lesson_04_path = BOOK1_ROOT / "units/15-C8-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb"
     lesson_04 = json.loads(lesson_04_path.read_text())
     cell_sources = {
         cell.get("id"): (
@@ -1484,11 +1512,11 @@ def test_plan016_existing_unit_register_extensions_are_exact():
         assert actual == expected_problems
 
     c10 = {
-        problem["id"]: problem for problem in _manifest("C10-competition-craft")["practice"]
+        problem["id"]: problem for problem in _manifest("C11-competition-craft")["practice"]
     }
     expected_c10_concepts = {
-        "C10-p15": ["writeup-quality", *PLAN016_C10_PROMOTED_CONCEPTS],
-        "C10-p17": [
+        "C11-p15": ["writeup-quality", *PLAN016_C10_PROMOTED_CONCEPTS],
+        "C11-p17": [
             "writeup-quality",
             *PLAN016_C10_PROMOTED_CONCEPTS,
             "train-test-split",
@@ -1497,7 +1525,7 @@ def test_plan016_existing_unit_register_extensions_are_exact():
             "feature-scaling",
             "sklearn-pipelines",
         ],
-        "C10-p18": [
+        "C11-p18": [
             "writeup-quality",
             *PLAN016_C10_PROMOTED_CONCEPTS,
             "train-test-split",
@@ -1516,11 +1544,11 @@ def test_plan016_existing_unit_register_extensions_are_exact():
             problem_id
             for problem_id, problem in c10.items()
             if concept in problem["concepts"]
-        ] == ["C10-p15", "C10-p17", "C10-p18"]
+        ] == ["C11-p15", "C11-p17", "C11-p18"]
 
 
 def test_plan016_f1_register_rows_are_under_truthful_set_comments():
-    text = (BOOK1_ROOT / "units" / "F1-scientific-python" / "manifest.yaml").read_text()
+    text = (unit_dir(BOOK1_ROOT, "F1-scientific-python") / "manifest.yaml").read_text()
     set_a, after_a = text.split("# --- Set B: exam register ---", 1)
     set_b, set_c = after_a.split("# --- Set C: integration + challenge ---", 1)
 
@@ -1530,19 +1558,19 @@ def test_plan016_f1_register_rows_are_under_truthful_set_comments():
 
 
 def test_f1_seaborn_array_only_boundary():
-    unit_dir = BOOK1_ROOT / "units" / "F1-scientific-python"
+    f1_dir = unit_dir(BOOK1_ROOT, "F1-scientific-python")
     actual_files = {
-        path.relative_to(unit_dir) for path in (unit_dir / "lessons").glob("*.ipynb")
+        path.relative_to(f1_dir) for path in (f1_dir / "lessons").glob("*.ipynb")
     }
     actual_files.update(
-        path.relative_to(unit_dir)
-        for path in (unit_dir / "practice").glob("p2[234]*.ipynb")
+        path.relative_to(f1_dir)
+        for path in (f1_dir / "practice").glob("p2[234]*.ipynb")
     )
     actual_files.update({Path("lesson.ipynb"), Path("review.ipynb")})
 
     assert len(F1_SEABORN_ARRAY_ONLY_FILES) == 12
     assert actual_files == F1_SEABORN_ARRAY_ONLY_FILES
-    assert all((unit_dir / relative).is_file() for relative in F1_SEABORN_ARRAY_ONLY_FILES)
+    assert all((f1_dir / relative).is_file() for relative in F1_SEABORN_ARRAY_ONLY_FILES)
 
     forbidden = {
         "import pandas": re.compile(r"\bimport\s+pandas\b", re.IGNORECASE),
@@ -1551,7 +1579,7 @@ def test_f1_seaborn_array_only_boundary():
         "DataFrame": re.compile(r"\bdataframe\b", re.IGNORECASE),
     }
     for relative in sorted(F1_SEABORN_ARRAY_ONLY_FILES):
-        text = (unit_dir / relative).read_text()
+        text = (f1_dir / relative).read_text()
         hits = [name for name, pattern in forbidden.items() if pattern.search(text)]
         assert hits == [], f"{relative}: forbidden pandas surface {hits}"
 
@@ -1561,8 +1589,8 @@ def test_plan016_f7_manifest_has_exact_foundation_contract_and_register():
     unit = syllabus.units["F7-kernels-convex-optimization"]
     assert unit.track == "foundation"
     assert unit.prereqs == [
-        "F3-matrices",
-        "F4-multivar-calculus",
+        "F4-matrices",
+        "F3-multivar-calculus",
         "F6-svd-spectral",
         "C3-gradient-descent",
     ]
@@ -1661,8 +1689,8 @@ def test_plan019_phase1_book1_narrative_order_and_book2_dependency_contract():
     book1_units = dict(units)
     assert units["F5-probability"]["length"] == "double"
     assert units["F6-svd-spectral"]["length"] == "double"
-    assert units["C7-cnn-transfer"]["length"] == "double"
-    assert units["C11-neural-training"]["length"] == "double"
+    assert units["C10-cnn-transfer"]["length"] == "double"
+    assert units["C8-neural-training"]["length"] == "double"
     assert units["C12-classical-models"]["length"] == "double"
     narrative = _syllabus_narrative()
     foundation = _narrative_section(narrative, "Foundation track — rationale")
@@ -1683,8 +1711,8 @@ def test_plan019_phase1_book1_narrative_order_and_book2_dependency_contract():
     ) in normalized_core
     assert "Fitting itself is deferred to `C3-gradient-descent`" not in normalized_core
     engineering_ladder = (
-        "`C5-neural-networks` → `C6-pytorch` → `C11-neural-training` → "
-        "`C7-cnn-transfer`"
+        "`C6-neural-networks` → `C7-pytorch` → `C8-neural-training` → "
+        "`C10-cnn-transfer`"
     )
     assert normalized_core.count(engineering_ladder) == 1
 
@@ -1699,21 +1727,21 @@ def test_plan019_phase1_book1_narrative_order_and_book2_dependency_contract():
         "F1-scientific-python",
         "F2-vectors",
         "C1-ml-fundamentals",
-        "F4-multivar-calculus",
-        "F3-matrices",
+        "F3-multivar-calculus",
+        "F4-matrices",
         "F5-probability",
         "C4-classical-ml-practice",
         "C2-linear-models",
         "C3-gradient-descent",
-        "C5-neural-networks",
-        "C6-pytorch",
-        "C11-neural-training",
-        "C7-cnn-transfer",
-        "C8-embeddings",
+        "C6-neural-networks",
+        "C7-pytorch",
+        "C8-neural-training",
+        "C10-cnn-transfer",
+        "C5-embeddings",
         "F6-svd-spectral",
         "F7-kernels-convex-optimization",
         "C9-dimensionality-reduction",
-        "C10-competition-craft",
+        "C11-competition-craft",
         "C12-classical-models",
     ]
     assert ordered_unit_ids == expected_order
@@ -1733,10 +1761,10 @@ def test_plan019_phase1_book1_narrative_order_and_book2_dependency_contract():
         book2.track,
     ) == (2, 2, "round-2-extension", "extension")
     assert book2.prereqs == [
-        "book1:C6-pytorch",
-        "book1:C7-cnn-transfer",
-        "book1:C8-embeddings",
-        "book1:C11-neural-training",
+        "book1:C7-pytorch",
+        "book1:C10-cnn-transfer",
+        "book1:C5-embeddings",
+        "book1:C8-neural-training",
     ]
     book2_position = len(ordered_unit_ids)
     assert all(
@@ -1749,7 +1777,7 @@ def test_plan019_phase1_book1_narrative_order_and_book2_dependency_contract():
     assert re.search(r'^name = "seaborn"$', (ROOT / "uv.lock").read_text(), re.MULTILINE)
     standards = (ROOT / "docs" / "unit-standards.md").read_text()
     assert (
-        "Double-length units (F5, F6, C7, C11, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024) use 4–6 sessions."
+        "Double-length units (F5, F6, C8, C10, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024) use 4–6 sessions."
         in standards
     )
 
@@ -1847,7 +1875,7 @@ problems:
 
 def test_full_pipeline_on_synthetic_test(tmp_path):
     seed_repo(tmp_path)
-    unit_dir = tmp_path / "units" / "F1-scientific-python"
+    unit_dir = tmp_path / "units" / "01-F1-scientific-python"
     (unit_dir / "practice").mkdir(parents=True)
     for number in range(1, 4):
         (unit_dir / "practice" / f"p{number:02}.ipynb").write_text(

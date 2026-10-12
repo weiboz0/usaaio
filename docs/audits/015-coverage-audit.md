@@ -59,7 +59,7 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C5-neural-networks
+- **Destination:** book1:C6-neural-networks
 - **Dependencies:** book1:affine-transformations
 - **Shipped concepts:** book1:activation-functions, book1:custom-layers, book1:manual-weights, book1:mlp-architecture
 - **Modalities missing:** —
@@ -67,17 +67,17 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 - **Rationale:** Component formulas, bias, composition, NumPy implementation, manual design, and PyTorch implementation are exercised.
 - **Consequence:** The essential affine layer is fully covered.
 
-- **derivation lessons:** book1:units/C5-neural-networks/lessons/01-perceptrons-and-activations.ipynb :: C5-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear :: cell 1
-- **derivation practices:** book1:C5-p04, book1:C5-p11, book1:C5-p18
+- **derivation lessons:** book1:units/11-C6-neural-networks/lessons/01-perceptrons-and-activations.ipynb :: C6-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear :: cell 1
+- **derivation practices:** book1:C6-p04, book1:C6-p11, book1:C6-p18
 - **derivation assessments:** book1:r1-001-p08-2
-- **implementation lessons:** book1:units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1
-- **implementation practices:** book1:C5-p08, book1:C5-p18, book1:C6-p09
+- **implementation lessons:** book1:units/11-C6-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C6-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1
+- **implementation practices:** book1:C6-p08, book1:C6-p18, book1:C7-p09
 - **implementation assessments:** book1:r1-001-p07-2
-- **theory lessons:** book1:units/C5-neural-networks/lessons/01-perceptrons-and-activations.ipynb :: C5-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear :: cell 1
-- **theory practices:** book1:C5-p11, book1:C5-p18, book1:C6-p09
+- **theory lessons:** book1:units/11-C6-neural-networks/lessons/01-perceptrons-and-activations.ipynb :: C6-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear :: cell 1
+- **theory practices:** book1:C6-p11, book1:C6-p18, book1:C7-p09
 - **theory assessments:** book1:r1-001-p07-2
 
-Practices: book1:C5-p04, book1:C5-p08, book1:C5-p11, book1:C5-p18, book1:C6-p09
+Practices: book1:C6-p04, book1:C6-p08, book1:C6-p11, book1:C6-p18, book1:C7-p09
 
 Assessments: book1:r1-001-p07-2, book1:r1-001-p08-2
 
@@ -87,22 +87,22 @@ Assessments: book1:r1-001-p07-2, book1:r1-001-p08-2
 - **Layer:** shared-foundation
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C5-neural-networks
+- **Destination:** book1:C6-neural-networks
 - **Dependencies:** book1:linear-algebra-foundations
 - **Shipped concepts:** book1:activation-functions, book1:manual-weights, book1:matrices-as-linear-maps, book1:mlp-architecture
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** F3's origin-preservation test proves a nonzero shift is not linear; C5 then derives affine composition with bias/translation terms and implements it.
+- **Rationale:** F4's origin-preservation test proves a nonzero shift is not linear; C6 then derives affine composition with bias/translation terms and implements it.
 - **Consequence:** Students can use affine transformations despite their later unit ownership.
 
-- **implementation lessons:** book1:units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1
-- **implementation practices:** book1:C5-p08, book1:C5-p18, book1:C6-p09
+- **implementation lessons:** book1:units/11-C6-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C6-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1
+- **implementation practices:** book1:C6-p08, book1:C6-p18, book1:C7-p09
 - **implementation assessments:** book1:r1-001-p08-2
-- **theory lessons:** book1:units/C5-neural-networks/lessons/01-perceptrons-and-activations.ipynb :: C5-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear :: cell 1, book1:units/F3-matrices/lessons/01-matrices-as-maps.ipynb :: F3-matrices — Session 1: Matrices as Maps > 3. The Linearity Contract :: cell 1
-- **theory practices:** book1:C5-p11, book1:C5-p18, book1:C6-p09
+- **theory lessons:** book1:units/04-F4-matrices/lessons/01-matrices-as-maps.ipynb :: F4-matrices — Session 1: Matrices as Maps > 3. The Linearity Contract :: cell 1, book1:units/11-C6-neural-networks/lessons/01-perceptrons-and-activations.ipynb :: C6-neural-networks — Session 1: Perceptrons and Activations > 5. Why Nonlinearity Matters: a Stack of Linear Maps Is Linear :: cell 1
+- **theory practices:** book1:C6-p11, book1:C6-p18, book1:C7-p09
 - **theory assessments:** book1:r1-001-p07-2
 
-Practices: book1:C5-p08, book1:C5-p11, book1:C5-p18, book1:C6-p09
+Practices: book1:C6-p08, book1:C6-p11, book1:C6-p18, book1:C7-p09
 
 Assessments: book1:r1-001-p07-2, book1:r1-001-p08-2
 
@@ -112,25 +112,25 @@ Assessments: book1:r1-001-p07-2, book1:r1-001-p08-2
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C11-neural-training
+- **Destination:** book1:C8-neural-training
 - **Dependencies:** book1:forward-propagation-by-hand, book1:multivariable-derivatives
 - **Shipped concepts:** book1:manual-backpropagation
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** The shipped C11 lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Rationale:** The shipped C8 lesson-and-practice sequence now closes every required modality with executable evidence.
 - **Consequence:** Students can reason about and implement this neural-training component in the complete training system.
 
-- **derivation lessons:** book1:units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual Backpropagation > 4. Complete backward derivation :: cell 1
-- **derivation practices:** book1:C11-p12
+- **derivation lessons:** book1:units/15-C8-neural-training/lessons/02-manual-backpropagation.ipynb :: C8-neural-training — Session 2: Manual Backpropagation > 4. Complete backward derivation :: cell 1
+- **derivation practices:** book1:C8-p12
 - **derivation assessments:** —
-- **implementation lessons:** book1:units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP That Learns > 3. Backward pass with a shape-preserving return value :: cell 1
-- **implementation practices:** book1:C11-p07
+- **implementation lessons:** book1:units/15-C8-neural-training/lessons/03-numpy-mlp-training.ipynb :: C8-neural-training — Session 3: A NumPy MLP That Learns > 3. Backward pass with a shape-preserving return value :: cell 1
+- **implementation practices:** book1:C8-p07
 - **implementation assessments:** —
-- **theory lessons:** book1:units/C11-neural-training/lessons/02-manual-backpropagation.ipynb :: C11-neural-training — Session 2: Manual Backpropagation > 1. Computation graphs and local derivatives :: cell 1
-- **theory practices:** book1:C11-p03
+- **theory lessons:** book1:units/15-C8-neural-training/lessons/02-manual-backpropagation.ipynb :: C8-neural-training — Session 2: Manual Backpropagation > 1. Computation graphs and local derivatives :: cell 1
+- **theory practices:** book1:C8-p03
 - **theory assessments:** —
 
-Practices: book1:C11-p03, book1:C11-p07, book1:C11-p12
+Practices: book1:C8-p03, book1:C8-p07, book1:C8-p12
 
 Assessments: —
 
@@ -140,7 +140,7 @@ Assessments: —
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C11-neural-training
+- **Destination:** book1:C8-neural-training
 - **Dependencies:** book1:probability-and-statistics-foundations, book1:pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** book1:batch-normalization, book1:layer-freezing, book1:requires-grad, book1:resnet-architecture
 - **Modalities missing:** —
@@ -148,20 +148,20 @@ Assessments: —
 - **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
 - **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
-- **derivation lessons:** book1:units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 2. BatchNorm backward identity :: cell 1
-- **derivation practices:** book1:C11-p13
+- **derivation lessons:** book1:units/15-C8-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C8-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 2. BatchNorm backward identity :: cell 1
+- **derivation practices:** book1:C8-p13
 - **derivation assessments:** —
-- **implementation lessons:** book1:units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 1. Batch normalization forward pass :: cell 1
-- **implementation practices:** book1:C11-p09
+- **implementation lessons:** book1:units/15-C8-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C8-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 1. Batch normalization forward pass :: cell 1
+- **implementation practices:** book1:C8-p09
 - **implementation assessments:** —
-- **model-training lessons:** book1:units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 6. Worked combined training audit :: cell 1
-- **model-training practices:** book1:C11-p24
+- **model-training lessons:** book1:units/15-C8-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C8-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 6. Worked combined training audit :: cell 1
+- **model-training practices:** book1:C8-p24
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C7-cnn-transfer/lessons/02-resnet-reading.ipynb :: C7-cnn-transfer — Session 2: Reading ResNet-50 > 1. Loading a Pretrained Model, Reproducibly > BatchNorm's three independent controls :: cell 1
-- **theory practices:** book1:C7-p27
+- **theory lessons:** book1:units/17-C10-cnn-transfer/lessons/02-resnet-reading.ipynb :: C10-cnn-transfer — Session 2: Reading ResNet-50 > 1. Loading a Pretrained Model, Reproducibly > BatchNorm's three independent controls :: cell 1
+- **theory practices:** book1:C10-p27
 - **theory assessments:** —
 
-Practices: book1:C11-p09, book1:C11-p13, book1:C11-p24, book1:C7-p27
+Practices: book1:C10-p27, book1:C8-p09, book1:C8-p13, book1:C8-p24
 
 Assessments: —
 
@@ -179,13 +179,13 @@ Assessments: —
 - **Rationale:** F5 derives the prior-likelihood-posterior reversal from multiplication and total probability, computes it in code, and exercises it in three direct practices.
 - **Consequence:** Students can derive and implement Bayes updates without reversing conditionals or dropping evidence routes.
 
-- **derivation lessons:** book1:units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 5. Bayes reverses the direction > Checkpoint 5 :: cell 1
+- **derivation lessons:** book1:units/05-F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 5. Bayes reverses the direction > Checkpoint 5 :: cell 1
 - **derivation practices:** book1:F5-p21, book1:F5-p22, book1:F5-p25
 - **derivation assessments:** —
-- **implementation lessons:** book1:units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 5. Bayes reverses the direction > Checkpoint 5 :: cell 2
+- **implementation lessons:** book1:units/05-F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 5. Bayes reverses the direction > Checkpoint 5 :: cell 2
 - **implementation practices:** book1:F5-p21, book1:F5-p25
 - **implementation assessments:** —
-- **theory lessons:** book1:units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 5. Bayes reverses the direction > Checkpoint 5 :: cell 1
+- **theory lessons:** book1:units/05-F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 5. Bayes reverses the direction > Checkpoint 5 :: cell 1
 - **theory practices:** book1:F5-p21, book1:F5-p22, book1:F5-p25
 - **theory assessments:** —
 
@@ -207,10 +207,10 @@ Assessments: —
 - **Rationale:** Flexible-versus-rigid behavior, memorization, and underfitting are reasoned through and experimentally compared.
 - **Consequence:** The intended introductory tradeoff depth is covered.
 
-- **implementation lessons:** book1:units/C1-ml-fundamentals/lessons/02-generalization-train-test-overfitting.ipynb :: C1 Session 2 — Generalization: Train/Test Discipline and Overfitting > 5. Flexible Rules, Rigid Rules :: cell 1
+- **implementation lessons:** book1:units/06-C1-ml-fundamentals/lessons/02-generalization-train-test-overfitting.ipynb :: C1 Session 2 — Generalization: Train/Test Discipline and Overfitting > 5. Flexible Rules, Rigid Rules :: cell 1
 - **implementation practices:** book1:C1-p03, book1:C1-p19, book1:C1-p24
 - **implementation assessments:** book1:r1-001-p01-2
-- **theory lessons:** book1:units/C1-ml-fundamentals/lessons/02-generalization-train-test-overfitting.ipynb :: C1 Session 2 — Generalization: Train/Test Discipline and Overfitting > 5. Flexible Rules, Rigid Rules :: cell 1
+- **theory lessons:** book1:units/06-C1-ml-fundamentals/lessons/02-generalization-train-test-overfitting.ipynb :: C1 Session 2 — Generalization: Train/Test Discipline and Overfitting > 5. Flexible Rules, Rigid Rules :: cell 1
 - **theory practices:** book1:C1-p07, book1:C1-p19, book1:C1-p24
 - **theory assessments:** book1:r1-001-p01-2
 
@@ -224,22 +224,22 @@ Assessments: book1:r1-001-p01-2
 - **Layer:** shared-foundation
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** book1:colab-markdown-solution-authoring
 - **Shipped concepts:** book1:colab-coding-submission
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** C10 binds executable cells, the exact function and file contracts, Restart and Run All, reopening, and download checks into three graded Colab submissions.
+- **Rationale:** C11 binds executable cells, the exact function and file contracts, Restart and Run All, reopening, and download checks into three graded Colab submissions.
 - **Consequence:** Students can deliver a fresh-runnable Colab coding submission with the required artifacts.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 2. A repeatable Colab authoring workflow > Checkpoint 2 :: cell 1
-- **competition-workflow practices:** book1:C10-p15, book1:C10-p17, book1:C10-p18
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C11-competition-craft — Session 04: Colab, Markdown, and Round Policy > 2. A repeatable Colab authoring workflow > Checkpoint 2 :: cell 1
+- **competition-workflow practices:** book1:C11-p15, book1:C11-p17, book1:C11-p18
 - **competition-workflow assessments:** —
-- **implementation lessons:** book1:units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 5. The mixed-cell submission contract > Checkpoint 5 :: cell 1
-- **implementation practices:** book1:C10-p15, book1:C10-p17, book1:C10-p18
+- **implementation lessons:** book1:units/18-C11-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C11-competition-craft — Session 04: Colab, Markdown, and Round Policy > 5. The mixed-cell submission contract > Checkpoint 5 :: cell 1
+- **implementation practices:** book1:C11-p15, book1:C11-p17, book1:C11-p18
 - **implementation assessments:** —
 
-Practices: book1:C10-p15, book1:C10-p17, book1:C10-p18
+Practices: book1:C11-p15, book1:C11-p17, book1:C11-p18
 
 Assessments: —
 
@@ -249,19 +249,19 @@ Assessments: —
 - **Layer:** shared-foundation
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** —
 - **Shipped concepts:** book1:colab-markdown-solution-authoring
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** C10 Session 04 teaches a repeatable mixed-cell Colab authoring workflow, and three practices grade its planning, repair, fresh-run, and download disciplines.
+- **Rationale:** C11 Session 04 teaches a repeatable mixed-cell Colab authoring workflow, and three practices grade its planning, repair, fresh-run, and download disciplines.
 - **Consequence:** Students can author and audit a Colab solution artifact under the official workflow.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 2. A repeatable Colab authoring workflow > Checkpoint 2 :: cell 1
-- **competition-workflow practices:** book1:C10-p15, book1:C10-p17, book1:C10-p18
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C11-competition-craft — Session 04: Colab, Markdown, and Round Policy > 2. A repeatable Colab authoring workflow > Checkpoint 2 :: cell 1
+- **competition-workflow practices:** book1:C11-p15, book1:C11-p17, book1:C11-p18
 - **competition-workflow assessments:** —
 
-Practices: book1:C10-p15, book1:C10-p17, book1:C10-p18
+Practices: book1:C11-p15, book1:C11-p17, book1:C11-p18
 
 Assessments: —
 
@@ -279,13 +279,13 @@ Assessments: —
 - **Rationale:** F5 defines conditioning with its positivity condition, derives multiplication and chain rules, and implements empirical conditionals with Boolean masks across four practices.
 - **Consequence:** Conditional probability now closes the prerequisite path to Bayes and later probabilistic models.
 
-- **derivation lessons:** book1:units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 3. Multiplication and chain rules > Checkpoint 3 :: cell 1
+- **derivation lessons:** book1:units/05-F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 3. Multiplication and chain rules > Checkpoint 3 :: cell 1
 - **derivation practices:** book1:F5-p20, book1:F5-p22, book1:F5-p25
 - **derivation assessments:** —
-- **implementation lessons:** book1:units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 6. Empirical conditionals with Boolean masks :: cell 2
+- **implementation lessons:** book1:units/05-F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 6. Empirical conditionals with Boolean masks :: cell 2
 - **implementation practices:** book1:F5-p21, book1:F5-p25
 - **implementation assessments:** —
-- **theory lessons:** book1:units/F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 2. Conditioning changes the denominator > Checkpoint 2 :: cell 1
+- **theory lessons:** book1:units/05-F5-probability/lessons/04-conditional-probability-and-bayes.ipynb :: F5-probability — Session 04: Conditional Probability and Bayes > 2. Conditioning changes the denominator > Checkpoint 2 :: cell 1
 - **theory practices:** book1:F5-p20, book1:F5-p22, book1:F5-p25
 - **theory assessments:** —
 
@@ -299,7 +299,7 @@ Assessments: —
 - **Layer:** shared-foundation
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** book1:numpy-programming, book1:python-programming
 - **Shipped concepts:** book1:api-constraint-compliance, book1:vectorization
 - **Modalities missing:** —
@@ -307,14 +307,14 @@ Assessments: —
 - **Rationale:** Zero-point API bans are explicitly taught, priced, audited, and exercised.
 - **Consequence:** Students can implement under machine-checked restrictions.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/01-the-contract.ipynb :: C10-competition-craft — Session 1: The Contract > 2. The Task and the Harness :: cell 1
-- **competition-workflow practices:** book1:C10-p22, book1:C10-p23, book1:C10-p24
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/01-the-contract.ipynb :: C11-competition-craft — Session 1: The Contract > 2. The Task and the Harness :: cell 1
+- **competition-workflow practices:** book1:C11-p22, book1:C11-p23, book1:C11-p24
 - **competition-workflow assessments:** book1:r1-001-p05-5
-- **implementation lessons:** book1:units/F1-scientific-python/lessons/02-broadcasting-and-vectorization.ipynb :: F1-scientific-python — Session 02: Broadcasting, Vectorization, and Axis Aggregations > 5. Vectorization: replacing loops with array operations :: cell 1
-- **implementation practices:** book1:C10-p22, book1:C10-p23, book1:F1-p07
+- **implementation lessons:** book1:units/01-F1-scientific-python/lessons/02-broadcasting-and-vectorization.ipynb :: F1-scientific-python — Session 02: Broadcasting, Vectorization, and Axis Aggregations > 5. Vectorization: replacing loops with array operations :: cell 1
+- **implementation practices:** book1:C11-p22, book1:C11-p23, book1:F1-p07
 - **implementation assessments:** book1:r1-001-p05-5, book1:r1-001-p06-1
 
-Practices: book1:C10-p22, book1:C10-p23, book1:C10-p24, book1:F1-p07
+Practices: book1:C11-p22, book1:C11-p23, book1:C11-p24, book1:F1-p07
 
 Assessments: book1:r1-001-p05-5, book1:r1-001-p06-1
 
@@ -332,10 +332,10 @@ Assessments: book1:r1-001-p05-5, book1:r1-001-p06-1
 - **Rationale:** F7 fixes one minimization convention, derives the dual lower-bound chain, and verifies KKT, complementary slackness, and strong-duality assumptions in six practices.
 - **Consequence:** Students can derive and audit constrained primal-dual certificates needed by later SVM work.
 
-- **derivation lessons:** book1:units/F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 2. The dual function and weak-duality direction > Checkpoint 2 :: cell 1, book1:units/F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 5. Worked exam-style example 2: a boundary certificate > Checkpoint 5 :: cell 1
+- **derivation lessons:** book1:units/14-F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 2. The dual function and weak-duality direction > Checkpoint 2 :: cell 1, book1:units/14-F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 5. Worked exam-style example 2: a boundary certificate > Checkpoint 5 :: cell 1
 - **derivation practices:** book1:F7-p14, book1:F7-p18, book1:F7-p20
 - **derivation assessments:** —
-- **theory lessons:** book1:units/F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 1. Fix the minimization sign convention first > Checkpoint 1 :: cell 1, book1:units/F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 4. The four KKT conditions and their assumptions > Checkpoint 4 :: cell 1
+- **theory lessons:** book1:units/14-F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 1. Fix the minimization sign convention first > Checkpoint 1 :: cell 1, book1:units/14-F7-kernels-convex-optimization/lessons/04-lagrangians-duality-and-certificates.ipynb :: F7-kernels-convex-optimization — Session 4: Lagrangians, Duality, and Certificates > 4. The four KKT conditions and their assumptions > Checkpoint 4 :: cell 1
 - **theory practices:** book1:F7-p10, book1:F7-p18, book1:F7-p20
 - **theory assessments:** —
 
@@ -357,10 +357,10 @@ Assessments: —
 - **Rationale:** F7 develops segment and Jensen definitions, supporting-plane inequalities, and global first-order certificates without assuming Hessians, with six direct reasoning practices.
 - **Consequence:** Convexity and optimality arguments now form a rigorous prerequisite for constrained optimization and SVMs.
 
-- **derivation lessons:** book1:units/F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 5. Supporting planes: the first-order certificate > Checkpoint 5 :: cell 1, book1:units/F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 6. From local information to global optimality > Checkpoint 6 :: cell 1
+- **derivation lessons:** book1:units/14-F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 5. Supporting planes: the first-order certificate > Checkpoint 5 :: cell 1, book1:units/14-F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 6. From local information to global optimality > Checkpoint 6 :: cell 1
 - **derivation practices:** book1:F7-p12, book1:F7-p14, book1:F7-p16
 - **derivation assessments:** —
-- **theory lessons:** book1:units/F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 1. Convex sets contain every segment > Checkpoint 1 :: cell 1, book1:units/F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 3. Convex functions and Jensen's inequality > Checkpoint 3 :: cell 1
+- **theory lessons:** book1:units/14-F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 1. Convex sets contain every segment > Checkpoint 1 :: cell 1, book1:units/14-F7-kernels-convex-optimization/lessons/03-convex-sets-functions-and-optimality.ipynb :: F7-kernels-convex-optimization — Session 3: Convex Sets, Functions, and Optimality > 3. Convex functions and Jensen's inequality > Checkpoint 3 :: cell 1
 - **theory practices:** book1:F7-p03, book1:F7-p16, book1:F7-p19
 - **theory assessments:** —
 
@@ -374,7 +374,7 @@ Assessments: —
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C7-cnn-transfer
+- **Destination:** book1:C10-cnn-transfer
 - **Dependencies:** book1:pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** book1:cnn-training, book1:convolution, book1:feature-hierarchy, book1:feature-maps, book1:receptive-field
 - **Modalities missing:** —
@@ -382,17 +382,17 @@ Assessments: —
 - **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
 - **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
-- **implementation lessons:** book1:units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb :: C7-cnn-transfer — Session 1: Convolution and Feature Maps > 3. Convolution in 2-D :: cell 1
-- **implementation practices:** book1:C7-p06, book1:C7-p07, book1:C7-p26
+- **implementation lessons:** book1:units/17-C10-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb :: C10-cnn-transfer — Session 1: Convolution and Feature Maps > 3. Convolution in 2-D :: cell 1
+- **implementation practices:** book1:C10-p06, book1:C10-p07, book1:C10-p26
 - **implementation assessments:** book1:r1-001-p07-4
-- **model-training lessons:** book1:units/C7-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C7-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning > 2. Deterministic synthetic images and a complete training step :: cell 1
-- **model-training practices:** book1:C7-p10
+- **model-training lessons:** book1:units/17-C10-cnn-transfer/lessons/04-cnn-training-and-fine-tuning.ipynb :: C10-cnn-transfer — Session 4: CNN Training and Selective Fine-Tuning > 2. Deterministic synthetic images and a complete training step :: cell 1
+- **model-training practices:** book1:C10-p10
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb :: C7-cnn-transfer — Session 1: Convolution and Feature Maps > 3. Convolution in 2-D :: cell 1, book1:units/C7-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb :: C7-cnn-transfer — Session 1: Convolution and Feature Maps > 6. Feature Maps: a Bank of Detectors, Stacked :: cell 1
-- **theory practices:** book1:C7-p01, book1:C7-p03, book1:C7-p05
+- **theory lessons:** book1:units/17-C10-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb :: C10-cnn-transfer — Session 1: Convolution and Feature Maps > 3. Convolution in 2-D :: cell 1, book1:units/17-C10-cnn-transfer/lessons/01-convolution-and-feature-maps.ipynb :: C10-cnn-transfer — Session 1: Convolution and Feature Maps > 6. Feature Maps: a Bank of Detectors, Stacked :: cell 1
+- **theory practices:** book1:C10-p01, book1:C10-p03, book1:C10-p05
 - **theory assessments:** book1:r1-001-p07-3
 
-Practices: book1:C7-p01, book1:C7-p03, book1:C7-p05, book1:C7-p06, book1:C7-p07, book1:C7-p10, book1:C7-p26
+Practices: book1:C10-p01, book1:C10-p03, book1:C10-p05, book1:C10-p06, book1:C10-p07, book1:C10-p10, book1:C10-p26
 
 Assessments: book1:r1-001-p07-3, book1:r1-001-p07-4
 
@@ -402,19 +402,19 @@ Assessments: book1:r1-001-p07-3, book1:r1-001-p07-4
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** book1:colab-coding-submission
 - **Shipped concepts:** book1:cpu-and-gpu-round-boundary
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** C10 states the exact Round 1 CPU-only versus Round 2 Colab L4/GPU boundary, and three practices grade diagnosis and correction of policy claims.
+- **Rationale:** C11 states the exact Round 1 CPU-only versus Round 2 Colab L4/GPU boundary, and three practices grade diagnosis and correction of policy claims.
 - **Consequence:** Students can choose and declare the permitted compute environment for each round.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 6. The exact round boundary > Checkpoint 6 :: cell 1
-- **competition-workflow practices:** book1:C10-p15, book1:C10-p17, book1:C10-p18
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C11-competition-craft — Session 04: Colab, Markdown, and Round Policy > 6. The exact round boundary > Checkpoint 6 :: cell 1
+- **competition-workflow practices:** book1:C11-p15, book1:C11-p17, book1:C11-p18
 - **competition-workflow assessments:** —
 
-Practices: book1:C10-p15, book1:C10-p17, book1:C10-p18
+Practices: book1:C11-p15, book1:C11-p17, book1:C11-p18
 
 Assessments: —
 
@@ -424,25 +424,25 @@ Assessments: —
 - **Layer:** round-1-core
 - **Requirement:** bridge
 - **Coverage:** covered
-- **Destination:** book1:C11-neural-training
+- **Destination:** book1:C8-neural-training
 - **Dependencies:** book1:loss-functions, book1:softmax
 - **Shipped concepts:** book1:cross-entropy-loss
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** The shipped C11 lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Rationale:** The shipped C8 lesson-and-practice sequence now closes every required modality with executable evidence.
 - **Consequence:** Students can reason about and implement this neural-training component in the complete training system.
 
-- **derivation lessons:** book1:units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 6. Fusing softmax and cross-entropy :: cell 1
-- **derivation practices:** book1:C11-p11
+- **derivation lessons:** book1:units/15-C8-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C8-neural-training — Session 1: Stable Softmax and Cross-Entropy > 6. Fusing softmax and cross-entropy :: cell 1
+- **derivation practices:** book1:C8-p11
 - **derivation assessments:** —
-- **implementation lessons:** book1:units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 4. Worked exam-register example 1: stable normal form :: cell 1
-- **implementation practices:** book1:C11-p06
+- **implementation lessons:** book1:units/15-C8-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C8-neural-training — Session 1: Stable Softmax and Cross-Entropy > 4. Worked exam-register example 1: stable normal form :: cell 1
+- **implementation practices:** book1:C8-p06
 - **implementation assessments:** —
-- **theory lessons:** book1:units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 3. Cross-entropy is negative log likelihood :: cell 1
-- **theory practices:** book1:C11-p02
+- **theory lessons:** book1:units/15-C8-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C8-neural-training — Session 1: Stable Softmax and Cross-Entropy > 3. Cross-entropy is negative log likelihood :: cell 1
+- **theory practices:** book1:C8-p02
 - **theory assessments:** —
 
-Practices: book1:C11-p02, book1:C11-p06, book1:C11-p11
+Practices: book1:C8-p02, book1:C8-p06, book1:C8-p11
 
 Assessments: —
 
@@ -460,13 +460,13 @@ Assessments: —
 - **Rationale:** Fold semantics, manual CV, pipeline-inside-CV, and model selection are directly graded.
 - **Consequence:** Students can perform honest repeated validation.
 
-- **implementation lessons:** book1:units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck :: cell 1
+- **implementation lessons:** book1:units/09-C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck :: cell 1
 - **implementation practices:** book1:C4-p10, book1:C4-p15, book1:C4-p17
 - **implementation assessments:** book1:r1-001-p09
-- **model-training lessons:** book1:units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck :: cell 1
+- **model-training lessons:** book1:units/09-C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck :: cell 1
 - **model-training practices:** book1:C4-p10, book1:C4-p15, book1:C4-p19
 - **model-training assessments:** book1:r1-001-p09
-- **theory lessons:** book1:units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck :: cell 1
+- **theory lessons:** book1:units/09-C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck :: cell 1
 - **theory practices:** book1:C4-p03, book1:C4-p13, book1:C4-p19
 - **theory assessments:** book1:r1-001-p09
 
@@ -488,13 +488,13 @@ Assessments: book1:r1-001-p09
 - **Rationale:** C12 derives impurity reduction, implements deterministic split search and recursive construction, and fits and evaluates trees in direct practice.
 - **Consequence:** Students can construct, train, regularize, and audit decision trees.
 
-- **implementation lessons:** book1:units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 3. Deterministic best-split search :: cell 2
+- **implementation lessons:** book1:units/19-C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 3. Deterministic best-split search :: cell 2
 - **implementation practices:** book1:C12-p10, book1:C12-p11, book1:C12-p28
 - **implementation assessments:** —
-- **model-training lessons:** book1:units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 5. Worked tree construction :: cell 2
+- **model-training lessons:** book1:units/19-C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 5. Worked tree construction :: cell 2
 - **model-training practices:** book1:C12-p11, book1:C12-p19, book1:C12-p21
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 2. Candidate thresholds and weighted child impurity :: cell 1
+- **theory lessons:** book1:units/19-C12-classical-models/lessons/04-decision-trees.ipynb :: C12-classical-models — Session 4: Decision Trees from Impurity to Prediction > 2. Candidate thresholds and weighted child impurity :: cell 1
 - **theory practices:** book1:C12-p03, book1:C12-p16, book1:C12-p23
 - **theory assessments:** —
 
@@ -508,25 +508,25 @@ Assessments: —
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C11-neural-training
+- **Destination:** book1:C8-neural-training
 - **Dependencies:** book1:multilayer-perceptron-model, book1:pytorch-autograd-and-optimizer-training
 - **Shipped concepts:** book1:dropout
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** The shipped C11 lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Rationale:** The shipped C8 lesson-and-practice sequence now closes every required modality with executable evidence.
 - **Consequence:** Students can reason about and implement this neural-training component in the complete training system.
 
-- **implementation lessons:** book1:units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 5. Train mode and eval mode are different functions :: cell 1
-- **implementation practices:** book1:C11-p10
+- **implementation lessons:** book1:units/15-C8-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C8-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 5. Train mode and eval mode are different functions :: cell 1
+- **implementation practices:** book1:C8-p10
 - **implementation assessments:** —
-- **model-training lessons:** book1:units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 6. Worked combined training audit :: cell 1
-- **model-training practices:** book1:C11-p24
+- **model-training lessons:** book1:units/15-C8-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C8-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 6. Worked combined training audit :: cell 1
+- **model-training practices:** book1:C8-p24
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C11-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C11-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 4. Inverted dropout preserves expectation :: cell 1
-- **theory practices:** book1:C11-p04
+- **theory lessons:** book1:units/15-C8-neural-training/lessons/05-batchnorm-and-dropout.ipynb :: C8-neural-training — Session 5: BatchNorm, Dropout, and Mode Audits > 4. Inverted dropout preserves expectation :: cell 1
+- **theory practices:** book1:C8-p04
 - **theory assessments:** —
 
-Practices: book1:C11-p04, book1:C11-p10, book1:C11-p24
+Practices: book1:C8-p04, book1:C8-p10, book1:C8-p24
 
 Assessments: —
 
@@ -544,13 +544,13 @@ Assessments: —
 - **Rationale:** The eigen equation, hand solution route, NumPy verification, and repeated derivations meet all modalities.
 - **Consequence:** Students can reason about and compute eigensystems.
 
-- **derivation lessons:** book1:units/F6-svd-spectral/lessons/01-eigenvalues-and-eigenvectors.ipynb :: F6-svd-spectral — Session 1: Eigenvalues and Eigenvectors > 3. Finding Eigenvalues by Hand: the Dependent-Rows Route :: cell 1
+- **derivation lessons:** book1:units/12-F6-svd-spectral/lessons/01-eigenvalues-and-eigenvectors.ipynb :: F6-svd-spectral — Session 1: Eigenvalues and Eigenvectors > 3. Finding Eigenvalues by Hand: the Dependent-Rows Route :: cell 1
 - **derivation practices:** book1:F6-p07, book1:F6-p22, book1:F6-p24
 - **derivation assessments:** book1:r1-001-p03-2
-- **implementation lessons:** book1:units/F6-svd-spectral/lessons/01-eigenvalues-and-eigenvectors.ipynb :: F6-svd-spectral — Session 1: Eigenvalues and Eigenvectors > 2. The Eigen Equation $S q = \lambda q$ :: cell 1
+- **implementation lessons:** book1:units/12-F6-svd-spectral/lessons/01-eigenvalues-and-eigenvectors.ipynb :: F6-svd-spectral — Session 1: Eigenvalues and Eigenvectors > 2. The Eigen Equation $S q = \lambda q$ :: cell 1
 - **implementation practices:** book1:F6-p07, book1:F6-p22, book1:F6-p24
 - **implementation assessments:** book1:r1-001-p03-2
-- **theory lessons:** book1:units/F6-svd-spectral/lessons/01-eigenvalues-and-eigenvectors.ipynb :: F6-svd-spectral — Session 1: Eigenvalues and Eigenvectors > 2. The Eigen Equation $S q = \lambda q$ :: cell 1
+- **theory lessons:** book1:units/12-F6-svd-spectral/lessons/01-eigenvalues-and-eigenvectors.ipynb :: F6-svd-spectral — Session 1: Eigenvalues and Eigenvectors > 2. The Eigen Equation $S q = \lambda q$ :: cell 1
 - **theory practices:** book1:F6-p01, book1:F6-p07, book1:F6-p24
 - **theory assessments:** book1:r1-001-p03-1
 
@@ -564,7 +564,7 @@ Assessments: book1:r1-001-p03-1, book1:r1-001-p03-2
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** book1:cross-validation, book1:loss-functions
 - **Shipped concepts:** book1:cross-validation, book1:metric-driven-iteration, book1:prediction-function-contract, book1:sklearn-pipelines
 - **Modalities missing:** —
@@ -572,17 +572,17 @@ Assessments: book1:r1-001-p03-1, book1:r1-001-p03-2
 - **Rationale:** The course goes from data through fixed validation, bounded selection, refit, packaging, and writeup.
 - **Consequence:** Students can deliver a complete R1 applied-model submission.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/03-notebook-and-writeup.ipynb :: C10-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition :: cell 1
-- **competition-workflow practices:** book1:C10-p13, book1:C10-p17, book1:C10-p18
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/03-notebook-and-writeup.ipynb :: C11-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition :: cell 1
+- **competition-workflow practices:** book1:C11-p13, book1:C11-p17, book1:C11-p18
 - **competition-workflow assessments:** book1:r1-001-p09
-- **implementation lessons:** book1:units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 3. Pipelines: the Whole Recipe as One Object :: cell 1
-- **implementation practices:** book1:C10-p17, book1:C10-p18, book1:C4-p15
+- **implementation lessons:** book1:units/09-C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 3. Pipelines: the Whole Recipe as One Object :: cell 1
+- **implementation practices:** book1:C11-p17, book1:C11-p18, book1:C4-p15
 - **implementation assessments:** book1:r1-001-p09
-- **model-training lessons:** book1:units/C10-competition-craft/lessons/02-metric-driven-iteration.ipynb :: C10-competition-craft — Session 2: Metric-Driven Iteration > 5. The Iteration Loop :: cell 1
-- **model-training practices:** book1:C10-p17, book1:C10-p18, book1:C4-p15
+- **model-training lessons:** book1:units/18-C11-competition-craft/lessons/02-metric-driven-iteration.ipynb :: C11-competition-craft — Session 2: Metric-Driven Iteration > 5. The Iteration Loop :: cell 1
+- **model-training practices:** book1:C11-p17, book1:C11-p18, book1:C4-p15
 - **model-training assessments:** book1:r1-001-p09
 
-Practices: book1:C10-p13, book1:C10-p17, book1:C10-p18, book1:C4-p15
+Practices: book1:C11-p13, book1:C11-p17, book1:C11-p18, book1:C4-p15
 
 Assessments: book1:r1-001-p09
 
@@ -600,13 +600,13 @@ Assessments: book1:r1-001-p09
 - **Rationale:** C12 teaches voting, bagging, random forests, and AdaBoost reweighting, then implements and fits the ensemble families in direct practice.
 - **Consequence:** Students can explain, implement, train, and compare major ensemble methods.
 
-- **implementation lessons:** book1:units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 4. AdaBoost: sequential reweighting :: cell 2
+- **implementation lessons:** book1:units/19-C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 4. AdaBoost: sequential reweighting :: cell 2
 - **implementation practices:** book1:C12-p12, book1:C12-p19, book1:C12-p29
 - **implementation assessments:** —
-- **model-training lessons:** book1:units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 5. Worked comparison: fit bagging, forest, and boosting :: cell 2
+- **model-training lessons:** book1:units/19-C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 5. Worked comparison: fit bagging, forest, and boosting :: cell 2
 - **model-training practices:** book1:C12-p12, book1:C12-p19, book1:C12-p21
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 4. AdaBoost: sequential reweighting :: cell 1
+- **theory lessons:** book1:units/19-C12-classical-models/lessons/05-ensembles.ipynb :: C12-classical-models — Session 5: Voting, Bagging, Random Forests, and Boosting > 4. AdaBoost: sequential reweighting :: cell 1
 - **theory practices:** book1:C12-p04, book1:C12-p24, book1:C12-p29
 - **theory assessments:** —
 
@@ -620,7 +620,7 @@ Assessments: —
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C5-neural-networks
+- **Destination:** book1:C6-neural-networks
 - **Dependencies:** book1:affine-neural-network-layer
 - **Shipped concepts:** book1:activation-functions, book1:mlp-architecture, book1:perceptron
 - **Modalities missing:** —
@@ -628,14 +628,14 @@ Assessments: —
 - **Rationale:** Students repeatedly compute exact preactivations, activations, hidden states, and outputs by hand before code verification.
 - **Consequence:** Forward propagation meets the official by-hand expectation.
 
-- **derivation lessons:** book1:units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
-- **derivation practices:** book1:C5-p04, book1:C5-p08, book1:C5-p14
+- **derivation lessons:** book1:units/11-C6-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C6-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
+- **derivation practices:** book1:C6-p04, book1:C6-p08, book1:C6-p14
 - **derivation assessments:** book1:r1-001-p08-3
-- **theory lessons:** book1:units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
-- **theory practices:** book1:C5-p04, book1:C5-p08, book1:C5-p14
+- **theory lessons:** book1:units/11-C6-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C6-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
+- **theory practices:** book1:C6-p04, book1:C6-p08, book1:C6-p14
 - **theory assessments:** book1:r1-001-p08-3
 
-Practices: book1:C5-p04, book1:C5-p08, book1:C5-p14
+Practices: book1:C6-p04, book1:C6-p08, book1:C6-p14
 
 Assessments: book1:r1-001-p08-3
 
@@ -645,7 +645,7 @@ Assessments: book1:r1-001-p08-3
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C11-neural-training
+- **Destination:** book1:C8-neural-training
 - **Dependencies:** book1:backpropagation-by-hand, book1:cross-entropy-loss, book1:softmax
 - **Shipped concepts:** book1:activation-functions, book1:decision-boundaries-geometric, book1:manual-backpropagation, book1:manual-weights, book1:mlp-architecture, book1:trained-mlp
 - **Modalities missing:** —
@@ -653,17 +653,17 @@ Assessments: book1:r1-001-p08-3
 - **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
 - **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
-- **implementation lessons:** book1:units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
-- **implementation practices:** book1:C5-p08, book1:C5-p13, book1:C5-p18
+- **implementation lessons:** book1:units/11-C6-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C6-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
+- **implementation practices:** book1:C6-p08, book1:C6-p13, book1:C6-p18
 - **implementation assessments:** book1:r1-001-p08-3
-- **model-training lessons:** book1:units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP That Learns > 4. Update ordering and a complete training loop :: cell 1
-- **model-training practices:** book1:C11-p15
+- **model-training lessons:** book1:units/15-C8-neural-training/lessons/03-numpy-mlp-training.ipynb :: C8-neural-training — Session 3: A NumPy MLP That Learns > 4. Update ordering and a complete training loop :: cell 1
+- **model-training practices:** book1:C8-p15
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1
-- **theory practices:** book1:C5-p08, book1:C5-p13, book1:C5-p18
+- **theory lessons:** book1:units/11-C6-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C6-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1
+- **theory practices:** book1:C6-p08, book1:C6-p13, book1:C6-p18
 - **theory assessments:** book1:r1-001-p08-3
 
-Practices: book1:C11-p15, book1:C5-p08, book1:C5-p13, book1:C5-p18
+Practices: book1:C6-p08, book1:C6-p13, book1:C6-p18, book1:C8-p15
 
 Assessments: book1:r1-001-p08-3
 
@@ -681,13 +681,13 @@ Assessments: book1:r1-001-p08-3
 - **Rationale:** C3 derives update behavior and makes students implement and diagnose full and stochastic descent.
 - **Consequence:** First-order optimization is available for linear and future neural models.
 
-- **derivation lessons:** book1:units/C3-gradient-descent/lessons/01-surfaces-and-descent.ipynb :: C3-gradient-descent — Session 1: Loss Surfaces and the Descent Step > 3. The Descent Step :: cell 1
+- **derivation lessons:** book1:units/08-C3-gradient-descent/lessons/01-surfaces-and-descent.ipynb :: C3-gradient-descent — Session 1: Loss Surfaces and the Descent Step > 3. The Descent Step :: cell 1
 - **derivation practices:** book1:C3-p02, book1:C3-p10, book1:C3-p17
 - **derivation assessments:** book1:r1-001-p04-2
-- **implementation lessons:** book1:units/C3-gradient-descent/lessons/02-learning-rates-and-stochasticity.ipynb :: C3-gradient-descent — Session 2: Learning Rates and Stochasticity > 2. The Payoff: Fitting the C2 Linear Model End to End :: cell 1
+- **implementation lessons:** book1:units/08-C3-gradient-descent/lessons/02-learning-rates-and-stochasticity.ipynb :: C3-gradient-descent — Session 2: Learning Rates and Stochasticity > 2. The Payoff: Fitting the C2 Linear Model End to End :: cell 1
 - **implementation practices:** book1:C3-p05, book1:C3-p13, book1:C3-p19
 - **implementation assessments:** —
-- **theory lessons:** book1:units/C3-gradient-descent/lessons/01-surfaces-and-descent.ipynb :: C3-gradient-descent — Session 1: Loss Surfaces and the Descent Step > 3. The Descent Step :: cell 1
+- **theory lessons:** book1:units/08-C3-gradient-descent/lessons/01-surfaces-and-descent.ipynb :: C3-gradient-descent — Session 1: Loss Surfaces and the Descent Step > 3. The Descent Step :: cell 1
 - **theory practices:** book1:C3-p01, book1:C3-p04, book1:C3-p17
 - **theory assessments:** book1:r1-001-p04-2
 
@@ -701,7 +701,7 @@ Assessments: book1:r1-001-p04-2
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** book1:end-to-end-model-selection
 - **Shipped concepts:** book1:hidden-test-protocol, book1:metric-driven-iteration, book1:prediction-function-contract, book1:writeup-quality
 - **Modalities missing:** —
@@ -709,14 +709,14 @@ Assessments: book1:r1-001-p04-2
 - **Rationale:** Hidden-test isolation, selection optimism, contract checks, and final fitting are explicitly taught and practiced.
 - **Consequence:** Students understand honest hidden-test evaluation.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/01-the-contract.ipynb :: C10-competition-craft — Session 1: The Contract > 3. The Prediction-Function Contract :: cell 1
-- **competition-workflow practices:** book1:C10-p12, book1:C10-p16, book1:C10-p17
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/01-the-contract.ipynb :: C11-competition-craft — Session 1: The Contract > 3. The Prediction-Function Contract :: cell 1
+- **competition-workflow practices:** book1:C11-p12, book1:C11-p16, book1:C11-p17
 - **competition-workflow assessments:** book1:r1-001-p09
-- **model-training lessons:** book1:units/C10-competition-craft/lessons/02-metric-driven-iteration.ipynb :: C10-competition-craft — Session 2: Metric-Driven Iteration > 5. The Iteration Loop :: cell 1
-- **model-training practices:** book1:C10-p09, book1:C10-p12, book1:C10-p17
+- **model-training lessons:** book1:units/18-C11-competition-craft/lessons/02-metric-driven-iteration.ipynb :: C11-competition-craft — Session 2: Metric-Driven Iteration > 5. The Iteration Loop :: cell 1
+- **model-training practices:** book1:C11-p09, book1:C11-p12, book1:C11-p17
 - **model-training assessments:** book1:r1-001-p09
 
-Practices: book1:C10-p09, book1:C10-p12, book1:C10-p16, book1:C10-p17
+Practices: book1:C11-p09, book1:C11-p12, book1:C11-p16, book1:C11-p17
 
 Assessments: book1:r1-001-p09
 
@@ -734,13 +734,13 @@ Assessments: book1:r1-001-p09
 - **Rationale:** F5 states Hoeffding with its assumptions and heterogeneous widths, derives the two-sided factor by a union bound, and compares seeded simulation with the theoretical envelope.
 - **Consequence:** Students can derive and compute finite-sample deviation guarantees while separating evidence from theorem.
 
-- **derivation lessons:** book1:units/F5-probability/lessons/05-hoeffding-inequality.ipynb :: F5-probability — Session 05: Hoeffding's Inequality > 6. The two-sided factor 2 > Checkpoint 6 :: cell 1
+- **derivation lessons:** book1:units/05-F5-probability/lessons/05-hoeffding-inequality.ipynb :: F5-probability — Session 05: Hoeffding's Inequality > 6. The two-sided factor 2 > Checkpoint 6 :: cell 1
 - **derivation practices:** book1:F5-p23, book1:F5-p25
 - **derivation assessments:** —
-- **implementation lessons:** book1:units/F5-probability/lessons/05-hoeffding-inequality.ipynb :: F5-probability — Session 05: Hoeffding's Inequality > 8. Simulation versus the theoretical envelope :: cell 2
+- **implementation lessons:** book1:units/05-F5-probability/lessons/05-hoeffding-inequality.ipynb :: F5-probability — Session 05: Hoeffding's Inequality > 8. Simulation versus the theoretical envelope :: cell 2
 - **implementation practices:** book1:F5-p24, book1:F5-p25
 - **implementation assessments:** —
-- **theory lessons:** book1:units/F5-probability/lessons/05-hoeffding-inequality.ipynb :: F5-probability — Session 05: Hoeffding's Inequality > 3. One-sided Hoeffding > Checkpoint 3 :: cell 1
+- **theory lessons:** book1:units/05-F5-probability/lessons/05-hoeffding-inequality.ipynb :: F5-probability — Session 05: Hoeffding's Inequality > 3. One-sided Hoeffding > Checkpoint 3 :: cell 1
 - **theory practices:** book1:F5-p23, book1:F5-p24, book1:F5-p25
 - **theory assessments:** —
 
@@ -762,13 +762,13 @@ Assessments: —
 - **Rationale:** C12 derives Lloyd assignment and centroid updates, implements objective-monotone clustering with empty-cluster handling, and fits and audits k-means directly.
 - **Consequence:** Students can derive, implement, fit, and diagnose k-means clustering.
 
-- **implementation lessons:** book1:units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6: Lloyd's k-means and Classical-Model Comparison > 5. Worked Lloyd implementation and objective trace :: cell 2
+- **implementation lessons:** book1:units/19-C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6: Lloyd's k-means and Classical-Model Comparison > 5. Worked Lloyd implementation and objective trace :: cell 2
 - **implementation practices:** book1:C12-p13, book1:C12-p20, book1:C12-p30
 - **implementation assessments:** —
-- **model-training lessons:** book1:units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6: Lloyd's k-means and Classical-Model Comparison > 6. Scaling, diagnostics, and sklearn comparison :: cell 2
+- **model-training lessons:** book1:units/19-C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6: Lloyd's k-means and Classical-Model Comparison > 6. Scaling, diagnostics, and sklearn comparison :: cell 2
 - **model-training practices:** book1:C12-p13, book1:C12-p20, book1:C12-p21
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6: Lloyd's k-means and Classical-Model Comparison > 2. Lloyd assignment and centroid update :: cell 1
+- **theory lessons:** book1:units/19-C12-classical-models/lessons/06-kmeans-and-model-comparison.ipynb :: C12-classical-models — Session 6: Lloyd's k-means and Classical-Model Comparison > 2. Lloyd assignment and centroid update :: cell 1
 - **theory practices:** book1:C12-p05, book1:C12-p17, book1:C12-p25
 - **theory assessments:** —
 
@@ -790,13 +790,13 @@ Assessments: —
 - **Rationale:** First-principles prediction, scaling, sklearn fitting, validation, and selection are all practiced.
 - **Consequence:** kNN is a complete shipped model family.
 
-- **implementation lessons:** book1:units/C4-classical-ml-practice/lessons/02-knn-and-scaling.ipynb :: C4-classical-ml-practice — Session 2: k-Nearest Neighbors and Feature Scaling > 7. Enter sklearn — a Wrapper You Can Verify :: cell 1
+- **implementation lessons:** book1:units/09-C4-classical-ml-practice/lessons/02-knn-and-scaling.ipynb :: C4-classical-ml-practice — Session 2: k-Nearest Neighbors and Feature Scaling > 7. Enter sklearn — a Wrapper You Can Verify :: cell 1
 - **implementation practices:** book1:C4-p04, book1:C4-p11, book1:C4-p14
 - **implementation assessments:** book1:r1-001-p09
-- **model-training lessons:** book1:units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck :: cell 1
+- **model-training lessons:** book1:units/09-C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 4. Cross-Validation: Averaging Away Split Luck :: cell 1
 - **model-training practices:** book1:C4-p15, book1:C4-p16, book1:C4-p18
 - **model-training assessments:** book1:r1-001-p09
-- **theory lessons:** book1:units/C4-classical-ml-practice/lessons/02-knn-and-scaling.ipynb :: C4-classical-ml-practice — Session 2: k-Nearest Neighbors and Feature Scaling > 3. kNN From First Principles :: cell 1
+- **theory lessons:** book1:units/09-C4-classical-ml-practice/lessons/02-knn-and-scaling.ipynb :: C4-classical-ml-practice — Session 2: k-Nearest Neighbors and Feature Scaling > 3. kNN From First Principles :: cell 1
 - **theory practices:** book1:C4-p02, book1:C4-p04, book1:C4-p12
 - **theory assessments:** book1:r1-001-p09
 
@@ -810,22 +810,22 @@ Assessments: book1:r1-001-p09
 - **Layer:** shared-foundation
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:F3-matrices
+- **Destination:** book1:F4-matrices
 - **Dependencies:** book1:numpy-programming
 - **Shipped concepts:** book1:linear-independence-span, book1:matrices-as-linear-maps, book1:matrix-multiplication, book1:rank
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** F3 teaches maps, composition, span, rank, and executable matrix operations with direct practices.
+- **Rationale:** F4 teaches maps, composition, span, rank, and executable matrix operations with direct practices.
 - **Consequence:** The linear-algebra base is ready for downstream models.
 
-- **implementation lessons:** book1:units/F3-matrices/lessons/02-multiplication-and-gram-matrices.ipynb :: F3-matrices — Session 2: Multiplication and Gram Matrices > 3. Multiplication Is Composition :: cell 1
-- **implementation practices:** book1:F3-p02, book1:F3-p07, book1:F3-p20
+- **implementation lessons:** book1:units/04-F4-matrices/lessons/02-multiplication-and-gram-matrices.ipynb :: F4-matrices — Session 2: Multiplication and Gram Matrices > 3. Multiplication Is Composition :: cell 1
+- **implementation practices:** book1:F4-p02, book1:F4-p07, book1:F4-p20
 - **implementation assessments:** book1:r1-001-p05-7
-- **theory lessons:** book1:units/F3-matrices/lessons/01-matrices-as-maps.ipynb :: F3-matrices — Session 1: Matrices as Maps > 3. The Linearity Contract :: cell 1, book1:units/F3-matrices/lessons/03-rank-independence-and-outer-products.ipynb :: F3-matrices — Session 3: Rank, Independence, and Outer Products > 3. Rank: Counting Independent Directions :: cell 1
-- **theory practices:** book1:F3-p01, book1:F3-p03, book1:F3-p12
+- **theory lessons:** book1:units/04-F4-matrices/lessons/01-matrices-as-maps.ipynb :: F4-matrices — Session 1: Matrices as Maps > 3. The Linearity Contract :: cell 1, book1:units/04-F4-matrices/lessons/03-rank-independence-and-outer-products.ipynb :: F4-matrices — Session 3: Rank, Independence, and Outer Products > 3. Rank: Counting Independent Directions :: cell 1
+- **theory practices:** book1:F4-p01, book1:F4-p03, book1:F4-p12
 - **theory assessments:** book1:r1-001-p03-2
 
-Practices: book1:F3-p01, book1:F3-p02, book1:F3-p03, book1:F3-p07, book1:F3-p12, book1:F3-p20
+Practices: book1:F4-p01, book1:F4-p02, book1:F4-p03, book1:F4-p07, book1:F4-p12, book1:F4-p20
 
 Assessments: book1:r1-001-p03-2, book1:r1-001-p05-7
 
@@ -843,13 +843,13 @@ Assessments: book1:r1-001-p03-2, book1:r1-001-p05-7
 - **Rationale:** The model and loss are taught in C2 and genuinely fit end to end in C3.
 - **Consequence:** Base linear regression is covered independently of the OLS gap.
 
-- **implementation lessons:** book1:units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 1. From Data to a Prediction Rule :: cell 1
+- **implementation lessons:** book1:units/07-C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 1. From Data to a Prediction Rule :: cell 1
 - **implementation practices:** book1:C2-p05, book1:C2-p09, book1:C3-p13
 - **implementation assessments:** book1:r1-001-p04-2
-- **model-training lessons:** book1:units/C3-gradient-descent/lessons/02-learning-rates-and-stochasticity.ipynb :: C3-gradient-descent — Session 2: Learning Rates and Stochasticity > 2. The Payoff: Fitting the C2 Linear Model End to End :: cell 1
+- **model-training lessons:** book1:units/08-C3-gradient-descent/lessons/02-learning-rates-and-stochasticity.ipynb :: C3-gradient-descent — Session 2: Learning Rates and Stochasticity > 2. The Payoff: Fitting the C2 Linear Model End to End :: cell 1
 - **model-training practices:** book1:C3-p13, book1:C3-p14, book1:C3-p18
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 1. From Data to a Prediction Rule :: cell 1, book1:units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 3. Misses, Residuals, and the MSE :: cell 1
+- **theory lessons:** book1:units/07-C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 1. From Data to a Prediction Rule :: cell 1, book1:units/07-C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 3. Misses, Residuals, and the MSE :: cell 1
 - **theory practices:** book1:C2-p01, book1:C2-p04, book1:C2-p18
 - **theory assessments:** book1:r1-001-p04-2
 
@@ -871,7 +871,7 @@ Assessments: book1:r1-001-p04-2
 - **Rationale:** C2 derives the normal equations from the MSE gradient, proves their global-minimizer condition, and obtains the unique full-rank solve across proof, coding, and exact-arithmetic practices.
 - **Consequence:** Students can derive and compute the officially required closed-form linear-regression estimator.
 
-- **derivation lessons:** book1:units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 1. One Design-Matrix Convention > Checkpoint 1 :: cell 1, book1:units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 2. Full Column Rank and a Unique Worked Fit > Checkpoint 2 :: cell 1
+- **derivation lessons:** book1:units/07-C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 1. One Design-Matrix Convention > Checkpoint 1 :: cell 1, book1:units/07-C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 2. Full Column Rank and a Unique Worked Fit > Checkpoint 2 :: cell 1
 - **derivation practices:** book1:C2-p19, book1:C2-p20, book1:C2-p21
 - **derivation assessments:** —
 
@@ -893,13 +893,13 @@ Assessments: —
 - **Rationale:** C12 derives the logit objective and mean gradient, implements stable NumPy training, and practices the model in theory, implementation, and training settings.
 - **Consequence:** Students can derive, implement, fit, and audit logistic regression.
 
-- **implementation lessons:** book1:units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 5. Worked example: deterministic NumPy training :: cell 2
+- **implementation lessons:** book1:units/19-C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 5. Worked example: deterministic NumPy training :: cell 2
 - **implementation practices:** book1:C12-p06, book1:C12-p07, book1:C12-p18
 - **implementation assessments:** —
-- **model-training lessons:** book1:units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 5. Worked example: deterministic NumPy training :: cell 2
+- **model-training lessons:** book1:units/19-C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 5. Worked example: deterministic NumPy training :: cell 2
 - **model-training practices:** book1:C12-p07, book1:C12-p18, book1:C12-p21
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 4. Deriving the mean gradient and shape ledger :: cell 1
+- **theory lessons:** book1:units/19-C12-classical-models/lessons/01-logistic-regression.ipynb :: C12-classical-models — Session 1: Logistic Regression as a Trained Linear Classifier > 4. Deriving the mean gradient and shape ledger :: cell 1
 - **theory practices:** book1:C12-p01, book1:C12-p14, book1:C12-p26
 - **theory assessments:** —
 
@@ -921,13 +921,13 @@ Assessments: —
 - **Rationale:** MSE and penalized objectives are defined, differentiated, minimized in constrained cases, and implemented.
 - **Consequence:** Classical optimization has a sufficient loss foundation.
 
-- **derivation lessons:** book1:units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 5. The Gradient of the MSE at Given Weights :: cell 1
+- **derivation lessons:** book1:units/07-C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 5. The Gradient of the MSE at Given Weights :: cell 1
 - **derivation practices:** book1:C2-p11, book1:C2-p12, book1:C2-p18
 - **derivation assessments:** book1:r1-001-p04-2
-- **implementation lessons:** book1:units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 5. The Gradient of the MSE at Given Weights :: cell 1
+- **implementation lessons:** book1:units/07-C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 5. The Gradient of the MSE at Given Weights :: cell 1
 - **implementation practices:** book1:C2-p06, book1:C2-p07, book1:C2-p13
 - **implementation assessments:** book1:r1-001-p04-2
-- **theory lessons:** book1:units/C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 3. Misses, Residuals, and the MSE :: cell 1
+- **theory lessons:** book1:units/07-C2-linear-models/lessons/01-linear-regression-and-mse.ipynb :: C2-linear-models — Session 1: Linear Regression and the MSE Loss > 3. Misses, Residuals, and the MSE :: cell 1
 - **theory practices:** book1:C2-p02, book1:C2-p03, book1:C2-p16
 - **theory assessments:** book1:r1-001-p04-2
 
@@ -941,22 +941,22 @@ Assessments: book1:r1-001-p04-2
 - **Layer:** shared-foundation
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** book1:markdown-text-communication
 - **Shipped concepts:** book1:markdown-code-snippets
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** C10 explicitly teaches matched language fences and their non-executable role, then three practices require repaired snippets alongside the executable function.
+- **Rationale:** C11 explicitly teaches matched language fences and their non-executable role, then three practices require repaired snippets alongside the executable function.
 - **Consequence:** Students can embed accurate code excerpts without confusing them with runnable cells.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 5. The mixed-cell submission contract > Checkpoint 5 :: cell 1
-- **competition-workflow practices:** book1:C10-p15, book1:C10-p17, book1:C10-p18
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C11-competition-craft — Session 04: Colab, Markdown, and Round Policy > 5. The mixed-cell submission contract > Checkpoint 5 :: cell 1
+- **competition-workflow practices:** book1:C11-p15, book1:C11-p17, book1:C11-p18
 - **competition-workflow assessments:** —
-- **implementation lessons:** book1:units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 3. Fenced code snippets > Checkpoint 3 :: cell 1
-- **implementation practices:** book1:C10-p15, book1:C10-p17, book1:C10-p18
+- **implementation lessons:** book1:units/18-C11-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C11-competition-craft — Session 04: Colab, Markdown, and Round Policy > 3. Fenced code snippets > Checkpoint 3 :: cell 1
+- **implementation practices:** book1:C11-p15, book1:C11-p17, book1:C11-p18
 - **implementation assessments:** —
 
-Practices: book1:C10-p15, book1:C10-p17, book1:C10-p18
+Practices: book1:C11-p15, book1:C11-p17, book1:C11-p18
 
 Assessments: —
 
@@ -966,22 +966,22 @@ Assessments: —
 - **Layer:** shared-foundation
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** book1:markdown-text-communication
 - **Shipped concepts:** book1:markdown-math-formulae
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** C10 teaches inline and display mathematics with symbol definitions and interpretation; three Colab practices require a rendered macro-F1 derivation.
+- **Rationale:** C11 teaches inline and display mathematics with symbol definitions and interpretation; three Colab practices require a rendered macro-F1 derivation.
 - **Consequence:** Students can present mathematical derivations as readable, correctly rendered Markdown.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 4. Inline and display mathematics > Checkpoint 4 :: cell 1
-- **competition-workflow practices:** book1:C10-p15, book1:C10-p17, book1:C10-p18
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C11-competition-craft — Session 04: Colab, Markdown, and Round Policy > 4. Inline and display mathematics > Checkpoint 4 :: cell 1
+- **competition-workflow practices:** book1:C11-p15, book1:C11-p17, book1:C11-p18
 - **competition-workflow assessments:** —
-- **derivation lessons:** book1:units/C10-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C10-competition-craft — Session 04: Colab, Markdown, and Round Policy > 4. Inline and display mathematics > Checkpoint 4 :: cell 1
-- **derivation practices:** book1:C10-p15, book1:C10-p17, book1:C10-p18
+- **derivation lessons:** book1:units/18-C11-competition-craft/lessons/04-colab-markdown-round-policy.ipynb :: C11-competition-craft — Session 04: Colab, Markdown, and Round Policy > 4. Inline and display mathematics > Checkpoint 4 :: cell 1
+- **derivation practices:** book1:C11-p15, book1:C11-p17, book1:C11-p18
 - **derivation assessments:** —
 
-Practices: book1:C10-p15, book1:C10-p17, book1:C10-p18
+Practices: book1:C11-p15, book1:C11-p17, book1:C11-p18
 
 Assessments: —
 
@@ -991,7 +991,7 @@ Assessments: —
 - **Layer:** shared-foundation
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** —
 - **Shipped concepts:** book1:notebook-discipline, book1:writeup-quality
 - **Modalities missing:** —
@@ -999,11 +999,11 @@ Assessments: —
 - **Rationale:** The lesson gives a reproducible three-part writeup contract and three practices grade written communication.
 - **Consequence:** Students can communicate reasoning in notebook text.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/03-notebook-and-writeup.ipynb :: C10-competition-craft — Session 3: The Notebook and the Writeup > 3. The Writeup: Approach, Intuition, Alternatives > Checkpoint 3 :: cell 1
-- **competition-workflow practices:** book1:C10-p15, book1:C10-p17, book1:C10-p18
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/03-notebook-and-writeup.ipynb :: C11-competition-craft — Session 3: The Notebook and the Writeup > 3. The Writeup: Approach, Intuition, Alternatives > Checkpoint 3 :: cell 1
+- **competition-workflow practices:** book1:C11-p15, book1:C11-p17, book1:C11-p18
 - **competition-workflow assessments:** book1:r1-001-p09
 
-Practices: book1:C10-p15, book1:C10-p17, book1:C10-p18
+Practices: book1:C11-p15, book1:C11-p17, book1:C11-p18
 
 Assessments: book1:r1-001-p09
 
@@ -1021,7 +1021,7 @@ Assessments: book1:r1-001-p09
 - **Rationale:** Line, scatter, and histogram construction plus plotting critiques provide direct practice.
 - **Consequence:** Students can create and diagnose basic pyplot figures.
 
-- **implementation lessons:** book1:units/F1-scientific-python/lessons/03-randomness-and-plotting.ipynb :: F1-scientific-python — Session 03: Random Numbers and Plotting > 4. Line plots :: cell 1
+- **implementation lessons:** book1:units/01-F1-scientific-python/lessons/03-randomness-and-plotting.ipynb :: F1-scientific-python — Session 03: Random Numbers and Plotting > 4. Line plots :: cell 1
 - **implementation practices:** book1:F1-p06, book1:F1-p11, book1:F1-p20
 - **implementation assessments:** —
 
@@ -1043,10 +1043,10 @@ Assessments: —
 - **Rationale:** Spectral decomposition and SVD are taught, related, reconstructed, and repeatedly implemented.
 - **Consequence:** Decomposition prerequisites are available to PCA and advanced models.
 
-- **implementation lessons:** book1:units/F6-svd-spectral/lessons/03-svd.ipynb :: F6-svd-spectral — Session 3: The Singular Value Decomposition > 5. The Bridge, Derived: the SVD of $W$ Solves the Spectral Problem > Checkpoint 5 :: cell 1
+- **implementation lessons:** book1:units/12-F6-svd-spectral/lessons/03-svd.ipynb :: F6-svd-spectral — Session 3: The Singular Value Decomposition > 5. The Bridge, Derived: the SVD of $W$ Solves the Spectral Problem > Checkpoint 5 :: cell 1
 - **implementation practices:** book1:F6-p10, book1:F6-p13, book1:F6-p21
 - **implementation assessments:** book1:r1-001-p05-10
-- **theory lessons:** book1:units/F6-svd-spectral/lessons/02-spectral-decomposition.ipynb :: F6-svd-spectral — Session 2: The Spectral Decomposition > 3. The Spectral Decomposition $S = Q \Lambda Q^{\mathsf T}$ :: cell 1, book1:units/F6-svd-spectral/lessons/03-svd.ipynb :: F6-svd-spectral — Session 3: The Singular Value Decomposition > 5. The Bridge, Derived: the SVD of $W$ Solves the Spectral Problem > Checkpoint 5 :: cell 1
+- **theory lessons:** book1:units/12-F6-svd-spectral/lessons/02-spectral-decomposition.ipynb :: F6-svd-spectral — Session 2: The Spectral Decomposition > 3. The Spectral Decomposition $S = Q \Lambda Q^{\mathsf T}$ :: cell 1, book1:units/12-F6-svd-spectral/lessons/03-svd.ipynb :: F6-svd-spectral — Session 3: The Singular Value Decomposition > 5. The Bridge, Derived: the SVD of $W$ Solves the Spectral Problem > Checkpoint 5 :: cell 1
 - **theory practices:** book1:F6-p03, book1:F6-p06, book1:F6-p10
 - **theory assessments:** book1:r1-001-p05-8
 
@@ -1060,7 +1060,7 @@ Assessments: book1:r1-001-p05-10, book1:r1-001-p05-8
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C11-neural-training
+- **Destination:** book1:C8-neural-training
 - **Dependencies:** book1:affine-neural-network-layer, book1:loss-functions
 - **Shipped concepts:** book1:activation-functions, book1:decision-boundaries-geometric, book1:manual-weights, book1:mlp-architecture, book1:trained-mlp
 - **Modalities missing:** —
@@ -1068,17 +1068,17 @@ Assessments: book1:r1-001-p05-10, book1:r1-001-p05-8
 - **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
 - **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
-- **implementation lessons:** book1:units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
-- **implementation practices:** book1:C5-p08, book1:C5-p13, book1:C5-p18
+- **implementation lessons:** book1:units/11-C6-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C6-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
+- **implementation practices:** book1:C6-p08, book1:C6-p13, book1:C6-p18
 - **implementation assessments:** book1:r1-001-p08-3
-- **model-training lessons:** book1:units/C11-neural-training/lessons/03-numpy-mlp-training.ipynb :: C11-neural-training — Session 3: A NumPy MLP That Learns > 5. Training certification: decisions changed for a reason :: cell 1
-- **model-training practices:** book1:C11-p15
+- **model-training lessons:** book1:units/15-C8-neural-training/lessons/03-numpy-mlp-training.ipynb :: C8-neural-training — Session 3: A NumPy MLP That Learns > 5. Training certification: decisions changed for a reason :: cell 1
+- **model-training practices:** book1:C8-p15
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1, book1:units/C5-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C5-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
-- **theory practices:** book1:C5-p04, book1:C5-p08, book1:C5-p18
+- **theory lessons:** book1:units/11-C6-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C6-neural-networks — Session 2: MLPs and Geometry > 2. The Two Pinned Helpers: `affine_layer` and `step_activation` :: cell 1, book1:units/11-C6-neural-networks/lessons/02-mlps-and-geometry.ipynb :: C6-neural-networks — Session 2: MLPs and Geometry > 3. A Full Forward Pass, by Hand and by NumPy :: cell 1
+- **theory practices:** book1:C6-p04, book1:C6-p08, book1:C6-p18
 - **theory assessments:** book1:r1-001-p08-3
 
-Practices: book1:C11-p15, book1:C5-p04, book1:C5-p08, book1:C5-p13, book1:C5-p18
+Practices: book1:C6-p04, book1:C6-p08, book1:C6-p13, book1:C6-p18, book1:C8-p15
 
 Assessments: book1:r1-001-p08-3
 
@@ -1088,25 +1088,25 @@ Assessments: book1:r1-001-p08-3
 - **Layer:** shared-foundation
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:F4-multivar-calculus
+- **Destination:** book1:F3-multivar-calculus
 - **Dependencies:** —
 - **Shipped concepts:** book1:gradient, book1:multivar-chain-rule, book1:partial-derivatives, book1:sum-of-squares-gradients, book1:tanh-derivative
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** F4 develops partials, gradients, chain rule, analytic derivations, and numerical checks.
+- **Rationale:** F3 develops partials, gradients, chain rule, analytic derivations, and numerical checks.
 - **Consequence:** Calculus prerequisites for optimization are satisfied.
 
-- **derivation lessons:** book1:units/F4-multivar-calculus/lessons/02-chain-rule-and-sums-of-squares.ipynb :: F4-multivar-calculus — Session 2: The Chain Rule, tanh, and Sums of Squares > 2. The Multivariable Chain Rule: Every Route Contributes :: cell 1
-- **derivation practices:** book1:F4-p08, book1:F4-p12, book1:F4-p17
+- **derivation lessons:** book1:units/03-F3-multivar-calculus/lessons/02-chain-rule-and-sums-of-squares.ipynb :: F3-multivar-calculus — Session 2: The Chain Rule, tanh, and Sums of Squares > 2. The Multivariable Chain Rule: Every Route Contributes :: cell 1
+- **derivation practices:** book1:F3-p08, book1:F3-p12, book1:F3-p17
 - **derivation assessments:** book1:r1-001-p04-2
-- **implementation lessons:** book1:units/F4-multivar-calculus/lessons/01-partials-and-the-gradient.ipynb :: F4-multivar-calculus — Session 1: Partial Derivatives and the Gradient > 4. The Gradient: All Partials in One Vector :: cell 1
-- **implementation practices:** book1:F4-p05, book1:F4-p10, book1:F4-p18
+- **implementation lessons:** book1:units/03-F3-multivar-calculus/lessons/01-partials-and-the-gradient.ipynb :: F3-multivar-calculus — Session 1: Partial Derivatives and the Gradient > 4. The Gradient: All Partials in One Vector :: cell 1
+- **implementation practices:** book1:F3-p05, book1:F3-p10, book1:F3-p18
 - **implementation assessments:** book1:r1-001-p04-2
-- **theory lessons:** book1:units/F4-multivar-calculus/lessons/01-partials-and-the-gradient.ipynb :: F4-multivar-calculus — Session 1: Partial Derivatives and the Gradient > 2. Partial Derivatives: Freeze, Then Differentiate :: cell 1
-- **theory practices:** book1:F4-p01, book1:F4-p03, book1:F4-p12
+- **theory lessons:** book1:units/03-F3-multivar-calculus/lessons/01-partials-and-the-gradient.ipynb :: F3-multivar-calculus — Session 1: Partial Derivatives and the Gradient > 2. Partial Derivatives: Freeze, Then Differentiate :: cell 1
+- **theory practices:** book1:F3-p01, book1:F3-p03, book1:F3-p12
 - **theory assessments:** book1:r1-001-p02-1
 
-Practices: book1:F4-p01, book1:F4-p03, book1:F4-p05, book1:F4-p08, book1:F4-p10, book1:F4-p12, book1:F4-p17, book1:F4-p18
+Practices: book1:F3-p01, book1:F3-p03, book1:F3-p05, book1:F3-p08, book1:F3-p10, book1:F3-p12, book1:F3-p17, book1:F3-p18
 
 Assessments: book1:r1-001-p02-1, book1:r1-001-p04-2
 
@@ -1116,7 +1116,7 @@ Assessments: book1:r1-001-p02-1, book1:r1-001-p04-2
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** book1:markdown-text-communication, book1:python-programming
 - **Shipped concepts:** book1:hidden-test-protocol, book1:normal-form-answers, book1:notebook-discipline, book1:prediction-function-contract, book1:writeup-quality
 - **Modalities missing:** —
@@ -1124,17 +1124,17 @@ Assessments: book1:r1-001-p02-1, book1:r1-001-p04-2
 - **Rationale:** The course explicitly alternates reasoning-only, constrained-code, and full-notebook forms.
 - **Consequence:** Students can switch answer modes under competition constraints.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/01-the-contract.ipynb :: C10-competition-craft — Session 1: The Contract > 2. The Task and the Harness :: cell 1
-- **competition-workflow practices:** book1:C10-p13, book1:C10-p14, book1:C10-p18
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/01-the-contract.ipynb :: C11-competition-craft — Session 1: The Contract > 2. The Task and the Harness :: cell 1
+- **competition-workflow practices:** book1:C11-p13, book1:C11-p14, book1:C11-p18
 - **competition-workflow assessments:** book1:r1-001-p09
-- **implementation lessons:** book1:units/C10-competition-craft/lessons/03-notebook-and-writeup.ipynb :: C10-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition :: cell 1
-- **implementation practices:** book1:C10-p13, book1:C10-p17, book1:C10-p18
+- **implementation lessons:** book1:units/18-C11-competition-craft/lessons/03-notebook-and-writeup.ipynb :: C11-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition :: cell 1
+- **implementation practices:** book1:C11-p13, book1:C11-p17, book1:C11-p18
 - **implementation assessments:** book1:r1-001-p09
-- **theory lessons:** book1:units/C10-competition-craft/lessons/01-the-contract.ipynb :: C10-competition-craft — Session 1: The Contract > 2. The Task and the Harness :: cell 1
-- **theory practices:** book1:C10-p12, book1:C10-p16, book1:C10-p18
+- **theory lessons:** book1:units/18-C11-competition-craft/lessons/01-the-contract.ipynb :: C11-competition-craft — Session 1: The Contract > 2. The Task and the Harness :: cell 1
+- **theory practices:** book1:C11-p12, book1:C11-p16, book1:C11-p18
 - **theory assessments:** book1:r1-001-p01-1
 
-Practices: book1:C10-p12, book1:C10-p13, book1:C10-p14, book1:C10-p16, book1:C10-p17, book1:C10-p18
+Practices: book1:C11-p12, book1:C11-p13, book1:C11-p14, book1:C11-p16, book1:C11-p17, book1:C11-p18
 
 Assessments: book1:r1-001-p01-1, book1:r1-001-p09
 
@@ -1152,10 +1152,10 @@ Assessments: book1:r1-001-p01-1, book1:r1-001-p09
 - **Rationale:** C9 specifies and implements reusable fit state, transform, inverse transform, variance ratios, and projector behavior, then grades the complete class in three practices.
 - **Consequence:** Students can build and validate PCA from scratch with NumPy under full-rank and degenerate regimes.
 
-- **implementation lessons:** book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 5. The reusable `NumpyPCA` fit-state contract :: cell 2, book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 6. Transform, inverse transform, and the projector :: cell 2
+- **implementation lessons:** book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 5. The reusable `NumpyPCA` fit-state contract :: cell 2, book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 6. Transform, inverse transform, and the projector :: cell 2
 - **implementation practices:** book1:C9-p22, book1:C9-p23, book1:C9-p24
 - **implementation assessments:** —
-- **theory lessons:** book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 5. The reusable `NumpyPCA` fit-state contract :: cell 1, book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 6. Transform, inverse transform, and the projector :: cell 1
+- **theory lessons:** book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 5. The reusable `NumpyPCA` fit-state contract :: cell 1, book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 6. Transform, inverse transform, and the projector :: cell 1
 - **theory practices:** book1:C9-p22, book1:C9-p23, book1:C9-p24
 - **theory assessments:** —
 
@@ -1177,7 +1177,7 @@ Assessments: —
 - **Rationale:** F1 directly teaches and heavily practices arrays, broadcasting, indexing, aggregation, and vectorization.
 - **Consequence:** NumPy is ready for all downstream numerical units.
 
-- **implementation lessons:** book1:units/F1-scientific-python/lessons/01-arrays-and-indexing.ipynb :: F1-scientific-python — Session 01: Arrays and Indexing > 2. Creating arrays :: cell 1, book1:units/F1-scientific-python/lessons/02-broadcasting-and-vectorization.ipynb :: F1-scientific-python — Session 02: Broadcasting, Vectorization, and Axis Aggregations > 5. Vectorization: replacing loops with array operations :: cell 1
+- **implementation lessons:** book1:units/01-F1-scientific-python/lessons/01-arrays-and-indexing.ipynb :: F1-scientific-python — Session 01: Arrays and Indexing > 2. Creating arrays :: cell 1, book1:units/01-F1-scientific-python/lessons/02-broadcasting-and-vectorization.ipynb :: F1-scientific-python — Session 02: Broadcasting, Vectorization, and Axis Aggregations > 5. Vectorization: replacing loops with array operations :: cell 1
 - **implementation practices:** book1:F1-p01, book1:F1-p03, book1:F1-p07
 - **implementation assessments:** book1:r1-001-p05-4, book1:r1-001-p06-1
 
@@ -1199,13 +1199,13 @@ Assessments: book1:r1-001-p05-4, book1:r1-001-p06-1
 - **Rationale:** C2 proves the full-rank uniqueness equivalence, separates exact consistency from least squares, derives the nullspace family, and implements the minimum-norm pseudoinverse fit.
 - **Consequence:** Students can reason correctly about identifiable predictions and non-identifiable coefficients at deficient rank.
 
-- **derivation lessons:** book1:units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 4. Pseudoinverse and the Minimum-Norm Worked Fit :: cell 1, book1:units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 5. Projectors Reveal What Is Unique > Checkpoint 5 :: cell 1
+- **derivation lessons:** book1:units/07-C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 4. Pseudoinverse and the Minimum-Norm Worked Fit :: cell 1, book1:units/07-C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 5. Projectors Reveal What Is Unique > Checkpoint 5 :: cell 1
 - **derivation practices:** book1:C2-p22, book1:C2-p24
 - **derivation assessments:** —
-- **implementation lessons:** book1:units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 4. Pseudoinverse and the Minimum-Norm Worked Fit > Checkpoint 4 :: cell 2
+- **implementation lessons:** book1:units/07-C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 4. Pseudoinverse and the Minimum-Norm Worked Fit > Checkpoint 4 :: cell 2
 - **implementation practices:** book1:C2-p23
 - **implementation assessments:** —
-- **theory lessons:** book1:units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 2. Full Column Rank and a Unique Worked Fit :: cell 1, book1:units/C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 3. Consistency, Rank Deficiency, and Identifiability :: cell 1
+- **theory lessons:** book1:units/07-C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 2. Full Column Rank and a Unique Worked Fit :: cell 1, book1:units/07-C2-linear-models/lessons/02-normal-equations-rank-pseudoinverse.ipynb :: C2-linear-models — Session 2: Normal Equations, Rank, and the Pseudoinverse > 3. Consistency, Rank Deficiency, and Identifiability :: cell 1
 - **theory practices:** book1:C2-p22, book1:C2-p23, book1:C2-p24
 - **theory assessments:** —
 
@@ -1227,7 +1227,7 @@ Assessments: —
 - **Rationale:** Tables, selection, masks, grouping, CSV loading, and NumPy bridging are taught and practiced.
 - **Consequence:** Tabular competition workflows have a sufficient pandas base.
 
-- **implementation lessons:** book1:units/C4-classical-ml-practice/lessons/01-pandas-and-data-loading.ipynb :: C4-classical-ml-practice — Session 1: Pandas and Data Loading > 1. From Arrays to Tables :: cell 1
+- **implementation lessons:** book1:units/09-C4-classical-ml-practice/lessons/01-pandas-and-data-loading.ipynb :: C4-classical-ml-practice — Session 1: Pandas and Data Loading > 1. From Arrays to Tables :: cell 1
 - **implementation practices:** book1:C4-p01, book1:C4-p05, book1:C4-p20
 - **implementation assessments:** book1:r1-001-p09
 
@@ -1249,13 +1249,13 @@ Assessments: book1:r1-001-p09
 - **Rationale:** C9 joins the covariance derivation to a certified NumPy class and explicitly grades fit state, reconstruction, rank deficiency, and repeated-eigenspace behavior without sklearn PCA.
 - **Consequence:** Students can explain and implement PCA mechanics rather than relying on a black-box estimator call.
 
-- **derivation lessons:** book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 2. Directional variance becomes an eigenproblem :: cell 1
+- **derivation lessons:** book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 2. Directional variance becomes an eigenproblem :: cell 1
 - **derivation practices:** book1:C9-p23, book1:C9-p24
 - **derivation assessments:** —
-- **implementation lessons:** book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 7. Worked exam-style example: certify a PCA implementation :: cell 2
+- **implementation lessons:** book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 7. Worked exam-style example: certify a PCA implementation :: cell 2
 - **implementation practices:** book1:C9-p22, book1:C9-p23, book1:C9-p24
 - **implementation assessments:** —
-- **theory lessons:** book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 7. Worked exam-style example: certify a PCA implementation :: cell 1
+- **theory lessons:** book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 7. Worked exam-style example: certify a PCA implementation :: cell 1
 - **theory practices:** book1:C9-p22, book1:C9-p23, book1:C9-p24
 - **theory assessments:** —
 
@@ -1277,10 +1277,10 @@ Assessments: —
 - **Rationale:** C9 constructs centered sample covariance, derives the Rayleigh-quotient eigenproblem, and proves its SVD equivalence with three direct derivation practices.
 - **Consequence:** Students can supply the official PCA covariance-eigenproblem derivation and reconcile both computational routes.
 
-- **derivation lessons:** book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 2. Directional variance becomes an eigenproblem :: cell 1, book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 3. Why the covariance and SVD routes agree :: cell 1
+- **derivation lessons:** book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 2. Directional variance becomes an eigenproblem :: cell 1, book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 3. Why the covariance and SVD routes agree :: cell 1
 - **derivation practices:** book1:C9-p20, book1:C9-p21, book1:C9-p23
 - **derivation assessments:** —
-- **theory lessons:** book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 1. One denominator, three views of variance :: cell 1, book1:units/C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 3. Why the covariance and SVD routes agree :: cell 1
+- **theory lessons:** book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 1. One denominator, three views of variance :: cell 1, book1:units/16-C9-dimensionality-reduction/lessons/02-pca-covariance-and-numpy-class.ipynb :: C9-dimensionality-reduction — Session 2: PCA from Covariance to a Reusable NumPy Class > 3. Why the covariance and SVD routes agree :: cell 1
 - **theory practices:** book1:C9-p20, book1:C9-p21, book1:C9-p23
 - **theory assessments:** —
 
@@ -1302,10 +1302,10 @@ Assessments: —
 - **Rationale:** Centering, directional variance, SVD directions, scores, explained variance, and projections are taught and practiced.
 - **Consequence:** Base PCA is covered independently of its official derivation and class requirements.
 
-- **implementation lessons:** book1:units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data :: cell 1
+- **implementation lessons:** book1:units/16-C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data :: cell 1
 - **implementation practices:** book1:C9-p05, book1:C9-p11, book1:C9-p13
 - **implementation assessments:** —
-- **theory lessons:** book1:units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 1. Centering: the Mean Vector and $X_c$ :: cell 1, book1:units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 2. Variance Along a Direction :: cell 1, book1:units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data :: cell 1
+- **theory lessons:** book1:units/16-C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 1. Centering: the Mean Vector and $X_c$ :: cell 1, book1:units/16-C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 2. Variance Along a Direction :: cell 1, book1:units/16-C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 3. PCA = the SVD of the Centered Data :: cell 1
 - **theory practices:** book1:C9-p01, book1:C9-p04, book1:C9-p19
 - **theory assessments:** —
 
@@ -1327,10 +1327,10 @@ Assessments: —
 - **Rationale:** F5 covers the declared elementary probability/statistics contract with reasoning and simulation practice.
 - **Consequence:** The base Gaussian and sampling foundation is shipped, but later rows remain independent gaps.
 
-- **implementation lessons:** book1:units/F5-probability/lessons/03-gaussian-simulation-covariance.ipynb :: F5-probability — Session 03: The Gaussian, Simulation, and Covariance > 2. The Gaussian, stated :: cell 1, book1:units/F5-probability/lessons/03-gaussian-simulation-covariance.ipynb :: F5-probability — Session 03: The Gaussian, Simulation, and Covariance > 6. Covariance :: cell 1
+- **implementation lessons:** book1:units/05-F5-probability/lessons/03-gaussian-simulation-covariance.ipynb :: F5-probability — Session 03: The Gaussian, Simulation, and Covariance > 2. The Gaussian, stated :: cell 1, book1:units/05-F5-probability/lessons/03-gaussian-simulation-covariance.ipynb :: F5-probability — Session 03: The Gaussian, Simulation, and Covariance > 6. Covariance :: cell 1
 - **implementation practices:** book1:F5-p05, book1:F5-p09, book1:F5-p18
 - **implementation assessments:** book1:r1-001-p02-3
-- **theory lessons:** book1:units/F5-probability/lessons/01-random-variables-and-expectation.ipynb :: F5-probability — Session 01: Random Variables and Expectation > 2. Random variables :: cell 1, book1:units/F5-probability/lessons/02-variance-and-independence.ipynb :: F5-probability — Session 02: Variance and Independence > 1. Measuring spread: variance :: cell 1
+- **theory lessons:** book1:units/05-F5-probability/lessons/01-random-variables-and-expectation.ipynb :: F5-probability — Session 01: Random Variables and Expectation > 2. Random variables :: cell 1, book1:units/05-F5-probability/lessons/02-variance-and-independence.ipynb :: F5-probability — Session 02: Variance and Independence > 1. Measuring spread: variance :: cell 1
 - **theory practices:** book1:F5-p01, book1:F5-p03, book1:F5-p08
 - **theory assessments:** book1:r1-001-p02-2
 
@@ -1344,19 +1344,19 @@ Assessments: book1:r1-001-p02-2, book1:r1-001-p02-3
 - **Layer:** shared-foundation
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C6-pytorch
+- **Destination:** book1:C7-pytorch
 - **Dependencies:** —
 - **Shipped concepts:** book1:python-inheritance
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** Basic Python is the declared baseline and C6 explicitly teaches classes and inheritance with graded implementations.
+- **Rationale:** Basic Python is the declared baseline and C7 explicitly teaches classes and inheritance with graded implementations.
 - **Consequence:** The Python prerequisite is operationally covered.
 
-- **implementation lessons:** book1:units/C6-pytorch/lessons/01-tensors-and-inheritance.ipynb :: C6-pytorch — Session 1: Torch Tensors and Python Inheritance > 5. Classes in Ten Minutes (Plain Python) :: cell 1
-- **implementation practices:** book1:C6-p02, book1:C6-p06, book1:C6-p17
+- **implementation lessons:** book1:units/13-C7-pytorch/lessons/01-tensors-and-inheritance.ipynb :: C7-pytorch — Session 1: Torch Tensors and Python Inheritance > 5. Classes in Ten Minutes (Plain Python) :: cell 1
+- **implementation practices:** book1:C7-p02, book1:C7-p06, book1:C7-p17
 - **implementation assessments:** book1:r1-001-p07-1
 
-Practices: book1:C6-p02, book1:C6-p06, book1:C6-p17
+Practices: book1:C7-p02, book1:C7-p06, book1:C7-p17
 
 Assessments: book1:r1-001-p07-1
 
@@ -1366,7 +1366,7 @@ Assessments: book1:r1-001-p07-1
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C11-neural-training
+- **Destination:** book1:C8-neural-training
 - **Dependencies:** book1:backpropagation-by-hand, book1:pytorch-deep-learning-programming
 - **Shipped concepts:** book1:autograd-training, book1:layer-freezing, book1:requires-grad, book1:torch-optimizers
 - **Modalities missing:** —
@@ -1374,17 +1374,17 @@ Assessments: book1:r1-001-p07-1
 - **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
 - **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
-- **implementation lessons:** book1:units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4: PyTorch Autograd and Optimizers > 2. Hand gradient versus autograd :: cell 1
-- **implementation practices:** book1:C11-p08
+- **implementation lessons:** book1:units/15-C8-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C8-neural-training — Session 4: PyTorch Autograd and Optimizers > 2. Hand gradient versus autograd :: cell 1
+- **implementation practices:** book1:C8-p08
 - **implementation assessments:** —
-- **model-training lessons:** book1:units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4: PyTorch Autograd and Optimizers > 6. Deterministic CPU-small training and evaluation :: cell 1
-- **model-training practices:** book1:C11-p16
+- **model-training lessons:** book1:units/15-C8-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C8-neural-training — Session 4: PyTorch Autograd and Optimizers > 6. Deterministic CPU-small training and evaluation :: cell 1
+- **model-training practices:** book1:C8-p16
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C6-pytorch/lessons/02-nn-module-and-custom-layers.ipynb :: C6-pytorch — Session 2: `nn.Module` and Custom Layers > 4. The `requires_grad` Flag, Up Close :: cell 1, book1:units/C7-cnn-transfer/lessons/02-resnet-reading.ipynb :: C7-cnn-transfer — Session 2: Reading ResNet-50 > 1. Loading a Pretrained Model, Reproducibly > BatchNorm's three independent controls :: cell 1
-- **theory practices:** book1:C7-p27
+- **theory lessons:** book1:units/13-C7-pytorch/lessons/02-nn-module-and-custom-layers.ipynb :: C7-pytorch — Session 2: `nn.Module` and Custom Layers > 4. The `requires_grad` Flag, Up Close :: cell 1, book1:units/17-C10-cnn-transfer/lessons/02-resnet-reading.ipynb :: C10-cnn-transfer — Session 2: Reading ResNet-50 > 1. Loading a Pretrained Model, Reproducibly > BatchNorm's three independent controls :: cell 1
+- **theory practices:** book1:C10-p27
 - **theory assessments:** —
 
-Practices: book1:C11-p08, book1:C11-p16, book1:C7-p27
+Practices: book1:C10-p27, book1:C8-p08, book1:C8-p16
 
 Assessments: —
 
@@ -1394,7 +1394,7 @@ Assessments: —
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C6-pytorch
+- **Destination:** book1:C7-pytorch
 - **Dependencies:** book1:numpy-programming, book1:python-programming
 - **Shipped concepts:** book1:autograd-training, book1:custom-layers, book1:nn-module, book1:torch-optimizers, book1:torch-tensors
 - **Modalities missing:** —
@@ -1402,14 +1402,14 @@ Assessments: —
 - **Rationale:** The shipped lesson-and-practice sequence now closes every required modality with executable evidence.
 - **Consequence:** Students can use this capability inside a complete, audited training workflow.
 
-- **implementation lessons:** book1:units/C6-pytorch/lessons/01-tensors-and-inheritance.ipynb :: C6-pytorch — Session 1: Torch Tensors and Python Inheritance > 1. Tensors: NumPy Arrays with a Passport :: cell 1, book1:units/C6-pytorch/lessons/02-nn-module-and-custom-layers.ipynb :: C6-pytorch — Session 2: `nn.Module` and Custom Layers > 3. Registering Numbers: `nn.Parameter` and `DenseLayer` :: cell 1
-- **implementation practices:** book1:C6-p08, book1:C6-p13, book1:C6-p20
+- **implementation lessons:** book1:units/13-C7-pytorch/lessons/01-tensors-and-inheritance.ipynb :: C7-pytorch — Session 1: Torch Tensors and Python Inheritance > 1. Tensors: NumPy Arrays with a Passport :: cell 1, book1:units/13-C7-pytorch/lessons/02-nn-module-and-custom-layers.ipynb :: C7-pytorch — Session 2: `nn.Module` and Custom Layers > 3. Registering Numbers: `nn.Parameter` and `DenseLayer` :: cell 1
+- **implementation practices:** book1:C7-p08, book1:C7-p13, book1:C7-p20
 - **implementation assessments:** book1:r1-001-p07-1, book1:r1-001-p08-3
-- **model-training lessons:** book1:units/C11-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C11-neural-training — Session 4: PyTorch Autograd and Optimizers > 6. Deterministic CPU-small training and evaluation :: cell 1
-- **model-training practices:** book1:C11-p16
+- **model-training lessons:** book1:units/15-C8-neural-training/lessons/04-pytorch-autograd-and-optimizers.ipynb :: C8-neural-training — Session 4: PyTorch Autograd and Optimizers > 6. Deterministic CPU-small training and evaluation :: cell 1
+- **model-training practices:** book1:C8-p16
 - **model-training assessments:** —
 
-Practices: book1:C11-p16, book1:C6-p08, book1:C6-p13, book1:C6-p20
+Practices: book1:C7-p08, book1:C7-p13, book1:C7-p20, book1:C8-p16
 
 Assessments: book1:r1-001-p07-1, book1:r1-001-p08-3
 
@@ -1419,19 +1419,19 @@ Assessments: book1:r1-001-p07-1, book1:r1-001-p08-3
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C6-pytorch
+- **Destination:** book1:C7-pytorch
 - **Dependencies:** book1:pytorch-deep-learning-programming
 - **Shipped concepts:** book1:custom-layers, book1:nn-module, book1:torch-tensors
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** The C6/C7 and mock engineering path consistently requires PyTorch and presents no TensorFlow alternative.
+- **Rationale:** The C7/C10 and mock engineering path consistently requires PyTorch and presents no TensorFlow alternative.
 - **Consequence:** Students practice the required framework workflow.
 
-- **competition-workflow lessons:** book1:units/C6-pytorch/lessons/01-tensors-and-inheritance.ipynb :: C6-pytorch — Session 1: Torch Tensors and Python Inheritance > 1. Tensors: NumPy Arrays with a Passport :: cell 1, book1:units/C6-pytorch/lessons/02-nn-module-and-custom-layers.ipynb :: C6-pytorch — Session 2: `nn.Module` and Custom Layers > 3. Registering Numbers: `nn.Parameter` and `DenseLayer` :: cell 1
-- **competition-workflow practices:** book1:C6-p08, book1:C6-p13, book1:C6-p20
+- **competition-workflow lessons:** book1:units/13-C7-pytorch/lessons/01-tensors-and-inheritance.ipynb :: C7-pytorch — Session 1: Torch Tensors and Python Inheritance > 1. Tensors: NumPy Arrays with a Passport :: cell 1, book1:units/13-C7-pytorch/lessons/02-nn-module-and-custom-layers.ipynb :: C7-pytorch — Session 2: `nn.Module` and Custom Layers > 3. Registering Numbers: `nn.Parameter` and `DenseLayer` :: cell 1
+- **competition-workflow practices:** book1:C7-p08, book1:C7-p13, book1:C7-p20
 - **competition-workflow assessments:** book1:r1-001-p07-1, book1:r1-001-p08-3
 
-Practices: book1:C6-p08, book1:C6-p13, book1:C6-p20
+Practices: book1:C7-p08, book1:C7-p13, book1:C7-p20
 
 Assessments: book1:r1-001-p07-1, book1:r1-001-p08-3
 
@@ -1449,7 +1449,7 @@ Assessments: book1:r1-001-p07-1, book1:r1-001-p08-3
 - **Rationale:** C4 teaches estimator, pipeline, and validation APIs with direct implementations.
 - **Consequence:** Students can use the required sklearn surface.
 
-- **implementation lessons:** book1:units/C4-classical-ml-practice/lessons/02-knn-and-scaling.ipynb :: C4-classical-ml-practice — Session 2: k-Nearest Neighbors and Feature Scaling > 7. Enter sklearn — a Wrapper You Can Verify :: cell 1, book1:units/C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 3. Pipelines: the Whole Recipe as One Object :: cell 1
+- **implementation lessons:** book1:units/09-C4-classical-ml-practice/lessons/02-knn-and-scaling.ipynb :: C4-classical-ml-practice — Session 2: k-Nearest Neighbors and Feature Scaling > 7. Enter sklearn — a Wrapper You Can Verify :: cell 1, book1:units/09-C4-classical-ml-practice/lessons/03-pipelines-and-validation.ipynb :: C4-classical-ml-practice — Session 3: Pipelines and Honest Validation > 3. Pipelines: the Whole Recipe as One Object :: cell 1
 - **implementation practices:** book1:C4-p09, book1:C4-p11, book1:C4-p15
 - **implementation assessments:** book1:r1-001-p09
 
@@ -1471,7 +1471,7 @@ Assessments: book1:r1-001-p09
 - **Rationale:** F1 teaches seaborn's array-to-Axes contract, deterministic histogram and scatter semantics, and the justified matplotlib boundary through three constrained practices without requiring pandas.
 - **Consequence:** Students can implement and verify the separately named seaborn plotting surface.
 
-- **implementation lessons:** book1:units/F1-scientific-python/lessons/04-seaborn-with-arrays.ipynb :: F1-scientific-python — Session 04: Seaborn with Arrays > 1. The array-to-axes contract > Checkpoint 1 :: cell 1, book1:units/F1-scientific-python/lessons/04-seaborn-with-arrays.ipynb :: F1-scientific-python — Session 04: Seaborn with Arrays > 2. Histograms with fixed bins :: cell 2, book1:units/F1-scientific-python/lessons/04-seaborn-with-arrays.ipynb :: F1-scientific-python — Session 04: Seaborn with Arrays > 3. Scatter plots, labels, and visual semantics :: cell 2
+- **implementation lessons:** book1:units/01-F1-scientific-python/lessons/04-seaborn-with-arrays.ipynb :: F1-scientific-python — Session 04: Seaborn with Arrays > 1. The array-to-axes contract > Checkpoint 1 :: cell 1, book1:units/01-F1-scientific-python/lessons/04-seaborn-with-arrays.ipynb :: F1-scientific-python — Session 04: Seaborn with Arrays > 2. Histograms with fixed bins :: cell 2, book1:units/01-F1-scientific-python/lessons/04-seaborn-with-arrays.ipynb :: F1-scientific-python — Session 04: Seaborn with Arrays > 3. Scatter plots, labels, and visual semantics :: cell 2
 - **implementation practices:** book1:F1-p22, book1:F1-p23, book1:F1-p24
 - **implementation assessments:** —
 
@@ -1485,25 +1485,25 @@ Assessments: —
 - **Layer:** round-1-core
 - **Requirement:** bridge
 - **Coverage:** covered
-- **Destination:** book1:C11-neural-training
+- **Destination:** book1:C8-neural-training
 - **Dependencies:** book1:affine-neural-network-layer, book1:probability-and-statistics-foundations
 - **Shipped concepts:** book1:softmax
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** The shipped C11 lesson-and-practice sequence now closes every required modality with executable evidence.
+- **Rationale:** The shipped C8 lesson-and-practice sequence now closes every required modality with executable evidence.
 - **Consequence:** Students can reason about and implement this neural-training component in the complete training system.
 
-- **derivation lessons:** book1:units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 5. The softmax Jacobian :: cell 1
-- **derivation practices:** book1:C11-p11
+- **derivation lessons:** book1:units/15-C8-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C8-neural-training — Session 1: Stable Softmax and Cross-Entropy > 5. The softmax Jacobian :: cell 1
+- **derivation practices:** book1:C8-p11
 - **derivation assessments:** —
-- **implementation lessons:** book1:units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 2. Shift invariance gives a stable algorithm :: cell 1
-- **implementation practices:** book1:C11-p05
+- **implementation lessons:** book1:units/15-C8-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C8-neural-training — Session 1: Stable Softmax and Cross-Entropy > 2. Shift invariance gives a stable algorithm :: cell 1
+- **implementation practices:** book1:C8-p05
 - **implementation assessments:** —
-- **theory lessons:** book1:units/C11-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C11-neural-training — Session 1: Stable Softmax and Cross-Entropy > 1. Logits, probabilities, and the class axis :: cell 1
-- **theory practices:** book1:C11-p01
+- **theory lessons:** book1:units/15-C8-neural-training/lessons/01-softmax-and-cross-entropy.ipynb :: C8-neural-training — Session 1: Stable Softmax and Cross-Entropy > 1. Logits, probabilities, and the class axis :: cell 1
+- **theory practices:** book1:C8-p01
 - **theory assessments:** —
 
-Practices: book1:C11-p01, book1:C11-p05, book1:C11-p11
+Practices: book1:C8-p01, book1:C8-p05, book1:C8-p11
 
 Assessments: —
 
@@ -1521,10 +1521,10 @@ Assessments: —
 - **Rationale:** Labeled-task framing, splitting, fitting simple rules, and generalization are taught and practiced.
 - **Consequence:** Supervised-model units have a sound base.
 
-- **implementation lessons:** book1:units/C1-ml-fundamentals/lessons/02-generalization-train-test-overfitting.ipynb :: C1 Session 2 — Generalization: Train/Test Discipline and Overfitting > 5. Flexible Rules, Rigid Rules :: cell 1
+- **implementation lessons:** book1:units/06-C1-ml-fundamentals/lessons/02-generalization-train-test-overfitting.ipynb :: C1 Session 2 — Generalization: Train/Test Discipline and Overfitting > 5. Flexible Rules, Rigid Rules :: cell 1
 - **implementation practices:** book1:C1-p02, book1:C1-p03, book1:C1-p20
 - **implementation assessments:** book1:r1-001-p01-3
-- **theory lessons:** book1:units/C1-ml-fundamentals/lessons/01-learning-and-task-types.ipynb :: C1 Session 1 — Learning from Data and the Types of Learning Tasks > 2. Supervised Learning: Data with Answers Attached :: cell 1
+- **theory lessons:** book1:units/06-C1-ml-fundamentals/lessons/01-learning-and-task-types.ipynb :: C1 Session 1 — Learning from Data and the Types of Learning Tasks > 2. Supervised Learning: Data with Answers Attached :: cell 1
 - **theory practices:** book1:C1-p01, book1:C1-p15, book1:C1-p21
 - **theory assessments:** book1:r1-001-p01-1
 
@@ -1546,13 +1546,13 @@ Assessments: book1:r1-001-p01-1, book1:r1-001-p01-3
 - **Rationale:** C12 develops margin and hinge-loss mechanics, connects primal and dual views, and fits both linear and kernel SVMs across the required modalities.
 - **Consequence:** Students can derive, implement, fit, and compare support-vector machines.
 
-- **implementation lessons:** book1:units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss > 4. Vectorized objective and one valid subgradient step :: cell 2
+- **implementation lessons:** book1:units/19-C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss > 4. Vectorized objective and one valid subgradient step :: cell 2
 - **implementation practices:** book1:C12-p08, book1:C12-p09, book1:C12-p27
 - **implementation assessments:** —
-- **model-training lessons:** book1:units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3: Kernel SVM and Dual Intuition > 5. Worked example: fit and reconstruct an RBF decision score :: cell 2
+- **model-training lessons:** book1:units/19-C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3: Kernel SVM and Dual Intuition > 5. Worked example: fit and reconstruct an RBF decision score :: cell 2
 - **model-training practices:** book1:C12-p09, book1:C12-p18, book1:C12-p21
 - **model-training assessments:** —
-- **theory lessons:** book1:units/C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss > 3. Soft margin, slack, hinge loss, and `C` :: cell 1, book1:units/C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3: Kernel SVM and Dual Intuition > 1. From the soft-margin primal to dual coefficients :: cell 1
+- **theory lessons:** book1:units/19-C12-classical-models/lessons/02-linear-svm-margin-and-hinge.ipynb :: C12-classical-models — Session 2: Linear SVM, Margins, and Hinge Loss > 3. Soft margin, slack, hinge loss, and `C` :: cell 1, book1:units/19-C12-classical-models/lessons/03-kernel-svm-and-dual-intuition.ipynb :: C12-classical-models — Session 3: Kernel SVM and Dual Intuition > 1. From the soft-margin primal to dual coefficients :: cell 1
 - **theory practices:** book1:C12-p02, book1:C12-p15, book1:C12-p27
 - **theory assessments:** —
 
@@ -1566,7 +1566,7 @@ Assessments: —
 - **Layer:** round-1-core
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C10-competition-craft
+- **Destination:** book1:C11-competition-craft
 - **Dependencies:** book1:noncoding-and-coding-task-switching
 - **Shipped concepts:** book1:hidden-test-protocol, book1:metric-driven-iteration, book1:prediction-function-contract, book1:writeup-quality
 - **Modalities missing:** —
@@ -1574,17 +1574,17 @@ Assessments: —
 - **Rationale:** The mini-competition makes construction, evaluation, diagnosis, and written justification one graded artifact.
 - **Consequence:** Students practice the official theory-plus-programming expectation.
 
-- **competition-workflow lessons:** book1:units/C10-competition-craft/lessons/03-notebook-and-writeup.ipynb :: C10-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition :: cell 1
-- **competition-workflow practices:** book1:C10-p13, book1:C10-p17, book1:C10-p18
+- **competition-workflow lessons:** book1:units/18-C11-competition-craft/lessons/03-notebook-and-writeup.ipynb :: C11-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition :: cell 1
+- **competition-workflow practices:** book1:C11-p13, book1:C11-p17, book1:C11-p18
 - **competition-workflow assessments:** book1:r1-001-p09
-- **implementation lessons:** book1:units/C10-competition-craft/lessons/03-notebook-and-writeup.ipynb :: C10-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition :: cell 1
-- **implementation practices:** book1:C10-p13, book1:C10-p17, book1:C10-p18
+- **implementation lessons:** book1:units/18-C11-competition-craft/lessons/03-notebook-and-writeup.ipynb :: C11-competition-craft — Session 3: The Notebook and the Writeup > 5. The Full Worked Mini-Competition :: cell 1
+- **implementation practices:** book1:C11-p13, book1:C11-p17, book1:C11-p18
 - **implementation assessments:** book1:r1-001-p09
-- **theory lessons:** book1:units/C10-competition-craft/lessons/02-metric-driven-iteration.ipynb :: C10-competition-craft — Session 2: Metric-Driven Iteration > 5. The Iteration Loop :: cell 1
-- **theory practices:** book1:C10-p12, book1:C10-p15, book1:C10-p18
+- **theory lessons:** book1:units/18-C11-competition-craft/lessons/02-metric-driven-iteration.ipynb :: C11-competition-craft — Session 2: Metric-Driven Iteration > 5. The Iteration Loop :: cell 1
+- **theory practices:** book1:C11-p12, book1:C11-p15, book1:C11-p18
 - **theory assessments:** book1:r1-001-p09
 
-Practices: book1:C10-p12, book1:C10-p13, book1:C10-p15, book1:C10-p17, book1:C10-p18
+Practices: book1:C11-p12, book1:C11-p13, book1:C11-p15, book1:C11-p17, book1:C11-p18
 
 Assessments: book1:r1-001-p09
 
@@ -1602,10 +1602,10 @@ Assessments: book1:r1-001-p09
 - **Rationale:** Unlabeled-task framing, toy clustering, and PCA provide theory and executable examples.
 - **Consequence:** Unsupervised-learning basics are present independently of the k-means gap.
 
-- **implementation lessons:** book1:units/C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 1. Centering: the Mean Vector and $X_c$ :: cell 1
+- **implementation lessons:** book1:units/16-C9-dimensionality-reduction/lessons/01-pca.ipynb :: C9-dimensionality-reduction — Session 1: PCA — Directions That Carry the Variance > 1. Centering: the Mean Vector and $X_c$ :: cell 1
 - **implementation practices:** book1:C1-p17, book1:C1-p22, book1:C9-p05
 - **implementation assessments:** book1:r1-001-p01-5
-- **theory lessons:** book1:units/C1-ml-fundamentals/lessons/01-learning-and-task-types.ipynb :: C1 Session 1 — Learning from Data and the Types of Learning Tasks > 3. Unsupervised Learning and Clustering :: cell 1
+- **theory lessons:** book1:units/06-C1-ml-fundamentals/lessons/01-learning-and-task-types.ipynb :: C1 Session 1 — Learning from Data and the Types of Learning Tasks > 3. Unsupervised Learning and Clustering :: cell 1
 - **theory practices:** book1:C1-p01, book1:C1-p17, book1:C1-p21
 - **theory assessments:** book1:r1-001-p01-5
 
@@ -1627,10 +1627,10 @@ Assessments: book1:r1-001-p01-5
 - **Rationale:** F7 teaches the universal finite-Gram criterion, feature-map and closure proofs, and constructive negative-energy counterexamples with six direct practices.
 - **Consequence:** Students can prove or refute kernel validity with the required quantifiers and PSD certificates.
 
-- **proof lessons:** book1:units/F7-kernels-convex-optimization/lessons/02-kernel-proofs-and-counterexamples.ipynb :: F7-kernels-convex-optimization — Session 2: Kernel Proofs and Counterexamples > 2. Direct feature-map proofs > Checkpoint 2 :: cell 1, book1:units/F7-kernels-convex-optimization/lessons/02-kernel-proofs-and-counterexamples.ipynb :: F7-kernels-convex-optimization — Session 2: Kernel Proofs and Counterexamples > 6. Constructive negative-eigenvalue counterexamples > Checkpoint 6 :: cell 1
+- **proof lessons:** book1:units/14-F7-kernels-convex-optimization/lessons/02-kernel-proofs-and-counterexamples.ipynb :: F7-kernels-convex-optimization — Session 2: Kernel Proofs and Counterexamples > 2. Direct feature-map proofs > Checkpoint 2 :: cell 1, book1:units/14-F7-kernels-convex-optimization/lessons/02-kernel-proofs-and-counterexamples.ipynb :: F7-kernels-convex-optimization — Session 2: Kernel Proofs and Counterexamples > 6. Constructive negative-eigenvalue counterexamples > Checkpoint 6 :: cell 1
 - **proof practices:** book1:F7-p11, book1:F7-p13, book1:F7-p17
 - **proof assessments:** —
-- **theory lessons:** book1:units/F7-kernels-convex-optimization/lessons/01-psd-matrices-and-kernels.ipynb :: F7-kernels-convex-optimization — Session 1: PSD Matrices and Kernels > 5. The finite-Gram definition of a valid kernel > Checkpoint 5 :: cell 1
+- **theory lessons:** book1:units/14-F7-kernels-convex-optimization/lessons/01-psd-matrices-and-kernels.ipynb :: F7-kernels-convex-optimization — Session 1: PSD Matrices and Kernels > 5. The finite-Gram definition of a valid kernel > Checkpoint 5 :: cell 1
 - **theory practices:** book1:F7-p02, book1:F7-p06, book1:F7-p15
 - **theory assessments:** —
 
@@ -2070,22 +2070,22 @@ Assessments: —
 - **Layer:** round-2-extension
 - **Requirement:** required
 - **Coverage:** covered
-- **Destination:** book1:C8-embeddings
+- **Destination:** book1:C5-embeddings
 - **Dependencies:** book1:python-programming
 - **Shipped concepts:** book1:tokenization
 - **Modalities missing:** —
 - **Practice shortfall:** 0
 - **Rationale:** The shipped R1 embedding unit honestly teaches and practices tokenization.
-- **Consequence:** Round 2 must reuse C8 rather than duplicate tokenization.
+- **Consequence:** Round 2 must reuse C5 rather than duplicate tokenization.
 
-- **implementation lessons:** book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb :: C8-embeddings — Session 1: Tokens and Embeddings > 1. From Text to Tokens :: cell 1
-- **implementation practices:** book1:C8-p01, book1:C8-p06, book1:C8-p15
+- **implementation lessons:** book1:units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb :: C5-embeddings — Session 1: Tokens and Embeddings > 1. From Text to Tokens :: cell 1
+- **implementation practices:** book1:C5-p01, book1:C5-p06, book1:C5-p15
 - **implementation assessments:** book1:r1-001-p05-1, book1:r1-001-p05-2
-- **theory lessons:** book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb :: C8-embeddings — Session 1: Tokens and Embeddings > 1. From Text to Tokens :: cell 1
-- **theory practices:** book1:C8-p01, book1:C8-p06, book1:C8-p15
+- **theory lessons:** book1:units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb :: C5-embeddings — Session 1: Tokens and Embeddings > 1. From Text to Tokens :: cell 1
+- **theory practices:** book1:C5-p01, book1:C5-p06, book1:C5-p15
 - **theory assessments:** book1:r1-001-p05-1, book1:r1-001-p05-2
 
-Practices: book1:C8-p01, book1:C8-p06, book1:C8-p15
+Practices: book1:C5-p01, book1:C5-p06, book1:C5-p15
 
 Assessments: book1:r1-001-p05-1, book1:r1-001-p05-2
 
@@ -2184,7 +2184,7 @@ Assessments: —
 - **Shipped concepts:** book2:open-ended-experiment-design
 - **Modalities missing:** —
 - **Practice shortfall:** 0
-- **Rationale:** C10's bounded kNN campaign is useful prerequisite practice but not open-ended architecture or experiment design.
+- **Rationale:** C11's bounded kNN campaign is useful prerequisite practice but not open-ended architecture or experiment design.
 - **Consequence:** Students cannot plan a broad R2 modeling investigation.
 
 - **competition-workflow lessons:** book2:units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2: Experiment Design Under a Budget > 6. Held-out discipline and the experiment log :: cell 1

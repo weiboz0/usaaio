@@ -100,7 +100,7 @@ practice: []
 
 
 def test_unit_manifest_rejects_non_string_solution_policy(tmp_path):
-    unit_dir = tmp_path / "units" / "F1-scientific-python"
+    unit_dir = tmp_path / "units" / "01-F1-scientific-python"
     unit_dir.mkdir(parents=True)
     (unit_dir / "manifest.yaml").write_text(
         """
@@ -217,7 +217,7 @@ def test_environment_cannot_override_deferred_policy_date(
 
 
 def test_unit_manifest_roundtrip(tmp_path):
-    unit_dir = tmp_path / "units" / "F1-scientific-python"
+    unit_dir = tmp_path / "units" / "01-F1-scientific-python"
     unit_dir.mkdir(parents=True)
     (unit_dir / "manifest.yaml").write_text(
         """
@@ -240,16 +240,16 @@ practice:
 
 
 def test_unit_manifest_parses_optional_positive_practice_minutes(tmp_path):
-    unit_dir = tmp_path / "units" / "C11-neural-training"
+    unit_dir = tmp_path / "units" / "15-C8-neural-training"
     unit_dir.mkdir(parents=True)
     (unit_dir / "manifest.yaml").write_text(
         """
-unit: C11-neural-training
+unit: C8-neural-training
 concepts_taught: [softmax]
 concepts_used: []
 prereq_units: []
 practice:
-  - id: C11-p01
+  - id: C8-p01
     concepts: [softmax]
     path: practice/p01.ipynb
     solution_path: practice/p01_solution.ipynb
@@ -266,17 +266,17 @@ practice:
 def test_unit_manifest_rejects_non_positive_integer_practice_minutes(
     tmp_path, yaml_value
 ):
-    unit_dir = tmp_path / "units" / "C11-neural-training"
+    unit_dir = tmp_path / "units" / "15-C8-neural-training"
     unit_dir.mkdir(parents=True)
     manifest_path = unit_dir / "manifest.yaml"
     manifest_path.write_text(
         f"""
-unit: C11-neural-training
+unit: C8-neural-training
 concepts_taught: [softmax]
 concepts_used: []
 prereq_units: []
 practice:
-  - id: C11-p01
+  - id: C8-p01
     concepts: [softmax]
     path: practice/p01.ipynb
     solution_path: practice/p01_solution.ipynb
@@ -290,7 +290,7 @@ practice:
 
 
 def test_unit_manifest_parses_lesson_sessions(tmp_path):
-    unit_dir = tmp_path / "units" / "F6-svd-spectral"
+    unit_dir = tmp_path / "units" / "12-F6-svd-spectral"
     unit_dir.mkdir(parents=True)
     (unit_dir / "manifest.yaml").write_text(
         """
@@ -312,7 +312,7 @@ practice: []
 
 @pytest.mark.parametrize("yaml_value", ["85", "[85]", "null"])
 def test_unit_manifest_rejects_non_mapping_estimated_minutes(tmp_path, yaml_value):
-    unit_dir = tmp_path / "units" / "F1-scientific-python"
+    unit_dir = tmp_path / "units" / "01-F1-scientific-python"
     unit_dir.mkdir(parents=True)
     manifest_path = unit_dir / "manifest.yaml"
     manifest_path.write_text(
@@ -345,7 +345,7 @@ practice: []
 def test_unit_manifest_rejects_malformed_lesson_sessions(
     tmp_path, yaml_value, detail
 ):
-    unit_dir = tmp_path / "units" / "F6-svd-spectral"
+    unit_dir = tmp_path / "units" / "12-F6-svd-spectral"
     unit_dir.mkdir(parents=True)
     manifest_path = unit_dir / "manifest.yaml"
     manifest_path.write_text(
@@ -366,7 +366,7 @@ practice: []
 
 
 def _write_session_manifest(tmp_path, *, concept_sessions, practice):
-    unit_dir = tmp_path / "units" / "C12-classical-models"
+    unit_dir = tmp_path / "units" / "19-C12-classical-models"
     unit_dir.mkdir(parents=True)
     manifest = {
         "unit": "C12-classical-models",
@@ -495,10 +495,10 @@ BOOK2_CONCEPTS = [
     "transformer-block",
 ]
 BOOK2_UNIT_PREREQS = [
-    "C6-pytorch",
-    "C7-cnn-transfer",
-    "C8-embeddings",
-    "C11-neural-training",
+    "C7-pytorch",
+    "C10-cnn-transfer",
+    "C5-embeddings",
+    "C8-neural-training",
 ]
 BOOK2_CONCEPT_PREREQS = [
     "softmax",

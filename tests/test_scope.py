@@ -63,27 +63,27 @@ BOOK1_OWNED_R2_DEPENDENCIES = {
 
 PLAN017_CLOSURE = {
     "softmax": (
-        "C11-neural-training",
+        "C8-neural-training",
         ["softmax"],
-        {"theory": "C11-p01", "derivation": "C11-p11", "implementation": "C11-p05"},
+        {"theory": "C8-p01", "derivation": "C8-p11", "implementation": "C8-p05"},
     ),
     "cross-entropy-loss": (
-        "C11-neural-training",
+        "C8-neural-training",
         ["cross-entropy-loss"],
-        {"theory": "C11-p02", "derivation": "C11-p11", "implementation": "C11-p06"},
+        {"theory": "C8-p02", "derivation": "C8-p11", "implementation": "C8-p06"},
     ),
     "backpropagation-by-hand": (
-        "C11-neural-training",
+        "C8-neural-training",
         ["manual-backpropagation"],
-        {"theory": "C11-p03", "derivation": "C11-p12", "implementation": "C11-p07"},
+        {"theory": "C8-p03", "derivation": "C8-p12", "implementation": "C8-p07"},
     ),
     "pytorch-autograd-and-optimizer-training": (
-        "C11-neural-training",
+        "C8-neural-training",
         ["requires-grad", "layer-freezing", "autograd-training", "torch-optimizers"],
-        {"implementation": "C11-p08", "model-training": "C11-p16"},
+        {"implementation": "C8-p08", "model-training": "C8-p16"},
     ),
     "multilayer-perceptron-model": (
-        "C11-neural-training",
+        "C8-neural-training",
         [
             "mlp-architecture",
             "activation-functions",
@@ -91,10 +91,10 @@ PLAN017_CLOSURE = {
             "decision-boundaries-geometric",
             "trained-mlp",
         ],
-        {"model-training": "C11-p15"},
+        {"model-training": "C8-p15"},
     ),
     "fully-connected-network-from-scratch": (
-        "C11-neural-training",
+        "C8-neural-training",
         [
             "mlp-architecture",
             "activation-functions",
@@ -103,24 +103,24 @@ PLAN017_CLOSURE = {
             "manual-backpropagation",
             "trained-mlp",
         ],
-        {"model-training": "C11-p15"},
+        {"model-training": "C8-p15"},
     ),
     "batch-normalization": (
-        "C11-neural-training",
+        "C8-neural-training",
         ["layer-freezing", "requires-grad", "resnet-architecture", "batch-normalization"],
         {
-            "derivation": "C11-p13",
-            "implementation": "C11-p09",
-            "model-training": "C11-p24",
+            "derivation": "C8-p13",
+            "implementation": "C8-p09",
+            "model-training": "C8-p24",
         },
     ),
     "dropout": (
-        "C11-neural-training",
+        "C8-neural-training",
         ["dropout"],
-        {"theory": "C11-p04", "implementation": "C11-p10", "model-training": "C11-p24"},
+        {"theory": "C8-p04", "implementation": "C8-p10", "model-training": "C8-p24"},
     ),
     "pytorch-deep-learning-programming": (
-        "C6-pytorch",
+        "C7-pytorch",
         [
             "torch-tensors",
             "nn-module",
@@ -128,10 +128,10 @@ PLAN017_CLOSURE = {
             "autograd-training",
             "torch-optimizers",
         ],
-        {"model-training": "C11-p16"},
+        {"model-training": "C8-p16"},
     ),
     "convolutional-neural-network-basics": (
-        "C7-cnn-transfer",
+        "C10-cnn-transfer",
         [
             "convolution",
             "feature-maps",
@@ -139,7 +139,7 @@ PLAN017_CLOSURE = {
             "feature-hierarchy",
             "cnn-training",
         ],
-        {"model-training": "C7-p10"},
+        {"model-training": "C10-p10"},
     ),
 }
 
@@ -1126,7 +1126,7 @@ def _add_unestimated_c8_point(data: dict[str, Any], *, covered: bool) -> None:
                 "model-training": model_training,
             },
             "disposition": "keep" if covered else "existing-unit-extension",
-            "destination": "C8-embeddings",
+            "destination": "C5-embeddings",
             "deficits": {"modalities_missing": [] if covered else ["model-training"]},
             "rationale": "Word embeddings still need model-training evidence.",
             "consequence": "Round 2 NLP training remains incomplete.",
@@ -1157,10 +1157,10 @@ def _add_pending_c7_training_point(data: dict[str, Any]) -> None:
                 "model-training": {"lesson_anchors": [], "practices": []}
             },
             "disposition": "existing-unit-extension",
-            "destination": "C7-cnn-transfer",
+            "destination": "C10-cnn-transfer",
             "deficits": {"modalities_missing": ["model-training"]},
             "rationale": "CNN training evidence remains pending.",
-            "consequence": "The C7 extension must return to the roadmap.",
+            "consequence": "The C10 extension must return to the roadmap.",
         }
     )
 
@@ -1792,8 +1792,8 @@ def test_completed_plan017_neural_extensions_are_not_rendered_as_pending() -> No
     rendered = renderer.render_documents(BOOK1_ROOT)
 
     for document in rendered.values():
-        assert "C7 CNN training" not in document
-        assert "C6 and C8 are not yet estimated" not in document
+        assert "C10 CNN training" not in document
+        assert "C7 and C5 are not yet estimated" not in document
 
 
 def test_c7_extension_returns_only_when_cnn_training_owner_is_pending(
@@ -1801,14 +1801,14 @@ def test_c7_extension_returns_only_when_cnn_training_owner_is_pending(
 ) -> None:
     contract = _base_contract(tmp_path)
     without_pending_owner = _render_fixture_documents(tmp_path)
-    assert all("C7 CNN training" not in document for document in without_pending_owner.values())
+    assert all("C10 CNN training" not in document for document in without_pending_owner.values())
 
     _add_pending_c7_training_point(contract)
     _write_yaml(tmp_path / "curriculum" / "official-topics.yaml", contract["topics"])
     _write_yaml(tmp_path / "curriculum" / "coverage-map.yaml", contract["roadmap"])
     with_pending_owner = _render_fixture_documents(tmp_path)
 
-    assert all("C7 CNN training" in document for document in with_pending_owner.values())
+    assert all("C10 CNN training" in document for document in with_pending_owner.values())
 
 
 def test_attention_tranche_returns_only_when_its_planned_unit_is_restored(
@@ -1854,14 +1854,14 @@ def test_unestimated_c8_clause_remains_but_estimated_extension_section_is_suppre
     rendered = _render_fixture_documents(tmp_path)
 
     for document in rendered.values():
-        assert "C8" in document
+        assert "C5" in document
         assert "nlp-word-embeddings" in document
-        assert "C6 and C8 are not yet estimated" not in document
+        assert "C7 and C5 are not yet estimated" not in document
         assert "so this is not a complete roadmap total" not in document
         assert "Estimated major existing-unit extensions" not in document
         assert "Minimum estimated scoped delta" not in document
         assert (
-            "The unestimated C8 `nlp-word-embeddings` model-training correction remains pending."
+            "The unestimated C5 `nlp-word-embeddings` model-training correction remains pending."
             in document
         )
 
@@ -1878,7 +1878,7 @@ def test_unestimated_c8_clause_disappears_only_after_its_canonical_row_is_covere
 
     for document in rendered.values():
         assert (
-            "The unestimated C8 `nlp-word-embeddings` model-training correction remains pending."
+            "The unestimated C5 `nlp-word-embeddings` model-training correction remains pending."
             not in document
         )
         assert "Estimated major existing-unit extensions" not in document
@@ -1915,7 +1915,7 @@ def test_renderer_reports_layer_hour_ranges_total_and_resulting_delta(tmp_path: 
         )
         assert "Estimated major existing-unit extensions subtotal" not in document
         assert "Minimum estimated scoped delta" not in document
-        assert "C6 and C8 are not yet estimated" not in document
+        assert "C7 and C5 are not yet estimated" not in document
         assert "**8.5–10.5 manifested-baseline hours**" in document
         assert "**8.75–10.75 scheduled-baseline hours**" in document
 
@@ -1931,8 +1931,8 @@ def test_renderer_recomputes_the_design019_book2_planned_delta() -> None:
         )
         assert "Estimated major existing-unit extensions subtotal" not in document
         assert "Minimum estimated scoped delta" not in document
-        assert "C6 and C8 are not yet estimated" not in document
-        assert "C8" in document
+        assert "C7 and C5 are not yet estimated" not in document
+        assert "C5" in document
         assert "so this is not a complete roadmap total" not in document
         assert "**620.75–660.75 manifested-baseline hours**" in document
         assert "**627.75–667.75 scheduled-baseline hours**" in document
@@ -1974,7 +1974,7 @@ def test_both_documents_render_exact_design019_book2_plan_order() -> None:
         assert "graph-neural-network" in document
         assert "C2 extension" not in document
         assert "C9 extension" not in document
-        assert "C7 CNN training" not in document
+        assert "C10 CNN training" not in document
         assert "Round 1 neural-training completion" not in document
         assert "Round 1 classical-model breadth" not in document
         assert "Forward propagation is already a shipped prerequisite, not a new gap." not in document
@@ -2189,7 +2189,7 @@ def _add_c8_embeddings_fixture(root: Path, contract: dict[str, Any]) -> None:
         "    title: Unrelated\n"
         "    prereqs: []\n"
         "    teaches: [c2]\n"
-        "  - id: C8-embeddings\n"
+        "  - id: C5-embeddings\n"
         "    track: core\n"
         "    title: Embeddings\n"
         "    prereqs: []\n"
@@ -2197,9 +2197,9 @@ def _add_c8_embeddings_fixture(root: Path, contract: dict[str, Any]) -> None:
     )
     syllabus_path.write_text(syllabus)
     _write_yaml(
-        root / "units" / "C8-embeddings" / "manifest.yaml",
+        root / "units" / "10-C5-embeddings" / "manifest.yaml",
         {
-            "unit": "C8-embeddings",
+            "unit": "C5-embeddings",
             "concepts_taught": ["c8-embedding"],
             "concepts_used": [],
             "prereq_units": [],
@@ -2210,7 +2210,7 @@ def _add_c8_embeddings_fixture(root: Path, contract: dict[str, Any]) -> None:
             },
             "practice": [
                 {
-                    "id": f"C8-embeddings-p{number}",
+                    "id": f"C5-embeddings-p{number}",
                     "concepts": ["c8-embedding"],
                     "path": f"practice/p{number}.ipynb",
                     "solution_path": f"practice/p{number}_solution.ipynb",
@@ -2222,20 +2222,20 @@ def _add_c8_embeddings_fixture(root: Path, contract: dict[str, Any]) -> None:
     notebooks = contract["inventory"]["notebooks"]
     notebooks.append(
         {
-            "path": "units/C8-embeddings/lessons/01-lesson.ipynb",
+            "path": "units/10-C5-embeddings/lessons/01-lesson.ipynb",
             "anchors": [{"heading_path": ["Lesson"], "cell_ordinal": 1}],
-            "declared_unit_ids": ["C8-embeddings"],
+            "declared_unit_ids": ["C5-embeddings"],
             "declared_concept_ids": ["c8-embedding"],
             "declared_problem_ids": [],
         }
     )
     notebooks.extend(
         {
-            "path": f"units/C8-embeddings/practice/p{number}.ipynb",
+            "path": f"units/10-C5-embeddings/practice/p{number}.ipynb",
             "anchors": [{"heading_path": ["Practice"], "cell_ordinal": 1}],
-            "declared_unit_ids": ["C8-embeddings"],
+            "declared_unit_ids": ["C5-embeddings"],
             "declared_concept_ids": ["c8-embedding"],
-            "declared_problem_ids": [f"C8-embeddings-p{number}"],
+            "declared_problem_ids": [f"C5-embeddings-p{number}"],
         }
         for number in range(1, 4)
     )
@@ -2305,14 +2305,14 @@ def _write_book2_roadmap_fixture(root: Path) -> dict[str, Any]:
                         "theory": {
                             "lesson_anchors": [
                                 {
-                                    "path": "units/C8-embeddings/lessons/01-lesson.ipynb",
+                                    "path": "units/10-C5-embeddings/lessons/01-lesson.ipynb",
                                     "heading": "Lesson",
                                     "cell_ordinal": 1,
                                     "role": "primary",
                                 }
                             ],
                             "practices": [
-                                {"id": f"C8-embeddings-p{number}", "role": "primary"}
+                                {"id": f"C5-embeddings-p{number}", "role": "primary"}
                                 for number in range(1, 4)
                             ],
                             "assessments": [],
@@ -2370,7 +2370,7 @@ def test_book2_roadmap_fixture_is_an_exact_six_row_partition_of_all_30_targets(
                 row
                 for row in contract["roadmap"]["knowledge_points"]
                 if row["id"] == "nlp-word-embeddings"
-            ).update(destination="C8-embeddings", disposition="extend-existing-unit"),
+            ).update(destination="C5-embeddings", disposition="extend-existing-unit"),
             "nlp-word-embeddings must have destination B2-020-language-transformers",
         ),
     ],
@@ -2426,7 +2426,7 @@ def _bridge_rows(roadmap: dict[str, Any]) -> list[dict[str, Any]]:
     return [rows["nlp-tokenization"], rows["nlp-word-embeddings"]]
 
 
-_C8_LESSON = "book1:units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb"
+_C8_LESSON = "book1:units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb"
 _B2_020_EMBEDDINGS_LESSON = (
     "units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb"
 )
@@ -2437,7 +2437,7 @@ _C8_IMPORTED_CONCEPTS = {
     "embedding-matrices",
 }
 _C8_IMPORTED_PRACTICES = {
-    f"C8-p{number:02d}" for number in (1, 2, 5, 6, 12, 13, 15, 17)
+    f"C5-p{number:02d}" for number in (1, 2, 5, 6, 12, 13, 15, 17)
 }
 _C8_IMPORTED_ASSESSMENTS = {f"r1-001-p05-{number}" for number in (1, 2, 3, 4)}
 _C8_BRIDGE_CANONICAL: dict[str, dict[str, Any]] = {
@@ -2448,13 +2448,13 @@ _C8_BRIDGE_CANONICAL: dict[str, dict[str, Any]] = {
                 "lesson_anchors": [
                     {
                         "path": _C8_LESSON,
-                        "heading": "C8-embeddings — Session 1: Tokens and Embeddings > 1. From Text to Tokens",
+                        "heading": "C5-embeddings — Session 1: Tokens and Embeddings > 1. From Text to Tokens",
                         "cell_ordinal": 1,
                         "role": "primary",
                     }
                 ],
                 "practices": [
-                    {"id": f"book1:C8-p{number:02d}", "role": "primary"}
+                    {"id": f"book1:C5-p{number:02d}", "role": "primary"}
                     for number in (1, 6, 15)
                 ],
                 "assessments": [
@@ -2590,7 +2590,7 @@ def _replace_first_qualified_bridge_value(
             if evidence.get(field):
                 evidence[field][0][key] = transform(evidence[field][0][key])
                 return
-    raise AssertionError(f"no {kind} evidence in C8 bridge fixture")
+    raise AssertionError(f"no {kind} evidence in C5 bridge fixture")
 
 
 def _reown_tokenization_in_book2(book2: Path) -> None:
@@ -2665,7 +2665,7 @@ def test_active_book2_roadmap_dependency_requires_persisted_import_destination(
         row for row in roadmap["knowledge_points"]
         if row["id"] == "attention-mechanism-foundations"
     )
-    # C4 stays outside the Book 2 imports allowlist (C10 joined it in Plan 029).
+    # C4 stays outside the Book 2 imports allowlist (C11 joined it in Plan 029).
     point["depends_on"][0] = "book1:pandas-programming"
     _write_yaml(book2 / "curriculum/coverage-map.yaml", roadmap)
 

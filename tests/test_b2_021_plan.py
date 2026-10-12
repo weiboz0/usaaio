@@ -12,10 +12,10 @@ BOOK2_ROOT = ROOT / "book2"
 UNIT_ID = "B2-021-cross-modal-transformers-vision"
 PREREQUISITES = [
     "book1:F1-scientific-python",
-    "book1:F3-matrices",
-    "book1:C6-pytorch",
-    "book1:C7-cnn-transfer",
-    "book1:C11-neural-training",
+    "book1:F4-matrices",
+    "book1:C7-pytorch",
+    "book1:C10-cnn-transfer",
+    "book1:C8-neural-training",
     "B2-019-attention-transformers",
     "B2-020-language-transformers",
 ]

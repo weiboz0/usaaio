@@ -8,42 +8,42 @@ publication_version: 1
 # Set A (fundamentals) only; Sets B and C stay answer-free (docs/unit-standards.md).
 student_answers: {set: A}
 
-# Chapter order (curriculum order) and titles. A title over 32 characters needs a `head:`,
-# the running head printed at the top of its pages.
+# Chapter order (teaching order, matching the unit folders' NN- prefixes; Plan 031) and titles.
+# A title over 32 characters needs a `head:`, the running head printed at the top of its pages.
 chapters:
 - {unit: F1-scientific-python, title: Scientific Python and NumPy}
 - {unit: F2-vectors, title: 'Vectors, Norms, and Projections'}
-- {unit: F3-matrices, title: 'Matrices as Maps, Products, and Rank', head: Matrices as Maps and Rank}
-- {unit: F4-multivar-calculus, title: 'Partials, Gradients, and the Chain Rule', head: Partials and the Chain Rule}
+- {unit: F3-multivar-calculus, title: 'Partials, Gradients, and the Chain Rule', head: Partials and the Chain Rule}
+- {unit: F4-matrices, title: 'Matrices as Maps, Products, and Rank', head: Matrices as Maps and Rank}
 - {unit: F5-probability, title: Probability and Concentration}
-- {unit: F6-svd-spectral, title: 'Eigenvalues, SVD, and Low-Rank Approximation', head: 'Eigenvalues, SVD, and Low Rank'}
-- {unit: F7-kernels-convex-optimization, title: 'Kernels, Convexity, and Certificates', head: Kernels and Convexity}
 - {unit: C1-ml-fundamentals, title: Machine Learning Fundamentals}
 - {unit: C2-linear-models, title: 'Linear Models, Closed-Form OLS, and Regularization', head: Linear Models and Regularization}
 - {unit: C3-gradient-descent, title: Optimization by Gradient Descent}
 - {unit: C4-classical-ml-practice, title: Classical ML Practice with sklearn and pandas, head: Classical ML Practice}
-- {unit: C5-neural-networks, title: Neural Networks by Hand}
-- {unit: C6-pytorch, title: 'PyTorch: Tensors, Modules, and Manual-Weight Networks', head: PyTorch Tensors and Modules}
-- {unit: C11-neural-training, title: 'Losses, Gradients, and Training'}
-- {unit: C7-cnn-transfer, title: 'CNNs, Transfer Learning, and CNN Training', head: CNNs and Transfer Learning}
-- {unit: C8-embeddings, title: 'Word Embeddings, Similarity, and Retrieval', head: Embeddings and Retrieval}
+- {unit: C5-embeddings, title: 'Word Embeddings, Similarity, and Retrieval', head: Embeddings and Retrieval}
+- {unit: C6-neural-networks, title: Neural Networks by Hand}
+- {unit: F6-svd-spectral, title: 'Eigenvalues, SVD, and Low-Rank Approximation', head: 'Eigenvalues, SVD, and Low Rank'}
+- {unit: C7-pytorch, title: 'PyTorch: Tensors, Modules, and Manual-Weight Networks', head: PyTorch Tensors and Modules}
+- {unit: F7-kernels-convex-optimization, title: 'Kernels, Convexity, and Certificates', head: Kernels and Convexity}
+- {unit: C8-neural-training, title: 'Losses, Gradients, and Training'}
 - {unit: C9-dimensionality-reduction, title: Dimensionality Reduction}
-- {unit: C10-competition-craft, title: Competition Craft}
+- {unit: C10-cnn-transfer, title: 'CNNs, Transfer Learning, and CNN Training', head: CNNs and Transfer Learning}
+- {unit: C11-competition-craft, title: Competition Craft}
 - {unit: C12-classical-models, title: Classical Supervised and Unsupervised Models, head: Classical Models}
 
 # The mock tests printed in the Teacher's Edition's final part.
 mocktests: [r1-001]
 
-# Volumes (Plan 030 D8). The C3 pilot projects the full Student Book at about 1,330 pages and
-# the Teacher's Edition at about 1,860, over the 1,200-page budget per PDF, so both are split
-# into three contiguous volumes along the curriculum parts. The print edition (about 975 pages)
-# and the Answer Key stay single PDFs.
+# Volumes (Plan 030 D8, recomputed in teaching order by Plan 031). The full Student Book and
+# the Teacher's Edition run over the 1,200-page budget per PDF, so both are split into three
+# contiguous volumes of the teaching order (units 01-08, 09-14, 15-19). The print edition and
+# the Answer Key stay single PDFs.
 volumes:
   editions: [student, teacher]
   parts:
-  - {title: Foundations, first: F1-scientific-python, last: F7-kernels-convex-optimization}
-  - {title: Core Machine Learning and Neural Networks, first: C1-ml-fundamentals, last: C11-neural-training}
-  - {title: Applied Models and Competition Practice, first: C7-cnn-transfer, last: C12-classical-models}
+  - {title: Foundations and First Models, first: F1-scientific-python, last: C3-gradient-descent}
+  - {title: 'Practice, Embeddings, and Neural Networks', first: C4-classical-ml-practice, last: F7-kernels-convex-optimization}
+  - {title: 'Training, Deep Models, and Competition Practice', first: C8-neural-training, last: C12-classical-models}
 
 audit:
   # Page counts are recorded; an edition PDF over this many pages is a warning only.

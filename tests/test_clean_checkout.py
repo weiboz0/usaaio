@@ -34,6 +34,27 @@ def _inventory() -> dict[str, Any]:
     return yaml.safe_load(INVENTORY.read_text(encoding="utf-8"))
 
 
+def _live_book1_path(historical: str) -> Path:
+    """A pre-Plan 019 `units/<old id>/...` path resolved in today's tree.
+
+    The inventory keeps historical paths; Plan 031 renamed the unit folders, so the live
+    path maps the old id through the renumbering table and resolves the folder by id.
+    """
+    from tools.books import unit_dir
+
+    parts = historical.split("/")
+    if parts[0] != "units":
+        return ROOT / "book1" / historical
+    spec = importlib.util.spec_from_file_location(
+        "renumber_live_paths", ROOT / "scripts" / "renumber-book1-units.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    folder = unit_dir(ROOT / "book1", module.OLD_TO_NEW_ID[parts[1]])
+    return folder.joinpath(*parts[2:])
+
+
 def _notebook_pyproject_cells(path: Path) -> list[int]:
     raw = json.loads(path.read_text(encoding="utf-8"))
     return [
@@ -78,7 +99,7 @@ def test_path_inventory_pins_exactly_64_code_cell_pyproject_consumers() -> None:
     else:
         assert discovered == [], discovered
         for row in rows:
-            migrated_path = ROOT / "book1" / row["path"]
+            migrated_path = _live_book1_path(row["path"])
             assert migrated_path.is_file(), row["path"]
             assert _notebook_pyproject_cells(migrated_path) == []
 
@@ -138,7 +159,7 @@ def test_path_inventory_names_split_token_and_special_relative_consumers() -> No
         path = ROOT / relative
         legacy = path.exists()
         if not path.exists():
-            path = ROOT / "book1" / relative
+            path = _live_book1_path(relative)
         assert path.is_file(), relative
         notebook = json.loads(path.read_text(encoding="utf-8"))
         for index, markers in cells.items():
@@ -1382,8 +1403,8 @@ def test_book_local_generated_paths_are_ignored_without_ignoring_sources(
         "book1/mocktests/r1-001/build/test.pdf",
         "book1/reference/r1-2026/paper.pdf",
         "book2/reference/r2-2026/day1.pdf",
-        "book1/units/C10-competition-craft/data/heldout.csv",
-        "book1/units/C10-competition-craft/practice/p15_contract.csv",
+        "book1/units/18-C11-competition-craft/data/heldout.csv",
+        "book1/units/18-C11-competition-craft/practice/p15_contract.csv",
         "book1/mocktests/r1-001/data/p09_heldout.csv",
     )
     sources = (
@@ -1391,7 +1412,7 @@ def test_book_local_generated_paths_are_ignored_without_ignoring_sources(
         "book2/syllabus.md",
         "book1/reference/analysis.md",
         "book2/reference/analysis.md",
-        "book1/units/C10-competition-craft/data/make_dataset.py",
+        "book1/units/18-C11-competition-craft/data/make_dataset.py",
         "book1/mocktests/r1-001/data/gen_p09.py",
         "book1/mocktests/r1-001/problems/p09.ipynb",
     )

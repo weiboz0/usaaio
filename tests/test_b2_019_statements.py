@@ -17,6 +17,7 @@ import pytest
 import yaml
 
 from tools import audit_curriculum
+from tools.books import unit_relpath
 from tools.checks.coverage import check_coverage
 from tools.checks.hygiene import check_hygiene
 from tools.checks.layer_boundary import check_layer_boundary
@@ -55,18 +56,18 @@ OWNED_CONCEPTS = [
 IMPORTED_UNITS = [
     "F1-scientific-python",
     "F2-vectors",
-    "F3-matrices",
+    "F4-matrices",
     "F5-probability",
-    "C6-pytorch",
-    "C7-cnn-transfer",
-    "C8-embeddings",
-    "C11-neural-training",
+    "C7-pytorch",
+    "C10-cnn-transfer",
+    "C5-embeddings",
+    "C8-neural-training",
 ]
 LOCAL_PREREQ_UNITS = [
-    "book1:C6-pytorch",
-    "book1:C7-cnn-transfer",
-    "book1:C8-embeddings",
-    "book1:C11-neural-training",
+    "book1:C7-pytorch",
+    "book1:C10-cnn-transfer",
+    "book1:C5-embeddings",
+    "book1:C8-neural-training",
 ]
 IMPORTED_CONCEPTS = [
     "numpy-arrays",
@@ -422,9 +423,9 @@ def test_task6_solutions_preserve_source_isolation_and_answer_register() -> None
         assert "assert " in solution["cells"][-1]["source"]
         expected_prerequisites = [
             "book1:F1-scientific-python",
-            "book1:F3-matrices",
-            "book1:C6-pytorch",
-            "book1:C11-neural-training",
+            "book1:F4-matrices",
+            "book1:C7-pytorch",
+            "book1:C8-neural-training",
         ]
         if number == 13:
             expected_prerequisites.insert(2, "book1:F5-probability")
@@ -606,7 +607,7 @@ def test_bridge_diagnoses_every_import_and_links_every_remediation_unit() -> Non
         assert concept in source
     for unit in IMPORTED_UNITS:
         assert f"book1:{unit}" in source
-        assert f"book1/units/{unit}/" in source
+        assert f"book1/{unit_relpath(BOOK1_ROOT, unit)}/" in source
     for phrase in (
         "NumPy reductions and vectorization",
         "dot products and matrix multiplication",
@@ -935,7 +936,7 @@ def test_embedding_apis_are_ast_forbidden_and_metadata_stays_independent(
     path = UNIT / f"practice/p{number:02}.ipynb"
     notebook = json.loads(path.read_text(encoding="utf-8"))
     assert _embedding_api_violations(_code_source(path)) == []
-    assert "book1:C8-embeddings" not in notebook["metadata"]["usaaio"][
+    assert "book1:C5-embeddings" not in notebook["metadata"]["usaaio"][
         "qualified_prerequisites"
     ]
 
@@ -1188,7 +1189,7 @@ def test_generator_is_deterministic_cpu_only_and_uses_no_network(tmp_path: Path)
 def test_unit_standards_names_b2_019_in_double_length_roster() -> None:
     standards = (ROOT / "docs/unit-standards.md").read_text(encoding="utf-8")
     assert "B2-019-attention-transformers" in standards
-    assert "F5, F6, C7, C11, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024" in standards
+    assert "F5, F6, C8, C10, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024" in standards
     assert "B2-020-language-transformers" in standards
     assert "B2-021-cross-modal-transformers-vision" in standards
     assert "B2-022-probabilistic-latent-models" in standards

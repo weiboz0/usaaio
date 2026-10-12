@@ -43,12 +43,12 @@ class MutationVerificationError(RuntimeError):
 MUTATIONS = [
     MutationSpec(
         id="c11-p16-delay-zero-grad",
-        notebook="units/C11-neural-training/practice/p16_solution.ipynb",
+        notebook="units/15-C8-neural-training/practice/p16_solution.ipynb",
         mutation_kind="delay-zero-grad-until-after-backward",
-        target_marker="PLAN017_MUTATION_TARGET: C11-p16-zero-grad",
+        target_marker="PLAN017_MUTATION_TARGET: C8-p16-zero-grad",
         search=(
             "        optimizer.zero_grad(set_to_none=True)  "
-            "# PLAN017_MUTATION_TARGET: C11-p16-zero-grad\n"
+            "# PLAN017_MUTATION_TARGET: C8-p16-zero-grad\n"
             "        logits = model(X)\n"
             "        loss = criterion(logits, y)\n"
             "        losses[epoch] = loss.detach()\n"
@@ -60,59 +60,59 @@ MUTATIONS = [
             "        losses[epoch] = loss.detach()\n"
             "        loss.backward()\n"
             "        optimizer.zero_grad(set_to_none=True)  "
-            "# PLAN017_MUTATION_TARGET: C11-p16-zero-grad"
+            "# PLAN017_MUTATION_TARGET: C8-p16-zero-grad"
         ),
-        expected_failure_marker="PLAN017_ANSWER_CHECK: C11-p16-training",
+        expected_failure_marker="PLAN017_ANSWER_CHECK: C8-p16-training",
     ),
     MutationSpec(
         id="c11-p23-noop-optimizer-step",
-        notebook="units/C11-neural-training/practice/p23_solution.ipynb",
+        notebook="units/15-C8-neural-training/practice/p23_solution.ipynb",
         mutation_kind="replace-optimizer-step-with-no-op",
-        target_marker="PLAN017_MUTATION_TARGET: C11-p23-optimizer-step",
-        search=("        optimizer.step()  # PLAN017_MUTATION_TARGET: C11-p23-optimizer-step"),
+        target_marker="PLAN017_MUTATION_TARGET: C8-p23-optimizer-step",
+        search=("        optimizer.step()  # PLAN017_MUTATION_TARGET: C8-p23-optimizer-step"),
         replacement=(
             "        pass  # optimizer step removed; "
-            "PLAN017_MUTATION_TARGET: C11-p23-optimizer-step"
+            "PLAN017_MUTATION_TARGET: C8-p23-optimizer-step"
         ),
-        expected_failure_marker="PLAN017_ANSWER_CHECK: C11-p23-training",
+        expected_failure_marker="PLAN017_ANSWER_CHECK: C8-p23-training",
     ),
     MutationSpec(
         id="c7-p10-forbidden-frozen-update",
-        notebook="units/C7-cnn-transfer/practice/p10_solution.ipynb",
+        notebook="units/17-C10-cnn-transfer/practice/p10_solution.ipynb",
         mutation_kind="enable-forbidden-frozen-parameter-update",
-        target_marker="PLAN017_MUTATION_TARGET: C7-p10-frozen-update",
+        target_marker="PLAN017_MUTATION_TARGET: C10-p10-frozen-update",
         search=(
             'frozen_prefixes = ("conv1", "bn1", "layer1", "layer2")  '
-            "# PLAN017_MUTATION_TARGET: C7-p10-frozen-update"
+            "# PLAN017_MUTATION_TARGET: C10-p10-frozen-update"
         ),
-        replacement=("frozen_prefixes = ()  # PLAN017_MUTATION_TARGET: C7-p10-frozen-update"),
-        expected_failure_marker="PLAN017_ANSWER_CHECK: C7-p10-freezing",
+        replacement=("frozen_prefixes = ()  # PLAN017_MUTATION_TARGET: C10-p10-frozen-update"),
+        expected_failure_marker="PLAN017_ANSWER_CHECK: C10-p10-freezing",
     ),
     MutationSpec(
         id="c7-p27-move-committed-predictions",
-        notebook="units/C7-cnn-transfer/practice/p27_solution.ipynb",
+        notebook="units/17-C10-cnn-transfer/practice/p27_solution.ipynb",
         mutation_kind="move-committed-predictions-below-verifier",
-        target_marker="PLAN017_MUTATION_TARGET: C7-p27-committed-predictions",
+        target_marker="PLAN017_MUTATION_TARGET: C10-p27-committed-predictions",
         search=(
             "committed_predictions = [prediction_eval, prediction_frozen, "
             "prediction_inference]  # PLAN017_MUTATION_TARGET: "
-            "C7-p27-committed-predictions"
+            "C10-p27-committed-predictions"
         ),
         replacement=(
             "committed_predictions = [prediction_eval, prediction_frozen, "
             "prediction_inference]  # PLAN017_MUTATION_TARGET: "
-            "C7-p27-committed-predictions"
+            "C10-p27-committed-predictions"
         ),
-        expected_failure_marker="PLAN017_VERIFIER: C7-p27-committed-predictions",
+        expected_failure_marker="PLAN017_VERIFIER: C10-p27-committed-predictions",
     ),
     MutationSpec(
         id="c7-p27-train-mode-buffer-audit",
-        notebook="units/C7-cnn-transfer/practice/p27_solution.ipynb",
+        notebook="units/17-C10-cnn-transfer/practice/p27_solution.ipynb",
         mutation_kind="replace-eval-mode-with-train-mode-for-buffer-audit",
-        target_marker="PLAN017_MUTATION_TARGET: C7-p27-eval-mode",
-        search=("train_model.eval()  # PLAN017_MUTATION_TARGET: C7-p27-eval-mode"),
-        replacement=("train_model.train()  # PLAN017_MUTATION_TARGET: C7-p27-eval-mode"),
-        expected_failure_marker="PLAN017_ANSWER_CHECK: C7-p27-mode-buffer-audit",
+        target_marker="PLAN017_MUTATION_TARGET: C10-p27-eval-mode",
+        search=("train_model.eval()  # PLAN017_MUTATION_TARGET: C10-p27-eval-mode"),
+        replacement=("train_model.train()  # PLAN017_MUTATION_TARGET: C10-p27-eval-mode"),
+        expected_failure_marker="PLAN017_ANSWER_CHECK: C10-p27-mode-buffer-audit",
     ),
 ]
 

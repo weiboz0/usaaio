@@ -32,10 +32,10 @@ concepts_used: &id001
 concept_prerequisites: *id001
 prereq_units:
 - book1:F1-scientific-python
-- book1:F3-matrices
-- book1:C6-pytorch
-- book1:C7-cnn-transfer
-- book1:C11-neural-training
+- book1:F4-matrices
+- book1:C7-pytorch
+- book1:C10-cnn-transfer
+- book1:C8-neural-training
 - B2-019-attention-transformers
 bridge_diagnostic:
   path: lessons/00-book1-bridge.ipynb

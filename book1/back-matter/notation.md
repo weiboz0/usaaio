@@ -4,7 +4,7 @@ This page lists the symbols the lessons use, grouped by topic, with the unit whe
 Use it as a reminder after you have met a symbol in its unit.
 When a lesson defines a symbol differently for a moment, the lesson's definition wins.
 
-## Numbers, sets, and shapes · F1–F3
+## Numbers, sets, and shapes · F1, F2, F4
 
 | Symbol | Meaning |
 |---|---|
@@ -29,7 +29,7 @@ When a lesson defines a symbol differently for a moment, the lesson's definition
 | $\cos\theta = \dfrac{u\cdot v}{\lVert u\rVert\,\lVert v\rVert}$ | cosine similarity of $u$ and $v$ |
 | $u \perp v$ | $u$ and $v$ are orthogonal: $u \cdot v = 0$ |
 
-## Matrices · F3, F6
+## Matrices · F4, F6
 
 | Symbol | Meaning |
 |---|---|
@@ -49,7 +49,7 @@ When a lesson defines a symbol differently for a moment, the lesson's definition
 | $A = U\Sigma V^{\mathsf T}$ | singular value decomposition, with singular values $\sigma_1 \ge \sigma_2 \ge \dots \ge 0$ on the diagonal of $\Sigma$ |
 | $\lVert A \rVert_F$ | Frobenius norm $\sqrt{\sum_{i,k} A_{ik}^2}$ |
 
-## Calculus and optimization · F4, F7, C3
+## Calculus and optimization · F3, F7, C3
 
 | Symbol | Meaning |
 |---|---|
@@ -58,7 +58,7 @@ When a lesson defines a symbol differently for a moment, the lesson's definition
 | $L$, $L(w, b)$ | a loss function of the parameters |
 | $\eta$ | learning rate (step size) |
 | $w \leftarrow w - \eta \nabla L(w)$ | one gradient-descent update |
-| $\theta$ | a model parameter (C11), or the angle between two vectors (F2) |
+| $\theta$ | a model parameter (C8), or the angle between two vectors (F2) |
 | $\arg\min_w L(w)$ | the value of $w$ that minimizes $L$ |
 | $L(x, \lambda, \nu)$ | the Lagrangian, with inequality multipliers $\lambda_i \ge 0$ and equality multipliers $\nu_j$ |
 | $\tanh$, $\tanh' = 1 - \tanh^2$ | hyperbolic tangent and its derivative |
@@ -91,14 +91,14 @@ When a lesson defines a symbol differently for a moment, the lesson's definition
 | $\lambda$ | regularization strength (in C2 and C12; elsewhere $\lambda$ is an eigenvalue or a multiplier) |
 | $\sigma(z)$ | the logistic sigmoid $1/(1 + e^{-z})$ (in F6, $\sigma_k$ is a singular value instead) |
 | $\mathrm{relu}(z)$, $\operatorname{ReLU}$ | $\max(0, z)$ |
-| $Z$, $P$, $Y$ | logits, softmax probabilities, one-hot labels (C11), each of shape $(N, C)$ |
-| $N$, $C$ | batch size; number of classes (C11) |
-| $\gamma$, $\beta$ | batch-normalization scale and shift (C11) |
-| $\widehat X$ | batch-normalized values before the scale and shift (C11) |
+| $Z$, $P$, $Y$ | logits, softmax probabilities, one-hot labels (C8), each of shape $(N, C)$ |
+| $N$, $C$ | batch size; number of classes (C8) |
+| $\gamma$, $\beta$ | batch-normalization scale and shift (C8) |
+| $\widehat X$ | batch-normalized values before the scale and shift (C8) |
 | $t_i \in \{-1, +1\}$ | class labels for a support vector machine (C12) |
 | $\xi_i$ | slack of example $i$ in a soft-margin SVM (C12) |
 | $C$ | the SVM penalty parameter, written `C` in code (C12) |
-| $n_{\text{out}} = \left\lfloor \frac{n_{\text{in}} + 2p - K}{s} \right\rfloor + 1$ | convolution output size with padding $p$, kernel size $K$, stride $s$ (C7) |
+| $n_{\text{out}} = \left\lfloor \frac{n_{\text{in}} + 2p - K}{s} \right\rfloor + 1$ | convolution output size with padding $p$, kernel size $K$, stride $s$ (C10) |
 
 ## Logarithms
 

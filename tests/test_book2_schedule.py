@@ -21,10 +21,10 @@ ROOT = Path(__file__).resolve().parents[1]
 BOOK1_ROOT = ROOT / "book1"
 BOOK2_ROOT = ROOT / "book2"
 FIXTURE_ROOT = ROOT / "tests" / "fixtures" / "two-books-valid"
-BOOK1_SCHEDULE_SHA256 = "6c1f4f6eeb518930e5772ef0f14d8bba18be1f191114c91edfae52ef8811eb4d"
-BOOK1_STRUCTURE_SHA256 = "75518825359dd1e0ed3501c0301fbdfb1fc685d6944465f924f1f88c0d25e642"
+BOOK1_SCHEDULE_SHA256 = "d40c894764dbdb49939ddf55412afc3b736b3a8f10f46847caf3be4c34caf8a7"
+BOOK1_STRUCTURE_SHA256 = "1537c797c9f1108f1779850218b65313c656254b28a54723095b0b5c842dfed6"
 BOOK2_SCHEDULE_SHA256 = "fef51a85cbd652de279d60429c0a5559ba2e6a6ac6e767f2dd5293c22bf65e56"
-BOOK2_MANIFEST_SHA256 = "c50be81714b421e85f1e3e3afdf0eddd65352ae7c0f94ba5f655cb2716e9d5c1"
+BOOK2_MANIFEST_SHA256 = "d9b6c0c53872ccbebe657f4ddf085844206305ccfb3daf31e555cc8189dab6d9"
 B2_019 = "B2-019-attention-transformers"
 B2_020 = "B2-020-language-transformers"
 B2_021 = "B2-021-cross-modal-transformers-vision"
@@ -33,10 +33,10 @@ B2_023 = "B2-023-generative-models-diffusion"
 B2_024 = "B2-024-gpu-scientific-ml-capstone"
 B2_021_PREREQUISITES = (
     "book1:F1-scientific-python",
-    "book1:F3-matrices",
-    "book1:C6-pytorch",
-    "book1:C7-cnn-transfer",
-    "book1:C11-neural-training",
+    "book1:F4-matrices",
+    "book1:C7-pytorch",
+    "book1:C10-cnn-transfer",
+    "book1:C8-neural-training",
     B2_019,
     B2_020,
 )
@@ -1071,9 +1071,9 @@ def test_unregistered_direct_schedule_api_requires_explicit_identity(
         ),
         pytest.param(
             lambda schedule: schedule["weeks"][0]["allocations"][1].update(
-                unit="book1:C6-pytorch"
+                unit="book1:C7-pytorch"
             ),
-            "cross-book unit reference book1:C6-pytorch",
+            "cross-book unit reference book1:C7-pytorch",
             id="cross-book-reference",
         ),
     ],

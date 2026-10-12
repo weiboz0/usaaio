@@ -21,13 +21,13 @@ Folders and PDF file names use the book id from `books.yaml`; the PDFs themselve
 | File | What it is | Made by |
 |---|---|---|
 | `book1-student-print.pdf` | Student Book — Print Edition: lessons, reviews and practice statements (markdown only, with a pointer to each practice file); no answers of any kind | `scripts/build-book.sh --book book1` |
-| `book1-student-vol1.pdf` | Student Book — Full Edition, Volume 1: Foundations (F1–F7), with starter code and an appendix of checkpoint answers and selected-practice solutions | `scripts/build-book.sh --book book1` |
-| `book1-student-vol2.pdf` | Student Book — Full Edition, Volume 2: Core Machine Learning and Neural Networks (C1–C6, C11) | `scripts/build-book.sh --book book1` |
-| `book1-student-vol3.pdf` | Student Book — Full Edition, Volume 3: Applied Models and Competition Practice (C7–C10, C12) | `scripts/build-book.sh --book book1` |
+| `book1-student-vol1.pdf` | Student Book — Full Edition, Volume 1: Foundations and First Models (units 01–08: F1–F5, C1–C3), with starter code and an appendix of checkpoint answers and selected-practice solutions | `scripts/build-book.sh --book book1` |
+| `book1-student-vol2.pdf` | Student Book — Full Edition, Volume 2: Practice, Embeddings, and Neural Networks (units 09–14: C4, C5, C6, F6, C7, F7) | `scripts/build-book.sh --book book1` |
+| `book1-student-vol3.pdf` | Student Book — Full Edition, Volume 3: Training, Deep Models, and Competition Practice (units 15–19: C8–C12) | `scripts/build-book.sh --book book1` |
 | `book1-answer-key.pdf` | Answer Key: the selected-practice solutions, one chapter per unit | `scripts/build-book.sh --book book1` |
-| `book1-teacher-vol1.pdf` | Teacher's Edition, Volume 1: Foundations, with every answer inline and every practice solution | `scripts/build-book.sh --book book1` |
-| `book1-teacher-vol2.pdf` | Teacher's Edition, Volume 2: Core Machine Learning and Neural Networks | `scripts/build-book.sh --book book1` |
-| `book1-teacher-vol3.pdf` | Teacher's Edition, Volume 3: Applied Models and Competition Practice, ending with the `r1-001` mock test, its answers, rubric and solutions | `scripts/build-book.sh --book book1` |
+| `book1-teacher-vol1.pdf` | Teacher's Edition, Volume 1: Foundations and First Models, with every answer inline and every practice solution | `scripts/build-book.sh --book book1` |
+| `book1-teacher-vol2.pdf` | Teacher's Edition, Volume 2: Practice, Embeddings, and Neural Networks | `scripts/build-book.sh --book book1` |
+| `book1-teacher-vol3.pdf` | Teacher's Edition, Volume 3: Training, Deep Models, and Competition Practice, ending with the `r1-001` mock test, its answers, rubric and solutions | `scripts/build-book.sh --book book1` |
 | `syllabus.pdf` | The Round 1 course structure (`book1/docs/course-structure.md`) | `scripts/build-pdf.sh --book book1` |
 | `handouts/<unit>.pdf` | One practice handout per unit: its practice statement notebooks, without answers | `scripts/build-pdf.sh --book book1` |
 | `mocktests/r1-001-paper.pdf` | Mock test `r1-001`: `test.md`, then each problem file in manifest order | `scripts/build-pdf.sh --book book1` |
