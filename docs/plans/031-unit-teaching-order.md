@@ -80,8 +80,9 @@ The pass:
 - Rewrites three token classes in **one** combined alternation: every match is mapped once from the original text, and nothing rewritten is ever re-scanned. Later classes match only where earlier ones did not.
   - (a) Full ids: `<old code>-<slug>`.
   - (b) Practice and qualified ids that start with a code: `C11-p16`, `book1:C11-…`. These map the code part.
-  - (c) Standalone prose codes matching `(?<![A-Za-z0-9_:-])(F[1-7]|C1[0-2]|C[1-9])(?![A-Za-z0-9_-])`. The trailing `-` exclusion keeps class (c) away from class (a) and (b) tokens. Class (c) applies only inside Book 1 and Book 2 prose (markdown cells and `.md` files).
-- Tests prove that a second run is a no-op (idempotence). They also cover each swap and cycle member (`F3`↔`F4`, and `C5…C11`), and check that `C11-p16` and `C11-neural-training` each map exactly once. The script lists every bare-code hit with its context before applying. Ambiguous hits are excluded by an explicit allow/deny list kept in the script, and any hit outside a unit-reference context is reviewed by hand. The review list goes in the post-execution report.
+  - (c) Standalone codes matching `(?<![A-Za-z0-9_:-])(F[1-7]|C1[0-2]|C[1-9])(?![A-Za-z0-9_-])`. The trailing `-` exclusion keeps class (c) away from class (a) and (b) tokens. Where class (c) applies, and with which deny and accept contexts, is defined only by D6 (one rule).
+- **Idempotence by migration state.** The mapping is not idempotent as text (`C11-p16` → `C8-p16` → `C5-p16`), so the script checks a state marker before it writes anything. The repository counts as migrated if `book1/curriculum/course-schedule.yaml` has `teaching_order:` or any `book1/units/NN-*` folder exists. If it is migrated, the script exits 0 and changes nothing; if it is half-migrated, it exits non-zero.
+- Tests prove that a second run is a no-op. They also cover each swap and cycle member (`F3`↔`F4`, and `C5…C11`), and check that `C11-p16` and `C11-neural-training` each map exactly once. The script lists every bare-code hit with its context before applying. Ambiguous hits are excluded by an explicit allow/deny list kept in the script, and any hit outside a unit-reference context is reviewed by hand. The review list goes in the post-execution report.
 - Renames `test_c11_solution_regressions.py` to `test_c8_solution_regressions.py`. That is the only test whose name carries a changed code; `test_c12_*` keeps its name.
 
 `docs/plans/`, earlier `ERRATA.md` entries, and `TODO.md` history keep the old ids as written, since they are historical records.
@@ -99,7 +100,9 @@ The verification phase proves this:
 Pinned digests (material inventories, test hashes) are regenerated through their own tools, never hand-edited, and each regeneration is named in the report.
 
 **Plan 019's enforcement files are migrated by hand, by user directive.** The inventory has no generator, so "regenerate through its tool" cannot apply. The user's 2026-10-12 instruction to rename and renumber the units is the authorization for this edit to the Plan 019/023 cutover contract.
-It also covers the token rule. `scripts/verify-staged-scope.py`'s `protected_category` flags any path containing `token`. The renamed `book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb` therefore needs a second exception entry in `token_path_exception`, with its cell hash unchanged, accepted by `validate_token_exception`.
+It also covers the token rule. `scripts/verify-staged-scope.py`'s `protected_category` flags any path containing `token`.
+The existing Plan 019 check stays as is: it allows changes to cell 1 only, compared with `old_path` at the Plan 019 base.
+A **second, separate** check is added for the Plan 031 rename. It compares the renamed notebook with the pre-rename path `book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb` at the merge base. Every cell must be identical after the D2 mapping is undone; cell 0 legitimately contains `C8-embeddings` and `F3-matrices`. Tests cover a mapped-only change (accepted) and any other change (rejected). The renamed `book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb` therefore needs a second exception entry in `token_path_exception`, with its cell hash unchanged, accepted by `validate_token_exception`.
 Both the verifier and the inventory are re-pinned (two sha256 values) in `scripts/pre-merge-guard.sh`. The fixtures read by `tests/test_integration.py` (about lines 838, 907, 1950) are updated to match.
 In more detail: `tests/fixtures/plan019-path-inventory.yaml` is pinned by digest in `scripts/pre-merge-guard.sh`. It also holds the token-notebook exception (its old and current paths plus a cell hash), which `scripts/verify-staged-scope.py` checks. The historical cutover tests in `tests/test_integration.py` (about 849–873) read the live tree through those paths.
 Task 3 handles it as follows:
@@ -146,7 +149,7 @@ Class 4 runs over every non-plan text file: Book 1 and Book 2 prose (about 45 ba
 **D7. Paths built in notebook code.** Some code cells build unit paths from parts, for example `book_root / "units" / "C4-classical-ml-practice" / …`. Task 1 greps code cells for `"units" /`, `'units'` and `units/`. Each site is rewritten to the new folder name, since that string is a folder, not an id.
 The book's printed "Practice file:" line (`tools/publish.py` and `tools/publish_audit.py`) prints the real **folder** path, `units/17-C10-cnn-transfer/practice/pNN.ipynb`.
 
-**D8. Teaching order is declared, not inferred.** `book1/curriculum/course-schedule.yaml` gains `teaching_order:`, the 19 unit ids in folder order.
+**D8. Teaching order is declared, not inferred.** `book1/curriculum/course-schedule.yaml` gains `teaching_order:`, the 19 unit ids in folder order. `_parse_schedule` (`tools/checks/schedule.py`) currently accepts only `schedule_version`, `calendar`, `weeks` and `totals`. Task 2 adds `teaching_order` as an optional, Book 1-only key, with tests for present, absent, a wrong unit set, and Book 2 rejecting the key.
 The `unit-order` check validates three things:
 - the folder prefixes match this list;
 - the list is consistent with the schedule: no unit appears in the schedule before an earlier-listed unit's first appearance;
@@ -179,8 +182,16 @@ A later schedule change no longer forces a rename unless it changes this declare
 - [ ] **Task 4 — Verification phase.**
   - Run `scripts/ci-local.sh --all-books` on a clean tip. It must end ALL GREEN, which includes notebook execution, the register (437/437), the mutation checks, both publish audits, and the pre-merge guard.
   - `git diff --stat -M main` must show the 19 folder renames as renames.
-  - Content-invariance checks:
-  - (a) For every notebook and text file, the diff against `main` after undoing the mapping is exactly the D6 deny-list residue, which is listed.
+  - Content-invariance checks, with the comparison defined exactly:
+  - **What is compared:** every file under `book1/` and `book2/` on `main` against its counterpart on the branch, paired through the folder mapping.
+  - **Transformation:** undo the D2 mapping on the branch side. The changed folder paths and the `NN-` prefixes disappear in the pairing.
+  - **Declared structural exceptions** (excluded, then reviewed by hand):
+    - the `teaching_order:` key;
+    - `book1/publication.yaml` `chapters:`/`volumes:`;
+    - generated artifacts (`course-structure.md`, the roadmap, material inventories), which are regenerated and checked by `--check`;
+    - the front-matter volume names.
+  - `tools/`, `scripts/` and `tests/` are code changes, reviewed in the gate, not by this check.
+  - (a) For every compared file, the diff after the transformation is exactly the D6 deny-list residue, which is listed.
   - (b) The diff with every `(F|C)\d+` token masked is empty.
   - (c) The sha256 of every `data/` file and every generated dataset is unchanged.
   - (d) The practice-id multiset check (D5) passes.
@@ -226,6 +237,14 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 9. `[FIXED]` Should Fix: order inferred from the schedule. → Response: D8 declares `teaching_order:` with the tie-break recorded.
 10. `[FIXED]` Should Fix: the printed practice path. → Response: D7 prints the folder path; page-count changes are recorded.
 11. `[FIXED]` Nits 11–14: volume titles and the fixture check; one renamed test file and renamed register identifiers; links at both depths and Book 2 bare codes; lesson references as class 3.
+
+### Review 2 — Sol, `gpt-6-sol` (2026-10-12)
+- **Verdict**: Reject.
+1. `[FIXED]` Must Fix: idempotence was undefined. → Response: a migration-state marker; an already-migrated repository is a no-op, a half-migrated one fails.
+2. `[FIXED]` Must Fix: the token exception versus the verifier. → Response: a second, separate check compares with the pre-rename path at the merge base after undoing the mapping (all cells); the Plan 019 check is kept unchanged.
+3. `[FIXED]` Must Fix: the schedule parser rejected `teaching_order`. → Response: it becomes an optional Book 1-only key in `_parse_schedule`, with tests.
+4. `[FIXED]` Must Fix: the invariance comparison was ill-defined. → Response: the compared set, the transformation, and the declared structural exceptions are now stated.
+5. `[FIXED]` Should Fix: D2 and D6 disagreed on scope. → Response: D6 is the single rule.
 
 ## Content Review
 
