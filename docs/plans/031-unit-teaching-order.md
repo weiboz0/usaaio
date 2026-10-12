@@ -53,7 +53,13 @@ That is why the rename is applied in one simultaneous pass over a full mapping, 
 The unit id stays `<code>-<slug>` (for example `F3-multivar-calculus`).
 It is what manifests, coverage maps, schedules, syllabus entries and `book1:` qualified references use.
 The folder is `<NN>-<id>`.
-`tools/` resolves between an id and its folder in one place, `tools/books.py`, so no other module builds a unit path from an id by hand.
+`tools/books.py` gains one resolver, `unit_dir(book_root, unit_id)` and its inverse `unit_id_of(folder)`. Every consumer that builds `units/<unit-id>` or treats a folder name as an id is routed through it. Known sites:
+- `tools/publish.py` (about lines 570–586) and `tools/publish_pdf.py` (about 106–109);
+- `tools/publish_audit.py` (about 281–321) and `scripts/verify-register.py` (about 307–313);
+- `tools/checks/scope.py` (about 885–899).
+
+Task 2 also greps every remaining `units/` path join and every `.name`-as-id use in `tools/` and `scripts/`.
+Publication, audit, register and scope are tested on a fixture book whose Book 1 folders carry the `NN-` prefix.
 A new check, `unit-order`, enforces three rules:
 - every Book 1 unit folder matches `^\d{2}-<id>$`;
 - the `NN` prefixes are 01…19 with no gaps;
@@ -71,7 +77,11 @@ The pass:
 - Rewrites every full-id token with a single regex alternation over the old ids. Each match maps through the table, so an already-rewritten token can never be rewritten again. This covers:
   - every text file outside `docs/plans/`: notebooks (JSON source, including relative links such as `../../../../book1/units/<folder>/lesson.ipynb`), YAML, Markdown, Python, shell and fixtures;
   - folder paths, by rewriting `units/<old id>` to `units/<new folder>`.
-- Rewrites bare codes (`F4`, `C11`, …) in one pass with the same simultaneous mapping. It only touches tokens matching `(?<![A-Za-z0-9_-])(F[1-7]|C1[0-2]|C[1-9])(?![A-Za-z0-9_])` inside Book 1 and Book 2 prose, in Book 1-scoped files only. The script lists every bare-code hit with its context before applying. Ambiguous hits are excluded by an explicit allow/deny list kept in the script, and any hit outside a unit-reference context is reviewed by hand. The review list goes in the post-execution report.
+- Rewrites three token classes in **one** combined alternation: every match is mapped once from the original text, and nothing rewritten is ever re-scanned. Later classes match only where earlier ones did not.
+  - (a) Full ids: `<old code>-<slug>`.
+  - (b) Practice and qualified ids that start with a code: `C11-p16`, `book1:C11-…`. These map the code part.
+  - (c) Standalone prose codes matching `(?<![A-Za-z0-9_:-])(F[1-7]|C1[0-2]|C[1-9])(?![A-Za-z0-9_-])`. The trailing `-` exclusion keeps class (c) away from class (a) and (b) tokens. Class (c) applies only inside Book 1 and Book 2 prose (markdown cells and `.md` files).
+- Tests prove that a second run is a no-op (idempotence). They also cover each swap and cycle member (`F3`↔`F4`, and `C5…C11`), and check that `C11-p16` and `C11-neural-training` each map exactly once. The script lists every bare-code hit with its context before applying. Ambiguous hits are excluded by an explicit allow/deny list kept in the script, and any hit outside a unit-reference context is reviewed by hand. The review list goes in the post-execution report.
 - Renames the test files that carry unit codes: `test_c11_solution_regressions.py` becomes `test_c8_…`, and the same for any other code-named test.
 
 `docs/plans/`, earlier `ERRATA.md` entries, and `TODO.md` history keep the old ids as written, since they are historical records.
@@ -86,7 +96,15 @@ The verification phase proves this:
 - the mutation checks pass;
 - r1-001's answer-key reproduction is unchanged.
 
-Pinned digests (path inventories, material inventories, `pre-merge-guard.sh` pins, test hashes) are regenerated through their own tools, never hand-edited, and each regeneration is named in the report.
+Pinned digests (material inventories, test hashes) are regenerated through their own tools, never hand-edited, and each regeneration is named in the report.
+
+**Plan 019's protected inventory is migrated, not regenerated.** `tests/fixtures/plan019-path-inventory.yaml` is pinned by digest in `scripts/pre-merge-guard.sh`. It also holds the token-notebook exception (its old and current paths plus a cell hash), which `scripts/verify-staged-scope.py` checks. The historical cutover tests in `tests/test_integration.py` (about 849–873) read the live tree through those paths.
+Task 3 handles it as follows:
+- The current-path fields move to the new folders.
+- The historical old paths and the cell hash stay unchanged, and the exception is extended to accept the renamed path.
+- The historical cutover tests resolve live paths through `unit_dir` while keeping their historical assertions.
+- The guard digest is re-pinned in the same commit.
+- The diff of the inventory and the guard is quoted in full in the post-execution report.
 
 **D4. The book follows the teaching order.**
 `book1/publication.yaml` `chapters:` lists the units in teaching order.
@@ -114,6 +132,7 @@ The rewrite also covers the generated documents: `course-structure.md`, the road
   - Separate id from folder in `tools/books.py` (D1) and route every unit-path construction through it.
   - Add the `unit-order` check to `scripts/ci-local.sh` (manifest validation step).
   - Tests: a folder with a bad prefix, a gap, an order mismatch, and a Book 2 unit that is exempt.
+  - `scripts/pre-merge-guard.sh`'s unit-collision logic (about lines 130–150) takes the leading number of a folder name, so for `03-F3-…` it would read `03`. Fix it to parse the code after an optional `NN-` prefix. Test the `--pr` union with the old layout on one side and the new on the other.
 - [ ] **Task 3 — Apply the rename** with the D2 script, regenerate every generated artifact and pinned digest through its tool, and update `publication.yaml` (D4).
   - Rename code-named tests.
   - Add `docs/unit-renumbering.md` and point to it from `TODO.md` and `docs/README.md`.
@@ -139,8 +158,15 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ### Review 1 — self (2026-10-12)
 - **Verdict**: Approve with suggestions.
-1. `[OPEN]` Should Fix: bare-code rewriting is the riskiest step. "C1" and "F5" can occur outside unit references, for example in tables or in a variable `C1`. → D2 limits the rewrite to prose tokens, runs a dry-run listing first, and keeps an allow/deny list. Code cells are excluded from the bare-code pass unless the token sits inside a string that names a unit.
-2. `[OPEN]` Nit: `pre-merge-guard.sh` checks unit-ID collisions across branches. The check must treat the renamed folders (`NN-<id>`) correctly, and Task 2 must cover it.
+1. `[FIXED]` Should Fix: bare-code rewriting is the riskiest step. "C1" and "F5" can occur outside unit references, for example in tables or in a variable `C1`. → D2 limits the rewrite to prose tokens, runs a dry-run listing first, and keeps an allow/deny list. Code cells are excluded from the bare-code pass unless the token sits inside a string that names a unit.
+2. `[FIXED]` (upgraded to Must Fix by Sol, finding 4) Nit: `pre-merge-guard.sh` checks unit-ID collisions across branches. The check must treat the renamed folders (`NN-<id>`) correctly, and Task 2 must cover it.
+
+### Review 1 — Sol, `gpt-6-sol` (2026-10-12)
+- **Verdict**: Reject. The mapping was verified against the schedule.
+1. `[FIXED]` Must Fix: id/folder coupling outside `books.py`. → Response: D1 names the `unit_dir`/`unit_id_of` resolver, every known site, a grep task, and a prefixed fixture test.
+2. `[FIXED]` Must Fix: the bare-code regex hit hyphenated ids. → Response: D2 uses three token classes in one alternation, excludes trailing `-` from class (c), and adds idempotence, cycle and collision tests.
+3. `[FIXED]` Must Fix: the Plan 019 inventory and exception. → Response: D3 migrates current paths, keeps the historical proof and hash, extends the exception, re-pins in the same commit, and quotes the diff.
+4. `[FIXED]` Must Fix: the guard's collision parse. → Response: Task 2 parses the code after `NN-` and tests a mixed-layout `--pr` union.
 
 ## Content Review
 
