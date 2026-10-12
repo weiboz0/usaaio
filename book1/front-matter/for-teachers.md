@@ -23,7 +23,7 @@ In outline:
 - A typical week has about 2.5 hours in class and about 5.3 hours of independent practice and review.
 - The mock test `r1-001` (180 minutes) and its 60-minute debrief fill Week 40.
 
-The chapters of this book follow the unit numbering, but the schedule teaches them in dependency order:
+The chapters of this book follow the teaching order, which is also a dependency order:
 
 - **Semester 1:** F1 → F2 → F3 → F4 → F5 → C1 → C2 → C3 → C4 → C5.
 - **Semester 2:** C6 → F6 → C7 → F7 → C8 → C9 → C10 → C11 → C12, then `r1-001`.

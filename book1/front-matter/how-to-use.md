@@ -67,7 +67,7 @@ book1/
 
 A unit is named by its code and a short title, such as `C3-gradient-descent`.
 Units whose code starts with **F** are the foundations; units starting with **C** are the core machine-learning units.
-The chapters of this book follow that numbering, but the course schedule teaches them in a slightly different order (see For Teachers, or ask your teacher).
+The chapters of this book are in the order the course teaches them, and each unit folder carries that position as a two-digit prefix (for example `08-C3-gradient-descent`).
 
 Open the unit's `practice/pNN.ipynb` in Jupyter, write your answer in the code cells, and run the whole notebook from the top before you call it done.
 A notebook that only works when its cells are run in a special order is not finished.

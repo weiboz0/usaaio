@@ -504,4 +504,21 @@ index 75b1c52..5671f9b 100644
 
 ## Content Review
 
+Roster: `[self]` (Opus 5.5 inline), `[sol]` (codex gpt-6-sol, read-only), `[fable]` (Fable 5, read-only).
+
+### Round 1
+
+- `[self]` APPROVE. `verify-unit-renumbering.py --base main` OK; 49 targeted tests pass; the only "next unit" phrase (F1 → F2) is still true; no governance, reference or secret paths in the diff.
+- `[sol]` APPROVE, no findings. Invariance OK; schedule, folders, publication chapters and prerequisite positions agree; Book 2 `book1:` links resolve.
+- `[fable]` REJECT on two Must Fix items; everything else verified (3,204 relative links resolve; every unit-code mention read in context).
+  - [FIXED] Must Fix — `book1/front-matter/how-to-use.md`: "chapters follow that numbering, but the course schedule teaches them in a slightly different order" is false after D4. Now states the chapters are in teaching order with the two-digit folder prefix.
+  - [FIXED] Must Fix — `book1/front-matter/for-teachers.md`: same stale "but the schedule teaches them in dependency order". Now "follow the teaching order, which is also a dependency order".
+  - [FIXED] Should Fix — `book1/syllabus.md` "Suggested order" listed the old topological sort and called it the shipped path. Replaced with the teaching order (a valid topological sort) and rewrote the rationale; `tests/test_integration.py` expected order updated (the prerequisite-position assertion still runs).
+  - [WONTFIX] Nit — volume part titles do not name every unit; they are summary titles.
+  - [FIXED] Nit — C9 lesson 04 called C11 "the course's final unit" (pre-existing, false since C12). Now "the course's competition-practice unit".
+  - [FIXED] Follow-up — C10 lesson 03 "C5 studies embeddings" is now a backward pointer; tense changed to "studied". The heading "Optional forward pointers" is left for the difficulty-ladder audit.
+  - The five hand edits are declared as structural exceptions (keyed by base path) in `scripts/verify-unit-renumbering.py`; the verifier is OK with them.
+
+### Round 2
+
 ## Post-execution report

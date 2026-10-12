@@ -677,12 +677,14 @@ ordered practices.
 
 ## Suggested order (one feasible topological sort)
 
-F1 → F2 → C1 → F3 → F4 → F5 → C4 → C2 → C3 → C6 → C7 → C8 → C10 → C5 → F6 → F7 → C9 → C11 → C12
+F1 → F2 → F3 → F4 → F5 → C1 → C2 → C3 → C4 → C5 → C6 → F6 → C7 → F7 → C8 → C9 → C10 → C11 → C12
 
-Foundation units interleave with core units so the student reaches applied work
-(C4) early — F5 precedes C4 because `feature-scaling` standardization needs `variance`;
+The five foundation units come first, so every core unit starts from a complete toolkit;
+F5 precedes C4 because `feature-scaling` standardization needs `variance`.
 F6 is deferred until C5 motivates it (the similarity matrix begs for SVD); F7 follows all
-four of its declared prerequisites before C9, C11, and the final classical-model unit.
+four of its declared prerequisites before C8, C9, C11, and the final classical-model unit.
+The unit codes count up along this order, and each unit folder carries its position as a
+two-digit prefix.
 
 This order is the shipped Book 1 path.
 Book 2 imports its prerequisites through `books.yaml` without duplicating Book 1 content;

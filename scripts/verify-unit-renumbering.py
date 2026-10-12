@@ -30,13 +30,22 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# Declared structural exceptions (Plan 031 Task 4): reviewed by hand, not by (a)/(b).
+# Declared structural exceptions (Plan 031 Task 4), keyed by base path: reviewed by hand, not by (a)/(b).
 STRUCTURAL = {
     "book1/publication.yaml": "chapters:/volumes: reordered and recomputed (D4)",
     "book1/curriculum/material-inventory.yaml": "generated (audit_curriculum --check)",
     "book2/curriculum/material-inventory.yaml": "generated (audit_curriculum --check)",
     "book1/docs/course-structure.md": "generated (render_course_structure --check)",
     "book2/docs/course-structure.md": "generated (render_course_structure --check)",
+    "book1/front-matter/how-to-use.md": "content gate: chapter-order sentence now states teaching order",
+    "book1/front-matter/for-teachers.md": "content gate: chapter-order sentence now states teaching order",
+    "book1/syllabus.md": "content gate: suggested order replaced by the shipped teaching order",
+    "book1/units/C9-dimensionality-reduction/lessons/04-maps-and-structure.ipynb": (
+        "content gate: C11 is not the final unit"
+    ),
+    "book1/units/C7-cnn-transfer/lessons/03-truncation-and-transfer.ipynb": (
+        "content gate: C5 pointer is now backward (tense)"
+    ),
 }
 
 
