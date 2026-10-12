@@ -117,6 +117,24 @@ def test_main_accepts_any_registered_problem_count(tmp_path, monkeypatch, capsys
     assert "register verification: 1/1 passed (1 problems checked)" in capsys.readouterr().out
 
 
+def test_main_discovers_teaching_order_prefixed_unit_folders(tmp_path, monkeypatch, capsys):
+    """Plan 031: a `NN-<id>` folder is discovered as unit <id> and its paths resolve."""
+    unit = "C7-example"
+    problem = write_problem(
+        tmp_path,
+        unit,
+        "# C7-example — Practice p01\n\n"
+        "**Type:** scenario analysis · **Difficulty:** core · **Concepts:** testing",
+    )
+    (tmp_path / "units" / unit / "manifest.yaml").write_text(yaml.safe_dump({"practice": [problem]}))
+    (tmp_path / "units" / unit).rename(tmp_path / "units" / f"03-{unit}")
+    monkeypatch.setattr(verify_register, "BOOK_ROOT", tmp_path)
+    monkeypatch.setattr(verify_register, "UNITS", None)
+
+    assert verify_register.main(["--book", "book1", "--statements-only"]) == 0
+    assert "register verification: 1/1 passed (1 problems checked)" in capsys.readouterr().out
+
+
 def test_register_main_follows_noncanonical_registered_book1_root(
     tmp_path: Path,
 ) -> None:

@@ -581,8 +581,8 @@ def _check_segment(result: AuditResult, label: str, segment: dict[str, Any], sou
             if not piece.lstrip().startswith("# "):
                 result.error(f"{label}: title span is not a notebook title in {source}")
                 return
-            heading = str(segment.get("title") or "") or title_text(piece, source.split("/")[1]
-                                                                   if "/" in source else "")
+            folder = source.split("/")[1] if "/" in source else ""
+            heading = str(segment.get("title") or "") or title_text(piece, unit_id_of(folder))
             expected = "#" * level + " " + heading
         if text != expected:
             result.error(f"{label}: text does not match {source} cell {cell} span {start}:{end}")
