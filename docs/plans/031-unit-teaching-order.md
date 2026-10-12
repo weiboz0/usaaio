@@ -58,7 +58,15 @@ The folder is `<NN>-<id>`.
 - `tools/publish_audit.py` (about 281–321) and `scripts/verify-register.py` (about 307–313);
 - `tools/checks/scope.py` (about 885–899).
 
-Task 2 also greps every remaining `units/` path join and every `.name`-as-id use in `tools/` and `scripts/`.
+Further sites:
+- `tools/ci_scope.py:200` takes `parts[1]` as the unit id. A prefixed folder would otherwise silently escalate every scoped route to `full`.
+- `tools/audit_curriculum.py:355` is named here; it reads `manifest["unit"]`, which is fine.
+- `tools/model.py` reads `raw["unit"]` from the manifest and does not depend on folder layout.
+
+Task 2 also greps every remaining `units/` path join and every `.name`-as-id use in `tools/`, `scripts/` **and `tests/`**. Examples include `tests/test_c11_solution_regressions.py:11`, `tests/test_integration.py:461,1523,1533` and `tests/test_scope.py:2200`; each is routed through `unit_dir`.
+
+**How `unit_dir` resolves.** It looks for `units/NN-<id>` or `units/<id>`. Exactly one must exist; zero or both is an error. Unprefixed fixture trees under `tmp_path` therefore keep working.
+The `unit-order` check is keyed on the Book 1 book id from `books.yaml`, not applied to every root.
 Publication, audit, register and scope are tested on a fixture book whose Book 1 folders carry the `NN-` prefix.
 A new check, `unit-order`, enforces three rules:
 - every Book 1 unit folder matches `^\d{2}-<id>$`;
@@ -66,7 +74,7 @@ A new check, `unit-order`, enforces three rules:
 - `NN` equals the unit's first-appearance position in the schedule.
 
 Within F and within C, the codes count up in that same order.
-Book 2 units have no prefix, and the check does not apply to Book 2.
+Book 2 units have no prefix, and the check does not apply to Book 2 (it is keyed on book id).
 
 **D2. One mechanical rewrite, driven by the mapping.**
 A committed one-shot script, `scripts/renumber-book1-units.py`, holds the table above as data.
@@ -102,11 +110,17 @@ Pinned digests (material inventories, test hashes) are regenerated through their
 **Plan 019's enforcement files are migrated by hand, by user directive.** The inventory has no generator, so "regenerate through its tool" cannot apply. The user's 2026-10-12 instruction to rename and renumber the units is the authorization for this edit to the Plan 019/023 cutover contract.
 It also covers the token rule. `scripts/verify-staged-scope.py`'s `protected_category` flags any path containing `token`.
 The existing Plan 019 check stays as is: it allows changes to cell 1 only, compared with `old_path` at the Plan 019 base.
-A **second, separate** check is added for the Plan 031 rename. It compares the renamed notebook with the pre-rename path `book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb` at the merge base. Every cell must be identical after the D2 mapping is undone; cell 0 legitimately contains `C8-embeddings` and `F3-matrices`. Tests cover a mapped-only change (accepted) and any other change (rejected). The renamed `book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb` therefore needs a second exception entry in `token_path_exception`, with its cell hash unchanged, accepted by `validate_token_exception`.
+A **second, separate** check is added for the Plan 031 rename. It compares the renamed notebook with the pre-rename path `book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb` at the merge base. Every cell must be identical after the D2 mapping is undone; cell 0 legitimately contains `C8-embeddings` and `F3-matrices`. Tests cover a mapped-only change (accepted) and any other change (rejected).
+Concretely, `validate_token_exception` changes in three ways:
+- `token_path_exception` becomes a **list** of typed entries. Entry 1 is the existing Plan 019 entry (kind `plan019-cell1`), with its semantics unchanged.
+- Entry 2 is kind `plan031-rename`. Its `old_path` is the C8 lesson path (entry 1's `new_path`, which makes a deliberate chain) and its `new_path` is the `10-C5-embeddings` path. It allows only differences that vanish once the D2 mapping is undone, in any cell, and also requires the pinned cell-1 hash.
+- In `--protected-range`, which runs without `-M`, the old path shows as deleted. Each entry's `old_path` is added to the skipped deleted paths.
+
+The `tests/test_integration.py` verifier cases (about lines 1964–2038) are extended to cover a list of entries and the chained entry. The renamed `book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb` therefore needs a second exception entry in `token_path_exception`, with its cell hash unchanged, accepted by `validate_token_exception`.
 Both the verifier and the inventory are re-pinned (two sha256 values) in `scripts/pre-merge-guard.sh`. The fixtures read by `tests/test_integration.py` (about lines 838, 907, 1950) are updated to match.
 In more detail: `tests/fixtures/plan019-path-inventory.yaml` is pinned by digest in `scripts/pre-merge-guard.sh`. It also holds the token-notebook exception (its old and current paths plus a cell hash), which `scripts/verify-staged-scope.py` checks. The historical cutover tests in `tests/test_integration.py` (about 849–873) read the live tree through those paths.
 Task 3 handles it as follows:
-- The current-path fields move to the new folders.
+- The current-path fields move to the new folders, including the `python_consumers` and `split_token_python_consumers` entry for the renamed `tests/test_c11_solution_regressions.py`.
 - The historical old paths and the cell hash stay unchanged, and the exception is extended to accept the renamed path.
 - The historical cutover tests resolve live paths through `unit_dir` while keeping their historical assertions.
 - The guard digest is re-pinned in the same commit.
@@ -125,7 +139,7 @@ The rewrite also covers the generated documents: `course-structure.md`, the road
 - Book 2 unit folders and ids are unchanged.
 - Concept ids are unchanged; they are not unit ids.
 - **Practice ids carry the unit code** (`C7-p10`, schedule `problem_ids`, coverage keys, mutation markers like `C7-p10-frozen-update`). They are renamed with their unit (`C7-pNN` → `C10-pNN`, `C11-pNN` → `C8-pNN`, …) as token class (b).
-  - Literal tables are updated too: `scripts/verify-register.py` `REGISTER_UNITS`, `C7_BUDGET_REGISTER`/`C7_BUDGET_IDS` (renamed to their new code), and the `if unit == "C7-cnn-transfer"` guard; `tests/test_verify_register.py`'s `removeprefix("C7-")`; and the mutation tools' path literals and marker names (`tools/verify_training_mutations.py`, `tools/verify_classical_mutations.py`, and their tests).
+  - Literal tables are updated too: `scripts/verify-register.py` `REGISTER_UNITS`, `C7_BUDGET_REGISTER` (renamed to its new code), and the `if unit == "C7-cnn-transfer"` guard; `tests/test_verify_register.py`'s `removeprefix("C7-")`; and the mutation tools' path literals and marker names (`tools/verify_training_mutations.py`, `tools/verify_classical_mutations.py`, and their tests).
   - Task 4 checks that the multiset of practice ids, with the mapping undone, equals `main`'s (437).
 
 **D6. Token classes and context rules for the rewrite** (Fable round 1). The single alternation (D2) is ordered longest first:
@@ -245,6 +259,15 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 3. `[FIXED]` Must Fix: the schedule parser rejected `teaching_order`. → Response: it becomes an optional Book 1-only key in `_parse_schedule`, with tests.
 4. `[FIXED]` Must Fix: the invariance comparison was ill-defined. → Response: the compared set, the transformation, and the declared structural exceptions are now stated.
 5. `[FIXED]` Should Fix: D2 and D6 disagreed on scope. → Response: D6 is the single rule.
+
+### Review 2 — Fable (2026-10-12)
+- **Verdict**: Reject, on one narrow point. Every other round-1 response was verified against the repo.
+1. `[FIXED]` Must Fix: `validate_token_exception` takes a single entry, requires a deletion, and requires byte-identical cells. → Response: D3 now specifies a typed exception list, a `plan031-rename` kind that accepts mapped-only differences plus the pinned cell-1 hash, the chained `old_path`, the deleted-path skip in `--protected-range`, and extended tests (same as Sol round 2, finding 2).
+2. `[FIXED]` Should Fix: missing sites. → Response: `ci_scope.py:200` and `audit_curriculum.py:355` are named; `model.py` is noted as layout-agnostic.
+3. `[FIXED]` Should Fix: split-part joins in Python. → Response: the grep covers `tests/`, and each site goes through `unit_dir`.
+4. `[FIXED]` Should Fix: the resolver rule. → Response: exactly one of `NN-<id>` or `<id>` must exist; the check is keyed on book id.
+5. `[FIXED]` Should Fix: the D2/D6 contradiction. → Response: D6 is the single rule (Sol round 2, finding 5).
+6. `[FIXED]` Nits: `C7_BUDGET_IDS` does not exist and was removed; the inventory consumer entry is renamed; empty deny contexts are harmless.
 
 ## Content Review
 
