@@ -90,7 +90,7 @@ The pass:
   - (b) Practice and qualified ids that start with a code: `C11-p16`, `book1:C11-…`. These map the code part.
   - (c) Standalone codes matching `(?<![A-Za-z0-9_:-])(F[1-7]|C1[0-2]|C[1-9])(?![A-Za-z0-9_-])`. The trailing `-` exclusion keeps class (c) away from class (a) and (b) tokens. Where class (c) applies, and with which deny and accept contexts, is defined only by D6 (one rule).
 - **Idempotence by migration state.** The mapping is not idempotent as text (`C11-p16` → `C8-p16` → `C5-p16`), so the script checks a state marker before it writes anything. The repository counts as migrated if `book1/curriculum/course-schedule.yaml` has `teaching_order:` or any `book1/units/NN-*` folder exists. If it is migrated, the script exits 0 and changes nothing; if it is half-migrated, it exits non-zero.
-- Tests prove that a second run is a no-op. They also cover each swap and cycle member (`F3`↔`F4`, and `C5…C11`), and check that `C11-p16` and `C11-neural-training` each map exactly once. The script lists every bare-code hit with its context before applying. Ambiguous hits are excluded by an explicit allow/deny list kept in the script, and any hit outside a unit-reference context is reviewed by hand. The review list goes in the post-execution report.
+- Tests prove that a second run is a no-op and that a half-migrated tree (some prefixed folders, no `teaching_order`) exits non-zero without writing anything. They also cover each swap and cycle member (`F3`↔`F4`, and `C5…C11`), and check that `C11-p16` and `C11-neural-training` each map exactly once. The script lists every bare-code hit with its context before applying. Ambiguous hits are excluded by an explicit allow/deny list kept in the script, and any hit outside a unit-reference context is reviewed by hand. The review list goes in the post-execution report.
 - Renames `test_c11_solution_regressions.py` to `test_c8_solution_regressions.py`. That is the only test whose name carries a changed code; `test_c12_*` keeps its name.
 
 `docs/plans/`, earlier `ERRATA.md` entries, and `TODO.md` history keep the old ids as written, since they are historical records.
@@ -268,6 +268,10 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 4. `[FIXED]` Should Fix: the resolver rule. → Response: exactly one of `NN-<id>` or `<id>` must exist; the check is keyed on book id.
 5. `[FIXED]` Should Fix: the D2/D6 contradiction. → Response: D6 is the single rule (Sol round 2, finding 5).
 6. `[FIXED]` Nits: `C7_BUDGET_IDS` does not exist and was removed; the inventory consumer entry is renamed; empty deny contexts are harmless.
+
+### Review 3 — Sol, `gpt-6-sol` (2026-10-12)
+- **Verdict**: Approve with nits.
+1. `[FIXED]` Nit: a test for the half-migrated failure was added to D2.
 
 ## Content Review
 
