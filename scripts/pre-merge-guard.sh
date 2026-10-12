@@ -160,7 +160,7 @@ for book_id in ("book1", "book2"):
                 if path.startswith(unit_prefix) and "/" in path[len(unit_prefix):]
             }
             if ref != "WORKTREE":
-                # A folder the branch renamed (F4-matrices -> 04-F4-matrices) is not a second unit.
+                # A folder the branch renamed (old id -> NN-<new id>) is not a second unit.
                 names -= rename_sources(unit_prefix) - unit_names
             unit_names.update(names)
         if mock_prefix:
@@ -170,7 +170,7 @@ for book_id in ("book1", "book2"):
                 if path.startswith(mock_prefix) and "/" in path[len(mock_prefix):]
             )
     # Plan 031: Book 1 folders are `NN-<id>`; key the collision on the code after the prefix,
-    # so two F4 folders still collide, and require the NN teaching-order prefixes to be unique.
+    # so two folders with the same code still collide, and require unique NN prefixes.
     duplicate_numbers(
         f"{book_id}/units",
         {TEACHING_PREFIX.sub("", name) for name in unit_names},

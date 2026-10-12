@@ -396,6 +396,111 @@ The same folder-context rule rewrites 27 `BOOK1_ROOT / "units" / "<id>"` and `tm
 
 **Script tests** (`tests/test_renumber_book1_units.py`, 26 cases): every swap/cycle member maps once (`F3`↔`F4`, `C5…C11`), simultaneous swap in one text, `C11-p16` and `C11-neural-training` each map exactly once, lesson references, folder contexts at both link depths and in JSON-escaped code joins, deny contexts, hyphenated non-codes, the residue deny, overrides, path mapping, apply-then-no-op idempotence, dry-run writes nothing, and both half-migrated states exit non-zero without writing.
 
+### Task 2 tooling (2026-10-12)
+
+- `tools/books.py`: `unit_id_of(folder)`, `unit_dir(book_root, unit_id)` (exactly one of `NN-<id>` or `<id>`; zero or both is an error), `unit_relpath`, and `live_units` returning ids.
+  Routed through them: `tools/publish.py` (manifest, session notebooks, statements and solutions; concept owners by id), `tools/publish_pdf.py` (handouts stay `handouts/<unit id>.pdf`), `tools/publish_audit.py` (classify, selected solutions, unit rows, fingerprints, glossary, and the notebook-title check), `tools/checks/scope.py` (lesson-session owner), `tools/ci_scope.py` (`parts[1]` through `unit_id_of`), `scripts/verify-register.py` (discovery, manifests, statement and solution paths).
+  `tools/audit_curriculum.py` and `tools/model.py` read `manifest["unit"]` and needed no change.
+- `teaching_order:` is an optional key of the Book 1 schedule parser (`tools/checks/schedule.py`), parsed as unique ids that must equal the scheduled unit set; Book 2's parser still rejects it.
+- `tools/checks/unit_order.py` (`unit-order-check`, run per book in `ci-local.sh` step 5) applies only to the registry's number-1 book: `NN-<id>` folders, prefixes 01…19 without gaps, `NN` = position in `teaching_order`, manifest `unit` = folder id, `teaching_order` = first-appearance order in the schedule (week, then allocation), and F/C codes counting up.
+- `scripts/pre-merge-guard.sh`: unit collisions key on the code after a stripped `NN-` prefix, `NN` prefixes must be unique, and in `--pr` mode `origin/main` folders that are `git diff -M <base>` rename sources of branch folders are excluded from the union.
+- `scripts/verify-staged-scope.py`: `token_path_exception` is a typed list; `plan019-cell1` keeps its semantics; `plan031-rename` requires a rename, loads `scripts/renumber-book1-units.py` only if its sha256 matches the pinned `rewrite_sha256`, forward-maps the base notebook and requires byte equality, plus the pinned cell-1 hash; every entry's deleted `old_path` is skipped when its `new_path` is in the same change.
+  The verifier and the script it pins are excluded from the rewrite (they hold historical paths).
+- Tests: `tests/test_unit_order.py` (resolver, parser present/absent/wrong set/Book 2 rejection, bad prefix, gap, order mismatch, schedule inconsistency, codes, missing order, Book 2 exempt, live Book 1), `tests/test_plan031_guard.py` (mixed-layout rename union accepted, genuine F3 collision and duplicate `NN` rejected), `tests/test_clean_checkout.py` (typed chain, mapped rename accepted in `--protected-cached`/`--cached`/`--protected-range`, any other change rejected, script-pin drift rejected, later edit rejected in `--protected-cached` and `--protected-diff`), and prefixed-fixture tests for publication/audit (`tests/test_publish_audit.py`), register discovery (`tests/test_verify_register.py`) and routing (`tests/test_ci_scope.py`).
+
+### Task 3 apply (2026-10-12)
+
+- `scripts/renumber-book1-units.py` applied: 19 `git mv` folder renames, 827 files rewritten, `teaching_order:` inserted, `tests/test_c11_solution_regressions.py` → `tests/test_c8_solution_regressions.py`.
+- Regenerated through their tools: `book1` and `book2` `curriculum/material-inventory.yaml` (`tools.audit_curriculum`), `book1` and `book2` `docs/course-structure.md` (`tools.render_course_structure`), `docs/curriculum-roadmap.md` and `docs/audits/015-coverage-audit.md` (`tools.render_curriculum_roadmap`).
+- Re-pinned through measured values (no generator exists): `tests/test_book2_schedule.py` Book 1 schedule and course-structure digests and the B2-019 manifest digest; `tests/test_attention_mutations.py` two roadmap/manifest digests. Each changed only because the pinned file's tokens were rewritten; check (a) below proves the files are mapping-only.
+- Hand edits: `book1/publication.yaml` chapters in teaching order and volumes 01–08 "Foundations and First Models", 09–14 "Practice, Embeddings, and Neural Networks", 15–19 "Training, Deep Models, and Competition Practice"; `output/README.md` volume names; `C7_BUDGET_REGISTER` → `C10_BUDGET_REGISTER` and the test's `C10_BUDGET_IDS`/`removeprefix("C10-")`; live-tree test joins through `unit_dir`; historical Plan 019/022 test paths resolved through the mapping; `docs/unit-renumbering.md` with pointers from `TODO.md` and `docs/README.md`; the live `TODO.md` items (C11 (old C10) erratum, C10/C6 capacity note).
+- `tests/test_publication_config.py` has no syllabus-order assumption (it builds its own fixture orders).
+- Plan 019 inventory diff (hand migration; guard digests re-pinned in the same commit — verifier `ed9bb4ca…`, inventory `36e68b14…`):
+
+```diff
+diff --git a/tests/fixtures/plan019-path-inventory.yaml b/tests/fixtures/plan019-path-inventory.yaml
+index 75b1c52..5671f9b 100644
+--- a/tests/fixtures/plan019-path-inventory.yaml
++++ b/tests/fixtures/plan019-path-inventory.yaml
+@@ -18,7 +18,10 @@ python_consumers:
+   - tools/publish_audit.py
+   - tools/publish_pdf.py
+   - tools/ci_scope.py
++  - tools/checks/unit_order.py
+   - scripts/verify-register.py
++  - scripts/renumber-book1-units.py
++  - scripts/verify-unit-renumbering.py
+   - tests/test_answerkey.py
+   - tests/test_attention_mutations.py
+   - tests/test_audit_curriculum.py
+@@ -35,7 +38,7 @@ python_consumers:
+   - tests/test_blueprint.py
+   - tests/test_blueprint_book2.py
+   - tests/test_book2_schedule.py
+-  - tests/test_c11_solution_regressions.py
++  - tests/test_c8_solution_regressions.py
+   - tests/test_c12_solution_regressions.py
+   - tests/test_c12_statement_contracts.py
+   - tests/test_capstone_checks.py
+@@ -50,6 +53,7 @@ python_consumers:
+   - tests/test_new_mocktest.py
+   - tests/test_new_mocktest_book2.py
+   - tests/test_overlap.py
++  - tests/test_plan031_guard.py
+   - tests/test_prereq_coverage.py
+   - tests/test_publication_config.py
+   - tests/test_publish.py
+@@ -58,9 +62,11 @@ python_consumers:
+   - tests/publication_fixture.py
+   - tests/test_r2_001.py
+   - tests/test_r2_001_checks.py
++  - tests/test_renumber_book1_units.py
+   - tests/test_schedule.py
+   - tests/test_scope.py
+   - tests/test_tolerance.py
++  - tests/test_unit_order.py
+   - tests/test_verify_register.py
+   - tests/test_vision_transformer_checks.py
+ shell_consumers:
+@@ -154,14 +160,23 @@ special_notebook_consumers:
+     cells: [2, 14]
+     classification: non-pyproject-relative-data-and-generator-fallback
+ split_token_python_consumers:
+-  - tests/test_c11_solution_regressions.py
++  - tests/test_c8_solution_regressions.py
+   - tests/test_c12_solution_regressions.py
+   - tests/test_c12_statement_contracts.py
+ token_path_exception:
+-  old_path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+-  new_path: book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+-  path_resolution_cells: [1]
+-  path_resolution_source_sha256: c41afcaea3d06f3089e9aa446d3865e8d67a7fca3cb9d2e16b35ef0b755ffb45
++  - kind: plan019-cell1
++    old_path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
++    new_path: book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
++    path_resolution_cells: [1]
++    path_resolution_source_sha256: c41afcaea3d06f3089e9aa446d3865e8d67a7fca3cb9d2e16b35ef0b755ffb45
++  # Plan 031 (user directive 2026-10-12): the unit renumbering renames C8-embeddings to
++  # 10-C5-embeddings. Chained on entry 1's new_path; only the pinned rewrite's output is accepted.
++  - kind: plan031-rename
++    old_path: book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
++    new_path: book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb
++    path_resolution_cells: [1]
++    path_resolution_source_sha256: c41afcaea3d06f3089e9aa446d3865e8d67a7fca3cb9d2e16b35ef0b755ffb45
++    rewrite_sha256: 268d1d1c48b102c4b785aac954b8df304461fd3eb8edb8854eb39087bd8d3541
+ notebook_pyproject_discovery:
+   - {path: mocktests/r1-001/problems/p05.ipynb, cells: [1]}
+   - {path: mocktests/r1-001/problems/p07.ipynb, cells: [1]}
+```
+
+### Task 4 verification (2026-10-12)
+
+- `scripts/verify-unit-renumbering.py --base main`: (a) 1,458 paired `book1/`/`book2/` files equal the forward rewrite byte for byte, with 5 declared structural exceptions (publication.yaml, both material inventories, both course-structure docs) and no unpaired branch file; (b) masked diff empty except the two override lines (notation heading, r1-001 manifest); (c) 11 data files byte-identical; (d) practice ids 437 = 437 after undoing the mapping; (e) 15 mutation markers resolve to exactly one target each.
+- `git diff -M main` shows all 19 folders as renames (979 file renames; 28 short practice notebooks under the 50% similarity default show as add/delete pairs, all mapping-only per (a)). The token notebook is `R099`.
+- Book 1 editions (pages, this branch vs a `main` build from the same day): student-print 984 (984); answer-key 122 (122); student vol1 546 (514), vol2 456 (490), vol3 452 (450); teacher vol1 718 (660), vol2 582 (650), vol3 698 (688). Totals are unchanged (student 1,454; teacher 1,998); every PDF is under the 1,200-page budget.
+- Spot check (pdftoppm): each volume's title page names its new part title; the Volume 2 table of contents runs C4 → C5 embeddings → C6 → F6 → C7 → F7; each volume's first chapter opener reads "Unit F1", "Unit C4" and "Unit C8" with the renumbered prose (C8's overview: "C6 supplied network architecture … C7 supplied PyTorch tensors … C8 now joins"). The print edition's practice pointer reads `units/17-C10-cnn-transfer/practice/pNN.ipynb`.
+- First full `ci-local.sh --all-books` run (158 min): steps 1–7 green (1,763 tests; every notebook; register 437/437; all per-book, aggregate, generated and mutation checks), then the Book 1 publish audit failed: its notebook-title check passed the folder name to `title_text`. Fixed (`unit_id_of`) with a prefixed-fixture regression test; the audit then passed.
+
 ## Content Review
 
 ## Post-execution report
