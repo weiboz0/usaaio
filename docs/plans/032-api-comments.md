@@ -150,8 +150,8 @@ A comment that does not name the callee or keyword does not count. This closes t
   - D3 cards are appended at the end. D6 teaching cells are inserted only after the last index-referenced cell of their notebook.
   - New cells get fresh ids, and `nbformat.validate` passes.
   - Student notebooks keep empty outputs.
-- **(f) No hints in statements:** in statement and mock-statement notebooks, every added comment is one line and names no identifier the student must define (D4's extractor).
 - **(e) Data and seeds untouched:** data, seeds and answer keys are covered by the existing generated-artifact `--check`s, solution execution and mutation checks.
+- **(f) No hints in statements:** in statement and mock-statement notebooks, every added comment is one line and names no identifier the student must define (D4's extractor).
 
 The verifier runs in Task 5 and in the content gate. It is not added to `ci-local.sh`, because on `main` after the squash merge it has no base to compare against.
 
