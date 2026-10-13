@@ -291,6 +291,11 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ### Round 5
 
+- `[sol]` REJECT on one wording point. The C9 and B2-024 fixes were verified.
+  - [FIXED] The F3 `np.arctan2` card claimed `-π` occurs "only for a negative zero `y`", but extreme finite and infinite inputs also give `-π`. The card now states the range `[-π, π]` only.
+
+### Round 6
+
 - `[sol]` REJECT.
   - [FIXED] Must Fix: index preservation in D5(d) contradicted the D6 insertion. Now only index-referenced cells keep their indices.
   - [FIXED] Must Fix: the CLI registry is `SUBCOMMANDS`.

@@ -11010,7 +11010,7 @@ notebooks:
   api_tokens: []
 - path: units/03-F3-multivar-calculus/lesson.ipynb
   kind: notebook
-  semantic_sha256: b8b75d0e988c507ec0a61d9cf98fc58029d3629c984f3225b9fdd137349fd7c4
+  semantic_sha256: d51602ed4f8dc1087f56d6f1816a0dd8764480025393f45bb77c0b8c26708345
   anchors:
   - anchor: 'units/03-F3-multivar-calculus/lesson.ipynb :: F3-multivar-calculus — Partials, Gradients, and the Chain Rule
       (Unit Overview) > How to study this unit :: cell 1'
@@ -12763,7 +12763,7 @@ notebooks:
   - np.tanh
 - path: units/03-F3-multivar-calculus/review.ipynb
   kind: notebook
-  semantic_sha256: 255fdf301bcedbfdf2717ad746380d3dbe22a852b11a6e1f2f99a806aea8b3b4
+  semantic_sha256: ac7e0a1f1c4b49ed9a39c62dbcd1f8a818e6313e7e41ec8046eef3922551caf0
   anchors:
   - anchor: 'units/03-F3-multivar-calculus/review.ipynb :: F3-multivar-calculus — Review :: cell 1'
     heading_path:
