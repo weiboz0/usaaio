@@ -420,4 +420,23 @@ The pins below are encoded in `scripts/verify-comment-only.py` `INDEX_PINNED`, o
 
 ## Content Review
 
+Roster: `[self]` (Opus 5.5 inline), `[sol]` (codex gpt-6-sol, read-only), `[fable]` (Fable 5, read-only). Extracts used: `scratchpad/gate032/` (all 141 added statement comments, an 80-comment sample, 50 cards, 8 teaching pairs).
+
+### Round 1
+
+- `[self]` APPROVE. Teaching cells and a card sample read accurate; statement comments explain provided code only.
+- `[sol]` REJECT.
+  - [FIXED] M1: `graduation_units: 1` contradicted D1. Reverted to 3; the 85 reopened rule-3 sites are closed by card "Also used here" entries.
+  - [FIXED] M2: harness markers outside the planned regions. Mock `# Checks:` now requires a byte-identical mirror in the solution (trailing newline ignored), and the r1-001 p09 markers are removed. `# Boilerplate:` exempts only the idiom's callees, and `torch.set_num_threads` is now commented.
+  - [FIXED] M3: receiver typing used later re-bindings. Types now follow execution order; the false `Tensor.append` and `ndarray.append` entries are gone. Tests added.
+  - [FIXED] S4 `.view`/`.contiguous` accuracy (C7 lesson 01 and card); S5 `.repeat_interleave` "in place"; S6 `.data_ptr` inference (B2-020 card and a p07 comment).
+- `[fable]` APPROVE WITH NITS.
+  - [FIXED] S1 `Tensor.append`, S2 graduation threshold (same as sol M3/M1).
+  - [FIXED] S3: three-argument `where` is now a new mode; B2-022 p08 is commented.
+  - [FIXED] Nits 4, 5, 8, 9: bare reminders, the inline `torch.arange`, `pathlib.Path` spelling, and the plan notes.
+  - [WONTFIX] Nit 6 (`RuntimeError` comment), Nit 10 (`.val_rows` named by analogy), Nit 11 (duplicate-sounding `.permutation` reminder, required because the existing comment does not name the callee and D2 forbids rewording it).
+  - [WONTFIX] Nit 7: mock setup markers read "Checks: provided setup"; the marker grammar has only two forms.
+
+### Round 2
+
 ## Post-execution report
