@@ -562,12 +562,12 @@ def test_double_length_planned_f5_shape_passes(tmp_path):
 def test_hypothetical_double_length_c7_rejects_three_sessions(tmp_path):
     write_syllabus(
         tmp_path,
-        second_unit="C7-cnn-transfer",
+        second_unit="C10-cnn-transfer",
         second_length="double",
     )
     unit_dir = write_unit(
         tmp_path,
-        unit="C7-cnn-transfer",
+        unit="C10-cnn-transfer",
         practice_count=27,
         lesson_sessions=[85, 85, 85],
     )
@@ -576,16 +576,16 @@ def test_hypothetical_double_length_c7_rejects_three_sessions(tmp_path):
 
     assert not report.ok
     assert (
-        f"{unit_dir / 'manifest.yaml'}: double-length unit C7-cnn-transfer has 3 lesson "
+        f"{unit_dir / 'manifest.yaml'}: double-length unit C10-cnn-transfer has 3 lesson "
         "sessions; requires 4-6"
     ) in report.errors
 
 
 def test_normal_length_c7_overflow_behavior_is_unchanged(tmp_path):
-    write_syllabus(tmp_path, second_unit="C7-cnn-transfer")
+    write_syllabus(tmp_path, second_unit="C10-cnn-transfer")
     write_unit(
         tmp_path,
-        unit="C7-cnn-transfer",
+        unit="C10-cnn-transfer",
         practice_count=27,
         lesson_sessions=[85, 85, 85],
     )
@@ -593,7 +593,7 @@ def test_normal_length_c7_overflow_behavior_is_unchanged(tmp_path):
     report = check_coverage(tmp_path)
 
     assert report.ok
-    assert not any("double-length unit C7-cnn-transfer" in error for error in report.errors)
+    assert not any("double-length unit C10-cnn-transfer" in error for error in report.errors)
 
 
 def test_planned_book2_root_preserves_existing_r1_manifests_and_r1_namespace(

@@ -312,7 +312,7 @@ def test_book2_promotes_exactly_the_seven_attention_points() -> None:
             ensure_ascii=False,
         ).encode()
     ).hexdigest()
-    assert unchanged_digest == "d7d2857ec4ec0a970117d8a8e330e2ba1277e52ac2b434784ac6e15e2eabe215"
+    assert unchanged_digest == "82018bf15324385cfba0467a2e3023c33e795818a8cb747d20efe888b82f63e9"
 
 
 def test_attention_manifest_adds_only_the_exact_seven_evidence_claims() -> None:
@@ -343,4 +343,4 @@ def test_attention_manifest_adds_only_the_exact_seven_evidence_claims() -> None:
             ensure_ascii=False,
         ).encode()
     ).hexdigest()
-    assert unchanged_digest == "f6eb6f6b69a075dab6c590878d5af9fd1e3d94d94b4d7c718231419701aeba39"
+    assert unchanged_digest == "d7e6d12d144b7bc08b6a2d957de0be6595de42a3458d8316c69d8170c3fa8040"

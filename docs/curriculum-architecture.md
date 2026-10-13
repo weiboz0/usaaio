@@ -17,7 +17,7 @@ and adds attention, transformers, advanced vision, generative modeling, and open
 It does not create a second version of the same prerequisites.
 Layer labels describe reuse and exit scope, not a promise that every shared node is taught
 before every Round 1 core node; each book's explicit dependency DAG determines teaching order.
-An official Round 2 target may already be covered by qualified Book 1 evidence, as with C8
+An official Round 2 target may already be covered by qualified Book 1 evidence, as with C5
 tokenization and word embeddings, without transferring its concept ownership to Book 2.
 Exit membership always comes from official `required_for`, not from calendar position.
 

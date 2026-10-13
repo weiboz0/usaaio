@@ -35,10 +35,10 @@ OWNED = {
 }
 PREREQ_UNITS = [
     "book1:F1-scientific-python",
-    "book1:F3-matrices",
-    "book1:C6-pytorch",
-    "book1:C7-cnn-transfer",
-    "book1:C11-neural-training",
+    "book1:F4-matrices",
+    "book1:C7-pytorch",
+    "book1:C10-cnn-transfer",
+    "book1:C8-neural-training",
     "B2-019-attention-transformers",
 ]
 IMPORTED = {
@@ -379,7 +379,7 @@ def test_collected_checkpoint_answers_match_their_numbered_questions() -> None:
 
 def test_bridge_distinguishes_remediation_from_attention_prerequisite() -> None:
     source = _source(UNIT / "lessons/00-book1-bridge.ipynb")
-    assert "book1:C8-embeddings" in source
+    assert "book1:C5-embeddings" in source
     assert "fixed-vector" in source
     assert "token-to-index" in source
     assert "B2-019-attention-transformers" in source
@@ -473,7 +473,7 @@ def test_syllabus_and_standards_publish_b2_020_as_double_length() -> None:
     assert set(unit.concept_prerequisites) == IMPORTED
     assert unit.length == "double"
     standards = (ROOT / "docs/unit-standards.md").read_text(encoding="utf-8")
-    assert "F5, F6, C7, C11, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024" in standards
+    assert "F5, F6, C8, C10, C12, B2-019, B2-020, B2-021, B2-022, B2-023, and B2-024" in standards
     assert all(
         standards.count(unit) >= 2
         for unit in ("B2-019", "B2-020", "B2-021", "B2-022", "B2-023", "B2-024")
@@ -629,7 +629,7 @@ def test_coverage_promotes_exact_five_rows_without_book1_embedding_evidence() ->
     assert rows["nlp-word-embeddings"]["disposition"] == "new-unit"
     assert rows["nlp-word-embeddings"]["shipped_concepts"] == ["learned-token-embedding"]
     assert rows["nlp-word-embeddings"]["deficits"]["modalities_missing"] == []
-    assert "book1:C8-embeddings" not in json.dumps(rows["nlp-word-embeddings"])
+    assert "book1:C5-embeddings" not in json.dumps(rows["nlp-word-embeddings"])
 
 
 def test_live_schedule_appends_exact_second_six_week_ledger() -> None:

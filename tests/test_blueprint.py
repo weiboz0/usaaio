@@ -96,22 +96,22 @@ def valid_problems() -> list[dict]:
         for _ in range(4)
     ]
     rows += [
-        problem("p04", "integrative-arc", "nlp-embeddings", "C8-embeddings", "tokenization", 5, "core", "theory")
+        problem("p04", "integrative-arc", "nlp-embeddings", "C5-embeddings", "tokenization", 5, "core", "theory")
         for _ in range(3)
     ]
     rows += [
         problem("p05", "integrative-arc", "linear-algebra", "F2-vectors", "vectors-and-norms", 20, "core", "theory")
     ]
     rows += [
-        problem("p06", "engineering", "pytorch", "C6-pytorch", "torch-tensors", 20, "advanced", "programming")
+        problem("p06", "engineering", "pytorch", "C7-pytorch", "torch-tensors", 20, "advanced", "programming")
         for _ in range(2)
     ]
     rows += [
-        problem("p06", "engineering", "pytorch", "C6-pytorch", "torch-tensors", 5, "advanced", "programming")
+        problem("p06", "engineering", "pytorch", "C7-pytorch", "torch-tensors", 5, "advanced", "programming")
         for _ in range(2)
     ]
     rows += [
-        problem("p07", "engineering", "cnn-vision", "C7-cnn-transfer", "convolution", 5, "advanced", "programming")
+        problem("p07", "engineering", "cnn-vision", "C10-cnn-transfer", "convolution", 5, "advanced", "programming")
         for _ in range(3)
     ]
     rows += [
@@ -170,7 +170,7 @@ def test_blueprint_flags_section_out_of_range(tmp_path):
                 section="engineering",
                 cluster="pytorch",
                 concepts=["torch-tensors"],
-                units=["C6-pytorch"],
+                units=["C7-pytorch"],
             )
 
     write_repo(tmp_path, broken(mutate))

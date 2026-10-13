@@ -22,7 +22,7 @@ generation_parameters:
     rotation-index-0 mandated texture; per-sub-part provenance tags mark only direct item adaptations
     — plan-011 gate ruling)'
   engineering_register_precedent: 'r1-2026-p07/p08 (REGISTER: threshold/half-plane module builds and bottleneck/truncation
-    counting are the exam''s engineering register taught by units C5-C7; fresh geometry, widths, cuts,
+    counting are the exam''s engineering register taught by units C6, C7 and C10; fresh geometry, widths, cuts,
     and contracts throughout)'
 duration_minutes: 180
 total_points: 300
@@ -88,7 +88,7 @@ problems:
   section: concept-block
   units:
   - C1-ml-fundamentals
-  - C10-competition-craft
+  - C11-competition-craft
   concepts:
   - f1-macro
   - accuracy-precision-recall
@@ -121,7 +121,7 @@ problems:
 - id: r1-001-p02-1
   section: math-computation
   units:
-  - F4-multivar-calculus
+  - F3-multivar-calculus
   concepts:
   - tanh-derivative
   - multivar-chain-rule
@@ -142,7 +142,7 @@ problems:
   section: math-computation
   units:
   - F5-probability
-  - C5-neural-networks
+  - C6-neural-networks
   concepts:
   - variance-of-sums
   - independence
@@ -160,7 +160,7 @@ problems:
 - id: r1-001-p02-3
   section: math-computation
   units:
-  - C5-neural-networks
+  - C6-neural-networks
   - F5-probability
   concepts:
   - weight-init-variance
@@ -198,7 +198,7 @@ problems:
   section: math-computation
   units:
   - F6-svd-spectral
-  - F3-matrices
+  - F4-matrices
   concepts:
   - eigenvalues-eigenvectors
   - linear-independence-span
@@ -232,7 +232,7 @@ problems:
 - id: r1-001-p04-2
   section: math-computation
   units:
-  - F4-multivar-calculus
+  - F3-multivar-calculus
   - C2-linear-models
   concepts:
   - sum-of-squares-gradients
@@ -251,7 +251,7 @@ problems:
 - id: r1-001-p05-1
   section: integrative-arc
   units:
-  - C8-embeddings
+  - C5-embeddings
   concepts:
   - tokenization
   cluster: nlp-embeddings
@@ -268,7 +268,7 @@ problems:
 - id: r1-001-p05-2
   section: integrative-arc
   units:
-  - C8-embeddings
+  - C5-embeddings
   concepts:
   - tokenization
   cluster: nlp-embeddings
@@ -284,7 +284,7 @@ problems:
 - id: r1-001-p05-3
   section: integrative-arc
   units:
-  - C8-embeddings
+  - C5-embeddings
   concepts:
   - gensim-usage
   - word-embeddings
@@ -302,7 +302,7 @@ problems:
 - id: r1-001-p05-4
   section: integrative-arc
   units:
-  - C8-embeddings
+  - C5-embeddings
   - F1-scientific-python
   concepts:
   - embedding-matrices
@@ -321,7 +321,7 @@ problems:
 - id: r1-001-p05-5
   section: integrative-arc
   units:
-  - C8-embeddings
+  - C5-embeddings
   - F1-scientific-python
   concepts:
   - broadcasting
@@ -341,7 +341,7 @@ problems:
   section: integrative-arc
   units:
   - F2-vectors
-  - C8-embeddings
+  - C5-embeddings
   concepts:
   - cosine-similarity
   - unit-vectors
@@ -358,8 +358,8 @@ problems:
 - id: r1-001-p05-7
   section: integrative-arc
   units:
-  - C8-embeddings
-  - F3-matrices
+  - C5-embeddings
+  - F4-matrices
   concepts:
   - similarity-matrices
   - matrix-multiplication
@@ -522,7 +522,7 @@ problems:
 - id: r1-001-p06-2
   section: engineering
   units:
-  - C8-embeddings
+  - C5-embeddings
   - F1-scientific-python
   concepts:
   - nearest-neighbor-search
@@ -541,7 +541,7 @@ problems:
 - id: r1-001-p06-3
   section: engineering
   units:
-  - C5-neural-networks
+  - C6-neural-networks
   - F1-scientific-python
   concepts:
   - relu-activation
@@ -578,7 +578,7 @@ problems:
 - id: r1-001-p07-1
   section: engineering
   units:
-  - C6-pytorch
+  - C7-pytorch
   concepts:
   - nn-module
   - custom-layers
@@ -596,7 +596,7 @@ problems:
 - id: r1-001-p07-2
   section: engineering
   units:
-  - C6-pytorch
+  - C7-pytorch
   concepts:
   - torch-tensors
   - manual-weights
@@ -614,7 +614,7 @@ problems:
 - id: r1-001-p07-3
   section: engineering
   units:
-  - C7-cnn-transfer
+  - C10-cnn-transfer
   concepts:
   - bottleneck-blocks
   - parameter-counting
@@ -632,7 +632,7 @@ problems:
 - id: r1-001-p07-4
   section: engineering
   units:
-  - C7-cnn-transfer
+  - C10-cnn-transfer
   concepts:
   - model-truncation
   - resnet-architecture
@@ -650,8 +650,8 @@ problems:
 - id: r1-001-p07-5
   section: engineering
   units:
-  - C7-cnn-transfer
-  - C6-pytorch
+  - C10-cnn-transfer
+  - C7-pytorch
   concepts:
   - layer-freezing
   - requires-grad
@@ -669,8 +669,8 @@ problems:
 - id: r1-001-p08-1
   section: engineering
   units:
-  - C6-pytorch
-  - C5-neural-networks
+  - C7-pytorch
+  - C6-neural-networks
   concepts:
   - threshold-activation
   - nn-module
@@ -688,8 +688,8 @@ problems:
 - id: r1-001-p08-2
   section: engineering
   units:
-  - C5-neural-networks
-  - C6-pytorch
+  - C6-neural-networks
+  - C7-pytorch
   concepts:
   - decision-boundaries-geometric
   - manual-weights
@@ -707,8 +707,8 @@ problems:
 - id: r1-001-p08-3
   section: engineering
   units:
-  - C5-neural-networks
-  - C6-pytorch
+  - C6-neural-networks
+  - C7-pytorch
   concepts:
   - mlp-architecture
   - custom-layers
@@ -726,7 +726,7 @@ problems:
 - id: r1-001-p08-4
   section: engineering
   units:
-  - C6-pytorch
+  - C7-pytorch
   concepts:
   - parameter-counting
   cluster: pytorch
@@ -743,7 +743,7 @@ problems:
 - id: r1-001-p09
   section: open-ended-notebook
   units:
-  - C10-competition-craft
+  - C11-competition-craft
   - C4-classical-ml-practice
   concepts:
   - prediction-function-contract

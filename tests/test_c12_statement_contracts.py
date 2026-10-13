@@ -5,10 +5,14 @@ import json
 import re
 from pathlib import Path
 
+from tools.books import unit_dir
+
 ROOT = Path(__file__).parents[1]
 BOOK1_ROOT = ROOT / "book1"
-PRACTICE = BOOK1_ROOT / "units" / "C12-classical-models" / "practice"
-LESSONS = BOOK1_ROOT / "units" / "C12-classical-models" / "lessons"
+PRACTICE = unit_dir(BOOK1_ROOT, "C12-classical-models") / "practice"
+LESSONS = unit_dir(BOOK1_ROOT, "C12-classical-models") / "lessons"
+# Plan 031: the folder is resolved by id; it still lives under the book's units tree.
+assert PRACTICE.parent.parent == BOOK1_ROOT / "units"
 
 
 def _source(number: int) -> str:
@@ -208,7 +212,7 @@ def test_required_top_level_submission_variables_are_literal_assignments() -> No
 
 
 def test_session1_teaches_the_complete_p06_validation_policy_executably() -> None:
-    path = BOOK1_ROOT / "units" / "C12-classical-models" / "lessons" / "01-logistic-regression.ipynb"
+    path = unit_dir(BOOK1_ROOT, "C12-classical-models") / "lessons" / "01-logistic-regression.ipynb"
     notebook = json.loads(path.read_text())
     source = "\n".join(str(cell.get("source", "")) for cell in notebook["cells"])
     for marker in (
@@ -224,7 +228,7 @@ def test_session1_teaches_the_complete_p06_validation_policy_executably() -> Non
 
 
 def test_session3_teaches_alpha_box_cases_and_limits() -> None:
-    path = BOOK1_ROOT / "units" / "C12-classical-models" / "lessons" / "03-kernel-svm-and-dual-intuition.ipynb"
+    path = unit_dir(BOOK1_ROOT, "C12-classical-models") / "lessons" / "03-kernel-svm-and-dual-intuition.ipynb"
     notebook = json.loads(path.read_text())
     source = "\n".join(str(cell.get("source", "")) for cell in notebook["cells"])
     for marker in (
@@ -236,9 +240,7 @@ def test_session3_teaches_alpha_box_cases_and_limits() -> None:
 
 def test_session2_defines_support_vectors_by_dual_state_with_equality_caveat() -> None:
     path = (
-        BOOK1_ROOT
-        / "units"
-        / "C12-classical-models"
+        unit_dir(BOOK1_ROOT, "C12-classical-models")
         / "lessons"
         / "02-linear-svm-margin-and-hinge.ipynb"
     )

@@ -40,10 +40,10 @@ concepts_used: &id001
 - book1:autograd-training
 concept_prerequisites: *id001
 prereq_units:
-- book1:C6-pytorch
-- book1:C7-cnn-transfer
-- book1:C8-embeddings
-- book1:C11-neural-training
+- book1:C7-pytorch
+- book1:C10-cnn-transfer
+- book1:C5-embeddings
+- book1:C8-neural-training
 bridge_diagnostic:
   path: lessons/00-book1-bridge.ipynb
   minutes: 30

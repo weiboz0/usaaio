@@ -1,5 +1,8 @@
 # TODO
 
+Plan 031 renumbered the Book 1 units into teaching order; codes in completed entries are historical.
+The old-to-new table is [docs/unit-renumbering.md](docs/unit-renumbering.md).
+
 - [x] 000 — project design (docs/designs/000-project-design.md)
 - [x] 001 — scaffold repo (docs/plans/001-scaffold-repo.md)
 - [x] 002 — reference corpus (docs/plans/002-reference-corpus.md)
@@ -25,6 +28,7 @@
 - [x] 022 — C12 p20 K-means near-tie erratum (deterministic lowest-seed rule)
 - [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
+- [x] 031 — Book 1 units in teaching order: `NN-` folder prefixes and F/C codes renumbered (docs/unit-renumbering.md)
 - [x] 030 — py4kids-style book editions: student-print, student, answer key and teacher PDFs, plus syllabus, handouts and mock-test papers and solutions, for both books
 - [x] 024 — Round 2 live blueprint and mock test r2-001 (Book 2 final assessment) — **Book 2 complete**
 - [x] 029 — Round 2 GPU scientific-modeling capstone (B2-024) and the `optional-colab-l4` compute policy
@@ -34,15 +38,15 @@
 
 ## Deferred, with a named owner plan still to be written
 
-- [ ] **Erratum: C10 `p12_solution.ipynb` lost math delimiters.** Its prose has `(A_j=\frac1{50}\sum…)` where `\(…\)` was intended, so the Plan 030 editions print the LaTeX literally (they are read with `-raw_tex`). Fix the delimiters through the errata lifecycle.
+- [ ] **Erratum: C11 (old C10) `p12_solution.ipynb` lost math delimiters.** Its prose has `(A_j=\frac1{50}\sum…)` where `\(…\)` was intended, so the Plan 030 editions print the LaTeX literally (they are read with `-raw_tex`). Fix the delimiters through the errata lifecycle.
 - [ ] **Erratum review: KL direction wording in B2-022 `lessons/02-kl-divergence.ipynb`.** It says "divergence of $Q$ from $P$" for $\mathrm{KL}(P\|Q)$. Align it with the back-matter wording ("extra expected log loss from using $Q$ when the data follow $P$").
 - [ ] **Overfull lines in the editions (Plan 030).** Three `lll` longtables in one C9 practice are about 51 pt too wide. Book 2's Teacher's Edition has 47 small overfull boxes (≤ 40 pt), mostly inline code in narrow table cells.
 
 - [x] **Execute the remaining Plan 015 content tranches.** Done: Plans 020, 021, 027, 028, 029 shipped B2-020…B2-024 and Plan 024 shipped r2-001.
-- [x] **Unit capacity: C7 and C5.** Plan 017 resolves the decision substantively: C7 gains a
+- [x] **Unit capacity: C10 (old C7) and C6 (old C5).** Plan 017 resolves the decision substantively: C10 gains a
       fourth 90-minute lesson session and remains at 27 practices, satisfying both double-length
-      bands. C5 remains a compliant standard-length unit with 22 practices because neural-network
-      training moves to C11. `docs/unit-standards.md` preserves the Plan 014 rejection history and
+      bands. C6 remains a compliant standard-length unit with 22 practices because neural-network
+      training moves to C8 (old C11). `docs/unit-standards.md` preserves the Plan 014 rejection history and
       records why this implemented capacity increase differs from the rejected label-only change.
 - [ ] **Real tag-honesty enforcement.** `prereq-check`'s `concepts_used` leg is manifest
       consistency only, so it cannot see a decorative tag. Plan 014's gate found 7 decorative

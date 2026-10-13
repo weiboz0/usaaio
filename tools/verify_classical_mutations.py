@@ -43,7 +43,7 @@ class MutationVerificationError(RuntimeError):
 MUTATIONS = [
     MutationSpec(
         id="c12-p07-logistic-mean-factor",
-        notebook="units/C12-classical-models/practice/p07_solution.ipynb",
+        notebook="units/19-C12-classical-models/practice/p07_solution.ipynb",
         mutation_kind="remove-logistic-mean-factor",
         target_marker="PLAN018_MUTATION_TARGET: C12-p07-logistic-mean-factor",
         search=(
@@ -58,7 +58,7 @@ MUTATIONS = [
     ),
     MutationSpec(
         id="c12-p08-signed-hinge-branch",
-        notebook="units/C12-classical-models/practice/p08_solution.ipynb",
+        notebook="units/19-C12-classical-models/practice/p08_solution.ipynb",
         mutation_kind="reverse-signed-hinge-branch",
         target_marker="PLAN018_MUTATION_TARGET: C12-p08-signed-hinge-branch",
         search=(
@@ -73,7 +73,7 @@ MUTATIONS = [
     ),
     MutationSpec(
         id="c12-p10-maximum-impurity-split",
-        notebook="units/C12-classical-models/practice/p10_solution.ipynb",
+        notebook="units/19-C12-classical-models/practice/p10_solution.ipynb",
         mutation_kind="select-maximum-impurity-split",
         target_marker="PLAN018_MUTATION_TARGET: C12-p10-best-split",
         search=(
@@ -88,7 +88,7 @@ MUTATIONS = [
     ),
     MutationSpec(
         id="c12-p29-missing-adaboost-weight-update",
-        notebook="units/C12-classical-models/practice/p29_solution.ipynb",
+        notebook="units/19-C12-classical-models/practice/p29_solution.ipynb",
         mutation_kind="remove-adaboost-weight-update",
         target_marker="PLAN018_MUTATION_TARGET: C12-p29-weight-update",
         search=(
@@ -103,7 +103,7 @@ MUTATIONS = [
     ),
     MutationSpec(
         id="c12-p13-non-centroid-lloyd-update",
-        notebook="units/C12-classical-models/practice/p13_solution.ipynb",
+        notebook="units/19-C12-classical-models/practice/p13_solution.ipynb",
         mutation_kind="replace-centroid-with-non-centroid-update",
         target_marker="PLAN018_MUTATION_TARGET: C12-p13-centroid-update",
         search=(

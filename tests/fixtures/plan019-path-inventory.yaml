@@ -18,7 +18,10 @@ python_consumers:
   - tools/publish_audit.py
   - tools/publish_pdf.py
   - tools/ci_scope.py
+  - tools/checks/unit_order.py
   - scripts/verify-register.py
+  - scripts/renumber-book1-units.py
+  - scripts/verify-unit-renumbering.py
   - tests/test_answerkey.py
   - tests/test_attention_mutations.py
   - tests/test_audit_curriculum.py
@@ -35,7 +38,7 @@ python_consumers:
   - tests/test_blueprint.py
   - tests/test_blueprint_book2.py
   - tests/test_book2_schedule.py
-  - tests/test_c11_solution_regressions.py
+  - tests/test_c8_solution_regressions.py
   - tests/test_c12_solution_regressions.py
   - tests/test_c12_statement_contracts.py
   - tests/test_capstone_checks.py
@@ -50,6 +53,7 @@ python_consumers:
   - tests/test_new_mocktest.py
   - tests/test_new_mocktest_book2.py
   - tests/test_overlap.py
+  - tests/test_plan031_guard.py
   - tests/test_prereq_coverage.py
   - tests/test_publication_config.py
   - tests/test_publish.py
@@ -58,9 +62,11 @@ python_consumers:
   - tests/publication_fixture.py
   - tests/test_r2_001.py
   - tests/test_r2_001_checks.py
+  - tests/test_renumber_book1_units.py
   - tests/test_schedule.py
   - tests/test_scope.py
   - tests/test_tolerance.py
+  - tests/test_unit_order.py
   - tests/test_verify_register.py
   - tests/test_vision_transformer_checks.py
 shell_consumers:
@@ -154,14 +160,23 @@ special_notebook_consumers:
     cells: [2, 14]
     classification: non-pyproject-relative-data-and-generator-fallback
 split_token_python_consumers:
-  - tests/test_c11_solution_regressions.py
+  - tests/test_c8_solution_regressions.py
   - tests/test_c12_solution_regressions.py
   - tests/test_c12_statement_contracts.py
 token_path_exception:
-  old_path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
-  new_path: book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
-  path_resolution_cells: [1]
-  path_resolution_source_sha256: c41afcaea3d06f3089e9aa446d3865e8d67a7fca3cb9d2e16b35ef0b755ffb45
+  - kind: plan019-cell1
+    old_path: units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+    new_path: book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+    path_resolution_cells: [1]
+    path_resolution_source_sha256: c41afcaea3d06f3089e9aa446d3865e8d67a7fca3cb9d2e16b35ef0b755ffb45
+  # Plan 031 (user directive 2026-10-12): the unit renumbering renames C8-embeddings to
+  # 10-C5-embeddings. Chained on entry 1's new_path; only the pinned rewrite's output is accepted.
+  - kind: plan031-rename
+    old_path: book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+    new_path: book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb
+    path_resolution_cells: [1]
+    path_resolution_source_sha256: c41afcaea3d06f3089e9aa446d3865e8d67a7fca3cb9d2e16b35ef0b755ffb45
+    rewrite_sha256: 268d1d1c48b102c4b785aac954b8df304461fd3eb8edb8854eb39087bd8d3541
 notebook_pyproject_discovery:
   - {path: mocktests/r1-001/problems/p05.ipynb, cells: [1]}
   - {path: mocktests/r1-001/problems/p07.ipynb, cells: [1]}

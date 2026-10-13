@@ -109,6 +109,13 @@ def test_coverage_map_changes_route_by_introduced_concepts() -> None:
     assert route(unattributed) == "full book1"
 
 
+def test_teaching_order_prefixed_folder_routes_by_unit_id() -> None:
+    """Plan 031: `units/03-C3-b/...` is unit C3-b, so the route stays scoped."""
+    assert _route(["book1/units/03-C3-b/lessons/01-x.ipynb"]) == _route(
+        ["book1/units/C3-b/lessons/01-x.ipynb"]
+    )
+
+
 def test_unconfigured_unit_change_routes_full() -> None:
     assert _route(["book1/units/C9-new/lesson.ipynb"])["book1"] == "full book1"
 

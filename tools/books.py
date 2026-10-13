@@ -724,11 +724,48 @@ def output_pdf_name(book_id: str, edition: str, volume: int | None = None) -> st
     return f"{book_id}-{edition}{suffix}.pdf"
 
 
+# Plan 031 D1: a unit's id (`F3-multivar-calculus`) and its folder are separate.
+# Book 1 folders carry a two-digit teaching-order prefix (`03-F3-multivar-calculus`);
+# Book 2 folders and unprefixed fixture trees are named by the id itself.
+_UNIT_FOLDER = re.compile(r"(?P<order>\d{2})-(?P<id>[A-Za-z].*)\Z")
+
+
+def unit_id_of(folder: str) -> str:
+    """The unit id a folder name holds: `NN-<id>` -> `<id>`; any other name is its own id."""
+    match = _UNIT_FOLDER.match(folder)
+    return match.group("id") if match else folder
+
+
+def unit_dir(book_root: Path, unit_id: str) -> Path:
+    """The folder of `unit_id` under `<book_root>/units`: `NN-<id>` or `<id>`, exactly one."""
+    units = Path(book_root) / "units"
+    found = []
+    if (units / unit_id).is_dir():
+        found.append(units / unit_id)
+    if units.is_dir():
+        found.extend(
+            path
+            for path in sorted(units.iterdir())
+            if path.is_dir() and _UNIT_FOLDER.match(path.name) and unit_id_of(path.name) == unit_id
+        )
+    if not found:
+        raise ValueError(f"{units}: no folder for unit {unit_id!r} (expected NN-{unit_id} or {unit_id})")
+    if len(found) > 1:
+        names = ", ".join(path.name for path in found)
+        raise ValueError(f"{units}: unit {unit_id!r} has more than one folder: {names}")
+    return found[0]
+
+
+def unit_relpath(book_root: Path, unit_id: str) -> str:
+    """`units/<folder>` for `unit_id`, relative to the book root (POSIX)."""
+    return unit_dir(book_root, unit_id).relative_to(Path(book_root)).as_posix()
+
+
 def live_units(book: BookSpec) -> tuple[str, ...]:
-    """The book's live units: `units/<unit>/` directories that hold a `manifest.yaml`."""
+    """The book's live unit ids: `units/<folder>/` directories that hold a `manifest.yaml`."""
     _require_book_root(book)
     return tuple(
-        manifest.parent.name
+        unit_id_of(manifest.parent.name)
         for manifest in sorted(book.root.glob("units/*/manifest.yaml"))
         if not _path_has_symlink_component(book.root, manifest)
     )

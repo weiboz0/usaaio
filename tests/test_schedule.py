@@ -10,6 +10,7 @@ import pytest
 import yaml
 
 from tools import render_course_structure as course_renderer
+from tools.books import unit_dir
 from tools.model import load_unit_manifests
 
 ROOT = Path(__file__).parents[1]
@@ -936,13 +937,13 @@ def test_real_schedule_has_exact_plan018_calendar_and_complete_allocation() -> N
         week["week"]
         for week in weeks
         for allocation in week["allocations"]
-        if allocation.get("unit") == "C11-neural-training"
+        if allocation.get("unit") == "C8-neural-training"
     ]
     c7_weeks = [
         week["week"]
         for week in weeks
         for allocation in week["allocations"]
-        if allocation.get("unit") == "C7-cnn-transfer"
+        if allocation.get("unit") == "C10-cnn-transfer"
     ]
     assert c11_weeks and c7_weeks
     assert max(c11_weeks) < min(c7_weeks)
@@ -951,14 +952,14 @@ def test_real_schedule_has_exact_plan018_calendar_and_complete_allocation() -> N
         for week in weeks
         for allocation in week["allocations"]
         if allocation["kind"] == "lesson-session"
-        and allocation.get("unit") == "C11-neural-training"
+        and allocation.get("unit") == "C8-neural-training"
     ] == [24, 24, 25, 25, 26]
     assert [
         week["week"]
         for week in weeks
         for allocation in week["allocations"]
         if allocation["kind"] == "lesson-session"
-        and allocation.get("unit") == "C7-cnn-transfer"
+        and allocation.get("unit") == "C10-cnn-transfer"
     ] == [29, 30, 31, 32]
     assert [row["kind"] for row in weeks[-1]["allocations"][-2:]] == ["mock", "debrief"]
     assert weeks[-1]["allocations"][-2]["test"] == "r1-001"
@@ -1014,7 +1015,7 @@ def test_real_c12_schedule_has_exact_problem_ids_minutes_and_partition() -> None
 
 def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
     manifest = yaml.safe_load(
-        (BOOK1_ROOT / "units" / "C11-neural-training" / "manifest.yaml").read_text()
+        (unit_dir(BOOK1_ROOT, "C8-neural-training") / "manifest.yaml").read_text()
     )
     concepts_added_by_session = [
         {"softmax", "cross-entropy-loss"},
@@ -1043,7 +1044,7 @@ def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
     scheduled_practice = 0
     for week in schedule["weeks"]:
         for allocation in week["allocations"]:
-            if allocation.get("unit") != "C11-neural-training":
+            if allocation.get("unit") != "C8-neural-training":
                 continue
             if allocation["kind"] == "lesson-session":
                 delivered_sessions += 1
@@ -1053,7 +1054,7 @@ def test_c11_practice_never_exceeds_unlocked_problem_minutes() -> None:
                 capacity = capacities[delivered_sessions - 1]
                 assert scheduled_practice <= capacity, (
                     f"week {week['week']} schedules {scheduled_practice} cumulative "
-                    f"C11 practice minutes after {delivered_sessions} sessions; "
+                    f"C8 practice minutes after {delivered_sessions} sessions; "
                     f"only {capacity} problem minutes are unlocked"
                 )
 
@@ -1121,9 +1122,9 @@ def test_rendered_first_instruction_region_exactly_matches_the_schedule_source()
 
     assert actual == expected
     positions = {unit: index for index, (unit, _) in enumerate(actual)}
-    assert positions["C5-neural-networks"] < positions["C6-pytorch"]
-    assert positions["C6-pytorch"] < positions["C11-neural-training"]
-    assert positions["C11-neural-training"] < positions["C7-cnn-transfer"]
+    assert positions["C6-neural-networks"] < positions["C7-pytorch"]
+    assert positions["C7-pytorch"] < positions["C8-neural-training"]
+    assert positions["C8-neural-training"] < positions["C10-cnn-transfer"]
 
 
 def test_book2_sidecar_creation_cannot_rewrite_checked_in_book1_schedule(

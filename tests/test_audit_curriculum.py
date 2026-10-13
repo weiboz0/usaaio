@@ -556,7 +556,7 @@ def test_plan019_task3_aggregate_renderer_reads_registered_books_in_dependency_o
 
     assert "- **Book:** book1" in audit_document
     assert "- **Book:** book2" in audit_document
-    assert "- **Destination:** book1:C10-competition-craft" in audit_document
+    assert "- **Destination:** book1:C11-competition-craft" in audit_document
     assert "- **Destination:** book2:B2-019-attention-transformers" in audit_document
     assert "| Book | Knowledge point |" in roadmap_document
     assert "| book1 |" in roadmap_document
@@ -587,7 +587,7 @@ def test_plan019_task3_aggregate_renderer_assigns_embedding_completion_to_b2_020
     assert (owner.estimated_hours.minimum, owner.estimated_hours.maximum) == (26, 32)
 
     for document in rendered.values():
-        assert "unestimated C8" not in document
+        assert "unestimated C5" not in document
         assert "book2:B2-020-language-transformers" in document
         assert "nlp-word-embeddings" in document
         assert (

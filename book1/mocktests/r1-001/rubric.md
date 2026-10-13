@@ -96,7 +96,7 @@ The performance mapping is DEFINED below (see 'Performance-points mapping') — 
 
 ### Required summary cell — 6 points
 
-Apply the C10 register mechanically, one point each:
+Apply the C11 register mechanically, one point each:
 
 - **W-A1:** full recipe: preprocessing, kNN family with hyperparameter values, and feature set.
 - **W-A2:** validation carve size, seed policy, stratification, and submitted recipe's validation metric value.

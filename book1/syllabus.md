@@ -362,7 +362,7 @@ units:
   - residuals
   - unit-vectors
   - orthogonality-orthonormality
-- id: F3-matrices
+- id: F4-matrices
   track: foundation
   title: Matrices as Linear Maps
   prereqs:
@@ -376,7 +376,7 @@ units:
   - matrix-from-action
   - gram-matrices
   - linear-independence-span
-- id: F4-multivar-calculus
+- id: F3-multivar-calculus
   track: foundation
   title: Gradients from Calculus AB
   prereqs:
@@ -410,7 +410,7 @@ units:
   title: Eigenvalues, SVD, and Low-Rank Structure
   length: double
   prereqs:
-  - F3-matrices
+  - F4-matrices
   teaches:
   - eigenvalues-eigenvectors
   - spectral-decomposition
@@ -422,8 +422,8 @@ units:
   track: foundation
   title: Kernel Validity and Convex Optimization
   prereqs:
-  - F3-matrices
-  - F4-multivar-calculus
+  - F4-matrices
+  - F3-multivar-calculus
   - F6-svd-spectral
   - C3-gradient-descent
   teaches:
@@ -453,8 +453,8 @@ units:
   track: core
   title: Linear Models and Regularization
   prereqs:
-  - F3-matrices
-  - F4-multivar-calculus
+  - F4-matrices
+  - F3-multivar-calculus
   - C1-ml-fundamentals
   teaches:
   - linear-regression
@@ -468,7 +468,7 @@ units:
   track: core
   title: Optimization by Gradient Descent
   prereqs:
-  - F4-multivar-calculus
+  - F3-multivar-calculus
   - C2-linear-models
   teaches:
   - loss-surfaces
@@ -491,7 +491,7 @@ units:
   - sklearn-pipelines
   - cross-validation
   - tabular-feature-engineering
-- id: C5-neural-networks
+- id: C6-neural-networks
   track: core
   title: Neural Networks from First Principles
   prereqs:
@@ -505,11 +505,11 @@ units:
   - mlp-architecture
   - decision-boundaries-geometric
   - weight-init-variance
-- id: C6-pytorch
+- id: C7-pytorch
   track: core
   title: PyTorch Engineering
   prereqs:
-  - C5-neural-networks
+  - C6-neural-networks
   teaches:
   - python-inheritance
   - torch-tensors
@@ -518,15 +518,15 @@ units:
   - manual-weights
   - requires-grad
   - parameter-counting
-- id: C11-neural-training
+- id: C8-neural-training
   track: core
   title: Neural Network Training from Scratch to PyTorch
   length: double
   prereqs:
-  - F4-multivar-calculus
+  - F3-multivar-calculus
   - C3-gradient-descent
-  - C5-neural-networks
-  - C6-pytorch
+  - C6-neural-networks
+  - C7-pytorch
   teaches:
   - softmax
   - cross-entropy-loss
@@ -536,13 +536,13 @@ units:
   - trained-mlp
   - batch-normalization
   - dropout
-- id: C7-cnn-transfer
+- id: C10-cnn-transfer
   track: core
   title: CNNs, ResNet, and Transfer Learning
   length: double
   prereqs:
-  - C6-pytorch
-  - C11-neural-training
+  - C7-pytorch
+  - C8-neural-training
   teaches:
   - convolution
   - feature-maps
@@ -555,12 +555,12 @@ units:
   - transfer-learning
   - tensor-shape-tracing
   - cnn-training
-- id: C8-embeddings
+- id: C5-embeddings
   track: core
   title: Word Embeddings and Similarity
   prereqs:
   - F2-vectors
-  - F3-matrices
+  - F4-matrices
   - F1-scientific-python
   teaches:
   - tokenization
@@ -574,7 +574,7 @@ units:
   title: Dimensionality Reduction
   prereqs:
   - F6-svd-spectral
-  - C8-embeddings
+  - C5-embeddings
   - F5-probability
   - C1-ml-fundamentals
   teaches:
@@ -585,7 +585,7 @@ units:
   - pca-centered-covariance-eigenproblem-derivation
   - numpy-pca-class-from-scratch
   - pca-black-box-insufficiency
-- id: C10-competition-craft
+- id: C11-competition-craft
   track: core
   title: Competition and Notebook Craft
   prereqs:
@@ -631,10 +631,10 @@ units:
 `F1-scientific-python` opens the curriculum:
 every later unit's practice is notebook-based, and the exam bans loops in favor of
 `broadcasting`/`vectorization` (analysis: NumPy tasks with explicit API bans).
-`F2-vectors` and `F3-matrices` build the linear-algebra spine —
+`F2-vectors` and `F4-matrices` build the linear-algebra spine —
 `projection`, `residuals`, `matrix-from-action`, `outer-products`, and `gram-matrices`
 appeared directly as exam sub-parts.
-`F4-multivar-calculus` extends Calc AB to `gradient` and `multivar-chain-rule`,
+`F3-multivar-calculus` extends Calc AB to `gradient` and `multivar-chain-rule`,
 stated component-wise (`sum-of-squares-gradients`) so no matrix calculus is needed;
 `tanh-derivative` is the exam's canonical 1-D exercise.
 `F5-probability` is a double-length unit: it connects `variance-of-sums` and
@@ -652,7 +652,7 @@ PSD structure into `kernel-validity` proofs and extending gradient intuition to
 `C1-ml-fundamentals` covers the opening concept block
 (`supervised-vs-unsupervised` through `class-imbalance`);
 `bias-variance-intuition` is deliberately intuitive; its statistical vocabulary
-(`variance`, `expectation`) firms up in F5 and is exercised in C5's
+(`variance`, `expectation`) firms up in F5 and is exercised in C6's
 `weight-init-variance` derivation.
 `C2-linear-models` session 02 ships closed-form unregularized OLS fitting and the
 `linear-regression-estimator-derivation`, including rank, identifiability, and
@@ -660,16 +660,16 @@ pseudoinverse behavior.
 Only iterative gradient-based fitting remains deferred to `C3-gradient-descent`.
 `C4-classical-ml-practice` teaches the `knn` + `pandas-basics` + `sklearn-pipelines`
 craft that the 50-point applied problem demands;
-`C10-competition-craft` turns that into exam technique
+`C11-competition-craft` turns that into exam technique
 (`prediction-function-contract`, `hidden-test-protocol`).
-`C5-neural-networks` → `C6-pytorch` → `C11-neural-training` → `C7-cnn-transfer` is the
+`C6-neural-networks` → `C7-pytorch` → `C8-neural-training` → `C10-cnn-transfer` is the
 engineering ladder from `perceptron`, through explicit and autograd-based training, to
 `resnet-architecture` surgery.
-`C11-neural-training` is double-length because five sessions connect manual gradients,
+`C8-neural-training` is double-length because five sessions connect manual gradients,
 NumPy training, PyTorch autograd and optimizers, BatchNorm, and dropout to 24 practices.
-`C7-cnn-transfer` is also double-length: its fourth session and 27-practice register make
+`C10-cnn-transfer` is also double-length: its fourth session and 27-practice register make
 `cnn-training` a substantive bridge from trained MLPs to convolutional transfer learning.
-`C8-embeddings` + `C9-dimensionality-reduction` cover the integrative-arc territory
+`C5-embeddings` + `C9-dimensionality-reduction` cover the integrative-arc territory
 (`similarity-matrices`, `truncated-svd-practice`).
 `C12-classical-models` is double-length because six sessions connect logistic classification,
 linear and kernel margins, trees, ensembles, clustering, and explicit model comparison to 30
@@ -677,12 +677,14 @@ ordered practices.
 
 ## Suggested order (one feasible topological sort)
 
-F1 → F2 → C1 → F4 → F3 → F5 → C4 → C2 → C3 → C5 → C6 → C11 → C7 → C8 → F6 → F7 → C9 → C10 → C12
+F1 → F2 → F3 → F4 → F5 → C1 → C2 → C3 → C4 → C5 → C6 → F6 → C7 → F7 → C8 → C9 → C10 → C11 → C12
 
-Foundation units interleave with core units so the student reaches applied work
-(C4) early — F5 precedes C4 because `feature-scaling` standardization needs `variance`;
-F6 is deferred until C8 motivates it (the similarity matrix begs for SVD); F7 follows all
-four of its declared prerequisites before C9, C10, and the final classical-model unit.
+The five foundation units come first, so every core unit starts from a complete toolkit;
+F5 precedes C4 because `feature-scaling` standardization needs `variance`.
+F6 is deferred until C5 motivates it (the similarity matrix begs for SVD); F7 follows all
+four of its declared prerequisites before C8, C9, C11, and the final classical-model unit.
+The unit codes count up along this order, and each unit folder carries its position as a
+two-digit prefix.
 
 This order is the shipped Book 1 path.
 Book 2 imports its prerequisites through `books.yaml` without duplicating Book 1 content;

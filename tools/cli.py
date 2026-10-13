@@ -17,6 +17,7 @@ from tools.checks.prereq import check_prereq
 from tools.checks.schedule import check_schedule
 from tools.checks.scope import check_scope
 from tools.checks.tolerance import check_tolerance
+from tools.checks.unit_order import check_unit_order
 from tools.model import Report
 
 CheckFn = Callable[..., Report]
@@ -38,6 +39,10 @@ SUBCOMMANDS: dict[str, tuple[str, CheckFn | None]] = {
         check_layer_boundary,
     ),
     "tolerance-check": ("verify calls state absolute and relative tolerances", check_tolerance),
+    "unit-order-check": (
+        "verify Book 1 unit folders follow the declared teaching order",
+        check_unit_order,
+    ),
     "new-mocktest": ("scaffold a mock test from the blueprint", None),
 }
 
@@ -139,7 +144,7 @@ def main(argv: list[str] | None = None) -> int:
                 continue
             if args.command in {"answerkey-check", "overlap-scan"}:
                 report = check(book.root, book_number=book.number)
-            elif args.command == "schedule-check":
+            elif args.command in {"schedule-check", "unit-order-check"}:
                 report = check(book.root, book_spec=book)
             else:
                 report = check(book.root)

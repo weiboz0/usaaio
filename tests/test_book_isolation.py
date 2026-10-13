@@ -112,7 +112,7 @@ def _seed_book1_temp_root_inputs(repo: Path) -> None:
     practices[1]["minutes"] -= 1
     schedule_path.write_text(yaml.safe_dump(schedule, sort_keys=False), encoding="utf-8")
 
-    inventory_sentinel = book1 / "units" / "F1-scientific-python" / f"{TEMP_BOOK1_SENTINEL}.ipynb"
+    inventory_sentinel = book1 / "units" / "01-F1-scientific-python" / f"{TEMP_BOOK1_SENTINEL}.ipynb"
     inventory_sentinel.write_text(
         json.dumps(
             {
@@ -258,7 +258,7 @@ def test_book1_pdf_inputs_follow_noncanonical_registered_root(tmp_path: Path) ->
     ]
     assert len(paper) == 10
     assert "round1/docs/course-structure.md" in inputs
-    assert "round1/units/C3-gradient-descent/practice/p01.ipynb" in inputs
+    assert "round1/units/08-C3-gradient-descent/practice/p01.ipynb" in inputs
     assert not any(path.endswith("_solution.ipynb") and "/units/" in path for path in inputs)
 
 

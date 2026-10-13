@@ -22,7 +22,7 @@ from tools.model import CourseSchedule, KnowledgePoint, Roadmap, load_roadmap
 AUDIT_PATH = Path("docs/audits/015-coverage-audit.md")
 ROADMAP_PATH = Path("docs/curriculum-roadmap.md")
 EDITORIAL_EXISTING_UNIT_ESTIMATES = {
-    "convolutional-neural-network-basics": ("C7", 8.0, 12.0, "C7 CNN training"),
+    "convolutional-neural-network-basics": ("C10", 8.0, 12.0, "C10 CNN training"),
 }
 ScheduleLoader = Callable[[str | Path], CourseSchedule]
 
@@ -269,7 +269,7 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
                     f"{_format_number(embedding_unit.estimated_hours.minimum)}–"
                     f"{_format_number(embedding_unit.estimated_hours.maximum)}-hour estimate "
                     "includes completing the `nlp-word-embeddings` model-training bridge; "
-                    "no additional Book 1 C8 correction is pending."
+                    "no additional Book 1 C5 correction is pending."
                 ),
                 "",
             ]
@@ -277,7 +277,7 @@ def _time_section(roadmap: Roadmap, baseline: TimeBaseline) -> list[str]:
     elif embedding_point is not None and embedding_point.coverage != "covered":
         lines.extend(
             [
-                "The unestimated C8 `nlp-word-embeddings` model-training correction remains pending.",
+                "The unestimated C5 `nlp-word-embeddings` model-training correction remains pending.",
                 "",
             ]
         )

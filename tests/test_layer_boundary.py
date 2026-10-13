@@ -8,6 +8,8 @@ from typing import Any
 import pytest
 import yaml
 
+from tools.books import unit_dir
+
 BOOK2_UNIT = "B2-019-attention-transformers"
 BOOK2_CONCEPTS = [
     "matrix-transpose",
@@ -23,10 +25,10 @@ BOOK2_CONCEPTS = [
     "transformer-block",
 ]
 UNIT_PREREQS = [
-    "C6-pytorch",
-    "C7-cnn-transfer",
-    "C8-embeddings",
-    "C11-neural-training",
+    "C7-pytorch",
+    "C10-cnn-transfer",
+    "C5-embeddings",
+    "C8-neural-training",
 ]
 CONCEPT_PREREQS = [
     "softmax",
@@ -129,15 +131,15 @@ def _evidence(modalities: list[str], session: int) -> dict[str, Any]:
 
 def _build_layer_fixture(root: Path) -> dict[str, Any]:
     prereq_ownership = {
-        "C6-pytorch": [
+        "C7-pytorch": [
             "matrix-multiplication",
             "broadcasting",
             "torch-tensors",
             "nn-module",
         ],
-        "C7-cnn-transfer": ["variance"],
-        "C8-embeddings": [],
-        "C11-neural-training": ["softmax", "torch-optimizers", "autograd-training"],
+        "C10-cnn-transfer": ["variance"],
+        "C5-embeddings": [],
+        "C8-neural-training": ["softmax", "torch-optimizers", "autograd-training"],
     }
     units = [
         {
@@ -397,7 +399,7 @@ def _claim(data: dict[str, Any], point: str) -> dict[str, Any]:
 
 
 def _mutate_book1_round2_leak(data: dict[str, Any], root: Path) -> None:
-    path = root / "units" / "C11-neural-training" / "manifest.yaml"
+    path = unit_dir(root, "C8-neural-training") / "manifest.yaml"
     manifest = yaml.safe_load(path.read_text())
     manifest["coverage_claims"] = [data["manifest"]["coverage_claims"][0]]
     _write_yaml(path, manifest)
@@ -405,10 +407,10 @@ def _mutate_book1_round2_leak(data: dict[str, Any], root: Path) -> None:
 
 def _mutate_wrong_owner(data: dict[str, Any], root: Path) -> None:
     b2 = next(row for row in data["syllabus"]["units"] if row["id"] == BOOK2_UNIT)
-    c6 = next(row for row in data["syllabus"]["units"] if row["id"] == "C6-pytorch")
+    c6 = next(row for row in data["syllabus"]["units"] if row["id"] == "C7-pytorch")
     b2["teaches"].remove("matrix-transpose")
     c6["teaches"].append("matrix-transpose")
-    path = root / "units" / "C6-pytorch" / "manifest.yaml"
+    path = unit_dir(root, "C7-pytorch") / "manifest.yaml"
     manifest = yaml.safe_load(path.read_text())
     manifest["concepts_taught"].append("matrix-transpose")
     _write_yaml(path, manifest)
@@ -556,9 +558,9 @@ def test_layer_boundary_rejects_symlinked_artifact_paths(
 @pytest.mark.parametrize(
     ("replacement", "fragment"),
     [
-        pytest.param("book9:C6-pytorch", "unknown owner", id="wrong-owner"),
+        pytest.param("book9:C7-pytorch", "unknown owner", id="wrong-owner"),
         pytest.param(
-            "book1:C5-neural-networks", "allowlist", id="nonallowlisted-unit"
+            "book1:C6-neural-networks", "allowlist", id="nonallowlisted-unit"
         ),
     ],
 )

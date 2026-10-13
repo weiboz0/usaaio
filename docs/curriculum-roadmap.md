@@ -48,28 +48,28 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 
 | Book | Knowledge point | Requirement | Coverage | Modalities missing | Practice shortfall | Destination | Dependencies |
 |---|---|---|---|---|---:|---|---|
-| book1 | affine-transformations | required | covered | — | 0 | book1:C5-neural-networks | book1:linear-algebra-foundations |
+| book1 | affine-transformations | required | covered | — | 0 | book1:C6-neural-networks | book1:linear-algebra-foundations |
 | book1 | bayes-rule | required | covered | — | 0 | book1:F5-probability | book1:conditional-probability |
-| book1 | colab-coding-submission | required | covered | — | 0 | book1:C10-competition-craft | book1:colab-markdown-solution-authoring |
-| book1 | colab-markdown-solution-authoring | required | covered | — | 0 | book1:C10-competition-craft | — |
+| book1 | colab-coding-submission | required | covered | — | 0 | book1:C11-competition-craft | book1:colab-markdown-solution-authoring |
+| book1 | colab-markdown-solution-authoring | required | covered | — | 0 | book1:C11-competition-craft | — |
 | book1 | conditional-probability | bridge | covered | — | 0 | book1:F5-probability | book1:probability-and-statistics-foundations |
-| book1 | constrained-api-implementation | required | covered | — | 0 | book1:C10-competition-craft | book1:numpy-programming, book1:python-programming |
+| book1 | constrained-api-implementation | required | covered | — | 0 | book1:C11-competition-craft | book1:numpy-programming, book1:python-programming |
 | book1 | constrained-optimization-lagrangian-duality | required | covered | — | 0 | book1:F7-kernels-convex-optimization | book1:convex-sets-functions-and-optimality, book1:multivariable-derivatives |
 | book1 | convex-sets-functions-and-optimality | required | covered | — | 0 | book1:F7-kernels-convex-optimization | book1:linear-algebra-foundations, book1:multivariable-derivatives |
 | book1 | eigenvalues-and-eigenvectors | required | covered | — | 0 | book1:F6-svd-spectral | book1:linear-algebra-foundations |
 | book1 | gradient-descent-optimization | required | covered | — | 0 | book1:C3-gradient-descent | book1:loss-functions, book1:multivariable-derivatives |
 | book1 | hoeffding-inequality | required | covered | — | 0 | book1:F5-probability | book1:probability-and-statistics-foundations |
-| book1 | linear-algebra-foundations | required | covered | — | 0 | book1:F3-matrices | book1:numpy-programming |
-| book1 | markdown-code-snippets | required | covered | — | 0 | book1:C10-competition-craft | book1:markdown-text-communication |
-| book1 | markdown-math-formulae | required | covered | — | 0 | book1:C10-competition-craft | book1:markdown-text-communication |
-| book1 | markdown-text-communication | required | covered | — | 0 | book1:C10-competition-craft | — |
+| book1 | linear-algebra-foundations | required | covered | — | 0 | book1:F4-matrices | book1:numpy-programming |
+| book1 | markdown-code-snippets | required | covered | — | 0 | book1:C11-competition-craft | book1:markdown-text-communication |
+| book1 | markdown-math-formulae | required | covered | — | 0 | book1:C11-competition-craft | book1:markdown-text-communication |
+| book1 | markdown-text-communication | required | covered | — | 0 | book1:C11-competition-craft | — |
 | book1 | matplotlib-pyplot-programming | required | covered | — | 0 | book1:F1-scientific-python | book1:numpy-programming |
 | book1 | matrix-decompositions | required | covered | — | 0 | book1:F6-svd-spectral | book1:eigenvalues-and-eigenvectors, book1:linear-algebra-foundations |
-| book1 | multivariable-derivatives | required | covered | — | 0 | book1:F4-multivar-calculus | — |
+| book1 | multivariable-derivatives | required | covered | — | 0 | book1:F3-multivar-calculus | — |
 | book1 | numpy-programming | required | covered | — | 0 | book1:F1-scientific-python | book1:python-programming |
 | book1 | pandas-programming | required | covered | — | 0 | book1:C4-classical-ml-practice | book1:numpy-programming, book1:python-programming |
 | book1 | probability-and-statistics-foundations | required | covered | — | 0 | book1:F5-probability | book1:numpy-programming |
-| book1 | python-programming | required | covered | — | 0 | book1:C6-pytorch | — |
+| book1 | python-programming | required | covered | — | 0 | book1:C7-pytorch | — |
 | book1 | scikit-learn-programming | required | covered | — | 0 | book1:C4-classical-ml-practice | book1:numpy-programming, book1:pandas-programming |
 | book1 | seaborn-programming | required | covered | — | 0 | book1:F1-scientific-python | book1:matplotlib-pyplot-programming, book1:numpy-programming |
 | book1 | valid-kernel-positive-definite-proof | required | covered | — | 0 | book1:F7-kernels-convex-optimization | book1:eigenvalues-and-eigenvectors, book1:gram-matrices |
@@ -78,41 +78,41 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 
 | Book | Knowledge point | Requirement | Coverage | Modalities missing | Practice shortfall | Destination | Dependencies |
 |---|---|---|---|---|---:|---|---|
-| book1 | affine-neural-network-layer | required | covered | — | 0 | book1:C5-neural-networks | book1:affine-transformations |
-| book1 | backpropagation-by-hand | required | covered | — | 0 | book1:C11-neural-training | book1:forward-propagation-by-hand, book1:multivariable-derivatives |
-| book1 | batch-normalization | required | covered | — | 0 | book1:C11-neural-training | book1:probability-and-statistics-foundations, book1:pytorch-autograd-and-optimizer-training |
+| book1 | affine-neural-network-layer | required | covered | — | 0 | book1:C6-neural-networks | book1:affine-transformations |
+| book1 | backpropagation-by-hand | required | covered | — | 0 | book1:C8-neural-training | book1:forward-propagation-by-hand, book1:multivariable-derivatives |
+| book1 | batch-normalization | required | covered | — | 0 | book1:C8-neural-training | book1:probability-and-statistics-foundations, book1:pytorch-autograd-and-optimizer-training |
 | book1 | bias-variance-tradeoff | required | covered | — | 0 | book1:C1-ml-fundamentals | book1:supervised-learning-foundations |
-| book1 | convolutional-neural-network-basics | required | covered | — | 0 | book1:C7-cnn-transfer | book1:pytorch-autograd-and-optimizer-training |
-| book1 | cpu-and-gpu-round-boundary | required | covered | — | 0 | book1:C10-competition-craft | book1:colab-coding-submission |
-| book1 | cross-entropy-loss | bridge | covered | — | 0 | book1:C11-neural-training | book1:loss-functions, book1:softmax |
+| book1 | convolutional-neural-network-basics | required | covered | — | 0 | book1:C10-cnn-transfer | book1:pytorch-autograd-and-optimizer-training |
+| book1 | cpu-and-gpu-round-boundary | required | covered | — | 0 | book1:C11-competition-craft | book1:colab-coding-submission |
+| book1 | cross-entropy-loss | bridge | covered | — | 0 | book1:C8-neural-training | book1:loss-functions, book1:softmax |
 | book1 | cross-validation | required | covered | — | 0 | book1:C4-classical-ml-practice | book1:supervised-learning-foundations, book1:train-test-split |
 | book1 | decision-trees | required | covered | — | 0 | book1:C12-classical-models | book1:loss-functions, book1:supervised-learning-foundations |
-| book1 | dropout | required | covered | — | 0 | book1:C11-neural-training | book1:multilayer-perceptron-model, book1:pytorch-autograd-and-optimizer-training |
-| book1 | end-to-end-model-selection | required | covered | — | 0 | book1:C10-competition-craft | book1:cross-validation, book1:loss-functions |
+| book1 | dropout | required | covered | — | 0 | book1:C8-neural-training | book1:multilayer-perceptron-model, book1:pytorch-autograd-and-optimizer-training |
+| book1 | end-to-end-model-selection | required | covered | — | 0 | book1:C11-competition-craft | book1:cross-validation, book1:loss-functions |
 | book1 | ensemble-learning | required | covered | — | 0 | book1:C12-classical-models | book1:bias-variance-tradeoff, book1:decision-trees |
-| book1 | forward-propagation-by-hand | required | covered | — | 0 | book1:C5-neural-networks | book1:affine-neural-network-layer |
-| book1 | fully-connected-network-from-scratch | required | covered | — | 0 | book1:C11-neural-training | book1:backpropagation-by-hand, book1:cross-entropy-loss, book1:softmax |
-| book1 | hidden-test-model-evaluation | required | covered | — | 0 | book1:C10-competition-craft | book1:end-to-end-model-selection |
+| book1 | forward-propagation-by-hand | required | covered | — | 0 | book1:C6-neural-networks | book1:affine-neural-network-layer |
+| book1 | fully-connected-network-from-scratch | required | covered | — | 0 | book1:C8-neural-training | book1:backpropagation-by-hand, book1:cross-entropy-loss, book1:softmax |
+| book1 | hidden-test-model-evaluation | required | covered | — | 0 | book1:C11-competition-craft | book1:end-to-end-model-selection |
 | book1 | k-means-clustering | required | covered | — | 0 | book1:C12-classical-models | book1:distance-metrics, book1:expectation, book1:unsupervised-learning-foundations |
 | book1 | knn | required | covered | — | 0 | book1:C4-classical-ml-practice | book1:distance-metrics, book1:supervised-learning-foundations |
 | book1 | linear-regression | required | covered | — | 0 | book1:C2-linear-models | book1:linear-algebra-foundations, book1:multivariable-derivatives, book1:supervised-learning-foundations |
 | book1 | linear-regression-estimator-derivation | required | covered | — | 0 | book1:C2-linear-models | book1:linear-regression, book1:matrix-multiplication, book1:multivariable-derivatives |
 | book1 | logistic-regression | required | covered | — | 0 | book1:C12-classical-models | book1:gradient-descent-optimization, book1:linear-regression, book1:loss-functions |
 | book1 | loss-functions | required | covered | — | 0 | book1:C2-linear-models | book1:multivariable-derivatives, book1:supervised-learning-foundations |
-| book1 | multilayer-perceptron-model | required | covered | — | 0 | book1:C11-neural-training | book1:affine-neural-network-layer, book1:loss-functions |
-| book1 | noncoding-and-coding-task-switching | required | covered | — | 0 | book1:C10-competition-craft | book1:markdown-text-communication, book1:python-programming |
+| book1 | multilayer-perceptron-model | required | covered | — | 0 | book1:C8-neural-training | book1:affine-neural-network-layer, book1:loss-functions |
+| book1 | noncoding-and-coding-task-switching | required | covered | — | 0 | book1:C11-competition-craft | book1:markdown-text-communication, book1:python-programming |
 | book1 | numpy-pca-class-from-scratch | required | covered | — | 0 | book1:C9-dimensionality-reduction | book1:pca-centered-covariance-eigenproblem-derivation, book1:principal-component-analysis, book1:python-programming |
 | book1 | ols-rank-identifiability-and-pseudoinverse | bridge | covered | — | 0 | book1:C2-linear-models | book1:linear-regression-estimator-derivation, book1:rank |
 | book1 | pca-black-box-insufficiency | required | covered | — | 0 | book1:C9-dimensionality-reduction | book1:numpy-pca-class-from-scratch, book1:pca-centered-covariance-eigenproblem-derivation |
 | book1 | pca-centered-covariance-eigenproblem-derivation | required | covered | — | 0 | book1:C9-dimensionality-reduction | book1:covariance, book1:eigenvalues-and-eigenvectors, book1:principal-component-analysis |
 | book1 | principal-component-analysis | required | covered | — | 0 | book1:C9-dimensionality-reduction | book1:matrix-decompositions, book1:probability-and-statistics-foundations |
-| book1 | pytorch-autograd-and-optimizer-training | required | covered | — | 0 | book1:C11-neural-training | book1:backpropagation-by-hand, book1:pytorch-deep-learning-programming |
-| book1 | pytorch-deep-learning-programming | required | covered | — | 0 | book1:C6-pytorch | book1:numpy-programming, book1:python-programming |
-| book1 | pytorch-not-tensorflow-workflow | required | covered | — | 0 | book1:C6-pytorch | book1:pytorch-deep-learning-programming |
-| book1 | softmax | bridge | covered | — | 0 | book1:C11-neural-training | book1:affine-neural-network-layer, book1:probability-and-statistics-foundations |
+| book1 | pytorch-autograd-and-optimizer-training | required | covered | — | 0 | book1:C8-neural-training | book1:backpropagation-by-hand, book1:pytorch-deep-learning-programming |
+| book1 | pytorch-deep-learning-programming | required | covered | — | 0 | book1:C7-pytorch | book1:numpy-programming, book1:python-programming |
+| book1 | pytorch-not-tensorflow-workflow | required | covered | — | 0 | book1:C7-pytorch | book1:pytorch-deep-learning-programming |
+| book1 | softmax | bridge | covered | — | 0 | book1:C8-neural-training | book1:affine-neural-network-layer, book1:probability-and-statistics-foundations |
 | book1 | supervised-learning-foundations | required | covered | — | 0 | book1:C1-ml-fundamentals | book1:probability-and-statistics-foundations, book1:python-programming |
 | book1 | support-vector-machine | required | covered | — | 0 | book1:C12-classical-models | book1:constrained-optimization-lagrangian-duality, book1:valid-kernel-positive-definite-proof |
-| book1 | theory-and-programming-integration | required | covered | — | 0 | book1:C10-competition-craft | book1:noncoding-and-coding-task-switching |
+| book1 | theory-and-programming-integration | required | covered | — | 0 | book1:C11-competition-craft | book1:noncoding-and-coding-task-switching |
 | book1 | unsupervised-learning-foundations | required | covered | — | 0 | book1:C1-ml-fundamentals | book1:linear-algebra-foundations, book1:probability-and-statistics-foundations |
 
 ### round-2-extension
@@ -134,7 +134,7 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 | book2 | multivariate-gaussian | bridge | covered | — | 0 | book2:B2-022-probabilistic-latent-models | book1:eigenvalues-and-eigenvectors, book1:probability-and-statistics-foundations |
 | book2 | nlp-fine-tuning | required | covered | — | 0 | book2:B2-020-language-transformers | book1:pytorch-autograd-and-optimizer-training, book2:nlp-pretraining |
 | book2 | nlp-pretraining | required | covered | — | 0 | book2:B2-020-language-transformers | book2:nlp-transformers |
-| book2 | nlp-tokenization | required | covered | — | 0 | book1:C8-embeddings | book1:python-programming |
+| book2 | nlp-tokenization | required | covered | — | 0 | book1:C5-embeddings | book1:python-programming |
 | book2 | nlp-transformers | required | covered | — | 0 | book2:B2-020-language-transformers | book2:nlp-tokenization, book2:transformer-architecture-foundations |
 | book2 | nlp-word-embeddings | required | covered | — | 0 | book2:B2-020-language-transformers | book1:linear-algebra-foundations, book2:nlp-tokenization |
 | book2 | object-detection | required | covered | — | 0 | book2:B2-021-cross-modal-transformers-vision | book1:convolutional-neural-network-basics |
@@ -161,12 +161,12 @@ These topics were adjudicated explicitly but remain outside atomic required cove
 
 | Book | Unit | Title | Layer | Hours | Schedule action | Prerequisites | Owns | Provisional concepts |
 |---|---|---|---|---:|---|---|---|---|
-| book2 | book2:B2-019-attention-transformers | Attention and Transformer Mechanics | round-2-extension | 22–28 | extend | book1:C11-neural-training, book1:C6-pytorch, book1:C7-cnn-transfer, book1:C8-embeddings | book2:attention-complexity-analysis, book2:attention-from-scratch, book2:attention-mechanism-foundations, book2:multi-head-attention, book2:positional-encoding, book2:self-attention, book2:transformer-architecture-foundations | — |
-| book2 | book2:B2-020-language-transformers | Language Transformers | round-2-extension | 26–32 | extend | book1:C11-neural-training, book1:C6-pytorch, book1:C7-cnn-transfer, book1:F1-scientific-python, book1:F3-matrices, book2:B2-019-attention-transformers | book2:nlp-fine-tuning, book2:nlp-pretraining, book2:nlp-transformers, book2:nlp-word-embeddings, book2:transformer-nlp-applications | — |
-| book2 | book2:B2-021-cross-modal-transformers-vision | Cross-modal Transformers and Advanced Vision | round-2-extension | 22–28 | extend | book1:C11-neural-training, book1:C6-pytorch, book1:C7-cnn-transfer, book1:F1-scientific-python, book1:F3-matrices, book2:B2-019-attention-transformers, book2:B2-020-language-transformers | book2:graph-neural-network-transformer-applications, book2:object-detection, book2:unet, book2:vision-transformers | — |
-| book2 | book2:B2-022-probabilistic-latent-models | Probabilistic Latent Models | round-2-extension | 22–28 | extend | book1:C1-ml-fundamentals, book1:C11-neural-training, book1:C2-linear-models, book1:C5-neural-networks, book1:C6-pytorch, book1:C9-dimensionality-reduction, book1:F1-scientific-python, book1:F3-matrices, book1:F4-multivar-calculus, book1:F5-probability, book1:F6-svd-spectral, book2:B2-021-cross-modal-transformers-vision | book2:autoencoder, book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian, book2:variational-autoencoder | — |
-| book2 | book2:B2-023-generative-models-diffusion | Generative Models and Diffusion | round-2-extension | 20–26 | extend | book1:C1-ml-fundamentals, book1:C11-neural-training, book1:C2-linear-models, book1:C5-neural-networks, book1:C6-pytorch, book1:F1-scientific-python, book1:F3-matrices, book1:F4-multivar-calculus, book1:F5-probability, book2:B2-019-attention-transformers, book2:B2-020-language-transformers, book2:B2-021-cross-modal-transformers-vision, book2:B2-022-probabilistic-latent-models | book2:denoising-diffusion-probabilistic-models, book2:generative-adversarial-network, book2:stable-diffusion | — |
-| book2 | book2:B2-024-gpu-scientific-ml-capstone | GPU Scientific Modeling Capstone | round-2-extension | 30–40 | extend | book1:C1-ml-fundamentals, book1:C10-competition-craft, book1:C11-neural-training, book1:C12-classical-models, book1:C2-linear-models, book1:C3-gradient-descent, book1:C5-neural-networks, book1:C6-pytorch, book1:C7-cnn-transfer, book1:F1-scientific-python, book1:F3-matrices, book1:F4-multivar-calculus, book1:F5-probability, book2:B2-023-generative-models-diffusion | book2:gpu-colab-l4-workflow, book2:mixture-parameter-regression, book2:open-ended-experiment-design, book2:open-ended-model-evaluation, book2:scientific-ml-inverse-problems, book2:semi-supervised-pseudo-labeling | — |
+| book2 | book2:B2-019-attention-transformers | Attention and Transformer Mechanics | round-2-extension | 22–28 | extend | book1:C10-cnn-transfer, book1:C5-embeddings, book1:C7-pytorch, book1:C8-neural-training | book2:attention-complexity-analysis, book2:attention-from-scratch, book2:attention-mechanism-foundations, book2:multi-head-attention, book2:positional-encoding, book2:self-attention, book2:transformer-architecture-foundations | — |
+| book2 | book2:B2-020-language-transformers | Language Transformers | round-2-extension | 26–32 | extend | book1:C10-cnn-transfer, book1:C7-pytorch, book1:C8-neural-training, book1:F1-scientific-python, book1:F4-matrices, book2:B2-019-attention-transformers | book2:nlp-fine-tuning, book2:nlp-pretraining, book2:nlp-transformers, book2:nlp-word-embeddings, book2:transformer-nlp-applications | — |
+| book2 | book2:B2-021-cross-modal-transformers-vision | Cross-modal Transformers and Advanced Vision | round-2-extension | 22–28 | extend | book1:C10-cnn-transfer, book1:C7-pytorch, book1:C8-neural-training, book1:F1-scientific-python, book1:F4-matrices, book2:B2-019-attention-transformers, book2:B2-020-language-transformers | book2:graph-neural-network-transformer-applications, book2:object-detection, book2:unet, book2:vision-transformers | — |
+| book2 | book2:B2-022-probabilistic-latent-models | Probabilistic Latent Models | round-2-extension | 22–28 | extend | book1:C1-ml-fundamentals, book1:C2-linear-models, book1:C6-neural-networks, book1:C7-pytorch, book1:C8-neural-training, book1:C9-dimensionality-reduction, book1:F1-scientific-python, book1:F3-multivar-calculus, book1:F4-matrices, book1:F5-probability, book1:F6-svd-spectral, book2:B2-021-cross-modal-transformers-vision | book2:autoencoder, book2:gaussian-reparameterization, book2:kl-divergence, book2:multivariate-gaussian, book2:variational-autoencoder | — |
+| book2 | book2:B2-023-generative-models-diffusion | Generative Models and Diffusion | round-2-extension | 20–26 | extend | book1:C1-ml-fundamentals, book1:C2-linear-models, book1:C6-neural-networks, book1:C7-pytorch, book1:C8-neural-training, book1:F1-scientific-python, book1:F3-multivar-calculus, book1:F4-matrices, book1:F5-probability, book2:B2-019-attention-transformers, book2:B2-020-language-transformers, book2:B2-021-cross-modal-transformers-vision, book2:B2-022-probabilistic-latent-models | book2:denoising-diffusion-probabilistic-models, book2:generative-adversarial-network, book2:stable-diffusion | — |
+| book2 | book2:B2-024-gpu-scientific-ml-capstone | GPU Scientific Modeling Capstone | round-2-extension | 30–40 | extend | book1:C1-ml-fundamentals, book1:C10-cnn-transfer, book1:C11-competition-craft, book1:C12-classical-models, book1:C2-linear-models, book1:C3-gradient-descent, book1:C6-neural-networks, book1:C7-pytorch, book1:C8-neural-training, book1:F1-scientific-python, book1:F3-multivar-calculus, book1:F4-matrices, book1:F5-probability, book2:B2-023-generative-models-diffusion | book2:gpu-colab-l4-workflow, book2:mixture-parameter-regression, book2:open-ended-experiment-design, book2:open-ended-model-evaluation, book2:scientific-ml-inverse-problems, book2:semi-supervised-pseudo-labeling | — |
 
 ## Dependency-ordered content tranche queue
 

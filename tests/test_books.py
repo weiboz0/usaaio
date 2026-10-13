@@ -90,8 +90,8 @@ def _write_book(
         evidence = {
             "book": "book1",
             "concepts": ["tokenization"],
-            "lesson_paths": ["units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb"],
-            "practices": ["C8-p01"],
+            "lesson_paths": ["units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb"],
+            "practices": ["C5-p01"],
             "assessments": ["r1-001-p05-1"],
         }
     syllabus = (
@@ -413,8 +413,8 @@ def test_cross_book_import_requires_registry_dependency_and_qualified_owner(
             id="prerequisite-concept-evidence-lesson",
         ),
         pytest.param(
-            lambda raw: raw["evidence_imports"]["assessments"].append("C8-p01"),
-            "C8-p01",
+            lambda raw: raw["evidence_imports"]["assessments"].append("C5-p01"),
+            "C5-p01",
             id="evidence-practice-assessment",
         ),
     ],
@@ -459,7 +459,7 @@ def _write_assessment_owner(repo: Path, test_id: str, assessment_id: str) -> Non
 def test_evidence_resolution_rejects_duplicate_owner_matches(tmp_path: Path, kind: str) -> None:
     write_two_book_repo(tmp_path)
     if kind == "practice":
-        identity = "C8-p01"
+        identity = "C5-p01"
         _write_practice_owner(tmp_path, "C8-first", identity)
         _write_practice_owner(tmp_path, "C8-second", identity)
     else:

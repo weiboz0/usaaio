@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import importlib.util
 import json
 import os
 import re
@@ -31,6 +32,27 @@ CONTENT_TOKENS = {
 
 def _inventory() -> dict[str, Any]:
     return yaml.safe_load(INVENTORY.read_text(encoding="utf-8"))
+
+
+def _live_book1_path(historical: str) -> Path:
+    """A pre-Plan 019 `units/<old id>/...` path resolved in today's tree.
+
+    The inventory keeps historical paths; Plan 031 renamed the unit folders, so the live
+    path maps the old id through the renumbering table and resolves the folder by id.
+    """
+    from tools.books import unit_dir
+
+    parts = historical.split("/")
+    if parts[0] != "units":
+        return ROOT / "book1" / historical
+    spec = importlib.util.spec_from_file_location(
+        "renumber_live_paths", ROOT / "scripts" / "renumber-book1-units.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    folder = unit_dir(ROOT / "book1", module.OLD_TO_NEW_ID[parts[1]])
+    return folder.joinpath(*parts[2:])
 
 
 def _notebook_pyproject_cells(path: Path) -> list[int]:
@@ -77,7 +99,7 @@ def test_path_inventory_pins_exactly_64_code_cell_pyproject_consumers() -> None:
     else:
         assert discovered == [], discovered
         for row in rows:
-            migrated_path = ROOT / "book1" / row["path"]
+            migrated_path = _live_book1_path(row["path"])
             assert migrated_path.is_file(), row["path"]
             assert _notebook_pyproject_cells(migrated_path) == []
 
@@ -111,7 +133,7 @@ def test_a_65th_unclassified_pyproject_notebook_is_discovered(tmp_path: Path) ->
 def test_path_inventory_names_split_token_and_special_relative_consumers() -> None:
     inventory = _inventory()
     assert inventory["split_token_python_consumers"] == [
-        "tests/test_c11_solution_regressions.py",
+        "tests/test_c8_solution_regressions.py",
         "tests/test_c12_solution_regressions.py",
         "tests/test_c12_statement_contracts.py",
     ]
@@ -137,7 +159,7 @@ def test_path_inventory_names_split_token_and_special_relative_consumers() -> No
         path = ROOT / relative
         legacy = path.exists()
         if not path.exists():
-            path = ROOT / "book1" / relative
+            path = _live_book1_path(relative)
         assert path.is_file(), relative
         notebook = json.loads(path.read_text(encoding="utf-8"))
         for index, markers in cells.items():
@@ -1381,8 +1403,8 @@ def test_book_local_generated_paths_are_ignored_without_ignoring_sources(
         "book1/mocktests/r1-001/build/test.pdf",
         "book1/reference/r1-2026/paper.pdf",
         "book2/reference/r2-2026/day1.pdf",
-        "book1/units/C10-competition-craft/data/heldout.csv",
-        "book1/units/C10-competition-craft/practice/p15_contract.csv",
+        "book1/units/18-C11-competition-craft/data/heldout.csv",
+        "book1/units/18-C11-competition-craft/practice/p15_contract.csv",
         "book1/mocktests/r1-001/data/p09_heldout.csv",
     )
     sources = (
@@ -1390,7 +1412,7 @@ def test_book_local_generated_paths_are_ignored_without_ignoring_sources(
         "book2/syllabus.md",
         "book1/reference/analysis.md",
         "book2/reference/analysis.md",
-        "book1/units/C10-competition-craft/data/make_dataset.py",
+        "book1/units/18-C11-competition-craft/data/make_dataset.py",
         "book1/mocktests/r1-001/data/gen_p09.py",
         "book1/mocktests/r1-001/problems/p09.ipynb",
     )
@@ -2113,3 +2135,150 @@ def test_permanent_protected_mode_rejects_future_token_path_change(tmp_path: Pat
 
     assert proc.returncode != 0
     assert "protected token path" in proc.stdout + proc.stderr
+
+
+# --- Plan 031: the chained plan031-rename token exception ------------------------------------
+
+PLAN031_OLD = "book1/units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb"
+PLAN031_NEW = "book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb"
+PLAN031_ROOT_CELL = [
+    "import os, pathlib\n",
+    '_env_root = os.environ.get("USAAIO_BOOK_ROOT")\n',
+    "if _env_root:\n",
+    "    _root = pathlib.Path(_env_root).resolve()\n",
+    "else:\n",
+    "    _start = pathlib.Path.cwd().resolve()\n",
+    "    _root = next(\n",
+    "        p for p in [_start, *_start.parents]\n",
+    '        if (p / "syllabus.md").is_file() and (p / "curriculum").is_dir()\n',
+    "    )\n",
+    'os.environ["GENSIM_DATA_DIR"] = str(_root / "reference" / "cache" / "gensim")\n',
+    "\n",
+    "import numpy as np\n",
+    "from gensim.utils import simple_preprocess",
+]
+
+
+def _plan031_token_repo(tmp_path: Path) -> Path:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _git(repo, "init", "-b", "main")
+    _git(repo, "config", "user.email", "test@example.com")
+    _git(repo, "config", "user.name", "Test")
+    token = repo / PLAN031_OLD
+    token.parent.mkdir(parents=True)
+    notebook = {
+        "cells": [
+            {
+                "cell_type": "markdown",
+                "metadata": {},
+                "source": ["# C8-embeddings — Session 01\n", "Builds on **F3-matrices**.\n"],
+            },
+            {"cell_type": "code", "metadata": {}, "source": PLAN031_ROOT_CELL},
+            {"cell_type": "markdown", "metadata": {}, "source": ["C8 practice: C8-p05\n"]},
+        ],
+        "metadata": {},
+        "nbformat": 4,
+        "nbformat_minor": 5,
+    }
+    token.write_text(json.dumps(notebook, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-m", "base")
+    for name in ("verify-staged-scope.py", "renumber-book1-units.py"):
+        target = repo / "scripts" / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / "scripts" / name, target)
+    return repo
+
+
+def _plan031_rename(repo: Path, *, extra: str = "") -> None:
+    spec = importlib.util.spec_from_file_location(
+        "renumber_for_test", ROOT / "scripts" / "renumber-book1-units.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    old_text = (repo / PLAN031_OLD).read_text(encoding="utf-8")
+    (repo / PLAN031_NEW).parent.mkdir(parents=True)
+    _git(repo, "mv", PLAN031_OLD, PLAN031_NEW)
+    new_text = module.rewrite_text(old_text, PLAN031_OLD)
+    assert "C5-embeddings" in new_text and "F4-matrices" in new_text and "C5-p05" in new_text
+    (repo / PLAN031_NEW).write_text(new_text.replace("practice", "practice" + extra), encoding="utf-8")
+    _git(repo, "add", "-A")
+
+
+def _plan031_scope(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [sys.executable, str(repo / "scripts" / "verify-staged-scope.py"), *args, str(INVENTORY)],
+        cwd=repo,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def test_inventory_token_exception_is_a_typed_chain() -> None:
+    entries = _inventory()["token_path_exception"]
+    assert [entry["kind"] for entry in entries] == ["plan019-cell1", "plan031-rename"]
+    assert entries[1]["old_path"] == entries[0]["new_path"] == PLAN031_OLD
+    assert entries[1]["new_path"] == PLAN031_NEW
+    assert entries[0]["path_resolution_source_sha256"] == entries[1]["path_resolution_source_sha256"]
+    assert (ROOT / PLAN031_NEW).is_file()
+
+
+@pytest.mark.parametrize("mode", ["--protected-cached", "--cached"])
+def test_plan031_mapped_rename_of_token_notebook_is_accepted(tmp_path: Path, mode: str) -> None:
+    repo = _plan031_token_repo(tmp_path)
+    _plan031_rename(repo)
+
+    proc = _plan031_scope(repo, mode)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+def test_plan031_mapped_rename_is_accepted_in_protected_range(tmp_path: Path) -> None:
+    repo = _plan031_token_repo(tmp_path)
+    base = _git(repo, "rev-parse", "HEAD").stdout.strip()
+    _plan031_rename(repo)
+    _git(repo, "commit", "-m", "renumber")
+
+    proc = _plan031_scope(repo, "--protected-range", "--base", base)
+
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+def test_plan031_rename_with_any_other_change_is_rejected(tmp_path: Path) -> None:
+    repo = _plan031_token_repo(tmp_path)
+    _plan031_rename(repo, extra=" (edited)")
+
+    proc = _plan031_scope(repo, "--protected-cached")
+
+    assert proc.returncode != 0
+    assert "beyond the Plan 031 renumbering" in proc.stderr
+
+
+def test_plan031_rename_requires_the_pinned_rewrite_script(tmp_path: Path) -> None:
+    repo = _plan031_token_repo(tmp_path)
+    _plan031_rename(repo)
+    with (repo / "scripts" / "renumber-book1-units.py").open("a", encoding="utf-8") as handle:
+        handle.write("\n# drift\n")
+
+    proc = _plan031_scope(repo, "--protected-cached")
+
+    assert proc.returncode != 0
+    assert "does not match its pin" in proc.stderr
+
+
+@pytest.mark.parametrize("mode", ["--protected-cached", "--protected-diff"])
+def test_later_edit_to_renamed_token_notebook_is_still_rejected(tmp_path: Path, mode: str) -> None:
+    repo = _plan031_token_repo(tmp_path)
+    _plan031_rename(repo)
+    _git(repo, "commit", "-m", "renumber")
+    path = repo / PLAN031_NEW
+    path.write_text(path.read_text(encoding="utf-8").replace("Session 01", "Session 1"), encoding="utf-8")
+    _git(repo, "add", PLAN031_NEW)
+
+    proc = _plan031_scope(repo, mode)
+
+    assert proc.returncode != 0
+    assert PLAN031_NEW in proc.stderr

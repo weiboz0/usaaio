@@ -22,7 +22,13 @@ from pathlib import Path
 
 import yaml
 
-from tools.books import load_book_catalog, resolve_contained_path
+from tools.books import (
+    load_book_catalog,
+    resolve_contained_path,
+    unit_dir,
+    unit_id_of,
+    unit_relpath,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOK_ROOT: Path | None = None
@@ -36,19 +42,19 @@ REGISTER_UNITS = (
     "F1-scientific-python",
     "F2-vectors",
     "C1-ml-fundamentals",
-    "C11-neural-training",
+    "C8-neural-training",
     "C12-classical-models",
 )
 # Tests may override this inventory; normal runs discover every unit manifest.
 UNITS: tuple[str, ...] | None = None
-# C7 has no honest historical per-problem minute data. A future capstone budget change must
-# update both the student-facing statement and this explicit exception map. Unlike C11's
+# C10 has no honest historical per-problem minute data. A future capstone budget change must
+# update both the student-facing statement and this explicit exception map. Unlike C8's
 # manifest-driven budgets, these four values intentionally remain literal and closed-world.
-C7_BUDGET_REGISTER = {
-    "C7-p10": 75,
-    "C7-p24": 75,
-    "C7-p26": 75,
-    "C7-p27": 75,
+C10_BUDGET_REGISTER = {
+    "C10-p10": 75,
+    "C10-p24": 75,
+    "C10-p26": 75,
+    "C10-p27": 75,
 }
 TYPE_LABELS = {
     "mc": "multiple choice",
@@ -115,6 +121,15 @@ def _type_matches(actual: str, type_label: str, raw_type: str) -> bool:
     return False
 
 
+def _unit_path(unit: str) -> Path:
+    """`units/<folder>` for a unit id (Plan 031); an unresolvable unit falls back to `units/<id>`
+    so the containment check below still reports the real finding."""
+    try:
+        return Path(unit_relpath(_content_root(), unit))
+    except ValueError:
+        return Path("units") / unit
+
+
 def _check_solution_header(unit: str, problem: dict) -> list[str]:
     """Most solutions carry no metadata header, which is the corpus convention. Where one IS
     present it is a second copy of the manifest's claims, and an unenforced second copy is how
@@ -126,7 +141,7 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
         return [f"{problem['id']}: solution_path is missing"]
     try:
         path = resolve_contained_path(
-            _content_root(), Path("units") / unit / relative,
+            _content_root(), _unit_path(unit) / relative,
             label=f"{problem['id']}: solution_path",
         )
     except ValueError as exc:
@@ -156,7 +171,7 @@ def _check_solution_header(unit: str, problem: dict) -> list[str]:
         None,
     )
     if header is None:
-        if unit == "C11-neural-training":
+        if unit == "C8-neural-training":
             return [f"{problem['id']}: solution metadata header is missing"]
         return []
     if HEADER_NAME_RE.findall(header) != ["Type", "Difficulty", "Concepts"]:
@@ -183,7 +198,7 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
         return [f"{problem['id']}: statement path is missing"]
     try:
         path = resolve_contained_path(
-            _content_root(), Path("units") / unit / relative,
+            _content_root(), _unit_path(unit) / relative,
             label=f"{problem['id']}: statement path",
         )
     except ValueError as exc:
@@ -238,7 +253,7 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
     # The multiple-choice option-format checks stay scoped to the tranche-1 units that were
     # authored against that exact register; widening them is a separate, evidence-led change.
     if unit in REGISTER_UNITS and problem["type"].startswith("mc"):
-        if unit in {"C11-neural-training", "C12-classical-models"}:
+        if unit in {"C8-neural-training", "C12-classical-models"}:
             if "Reasoning is required." not in all_markdown or (
                 "Reasoning is not required." in all_markdown
             ):
@@ -261,10 +276,10 @@ def _check_problem(unit: str, problem: dict) -> list[str]:
         budgets = re.findall(r"(?m)^\*\*Time budget:\*\* ([1-9]\d*) minutes$", all_markdown)
         if budgets != [str(minutes)]:
             errors.append(f"time budget is missing or does not match manifest minutes {minutes}")
-    elif unit == "C7-cnn-transfer":
+    elif unit == "C10-cnn-transfer":
         budgets = re.findall(r"(?m)^\*\*Time budget:\*\* ([1-9]\d*) minutes$", all_markdown)
-        if problem["id"] in C7_BUDGET_REGISTER:
-            literal_minutes = C7_BUDGET_REGISTER[problem["id"]]
+        if problem["id"] in C10_BUDGET_REGISTER:
+            literal_minutes = C10_BUDGET_REGISTER[problem["id"]]
             if budgets != [str(literal_minutes)]:
                 errors.append(
                     "time budget is missing or does not match literal register minutes "
@@ -305,23 +320,24 @@ def main(argv: list[str] | None = None) -> int:
     checked = 0
     failures: list[str] = []
     units = UNITS or tuple(
-        path.parent.name for path in sorted((_content_root() / "units").glob("*/manifest.yaml"))
+        unit_id_of(path.parent.name)
+        for path in sorted((_content_root() / "units").glob("*/manifest.yaml"))
     )
     for unit in units:
-        manifest_path = _content_root() / "units" / unit / "manifest.yaml"
+        manifest_path = unit_dir(_content_root(), unit) / "manifest.yaml"
         manifest = yaml.safe_load(manifest_path.read_text())
-        if unit == "C7-cnn-transfer":
+        if unit == "C10-cnn-transfer":
             manifest_ids = [problem.get("id") for problem in manifest.get("practice", [])]
-            for required_id in C7_BUDGET_REGISTER:
+            for required_id in C10_BUDGET_REGISTER:
                 count = manifest_ids.count(required_id)
                 if count == 0:
                     failures.append(
-                        "C7-budget-register: C7 budget register required id "
+                        "C10-budget-register: C10 budget register required id "
                         f"{required_id} is missing from manifest"
                     )
                 elif count > 1:
                     failures.append(
-                        "C7-budget-register: C7 budget register required id "
+                        "C10-budget-register: C10 budget register required id "
                         f"{required_id} occurs {count} times in manifest"
                     )
         for problem in manifest["practice"]:

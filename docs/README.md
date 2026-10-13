@@ -5,6 +5,7 @@ Project documentation and the plan-driven execution lifecycle.
 - [Book 1 course structure](../book1/docs/course-structure.md) — the complete Round 1 pacing map.
 - [Book 2 course structure](../book2/docs/course-structure.md) — the complete Round 2 program skeleton.
 - [`books.yaml`](../books.yaml) — the authoritative book registry and dependency order.
+- [Unit renumbering](unit-renumbering.md) — Plan 031's old-to-new Book 1 unit codes; plans and designs before it use the old codes.
 
 ## Plan-driven execution docs
 

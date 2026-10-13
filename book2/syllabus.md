@@ -34,20 +34,20 @@ imports:
   units:
   - F1-scientific-python
   - F2-vectors
-  - F3-matrices
-  - F4-multivar-calculus
+  - F4-matrices
+  - F3-multivar-calculus
   - F5-probability
   - F6-svd-spectral
   - C1-ml-fundamentals
   - C2-linear-models
   - C3-gradient-descent
-  - C5-neural-networks
-  - C6-pytorch
-  - C7-cnn-transfer
-  - C8-embeddings
+  - C6-neural-networks
+  - C7-pytorch
+  - C10-cnn-transfer
+  - C5-embeddings
   - C9-dimensionality-reduction
-  - C10-competition-craft
-  - C11-neural-training
+  - C11-competition-craft
+  - C8-neural-training
   - C12-classical-models
   concepts:
   - numpy-arrays
@@ -114,16 +114,16 @@ evidence_imports:
   - gensim-usage
   - embedding-matrices
   lesson_paths:
-  - units/C8-embeddings/lessons/01-tokens-and-embeddings.ipynb
+  - units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb
   practices:
-  - C8-p01
-  - C8-p02
-  - C8-p05
-  - C8-p06
-  - C8-p12
-  - C8-p13
-  - C8-p15
-  - C8-p17
+  - C5-p01
+  - C5-p02
+  - C5-p05
+  - C5-p06
+  - C5-p12
+  - C5-p13
+  - C5-p15
+  - C5-p17
   assessments:
   - r1-001-p05-1
   - r1-001-p05-2
@@ -212,10 +212,10 @@ units:
   layer: round-2-extension
   round: 2
   prereqs:
-  - book1:C6-pytorch
-  - book1:C7-cnn-transfer
-  - book1:C8-embeddings
-  - book1:C11-neural-training
+  - book1:C7-pytorch
+  - book1:C10-cnn-transfer
+  - book1:C5-embeddings
+  - book1:C8-neural-training
   concept_prerequisites:
   - book1:numpy-arrays
   - book1:broadcasting
@@ -258,10 +258,10 @@ units:
   round: 2
   prereqs:
   - book1:F1-scientific-python
-  - book1:F3-matrices
-  - book1:C6-pytorch
-  - book1:C7-cnn-transfer
-  - book1:C11-neural-training
+  - book1:F4-matrices
+  - book1:C7-pytorch
+  - book1:C10-cnn-transfer
+  - book1:C8-neural-training
   - B2-019-attention-transformers
   concept_prerequisites:
   - attention-mask
@@ -296,10 +296,10 @@ units:
   round: 2
   prereqs:
   - book1:F1-scientific-python
-  - book1:F3-matrices
-  - book1:C6-pytorch
-  - book1:C7-cnn-transfer
-  - book1:C11-neural-training
+  - book1:F4-matrices
+  - book1:C7-pytorch
+  - book1:C10-cnn-transfer
+  - book1:C8-neural-training
   - B2-019-attention-transformers
   - B2-020-language-transformers
   concept_prerequisites:
@@ -338,16 +338,16 @@ units:
   round: 2
   prereqs:
   - book1:F1-scientific-python
-  - book1:F3-matrices
-  - book1:F4-multivar-calculus
+  - book1:F4-matrices
+  - book1:F3-multivar-calculus
   - book1:F5-probability
   - book1:F6-svd-spectral
   - book1:C1-ml-fundamentals
   - book1:C2-linear-models
-  - book1:C5-neural-networks
-  - book1:C6-pytorch
+  - book1:C6-neural-networks
+  - book1:C7-pytorch
   - book1:C9-dimensionality-reduction
-  - book1:C11-neural-training
+  - book1:C8-neural-training
   - B2-021-cross-modal-transformers-vision
   concept_prerequisites:
   - book1:numpy-arrays
@@ -391,14 +391,14 @@ units:
   round: 2
   prereqs:
   - book1:F1-scientific-python
-  - book1:F3-matrices
-  - book1:F4-multivar-calculus
+  - book1:F4-matrices
+  - book1:F3-multivar-calculus
   - book1:F5-probability
   - book1:C1-ml-fundamentals
   - book1:C2-linear-models
-  - book1:C5-neural-networks
-  - book1:C6-pytorch
-  - book1:C11-neural-training
+  - book1:C6-neural-networks
+  - book1:C7-pytorch
+  - book1:C8-neural-training
   - B2-019-attention-transformers
   - B2-020-language-transformers
   - B2-021-cross-modal-transformers-vision
@@ -448,17 +448,17 @@ units:
   round: 2
   prereqs:
   - book1:F1-scientific-python
-  - book1:F3-matrices
-  - book1:F4-multivar-calculus
+  - book1:F4-matrices
+  - book1:F3-multivar-calculus
   - book1:F5-probability
   - book1:C1-ml-fundamentals
   - book1:C2-linear-models
   - book1:C3-gradient-descent
-  - book1:C5-neural-networks
-  - book1:C6-pytorch
-  - book1:C7-cnn-transfer
-  - book1:C10-competition-craft
-  - book1:C11-neural-training
+  - book1:C6-neural-networks
+  - book1:C7-pytorch
+  - book1:C10-cnn-transfer
+  - book1:C11-competition-craft
+  - book1:C8-neural-training
   - book1:C12-classical-models
   - B2-023-generative-models-diffusion
   concept_prerequisites:

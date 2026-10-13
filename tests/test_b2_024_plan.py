@@ -19,17 +19,17 @@ UNIT_ID = "B2-024-gpu-scientific-ml-capstone"
 B2_023 = "B2-023-generative-models-diffusion"
 PREREQUISITES = [
     "book1:F1-scientific-python",
-    "book1:F3-matrices",
-    "book1:F4-multivar-calculus",
+    "book1:F4-matrices",
+    "book1:F3-multivar-calculus",
     "book1:F5-probability",
     "book1:C1-ml-fundamentals",
     "book1:C2-linear-models",
     "book1:C3-gradient-descent",
-    "book1:C5-neural-networks",
-    "book1:C6-pytorch",
-    "book1:C7-cnn-transfer",
-    "book1:C10-competition-craft",
-    "book1:C11-neural-training",
+    "book1:C6-neural-networks",
+    "book1:C7-pytorch",
+    "book1:C10-cnn-transfer",
+    "book1:C11-competition-craft",
+    "book1:C8-neural-training",
     "book1:C12-classical-models",
     B2_023,
 ]
@@ -58,7 +58,7 @@ CONCEPT_PREREQUISITES = [
     )
 ]
 # Book 1 units and concepts Plan 029 added to the Book 2 imports allowlist.
-IMPORT_ADDITIONS_UNITS = ["C3-gradient-descent", "C10-competition-craft", "C12-classical-models"]
+IMPORT_ADDITIONS_UNITS = ["C3-gradient-descent", "C11-competition-craft", "C12-classical-models"]
 IMPORT_ADDITIONS_CONCEPTS = [
     "invertibility-via-rank", "sum-of-squares-gradients", "overfitting",
     "accuracy-precision-recall", "class-imbalance", "linear-regression", "l2-regularization",

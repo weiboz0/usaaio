@@ -53,10 +53,10 @@ require_enforcement_file() {
 }
 require_enforcement_file "$scope_verifier" \
   100755 \
-  9153dc4396799356c6d77fe19b439d742d6d31a75c388624374f0bb0eb5129ef
+  ed9bb4ca127b96644fe18160fc8da78c966f3dd60f1d33cb050b8795bfe8ead9
 require_enforcement_file "$scope_inventory" \
   100644 \
-  9e3448476a116737001189a13758021773a169484ce0f38a950bf54ad7c5afe8
+  36e68b149428d5eb1d39b3967dc577164fb8d3457a96f63dac374b61ba1e3ff4
 
 uv run python "$scope_verifier" --protected-cached "$scope_inventory"
 uv run python "$scope_verifier" --protected-diff "$scope_inventory"
@@ -127,6 +127,25 @@ for directory in ("docs/proposals", "docs/designs", "docs/plans", "docs/reviews"
     }
     duplicate_numbers(directory, names, r"^[0-9]{3}")
 
+def rename_sources(unit_prefix: str) -> set[str]:
+    """Base-side unit folders the branch renamed (Plan 031): `git diff -M <base>` renames."""
+    if mode != "--pr" or not base:
+        return set()
+    proc = git("diff", "-M", "--name-status", "--diff-filter=R", base, "--", unit_prefix)
+    sources: set[str] = set()
+    for line in proc.stdout.splitlines():
+        fields = line.split("\t")
+        if len(fields) != 3 or not fields[1].startswith(unit_prefix) or not fields[2].startswith(unit_prefix):
+            continue
+        old_folder = fields[1][len(unit_prefix):].split("/", 1)[0]
+        new_folder = fields[2][len(unit_prefix):].split("/", 1)[0]
+        if old_folder != new_folder:
+            sources.add(old_folder)
+    return sources
+
+
+TEACHING_PREFIX = re.compile(r"^([0-9]{2})-")
+
 for book_id in ("book1", "book2"):
     unit_names: set[str] = set()
     mock_names: set[str] = set()
@@ -135,18 +154,29 @@ for book_id in ("book1", "book2"):
         unit_prefix = f"{book_id}/units/" if post else ("units/" if book_id == "book1" else "")
         mock_prefix = f"{book_id}/mocktests/" if post else ("mocktests/" if book_id == "book1" else "")
         if unit_prefix:
-            unit_names.update(
+            names = {
                 path[len(unit_prefix):].split("/", 1)[0]
                 for path in all_paths[ref]
                 if path.startswith(unit_prefix) and "/" in path[len(unit_prefix):]
-            )
+            }
+            if ref != "WORKTREE":
+                # A folder the branch renamed (old id -> NN-<new id>) is not a second unit.
+                names -= rename_sources(unit_prefix) - unit_names
+            unit_names.update(names)
         if mock_prefix:
             mock_names.update(
                 path[len(mock_prefix):].split("/", 1)[0]
                 for path in all_paths[ref]
                 if path.startswith(mock_prefix) and "/" in path[len(mock_prefix):]
             )
-    duplicate_numbers(f"{book_id}/units", unit_names, r"^(?:B[0-9]-)?[A-Z]?[0-9]+")
+    # Plan 031: Book 1 folders are `NN-<id>`; key the collision on the code after the prefix,
+    # so two folders with the same code still collide, and require unique NN prefixes.
+    duplicate_numbers(
+        f"{book_id}/units",
+        {TEACHING_PREFIX.sub("", name) for name in unit_names},
+        r"^(?:B[0-9]-)?[A-Z]?[0-9]+",
+    )
+    duplicate_numbers(f"{book_id}/units teaching-order prefix", unit_names, r"^[0-9]{2}(?=-)")
     duplicate_numbers(f"{book_id}/mocktests", mock_names, rf"^r{book_id[-1]}-[0-9]+")
 
 

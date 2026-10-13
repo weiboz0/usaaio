@@ -36,12 +36,12 @@ The scheduled total is `12,347 + 180 + 60 = 12,587` minutes.
 ## Overlapping-topic dispositions
 
 - Plan 014 shipped no top-level `synthesis/` tree.
-  It shipped six new in-unit problems: F6-p25, C3-p19, C7-p27, C9-p19, C1-p24,
+  It shipped six new in-unit problems: F6-p25, C3-p19, C10-p27, C9-p19, C1-p24,
   and F5-p19.
   F6-p25 is the one purpose-built cross-unit synthesis problem; the retagged
   existing practices and these six problems are complementary evidence for the
   Plan 015 audit, not automatic coverage findings.
-- Plan 014 shipped a BatchNorm subsection in C7's ResNet lesson and the C7-p27
+- Plan 014 shipped a BatchNorm subsection in C10's ResNet lesson and the C10-p27
   train/eval/freeze/inference clinic.
   This is partial evidence only: the shipped syllabus has no
   `batch-normalization` concept owner and no three honestly tagged unit

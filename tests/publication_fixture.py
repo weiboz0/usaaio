@@ -35,7 +35,9 @@ LESSON_DETAILS = (
 OPEN_ANSWERS = "## Collected answers\n\nOPENANSWER the answer is seven\n"
 
 
-def fixture_book(tmp_path: Path, *, selector: object = None, volumes: object = None) -> Path:
+def fixture_book(
+    tmp_path: Path, *, selector: object = None, volumes: object = None, prefixed: bool = False
+) -> Path:
     repo = tmp_path / "repo"
     book = repo / "book1"
     write_yaml(repo / "books.yaml", {"books_version": 1, "books": [{
@@ -128,4 +130,8 @@ def fixture_book(tmp_path: Path, *, selector: object = None, volumes: object = N
     if volumes is not None:
         config["volumes"] = volumes
     write_yaml(book / "publication.yaml", config)
+    if prefixed:
+        # Plan 031: Book 1 folders carry a teaching-order prefix (`NN-<unit id>`).
+        for order, unit in enumerate(("U1-alpha", "U2-beta"), start=1):
+            (book / "units" / unit).rename(book / "units" / f"{order:02d}-{unit}")
     return repo

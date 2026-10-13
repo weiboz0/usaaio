@@ -66,6 +66,19 @@ def test_clean_full_build_passes(built: Path) -> None:
     assert any("student-print: 12 pages" in line for line in result.info)
 
 
+def test_clean_full_build_passes_with_teaching_order_prefixed_folders(tmp_path: Path) -> None:
+    """Plan 031: unit folders are `NN-<id>`; chapters, titles and practice paths use ids."""
+    repo = fixture_book(tmp_path, prefixed=True)
+    assert (repo / "book1" / "units" / "01-U1-alpha").is_dir()
+    rubric = repo / "book1/mocktests/r1-001/rubric.md"
+    rubric.write_text(rubric.read_text() + "\nAward full marks only when the derivation names the stationary point.\n")
+    _render_stub(build_all(repo, "book1"))
+    result = audit(repo, "book1")
+    assert result.errors == []
+    print_qmd = (_project(repo, "student-print") / "U1-alpha.qmd").read_text()
+    assert "`units/01-U1-alpha/practice/p01.ipynb`" in print_qmd
+
+
 def test_planted_solution_chapter_in_a_student_edition(built: Path) -> None:
     project = _project(built, "student-print")
     key = _project(built, "answer-key")

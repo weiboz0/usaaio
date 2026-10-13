@@ -20,16 +20,16 @@ B2_021 = "B2-021-cross-modal-transformers-vision"
 LATER_UNITS = ("B2-023-generative-models-diffusion", "B2-024-gpu-scientific-ml-capstone")
 PREREQUISITES = [
     "book1:F1-scientific-python",
-    "book1:F3-matrices",
-    "book1:F4-multivar-calculus",
+    "book1:F4-matrices",
+    "book1:F3-multivar-calculus",
     "book1:F5-probability",
     "book1:F6-svd-spectral",
     "book1:C1-ml-fundamentals",
     "book1:C2-linear-models",
-    "book1:C5-neural-networks",
-    "book1:C6-pytorch",
+    "book1:C6-neural-networks",
+    "book1:C7-pytorch",
     "book1:C9-dimensionality-reduction",
-    "book1:C11-neural-training",
+    "book1:C8-neural-training",
     B2_021,
 ]
 OWNED_CONCEPTS = [
@@ -188,7 +188,7 @@ def test_b2_022_planned_row_is_retained_but_no_longer_provisional() -> None:
     assert len(matches) == 1
     planned = matches[0]
     assert planned["prerequisites"] == PREREQUISITES
-    assert "book1:C7-cnn-transfer" not in planned["prerequisites"]
+    assert "book1:C10-cnn-transfer" not in planned["prerequisites"]
     assert planned["provisional_concepts"] == []
     assert planned["knowledge_points"] == KNOWLEDGE_POINTS
     assert planned["estimated_hours"] == {"min": 22, "max": 28}

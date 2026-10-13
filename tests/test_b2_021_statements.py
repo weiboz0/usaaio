@@ -28,10 +28,10 @@ UNIT = BOOK2_ROOT / "units" / UNIT_ID
 SEED = 20260901
 PREREQ_UNITS = [
     "book1:F1-scientific-python",
-    "book1:F3-matrices",
-    "book1:C6-pytorch",
-    "book1:C7-cnn-transfer",
-    "book1:C11-neural-training",
+    "book1:F4-matrices",
+    "book1:C7-pytorch",
+    "book1:C10-cnn-transfer",
+    "book1:C8-neural-training",
     "B2-019-attention-transformers",
     "B2-020-language-transformers",
 ]
@@ -558,7 +558,7 @@ def test_ci_timeout_path_match_propagates_timeout_exit(tmp_path: Path) -> None:
         f"20s uv run --project .. jupyter execute {relative}"
     ]
 
-    ordinary = "units/F1-scientific-python/practice/p17_solution.ipynb"
+    ordinary = "units/01-F1-scientific-python/practice/p17_solution.ipynb"
     proc = subprocess.run(
         ["bash", str(ROOT / "scripts/ci-local.sh"), "--solution-probe", str(BOOK2_ROOT), ordinary],
         cwd=ROOT,
