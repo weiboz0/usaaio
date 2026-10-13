@@ -24,103 +24,236 @@ User directives (2026-10-12):
 
 ### D1 — The four comment rules (option C)
 
-Teaching order is Book 1 `teaching_order`, then Book 2 units in folder order.
-Inside a unit, notebooks are ordered: `lesson.ipynb` (overview), `lessons/*.ipynb` by file name, `review.ipynb`, practice statements by number, practice solutions by number.
-Mock tests come after their book's units and get their own pass (D6).
+**Order.** Teaching order is Book 1 `teaching_order`, then Book 2 units in folder order.
+Inside a unit, notebooks are ordered: `lesson.ipynb` (overview), `lessons/*.ipynb` by file name (B2-019's `00-book1-bridge.ipynb` comes first), `review.ipynb`, practice statements by number, then practice solutions by number.
+Mock tests come after their book's units (D6).
+Book 2 counts a callee as already explained when Book 1 explains it; Book 1 never counts Book 2.
 
-1. **Book-first.** The first time a callee appears in the book (Book 1 and Book 2 separately; Book 2 counts Book 1 as already taught only for callees Book 1 explains), the call carries a full comment: what it returns or does, in plain words, including the meaning of each argument used. One line where possible; a comment block on the line(s) above when it does not fit in 100 characters.
-2. **New signature.** A later use that adds a keyword argument, a positional-argument count that changes meaning (e.g. `np.arange(a, b, step)` after `np.arange(n)`), or a call mode (method vs function form, `axis=`, `keepdims=`, `dim=`, `replace=False`, `key=`, `reduction=`) carries a comment on the new element only, e.g. `# keepdims=True keeps the summed axis as length 1`.
-3. **Unit-first reminder.** The first use of a non-baseline callee in each later unit carries a reminder of six words or fewer, e.g. `# np.linalg.solve: solve Ax = b`. A unit whose overview carries the callee in its API card (D3) satisfies this rule for every notebook of that unit.
-4. **Harness cells.** Test and checker code that the student runs but does not write (`assert`, `check_*`, `_test_*`, path-finding boilerplate) gets one cell-level comment at the top saying what the cell checks, instead of per-call comments. Rules 1–3 do not apply inside a cell that starts with that note (`# Checks:` prefix).
+**Harness cells are outside the ladder.** First use (rules 1–3 and the D3 cards) is computed over non-harness code only (D1 rule 4).
+A callee that appears only in harness code needs no explanation anywhere.
 
-Baseline callees that never need a comment: the Python built-ins and string/list/dict methods in the course baseline (Calculus AB + basic Python), listed in `tools/checks/api_comments_baseline.yaml` (seeded from the survey's `BASE_BUILTINS`/`BASE_METHODS`).
+1. **Book-first.** The first non-harness use of a callee carries a full comment: what it returns or does, in plain words, with the meaning of each argument used. It goes on the same line when the line stays within 80 columns; otherwise in a comment block directly above the statement.
+2. **New signature.** A later use that adds a *semantic* keyword or call mode carries a comment on the new element only, e.g. `# keepdims=True keeps the summed axis as length 1`.
+   The trigger set is fixed in `tools/checks/api_comments_baseline.yaml` under `semantic_keywords`. It holds `axis`, `dim`, `keepdim`/`keepdims`, `replace`, `key`, `reduction`, `generator`, `dtype`, `device`, `bias`, `indexing`, `return_counts`, `ddof`, `full_matrices`, `size`, `p` and `weights`, plus positional-count changes for `arange`, `linspace`, `normal`, `zeros`/`ones`/`full`, `randint` and `split`.
+   Styling keywords (`label`, `color`, `alpha`, `linewidth`, `zorder`, `marker`, `title`, `figsize`, `fontsize`, `ls`/`lw`) are out of rule 2.
+   Task 1 may add keywords, with each one recorded in the plan.
+3. **Unit-first reminder.** In each later unit, the first non-harness use of a callee is reminded in one of two ways:
+   - inline, as a reminder of six words or fewer that names the callee, e.g. `# np.linalg.solve: solve Ax = b`;
+   - or as an entry in the unit card's "Also used here" part (D3).
+
+   Two kinds of callee are exempt from rule 3:
+   - **graduated callees**, listed under `graduated` in the baseline YAML: the everyday array, plotting and Python calls explained in F1–F5 and used in at least three earlier units, such as `np.array`, `np.zeros`, `.sum`/`.mean`/`.max`/`.min`/`.reshape`/`.copy`/`.astype`, `np.random.default_rng`/`.normal`, `plt.subplots`/`.plot`, `zip`/`sorted`/`enumerate`/`next`/`any`/`all` and `ValueError`. Rule 1 still applies at their first use, and rule 2 still applies.
+   - **self-describing callees**, listed under `no_reminder`, such as `torch.cuda.is_available`, `math.isfinite` and `ax.set_xlabel`.
+
+   Task 1 records the real per-rule counts from the check, not the survey's.
+4. **Harness code.** Harness code is test or checker code that the student runs but does not write. It is marked in one of two ways:
+   - a whole cell whose first line is `# Checks: <what this cell verifies>`;
+   - a contiguous block that starts `# Boilerplate: <what it does>` and ends with a blank line, used for the book-root/path-finding idiom.
+
+   Calls inside harness code are exempt from rules 1–3 and do not count as first use.
+   The marker is allowed only in these places:
+   - practice-statement check cells;
+   - solution notebooks' answer-check and assert-only cells;
+   - mock-test probe cells;
+   - the `# Boilerplate:` block, anywhere.
+
+   The check rejects a `# Checks:` marker in `lesson.ipynb`, `lessons/*.ipynb` or `review.ipynb`. Lesson cells that teach through asserts, for example C8 lesson 04 cells 3–7, follow rules 1–3.
+   The path-finding idiom is explained once in full at its first appearance in a lesson (C4 lesson 01), as an ordinary rule-1 comment block, and is listed as the named idiom `book-root-finder` in the baseline.
+
+Baseline callees never need a comment. They are the Python built-ins and the string, list and dict methods in the course baseline (Calculus AB plus basic Python), listed under `baseline` and seeded from the survey's `BASE_BUILTINS` and `BASE_METHODS`.
 
 ### D2 — Existing comments are never removed or reworded
 
-The user rule is absolute.
-An added comment may sit next to an existing one; when an existing comment already explains the call, nothing is added.
-Enforced mechanically by D5(b).
+The user's rule is absolute.
+An added comment may sit next to an existing one. When an existing comment already explains the call (D4), nothing is added.
+D5(b) enforces this mechanically.
 
-### D3 — Per-unit "New in this unit" API card
+### D3 — Per-unit API card
 
-Each unit's overview notebook (`lesson.ipynb`, present in every unit) gets one markdown cell titled "New code in this unit": a short table of the callees the unit introduces (book-first) with a one-line meaning each.
-The review notebook (where one exists) gets the same table under "Code you met in this unit" for revision.
-Cards are generated from the check's first-use table (D4) and hand-edited for wording; the check verifies that every book-first callee of the unit appears in its card.
+Each unit's overview `lesson.ipynb` gets one markdown cell, appended at the end of the notebook, headed "Code in this unit". It has two parts:
+
+- **New in this unit:** each book-first callee of the unit with a one-line meaning.
+- **Also used here (met earlier):** each rule-3 callee that is not reminded inline, with a reminder of six words or fewer and the unit where it was first explained.
+
+`review.ipynb`, where it exists (25 units), gets a copy of the same card at its end, under "Code you met in this unit".
+The cards are drafted from the check's first-use table and edited by hand for wording.
+The check verifies four things:
+- every book-first callee of the unit is in its "New" part;
+- every "Also used" entry is a real rule-3 callee of that unit;
+- no card names a harness-only callee;
+- the review copy has the same entries as the overview card.
 
 ### D4 — CI check `api-comments`
 
-New module `tools/checks/api_comments.py`, run per book from `scripts/ci-local.sh` (scope-aware like the other content checks: a scoped run checks the changed units but computes first-use from the whole book).
+There is a new module, `tools/checks/api_comments.py`.
 
-- Parse every code cell with `ast` (cell magics and shell lines blanked), resolve import aliases, and collect call sites with their callee name, keyword set and positional count.
-- "Explained" means: a comment on the same line, on a contiguous comment block directly above the statement, or (rule 1 only) a markdown cell among the three preceding cells that names the callee in backticks.
-- Fails on: a book-first call without explanation (rule 1); a new-signature call without a comment naming the new keyword or mode (rule 2); a unit-first call without a comment or API-card entry (rule 3); a unit card missing a book-first callee (D3).
-- Receiver-type ambiguity (bare methods such as `.fit`, `.view`, `.sum`) is resolved by an explicit table in the baseline file mapping method name → library family; unresolved bare methods are treated by name only.
-- A committed allowlist `tools/checks/api_comments_waivers.yaml` records each deliberate exemption with a one-line reason. The waiver list must stay under 2% of call sites checked; the check prints its size.
-- Tests: fixtures for each rule's pass and fail, alias resolution, harness-cell exemption, waiver handling, card check, scoped vs full first-use.
+**Wiring:**
+- It is registered in `tools/cli.py` `COMMANDS`.
+- It runs per book in the `scripts/ci-local.sh` content-check loop (step 5).
+- It is routed by `tools/ci_scope.py` like the other content checks. A scoped run reports the changed units, but always computes first use from the whole book.
+
+**How it parses notebooks:**
+- Code cells are parsed with `ast`.
+- A cell containing an IPython magic or shell line (`%`, `!`) is rejected outright, not blanked. Current units and mocks have none, so the rule is preventive.
+- Comments come from `tokenize` on the original source, so a `#` inside a string is not a comment. `# %%` is an ordinary comment.
+- Import aliases are resolved with the existing `tools/checks/tolerance.py` machinery (`_import_aliases` / `_resolved_name`), extended rather than duplicated.
+
+**Call-bound evidence: a call counts as explained only if one of these holds:**
+- **(a) Comment on the same line:** a comment on the call's line names the callee (its last dotted component, e.g. `solve`, `argmax`) or, for rule 2, the new keyword.
+- **(b) Comment block directly above:** a comment block directly above the statement does the same.
+- **(c) Markdown cell nearby (rules 1 and 3 only):** the markdown cell immediately before or after the code cell, or the second cell before it, contains the exact dotted name or `.method(` in backticks, outside LaTeX math.
+- **(d) Unit card (rule 3 only):** the unit card's "Also used here" lists the callee.
+
+A comment that does not name the callee or keyword does not count. This closes the survey's false "explained" match, where an unrelated comment sat next to `np.zeros_like`.
+
+**Bare methods:**
+- The method-to-library-family table in the baseline YAML resolves bare methods such as `.fit`, `.view` and `.sum` where the receiver's type is known.
+- A bare method whose receiver is still unknown is keyed by name only.
+
+**What fails the check:**
+- an unexplained rule 1, 2 or 3 site;
+- a misplaced `# Checks:` marker;
+- a card mismatch (D3);
+- in statement notebooks, any rule-2 comment, or any added comment that names an identifier the statement asks the student to define. In statement notebooks only rules 1 and 3 apply, and each added comment is one line (D7).
+
+**Waivers:**
+- Waivers live in `tools/checks/api_comments_waivers.yaml`, as path, cell, callee and a one-line reason.
+- The denominator is rule-subject sites: rule 1, plus rule 2, plus rule 3 after graduation.
+- Waivers must stay at or below 2% of rule-subject sites. The check prints both numbers.
+
+**Tests** cover:
+- pass and fail fixtures for each rule;
+- alias resolution;
+- the markdown-before and markdown-after windows;
+- the LaTeX false match;
+- harness markers (an allowed location, a lesson rejection, the boilerplate block);
+- graduated and no-reminder callees;
+- the statement restrictions;
+- the waiver cap;
+- card checks;
+- scoped against full first use.
 
 ### D5 — Comment-only invariance
 
-Notebooks change only by added comments and added markdown cells.
+`scripts/verify-comment-only.py --base <ref>` compares each notebook on the branch with its counterpart at `<ref>`.
 
-- (a) For every code cell, `ast.dump(ast.parse(cleaned_source))` is identical on `main` and the branch. Docstrings are not allowed as the vehicle (they change the AST).
-- (b) Every comment token on `main` is still present on the branch, in order, in the same cell (a subsequence check over `tokenize` COMMENT tokens). No removal, no rewording.
-- (c) Markdown cells on `main` are byte-identical; new markdown cells are only the D3 cards and the D6 teaching cells, recognisable by a fixed first-line marker.
-- (d) Cell count changes only by the added markdown cells; code cells keep their ids and order; outputs stay empty in student notebooks.
-- (e) Data files, seeds and answer keys unchanged (the existing generated-artifact `--check`s and solution-execution steps cover this).
+- **(a) Code unchanged:** every pre-existing code cell, matched by cell id, has an identical `ast.dump(ast.parse(source))`. Docstrings are not allowed as the vehicle for an explanation, because they change the AST.
+- **(b) Comments preserved:** every comment token on `<ref>` is still present on the branch, in order, in the same cell. This is a subsequence check over `tokenize` COMMENT tokens taken from the original source. Nothing is removed or reworded.
+- **(c) Markdown unchanged:** pre-existing markdown cells are byte-identical. New cells must start with a marker:
+  - `<!-- api-card -->` for D3 cards;
+  - `<!-- api-teach -->` for D6 markdown;
+  - `# api-teach` as the first line of D6 code cells.
+- **(d) Cell structure:** pre-existing cells keep their ids, their relative order and their **indices**.
+  - New cells are appended after the last pre-existing cell. The one exception is D6 teaching cells, which are inserted after the last cell that any test or the Plan 019 inventory references by index. Task 1 lists those references, for example C4 lesson 01 cell 22 and r1-001 p09 cells 3 and 2/14.
+  - New cells get fresh ids, and `nbformat.validate` passes.
+  - Student notebooks keep empty outputs.
+- **(e) Data and seeds untouched:** data, seeds and answer keys are covered by the existing generated-artifact `--check`s, solution execution and mutation checks.
 
-Implemented as `scripts/verify-comment-only.py --base main`, run in Task 5 and by the content gate.
+The verifier runs in Task 5 and in the content gate. It is not added to `ci-local.sh`, because on `main` after the squash merge it has no base to compare against.
 
-### D6 — The 12 mock-only callees
+### D6 — The 12 mock-only callees, and prose-mandated calls
 
-Twelve callees appear in mock tests but in no unit notebook:
+The survey scanned only code cells. Task 1 also scans statement markdown and `theory/*.md` for callees that the statement prose requires. That is how `.view` and `nn.ModuleList` slipped through: r2-001 p01 requires them in prose (cells 4 and 6), yet no unit notebook uses them.
 
-- r1-001: `numpy.pad` (p05 solution), `sklearn.preprocessing.RobustScaler`, `shutil.copy2`, `subprocess.run` (p09 solution).
-- r2-001: `json.loads` (p01 **statement**), `Tensor.view`, `torch.nn.ModuleList` (p01 solution), `torch.nn.GELU`, `torch.optim.lr_scheduler.OneCycleLR` (p02 solution), `torch.fft.fftfreq`, `torch.meshgrid`, `torch.fft.fft2` (p04 solution).
+| Callee | Mock use | Treatment | Teaching location |
+|---|---|---|---|
+| `json.loads` | r2-001 p01 statement, provided code | Rule-1 comment in the statement. A teaching cell is a bonus, since students read this line but never write it. | `09-C4` lesson 01 (data loading), a D6 cell after cell 22 |
+| `Tensor.view` | r2-001 p01, prose-mandated | Teaching cell | `13-C7-pytorch`, the lesson that teaches `.reshape` (next to it; contiguity note) |
+| `torch.nn.ModuleList` | r2-001 p01, prose-mandated | Teaching cell | `B2-019` lesson 04 (stacking attention blocks) |
+| `torch.nn.GELU` | r2-001 p02 solution | Teaching cell | `B2-020` lesson 03, where GELU is already named in prose |
+| `torch.optim.lr_scheduler.OneCycleLR` | r2-001 p02 solution | Teaching cell | `15-C8` lesson 04 (optimizers) |
+| `torch.fft.fftfreq`, `torch.fft.fft2`, `torch.meshgrid` | r2-001 p04 solution | Teaching cell | `B2-024`, the lesson on spectral/PDE fields (Task 1 names the notebook) |
+| `numpy.pad` | r1-001 p05 solution | Teaching cell | `01-F1` lesson on arrays (`lessons/01-arrays-and-indexing.ipynb`) |
+| `sklearn.preprocessing.RobustScaler` | r1-001 p09 solution | Teaching cell | `09-C4` lesson 02 (kNN and scaling), next to `StandardScaler` |
+| `shutil.copy2`, `subprocess.run` | r1-001 p09 solution, infrastructure | Rule-1 comment in the solution only; not exam content | — |
 
-- Callees in **statement** notebooks (provided code the student reads, e.g. `json.loads` in r2-001 p01) get a rule-1 comment in the statement and are taught in the unit that owns the closest concept, as a short lesson code cell with comment plus a sentence of prose.
-- Callees only in **solution** notebooks that a student could reasonably need (`np.pad`, `RobustScaler`, `nn.ModuleList`, `nn.GELU`, `.view`, `OneCycleLR`, `torch.fft.fftfreq`, `torch.fft.fft2`, `torch.meshgrid`) are taught the same way in their owning unit.
-- Infrastructure callees in solutions (`shutil.copy2`, `subprocess.run`) get a rule-1 comment in the solution only; they are not exam content.
-- Each new lesson cell is a markdown + code pair with the D5(c) marker; it does not add a concept tag and does not change any practice or answer.
-
-The owning unit for each callee is fixed in Task 1's mapping table and reviewed in the plan gate.
+Each teaching cell is a marked markdown-and-code pair (D5(c)). It adds no concept tag and changes no practice item or answer.
+Prerequisite and coverage checks work on manifest concept tags, not callees, so they are unaffected.
+Any further prose-mandated callee that Task 1 finds is added to this table and reviewed in the content gate.
 
 ### D7 — Comment wording standard
 
-- Plain words, present tense, says what the call returns or does, e.g. `# np.argmax: index of the largest entry`.
-- Names the meaning of arguments actually used, not every parameter of the API.
-- Uses the book's notation (shapes as `(n, d)`, the same variable names).
-- No URLs, no "see the docs".
-- Fits within the 100-column ruff limit; otherwise a block above the statement.
-- In statement notebooks, comments explain provided code only and never hint at the solution.
+- Write in plain words and the present tense. Say what the call returns or does, e.g. `# np.argmax: index of the largest entry`.
+- Name the meaning of the arguments actually used, not every parameter.
+- Use the book's notation: shapes as `(n, d)` and the same variable names.
+- No URLs, and no "see the docs".
+- Keep inline comments within 80 columns. The PDF code column is narrower than ruff's 100 columns, and code wraps there (`code-overflow: wrap`). Anything longer goes in a block above.
+- In statement notebooks:
+  - Comments explain provided code only.
+  - One line each, and only rules 1 and 3.
+  - Never name an identifier the student must define, and never hint at the approach.
 
-### D8 — Dispatch and batching
+### D8 — Test-coupled notebook text
 
-- Tooling (Tasks 1–2): one Opus subagent.
-- Annotation (Task 3): Opus subagents in batches of 3–4 units, in teaching order, working from the check's failure list. A batch annotates lessons, statements and solutions of its units; this is annotation of existing code, not authoring or solving, so the statement/solution session separation does not apply. Each batch re-runs the check and D5 for its units before committing.
-- Teaching cells and cards (Task 4): one Opus author.
+Some tests read notebook source by cell index, or match literal substrings: the Plan 019 marker tests, mutation targets, and statement-contract tests.
+
+- Task 1 records which notebooks and cells are referenced this way.
+- The protected notebook `book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb` is not edited. Its path matches the guard's protected "token" category, and its only exception is the byte-pinned Plan 031 rename. Its book-first callees are explained in the C5 card's "New in this unit" part instead. The check accepts that for this one path, which is listed in the waivers file with reason `guard-protected`; it does not count toward the cap.
+- An added comment must never land inside a substring that a test or mutation target matches. Where it would, the comment goes in a block above the statement. Tests are not edited to accommodate comments.
+
+### D9 — Dispatch and batching
+
+- **Tooling (Tasks 1–2):** one Opus subagent.
+- **Annotation (Task 3):** Opus subagents, in teaching order. Each works from the check's failure list.
+  - F1 is its own first batch. Its results settle the baseline, graduated and no-reminder lists before the rest fan out.
+  - After F1, batches of 3–4 units.
+  - A batch annotates its units' lessons, statements and solutions. This is annotation of existing code, not authoring or solving, so the statement/solution session separation does not apply.
+  - Each batch reruns the check, D5, and the targeted tests for its units before committing.
+- **Cards and D6 teaching cells (Task 4):** one Opus author.
 
 ## Implementation tasks
 
-- [ ] **Task 1 — Inventory.** Remap the survey worklist to the post-031 paths; produce the D6 owning-unit table; record counts per rule and per unit in this plan.
-- [ ] **Task 2 — Tooling.** `tools/checks/api_comments.py`, baseline and waiver YAMLs, `scripts/verify-comment-only.py`, tests, wiring into `scripts/ci-local.sh` (both books) and `tools/ci_scope.py`. Initially the check runs in report mode; Task 5 flips it to enforcing.
-- [ ] **Task 3 — Annotate** units in teaching order (rules 1–4), Book 1 then Book 2, then the mock tests (rule 1 in statements; D6).
-- [ ] **Task 4 — API cards and D6 teaching cells**, then regenerate generated artifacts (material inventory, course structure) through their tools.
+- [ ] **Task 1 — Inventory.**
+  - Remap the survey to the post-031 paths.
+  - Run the check in report mode and record real per-rule counts per unit and book.
+  - Scan statement prose for prose-mandated callees (D6) and fill in the B2-024 notebook name.
+  - List cell-index and substring couplings (D8).
+  - Settle the semantic-keyword, graduated and no-reminder lists, and record them in this plan.
+- [ ] **Task 2 — Tooling.**
+  - `tools/checks/api_comments.py`, the baseline and waiver YAMLs, and `scripts/verify-comment-only.py`.
+  - Tests (D4), `cli.py` registration, the `ci-local.sh` step-5 loop, and `ci_scope.py` routing.
+  - The check starts in report mode (prints, exits 0). Task 5 switches it to enforcing.
+- [ ] **Task 3 — Annotate** units in teaching order with rules 1–4: F1 first, then the rest of Book 1, then Book 2, then the mock tests (rule 1 in statements and solutions; the D6 infrastructure comments).
+- [ ] **Task 4 — Cards and teaching cells.** Add the API cards (D3) and the D6 teaching cells, then regenerate the material inventories and course structure with their tools.
 - [ ] **Task 5 — Verification phase.**
-  - `api-comments` in enforcing mode passes for both books; waiver count recorded.
-  - `scripts/verify-comment-only.py --base main` passes (D5 a–d).
-  - `scripts/ci-local.sh --all-books` ALL GREEN on a clean tip (solution execution, hygiene, register, publish audits, pre-merge guard).
-  - Rebuild the editions and spot-check that comments render inside the code-block width in the print edition (no overfull code lines); record page-count deltas.
-  - Content-gate reviewers each audit a random sample of at least 60 added comments for accuracy (D7) and for statement hints.
-- [ ] **Task 6 — Post-execution report, PR, `pre-merge-guard --pr`, squash-merge.**
+  - `api-comments` runs in enforcing mode and passes for both books. Record the waiver count against its cap.
+  - `scripts/verify-comment-only.py --base main` passes, (a)–(d).
+  - `scripts/ci-local.sh --all-books` is ALL GREEN on a clean tip. That covers solution execution, hygiene, the register, mutation checks, both publish audits (including the solution-isolation fingerprints) and the pre-merge guard.
+  - Rebuild the editions. Spot-check that comments wrap readably in the print edition's code blocks, and record page-count deltas.
+- [ ] **Task 6 — Content gate, post-execution report, PR, `pre-merge-guard --pr`, squash-merge.**
+
+**Content-gate duties for this plan.** There is no blind solving, because no problem or answer changes. Each reviewer:
+- reads every added comment in statement and mock-statement notebooks (the leak surface);
+- reads a random sample of at least 60 other added comments for accuracy against D7;
+- reads all cards and D6 teaching cells;
+- reviews the tooling.
 
 ## Out of scope
 
-- Rewriting existing comments or prose (forbidden by D2).
-- The difficulty-ladder recommendations (separate, user decides).
-- Any change to answers, data, seeds or practice statements beyond comments.
+- Rewriting or removing existing comments or prose (D2).
+- The difficulty-ladder recommendations; the user decides those separately.
+- Any change to answers, data, seeds, or practice statements beyond comments.
+- Editing the guard-protected C5 tokens notebook (D8).
 - The verification-phase rule is satisfied by Task 5. This plan ships no new units or mock tests.
 
 ## Plan Review
+
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
+
+### Round 1
+
+- `[self]` Should Fix: test-coupled text. Tests index notebook cells (Plan 019 marker tests, statement contracts), and mutation targets match substrings, so inserted cells or same-line comments could break them. Resolved by D5(d) and D8.
+- `[sol]` REJECT.
+  - [FIXED] M1: the protected C5 tokens notebook cannot be edited. Resolved by D8: excluded from editing, card carries its explanations, listed as a `guard-protected` waiver.
+  - [FIXED] M2: D5 contradicted the D6 code cells. Resolved by marked D6 code cells, with pre-existing cells matched by id (D5(a), (c), (d)).
+  - [FIXED] M3: "explained" was not tied to the call. Resolved by D4's call-bound evidence: the comment must name the callee or keyword; the harness marker is restricted by location; reviewers read every statement comment.
+  - [FIXED] M4: the D6 owner table was missing. The table is now in D6.
+  - [FIXED] S5: the parser boundary. Magic and shell lines are rejected, comments are tokenized from the original source, and `# %%` is an ordinary comment.
+- `[fable]` APPROVE WITH NITS, conditional on M1 and M2.
+  - [FIXED] M1: rule 3 contradicted the card, and was the main source of noise. Resolved by the two-part card plus the graduated and no-reminder lists (D1, D3).
+  - [FIXED] M2: the harness exemption. Resolved: it is outside first use, restricted by location, and has a block form for boilerplate (D1 rule 4).
+  - [FIXED] S1: rule-2 trigger set (D1). S2: D6 table, including prose-mandated callees. S3: the statement restrictions plus the gate reads every statement comment (D4, D7, Task 6). S4: the waiver denominator (D4). S5: the markdown window before and after, backticked exact names outside LaTeX, and reuse of `tolerance.py` (D4). S6: wiring, the verifier not in `ci-local.sh`, and fingerprints (D4, D5, Task 5).
+  - [FIXED] N1: no-reminder list. N2: an 80-column inline limit, readable wrapping in place of "no overfull lines". N3: fresh ids and `nbformat.validate`. N4: the bridge notebook's order. N5: F1 as the first batch. N6: `.view` and `ModuleList` reclassified as prose-mandated.
 
 ## Implementation notes
 
