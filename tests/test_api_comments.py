@@ -29,6 +29,7 @@ BASE_CONFIG = {
     "graduated": [],
     "no_reminder": [],
     "method_families": {"roots": {"np": "ndarray"}, "keyed": []},
+    "named_idioms": {"book-root-finder": {"callees": ["os.environ.get"]}},
 }
 
 
@@ -278,6 +279,77 @@ def test_boilerplate_block_ends_at_blank_line(tmp_path):
     assert "os.environ.get" in analysis.harness_only
 
 
+def test_boilerplate_block_exempts_only_idiom_callees(tmp_path):
+    write(tmp_path, "units/01-U1/lesson.ipynb", code(
+        "# Boilerplate: find the book root\n"
+        "import os\n"
+        "import numpy as np\n"
+        "root = os.environ.get('USAAIO_BOOK_ROOT')\n"
+        "np.cumsum([1])\n"
+        "np.diff([1])  # np.diff: steps\n"
+    ))
+    analysis = run(tmp_path)
+    # os.environ.get is in the idiom's callee set; the other calls follow rules 1-3.
+    assert [(s.callee, s.explained) for s in analysis.sites] == [
+        ("np.cumsum", False), ("np.diff", True),
+    ]
+    assert "os.environ.get" in analysis.harness_only
+
+
+def test_mock_statement_checks_marker_only_on_paper_provided_cells(tmp_path):
+    provided = "# Checks: provided setup\nimport numpy as np\nx = np.zeros(2)"
+    write(tmp_path, "mocktests/m1/problems/p01.ipynb",
+          code(provided + "\n"),  # trailing newline only: still mirrored
+          code("# Checks: contract self-check\nassert True"))
+    write(tmp_path, "mocktests/m1/solutions/p01_solution.ipynb",
+          code(provided), code("# Checks: answer pin\nANSWER = 3\nassert ANSWER == 3"))
+    errors = [e for e in run(tmp_path).errors if "paper-provided" in e]
+    assert len(errors) == 1
+    assert "problems/p01.ipynb:cell 1:" in errors[0]
+
+
+def test_receiver_types_follow_execution_order(tmp_path):
+    write(tmp_path, "units/01-U1/lesson.ipynb", code(
+        "import numpy as np\n"
+        "names = []\n"
+        "names.append(1)\n"
+        "names = np.array(names)  # np.array: list to array\n"
+    ), code(
+        "grid = np.zeros(2)  # np.zeros: zeros\n"
+        "grid.append(0)\n"
+        "grid = []\n"
+        "grid.append(1)\n"
+    ))
+    sites = [(s.callee, s.cell, s.line) for s in run(tmp_path).sites]
+    # Only the append that runs while `grid` is an array is keyed ndarray.append; the
+    # later re-binding of `names` does not reach back to the earlier list append.
+    assert sites == [("np.array", 0, 4), ("np.zeros", 1, 1), ("ndarray.append", 1, 2)]
+
+
+def test_three_argument_where_is_a_new_positional_mode(tmp_path):
+    write(tmp_path, "units/01-U1/lesson.ipynb", code(
+        "import numpy as np\n"
+        "i = np.where([True, False])  # np.where(cond): indices of True\n"
+        "a = np.where([True, False], 1, 0)\n"
+        "b = np.where([True], [1, 2], 0)\n"
+        "c = np.sum([1], where=[True])  # np.sum: total (the where= keyword is not a mode)\n"
+    ), code(
+        "import numpy as np\n"
+        "d = np.where([True], 1, 0)  # np.where(cond, a, b): a where True, else b\n"
+    ))
+    sites = [(s.element, s.explained) for s in run(tmp_path, positional_callees=["where"]).sites
+             if s.rule == 2]
+    assert sites == [("npos=3", False)]
+    write(tmp_path, "units/01-U1/lesson.ipynb", code(
+        "import numpy as np\n"
+        "i = np.where([True, False])  # np.where(cond): indices of True\n"
+        "a = np.where([True, False], 1, 0)  # np.where(cond, a, b): a if cond, else b\n"
+    ))
+    sites = [(s.element, s.explained) for s in run(tmp_path, positional_callees=["where"]).sites
+             if s.rule == 2]
+    assert sites == [("npos=3", True)]
+
+
 def test_magic_lines_are_rejected(tmp_path):
     write(tmp_path, "units/01-U1/lesson.ipynb", code("%matplotlib inline\nx = 1"))
     assert any("magic" in error for error in run(tmp_path).errors)
@@ -433,6 +505,10 @@ def test_shipped_configuration_loads():
     assert loaded.enforce is True
     assert {"axis", "dim", "keepdims", "size", "dtype", "device"} <= loaded.semantic_keywords
     assert not (loaded.graduated & loaded.no_reminder)
+    assert loaded.graduation_units == 3  # D1 rule 3: used in at least three earlier units
+    assert "where" in loaded.positional_callees
+    assert {"os.environ.get", "pathlib.Path"} <= loaded.idiom_callees
+    assert "torch.set_num_threads" not in loaded.idiom_callees
 
 
 def test_card_must_open_with_unnumbered_heading(tmp_path):

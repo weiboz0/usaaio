@@ -37,14 +37,14 @@ semantic_keywords: [axis, bias, bins, ddof, density, device, dim, dtype, full_ma
 
 # Rule 2 positional call modes: a new positional-argument count on these callees (matched by
 # their last name component) is a new signature.
-positional_callees: [arange, full, linspace, normal, ones, randint, split, zeros]
+positional_callees: [arange, full, linspace, normal, ones, randint, split, where, zeros]
 # A comment explains a positional mode when it names the callee or one of these parameter words.
 positional_words: [start, stop, step, num, low, high, loc, scale, shape, size, fill, sections,
   mean, std]
 
 # Rule 3 exemption: everyday calls explained in F1-F5. The exemption applies in a unit once the
 # callee has non-harness uses in at least `graduation_units` earlier units.
-graduation_units: 1
+graduation_units: 3
 graduated:
   - .all
   - .argmax
@@ -126,11 +126,13 @@ no_reminder:
   - torch.cuda.is_available
 
 # Named idioms: explained once in full at the listed first appearance, then marked
-# `# Boilerplate: <what it does>` elsewhere (D1 rule 4).
+# `# Boilerplate: <what it does>` elsewhere (D1 rule 4). Inside a `# Boilerplate:` block only
+# calls in an idiom's `callees` are harness; any other call there follows rules 1-3.
 named_idioms:
   book-root-finder:
     first_explained: book1/units/09-C4-classical-ml-practice/lessons/01-pandas-and-data-loading.ipynb
     cell: 22
+    callees: [.is_dir, .is_file, .resolve, next, os.environ.get, pathlib.Path, pathlib.Path.cwd]
 
 # Method-to-library-family table. A method call whose receiver is known to come from one of
 # these modules is keyed `<Family>.method` when the method is in `keyed` or is a baseline

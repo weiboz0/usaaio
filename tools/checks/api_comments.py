@@ -9,7 +9,9 @@ non-baseline callee. Four rules apply to non-harness code:
 3. **Unit-first reminder**: the first use in each later unit names the callee in a comment,
    or the unit's API card lists it under "Also used here" (graduated and no-reminder callees
    are exempt).
-4. **Harness code** (`# Checks:` cells, `# Boilerplate:` blocks) is outside the ladder.
+4. **Harness code** (`# Checks:` cells, and named-idiom calls inside `# Boilerplate:` blocks) is
+   outside the ladder. In a mock statement, `# Checks:` marks only paper-provided cells, which
+   also appear byte-identically as code cells of the matching solution.
 
 Book 2 is scanned after its dependencies (Book 1), so a callee Book 1 explains is not new in
 Book 2. Cell indices in messages and waivers are 0-based (`nb.cells[i]`).
@@ -89,6 +91,7 @@ class Config:
     no_reminder: frozenset[str]
     family_roots: dict[str, str]
     family_keyed: frozenset[str]
+    idiom_callees: frozenset[str] = frozenset()
 
 
 def load_config(raw: dict[str, Any] | None = None) -> Config:
@@ -111,6 +114,11 @@ def load_config(raw: dict[str, Any] | None = None) -> Config:
         no_reminder=frozenset(raw.get("no_reminder") or ()),
         family_roots={str(k): str(v) for k, v in (families.get("roots") or {}).items()},
         family_keyed=frozenset(families.get("keyed") or ()),
+        idiom_callees=frozenset(
+            str(callee)
+            for idiom in (raw.get("named_idioms") or {}).values()
+            for callee in ((idiom or {}).get("callees") or ())
+        ),
     )
 
 
@@ -508,6 +516,11 @@ def _enclosing_statement(node: ast.AST, parents: dict[int, ast.AST]) -> ast.stmt
     return current if isinstance(current, ast.stmt) else None
 
 
+_LITERALS = (
+    ast.List, ast.ListComp, ast.Dict, ast.DictComp, ast.Set, ast.SetComp, ast.Tuple,
+    ast.Constant, ast.JoinedStr,
+)
+
 _COMPOUND = (
     ast.For, ast.AsyncFor, ast.While, ast.If, ast.With, ast.AsyncWith, ast.Try,
     ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Match,
@@ -523,7 +536,8 @@ class _Ctx:
     source: str
     lines: list[str]
     comments: CellComments
-    harness_lines: set[int]
+    harness_lines: set[int]  # whole `# Checks:` cell
+    boilerplate_lines: set[int]  # `# Boilerplate:` blocks (only idiom callees are harness)
     markdown: str
     parents: dict[int, ast.AST]
 
@@ -546,11 +560,18 @@ class _Ctx:
         return texts
 
 
-def _harness_lines(source: str, comments: CellComments) -> set[int]:
+def _checks_lines(source: str) -> set[int]:
+    """Every line of a `# Checks:` cell (the marker is the cell's first line)."""
     lines = source.splitlines()
     if lines and lines[0].startswith(CHECKS_MARKER):
         return set(range(1, len(lines) + 1))
+    return set()
+
+
+def _harness_lines(source: str, comments: CellComments) -> set[int]:
+    """Lines of `# Boilerplate:` blocks (from the marker line to the next blank line)."""
     harness: set[int] = set()
+    lines = source.splitlines()
     for line_no, texts in comments.by_line.items():
         if line_no in comments.comment_only and any(t.startswith(BOILERPLATE_MARKER) for t in texts):
             end = line_no
@@ -751,35 +772,51 @@ class _Scanner:
             aliases.update(
                 _import_aliases(tree, self.config.module_aliases, passthrough=True)
             )
-            for node in ast.walk(tree):
-                if isinstance(node, ast.Assign):
-                    family = self._value_family(node.value, aliases)
-                    if family is None:
-                        continue
-                    for target in node.targets:
-                        names = target.elts if isinstance(target, ast.Tuple) else [target]
-                        for name in names:
-                            if isinstance(name, ast.Name):
-                                vartypes[name.id] = family
             ctx = _Ctx(
                 ref=ref,
                 cell=index,
                 source=source,
                 lines=source.splitlines(),
                 comments=comments,
-                harness_lines=_harness_lines(source, comments),
+                harness_lines=_checks_lines(source),
+                boilerplate_lines=_harness_lines(source, comments),
                 markdown="\n".join(markdown(j) for j in (index - 1, index + 1, index - 2)),
                 parents=_parents(tree),
             )
-            calls = sorted(
-                (node for node in ast.walk(tree) if isinstance(node, ast.Call)),
-                key=lambda node: (node.lineno, node.col_offset),
-            )
-            for call in calls:
-                resolved = self.resolve(call, aliases, vartypes, defs)
+            # Execution order: a call sees only the bindings made before it. An assignment
+            # binds after its value is evaluated, so it is ordered at its end position
+            # (`names = torch.tensor(names)` does not type the `names` of earlier calls).
+            events: list[tuple[tuple[int, int], int, ast.AST]] = []
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Call):
+                    events.append(((node.lineno, node.col_offset), 0, node))
+                elif isinstance(node, ast.Assign):
+                    end = (node.end_lineno or node.lineno, node.end_col_offset or 0)
+                    events.append((end, 1, node))
+            events.sort(key=lambda event: (event[0], event[1]))
+            for _position, kind, node in events:
+                if kind == 1:
+                    self._bind(node, aliases, vartypes)
+                    continue
+                resolved = self.resolve(node, aliases, vartypes, defs)
                 if resolved is None:
                     continue
-                self._use(ctx, call, resolved[0], resolved[1], required)
+                self._use(ctx, node, resolved[0], resolved[1], required)
+
+    def _bind(self, node: ast.Assign, aliases: dict[str, str], vartypes: dict[str, str]) -> None:
+        """Type (or untype) the assigned names; the latest binding wins."""
+        family = self._value_family(node.value, aliases)
+        if family is None and not isinstance(node.value, _LITERALS):
+            return  # unknown value: keep what is known (`x = x.reshape(...)`)
+        for target in node.targets:
+            names = target.elts if isinstance(target, ast.Tuple) else [target]
+            for name in names:
+                if not isinstance(name, ast.Name):
+                    continue
+                if family is None:
+                    vartypes.pop(name.id, None)
+                else:
+                    vartypes[name.id] = family
 
     def _check_markers(self, ref: NotebookRef, index: int, source: str, comments: CellComments) -> None:
         if not ref.selected:
@@ -789,6 +826,15 @@ class _Scanner:
             self.analysis.errors.append(
                 f"{ref.rel}:cell {index}: '# Checks:' marker is not allowed in lesson or "
                 "review notebooks (D1 rule 4)"
+            )
+        if (
+            first_line.startswith(CHECKS_MARKER)
+            and ref.kind == "mock-statement"
+            and source.rstrip("\n") not in _mirror_sources(ref.path)
+        ):
+            self.analysis.errors.append(
+                f"{ref.rel}:cell {index}: '# Checks:' in a mock statement is allowed only on a "
+                "paper-provided cell (byte-identical to a code cell of its solution, D1 rule 4)"
             )
         for line_no, texts in comments.by_line.items():
             if line_no != 1 and any(text.startswith(CHECKS_MARKER) for text in texts):
@@ -815,7 +861,9 @@ class _Scanner:
         forms.add(written)
         if written.startswith("."):
             forms.add(written)
-        if call.lineno in ctx.harness_lines:
+        if call.lineno in ctx.harness_lines or (
+            call.lineno in ctx.boilerplate_lines and callee in self.config.idiom_callees
+        ):
             self.harness.add(callee)
             return
         self.nonharness.add(callee)
@@ -920,6 +968,27 @@ class _Scanner:
                         f"{ref.rel}:cell {ctx.cell}:line {call.lineno}: statement comment {text!r} "
                         f"names required identifier(s) {', '.join(leaked)} (D4)"
                     )
+
+
+def _mirror_path(statement: Path) -> Path:
+    """`<mock>/problems/pNN.ipynb` -> `<mock>/solutions/pNN_solution.ipynb`."""
+    return statement.parent.parent / "solutions" / f"{statement.stem}_solution.ipynb"
+
+
+def _mirror_sources(statement: Path) -> set[str]:
+    """Code-cell sources of a mock statement's solution (paper-provided cells mirror them).
+
+    Byte-identical apart from trailing newlines, which notebook writers add or drop.
+    """
+    try:
+        notebook = json.loads(_mirror_path(statement).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return set()
+    return {
+        _source(cell).rstrip("\n")
+        for cell in notebook.get("cells", [])
+        if cell.get("cell_type") == "code"
+    }
 
 
 def _markdown_names(markdown: str, callee: str, written: str) -> bool:
