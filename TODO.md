@@ -28,6 +28,7 @@ The old-to-new table is [docs/unit-renumbering.md](docs/unit-renumbering.md).
 - [x] 022 — C12 p20 K-means near-tie erratum (deterministic lowest-seed rule)
 - [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
+- [x] 032 — explanatory comments for library calls (option C tiers), `api-comments-check` CI check, per-unit API cards, mock-only callees taught
 - [x] 031 — Book 1 units in teaching order: `NN-` folder prefixes and F/C codes renumbered (docs/unit-renumbering.md)
 - [x] 030 — py4kids-style book editions: student-print, student, answer key and teacher PDFs, plus syllabus, handouts and mock-test papers and solutions, for both books
 - [x] 024 — Round 2 live blueprint and mock test r2-001 (Book 2 final assessment) — **Book 2 complete**

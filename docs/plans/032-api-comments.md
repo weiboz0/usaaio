@@ -263,44 +263,6 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ### Round 2
 
-- `[fable]` APPROVE. All round-1 items verified; every "Also used here" pointer resolves to an earlier unit's "New" list.
-- `[sol]` REJECT on one item:
-  - [FIXED] The F5 and C2 cards said `np.asarray` converts "with no copy". It copies when a dtype change is needed (F5 asks for `dtype=bool`). The cards now say "copying if needed", and the F3 card qualifies "no copy" as "with that dtype". 20 of 22 sampled new entries were accurate; the 2 inaccurate ones were these. The material inventory was regenerated.
-- `[self]` APPROVE.
-
-### Round 3
-
-- `[sol]` REJECT on card accuracy after scanning all 50 cards:
-  - [FIXED] C7 `torch.as_tensor`: "reused without copying" is now qualified with "with the same dtype and device".
-  - [FIXED] C8 `.cpu`: no longer called "a copy"; it now says "copied there if it is elsewhere".
-  - [FIXED] Nit B2-020 `.data_ptr`: qualified to non-empty tensors.
-  - `[self]` follow-up sweep of every added copy, sharing or in-place claim in comments and cards:
-    - `.to` is qualified as "the same tensor if nothing changes";
-    - the r2-001 p01 `.view` comment now reads "needs a stride-compatible shape";
-    - the C8 p16 and B2-024 p16 `.cpu` comments no longer say copy;
-    - the rest (`.clone`, `np.pad`, `np.tril`, `.masked_fill`, `.expand`, `.astype`, `np.sort`) were checked as accurate.
-  - Material inventories regenerated. The check, the verifier, the training mutations (5/5), the affected notebooks and their tests (139) pass.
-
-### Round 4
-
-- `[sol]` REJECT after a full accuracy sweep of all 50 cards:
-  - [FIXED] C9 `np.triu` / `np.triu_indices`: "above the diagonal" is now "diagonal included; `k=1` gives strictly above".
-  - [FIXED] Nit: the F3 `np.arctan2` range is now `[-π, π]`, noting the negative-zero case.
-  - [FIXED] Nit: the B2-024 `.to` reminder now says "same if unchanged".
-  - The sweep found no other factual errors; each lesson and review card pair matches.
-
-### Round 5
-
-- `[sol]` REJECT on one wording point. The C9 and B2-024 fixes were verified.
-  - [FIXED] The F3 `np.arctan2` card claimed `-π` occurs "only for a negative zero `y`", but extreme finite and infinite inputs also give `-π`. The card now states the range `[-π, π]` only.
-
-### Round 6
-
-- `[sol]` APPROVE (4ca67f7 verified).
-- `[fable]` APPROVE (round 2; the later rounds changed only card and comment wording that sol reviewed).
-- `[self]` APPROVE.
-- **Gate passed** (3/3, no `[OPEN]` items).
-
 - `[sol]` REJECT.
   - [FIXED] Must Fix: index preservation in D5(d) contradicted the D6 insertion. Now only index-referenced cells keep their indices.
   - [FIXED] Must Fix: the CLI registry is `SUBCOMMANDS`.
@@ -477,4 +439,72 @@ Roster: `[self]` (Opus 5.5 inline), `[sol]` (codex gpt-6-sol, read-only), `[fabl
 
 ### Round 2
 
+- `[fable]` APPROVE. All round-1 items verified; every "Also used here" pointer resolves to an earlier unit's "New" list.
+- `[sol]` REJECT on one item:
+  - [FIXED] The F5 and C2 cards said `np.asarray` converts "with no copy". It copies when a dtype change is needed (F5 asks for `dtype=bool`). The cards now say "copying if needed", and the F3 card qualifies "no copy" as "with that dtype". 20 of 22 sampled new entries were accurate; the 2 inaccurate ones were these. The material inventory was regenerated.
+- `[self]` APPROVE.
+
+### Round 3
+
+- `[sol]` REJECT on card accuracy after scanning all 50 cards:
+  - [FIXED] C7 `torch.as_tensor`: "reused without copying" is now qualified with "with the same dtype and device".
+  - [FIXED] C8 `.cpu`: no longer called "a copy"; it now says "copied there if it is elsewhere".
+  - [FIXED] Nit B2-020 `.data_ptr`: qualified to non-empty tensors.
+  - `[self]` follow-up sweep of every added copy, sharing or in-place claim in comments and cards:
+    - `.to` is qualified as "the same tensor if nothing changes";
+    - the r2-001 p01 `.view` comment now reads "needs a stride-compatible shape";
+    - the C8 p16 and B2-024 p16 `.cpu` comments no longer say copy;
+    - the rest (`.clone`, `np.pad`, `np.tril`, `.masked_fill`, `.expand`, `.astype`, `np.sort`) were checked as accurate.
+  - Material inventories regenerated. The check, the verifier, the training mutations (5/5), the affected notebooks and their tests (139) pass.
+
+### Round 4
+
+- `[sol]` REJECT after a full accuracy sweep of all 50 cards:
+  - [FIXED] C9 `np.triu` / `np.triu_indices`: "above the diagonal" is now "diagonal included; `k=1` gives strictly above".
+  - [FIXED] Nit: the F3 `np.arctan2` range is now `[-π, π]`, noting the negative-zero case.
+  - [FIXED] Nit: the B2-024 `.to` reminder now says "same if unchanged".
+  - The sweep found no other factual errors; each lesson and review card pair matches.
+
+### Round 5
+
+- `[sol]` REJECT on one wording point. The C9 and B2-024 fixes were verified.
+  - [FIXED] The F3 `np.arctan2` card claimed `-π` occurs "only for a negative zero `y`", but extreme finite and infinite inputs also give `-π`. The card now states the range `[-π, π]` only.
+
+### Round 6
+
+- `[sol]` APPROVE (4ca67f7 verified).
+- `[fable]` APPROVE (round 2; the later rounds changed only card and comment wording that sol reviewed).
+- `[self]` APPROVE.
+- **Gate passed** (3/3, no `[OPEN]` items).
+
 ## Post-execution report
+
+Shipped 2026-10-13 on `feature/plan-032-api-comments`.
+
+### What changed
+
+- New CI check `api-comments-check` (`tools/checks/api_comments.py`), enforcing D1 rules 1–3 per book in `ci-local.sh` step 5, with its baseline and waiver YAMLs and 40 tests.
+- New verifier `scripts/verify-comment-only.py --base main` (D5 a–f) with tests; it passes on the tip.
+- About 850 notebooks gained comments only: same AST, no existing comment removed or reworded, markdown byte-identical.
+- 50 API cards (one "New code in this unit" / "Also used here" card per unit lesson and review notebook).
+- 8 D6 teaching pairs for the mock-only callees (`np.pad`, `json.loads`, `RobustScaler`, `.view`/`.contiguous`, `OneCycleLR`, `nn.ModuleList`, `nn.GELU`, `torch.fft`/`torch.meshgrid`).
+- `tools/books.py` gained `units_root` and `mocktests_root` helpers; material inventories regenerated.
+
+### Check result (final CI)
+
+| Book | Rule-subject sites | Rule 1 / 2 / 3 | Unexplained | Exempt (graduated / no-reminder / guard) | Waivers |
+|------|-------------------:|----------------|------------:|------------------------------------------|---------|
+| Book 1 | 780 | 378 / 62 / 340 | 0 | 313 / 99 / 1 | 0 (cap 15.6) |
+| Book 2 | 529 | 148 / 32 / 349 | 0 | 80 / 1 / 0 | 2 (cap 10.6) |
+
+### Verification
+
+- `scripts/ci-local.sh --all-books` on f8f607c: **ALL GREEN** (main suite 1828 passed; scoped suites 20/34/46/50/52/13 passed; `pre-merge-guard: OK`).
+- Publish audit page counts: Book 1 student-print 1024, vol1/2/3 560/470/464, answer key 125, teacher vol1/2/3 738/600/718; Book 2 student-print 444, student 552, answer key 46, teacher 938.
+- Content gate passed in round 6 (3/3).
+
+### Deviations and lessons
+
+- `graduation_units` stayed at the planned 3 after a trial at 1; the 85 reopened sites are covered by card "Also used here" entries.
+- The final CI was restarted four times because content-gate wording rounds changed cards after the run started. In future, get gate sign-off before starting the 2.7 h CI.
+- Open follow-ups (unchanged): C11 p12 delimiter erratum, B2-022 KL wording, overfull tables; ladder-audit recommendations R1–R14 await the user.
