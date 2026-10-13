@@ -207,13 +207,13 @@ Some tests read notebook source by cell index, or match literal substrings: the 
 
 ## Implementation tasks
 
-- [ ] **Task 1 — Inventory.**
+- [x] **Task 1 — Inventory.**
   - Remap the survey to the post-031 paths.
   - Run the check in report mode and record real per-rule counts per unit and book. Report the rule-2 count for `size`, `dtype` and `device` separately, so the list can be trimmed if it reads as noise.
   - Scan statement prose for prose-mandated callees (D6).
   - List cell-index and substring couplings (D8).
   - Settle the semantic-keyword, graduated and no-reminder lists, and record them in this plan.
-- [ ] **Task 2 — Tooling.**
+- [x] **Task 2 — Tooling.**
   - `tools/checks/api_comments.py`, the baseline and waiver YAMLs, and `scripts/verify-comment-only.py`.
   - Tests (D4), `cli.py` `SUBCOMMANDS` registration, and the `ci-local.sh` step-5 loop.
   - The check starts in report mode (prints, exits 0). Task 5 switches it to enforcing.
@@ -285,6 +285,127 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 - **Gate passed** (3/3, no `[OPEN]` items).
 
 ## Implementation notes
+
+### Task 1 — Inventory (2026-10-12, report mode, tip f60cd23)
+
+**Survey remap.**
+The pre-031 survey worklist is superseded by the check itself.
+`python -m tools.checks.api_comments --root bookN [--unit ID] [--findings] [--csv FILE]` prints the per-unit table below and the open sites with post-031 paths (0-based cell indices), so Task 3 batches work from that list, not from `snippet-survey/worklist.csv`.
+The check's counts differ from the survey's on purpose: evidence must name the callee (D4), harness is opt-in by marker, and rule 2 fires only on the fixed trigger set.
+Until Task 3 adds the `# Checks:` / `# Boilerplate:` markers, harness code is counted as ordinary code, so rule-3 counts below include check-cell calls (`np.isclose`, `np.array_equal`, `torch.allclose`, ...) that the markers will remove.
+
+**Real per-rule counts** (rule-subject sites; "open" = no call-bound evidence yet; "exempt" = graduated or no-reminder rule-3 sites, outside the denominator).
+
+| unit | r1 | r1 open | r2 | r2 open | r3 | r3 open | r3 exempt |
+|---|---|---|---|---|---|---|---|
+| F1-scientific-python | 96 | 65 | 11 | 10 | 0 | 0 | 0 |
+| F2-vectors | 17 | 14 | 2 | 2 | 14 | 11 | 6 |
+| F3-multivar-calculus | 12 | 12 | 2 | 2 | 23 | 22 | 6 |
+| F4-matrices | 16 | 15 | 0 | 0 | 20 | 18 | 10 |
+| F5-probability | 13 | 13 | 2 | 2 | 22 | 21 | 21 |
+| C1-ml-fundamentals | 12 | 10 | 3 | 3 | 18 | 16 | 20 |
+| C2-linear-models | 19 | 19 | 3 | 3 | 24 | 24 | 36 |
+| C3-gradient-descent | 6 | 6 | 0 | 0 | 19 | 19 | 23 |
+| C4-classical-ml-practice | 42 | 26 | 3 | 3 | 20 | 19 | 27 |
+| C5-embeddings | 14 | 7 | 3 | 3 | 22 | 13 | 23 |
+| C6-neural-networks | 5 | 4 | 1 | 1 | 10 | 10 | 25 |
+| F6-svd-spectral | 7 | 5 | 2 | 2 | 22 | 19 | 30 |
+| C7-pytorch | 31 | 16 | 9 | 9 | 7 | 7 | 20 |
+| F7-kernels-convex-optimization | 7 | 7 | 0 | 0 | 16 | 16 | 17 |
+| C8-neural-training | 44 | 37 | 7 | 7 | 40 | 38 | 30 |
+| C9-dimensionality-reduction | 4 | 4 | 5 | 5 | 58 | 56 | 37 |
+| C10-cnn-transfer | 22 | 15 | 6 | 6 | 58 | 52 | 27 |
+| C11-competition-craft | 18 | 16 | 0 | 0 | 29 | 29 | 20 |
+| C12-classical-models | 19 | 13 | 1 | 1 | 37 | 34 | 27 |
+| r1-001 (rule 1 only) | 6 | 6 | 0 | 0 | 0 | 0 | 0 |
+| B2-019-attention-transformers | 26 | 26 | 16 | 16 | 51 | 50 | 22 |
+| B2-020-language-transformers | 22 | 22 | 3 | 3 | 38 | 38 | 10 |
+| B2-021-cross-modal-transformers-vision | 27 | 27 | 4 | 4 | 57 | 55 | 9 |
+| B2-022-probabilistic-latent-models | 31 | 23 | 4 | 4 | 71 | 69 | 16 |
+| B2-023-generative-models-diffusion | 11 | 10 | 2 | 2 | 78 | 71 | 14 |
+| B2-024-gpu-scientific-ml-capstone | 30 | 29 | 3 | 3 | 91 | 85 | 16 |
+| r2-001 (rule 1 only) | 8 | 8 | 0 | 0 | 0 | 0 | 0 |
+
+| book | rule-subject sites | rule 1 | rule 2 | rule 3 | open (r1 / r2 / r3) | graduated / no-reminder exempt | waiver cap (2%) |
+|---|---|---|---|---|---|---|---|
+| Book 1 | 929 | 410 | 60 | 459 | 793 (310 / 59 / 424) | 320 / 85 | 18.6 |
+| Book 2 | 573 | 155 | 32 | 386 | 545 (145 / 32 / 368) | 85 / 2 | 11.5 |
+
+By notebook kind, Book 1 sites sit in lessons (r1 270, r2 34, r3 307), solutions (67 / 26 / 101), statements (r1 66, r3 51) and review (r1 1); Book 2 in lessons (76 / 14 / 207), solutions (69 / 18 / 160) and statements (r1 2, r3 19).
+Every unit also reports "missing API card" until Task 4.
+
+**Rule 2 for `size` / `dtype` / `device`** (reported separately, D1): Book 1 1 / 16 / 1, Book 2 0 / 5 / 5.
+All three stay in the trigger set for now; `dtype` carries most of the weight (`np.array(..., dtype=int)`, `torch.tensor(..., dtype=torch.float64)`), which is a genuine new call mode.
+Rule-2 elements overall: Book 1 `axis` 17, `dtype` 16, `dim` 5, positional modes 9, `keepdims` 3, `ddof` 2, one each of `p`, `size`, `return_counts`, `indexing`, `full_matrices`, `keepdim`, `generator`, `device`.
+
+**Prose-mandated callees (D6).**
+The scan covered every practice-statement and mock-problem markdown cell plus `book*/mocktests/*/theory/*.md`, looking for backticked calls not used in any unit's code.
+It confirmed `Tensor.view` (r2-001 p01 cell 4) and `torch.nn.ModuleList` (r2-001 p01 cell 6), already in D6.
+The other hits are attributes (`.T`, `.shape`, `.data`, `.weight`, `.requires_grad`), student-defined methods (C7 p06 `.apply`/`.twice`/`.label`), banned calls quoted in prose (C11 p10 `np.random.permutation`), or calls a unit already uses (`np.char.capitalize` in C11 p18 code, `torch.cuda.max_memory_allocated` in B2-024 lesson 01).
+No new D6 rows from prose.
+The check's mock rule-1 list adds two mock-first callees that the survey's 12 did not name (needs a D6 decision):
+- `.copy_` — r1-001 `problems/p08.ipynb` cell 5 (provided code in a statement; a one-line rule-1 comment is enough, since Book 2 units use it later);
+- `tempfile.TemporaryDirectory` — r1-001 `solutions/p09_solution.ipynb` cell 14, infrastructure beside `shutil.copy2` / `subprocess.run` (rule-1 comment in the solution only).
+
+**Settled lists** (in `tools/checks/api_comments_baseline.yaml`; F1's Task 3 batch may still trim or extend them, D9).
+- `semantic_keywords`: exactly the D1 set — `axis`, `bias`, `ddof`, `device`, `dim`, `dtype`, `full_matrices`, `generator`, `indexing`, `keepdim`, `keepdims`, `key`, `p`, `reduction`, `replace`, `return_counts`, `size`, `weights`. No keywords added.
+- `positional_callees`: `arange`, `full`, `linspace`, `normal`, `ones`, `randint`, `split`, `zeros`. A positional mode counts as explained when the comment names the callee or one of the `positional_words` (`start`, `stop`, `step`, `num`, `low`, `high`, `loc`, `scale`, `shape`, `size`, `fill`, `sections`, `mean`, `std`); otherwise existing comments such as `# start 2, step 3, stop excluded` would not count.
+- `graduated` (exempt from rule 3 once used in 3 earlier units): `.all`, `.argmax`, `.astype`, `.copy`, `.integers`, `.max`, `.mean`, `.min`, `.normal`, `.plot`, `.reshape`, `.sum`, `.tolist`, `ValueError`, `all`, `any`, `enumerate`, `next`, `np.abs`, `np.allclose`, `np.arange`, `np.argmax`, `np.array`, `np.asarray`, `np.isclose`, `np.linspace`, `np.max`, `np.maximum`, `np.mean`, `np.ones`, `np.random.default_rng`, `np.sqrt`, `np.sum`, `np.where`, `np.zeros`, `plt.plot`, `plt.subplots`, `sorted`, `zip`. All are book-first in F1–F5 and reused in at least 7 later units.
+- `no_reminder`: `.legend`, `.set_title`, `.set_xlabel`, `.set_xlim`, `.set_ylabel`, `.set_ylim`, `math.isfinite`, `plt.figure`, `plt.legend`, `plt.show`, `plt.tight_layout`, `plt.title`, `plt.xlabel`, `plt.ylabel`, `torch.cuda.is_available`.
+- `baseline`: the survey's `BASE_BUILTINS` and `BASE_METHODS`, unchanged.
+- `method_families`: receivers built by a lower-case `np.` / `torch.` / `pd.` function are typed `ndarray` / `Tensor` / `DataFrame`; on a typed receiver a baseline method name is keyed per family (`ndarray.append` is not `list.append`). `keyed` (non-baseline methods split per family) starts empty; everything else is keyed by name (`.sum`, `.view`).
+- `mock_rules: [1]`: mocks apply rule 1 only, as Task 3 describes.
+- Named idiom `book-root-finder`: first explained at C4 lesson 01 cell 22.
+
+### D8 — test couplings to notebook text
+
+All indices are 0-based (Python list indexing); no test uses 1-based indices.
+The pins below are encoded in `scripts/verify-comment-only.py` `INDEX_PINNED`, or enforced by its generic rules.
+
+**Cell-index references** (Plan 019 inventory `tests/fixtures/plan019-path-inventory.yaml` via `test_integration.py` `_plan019_assert_live_migration_cells`, and `test_clean_checkout.py`). Each cell must keep its index and still contain `USAAIO_BOOK_ROOT` or `book_root`; none may contain `pyproject.toml`.
+- r1-001: `problems/p05` 1, `problems/p07` 1, `problems/p09` 3, `solutions/p05_solution` 1, `p07_solution` 1, `p09_solution` 2 and 14.
+- `09-C4/lessons/01-pandas-and-data-loading` 22 (D6 `json.loads` teaching cell goes after it; the notebook ends in an open `## Checkpoint Answers` section from cell 33).
+- `10-C5`: lessons 02 and 03 cell 1; practice p05, p07–p10, p13, p14, p16–p20 (statement and solution) cell 1; p11, p12 cell 2. Lesson 01 (tokens) is guard-protected and pinned in `test_scope.py`.
+- `16-C9`: lesson 03 cell 1; practice p07, p09, p14 cell 1; p12 cell 2.
+- `17-C10`: lessons 02 and 03 cell 1; statements p08, p09, p11, p12, p15, p16, p19 cell 1; p14, p17 cell 2; solutions p08, p09, p11, p12, p14–p17, p19 cell 2.
+- Negative indices: solutions in B2-019, B2-020, 19-C12 (`cells[-2]` is `### Answer check`, `cells[-1]` the assert cell); B2-020/022/023 check tests require the failure at `len(cells)-1`; B2-021–B2-024 solutions allow only code after the last `### Answer check`; capstone `cells[-1]` must be code; r2-001 p02/p04/p05's last code cell is the `test_call_count` check. So no new cell goes after `### Answer check` in any solution (verifier rule).
+- `cells[0]` header checks: B2-020 solutions, B2-021–B2-024 student surfaces (B2-024 solutions too), and `verify-register.py`'s first markdown cell of every Book 1 practice notebook. Nothing is inserted at the front.
+- B2-022/B2-023 latent and generative checks read `code_cells[0]` and `code_cells[1]`; no code cell may be inserted before or between them.
+
+**Literal-substring and mutation targets, by notebook** (comments must not repeat, split or trail these; where a comment is needed it goes in a block above, D8):
+- `15-C8/practice/p16_solution` cell 3: the five-line block from `optimizer.zero_grad(set_to_none=True)  # PLAN017_MUTATION_TARGET: C8-p16-zero-grad` to `loss.backward()`; marker cell 5; `model.eval()\n    with torch.no_grad():\n        predictions =` verbatim.
+- `15-C8/practice/p23_solution` cell 3: `optimizer.step()  # PLAN017_MUTATION_TARGET: C8-p23-optimizer-step`.
+- `15-C8/practice/p14_solution`, `p21_solution`: the `loss=…`/`gradient/=…`/`grad/=len(y)` literals (count 1 each).
+- `15-C8` statements p05–p10, p14, p15, p21: the statement code from its probe marker (`probe_p05 =`, …, `rng_p21 =`) to the end must appear verbatim in the solution, so any comment added there must be mirrored identically in the solution.
+- `15-C8` cell-id matches: `p04-m1`, `p10-c2`, lesson 03 `c11s3015`, lesson 04 `c11s4010`/`c11s4016` plus literals over all cells (`torch.Generator(device="cpu")`, `generator=data_generator`, …).
+- `17-C10/practice/p10_solution` cell 4 and `p27_solution` cells 2 and 8: `PLAN017_MUTATION_TARGET` lines; p27's move mutation pastes into the next code cell after the verifier (cell 5).
+- `19-C12/practice/p07`, `p08`, `p10`, `p13`, `p29_solution` cell 2: two-line `# PLAN018_MUTATION_TARGET: …` comment plus code line; markers count 1.
+- `19-C12/practice/p20_solution`: the `_lowest_seed_near_minimum` cell; anchors `np.isclose(inertias, minimum, atol=atol, rtol=rtol)`, `atol=atol`, `rtol=rtol`, `np.argmin(seeds[candidates])` must stay unique — no comment may contain them.
+- `19-C12/practice/p22_solution`: no comment may contain `0.2` (also `0.25`, `10.2`).
+- `19-C12` lessons 01–03 tests read `str(cell["source"])`: keep the stored source representation (verifier rule).
+- `B2-019` solutions p03, p06–p10, p15, p17, p24: replacement literals (`np.sqrt(X.shape[-1])`, `scores = (q @ k.T) / np.sqrt(q.shape[1])`, `masked_scores = scores + mask` four-line block, `return heads.transpose(0, 2, 1, 3).reshape(b, n, h * d_h)`, …); the first cell containing the literal is mutated, so no earlier comment may quote one. Statements p09/p17 forbid `nn.Embedding`; p02 forbids `before simplifying`. Lessons 00 and 04 (D6 `ModuleList` target) are executed with pinned values: teaching code must not consume the random generator.
+- `B2-020` solutions p07, p11, p18–p21, p24: whole-function literals (`def update_embedding_table…`, `def apply_mlm_mask…`, `def shift_targets…`, …) with count 1 — no comment inside these functions.
+- `B2-021` solutions p17–p20, p24: fragment literals inside functions (`optimizer.step()`, `loss.backward()`, `torch.cat((decoder,skip),dim=1)`, `torch.bmm(adjacency_float,nodes)/degree`, …), one AST definition per function; lesson 02's first `atol=1e-6, rtol=1e-6`. Statements forbid comment lines matching `(?im)^#{1,4}\s*(solution|answer)\b`.
+- `B2-024` solutions p18–p22, p26, p27: exact literals (`Z = torch.cat([features(xl), features(pool)])`, `losses = train_inverse(…)`, …); `assert capstone_data.test_call_count(...) == N` lines take no trailing comment; no comment may mention `final_test_score(` before its first call. Lesson 01's tail from `## 10.` is markdown-only.
+- r2-001 solutions p01–p05: anchors in `test_r2_001_checks.py` (`return torch.tril(torch.ones(n, n, dtype=torch.bool))`, the `table[:, 0::2] = torch.sin(p * omega)` pair, `total = recon_mean + beta * kl_mean`, the `test_call_count` asserts, …) must stay unique; asserts that end in `\n` take no trailing comment.
+
+**Generic couplings.**
+- No code cell may contain `pyproject.toml` (Plan 019 live rule); no comment may contain `# tol-exempt:`, `# SOLUTION` or `answer_key`.
+- Lesson and review notebooks often end in an open `## Checkpoint Answers` / `Self-quiz answers` section (`tools/publish.py` `answer_regions`); the D3 card must open with its own unnumbered `## ` heading to close it. The check and the verifier both enforce this.
+- B2-019–B2-024 lessons count `^## N. ` headings over all cells (comments included): D6 markdown cells add no headings (verifier rule), and no code comment may start `## 1.`.
+- B2-021 cell ids must be unique across all solutions; 36 nbformat-4.4 notebooks (F3 and F5 practice p01–p18 solutions) carry no ids, and new cells there must not add one (verifier rule).
+- Material inventories hash cell sources: Task 4 regenerates `book*/curriculum/material-inventory.yaml` with `python -m tools.audit_curriculum --root bookN`.
+- Statement A–E option lines, `## Accelerator extension` placement and scope anchors key on markdown only; code comments are safe there.
+
+### Task 2 — Tooling
+
+- `tools/checks/api_comments.py`, registered as `api-comments-check` and run in the `ci-local.sh` step-5 loop; ~6 s for Book 1 and ~8 s for Book 2 (which rescans Book 1 first).
+- `tools/checks/tolerance.py`'s `_canonical_module` / `_import_aliases` / `_resolved_name` gained an optional module map, a `passthrough` flag and longest-dotted-prefix canonical names; the tolerance check's behaviour is unchanged.
+- Report mode: `enforce: false` in `tools/checks/api_comments_baseline.yaml`; Task 5 flips that one value.
+- Waivers: `tools/checks/api_comments_waivers.yaml` holds only the D8 `guard-protected` entry for the C5 tokens notebook (0 counted waivers). Its rule-1 sites are explained by the C5 card's "New" part; today 6 of its 7 book-first callees are already explained in nearby markdown, `repr` is not.
+- `scripts/verify-comment-only.py --base <ref>` implements D5 (a)–(f) plus the D8 rules above; passes against `main` (0 changed notebooks).
+- Tests: `tests/test_api_comments.py` (36) and `tests/test_verify_comment_only.py` (22).
+- Design choices beyond the text: the unit card is never markdown evidence (c), only (d); in statements only the single comment line directly above a statement counts as block evidence (the one-line rule); a stale waiver is a finding; a `graduated` entry that no notebook calls is a finding.
 
 ## Content Review
 
