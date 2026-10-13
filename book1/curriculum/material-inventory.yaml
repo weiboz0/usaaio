@@ -43328,7 +43328,7 @@ notebooks:
   - plt.tight_layout
 - path: units/16-C9-dimensionality-reduction/lessons/04-maps-and-structure.ipynb
   kind: notebook
-  semantic_sha256: f5db138fd6b9dbf0bfd9a1c2c557f966cdd3dd42fadccb411c65f20113e7a1cb
+  semantic_sha256: fc7a3da3f94e92a84efa7ccd766fb1049cf5e66129f0bcf5b1c5cc11f9551f6a
   anchors:
   - anchor: 'units/16-C9-dimensionality-reduction/lessons/04-maps-and-structure.ipynb :: C9-dimensionality-reduction — Session
       4: Maps and Structure — What a 2-D Picture Can and Cannot Tell You :: cell 1'
@@ -46602,7 +46602,7 @@ notebooks:
   - x.to
 - path: units/17-C10-cnn-transfer/lessons/03-truncation-and-transfer.ipynb
   kind: notebook
-  semantic_sha256: 407d4a60ec545717cfdf4222488d166e926e7f91076b61723a509dbb310c7b75
+  semantic_sha256: b4bbcf56e4168ddd08e5edb800a8d567b134348a59732155b58bf770c63e6d4d
   anchors:
   - anchor: 'units/17-C10-cnn-transfer/lessons/03-truncation-and-transfer.ipynb :: C10-cnn-transfer — Session 3: Truncation
       and Transfer :: cell 1'
