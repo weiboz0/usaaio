@@ -15593,7 +15593,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb
   kind: notebook
-  semantic_sha256: 8866571541f0f86b8579724d6ce0342867e8a1fae57a79fac167a55b34f5f14b
+  semantic_sha256: 129206b983e8be562627be432480035010b21391f6edd2b024764ac642ab9ba9
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone :: cell
       1'
@@ -19995,7 +19995,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/review.ipynb
   kind: notebook
-  semantic_sha256: d9c4bb68a1ae7838f2e739bb6e015c9a520da7539af4a05776b50929c1c74e81
+  semantic_sha256: f4c5c99b19daec75ce6acc78d2444e7ff4026c8f6a33064c90e7d90361ad82a0
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/review.ipynb :: B2-024 — Review and Self-Quiz :: cell 1'
     heading_path:

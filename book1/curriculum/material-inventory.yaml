@@ -11010,7 +11010,7 @@ notebooks:
   api_tokens: []
 - path: units/03-F3-multivar-calculus/lesson.ipynb
   kind: notebook
-  semantic_sha256: dd9d7002939d62e81bd3de78721c650512b9c4cf98fb6d3c03b1bbd7a58fcb25
+  semantic_sha256: b8b75d0e988c507ec0a61d9cf98fc58029d3629c984f3225b9fdd137349fd7c4
   anchors:
   - anchor: 'units/03-F3-multivar-calculus/lesson.ipynb :: F3-multivar-calculus — Partials, Gradients, and the Chain Rule
       (Unit Overview) > How to study this unit :: cell 1'
@@ -12763,7 +12763,7 @@ notebooks:
   - np.tanh
 - path: units/03-F3-multivar-calculus/review.ipynb
   kind: notebook
-  semantic_sha256: b345f58a4496ac67049e51a8301e5d0bd4f1a30a77f5f6af9e9169f8292e867d
+  semantic_sha256: 255fdf301bcedbfdf2717ad746380d3dbe22a852b11a6e1f2f99a806aea8b3b4
   anchors:
   - anchor: 'units/03-F3-multivar-calculus/review.ipynb :: F3-multivar-calculus — Review :: cell 1'
     heading_path:
@@ -42812,7 +42812,7 @@ notebooks:
   - torch.set_default_dtype
 - path: units/16-C9-dimensionality-reduction/lesson.ipynb
   kind: notebook
-  semantic_sha256: ddd15e962f1146a6490071c3e88a6526b01fb9f33a329d5371d5a68a843f359d
+  semantic_sha256: 2b618f8285369021c8258fd5cf5c12ccc34cf7360f0e7a455e1dfa20e5e211fb
   anchors:
   - anchor: 'units/16-C9-dimensionality-reduction/lesson.ipynb :: C9-dimensionality-reduction — Dimensionality Reduction (Unit
       Overview) > How to study :: cell 1'
@@ -46175,7 +46175,7 @@ notebooks:
   - self.transform
 - path: units/16-C9-dimensionality-reduction/review.ipynb
   kind: notebook
-  semantic_sha256: f1146f5f3cd83c3acfc8973395f9537ca43d62c2b27e65f81e11ea3bcaa89916
+  semantic_sha256: 64826467977c4921a9829e5cf7465b49c74d25caab907fddf71cffdd15891766
   anchors:
   - anchor: 'units/16-C9-dimensionality-reduction/review.ipynb :: C9-dimensionality-reduction — Review :: cell 1'
     heading_path:

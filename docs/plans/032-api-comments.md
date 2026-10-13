@@ -283,6 +283,14 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ### Round 4
 
+- `[sol]` REJECT after a full accuracy sweep of all 50 cards:
+  - [FIXED] C9 `np.triu` / `np.triu_indices`: "above the diagonal" is now "diagonal included; `k=1` gives strictly above".
+  - [FIXED] Nit: the F3 `np.arctan2` range is now `[-π, π]`, noting the negative-zero case.
+  - [FIXED] Nit: the B2-024 `.to` reminder now says "same if unchanged".
+  - The sweep found no other factual errors; each lesson and review card pair matches.
+
+### Round 5
+
 - `[sol]` REJECT.
   - [FIXED] Must Fix: index preservation in D5(d) contradicted the D6 insertion. Now only index-referenced cells keep their indices.
   - [FIXED] Must Fix: the CLI registry is `SUBCOMMANDS`.
