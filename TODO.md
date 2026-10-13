@@ -28,13 +28,13 @@ The old-to-new table is [docs/unit-renumbering.md](docs/unit-renumbering.md).
 - [x] 022 — C12 p20 K-means near-tie erratum (deterministic lowest-seed rule)
 - [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
+- [x] 031 — Book 1 units in teaching order: `NN-` folder prefixes and F/C codes renumbered (docs/unit-renumbering.md)
 - [x] 030 — py4kids-style book editions: student-print, student, answer key and teacher PDFs, plus syllabus, handouts and mock-test papers and solutions, for both books
 - [x] 024 — Round 2 live blueprint and mock test r2-001 (Book 2 final assessment) — **Book 2 complete**
 - [x] 029 — Round 2 GPU scientific-modeling capstone (B2-024) and the `optional-colab-l4` compute policy
 - [x] 028 — Round 2 generative models and diffusion (B2-023: GANs, DDPM, Stable Diffusion architecture with a CPU latent-diffusion analogue)
 - [x] 027 — Round 2 probabilistic latent models (B2-022: Gaussians, KL, AE, reparameterization, VAE)
 - [x] 026 — py4kids 3-way review roster and Opus dispatch; deferred-policy test clock pinned
-- [ ] 031 — Book 1 units in teaching order: `NN-` folder prefixes and F/C codes renumbered (docs/unit-renumbering.md)
 
 ## Deferred, with a named owner plan still to be written
 

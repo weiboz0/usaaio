@@ -521,4 +521,21 @@ Roster: `[self]` (Opus 5.5 inline), `[sol]` (codex gpt-6-sol, read-only), `[fabl
 
 ### Round 2
 
+- `[fable]` APPROVE. All round-1 items verified fixed (front matter, syllabus order and rationale, both lesson pointers, the test's expected order, the base-path-keyed structural exceptions); every manifest prerequisite precedes its unit in the new order. Nit noted: the five hand-edited files are excluded from check (a) wholesale; each diff is one line and was read by hand.
+- `[sol]` and `[self]` round-1 APPROVE stand; the round-1 fixes are wording-only and test-expectation updates.
+- **Gate passed** (3/3 APPROVE, no `[OPEN]` items).
+
 ## Post-execution report
+
+**Shipped.** Book 1 units now live in `book1/units/NN-<code>-<slug>/` with codes renumbered so F1–F7 and C1–C12 each count up in teaching order (mapping in `docs/unit-renumbering.md`).
+
+- Tooling: `unit_dir`/`unit_id_of` separate unit id from folder; every path-building site routes through them; new `unit-order` check; the pre-merge guard keys on codes, requires unique prefixes and ignores rename sources; a narrowly scoped `plan031-rename` token exception.
+- Content: token-only rewrite of 827 files by the committed `scripts/renumber-book1-units.py`, proved by `scripts/verify-unit-renumbering.py --base main` (1,458 paired files, 2 override lines, 11 data files identical, 437 = 437 practice ids, 15 markers). Five one-line wording fixes from the content gate (front matter and syllabus now describe the teaching order; two lesson pointers) are declared structural exceptions.
+- Editions: Book 1 volumes are now units 01–08, 09–14, 15–19 with new part titles; total pages unchanged.
+- Gates: plan gate passed round 3; content gate passed round 2.
+- Final `ci-local.sh --all-books` on clean tip 2968f6e: **ALL GREEN** — 1,766 tests, every notebook, register 437/437, unit-order check for both books, all generated-artifact and mutation checks, both publish audits (Book 1: print 984, student 546/456/452, answer key 122, teacher 718/582/700; Book 2: print 427, student 536, answer key 46, teacher 912), `pre-merge-guard: OK`. The previous run on 2b36b8b failed one test (stale Book 1 material inventory after the gate edits); regenerated in 2968f6e.
+
+**Follow-ups (recorded, not done here):**
+
+- Difficulty-ladder audit (report delivered to the user; recommendations only): F7 and C12 rated "needs work"; C10 lesson 03 "Optional forward pointers" heading now contains a backward pointer.
+- Plan 032: code-snippet comments (option C), now working on the final paths.
