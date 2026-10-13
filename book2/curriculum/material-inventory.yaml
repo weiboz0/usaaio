@@ -407,7 +407,7 @@ manifests:
 notebooks:
 - path: mocktests/r2-001/problems/p01.ipynb
   kind: notebook
-  semantic_sha256: de036713fa94645083c6dfd92b386533657d6a07a96a6f2ef7f209a5c196b5b5
+  semantic_sha256: ac783f5b8552629b217b637e6ebf22d2b47c650699fd2035a2d1c928242d23c7
   anchors:
   - anchor: 'mocktests/r2-001/problems/p01.ipynb :: Problem 1 (programming parts). A Tiny Causal Language Model, End to End
       :: cell 1'
@@ -487,7 +487,7 @@ notebooks:
   - torch.tensor
 - path: mocktests/r2-001/problems/p02.ipynb
   kind: notebook
-  semantic_sha256: 2020894870bf3a02fe88a84b25bd941d9a832b1cc33df9a7cd640e67959a3f7c
+  semantic_sha256: 27edec5ea421e85d95fbdc744dd9920c612c3bd3d34d555132509e2dd5d208ef
   anchors:
   - anchor: 'mocktests/r2-001/problems/p02.ipynb :: Problem 2. Two-Source Heat Localization > Committed baseline :: cell 1'
     heading_path:
@@ -554,7 +554,7 @@ notebooks:
   - torch.set_num_threads
 - path: mocktests/r2-001/problems/p03.ipynb
   kind: notebook
-  semantic_sha256: 88b38701fc4897c9f1fb9df4541f1095d9894241b61eed8db3da5565d4f52f30
+  semantic_sha256: 630b8d5c20b364780bf728e6949b7a9ef8fb2c3db64c8445f27d6c5f2bebe4ed
   anchors:
   - anchor: 'mocktests/r2-001/problems/p03.ipynb :: Problem 3 (programming parts). A β-Weighted Variational Autoencoder ::
       cell 1'
@@ -641,7 +641,7 @@ notebooks:
   - torch.tensor
 - path: mocktests/r2-001/problems/p04.ipynb
   kind: notebook
-  semantic_sha256: e0f01603f168176a13e7f55481621e39d05662d54c1939e3ee6b36dd334b7009
+  semantic_sha256: 04d870f9e0d8719588a0509b343a4e777ef74d7e13688372426d80f9c2833225
   anchors:
   - anchor: 'mocktests/r2-001/problems/p04.ipynb :: Problem 4. Texture Patches with Five Percent of the Labels > Committed
       baseline :: cell 1'
@@ -714,7 +714,7 @@ notebooks:
   - torch.set_num_threads
 - path: mocktests/r2-001/problems/p05.ipynb
   kind: notebook
-  semantic_sha256: fde42f921aef08c2e3079add8a5fd4ab7b606b58dc9036cb9cc6c4968885cf9d
+  semantic_sha256: 4be9e582ace8d187db7f98dda824d09402eca7c0ef2369a858f1cdb8e84356b3
   anchors:
   - anchor: 'mocktests/r2-001/problems/p05.ipynb :: Problem 5. Reading Two Lorentzian Peaks > Committed baseline :: cell 1'
     heading_path:
@@ -779,7 +779,7 @@ notebooks:
   - torch.set_num_threads
 - path: mocktests/r2-001/solutions/p01_solution.ipynb
   kind: notebook
-  semantic_sha256: 02a466c20b5771d573d508ef90ffffc9579b447d9a8eced7a37f971f09776ef9
+  semantic_sha256: 40ad5e22d8598efbb0aa4b794f6da26b5477aa6e172339788399f1ca0c6e4a87
   anchors:
   - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) ::
       cell 1'
@@ -959,7 +959,7 @@ notebooks:
   - x.clone
 - path: mocktests/r2-001/solutions/p02_solution.ipynb
   kind: notebook
-  semantic_sha256: 98056f4ce04cb66c71ab805d43da76e05a7db4189b584b19a745248feda7536b
+  semantic_sha256: d2e77fa858472c0748f1136893b0c6965893acb4b1eea8c79f6862a714053023
   anchors:
   - anchor: 'mocktests/r2-001/solutions/p02_solution.ipynb :: r2-001 Problem 2 — Reference solution (two-source heat localization)
       :: cell 1'
@@ -1102,7 +1102,7 @@ notebooks:
   - y_train.double
 - path: mocktests/r2-001/solutions/p03_solution.ipynb
   kind: notebook
-  semantic_sha256: efd3dc03dca49b90dd82518fe9202db38b1f59c182bb7a2b44bde6df37735b4e
+  semantic_sha256: 55f02a624855d5100092c0d48a2e84b16b5992cab909424bc25fc5f0ed2309fe
   anchors:
   - anchor: 'mocktests/r2-001/solutions/p03_solution.ipynb :: r2-001 Problem 3 — Solution (programming Parts 3.5–3.8) :: cell
       1'
@@ -1255,7 +1255,7 @@ notebooks:
   - z.sum
 - path: mocktests/r2-001/solutions/p04_solution.ipynb
   kind: notebook
-  semantic_sha256: fc9017b536a80c0e5bc0727d58451eac56274135d3d0fcc2deb940c12dacbd47
+  semantic_sha256: 0812f8892e1ae688956b7c8ceafff402f21f0c7da7325f98c3ce0abf108b2e8e
   anchors:
   - anchor: 'mocktests/r2-001/solutions/p04_solution.ipynb :: r2-001 Problem 4 — Reference solution (texture patches, 5% labels,
       scanner shift) :: cell 1'
@@ -1402,7 +1402,7 @@ notebooks:
   - z.std
 - path: mocktests/r2-001/solutions/p05_solution.ipynb
   kind: notebook
-  semantic_sha256: 97e473ac9e46979ec1ab8d836b9a1b4a33b11c7c51712c571cdf2d500b9ce16a
+  semantic_sha256: 362c656b4f7f2ca0cd0ff780cb9518b875018a65b6609b3a6606ffec6c4d1722
   anchors:
   - anchor: 'mocktests/r2-001/solutions/p05_solution.ipynb :: r2-001 Problem 5 — Reference solution (two Lorentzian peaks)
       :: cell 1'
@@ -1550,13 +1550,19 @@ notebooks:
   - train_x.std
 - path: units/B2-019-attention-transformers/lesson.ipynb
   kind: notebook
-  semantic_sha256: 661f808d6e7211208da048af8ac77273f8dd1730a6317f0366c69e9d5a994583
+  semantic_sha256: 8b4c23c3cdc228529677ced1ab151557dfd3c6bb0ac2091a0a959e668942c0e3
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lesson.ipynb :: B2-019 — Attention and Transformer Mechanics > Study route
       :: cell 1'
     heading_path:
     - B2-019 — Attention and Transformer Mechanics
     - Study route
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/lesson.ipynb :: B2-019 — Attention and Transformer Mechanics > Code in this
+      unit :: cell 1'
+    heading_path:
+    - B2-019 — Attention and Transformer Mechanics
+    - Code in this unit
     cell_ordinal: 1
   declared_unit_ids:
   - B2-019-attention-transformers
@@ -1576,7 +1582,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb
   kind: notebook
-  semantic_sha256: 6341a053ff416df19d71a2dfeacb8d3b6d0f50d8c338de2b0827f6f440008f00
+  semantic_sha256: b696077ad4470ad89b75d5d35d52a18e4e1d0e1f82756d9c656e67ded1b2a98d
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lessons/00-book1-bridge.ipynb :: B2-019 — Book 1 Bridge Diagnostic :: cell
       1'
@@ -1656,7 +1662,7 @@ notebooks:
   - np.swapaxes
 - path: units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb
   kind: notebook
-  semantic_sha256: 0d50013aa82c5528c29f6955793ca376290feaa90c246e202d05a7baed902467
+  semantic_sha256: b380754042a93b4087d553624881ca4dd0d210a703cef8ceab06f954537aa98b
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lessons/01-query-key-value-and-scaled-dot-product.ipynb :: B2-019 — Session
       1: Query, Key, Value, and Scaled Dot Product :: cell 1'
@@ -1735,7 +1741,7 @@ notebooks:
   - scores.max
 - path: units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb
   kind: notebook
-  semantic_sha256: 34481c6830604526906b6aaf81d89b6df7fed8491da65546c7da5915a3b8c824
+  semantic_sha256: 898de5f5ad7770d464ccb6b018e1d1d0717e8c09c5af0f56bceed920c8824047
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lessons/02-self-attention-and-masks.ipynb :: B2-019 — Session 2: Self-Attention
       and Masks :: cell 1'
@@ -1811,7 +1817,7 @@ notebooks:
   - weights.sum
 - path: units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb
   kind: notebook
-  semantic_sha256: bd718efc922c2c5f956426bfe4ac2c264a140fdf259b68773f8d93cac05d05ad
+  semantic_sha256: 3c78e8a35811ed66bed706de73eed63b294d4a4d47dbe73f303fb28274ff9cd2
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lessons/03-multi-head-position-and-cost.ipynb :: B2-019 — Session 3: Multi-Head
       Attention, Position, and Cost :: cell 1'
@@ -1886,7 +1892,7 @@ notebooks:
   - np.zeros
 - path: units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb
   kind: notebook
-  semantic_sha256: b9f60b1cd2c2647e298776092c06c36a920b196d915d7f786bf92f64cf9f8eb0
+  semantic_sha256: 8728dc095c9293b68a7de539cce3f4dcbba239bfec4cf0984607bf07e7f47469
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
       Attention Module and Tiny Training :: cell 1'
@@ -1942,6 +1948,18 @@ notebooks:
     - 4. Training loop
     cell_ordinal: 2
   - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training > 4. Training loop :: cell 3'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    - 4. Training loop
+    cell_ordinal: 3
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
+      Attention Module and Tiny Training > 4. Training loop :: cell 4'
+    heading_path:
+    - 'B2-019 — Session 4: Attention Module and Tiny Training'
+    - 4. Training loop
+    cell_ordinal: 4
+  - anchor: 'units/B2-019-attention-transformers/lessons/04-attention-module-and-tiny-training.ipynb :: B2-019 — Session 4:
       Attention Module and Tiny Training > 6. Common pitfalls :: cell 1'
     heading_path:
     - 'B2-019 — Session 4: Attention Module and Tiny Training'
@@ -1975,16 +1993,19 @@ notebooks:
   - math.sqrt
   - model.parameters
   - nn.Linear
+  - nn.ModuleList
   - nn.functional.cross_entropy
   - nn.functional.one_hot
   - optimizer.step
   - optimizer.zero_grad
   - parameter.detach
+  - parameter.numel
   - parameter.reshape
   - scores.masked_fill
   - self.attention
   - self.classifier
   - self.out
+  - stack.parameters
   - torch.allclose
   - torch.arange
   - torch.broadcast_to
@@ -2001,6 +2022,7 @@ notebooks:
   - torch.no_grad
   - torch.ones
   - torch.optim.Adam
+  - torch.random.fork_rng
   - torch.sin
   - torch.softmax
   - torch.tensor
@@ -2008,7 +2030,7 @@ notebooks:
   - x.is_floating_point
 - path: units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb
   kind: notebook
-  semantic_sha256: 2a829ff9fb0f0665799670ceb9e6c64491d81b4a3343b6f929d33056d781bcfc
+  semantic_sha256: 223bf82b4d952561c5baf9a6d07c5ec0b7bfe6e06f49d22a95264865695115be
   anchors:
   - anchor: 'units/B2-019-attention-transformers/lessons/05-transformer-blocks-and-architecture.ipynb :: B2-019 — Session
       5: Transformer Blocks and Architecture :: cell 1'
@@ -2101,7 +2123,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p01_solution.ipynb
   kind: notebook
-  semantic_sha256: c67a8a29932a7c997c8e67e0f36834962331156e9ba25e25a2472f02635535f6
+  semantic_sha256: 8bfa92661e900514dd24ea7f42418a631b2d9740eb0ea3c8b3e3a13c432cdd4f
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p01_solution.ipynb :: B2-019-attention-transformers — Practice p01
       — Solution :: cell 1'
@@ -2171,7 +2193,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p02_solution.ipynb
   kind: notebook
-  semantic_sha256: 5e3ad108463ed76ccf5e6e04a21f6bdda900b4f2a68bdc511ea9fccaa6b52639
+  semantic_sha256: ad04501b46dcddc42d83507d4259069872d4c627b2f09d7aaf63e008a3dcb855
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p02_solution.ipynb :: B2-019-attention-transformers — Practice p02
       — Solution :: cell 1'
@@ -2240,7 +2262,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p03_solution.ipynb
   kind: notebook
-  semantic_sha256: 5dbbfd321d748c17f7ffcebbf50dd01bf8578b3a7a82ab5604f56185d24a0b68
+  semantic_sha256: d621ef6e3e0a5d50324e3568c5073e7e0777c4ad47be57cfb96ce2007f5659e4
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p03_solution.ipynb :: B2-019-attention-transformers — Practice p03
       — Solution :: cell 1'
@@ -2314,7 +2336,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p04_solution.ipynb
   kind: notebook
-  semantic_sha256: e25fe6c75faa88cbad7c4215313733c5173576a1900a75c60a32f4af1cb764e1
+  semantic_sha256: 83b0dabac2a0087855b70ba72879219a40d59359eca0c8a0be4bce1c62708cc2
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p04_solution.ipynb :: B2-019-attention-transformers — Practice p04
       — Solution :: cell 1'
@@ -2390,7 +2412,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p05_solution.ipynb
   kind: notebook
-  semantic_sha256: e9f4d414b4f9188d58bc0a0cd6a63052ee2602d125b27950072e4d0a3de339d5
+  semantic_sha256: 296702e7a53a787b7d2688cf4fb01a77efa1f2854b584bbdfd4e9132d25f1334
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p05_solution.ipynb :: B2-019-attention-transformers — Practice p05
       — Solution :: cell 1'
@@ -2468,7 +2490,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p06_solution.ipynb
   kind: notebook
-  semantic_sha256: 5d23cbad8e5428ab2a716ce5b1d4ae9cb6f2bd0f53844209a6b309ae25781e3d
+  semantic_sha256: c9d30e4ff2d9161b46471ce7ccc7b8d933119e5dba7d5d9b611160eea7e735a0
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p06_solution.ipynb :: B2-019-attention-transformers — Practice p06
       — Solution :: cell 1'
@@ -2553,7 +2575,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: 87429acc4d749d414e1e24653176351461f5b4646ef7b617d4c7a9684006bd9a
+  semantic_sha256: 92d00205d7bd642c2c0777b7757b5f8bacfd7df3cea27767132fe81799d1f3db
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p07_solution.ipynb :: B2-019-attention-transformers — Practice p07
       — Solution :: cell 1'
@@ -2637,7 +2659,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p08_solution.ipynb
   kind: notebook
-  semantic_sha256: 4a91b9d1effe257cecd161bd7ad49b3ec087e8fa8e64a068f6025cce7964d5bd
+  semantic_sha256: 1dcef3962780a6f1ffc0120d13b8d2add64e48269e314037629b313dbc51ad1c
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p08_solution.ipynb :: B2-019-attention-transformers — Practice p08
       — Solution :: cell 1'
@@ -2723,7 +2745,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p09_solution.ipynb
   kind: notebook
-  semantic_sha256: d98eb574a232f0f6637f90cae5bd574482f2b228904f5ca610535bd026c77867
+  semantic_sha256: d091a343685851824d59ae7da0480b517b307bc3122e61df1f316e5245451b80
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p09_solution.ipynb :: B2-019-attention-transformers — Practice p09
       — Solution :: cell 1'
@@ -2801,7 +2823,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: ecad2677e285aab6c43316b3c05a9caaee0d97df94fcf7d07cc6c07ee9431550
+  semantic_sha256: 0a35b4cd9389b636bbfb30b7cff89559fed843e1612daaf019b3aaf6f9517c59
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p10_solution.ipynb :: B2-019-attention-transformers — Practice p10
       — Solution :: cell 1'
@@ -2848,7 +2870,7 @@ notebooks:
   - x.reshape
 - path: units/B2-019-attention-transformers/practice/p11.ipynb
   kind: notebook
-  semantic_sha256: 58aa18dc2b1385eb90fa8d625294d3f6c76ed55755cadcc001061974401dfb4c
+  semantic_sha256: 84fa8f7d2982dec24dd32902305ab13640a241516963aea8c534728535f600d9
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p11.ipynb :: B2-019 — Practice p11 > Task :: cell 1'
     heading_path:
@@ -2891,7 +2913,7 @@ notebooks:
   - v.numpy
 - path: units/B2-019-attention-transformers/practice/p11_solution.ipynb
   kind: notebook
-  semantic_sha256: 98779dde5306d257ee3a88cb82cd503f671122f871a7f22737679f680d61c511
+  semantic_sha256: ff4392a8f7d1029bab3ff395d61f7995577cd407962c0f0b90df0e6f1fcb2258
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p11_solution.ipynb :: B2-019-attention-transformers — Practice p11
       — Solution :: cell 1'
@@ -2957,7 +2979,7 @@ notebooks:
   - v.numpy
 - path: units/B2-019-attention-transformers/practice/p12.ipynb
   kind: notebook
-  semantic_sha256: 4cd141a12cbc7339befc0402efff8e0137083ae7ed79821be91a5a649c4bb303
+  semantic_sha256: 48eb3f9e9f4d8b5cd559f8b56a73515e0893be7bf8651a68defdb460e3148859
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p12.ipynb :: B2-019 — Practice p12 > Task :: cell 1'
     heading_path:
@@ -3002,7 +3024,7 @@ notebooks:
   - weight.copy_
 - path: units/B2-019-attention-transformers/practice/p12_solution.ipynb
   kind: notebook
-  semantic_sha256: 948bf2b279a0de528fdfed1d3633b623a15f40b58240be939b9acdbf4abf3c96
+  semantic_sha256: d721bbb9a99079f1a30106ea957863d4add3eb033057d6be7a940de755c34a46
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p12_solution.ipynb :: B2-019-attention-transformers — Practice p12
       — Solution :: cell 1'
@@ -3094,7 +3116,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p13_solution.ipynb
   kind: notebook
-  semantic_sha256: dead3d56e38d7c0b45da64fdac04aee7730dded0fcb70969c8c79e69f1f8ad07
+  semantic_sha256: f4ed75dfcb9c6ccef5494b7389fe8210e410778190e9d69f12f41983cb89b865
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p13_solution.ipynb :: B2-019-attention-transformers — Practice p13
       — Solution :: cell 1'
@@ -3165,7 +3187,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p14_solution.ipynb
   kind: notebook
-  semantic_sha256: 75596e4ac8d2eba79d362a1e9344e4b4787551148fe7cbb37a36de62352a3136
+  semantic_sha256: 457f7e8cca42d375f98ed756f078f4a44423d07f94df33b54bab89c075a574b0
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p14_solution.ipynb :: B2-019-attention-transformers — Practice p14
       — Solution :: cell 1'
@@ -3236,7 +3258,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p15_solution.ipynb
   kind: notebook
-  semantic_sha256: 935a3de0e17f0352f3a915522d4322edc21c080926c4eba6e3d6836936a76dc6
+  semantic_sha256: 1e1b07a4d0cc1afd973435a684611909f008295ee60fa1e095016c33d4f93e1c
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p15_solution.ipynb :: B2-019-attention-transformers — Practice p15
       — Solution :: cell 1'
@@ -3308,7 +3330,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: f79d28ae686ed5e940bb16ec4e36c15a9b6147894ef37d632c3cc54f4330cbbf
+  semantic_sha256: 2e6b50c1c961bd46e4af1c061fdb6e8976a4238e817245624e0cb258376c155f
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p16_solution.ipynb :: B2-019-attention-transformers — Practice p16
       — Solution :: cell 1'
@@ -3350,7 +3372,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: 1e7fe7fb0ce06ed392b74320d14b72a9e864646ba4ba9ce71b0ab2ea9e129cee
+  semantic_sha256: bd2a208a0acf35a10fb1957b752d4276ed4e3a28d1a66d85fcac7ad5747039ce
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p17.ipynb :: B2-019 — Practice p17 > Task :: cell 1'
     heading_path:
@@ -3393,7 +3415,7 @@ notebooks:
   - torch.tril
 - path: units/B2-019-attention-transformers/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: a94b1d039c7f0c05266ad4e69fd449a391254f10e0a560c04de190094029b907
+  semantic_sha256: 313a49a34c28d4d9edb106c5299e81f3e5dd60e045d5c9adedbabe204d956861
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p17_solution.ipynb :: B2-019-attention-transformers — Practice p17
       — Solution :: cell 1'
@@ -3496,7 +3518,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p18_solution.ipynb
   kind: notebook
-  semantic_sha256: 779e53f68e3e08b9a1a3e3cd7fceea2ea5c46a8f18a293b16c8a2ff2794194b8
+  semantic_sha256: e5fc4a5a2547bf4d759de5b32d4fb7b2a3b8aa8a63fcb241785f87f2a5d6a8ef
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p18_solution.ipynb :: B2-019-attention-transformers — Practice p18
       — Solution :: cell 1'
@@ -3576,7 +3598,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: a50b57fe9b2fcf2f624bb26366cd1675c22b19ec57b544ba03be3180d3f0d092
+  semantic_sha256: a04b8751060ac92cc445ac019d4a7f4da4c05dbc36fababf74899dc6b5a32396
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p19_solution.ipynb :: B2-019-attention-transformers — Practice p19
       — Solution :: cell 1'
@@ -3657,7 +3679,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 1c2c1ac9ae6be58ed356ea06f1ba16475c2b8c6041b869c11bf3752aaef1c156
+  semantic_sha256: 27df0fff97abb1a52761121ece85cab1892794f6d62399295b74160602f3f886
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p20_solution.ipynb :: B2-019-attention-transformers — Practice p20
       — Solution :: cell 1'
@@ -3720,7 +3742,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: 59006a012dd2cba0eddfc9d1793607d7b067a93322281c8983e97a4c4b59a79a
+  semantic_sha256: 4aca7f8cbee4c0df72e99915cd79fe6c8f3f011d678c72c66cee74e12900fb1c
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p21_solution.ipynb :: B2-019-attention-transformers — Practice p21
       — Solution :: cell 1'
@@ -3784,7 +3806,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: 3d59ac45ebc6f9dcbce676f66871742347f456a5fcb96f57f913c652a98e3c63
+  semantic_sha256: 401781d09656a1620be72d9a81471a3fe16df5739f248a64cc860b612da04fe3
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p22_solution.ipynb :: B2-019-attention-transformers — Practice p22
       — Solution :: cell 1'
@@ -3832,7 +3854,7 @@ notebooks:
   - np.tril
 - path: units/B2-019-attention-transformers/practice/p23.ipynb
   kind: notebook
-  semantic_sha256: 3994830559f819ec8cbb093e4dc7fab349739a70bd655bd0830eb2888b0c98fc
+  semantic_sha256: d33680fbf13e48c537fdab963f5f7b0e3a8aec1bb16f2515c649715c1a4ff2cb
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p23.ipynb :: B2-019 — Practice p23 > Task :: cell 1'
     heading_path:
@@ -3861,7 +3883,7 @@ notebooks:
   - np.stack
 - path: units/B2-019-attention-transformers/practice/p23_solution.ipynb
   kind: notebook
-  semantic_sha256: f781c614ec0131f3fd19379fbec480f5219c89ad28fc2b53b2655aa45d4a244f
+  semantic_sha256: 7817c4857448edbe277692d7bbf0d325e41980a9f7fe200887ff7a86a6acb4b4
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p23_solution.ipynb :: B2-019-attention-transformers — Practice p23
       — Solution :: cell 1'
@@ -3931,7 +3953,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-019-attention-transformers/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: d01227f1aa9c9db7170c7ab325b7214642517129de9884ec707adfdbc98e2d5c
+  semantic_sha256: c31a4110b616969d2dc3b1c7a009869ecaaa136399ab3d046d996dfe88a99bed
   anchors:
   - anchor: 'units/B2-019-attention-transformers/practice/p24_solution.ipynb :: B2-019-attention-transformers — Practice p24
       — Solution :: cell 1'
@@ -3991,12 +4013,18 @@ notebooks:
   - weights.sum
 - path: units/B2-019-attention-transformers/review.ipynb
   kind: notebook
-  semantic_sha256: 4275c6ebf510a3fbbec84e84d3c2ae7337b97c65aa64363ba14fca57d8d2d3d5
+  semantic_sha256: 7a09f059c75a674b881e6d8c444bf33d345dad4a72a3193f389d50da3ebd74f5
   anchors:
   - anchor: 'units/B2-019-attention-transformers/review.ipynb :: B2-019 — Review and Self-Quiz > Self-quiz :: cell 1'
     heading_path:
     - B2-019 — Review and Self-Quiz
     - Self-quiz
+    cell_ordinal: 1
+  - anchor: 'units/B2-019-attention-transformers/review.ipynb :: B2-019 — Review and Self-Quiz > Code you met in this unit
+      :: cell 1'
+    heading_path:
+    - B2-019 — Review and Self-Quiz
+    - Code you met in this unit
     cell_ordinal: 1
   declared_unit_ids:
   - B2-019-attention-transformers
@@ -4016,7 +4044,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/lesson.ipynb
   kind: notebook
-  semantic_sha256: 40fca80e33f3c26655478f0b554ebc2ff79a8bdebcef5c612b6fe1da860e7a78
+  semantic_sha256: 55b58f6f6b70d69cfa8599bd158dbae0fceaadaaacd4945648ad75ff3fcd2dee
   anchors:
   - anchor: 'units/B2-020-language-transformers/lesson.ipynb :: B2-020 — Language Transformers :: cell 1'
     heading_path:
@@ -4041,6 +4069,12 @@ notebooks:
     heading_path:
     - B2-020 — Language Transformers
     - Boundaries
+    cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/lesson.ipynb :: B2-020 — Language Transformers > Code in this unit :: cell
+      1'
+    heading_path:
+    - B2-020 — Language Transformers
+    - Code in this unit
     cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
@@ -4115,7 +4149,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb
   kind: notebook
-  semantic_sha256: bfc43f94d74946060e58dc1825836ca3d92ad9aaab49ae7b9d566dfc04caee59
+  semantic_sha256: ac2acb7623195420e3ce5d3e75895e117ef58ea8594628cdc58ef47391008faa
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/01-train-token-embeddings.ipynb :: B2-020 — Session 1: Train Token
       Embeddings :: cell 1'
@@ -4283,7 +4317,7 @@ notebooks:
   - torch.manual_seed
 - path: units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb
   kind: notebook
-  semantic_sha256: a7c70640c5e2f01d3772d5dbafba1bceac90794085b5c16988c02b2973583f91
+  semantic_sha256: 9dff8e58052626886157f501069c16c696458d32d74db39892ee32bc6e8fd609
   anchors:
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
       Objectives :: cell 1'
@@ -4327,6 +4361,18 @@ notebooks:
     - '5. Architecture delta: GELU and the pinned pretraining block'
     cell_ordinal: 1
   - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 5. Architecture delta: GELU and the pinned pretraining block :: cell 2'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - '5. Architecture delta: GELU and the pinned pretraining block'
+    cell_ordinal: 2
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
+      Objectives > 5. Architecture delta: GELU and the pinned pretraining block :: cell 3'
+    heading_path:
+    - 'B2-020 — Session 3: Pretraining Objectives'
+    - '5. Architecture delta: GELU and the pinned pretraining block'
+    cell_ordinal: 3
+  - anchor: 'units/B2-020-language-transformers/lessons/03-pretraining-objectives.ipynb :: B2-020 — Session 3: Pretraining
       Objectives > 6. AdamW and the sequential protocol :: cell 1'
     heading_path:
     - 'B2-020 — Session 3: Pretraining Objectives'
@@ -4363,8 +4409,12 @@ notebooks:
   - transformer-nlp-task-design
   declared_problem_ids: []
   api_tokens:
+  - nn.GELU
   - torch.get_num_threads
   - torch.manual_seed
+  - torch.relu
+  - torch.tensor
+  - z.tolist
 - path: units/B2-020-language-transformers/lessons/04-fine-tune-a-language-transformer.ipynb
   kind: notebook
   semantic_sha256: 36f20d97427ca5bfd407606f5f6db108e5a80150abf6487ac4de257f911691dc
@@ -4556,7 +4606,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p01_solution.ipynb
   kind: notebook
-  semantic_sha256: a3ce2eba043ce79998e2db39ad18d59184a47379aab4b8f9f0847d725c4472d4
+  semantic_sha256: c24c4f578157e94c1418014bf35c9464b1b315090d9a6b86a133ca823f2e1001
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p01_solution.ipynb :: B2-020-language-transformers — Practice p01
       — Solution :: cell 1'
@@ -4619,7 +4669,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p02_solution.ipynb
   kind: notebook
-  semantic_sha256: 3f865597ae1d9c20cbe665a73ae405f9220d463356c58bee7a8e8f7e4d3aa60e
+  semantic_sha256: 41d3a27840cae02813be689a794d8ff3f11c93935ea498cd6147e5e8718405b5
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p02_solution.ipynb :: B2-020-language-transformers — Practice p02
       — Solution :: cell 1'
@@ -4683,7 +4733,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p03_solution.ipynb
   kind: notebook
-  semantic_sha256: efb76caa2ca97decc9e67d534e1164f18224dcd39421611bebe1a51d044a0305
+  semantic_sha256: 4c70e426f3f45bd6df5d2eac61b93436a4c0d799d896003d597eb095a8781005
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p03_solution.ipynb :: B2-020-language-transformers — Practice p03
       — Solution :: cell 1'
@@ -4747,7 +4797,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p04_solution.ipynb
   kind: notebook
-  semantic_sha256: 579938ec0d46410d3379f213cbdfcf38b31878edef3a569af1fc9b99b6dbd2e6
+  semantic_sha256: 16f947f342de73982e7cf3462aa867e876649644d1f7d30dd38a391bfdb1f0d6
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p04_solution.ipynb :: B2-020-language-transformers — Practice p04
       — Solution :: cell 1'
@@ -4812,7 +4862,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p05_solution.ipynb
   kind: notebook
-  semantic_sha256: 62ab6e940ad49d5c139bd48423f90e2e040b5a81a3216f5085d14d9b659502ed
+  semantic_sha256: 0431055ab5eef5abbdfac9ab562bf7fbd1682ee7b5c99fe600eda6be47790013
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p05_solution.ipynb :: B2-020-language-transformers — Practice p05
       — Solution :: cell 1'
@@ -4881,7 +4931,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p06_solution.ipynb
   kind: notebook
-  semantic_sha256: bd9007c639534d4d6d84341edbeefb71f382565c242f41166d300908b0b5d4a9
+  semantic_sha256: 3411bef60ccab61ab49a4bd8aeae3d2133eb8d7d38d5ebb5c997f5f5f23567ef
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p06_solution.ipynb :: B2-020-language-transformers — Practice p06
       — Solution :: cell 1'
@@ -4955,7 +5005,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: a3147d21a10cb6a7e95c43f471d8c3f25b8988cd22052f2932bc634ad38e45bf
+  semantic_sha256: 7ace8432f703a2c26cadf5e26abbfc2d91322f1c0d1ed46a5790f88d542aca56
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p07_solution.ipynb :: B2-020-language-transformers — Practice p07
       — Solution :: cell 1'
@@ -5041,7 +5091,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p08_solution.ipynb
   kind: notebook
-  semantic_sha256: ca5708757b4a92921bb5c909e03af66406e0920708fd33275d6cde9629461c44
+  semantic_sha256: f1d5b2cba1cc91481444f01d2fdea040054c184b0155d0d6454c66920814bde1
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p08_solution.ipynb :: B2-020-language-transformers — Practice p08
       — Solution :: cell 1'
@@ -5118,7 +5168,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p09_solution.ipynb
   kind: notebook
-  semantic_sha256: 67f5854f765396d0c73bb74b740a7339e7da866c37cf56fc158377d09c23d511
+  semantic_sha256: 2d59eabaf7435344529befc1791d16ddd78a8c2ba160bcc21195fcee542735b2
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p09_solution.ipynb :: B2-020-language-transformers — Practice p09
       — Solution :: cell 1'
@@ -5206,7 +5256,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: 732d1a7df05c464aecd51dfbd1e895fa542d380813657bb3a9a43b60cc01651b
+  semantic_sha256: bc61c208b9779ea331abe5441a3fd52ddb866cc3c2d1a5a79faa6414a345a40c
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p10_solution.ipynb :: B2-020-language-transformers — Practice p10
       — Solution :: cell 1'
@@ -5281,7 +5331,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p11_solution.ipynb
   kind: notebook
-  semantic_sha256: dd553821c9845c5d39a3c61a3c81d0f2755bd11860c4df97a3e88258fa9e702b
+  semantic_sha256: 800183b85561b38c24133d4aacce83280b4deccfa8784bd616cdbcc07ba8746a
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p11_solution.ipynb :: B2-020-language-transformers — Practice p11
       — Solution :: cell 1'
@@ -5356,7 +5406,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p12_solution.ipynb
   kind: notebook
-  semantic_sha256: 159c8479060428528b5b689398b276c948dd905e129e17eb554f7c09ca295725
+  semantic_sha256: f7db8fd6e63ba4969051173256e2e4bfd2185abed442b2aa11d74cc2ee36c519
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p12_solution.ipynb :: B2-020-language-transformers — Practice p12
       — Solution :: cell 1'
@@ -5428,7 +5478,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p13_solution.ipynb
   kind: notebook
-  semantic_sha256: 853e0b6dd04f580bb68ede4ec6466044403e6ef135636d400bc37b12f9a2b8af
+  semantic_sha256: 2f3a554f5b38218a98bcc3326277622eb810bb16b3aec7eca60ecbae56ce694e
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p13_solution.ipynb :: B2-020-language-transformers — Practice p13
       — Solution :: cell 1'
@@ -5494,7 +5544,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p14_solution.ipynb
   kind: notebook
-  semantic_sha256: 22ce62a7c7b09f8a42c568347ed9a1645d21f4b6da06b4b5cb759789b934d8a2
+  semantic_sha256: d6a00da00c905f6824cb695b40456d4889f651dbd32ec3c634a4a05a452ddf84
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p14_solution.ipynb :: B2-020-language-transformers — Practice p14
       — Solution :: cell 1'
@@ -5557,7 +5607,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p15_solution.ipynb
   kind: notebook
-  semantic_sha256: 9fc52bc8eedc5a0345c33e9edc533f663bc805565d218bc9735a35bfb756abb4
+  semantic_sha256: 2924dbbf128bb773496726402f47c5edcb115306f488d75c37dd0660fe0b4fd6
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p15_solution.ipynb :: B2-020-language-transformers — Practice p15
       — Solution :: cell 1'
@@ -5624,7 +5674,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 6e7cb575701380989c3b5fbcc2ceefb34b6f0cb126237610f3bce15d9e770f59
+  semantic_sha256: 878782c21812971d6f7af8ca497918b765210e8de43285fad817e1b072c05b36
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p16_solution.ipynb :: B2-020-language-transformers — Practice p16
       — Solution :: cell 1'
@@ -5705,7 +5755,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: 5a3d022c675c8124b4f649b95d11f7190191139a5df2540b9f551089cada5dcb
+  semantic_sha256: d2287a3cb6a04c7423b9ae8409fe336ea198fc1349f7dc832729f4b46735fa44
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p17_solution.ipynb :: B2-020-language-transformers — Practice p17
       — Solution :: cell 1'
@@ -5812,7 +5862,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p18_solution.ipynb
   kind: notebook
-  semantic_sha256: 4d31bc42ba31baa94a343f807f5a2e4d2c40710369c287e4fedd11659130058f
+  semantic_sha256: 888e36da38b0db6da7b04c45e240a4c9f6cfbdd4590244abd212f11a5d12f3c9
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p18_solution.ipynb :: B2-020-language-transformers — Practice p18
       — Solution :: cell 1'
@@ -5935,7 +5985,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: b69c6c211a7029d47e6068e5bd9046e56b6c2d2b8d2c353127c0ce68149c8c6c
+  semantic_sha256: 0037956ead2509da433978560f4dd7360115edfed081287ee33187648d54ab90
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p19_solution.ipynb :: B2-020-language-transformers — Practice p19
       — Solution :: cell 1'
@@ -6056,7 +6106,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 02df95fdcc5ce98438f065d70e1efdaf6f81a3281ca91b09d086163a2a529d07
+  semantic_sha256: f76e453dcb94fa36718ee0ea3065c5ea7fde5f39eb0783c14ac0001f0567024e
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p20_solution.ipynb :: B2-020-language-transformers — Practice p20
       — Solution :: cell 1'
@@ -6176,7 +6226,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: de753944a04b7805231dcfa0e04c03c2289bb17a797ec065948612af4f21cc07
+  semantic_sha256: 4b5c5963ebfb953b5538722be5990a8f5616fa659d1558e4dff839b8f41f7043
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p21_solution.ipynb :: B2-020-language-transformers — Practice p21
       — Solution :: cell 1'
@@ -6293,7 +6343,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: 982d3d660800f19d8598c4e808d872755186300cc55ff8224778320d1e9dd2a8
+  semantic_sha256: b8e5905fae5be86a5621fcf7a2df5735c9341e485b38e12ec185c71871e89bab
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p22_solution.ipynb :: B2-020-language-transformers — Practice p22
       — Solution :: cell 1'
@@ -6362,7 +6412,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p23_solution.ipynb
   kind: notebook
-  semantic_sha256: 2e6adb2f1b6b5e6987002747ce78d2f60555127ec3c91327809622026e065e52
+  semantic_sha256: 368b96686a6091e17d9ebc97c095515222c06b7e6ed95ebfdd2c0b5a5ed7b5e4
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p23_solution.ipynb :: B2-020-language-transformers — Practice p23
       — Solution :: cell 1'
@@ -6457,7 +6507,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: c7385b960486f4dc4abf35a88748a216d043c39f859c03ab316dc18d29dbf47b
+  semantic_sha256: c70dbc4184eff961f65d81581cbce95b4b0783c8a75d3aec9f0c538dc01a7a07
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p24_solution.ipynb :: B2-020-language-transformers — Practice p24
       — Solution :: cell 1'
@@ -6521,7 +6571,7 @@ notebooks:
   - value.detach
 - path: units/B2-020-language-transformers/review.ipynb
   kind: notebook
-  semantic_sha256: f03d35f288d62e3245f90257278243a376e97b11163350ba6e097391fd07cb1a
+  semantic_sha256: 533722182c965e0dc3ae434837eeb6fbf9cf5c057d4b71a222b5c806ecd0a8ea
   anchors:
   - anchor: 'units/B2-020-language-transformers/review.ipynb :: B2-020 — Review and Self-Quiz :: cell 1'
     heading_path:
@@ -6556,6 +6606,12 @@ notebooks:
     - B2-020 — Review and Self-Quiz
     - Common pitfalls, Exam connections, and Going deeper
     cell_ordinal: 1
+  - anchor: 'units/B2-020-language-transformers/review.ipynb :: B2-020 — Review and Self-Quiz > Code you met in this unit
+      :: cell 1'
+    heading_path:
+    - B2-020 — Review and Self-Quiz
+    - Code you met in this unit
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-020-language-transformers
   declared_concept_ids:
@@ -6571,13 +6627,19 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/lesson.ipynb
   kind: notebook
-  semantic_sha256: 2e77202c38e5c8d4c6bcaa1bfe1eaced2fe6401ebcb3d75945743eedb73b76f6
+  semantic_sha256: f3ab10708be78c7346310bc10e848ac4fb5aad2b7d6b640fb0ad68cbed9790bb
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lesson.ipynb :: B2-021 — Cross-modal Transformers and Advanced Vision
       > Reproducibility contract :: cell 1'
     heading_path:
     - B2-021 — Cross-modal Transformers and Advanced Vision
     - Reproducibility contract
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/lesson.ipynb :: B2-021 — Cross-modal Transformers and Advanced Vision
+      > Code in this unit :: cell 1'
+    heading_path:
+    - B2-021 — Cross-modal Transformers and Advanced Vision
+    - Code in this unit
     cell_ordinal: 1
   declared_unit_ids:
   - B2-021-cross-modal-transformers-vision
@@ -6650,7 +6712,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb
   kind: notebook
-  semantic_sha256: 20b54604f3279df95427ee98ebe247abe92bf9e9724a1932fcf3f603a4d96cc3
+  semantic_sha256: fd41d5d0636b075d8b6b2f8d97b50180d629424be320ed2b40e198d1a3ed4d6c
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/01-image-patches-and-vision-transformers.ipynb :: B2-021
       — Session 1: Image Patches and Vision Transformers :: cell 1'
@@ -6744,7 +6806,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb
   kind: notebook
-  semantic_sha256: 17ae24aae6dfd8c6bd425acd2b1eb8b2db4bc36b3bd7bd1027ec4904e9831086
+  semantic_sha256: 442ee14e6a96855ca99563741fef132ba7b95d2d2f0ac75cac547203cc6ad6f8
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/02-detection-grids-and-set-prediction.ipynb :: B2-021 —
       Session 2: Detection Grids and Set Prediction :: cell 1'
@@ -6837,7 +6899,7 @@ notebooks:
   - torch.where
 - path: units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb
   kind: notebook
-  semantic_sha256: 3f5e401f94ad2597953d213bbc97139525bffd7ab1f2ae76ad11fef22562d7fb
+  semantic_sha256: acaa1a57cc4064c593e6559e85f1dfa43ff2c65cdf42a0f4163b2319cdfd8dfd
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/03-unet-segmentation-and-skip-connections.ipynb :: B2-021
       — Session 3: U-Net Segmentation and Skip Connections :: cell 1'
@@ -6933,7 +6995,7 @@ notebooks:
   - torch.randn
 - path: units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb
   kind: notebook
-  semantic_sha256: 7da5a0a0d53fe09d26b5d149f1d26f5f69c83f98d9c56f40793c73cd1afccee5
+  semantic_sha256: 8f7bcbb6eadf1070a2ce0a538d4ec115d4b860af736f267177eee1a0c7acb02e
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/04-graphs-cross-modal-attention.ipynb :: B2-021 — Session
       4: Graphs and Cross-modal Attention :: cell 1'
@@ -7027,7 +7089,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb
   kind: notebook
-  semantic_sha256: 7f8b81ed78c014579369064697783fd90802199d41f118fd5b26cb8947985470
+  semantic_sha256: daff281c9b43b39366443d8e8af4cccc91f67a7c6e2a7f89c2a2d8170ed71b4e
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/lessons/05-vision-system-design-and-audit.ipynb :: B2-021 — Session
       5: Vision-System Design and Audit :: cell 1'
@@ -7108,7 +7170,8 @@ notebooks:
   - unet
   - vision-transformers
   declared_problem_ids: []
-  api_tokens: []
+  api_tokens:
+  - set.isdisjoint
 - path: units/B2-021-cross-modal-transformers-vision/practice/p01.ipynb
   kind: notebook
   semantic_sha256: baa41c75530e9878d00b9f98b3e8583eabd9b91f009f75f95f2da23f72821ed4
@@ -7133,7 +7196,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p01_solution.ipynb
   kind: notebook
-  semantic_sha256: 5c9a37afabc96742f4d79aa332c196749069f6bdddc579c937c018870a24e779
+  semantic_sha256: 7a91e74803dd7626648de2a03c8e9e51a5c6a9e4c3e2f4382333fe294f595013
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p01_solution.ipynb :: Solution to p01 :: cell 1'
     heading_path:
@@ -7183,7 +7246,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p02_solution.ipynb
   kind: notebook
-  semantic_sha256: dd70a027d5e2cce7602f7d542e3ec2793b8a13a12e6468ff92642e6f5322491d
+  semantic_sha256: 2efbac288a2289e614a741b794cba437c03dd35a76bedc49f109d32284c13bca
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p02_solution.ipynb :: Solution to p02 :: cell 1'
     heading_path:
@@ -7232,7 +7295,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p03_solution.ipynb
   kind: notebook
-  semantic_sha256: c37899b85ecde91b5861a11c2370b0c4dcd5536cc0ad2e91d083988bb546ae00
+  semantic_sha256: eec3739dc144547d734bf23ded2a1724104b87db96d6ee0737a119a197ce4aa1
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p03_solution.ipynb :: Solution to p03 :: cell 1'
     heading_path:
@@ -7281,7 +7344,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p04_solution.ipynb
   kind: notebook
-  semantic_sha256: 0bd8f9333f1efb97cfcd3d2470fb076a5ea4b76902cf72953969f16e23d0d66c
+  semantic_sha256: a0bf55e4829c8d23d5c87c049fea44acee535e7d54b1888be3aa7b1ceaa5d8e8
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p04_solution.ipynb :: Solution to p04 :: cell 1'
     heading_path:
@@ -7331,7 +7394,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p05_solution.ipynb
   kind: notebook
-  semantic_sha256: a4c64922b5da5c1fb1ed91883c1b37b8484e890c4d715a9b0103d125fb65ea2b
+  semantic_sha256: 7cf49abb4f7d0e37c58577ec826ad773699bcc7b39a102e589b24976acb50f32
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p05_solution.ipynb :: Solution to p05 :: cell 1'
     heading_path:
@@ -7394,7 +7457,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/practice/p06_solution.ipynb
   kind: notebook
-  semantic_sha256: 549713f6b9511e1158bb6794d4941e396332eda1727e32a95e7b6abc0704c0d3
+  semantic_sha256: b933961b35f132874db668cc64b71a9a24173fa315e54148fc359f031a332c50
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p06_solution.ipynb :: Solution to p06 :: cell 1'
     heading_path:
@@ -7431,7 +7494,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-021-cross-modal-transformers-vision/practice/p07.ipynb
   kind: notebook
-  semantic_sha256: 9ca663c4612a023266de95aff4809f43d7b17baeb4d21e9d6e8f06cfd2467f20
+  semantic_sha256: 1ceba9d54b37c830fffe46331e0b28e1dff6d90d0c9127508c476e7d383205b2
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p07.ipynb :: B2-021 — Practice p07 > Supplied literals
       and exact probes :: cell 1'
@@ -7476,7 +7539,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-021-cross-modal-transformers-vision/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: cd6e0f6bbedd70beb43af7b188c7dbab7ea0e42dddc7388aedbe3e0e96718fe7
+  semantic_sha256: d46d35dbeb20aeb46af5df5179fc18d5131c7206ea0f681358fefb749faeb2df
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p07_solution.ipynb :: Solution to p07 :: cell 1'
     heading_path:
@@ -7557,7 +7620,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/practice/p08_solution.ipynb
   kind: notebook
-  semantic_sha256: 8e2c4a46d10c775609cbc664ae8e30c89aaef3f95c6ec39337d5d709b602f2a0
+  semantic_sha256: c0ed51cf6cf6bc6b1c6205778ddbecabf955a2fc952504eb2753b30236d7392b
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p08_solution.ipynb :: Solution to p08 :: cell 1'
     heading_path:
@@ -7634,7 +7697,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/practice/p09_solution.ipynb
   kind: notebook
-  semantic_sha256: df2bd7ed385f992eea6b61fcfbcd7b7d0fb6f67f3ee36348be47a358bc3ac5f7
+  semantic_sha256: b54f158ed76c60332615b4a88fdfcde0a29e7b6f1d0e85a20063186331e2183e
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p09_solution.ipynb :: Solution to p09 :: cell 1'
     heading_path:
@@ -7672,7 +7735,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/practice/p10.ipynb
   kind: notebook
-  semantic_sha256: 8870856402c2110d10f4683232da85fbd3c1b738d2b7d08e992c9538be4fb885
+  semantic_sha256: a72d1d8e885f6a8b93a8de7ad601d1c5e91239583cdd43763e62e9967c841db4
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p10.ipynb :: B2-021 — Practice p10 > Supplied literals
       and exact probes :: cell 1'
@@ -7713,7 +7776,7 @@ notebooks:
   - torch.no_grad
 - path: units/B2-021-cross-modal-transformers-vision/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: 4e7ffb10129d9b590f201df07cb4090d6471348cd0099823d4d0145c567c14f2
+  semantic_sha256: 4e334b3fa5a72b968d4099677eb987eef2ae2d032ae160b5f45451d1cd23739d
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p10_solution.ipynb :: Solution to p10 :: cell 1'
     heading_path:
@@ -7788,7 +7851,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/practice/p11_solution.ipynb
   kind: notebook
-  semantic_sha256: 711a1b1bb28148255aa364a010a98ea93271c41f458b6f1488ce754f8298ed35
+  semantic_sha256: 5ffa0dcde6bf4bf10deb8e8b9e7d66c065affcaa749f0545c5457c803f36bd02
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p11_solution.ipynb :: Solution to p11 :: cell 1'
     heading_path:
@@ -7863,7 +7926,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-021-cross-modal-transformers-vision/practice/p12_solution.ipynb
   kind: notebook
-  semantic_sha256: 5fa8e1ed67ab4c49576492f8245c81b248dfaa42d8da894d6a6a19cc8caf8d21
+  semantic_sha256: d46a2c5e4e0ff86f6c5650d71f1af4caf371d76a638548ae9500dcbc85490061
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p12_solution.ipynb :: Solution to p12 :: cell 1'
     heading_path:
@@ -7925,7 +7988,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p13_solution.ipynb
   kind: notebook
-  semantic_sha256: 12fb23841285a4edcc513eb54a74e8b64b61601f63f61a9e2054ecccbe2092e9
+  semantic_sha256: 723eff104b7e26528f34d359f7b0c10e5caa2a20ab3d928148882004c1938d83
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p13_solution.ipynb :: Solution to p13 :: cell 1'
     heading_path:
@@ -7975,7 +8038,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p14_solution.ipynb
   kind: notebook
-  semantic_sha256: 034c904ad66c32556552f5f007f2a4a0dce3b7a0bc3bb0922b3463cb30302356
+  semantic_sha256: bafdff290b10864d7dbdafaec76d905b44a19d01676dcc0c5730ab9477041825
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p14_solution.ipynb :: Solution to p14 :: cell 1'
     heading_path:
@@ -8025,7 +8088,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p15_solution.ipynb
   kind: notebook
-  semantic_sha256: 37fe9e5dff7aaeffc6c9d8eac807f084e659a9011bf28b88142e10be3ac7fe49
+  semantic_sha256: 1104fe50d1cde8f35dff5b8678cc881d75e274a0ab4cb0c4fd82fe7bbbd4a4dc
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p15_solution.ipynb :: Solution to p15 :: cell 1'
     heading_path:
@@ -8076,7 +8139,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 872bd63388f1f78510cf51fb51d944c3cad752f045d73df5dabfab32f6b439e2
+  semantic_sha256: 6a4f184f0e905d6f64fe585a16dc62c5b1eb37712e2cf05c5f4f3c6bce6b4b50
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p16_solution.ipynb :: Solution to p16 :: cell 1'
     heading_path:
@@ -8137,7 +8200,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: bf4f7fee28cc4bcbe7c875aa9cd729082b2a5c36cb4e35fb5263559ee220db71
+  semantic_sha256: 588c899fb413a04f77b2fc4d2afab63d4b9febafd7f0fe84b554bddf6b16f5f7
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p17_solution.ipynb :: Solution to p17 :: cell 1'
     heading_path:
@@ -8239,7 +8302,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p18_solution.ipynb
   kind: notebook
-  semantic_sha256: cdd7e2691dd69fba0c28dce94ef56f21fe2e788dd1f4223b3b15a818a8f97ec1
+  semantic_sha256: 2af21e64e0703914380cb44819e78d6b1923af78fd614a4c4805fd9ab5fb3b80
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p18_solution.ipynb :: Solution to p18 :: cell 1'
     heading_path:
@@ -8351,7 +8414,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: 53835ec8a7657b7765cde90881fe46c7bea072a36751144167f394ca996d59ad
+  semantic_sha256: efc67e3f15dea6fd3fea55484a934e73eeb7ca0b5df1536ebb8cc3740ac039ef
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p19_solution.ipynb :: Solution to p19 :: cell 1'
     heading_path:
@@ -8453,7 +8516,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 622e70a221787b5b7cd472ed9302b5de33958ce562b6faa3837dfc1afec4152e
+  semantic_sha256: ec27fa79f2055c42d38ae1c16161f04f798d4c766aa8e7f1f2baf1e9c4944640
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p20_solution.ipynb :: Solution to p20 :: cell 1'
     heading_path:
@@ -8554,7 +8617,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: cab6f7003c5faebcdfb012da7c29f59278e0e599673ace5acc76dacbb6ebe13d
+  semantic_sha256: aaabe5e7adee6eeb2d470efdec7d14d4b4385054cabb4ed0bc4b2b679db065ea
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p21_solution.ipynb :: Solution to p21 :: cell 1'
     heading_path:
@@ -8603,7 +8666,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: d6cbbaf21660b45d697ad0ca809ad0db2ca185330ef9e109bd9afeed5cd88222
+  semantic_sha256: 4d989ae42a0e4cf9de5cc143ce2eb3e046304a4c203bbfcc704c9af40aa84720
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p22_solution.ipynb :: Solution to p22 :: cell 1'
     heading_path:
@@ -8652,7 +8715,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p23_solution.ipynb
   kind: notebook
-  semantic_sha256: 2961583e46242d762f76e7d51524ce01e0b2011baacfd077a1221e903310d664
+  semantic_sha256: c13f40e2e4a5ff59c9c8ed029caa000bb59c58aff5c713e81f96fb136973e5e7
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p23_solution.ipynb :: Solution to p23 :: cell 1'
     heading_path:
@@ -8719,7 +8782,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-021-cross-modal-transformers-vision/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: ac0647fc7cade1c08e55f6c17815bcee4f462d692fdee3dda2f00474401d9d8c
+  semantic_sha256: 823b835c3e9c867ab2a2f1f444da06246a11bcef01209fde5a100bc472d0a040
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/practice/p24_solution.ipynb :: Solution to p24 :: cell 1'
     heading_path:
@@ -8753,13 +8816,19 @@ notebooks:
   - violations.append
 - path: units/B2-021-cross-modal-transformers-vision/review.ipynb
   kind: notebook
-  semantic_sha256: 2015eeeb4dee2e1b25a429b0e2d581f156e5819ae9a7f41188325f3d9ed67fb8
+  semantic_sha256: c89f3e1d786a85fec73f467ae2c3d2b496f2f8f8189412f68809217bd1ab8704
   anchors:
   - anchor: 'units/B2-021-cross-modal-transformers-vision/review.ipynb :: B2-021 — Review and Self-Quiz > Common pitfalls,
       Exam connections, and forward boundary :: cell 1'
     heading_path:
     - B2-021 — Review and Self-Quiz
     - Common pitfalls, Exam connections, and forward boundary
+    cell_ordinal: 1
+  - anchor: 'units/B2-021-cross-modal-transformers-vision/review.ipynb :: B2-021 — Review and Self-Quiz > Code you met in
+      this unit :: cell 1'
+    heading_path:
+    - B2-021 — Review and Self-Quiz
+    - Code you met in this unit
     cell_ordinal: 1
   declared_unit_ids:
   - B2-021-cross-modal-transformers-vision
@@ -8772,7 +8841,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/lesson.ipynb
   kind: notebook
-  semantic_sha256: fc2465e74180cbcc73ad3fbc501ccd427de5fd13b7557f610ac36eba92979351
+  semantic_sha256: df8fda0fba1e162b2d48759f8aa5f684c588c3d8f3f0b4efa1e74da3284b75ea
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models :: cell 1'
     heading_path:
@@ -8820,6 +8889,12 @@ notebooks:
     - B2-022 — Probabilistic Latent Models
     - Boundaries
     cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models > Code in this
+      unit :: cell 1'
+    heading_path:
+    - B2-022 — Probabilistic Latent Models
+    - Code in this unit
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-022-probabilistic-latent-models
   declared_concept_ids:
@@ -8832,7 +8907,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb
   kind: notebook
-  semantic_sha256: c7b82837e4cc6a2361909bee38bac01c0e56f126a999532f67ab99b18939963a
+  semantic_sha256: 3c43424eb9952d4b35455af3a51d46aca99086430bd59b051a2cc5c1c4e23f72
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lessons/00-book1-bridge.ipynb :: B2-022 — Book 1 Bridge Diagnostic ::
       cell 1'
@@ -8906,7 +8981,7 @@ notebooks:
   - torch.ones
 - path: units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb
   kind: notebook
-  semantic_sha256: 90e6cafcefc5a4b5ec4139d8e3bcba2cba960796ed751bc2424ffec31b904e16
+  semantic_sha256: 9801dd819feb0c9402d908c72bc3b03f625e4a4ebb36d702ee38f2aa0c6983ce
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lessons/01-multivariate-gaussians.ipynb :: B2-022 — Session 1: Multivariate
       Gaussians :: cell 1'
@@ -9031,7 +9106,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb
   kind: notebook
-  semantic_sha256: 179fe2a91e9f85a78ca1dcb8ab043698fb55cf8296a4b599502e8804abd4b34b
+  semantic_sha256: b34f8d3ce8948a9b947bea3376b2c3e0336e7506949a225a6a10f9bf813cb28c
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
       :: cell 1'
@@ -9139,7 +9214,7 @@ notebooks:
   - value.item
 - path: units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb
   kind: notebook
-  semantic_sha256: 4a8d3bc69d2684cbfe643ad3faac248afe3d2a1c03fc7602ebfa701f2b1a19ee
+  semantic_sha256: d26e7d7de1684d0b7cde5bd60f316f76949992bd064e8cf496468c6d13727727
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lessons/03-autoencoders.ipynb :: B2-022 — Session 3: Autoencoders ::
       cell 1'
@@ -9252,7 +9327,7 @@ notebooks:
   - weight.detach
 - path: units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb
   kind: notebook
-  semantic_sha256: 0d4a5eb81b4793546571423a32a30253ae521a44a6628d2ea48544ebdf481e1b
+  semantic_sha256: c3716e45c99f5b0d4ee35a6269ba595923b0c2d40b2e523afdbe2fbd7e783080
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lessons/04-reparameterization-and-the-elbo.ipynb :: B2-022 — Session
       4: Reparameterization and the ELBO :: cell 1'
@@ -9382,7 +9457,7 @@ notebooks:
   - z.tolist
 - path: units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb
   kind: notebook
-  semantic_sha256: 749caae56df085e1c8be1397d5cca387afd20264e42a1af4bfdd18e26364050e
+  semantic_sha256: 9afe0c6f5045f16761b0bff62b4f138d9134b84fa22c78f0d63347191529bd5f
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lessons/05-training-and-using-vaes.ipynb :: B2-022 — Session 5: Training
       and Using VAEs :: cell 1'
@@ -9523,7 +9598,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p01_solution.ipynb
   kind: notebook
-  semantic_sha256: 411502d79996aa4a354735219e1a58b48e2cba49987fce7140ada6f540086146
+  semantic_sha256: b16de1e7da3f7ae97546d86d01a07aad513ee13556731eb00e03c55e334e910f
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p01_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p01 — Solution :: cell 1'
@@ -9590,7 +9665,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p02_solution.ipynb
   kind: notebook
-  semantic_sha256: 0ec819d24418038614d8b2a98e44bacd0dcd24e694bb0851e526448c28b3ce89
+  semantic_sha256: e4fec3673a4171c682360a0a548d228a28a9ec8ed4e72fdeed39866d7a934367
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p02_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p02 — Solution :: cell 1'
@@ -9660,7 +9735,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p03_solution.ipynb
   kind: notebook
-  semantic_sha256: c90b8572c970b19e9a49f357524c8d7e32ab5c515df5d42d08b476c9f0967e21
+  semantic_sha256: 5696463cc0ff65be7d2871f4db7170061e3b6b5ba0fc24438bf3e9b1084663b4
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p03_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p03 — Solution :: cell 1'
@@ -9726,7 +9801,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p04_solution.ipynb
   kind: notebook
-  semantic_sha256: 5c96e0c7010bdc31f78cf5b81b812124cfc3d9ed32bb11618939019b9cbbfd49
+  semantic_sha256: e996233da881929f1cc12589e8b632195633d238744cf0063c69e7a00da9bbbd
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p04_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p04 — Solution :: cell 1'
@@ -9797,7 +9872,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p05_solution.ipynb
   kind: notebook
-  semantic_sha256: d46fa5fa73919fccbf3f55d816901b243b0bb235c27501d70a5e5e7c2a6c8c88
+  semantic_sha256: ee8e83a8525d1607de7f57a00e0c7bb25fed12e512b3923f27e4c44272a37c7f
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p05_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p05 — Solution :: cell 1'
@@ -9881,7 +9956,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb
   kind: notebook
-  semantic_sha256: 0a3c7d4e4eab13511df7060bdd3a04347b567d0dc6bc46540aac34d480c46abc
+  semantic_sha256: fb5af0acada7adc1bff10777690619e85b6ca92a9136871b1aa076ba1d84ae18
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p06_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p06 — Solution :: cell 1'
@@ -9977,7 +10052,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: 4baf63fed4b7e00c74bdc95cb7552e103558ea2b05776eebdfb43da2de8c3ee8
+  semantic_sha256: 7a1d520206313f71a2e240fca390606c94a640c00d178ccba64c3a27c1cc5baf
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p07_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p07 — Solution :: cell 1'
@@ -10080,7 +10155,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb
   kind: notebook
-  semantic_sha256: 53708b9cd008e5c278abbe9c0eb4c3a7bddb1c7e3a1693ef472cade20fa2a50f
+  semantic_sha256: e1e30af3395da10fa28d615f7f009ec1753b7d7f6923ac46af56328f9468a1d1
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p08 — Solution :: cell 1'
@@ -10192,7 +10267,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb
   kind: notebook
-  semantic_sha256: 475c9f981d43779acace98e475c8bf172cd92d3eb67c4cfcc0ed666331302802
+  semantic_sha256: 3147f9c773c65199f848934f00b7d1e5bdbe23df2e1b2cc568a8561d49d8c56b
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p09_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p09 — Solution :: cell 1'
@@ -10295,7 +10370,7 @@ notebooks:
   - torch.arange
 - path: units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: b60b43c9b3f06c032e3e03ec8732f55c9b35029f5b777164aaab75f1f5af19ff
+  semantic_sha256: 5541995a1326955bc79b3435e94662599e11db80591c90fb2d6be7eba256c579
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p10_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p10 — Solution :: cell 1'
@@ -10400,7 +10475,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb
   kind: notebook
-  semantic_sha256: 630a7546ebc2ac926ae628804102034694611d067737887db80ec47f5d18d041
+  semantic_sha256: 9de54712d1ba9c9e9bfc9da15ffae3ccbc16496ff787f220564b2f4983bb6ccc
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p11_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p11 — Solution :: cell 1'
@@ -10508,7 +10583,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb
   kind: notebook
-  semantic_sha256: 3418221635d600b8e39b1fef15ec7ee3cd07d2a47baabb60f789c55d9caee984
+  semantic_sha256: 9cdd420e1fa614c095001ca68e0035a61f82338a35c8e238aa01b9e1d0ac9b80
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p12_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p12 — Solution :: cell 1'
@@ -10601,7 +10676,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p13_solution.ipynb
   kind: notebook
-  semantic_sha256: 5de23a9ced016778d1e03687285eea65ba9dd866bba8271d1a7e18d3d4481c79
+  semantic_sha256: 53ca6eb4e69d442941695846282f8025b878faa634deeb9ee7369939204f52ee
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p13_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p13 — Solution :: cell 1'
@@ -10687,7 +10762,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p14_solution.ipynb
   kind: notebook
-  semantic_sha256: 84d7d2dc23592de1fda80d187f12c2aa96e4e7cffd9c85912ce1ec8bfdbe24e7
+  semantic_sha256: ae4fcfb95c306495db4865ae4a6b0048f9e3973494fd0fb9c6428f8cc30561eb
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p14_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p14 — Solution :: cell 1'
@@ -10764,7 +10839,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p15_solution.ipynb
   kind: notebook
-  semantic_sha256: 839380e436d2a89ca7eea8b99a99bd5c42aed13cc5f9d39749b995e28b4f2800
+  semantic_sha256: ae66f9d30684da7387fd9f0c5b417e5e046c6e7b2c36a2a7ae96273fa904a3f2
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p15_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p15 — Solution :: cell 1'
@@ -10840,7 +10915,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 2f24ead1bf87507cc8d1b2e17c19ff17b33e9962fe699c14962d69465440a23d
+  semantic_sha256: ffb69a432e515deb693776be14ef55f2499a9b26bb46627301c94403e29a16f9
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p16_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p16 — Solution :: cell 1'
@@ -10899,7 +10974,7 @@ notebooks:
   - z.item
 - path: units/B2-022-probabilistic-latent-models/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: 2bb01155076255e24be084ff496ba01b680c158d12f2d5c08281b05025212fb8
+  semantic_sha256: 313a0f845e159e9a02c51457e8ba32a2f9383582c795fdd0373075656a3144b1
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17.ipynb :: B2-022 — Practice p17 > Task :: cell 1'
     heading_path:
@@ -10937,7 +11012,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: 2bdd341323fcebc366e408c11559d180db9ef6da3fa57d1bb37bb4c723b2bbcb
+  semantic_sha256: 462a1d76635ef559516a17fbc7077de76b0b2890eb3c138a8789374d4f1b08ea
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p17 — Solution :: cell 1'
@@ -11031,7 +11106,7 @@ notebooks:
   - trace.append
 - path: units/B2-022-probabilistic-latent-models/practice/p18.ipynb
   kind: notebook
-  semantic_sha256: 22d980a48ab4b89427f1ac80dbdc1b47ef5b66ab642c7554f356c58e44482e14
+  semantic_sha256: a5b614f3b55cec1dd788d31ead010d7415d013c31a65de42f01430257f17f3df
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18.ipynb :: B2-022 — Practice p18 > Task :: cell 1'
     heading_path:
@@ -11069,7 +11144,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb
   kind: notebook
-  semantic_sha256: 3cdf7d52af312158be6545c4b15511fc2639bbf3358123d9bdea4d2de1c62ca3
+  semantic_sha256: 0fe8f91e96077ce697e3ae6eb5b7078d62da055fc9fd5b01f06d9d96a2e45d2e
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p18_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p18 — Solution :: cell 1'
@@ -11163,7 +11238,7 @@ notebooks:
   - trace.append
 - path: units/B2-022-probabilistic-latent-models/practice/p19.ipynb
   kind: notebook
-  semantic_sha256: 5ca7e77e3fc6cd04f27cd15ff028ed678fe0b5cb305dffe07248af9d72619899
+  semantic_sha256: f2cb40e3f13529b20cd61dfc05653bc8a42a3f60976dbd7299e44d28995fd487
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19.ipynb :: B2-022 — Practice p19 > Task :: cell 1'
     heading_path:
@@ -11202,7 +11277,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: 741f25238ecd6573c751829e4aaea35ea1e6c24fb00593824cae67c7cd700c2e
+  semantic_sha256: ee9e248e47794eea5409adb0835c301590af4daa7ecb0f226a14d934ace13b2c
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p19_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p19 — Solution :: cell 1'
@@ -11306,7 +11381,7 @@ notebooks:
   - trace.append
 - path: units/B2-022-probabilistic-latent-models/practice/p20.ipynb
   kind: notebook
-  semantic_sha256: 254c06cdc05065a893e8e74e0e72b2447913a5b2bdc471683792395f5f28e2eb
+  semantic_sha256: 19e0d5ab600c69c3fe403b3935f788e5572b2b85eaecd5329fd79fd5ed801435
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20.ipynb :: B2-022 — Practice p20 > Task :: cell 1'
     heading_path:
@@ -11345,7 +11420,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: b95b4c88ff43ecee5ce4262f283c10d6936165d212d22ed8359af264445913d9
+  semantic_sha256: 29a94ab8aeba051d146b4666b06e02898a8d8740c21ba38ade6c3543c1304385
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p20_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p20 — Solution :: cell 1'
@@ -11482,7 +11557,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: 826dc732a451f55550b8ab73a5c338e8af837314c025cc0b88bae55f92f397e4
+  semantic_sha256: de7c78f8ece987abc2177a19a6ea7ad242ee3f585452ef393803e9ea55043b72
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p21_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p21 — Solution :: cell 1'
@@ -11551,7 +11626,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: 41210361a417d92db80f0e17c1fd9cd9310c76e00fbfdbfa3b9ccfb47951aeb1
+  semantic_sha256: 463405bec67a57e6d59aebbd004ad71a02b312d1cafd1f354f97b4d4dafda152
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p22_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p22 — Solution :: cell 1'
@@ -11630,7 +11705,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb
   kind: notebook
-  semantic_sha256: 745e544706cef4d9a2f98030d3a557a8c9ab2ff507efc24b1efee4dfeaf8c7a9
+  semantic_sha256: ab2095ec35e14bfe33b043361d72ee36aeb893723791a6e733769a4d029aa6d9
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p23_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p23 — Solution :: cell 1'
@@ -11708,7 +11783,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p24.ipynb
   kind: notebook
-  semantic_sha256: ad44c8f3d96bdd0e4436524ebde78ad3b377aac54a00281e5a63ff71b5a99adb
+  semantic_sha256: d0b68306ad1165a8e3e0488130b014e0e2b9b9f4accb6e7ef05651c3560abd59
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24.ipynb :: B2-022 — Practice p24 > Task :: cell 1'
     heading_path:
@@ -11748,7 +11823,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: 4acbba33d844237c9e2c2b02d3479b2e04c8dec30e92dfa32f803aa0667eab1a
+  semantic_sha256: 54a850670c68e748c9ecde7167a1fd586e2334f81473a9ea30651f86ab286f76
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p24_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p24 — Solution :: cell 1'
@@ -11883,7 +11958,7 @@ notebooks:
   - z.sum
 - path: units/B2-022-probabilistic-latent-models/review.ipynb
   kind: notebook
-  semantic_sha256: 8ea2f80d5370e8b2ab4d5cf828f00db7c581f2c2294c5cc14451d1f7f0cb6801
+  semantic_sha256: 994878d485c0d5c95f667c145f02b96ef23b8597a0832683c65deda9203698d5
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/review.ipynb :: B2-022 — Review and Self-Quiz :: cell 1'
     heading_path:
@@ -11918,6 +11993,12 @@ notebooks:
     - B2-022 — Review and Self-Quiz
     - Collected answers
     cell_ordinal: 1
+  - anchor: 'units/B2-022-probabilistic-latent-models/review.ipynb :: B2-022 — Review and Self-Quiz > Code you met in this
+      unit :: cell 1'
+    heading_path:
+    - B2-022 — Review and Self-Quiz
+    - Code you met in this unit
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-022-probabilistic-latent-models
   declared_concept_ids:
@@ -11930,7 +12011,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/lesson.ipynb
   kind: notebook
-  semantic_sha256: 06045849ce3fdfce48e9508331cab15f43a62aa9d1b9498c7d6946f8992e1aa1
+  semantic_sha256: 134acfe0ffd777cfaccdd396f5b92d2bde29283c4174097bbdf632bfba930ca3
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion :: cell 1'
     heading_path:
@@ -11978,6 +12059,12 @@ notebooks:
     - B2-023 — Generative Models and Diffusion
     - Boundaries
     cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion > Code in this
+      unit :: cell 1'
+    heading_path:
+    - B2-023 — Generative Models and Diffusion
+    - Code in this unit
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-023-generative-models-diffusion
   declared_concept_ids:
@@ -11988,7 +12075,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb
   kind: notebook
-  semantic_sha256: 9cd2ade94dabbfeace6794e9bbcf3913aea17a4282535307050cb4edeaf6451e
+  semantic_sha256: 5aadec1e36ae3b0b3518ecae21680956c971e82be4ccf78da7bea23d2e59c17a
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/lessons/00-book1-bridge.ipynb :: B2-023 — Book 1 and Book 2 Bridge Diagnostic
       :: cell 1'
@@ -12069,7 +12156,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb
   kind: notebook
-  semantic_sha256: 69638c38ab9dc941a869e296e6f1a4195b3d7d440e69daaf6c236d768421aa25
+  semantic_sha256: 83c5d0c4986d2dc6e289f4154b99093da7ed7c910dcd226356a0f992bc294ed6
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/lessons/01-adversarial-games.ipynb :: B2-023 — Session 1: Adversarial
       Games :: cell 1'
@@ -12190,7 +12277,7 @@ notebooks:
   - torch.zeros_like
 - path: units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb
   kind: notebook
-  semantic_sha256: 69f66597e0fea5ed65ea6398424e0f8e1fda9c7a75b36909377c57adb7cc0aff
+  semantic_sha256: 08c54eb0a6ca658fe0b7a7a32ee0b0b104a4ab5b5338a2689ce8bdbcf73d9e19
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
       Training and Diagnosing GANs :: cell 1'
@@ -12314,7 +12401,7 @@ notebooks:
   - trace.append
 - path: units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb
   kind: notebook
-  semantic_sha256: ac852d9f1ec11a8e08968d2d86f6aaa0588afccd075715d3ad5bcc3ff8ceb9a8
+  semantic_sha256: 5aca6fe54208dbd54a3e4a0fd415ef1a781237799cff90a38db2a63d9a66cedd
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
       Diffusion Forward Process :: cell 1'
@@ -12420,7 +12507,7 @@ notebooks:
   - x3.var
 - path: units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb
   kind: notebook
-  semantic_sha256: bcbf66e848e45109afd5e502c4955fedc18575ebf9f48c0f7e8dbd8cf3b5af51
+  semantic_sha256: 3f2b44e976b735ce1eb0b849b449b23b3f5ff5ded2b06e90f0b7a8076b98781f
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/lessons/04-denoising-and-sampling.ipynb :: B2-023 — Session 4: Denoising
       and Sampling :: cell 1'
@@ -12544,7 +12631,7 @@ notebooks:
   - x_prev.tolist
 - path: units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb
   kind: notebook
-  semantic_sha256: 1e4f42433a495224fe24b29b7ba3d64ff8a2a36616b4cf026ade5d8860e3032c
+  semantic_sha256: a35ab1a897b59813c5aefbf2ae42f6904965ed902ae997e8becfa41ca959a714
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/lessons/05-latent-and-conditional-diffusion.ipynb :: B2-023 — Session
       5: Latent and Conditional Diffusion :: cell 1'
@@ -12702,7 +12789,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p01_solution.ipynb
   kind: notebook
-  semantic_sha256: 41e0cf25173e4f2e9561667c83075c3c9ea94bdbd481300e96ac4419204cec44
+  semantic_sha256: 3c40a0710d438c033ab89ae6f7ef75246bbf636486a16bd8063accbc5bd4e8c4
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p01_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p01 — Solution :: cell 1'
@@ -12767,7 +12854,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p02_solution.ipynb
   kind: notebook
-  semantic_sha256: fc8bc8c0eb3b66f98e7ac5dbd675f84a53cd7651ff250a26a0481e934af3c139
+  semantic_sha256: 73ff6d607a005e2b597870d9a74456ded6c9c4d5c0001eab22a6cea15746ac81
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p02_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p02 — Solution :: cell 1'
@@ -12840,7 +12927,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p03_solution.ipynb
   kind: notebook
-  semantic_sha256: d14d1417585be58ca3cb72e489b4bd01fbf27672acdeed5bd081c63a291d4092
+  semantic_sha256: fcf49b7179872822509e679dafddc1bbd077750061270055b75dfddc71ca7164
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p03_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p03 — Solution :: cell 1'
@@ -12908,7 +12995,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p04_solution.ipynb
   kind: notebook
-  semantic_sha256: 17472c6bc1cb1c0b6ecea93edd42c323cec5e7ab341e3fde5359e62b13ba5ceb
+  semantic_sha256: 8871c22d21af6be5c8473673d685a05057e7fb49066d05ad547decc3c80642ce
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p04_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p04 — Solution :: cell 1'
@@ -12983,7 +13070,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p05_solution.ipynb
   kind: notebook
-  semantic_sha256: 541dc1d4e548d9c5f8ab97e7c04e0651e16e37ad71d2aea9133aa95c46e1363b
+  semantic_sha256: fadfcafe4d82f67549dca3509a45c6c3531b6e1d20ce5ee4e6f6b0eb04d5b44a
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p05_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p05 — Solution :: cell 1'
@@ -13059,7 +13146,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb
   kind: notebook
-  semantic_sha256: 1b0638bf4edbfcedf2ec8037b7ad288b84693f9d664e0a57e53f987ab092574f
+  semantic_sha256: 46f7280f0ca5d106ca802bc55471c6d878ad98305a1b8c36c4ffa2da0408d72b
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p06_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p06 — Solution :: cell 1'
@@ -13153,7 +13240,7 @@ notebooks:
   - x.dim
 - path: units/B2-023-generative-models-diffusion/practice/p07.ipynb
   kind: notebook
-  semantic_sha256: 8c885a6ac9159f8f67f61461d5d6edf14afbfbebb7b3f200b2e96c7a024b4e37
+  semantic_sha256: 2cc34b1d7d89b30a515b8904c845e55e9c5d09775f67db9c5a964efc9befb0cc
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p07.ipynb :: B2-023 — Practice p07 > Task :: cell 1'
     heading_path:
@@ -13187,7 +13274,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: e61e9673e0c1f3774bb3a876e1105d5c7d668bf7c2436b805f285dab152b199e
+  semantic_sha256: 8ee1c2855018577de82cda458a77c6abf9be5892d20dccd9188f6a5c4c967824
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p07_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p07 — Solution :: cell 1'
@@ -13298,7 +13385,7 @@ notebooks:
   - x.dim
 - path: units/B2-023-generative-models-diffusion/practice/p08.ipynb
   kind: notebook
-  semantic_sha256: 395fab8ab0c5284d2466dbf4d33096cf26884a51864148864f1f54f6d07cb833
+  semantic_sha256: c698a17660624bfc45b3e9d7675c70eeb303e341c2a12c57e626c4a0d742045c
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p08.ipynb :: B2-023 — Practice p08 > Task :: cell 1'
     heading_path:
@@ -13332,7 +13419,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb
   kind: notebook
-  semantic_sha256: c56ba5223c6b1333ab1e805a74a4bc58ab0d6502eade38f57c198da7f055bf13
+  semantic_sha256: de2d87eb109ecae263460004f73a180eb3ca62a9c2821ac5b133b33be097cc3e
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p08_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p08 — Solution :: cell 1'
@@ -13458,7 +13545,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb
   kind: notebook
-  semantic_sha256: 1ee567827d1f4ad4ca07728cd08139b533e44439827b839cc51b4a116bf429e6
+  semantic_sha256: 599daf150323353504f1295d289fbeb515d20f132120abe5e926bbb90cbab1c3
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p09_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p09 — Solution :: cell 1'
@@ -13609,7 +13696,7 @@ notebooks:
   - torch.zeros_like
 - path: units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: 8e89928be94d486b7e42924f267a212a30bdbac1adaa1433c0ff6a09fb7b2de9
+  semantic_sha256: 93259329f001454123d8e27fd1b8e6cbc7192f2baade5b26084ed322c507c4a6
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p10_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p10 — Solution :: cell 1'
@@ -13747,7 +13834,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb
   kind: notebook
-  semantic_sha256: 43eec4f296346164345a1828ae086543ce984ef04bfc542e248f0a0f9a2710ca
+  semantic_sha256: b4d62f2c9b9a9bca51bda2feedb5eeae8fc2e9b2fec9cabac6c8c7f10c8a1bdc
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p11_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p11 — Solution :: cell 1'
@@ -13853,7 +13940,7 @@ notebooks:
   - torch.zeros_like
 - path: units/B2-023-generative-models-diffusion/practice/p12.ipynb
   kind: notebook
-  semantic_sha256: 1ce073c96e128ec793598e41f276d23b85c3431d10b282c227c74d1a1bd3c01a
+  semantic_sha256: d7989ba4998f005b4cd7569edadd227046a723c20654ec80c2740c10f20510ec
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p12.ipynb :: B2-023 — Practice p12 > Task :: cell 1'
     heading_path:
@@ -13894,7 +13981,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb
   kind: notebook
-  semantic_sha256: a46350dd65da42488ad65d469ec92a5e2cc3500dcf670c620e53053866eaf058
+  semantic_sha256: 8ff7f79a99fe124f575b507447de78641c2c8b26c68e555212370bd4ad21462c
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p12_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p12 — Solution :: cell 1'
@@ -14055,7 +14142,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p13_solution.ipynb
   kind: notebook
-  semantic_sha256: a555d5d9c93214c444754425e80490e4b6aef686a9cfbe5650bff69520305b0e
+  semantic_sha256: 5f15b4d029e6875bb9c3a04f08a4c06127f1e2712464df98caada30e4ec03744
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p13_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p13 — Solution :: cell 1'
@@ -14132,7 +14219,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p14_solution.ipynb
   kind: notebook
-  semantic_sha256: 551107ba1a926fe4bb9c12b5cd339f108d89268432f5a9a17826a8204adb4d38
+  semantic_sha256: f7b0aae952015923126cd2b32891f4222b56615cd371666a32da78a2eef0ae12
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p14_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p14 — Solution :: cell 1'
@@ -14200,7 +14287,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p15_solution.ipynb
   kind: notebook
-  semantic_sha256: 063c7561c91d607ef9b6b94f5deb0fef3adf5df8d99cf2c142ce2a536c46f0d3
+  semantic_sha256: ba5b40f07c8474dad9df07bbdecd2fc8bef3673588611088e64202361df6384f
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p15_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p15 — Solution :: cell 1'
@@ -14274,7 +14361,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 9751b01ca362990bfa8285dc1b104b5bbc923bc02da0f5087292cab1aebc3ae0
+  semantic_sha256: 54015a4129eb8020fe451f741a906d080f99e769c2261b7a845a7afd34c8b4d7
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p16_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p16 — Solution :: cell 1'
@@ -14326,7 +14413,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-023-generative-models-diffusion/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: ec88d119495eb8ec573babfcfdaa4d6bf743313bbec695ede2bddc7c24b6b3eb
+  semantic_sha256: e17a932e3f481c68b044b485f9e675dbcbd3050d10fd3cee44d8b0f3d84c0733
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p17.ipynb :: B2-023 — Practice p17 > Task :: cell 1'
     heading_path:
@@ -14364,7 +14451,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: 55e21407077bccbf8d2ef116ac360d3437ef610722d923545b1492227fd9c6f4
+  semantic_sha256: 01555f7e2b4de813e125e2001362ca776f87e760c1741c0e47ee1c51c4929e62
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p17_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p17 — Solution :: cell 1'
@@ -14488,7 +14575,7 @@ notebooks:
   - x.dim
 - path: units/B2-023-generative-models-diffusion/practice/p18.ipynb
   kind: notebook
-  semantic_sha256: d19545fcecefcb502c0558706c109604fbc4e3ea6d0dda8c72e20dcccbe8efe1
+  semantic_sha256: f0192d6748d74cbb977405f2ab5396bf9b5e49caed41c670d95191b47d942114
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p18.ipynb :: B2-023 — Practice p18 > Task :: cell 1'
     heading_path:
@@ -14526,7 +14613,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb
   kind: notebook
-  semantic_sha256: eac1a115f2f3bde56d4a61358f2b4d226e0932fb15d7292cc14391e91a6e6f7c
+  semantic_sha256: 612359010aa6a859145b61c23b21b9c1bd09d955c09106068b48d6d26d683770
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p18_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p18 — Solution :: cell 1'
@@ -14644,7 +14731,7 @@ notebooks:
   - x0.dim
 - path: units/B2-023-generative-models-diffusion/practice/p19.ipynb
   kind: notebook
-  semantic_sha256: 138513b4a2a77e332de3583d76261f6c752c88e2a8833fda9ca8bba56c607018
+  semantic_sha256: 7b74ff1b6c3be2ab8eb3d8dd1fd9351e0a4e00eba1b3e2b71f7f39d603e13a90
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p19.ipynb :: B2-023 — Practice p19 > Task :: cell 1'
     heading_path:
@@ -14682,7 +14769,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: a6ff61ce9ee66e48437d2933e56174d22d33b338968d5f73144bf28933d6f7aa
+  semantic_sha256: 6cd8bf16230c150db0674750a8902c4e49ece2f7ed9d90cb91ac02cbc256cef8
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p19_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p19 — Solution :: cell 1'
@@ -14827,7 +14914,7 @@ notebooks:
   - x0.dim
 - path: units/B2-023-generative-models-diffusion/practice/p20.ipynb
   kind: notebook
-  semantic_sha256: 58ab2fabcbb2ef3a845453053467953f045a224d3da29971ecfd191f72b41cc2
+  semantic_sha256: fb44e8ebb2cb153a709fc45abc1eba0f7e5faba99020c04a62a28c0ecbb2a9d0
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p20.ipynb :: B2-023 — Practice p20 > Task :: cell 1'
     heading_path:
@@ -14865,7 +14952,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 0aa61e95e2e0d91345c941913da947926d1c5a4c276b75588c02beb08440f1a6
+  semantic_sha256: d726dc12919d7733a35bd1d6531871415161b7879ba67a9dc4124c216b48e224
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p20_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p20 — Solution :: cell 1'
@@ -15038,7 +15125,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: 860b6853f862cbf0ccca74852abf4c10454bf17abbe27d99022f0737fd715cbd
+  semantic_sha256: 27f5632a6fa7be794ba79d781b82e90376097d3adacc440fbf990eb2ddaa8c06
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p21_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p21 — Solution :: cell 1'
@@ -15108,7 +15195,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: 381483ef6235256aa194afe644e974331f863413413d09be667427b6323ee79d
+  semantic_sha256: 7686442389ce4a8641933764094414bcf51fb55402ccb18993b47efdd37e5402
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p22_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p22 — Solution :: cell 1'
@@ -15188,7 +15275,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb
   kind: notebook
-  semantic_sha256: 057e504d5a939b56ef4d067fdda036234a1a0848d3088b49cd1513e89f956856
+  semantic_sha256: 6a336dfff6fa9a9525b048a1887d16a558bb2a934c6f224ad7472914c645e5e9
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p23_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p23 — Solution :: cell 1'
@@ -15298,7 +15385,7 @@ notebooks:
   - torch.zeros_like
 - path: units/B2-023-generative-models-diffusion/practice/p24.ipynb
   kind: notebook
-  semantic_sha256: c125875f729db318c3d84676b6b2f9f70f21913dd4f34bd45ebc31f72b0428e1
+  semantic_sha256: 3bcd3f7ffdca05a7c28dffcbde0af9f83eb1d0a4398df0b1181fe8bd831f991e
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p24.ipynb :: B2-023 — Practice p24 > Task :: cell 1'
     heading_path:
@@ -15337,7 +15424,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: 3b7639602c37f3ddd32e8cc4db0577df0a579f31c6ed3a02d54ef1a4ef3670e0
+  semantic_sha256: fede7a6e7487e7dd34578abd48a45a9769ee8cfb695e3fe4983af32fb5be240f
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/practice/p24_solution.ipynb :: B2-023-generative-models-diffusion —
       Practice p24 — Solution :: cell 1'
@@ -15455,7 +15542,7 @@ notebooks:
   - z0_repaired.std
 - path: units/B2-023-generative-models-diffusion/review.ipynb
   kind: notebook
-  semantic_sha256: 4cd52d219dd45e69938eb0e70dde6e62e2103dbaaab181faddfa02f6cf85d44d
+  semantic_sha256: 5e918959fb16feba0bb419f55320f988c7fc10ae9eb66515150c0e9d101ea5e7
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/review.ipynb :: B2-023 — Review and Self-Quiz :: cell 1'
     heading_path:
@@ -15490,6 +15577,12 @@ notebooks:
     - B2-023 — Review and Self-Quiz
     - Collected answers
     cell_ordinal: 1
+  - anchor: 'units/B2-023-generative-models-diffusion/review.ipynb :: B2-023 — Review and Self-Quiz > Code you met in this
+      unit :: cell 1'
+    heading_path:
+    - B2-023 — Review and Self-Quiz
+    - Code you met in this unit
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-023-generative-models-diffusion
   declared_concept_ids:
@@ -15500,7 +15593,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb
   kind: notebook
-  semantic_sha256: dc014bcb93de5ace31cf47f3b7223ead49eaf939c081c6baf2b94e8bbcc76cb8
+  semantic_sha256: 6a2c70dbbfb0606c683cc89ed198df1191418b8957f8e04cbac58260b0a996aa
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone :: cell
       1'
@@ -15555,6 +15648,12 @@ notebooks:
     - B2-024 — GPU Workflow and Scientific-ML Capstone
     - Boundaries
     cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone > Code
+      in this unit :: cell 1'
+    heading_path:
+    - B2-024 — GPU Workflow and Scientific-ML Capstone
+    - Code in this unit
+    cell_ordinal: 1
   declared_unit_ids:
   - B2-024-gpu-scientific-ml-capstone
   declared_concept_ids:
@@ -15568,7 +15667,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb
   kind: notebook
-  semantic_sha256: c60bb4dbc76dd6dce69616f08ca08852bcbf00ca7355070daa781e0249942114
+  semantic_sha256: 7e18bc9ab05fcf4b63a0e51b73c6b08aacc8b1d5afbade278215fb7622979e8e
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/00-book1-bridge.ipynb :: B2-024 — Book 1 Bridge Diagnostic ::
       cell 1'
@@ -15654,7 +15753,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb
   kind: notebook
-  semantic_sha256: 25d4df6758ac36805480caaeccff21b860b8566dc5890f6bd02e100121751cdf
+  semantic_sha256: 9f698b176a56f42f87ca3c2d15095a2f27b8084849d054f05f390abdf33d2092
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
       GPU Workflow on Colab L4 :: cell 1'
@@ -15806,6 +15905,7 @@ notebooks:
   - p.numel
   - path.is_file
   - pathlib.Path
+  - str.splitlines
   - tempfile.TemporaryDirectory
   - time.perf_counter
   - torch.autocast
@@ -15831,7 +15931,7 @@ notebooks:
   - wrong_next.item
 - path: units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb
   kind: notebook
-  semantic_sha256: 853c092bda85acfd513ba66b43385c1674134beaf59e222492557bbfa812d574
+  semantic_sha256: 56965c130f799c4f25d5b9f1862d541502a8f8d049cc017168ae1f5f22a95b0f
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/02-experiment-design-under-budget.ipynb :: B2-024 — Session 2:
       Experiment Design Under a Budget :: cell 1'
@@ -15952,7 +16052,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb
   kind: notebook
-  semantic_sha256: 23cf3b9686e12d34a795dee35efa80935dda78646ea348a7d4c406817ca65c9b
+  semantic_sha256: 4519232c535d872f79fc94dc8eff31512efdaaacdfc151e94191bac1bfc5b358
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/03-evaluating-open-ended-models.ipynb :: B2-024 — Session 3:
       Evaluating Open-Ended Models :: cell 1'
@@ -16087,7 +16187,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb
   kind: notebook
-  semantic_sha256: 1f43d3e853285f1cdab493e485ab3088ffa7bf1ab23abf04fcfba5a7dc6a2f8e
+  semantic_sha256: 85e86abab04df12481979344265423c4309efc3ba9c2d891d58d7628eb5f6406
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
       4: Semi-Supervised Learning by Pseudo-Labeling :: cell 1'
@@ -16150,6 +16250,18 @@ notebooks:
     - '7. Worked laboratory: a tiny shape trace'
     cell_ordinal: 3
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 7. Worked laboratory: a tiny shape trace :: cell 4'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - '7. Worked laboratory: a tiny shape trace'
+    cell_ordinal: 4
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
+      4: Semi-Supervised Learning by Pseudo-Labeling > 7. Worked laboratory: a tiny shape trace :: cell 5'
+    heading_path:
+    - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
+    - '7. Worked laboratory: a tiny shape trace'
+    cell_ordinal: 5
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/04-semi-supervised-pseudo-labeling.ipynb :: B2-024 — Session
       4: Semi-Supervised Learning by Pseudo-Labeling > 8. Common pitfalls and Exam connections :: cell 1'
     heading_path:
     - 'B2-024 — Session 4: Semi-Supervised Learning by Pseudo-Labeling'
@@ -16184,6 +16296,7 @@ notebooks:
   - importlib.util.module_from_spec
   - importlib.util.spec_from_file_location
   - init.clone
+  - k.tolist
   - loader_spec.loader.exec_module
   - model.eval
   - model.parameters
@@ -16193,21 +16306,28 @@ notebooks:
   - optimizer.zero_grad
   - path.is_file
   - pathlib.Path
+  - power.max
   - probs.max
+  - torch.arange
   - torch.bincount
   - torch.cat
   - torch.cdist
+  - torch.cos
+  - torch.fft.fft2
+  - torch.fft.fftfreq
   - torch.manual_seed
+  - torch.meshgrid
   - torch.no_grad
   - torch.nonzero
   - torch.optim.Adam
   - torch.randn_like
   - torch.set_num_threads
+  - torch.sqrt
   - torch.stack
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb
   kind: notebook
-  semantic_sha256: 49aa69df7cc32638f225b718aecccdb59ea3d05bddd73a35ac481d16d551bbb9
+  semantic_sha256: f85eb2b7d1bd5faad88bca4edfbb02295c09271ca4069d10bfa3e0f51e571c9e
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
       Inverse Problems :: cell 1'
@@ -16335,7 +16455,7 @@ notebooks:
   - val_x.double
 - path: units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb
   kind: notebook
-  semantic_sha256: c064a3a83483d8859f7fabc9c350a96b094452509f58c6c7464db52017dcb75e
+  semantic_sha256: 323fbe25faf9a896d000ffc227d017ba5ce466be4eb4451277d136ca6ff10483
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/06-mixture-parameter-regression.ipynb :: B2-024 — Session 6:
       Mixture-Function Parameter Regression :: cell 1'
@@ -16479,7 +16599,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p01_solution.ipynb
   kind: notebook
-  semantic_sha256: 1a8e5a8e7468ecb1fd6dac49b4d7e46ae21092093e395bc2c3c3a65a25fda774
+  semantic_sha256: 7e87ecf59fc2dc1be367525a75c985f40fc7a8d6696fe10d355114e25d953976
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p01_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p01 — Solution :: cell 1'
@@ -16545,7 +16665,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p02_solution.ipynb
   kind: notebook
-  semantic_sha256: 0234d862adda2b1107fcbeabdb39eaaf8d8a2beafac8a76dc10c0a7f92618395
+  semantic_sha256: f0755955070d07355d0414770995177f4dc934d79e66de8d71183dbe125d7d80
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p02_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p02 — Solution :: cell 1'
@@ -16622,7 +16742,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p03_solution.ipynb
   kind: notebook
-  semantic_sha256: ce18f2e8c242bcc4c0f495a1f26dae610476e706da31aa1fb615db50aa3d0e19
+  semantic_sha256: 6614c2e67d3b0fcbcb36c89d1c19c23d0e73dfa1ae97d31b67a073a0f74489c5
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p03_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p03 — Solution :: cell 1'
@@ -16688,7 +16808,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p04_solution.ipynb
   kind: notebook
-  semantic_sha256: 1989cd2eef5f50e232e5327179a4ee3270941825aa62fe74beddda403a3f0bc9
+  semantic_sha256: 7cedcc62489343e6bae883796066054798c275f17d8b483303f05f2e7f99a6c8
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p04_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p04 — Solution :: cell 1'
@@ -16755,7 +16875,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p05_solution.ipynb
   kind: notebook
-  semantic_sha256: 2b77a6a50f9294b9087b47531a2ccd2ecc4906b498ad99b49917b6306d86ae4a
+  semantic_sha256: 9a99e6a5ed73dc77151697abed8b6ad85bd8f0e91c0af13136849125a9630a45
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p05_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p05 — Solution :: cell 1'
@@ -16805,7 +16925,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb
   kind: notebook
-  semantic_sha256: 529145549a2a01cdb9052ed05da5d3a317e6dfa32a8bfc839b755b1457c07d51
+  semantic_sha256: 528b1a07f19167de47bcc0766c072c090e7f3696fa6280f8f23c9fba772c85e3
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: B2-024 — Practice p06 > Task :: cell 1'
     heading_path:
@@ -16852,7 +16972,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb
   kind: notebook
-  semantic_sha256: 971ab92d665177f8ee298a06fe9b854c85358159e94a029b962d5e7e433a4e75
+  semantic_sha256: 78d0bfbdb1faf94f078d3f20269c02f3b91f8277da0d774b441de0dba1de8d68
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p06 — Solution :: cell 1'
@@ -16980,7 +17100,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb
   kind: notebook
-  semantic_sha256: 8f86b3abface988327c20bc880f6abd35e22242fc2693ec5823764b0def14d96
+  semantic_sha256: ac3d8f8e015c242d2bd7eb890063af6c7cf58501bc6e213251fd51b851777ea3
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07.ipynb :: B2-024 — Practice p07 > Task :: cell 1'
     heading_path:
@@ -17023,7 +17143,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: 43c14f8c39ad302214318cde1164ca4c546a280861bc50e8df1e7c7202c84779
+  semantic_sha256: 9595348db2abf79a19fbd6f61f31d9e011fc47dd76f8385ac44c81ef87dd1e54
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p07_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p07 — Solution :: cell 1'
@@ -17176,7 +17296,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb
   kind: notebook
-  semantic_sha256: 32f8308369182ffe813d6f53559388982ab31dd6ee2da587b7cd24effa116c41
+  semantic_sha256: fc3f6a4aaa3c8fa47c2b0b0a84a938f9e66f859d8c5d80beda594e1ace9cd101
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p08_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p08 — Solution :: cell 1'
@@ -17279,7 +17399,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb
   kind: notebook
-  semantic_sha256: bcbb53d5a19b45c9f2a3df5fd04e551cd9640c8071e0899de33a942c2eee81b6
+  semantic_sha256: 27faba7e9e7b88f99bc523b72fce0d353eb4a60b591334240c4417762f88574b
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p09_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p09 — Solution :: cell 1'
@@ -17350,7 +17470,7 @@ notebooks:
   - values.to
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p10.ipynb
   kind: notebook
-  semantic_sha256: f82ae08cb5bf90b110b06e1c5f5d8d1eb78a3dcfb7d8e75a5a94b69eea1a9a42
+  semantic_sha256: 5009fee9114b69d7b63a1e5e89925f28f2bcc6ba35cf132b1d71ac4e622e270d
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10.ipynb :: B2-024 — Practice p10 > Task :: cell 1'
     heading_path:
@@ -17388,7 +17508,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: c0782e243cf0195856083c29b4c5c78879669f44bccbdfbf831f06b15fea44a2
+  semantic_sha256: 097a1edfd2520cb5772fce781bc195845e72d4a74f8ce59f0bada4dc43115801
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p10_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p10 — Solution :: cell 1'
@@ -17477,7 +17597,7 @@ notebooks:
   - y.double
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p11.ipynb
   kind: notebook
-  semantic_sha256: 53baffb807eff9d12a0022c892e508d89af2c8e03b0d38dbe8c992827b79ac07
+  semantic_sha256: d4b5b7183d0eb2dc2957b2903ac7a783e06679499ff5eb07d4ec4cd79d74d607
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11.ipynb :: B2-024 — Practice p11 > Task :: cell 1'
     heading_path:
@@ -17515,7 +17635,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb
   kind: notebook
-  semantic_sha256: 048a67d60d888f9058f160855d44993cf98a45823b1bd28c8110130853c087fb
+  semantic_sha256: 6beecfb5505154cb0b3049cfce424548fcd1476e81799bb6eab6f56760339a0b
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p11_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p11 — Solution :: cell 1'
@@ -17591,7 +17711,7 @@ notebooks:
   - wrong.tolist
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p12.ipynb
   kind: notebook
-  semantic_sha256: 7139cbf7cf37dbe3471e300f201eb78665c38833c9b061708998dd7d1e276037
+  semantic_sha256: 709b57efe3e2b05fe99c2d46df2129bf3fdd726ef97b75813fdf3117e8a162de
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12.ipynb :: B2-024 — Practice p12 > Task :: cell 1'
     heading_path:
@@ -17628,7 +17748,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb
   kind: notebook
-  semantic_sha256: 17af41c872fdb300e929fbec4e65dc78b50dc05ea4fdf2f34fe29e5d047a712e
+  semantic_sha256: 50c0905bd70cde6dcf700c05062d10dda094d2eb30f6706a9fdbac854834511d
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p12 — Solution :: cell 1'
@@ -17764,7 +17884,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p13_solution.ipynb
   kind: notebook
-  semantic_sha256: 1f6bc433fe5798bfdd4b38866f0a462c38da2b1ae17b62e22725b8208e52539c
+  semantic_sha256: e830daee9bb330821d4e18b373833e41c3c6e15d82a4f4fb5af75a2480df291c
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p13_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p13 — Solution :: cell 1'
@@ -17850,7 +17970,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p14_solution.ipynb
   kind: notebook
-  semantic_sha256: 788a85e749fffb2c83b493e005785482eb737e67d805265e1292b65d19fb4693
+  semantic_sha256: 919b9b77942cedca3bf9c883a8c23affac7d47f7d186bdb530328416f3ac4ca6
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p14_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p14 — Solution :: cell 1'
@@ -17938,7 +18058,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p15_solution.ipynb
   kind: notebook
-  semantic_sha256: c3b4f25a2ff909d08221e5c7601db4070db19b342470b75a43407c0ab7cfce9c
+  semantic_sha256: 7cdc74586e333826d84c20c2c90ab929a8de6e14ae5ca549846e7f5de7a683cb
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p15_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p15 — Solution :: cell 1'
@@ -17990,7 +18110,7 @@ notebooks:
   - torch.randn
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb
   kind: notebook
-  semantic_sha256: 6b1f86251db4423735efe2d98f6fe03c69852796fb60c524b2633ae2c63ac86e
+  semantic_sha256: 6c9af46bdbb84f74e3f15f7e36a6eedce547772bfffd771827a3b15b7604e827
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16.ipynb :: B2-024 — Practice p16 > Task :: cell 1'
     heading_path:
@@ -18033,7 +18153,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: ad8f728ce986e105e1aded134ab0741a12db3aa23aa1b14d241de70c303d792c
+  semantic_sha256: 8b5ff23bfb72701e266de272a89d8b2026fde6da38ad1b32e775a6aab81301b4
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p16 — Solution :: cell 1'
@@ -18168,7 +18288,7 @@ notebooks:
   - torch.set_rng_state
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: 16f77ddf1b76522c81523ec7a898f753d2c5b9914852f6723eae17071dbcc47c
+  semantic_sha256: 5456456dcfe34b42abb4fc25939b53225c60707156c63bdc49dfe3b7ed2cf71f
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17.ipynb :: B2-024 — Practice p17 > Task :: cell 1'
     heading_path:
@@ -18211,7 +18331,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: 75ec067cdc56be633e4dd4c124293274a1e5d169c0403baf9ce24df5cafae1f8
+  semantic_sha256: 9faa22daeb4a3ee0f20499c4d4c0338ce9c45f2294e5333542566bea2b65bfb8
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p17_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p17 — Solution :: cell 1'
@@ -18343,7 +18463,7 @@ notebooks:
   - y.to
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p18.ipynb
   kind: notebook
-  semantic_sha256: efbe53c0d0e689817dfae54b3660f1b6889a702a35b6d08ac9b5bf5211bff5a1
+  semantic_sha256: 3023c2a1b48b74430f74d4a839c5408aaf01484f119d29dc0beb08e5c4491273
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18.ipynb :: B2-024 — Practice p18 > Task :: cell 1'
     heading_path:
@@ -18380,7 +18500,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb
   kind: notebook
-  semantic_sha256: 85bdb056409ac0a2f5cbb82cadb6759fdd9035a47b3c104781126c120a822837
+  semantic_sha256: 5f48c8e114e63e13b6e2c6489bd0c57a9dd82634a10ca25c7ab1904396064a20
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p18_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p18 — Solution :: cell 1'
@@ -18514,7 +18634,7 @@ notebooks:
   - values.to
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb
   kind: notebook
-  semantic_sha256: ac858bdf466a954e60a853ea75b2b59c0156e87132abc31d0c3938b448b49b77
+  semantic_sha256: d32ac77c3bb4a2acdf08bdaa6baedca1dcf3f9e1e21cb0c1f463158e669b86a2
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19.ipynb :: B2-024 — Practice p19 > Task :: cell 1'
     heading_path:
@@ -18557,7 +18677,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb
   kind: notebook
-  semantic_sha256: ee7bea081cf22abd081caa0e7499925487355c5f56cb8dfe95e8625a0819817e
+  semantic_sha256: 1ee58247fae96c29e0a6aea8b29135f8e2140333b298f9d0a006f66d17ac6cad
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p19_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p19 — Solution :: cell 1'
@@ -18686,7 +18806,7 @@ notebooks:
   - y.to
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb
   kind: notebook
-  semantic_sha256: 2481465cb3f6a2e7ceec2c222dad4d30dea3e7fbeb9c585635e905e985d4cac7
+  semantic_sha256: 0dea12984b543b36e7e31462f2aed7df1946e986257b83dec2795e71f897ef13
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20.ipynb :: B2-024 — Practice p20 > Task :: cell 1'
     heading_path:
@@ -18729,7 +18849,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb
   kind: notebook
-  semantic_sha256: 446ab07559145f58e0f719dcda78419343c90c51d079474d57ac0ac525ce9399
+  semantic_sha256: 90639f377f8a5402d8c789b7b8f3575aa768ee6a81e2ebcf1f3ecf6aef9968d5
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p20_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p20 — Solution :: cell 1'
@@ -18864,7 +18984,7 @@ notebooks:
   - values.to
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p21.ipynb
   kind: notebook
-  semantic_sha256: 2f28133ae6770bdd9bc42e0a1077e4d0b178fd2ae05d0b46d1c027aaa40e4d1e
+  semantic_sha256: e90e972a2d8c65ba89c4ee47405b937c883aab1f4f48e4db5fffbb59a2c94928
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21.ipynb :: B2-024 — Practice p21 > Task :: cell 1'
     heading_path:
@@ -18901,7 +19021,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb
   kind: notebook
-  semantic_sha256: dc4a7de559bfb6e235f184dc3293c5f3673d20c094fa55e67c232032884a0db5
+  semantic_sha256: ac439c519cef4b00ff0c858dd945f390a1a836db6a21247b1855ea68c03470ea
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p21_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p21 — Solution :: cell 1'
@@ -19037,7 +19157,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p22.ipynb
   kind: notebook
-  semantic_sha256: 6b73914c1853e6b99506913de60e30d11c21c1197bb641091f4361d404ce11f8
+  semantic_sha256: 8278874218d498ab9dabcb0aa51acabf8a77b1f5e94f3179285192b1a8785886
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22.ipynb :: B2-024 — Practice p22 > Task :: cell 1'
     heading_path:
@@ -19074,7 +19194,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb
   kind: notebook
-  semantic_sha256: ea002666889a1955e42e3b7527d7bab82e598c667077876beb932f799cae6920
+  semantic_sha256: 824c45ed358b85ba7fa22ce7e2ffa4c2eb8dadae3a37b77023aa3ec7df751fd8
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p22_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p22 — Solution :: cell 1'
@@ -19223,7 +19343,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p23_solution.ipynb
   kind: notebook
-  semantic_sha256: 5ece9916f4605055500ee513eca3546060aa2af3a66c94f31b6d5e0bb7708e43
+  semantic_sha256: 90d51a2e6974682c1feda3904ae61674d5bf8b20d2486b4c7efc3ec07e9124a1
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p23_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p23 — Solution :: cell 1'
@@ -19305,7 +19425,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb
   kind: notebook
-  semantic_sha256: db0b2071122c560c42295a190455be63087b05e6fb186e1c65a649dd7987c2b1
+  semantic_sha256: 6042d9361834c562f5332638b92806a3969045a91e1c2a5daa13ea93e4d1e0ba
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p24_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p24 — Solution :: cell 1'
@@ -19393,7 +19513,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p25_solution.ipynb
   kind: notebook
-  semantic_sha256: 21ea82e798c74a414b87892d78652c80022e1d88b22ed8c35f5b36730d0e12a3
+  semantic_sha256: bb939e9bfc98ea76d8e0ffb512cb83a75188ca7770d5ce462b3137977633e72b
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p25_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p25 — Solution :: cell 1'
@@ -19445,7 +19565,7 @@ notebooks:
   - imbalance.items
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p26.ipynb
   kind: notebook
-  semantic_sha256: f0e193f1863c96dcac73a1c11e34bab91f7b8a742fc8b298561fec63cbd6653a
+  semantic_sha256: 4e680a560f87da0a8a9d72c471b3a0f5350543acbfe9b483c0bd935ca496c36e
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26.ipynb :: B2-024 — Practice p26 > Task :: cell 1'
     heading_path:
@@ -19482,7 +19602,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb
   kind: notebook
-  semantic_sha256: d1519dbeab9565b9a724a0429ba2c43732d28a6423a08446f31fa390c08c6422
+  semantic_sha256: 9ed6bfe1226a4fa6a7f1ce800bb8d5945ec37210d00bbbd3d7f90fe42a14f88a
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p26_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p26 — Solution :: cell 1'
@@ -19601,7 +19721,7 @@ notebooks:
   - x.double
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p27.ipynb
   kind: notebook
-  semantic_sha256: c285bd2b5bac6e87e46ae1e959cd6dab6a5fd68da5d6f1b8092619c45032c96a
+  semantic_sha256: a4603aef9aad29e62aff603345d703e5961fa7ba2c4057976b195e253dc624f3
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27.ipynb :: B2-024 — Practice p27 > Task :: cell 1'
     heading_path:
@@ -19638,7 +19758,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb
   kind: notebook
-  semantic_sha256: 4c40dd019f8fc27fb5e6486ea9f49944303da993282df7896d308ca759a9044c
+  semantic_sha256: 5b35f7ac3c053f9c97e01fd4d000613c59cbcc4177c4d3996346ad6e55b91d6a
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p27_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p27 — Solution :: cell 1'
@@ -19796,7 +19916,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb
   kind: notebook
-  semantic_sha256: 4a2bc1f8a5ddd2370577208607d6fdc5cf98fdd69637780256c372650c7af79b
+  semantic_sha256: 69d0e747240b834a4442c0c2adb0dcaa8c5ac7f1025e208daea247a7eb9e8e02
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p28_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p28 — Solution :: cell 1'
@@ -19875,7 +19995,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/review.ipynb
   kind: notebook
-  semantic_sha256: b1105afda7f799a46ab2523e0c0ed45367e8fbd010a6e77b3fdd9ff864be14a9
+  semantic_sha256: 53016dce8b1c43f7d0928427deb23e0cbe6a374589f58b5605ee4c24897bc8f5
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/review.ipynb :: B2-024 — Review and Self-Quiz :: cell 1'
     heading_path:
@@ -19909,6 +20029,12 @@ notebooks:
     heading_path:
     - B2-024 — Review and Self-Quiz
     - Collected answers
+    cell_ordinal: 1
+  - anchor: 'units/B2-024-gpu-scientific-ml-capstone/review.ipynb :: B2-024 — Review and Self-Quiz > Code you met in this
+      unit :: cell 1'
+    heading_path:
+    - B2-024 — Review and Self-Quiz
+    - Code you met in this unit
     cell_ordinal: 1
   declared_unit_ids:
   - B2-024-gpu-scientific-ml-capstone

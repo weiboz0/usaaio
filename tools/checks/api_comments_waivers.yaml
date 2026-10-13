@@ -11,3 +11,12 @@ waivers:
     cell: "*"
     callee: "*"
     reason: guard-protected
+  # D8: B2-020 whole-function test literals (count 1) take no comment inside them.
+  - path: book2/units/B2-020-language-transformers/practice/p11_solution.ipynb
+    cell: 2
+    callee: torch.full_like
+    reason: inside a whole-function test literal; explained in the B2-020 API card
+  - path: book2/units/B2-020-language-transformers/practice/p20_solution.ipynb
+    cell: 3
+    callee: .canonical_encoder_state_hash
+    reason: local data-module helper inside a test literal
