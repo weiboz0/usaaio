@@ -11010,7 +11010,7 @@ notebooks:
   api_tokens: []
 - path: units/03-F3-multivar-calculus/lesson.ipynb
   kind: notebook
-  semantic_sha256: 1bd54d5edf2fc0e6857676504303884f7471b88594898139929fe6ede5828141
+  semantic_sha256: dd9d7002939d62e81bd3de78721c650512b9c4cf98fb6d3c03b1bbd7a58fcb25
   anchors:
   - anchor: 'units/03-F3-multivar-calculus/lesson.ipynb :: F3-multivar-calculus — Partials, Gradients, and the Chain Rule
       (Unit Overview) > How to study this unit :: cell 1'
@@ -12763,7 +12763,7 @@ notebooks:
   - np.tanh
 - path: units/03-F3-multivar-calculus/review.ipynb
   kind: notebook
-  semantic_sha256: d0a79f12b6b6bf1361822e64fde1b1312478a7e084245d8caebd49216a569de3
+  semantic_sha256: b345f58a4496ac67049e51a8301e5d0bd4f1a30a77f5f6af9e9169f8292e867d
   anchors:
   - anchor: 'units/03-F3-multivar-calculus/review.ipynb :: F3-multivar-calculus — Review :: cell 1'
     heading_path:
@@ -14884,7 +14884,7 @@ notebooks:
   api_tokens: []
 - path: units/05-F5-probability/lesson.ipynb
   kind: notebook
-  semantic_sha256: 43a0057c43464251420dbc652ae74107004aa19a26e2a5da6e4f1ea63985a386
+  semantic_sha256: cb1eda2d5695b5d934c1577f52920a4a493f8d858d535b8417c580bba4fbc2e7
   anchors:
   - anchor: 'units/05-F5-probability/lesson.ipynb :: F5-probability — Unit Overview > How to study :: cell 1'
     heading_path:
@@ -17553,7 +17553,7 @@ notebooks:
   - success_counts.sum
 - path: units/05-F5-probability/review.ipynb
   kind: notebook
-  semantic_sha256: d21a7e5be986b9bc2a09557074029a6e470abaccb3ec67166bac46af9d10d375
+  semantic_sha256: 38ec731beab81e0947412d4b1c5bf2702e5f39ad2a5ceaba825159a5731639c5
   anchors:
   - anchor: 'units/05-F5-probability/review.ipynb :: F5-probability — Review :: cell 1'
     heading_path:
@@ -20649,7 +20649,7 @@ notebooks:
   - np.round
 - path: units/07-C2-linear-models/lesson.ipynb
   kind: notebook
-  semantic_sha256: 1fba037a14736d697c0285742a490a857887f6fe76a5d8e0c6b1e0a353b653fc
+  semantic_sha256: 6bedc4d99567a4112254d0d6e40c2cecce3753540d519d2794a16eeea2022c0a
   anchors:
   - anchor: 'units/07-C2-linear-models/lesson.ipynb :: C2-linear-models — Linear Models, Closed-Form OLS, and Regularization
       > How to study :: cell 1'
@@ -23149,7 +23149,7 @@ notebooks:
   - np.max
 - path: units/07-C2-linear-models/review.ipynb
   kind: notebook
-  semantic_sha256: 0cd54cafb72aa35f8a64a8e9eb65a7e48a0587461401b819b2db11d109569fe3
+  semantic_sha256: f127329068c648f583e4e41fa1e27aac5831f7130014ca8a0001cfd500f213ed
   anchors:
   - anchor: 'units/07-C2-linear-models/review.ipynb :: C2-linear-models — Review :: cell 1'
     heading_path:

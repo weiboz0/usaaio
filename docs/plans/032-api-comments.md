@@ -263,6 +263,13 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ### Round 2
 
+- `[fable]` APPROVE. All round-1 items verified; every "Also used here" pointer resolves to an earlier unit's "New" list.
+- `[sol]` REJECT on one item:
+  - [FIXED] The F5 and C2 cards said `np.asarray` converts "with no copy". It copies when a dtype change is needed (F5 asks for `dtype=bool`). The cards now say "copying if needed", and the F3 card qualifies "no copy" as "with that dtype". 20 of 22 sampled new entries were accurate; the 2 inaccurate ones were these. The material inventory was regenerated.
+- `[self]` APPROVE.
+
+### Round 3
+
 - `[sol]` REJECT.
   - [FIXED] Must Fix: index preservation in D5(d) contradicted the D6 insertion. Now only index-referenced cells keep their indices.
   - [FIXED] Must Fix: the CLI registry is `SUBCOMMANDS`.
