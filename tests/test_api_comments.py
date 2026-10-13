@@ -430,7 +430,7 @@ def test_cli_registration():
 
 def test_shipped_configuration_loads():
     loaded = load_config()
-    assert loaded.enforce is False  # Task 5 flips this
+    assert loaded.enforce is True
     assert {"axis", "dim", "keepdims", "size", "dtype", "device"} <= loaded.semantic_keywords
     assert not (loaded.graduated & loaded.no_reminder)
 

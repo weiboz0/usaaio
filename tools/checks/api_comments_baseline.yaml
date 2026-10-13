@@ -5,8 +5,8 @@
 # methods whose receiver is unknown use `.name` (`.reshape`); methods keyed per library
 # family use `<Family>.name` (`Tensor.sort`).
 
-# Report mode: findings are printed and the check exits 0. Task 5 flips this one value.
-enforce: false
+# Enforcing: findings fail the check (Plan 032 Task 5).
+enforce: true
 
 # Waivers (api_comments_waivers.yaml) may cover at most this percentage of rule-subject sites.
 waiver_cap_percent: 2
