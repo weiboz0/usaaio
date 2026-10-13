@@ -169,9 +169,11 @@ The survey scanned only code cells. Task 1 also scans statement markdown and `th
 | `torch.fft.fftfreq`, `torch.fft.fft2`, `torch.meshgrid` | r2-001 p04 solution (FFT texture features) | Teaching cell | `B2-024/lessons/04-semi-supervised-pseudo-labeling.ipynb` (feature step); `torch.meshgrid` may instead go in lesson 05 §3 "grid operator" |
 | `numpy.pad` | r1-001 p05 solution | Teaching cell | `01-F1` lesson on arrays (`lessons/01-arrays-and-indexing.ipynb`) |
 | `sklearn.preprocessing.RobustScaler` | r1-001 p09 solution | Teaching cell | `09-C4` lesson 02 (kNN and scaling), next to `StandardScaler` |
+| `.copy_` | r1-001 p08 statement, provided code | Rule-1 one-line comment in the statement | — |
+| `tempfile.TemporaryDirectory` | r1-001 p09 solution, infrastructure | Rule-1 comment in the solution only | — |
 | `shutil.copy2`, `subprocess.run` | r1-001 p09 solution, infrastructure | Rule-1 comment in the solution only; not exam content | — |
 
-Each teaching cell is a marked markdown-and-code pair (D5(c)). It adds no concept tag and changes no practice item or answer.
+Each teaching cell is a marked markdown-and-code pair (D5(c)). It goes before any trailing answer section of its notebook (`tools/publish.py` `answer_regions`), so it is not swallowed into the answers; in C4 lesson 01 that means after cell 22 and before the closing answers. It adds no concept tag and changes no practice item or answer.
 Prerequisite and coverage checks work on manifest concept tags, not callees, so they are unaffected.
 Any further prose-mandated callee that Task 1 finds is added to this table and reviewed in the content gate.
 
