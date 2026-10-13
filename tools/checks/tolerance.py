@@ -53,29 +53,48 @@ def _dotted_name(node: ast.expr) -> str | None:
     return None
 
 
-def _canonical_module(name: str) -> str | None:
-    root, *rest = name.split(".")
-    canonical_root = MODULE_NAMES.get(root)
-    if canonical_root is None:
-        return None
-    return ".".join([canonical_root, *rest])
+def _canonical_module(
+    name: str,
+    module_names: dict[str, str] = MODULE_NAMES,
+    *,
+    passthrough: bool = False,
+) -> str | None:
+    """Rewrite the longest registered dotted prefix of `name` to its canonical spelling.
+
+    Unregistered names map to None, or to themselves when `passthrough` is set (the API
+    comment check resolves every module, not only the tolerance-relevant ones).
+    """
+    parts = name.split(".")
+    for size in range(len(parts), 0, -1):
+        canonical_prefix = module_names.get(".".join(parts[:size]))
+        if canonical_prefix is not None:
+            return ".".join([canonical_prefix, *parts[size:]])
+    return name if passthrough else None
 
 
-def _import_aliases(tree: ast.AST) -> dict[str, str]:
+def _import_aliases(
+    tree: ast.AST,
+    module_names: dict[str, str] = MODULE_NAMES,
+    *,
+    passthrough: bool = False,
+) -> dict[str, str]:
     aliases: dict[str, str] = {}
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for imported in node.names:
-                canonical = _canonical_module(imported.name)
+                canonical = _canonical_module(imported.name, module_names, passthrough=passthrough)
                 if canonical is None:
                     continue
                 if imported.asname:
                     aliases[imported.asname] = canonical
                 else:
                     local_name = imported.name.split(".", 1)[0]
-                    aliases[local_name] = canonical.split(".", 1)[0]
+                    root = _canonical_module(local_name, module_names, passthrough=passthrough)
+                    aliases[local_name] = root or canonical.split(".", 1)[0]
         elif isinstance(node, ast.ImportFrom) and node.module:
-            canonical_module = _canonical_module(node.module)
+            canonical_module = _canonical_module(
+                node.module, module_names, passthrough=passthrough
+            )
             if canonical_module is None:
                 continue
             for imported in node.names:
@@ -86,12 +105,16 @@ def _import_aliases(tree: ast.AST) -> dict[str, str]:
     return aliases
 
 
-def _resolved_name(node: ast.expr, aliases: dict[str, str]) -> str | None:
+def _resolved_name(
+    node: ast.expr,
+    aliases: dict[str, str],
+    module_names: dict[str, str] = MODULE_NAMES,
+) -> str | None:
     name = _dotted_name(node)
     if name is None:
         return None
     root, *rest = name.split(".")
-    canonical_root = aliases.get(root, MODULE_NAMES.get(root, root))
+    canonical_root = aliases.get(root, module_names.get(root, root))
     return ".".join([canonical_root, *rest])
 
 

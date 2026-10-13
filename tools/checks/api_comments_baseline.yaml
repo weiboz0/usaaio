@@ -1,0 +1,122 @@
+# Plan 032 (D1, D4): configuration for tools/checks/api_comments.py.
+#
+# Callee keys: module functions use the canonical dotted name (`np.linalg.solve`,
+# `plt.subplots`, `torch.nn.Linear`, `F.relu`); builtins use their bare name (`zip`);
+# methods whose receiver is unknown use `.name` (`.reshape`); methods keyed per library
+# family use `<Family>.name` (`Tensor.sort`).
+
+# Report mode: findings are printed and the check exits 0. Task 5 flips this one value.
+enforce: false
+
+# Waivers (api_comments_waivers.yaml) may cover at most this percentage of rule-subject sites.
+waiver_cap_percent: 2
+
+# Rules applied inside mock tests (D1 order: mocks follow their book's units). Task 3 annotates
+# mocks for rule 1 only; rules 2 and 3 are not applied there.
+mock_rules: [1]
+
+# Spelling used for module prefixes (longest dotted prefix wins).
+module_aliases:
+  numpy: np
+  matplotlib.pyplot: plt
+  pandas: pd
+  seaborn: sns
+  torch.nn.functional: F
+
+# Course baseline (Calculus AB plus basic Python): never needs a comment.
+baseline:
+  builtins: [abs, bool, dict, float, input, int, isinstance, len, list, max, min, open, print,
+    range, round, set, str, sum, super, tuple, type]
+  methods: [add, append, close, endswith, extend, format, get, insert, items, join, keys,
+    lower, lstrip, pop, read, readline, readlines, remove, replace, rstrip, setdefault,
+    sort, split, startswith, strip, upper, values, write]
+
+# Rule 2 trigger set: a later use that adds one of these keywords needs a comment on it.
+semantic_keywords: [axis, bias, ddof, device, dim, dtype, full_matrices, generator, indexing,
+  keepdim, keepdims, key, p, reduction, replace, return_counts, size, weights]
+
+# Rule 2 positional call modes: a new positional-argument count on these callees (matched by
+# their last name component) is a new signature.
+positional_callees: [arange, full, linspace, normal, ones, randint, split, zeros]
+# A comment explains a positional mode when it names the callee or one of these parameter words.
+positional_words: [start, stop, step, num, low, high, loc, scale, shape, size, fill, sections,
+  mean, std]
+
+# Rule 3 exemption: everyday calls explained in F1-F5. The exemption applies in a unit once the
+# callee has non-harness uses in at least `graduation_units` earlier units.
+graduation_units: 3
+graduated:
+  - .all
+  - .argmax
+  - .astype
+  - .copy
+  - .integers
+  - .max
+  - .mean
+  - .min
+  - .normal
+  - .plot
+  - .reshape
+  - .sum
+  - .tolist
+  - ValueError
+  - all
+  - any
+  - enumerate
+  - next
+  - np.abs
+  - np.allclose
+  - np.arange
+  - np.argmax
+  - np.array
+  - np.asarray
+  - np.isclose
+  - np.linspace
+  - np.max
+  - np.maximum
+  - np.mean
+  - np.ones
+  - np.random.default_rng
+  - np.sqrt
+  - np.sum
+  - np.where
+  - np.zeros
+  - plt.plot
+  - plt.subplots
+  - sorted
+  - zip
+
+# Rule 3 exemption: self-describing callees that never need a reminder.
+no_reminder:
+  - .legend
+  - .set_title
+  - .set_xlabel
+  - .set_xlim
+  - .set_ylabel
+  - .set_ylim
+  - math.isfinite
+  - plt.figure
+  - plt.legend
+  - plt.show
+  - plt.tight_layout
+  - plt.title
+  - plt.xlabel
+  - plt.ylabel
+  - torch.cuda.is_available
+
+# Named idioms: explained once in full at the listed first appearance, then marked
+# `# Boilerplate: <what it does>` elsewhere (D1 rule 4).
+named_idioms:
+  book-root-finder:
+    first_explained: book1/units/09-C4-classical-ml-practice/lessons/01-pandas-and-data-loading.ipynb
+    cell: 22
+
+# Method-to-library-family table. A method call whose receiver is known to come from one of
+# these modules is keyed `<Family>.method` when the method is in `keyed` or is a baseline
+# method name (`Tensor.sort` is not `list.sort`). Every other method is keyed by name only.
+method_families:
+  roots:
+    np: ndarray
+    torch: Tensor
+    pd: DataFrame
+  keyed: []
