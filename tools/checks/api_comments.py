@@ -37,7 +37,8 @@ from typing import Any
 
 import yaml
 
-from tools.books import load_book_catalog, unit_id_of
+from tools.books import load_book_catalog, mocktests_root, unit_id_of
+from tools.books import units_root as books_units_root
 from tools.checks.tolerance import (
     _canonical_module,
     _dotted_name,
@@ -181,7 +182,7 @@ def book_sequence(book_root: Path, book_id: str, repo_root: Path, selected: bool
         return NotebookRef(path, rel, book_id, unit, kind, selected)
 
     refs: list[NotebookRef] = []
-    units_root = book_root / "units"
+    units_root = books_units_root(book_root)
     unit_dirs = sorted(
         p for p in units_root.iterdir() if p.is_dir() and not p.name.startswith(".")
     ) if units_root.is_dir() else []
@@ -204,7 +205,7 @@ def book_sequence(book_root: Path, book_id: str, repo_root: Path, selected: bool
         )
         ordered += [(p, "solution") for p in leftovers]
         refs += [ref(p, unit, kind) for p, kind in ordered]
-    mocks_root = book_root / "mocktests"
+    mocks_root = mocktests_root(book_root)
     mock_dirs = sorted(p for p in mocks_root.iterdir() if p.is_dir()) if mocks_root.is_dir() else []
     for mock_dir in mock_dirs:
         problems = sorted((mock_dir / "problems").glob("*.ipynb"), key=_natural)

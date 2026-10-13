@@ -32,8 +32,8 @@ baseline:
     sort, split, startswith, strip, upper, values, write]
 
 # Rule 2 trigger set: a later use that adds one of these keywords needs a comment on it.
-semantic_keywords: [axis, bias, ddof, device, dim, dtype, full_matrices, generator, indexing,
-  keepdim, keepdims, key, p, reduction, replace, return_counts, size, weights]
+semantic_keywords: [axis, bias, bins, ddof, density, device, dim, dtype, full_matrices, generator,
+  indexing, keepdim, keepdims, key, minlength, ord, p, reduction, replace, return_counts, size, weights]
 
 # Rule 2 positional call modes: a new positional-argument count on these callees (matched by
 # their last name component) is a new signature.
@@ -44,7 +44,7 @@ positional_words: [start, stop, step, num, low, high, loc, scale, shape, size, f
 
 # Rule 3 exemption: everyday calls explained in F1-F5. The exemption applies in a unit once the
 # callee has non-harness uses in at least `graduation_units` earlier units.
-graduation_units: 3
+graduation_units: 1
 graduated:
   - .all
   - .argmax
@@ -57,19 +57,25 @@ graduated:
   - .normal
   - .plot
   - .reshape
+  - .round
   - .sum
   - .tolist
+  - AssertionError
   - ValueError
   - all
   - any
   - enumerate
   - next
   - np.abs
+  - np.all
   - np.allclose
   - np.arange
   - np.argmax
+  - np.argmin
   - np.array
+  - np.array_equal
   - np.asarray
+  - np.full
   - np.isclose
   - np.linspace
   - np.max
@@ -77,6 +83,8 @@ graduated:
   - np.mean
   - np.ones
   - np.random.default_rng
+  - np.round
+  - np.sort
   - np.sqrt
   - np.sum
   - np.where
@@ -88,20 +96,33 @@ graduated:
 
 # Rule 3 exemption: self-describing callees that never need a reminder.
 no_reminder:
+  - .axhline
+  - .axvline
+  - .get_legend
+  - .get_text
+  - .get_title
+  - .get_xlabel
+  - .get_ylabel
   - .legend
+  - .set
   - .set_title
   - .set_xlabel
   - .set_xlim
   - .set_ylabel
   - .set_ylim
   - math.isfinite
+  - plt.axhline
+  - plt.close
   - plt.figure
   - plt.legend
+  - plt.scatter
   - plt.show
   - plt.tight_layout
   - plt.title
   - plt.xlabel
   - plt.ylabel
+  - sns.set_theme
+  - time.perf_counter
   - torch.cuda.is_available
 
 # Named idioms: explained once in full at the listed first appearance, then marked

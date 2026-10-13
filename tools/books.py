@@ -736,6 +736,16 @@ def unit_id_of(folder: str) -> str:
     return match.group("id") if match else folder
 
 
+def units_root(book_root: Path) -> Path:
+    """`<book_root>/units`."""
+    return Path(book_root) / "units"
+
+
+def mocktests_root(book_root: Path) -> Path:
+    """`<book_root>/mocktests`."""
+    return Path(book_root) / "mocktests"
+
+
 def unit_dir(book_root: Path, unit_id: str) -> Path:
     """The folder of `unit_id` under `<book_root>/units`: `NN-<id>` or `<id>`, exactly one."""
     units = Path(book_root) / "units"
