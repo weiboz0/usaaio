@@ -221,7 +221,7 @@ Some tests read notebook source by cell index, or match literal substrings: the 
 - [ ] **Task 4 — Cards and teaching cells.** Add the API cards (D3) and the D6 teaching cells, then regenerate the material inventories and course structure with their tools.
 - [ ] **Task 5 — Verification phase.**
   - `api-comments` runs in enforcing mode and passes for both books. Record the waiver count against its cap.
-  - `scripts/verify-comment-only.py --base main` passes, (a)–(d).
+  - `scripts/verify-comment-only.py --base main` passes, (a)–(f).
   - `scripts/ci-local.sh --all-books` is ALL GREEN on a clean tip. That covers solution execution, hygiene, the register, mutation checks, both publish audits (including the solution-isolation fingerprints) and the pre-merge guard.
   - Rebuild the editions. Spot-check that comments wrap readably in the print edition's code blocks, and record page-count deltas.
 - [ ] **Task 6 — Content gate, post-execution report, PR, `pre-merge-guard --pr`, squash-merge.**
@@ -276,6 +276,13 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 - `[sol]` REJECT.
   - [FIXED] Blocker: the base-free identifier rule failed on an existing scaffold comment, `# YOUR CODE HERE (call standardize)` in C4 p08 line 58, and the plan's "no existing comment" claim was false. The check's rule is narrowed to comments it counts as call evidence. The full no-added-hint rule moves to the base-aware verifier (D5(f)). The false claim is removed.
   - Round-2 items verified resolved.
+
+### Round 4
+
+- `[sol]` APPROVE WITH NITS. The D4 and D5(f) split is confirmed, and the C4 p08 scaffold comment cannot count as call evidence. [FIXED] Nit: Task 5 now says "(a)–(f)".
+- `[fable]` APPROVE. It confirmed the commits since round 2; no open findings.
+- `[self]` APPROVE.
+- **Gate passed** (3/3, no `[OPEN]` items).
 
 ## Implementation notes
 
