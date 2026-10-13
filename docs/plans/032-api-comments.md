@@ -54,7 +54,7 @@ A callee that appears only in harness code needs no explanation anywhere.
    The marker is allowed only in these places:
    - practice-statement check cells;
    - solution notebooks' answer-check and assert-only cells;
-   - mock-test probe cells;
+   - mock-test paper-provided setup cells and solution answer-pin cells (`ANSWER = …; assert …`). Probe code the student must write (for example r2-001 p01 cells 3, 5 and 7) is not harness;
    - the `# Boilerplate:` block, anywhere.
 
    The check rejects a `# Checks:` marker in `lesson.ipynb`, `lessons/*.ipynb` or `review.ipynb`. Lesson cells that teach through asserts, for example C8 lesson 04 cells 3–7, follow rules 1–3.
@@ -88,9 +88,8 @@ The check verifies four things:
 There is a new module, `tools/checks/api_comments.py`.
 
 **Wiring:**
-- It is registered in `tools/cli.py` `COMMANDS`.
-- It runs per book in the `scripts/ci-local.sh` content-check loop (step 5).
-- It is routed by `tools/ci_scope.py` like the other content checks. A scoped run reports the changed units, but always computes first use from the whole book.
+- It is registered in `tools/cli.py` `SUBCOMMANDS` as `api-comments-check`.
+- It runs per book in the `scripts/ci-local.sh` step-5 loop, over the whole book like its sibling checks. It only parses code, so it takes seconds per book and needs no scope interface. `tools/ci_scope.py` is unchanged.
 
 **How it parses notebooks:**
 - Code cells are parsed with `ast`.
@@ -114,7 +113,9 @@ A comment that does not name the callee or keyword does not count. This closes t
 - an unexplained rule 1, 2 or 3 site;
 - a misplaced `# Checks:` marker;
 - a card mismatch (D3);
-- in statement notebooks, any rule-2 comment, or any added comment that names an identifier the statement asks the student to define. In statement notebooks only rules 1 and 3 apply, and each added comment is one line (D7).
+- in statement notebooks, any rule-2-only comment, and any comment in a statement code cell (pre-existing or added) that names an identifier the student must define. In statement notebooks only rules 1 and 3 apply, and each added comment is one line (D7).
+  Required identifiers are extracted from the statement: names in `` `def name(` `` or `` `class Name` `` spans; backticked names after "Implement", "Define" or "Write"; and `def`/`class` stubs whose body is `...`, `pass` or `raise NotImplementedError`.
+  No current Book 1 statement comment names such an identifier, so this base-free rule can be enforced on `main`.
 
 **Waivers:**
 - Waivers live in `tools/checks/api_comments_waivers.yaml`, as path, cell, callee and a one-line reason.
@@ -131,7 +132,7 @@ A comment that does not name the callee or keyword does not count. This closes t
 - the statement restrictions;
 - the waiver cap;
 - card checks;
-- scoped against full first use.
+- first use computed across the whole book.
 
 ### D5 — Comment-only invariance
 
@@ -143,8 +144,9 @@ A comment that does not name the callee or keyword does not count. This closes t
   - `<!-- api-card -->` for D3 cards;
   - `<!-- api-teach -->` for D6 markdown;
   - `# api-teach` as the first line of D6 code cells.
-- **(d) Cell structure:** pre-existing cells keep their ids, their relative order and their **indices**.
-  - New cells are appended after the last pre-existing cell. The one exception is D6 teaching cells, which are inserted after the last cell that any test or the Plan 019 inventory references by index. Task 1 lists those references, for example C4 lesson 01 cell 22 and r1-001 p09 cells 3 and 2/14.
+- **(d) Cell structure:** pre-existing cells keep their ids and their relative order.
+  - Cells that any test or the Plan 019 inventory references by index keep their indices. Task 1 lists them, for example C4 lesson 01 cell 22 and r1-001 p09 cells 3 and 2/14.
+  - D3 cards are appended at the end. D6 teaching cells are inserted only after the last index-referenced cell of their notebook.
   - New cells get fresh ids, and `nbformat.validate` passes.
   - Student notebooks keep empty outputs.
 - **(e) Data and seeds untouched:** data, seeds and answer keys are covered by the existing generated-artifact `--check`s, solution execution and mutation checks.
@@ -158,11 +160,11 @@ The survey scanned only code cells. Task 1 also scans statement markdown and `th
 | Callee | Mock use | Treatment | Teaching location |
 |---|---|---|---|
 | `json.loads` | r2-001 p01 statement, provided code | Rule-1 comment in the statement. A teaching cell is a bonus, since students read this line but never write it. | `09-C4` lesson 01 (data loading), a D6 cell after cell 22 |
-| `Tensor.view` | r2-001 p01, prose-mandated | Teaching cell | `13-C7-pytorch`, the lesson that teaches `.reshape` (next to it; contiguity note) |
+| `Tensor.view` | r2-001 p01, prose-mandated | Teaching cell | `13-C7-pytorch/lessons/01-tensors-and-inheritance.ipynb`, beside `.reshape` (contiguity note) |
 | `torch.nn.ModuleList` | r2-001 p01, prose-mandated | Teaching cell | `B2-019` lesson 04 (stacking attention blocks) |
 | `torch.nn.GELU` | r2-001 p02 solution | Teaching cell | `B2-020` lesson 03, where GELU is already named in prose |
 | `torch.optim.lr_scheduler.OneCycleLR` | r2-001 p02 solution | Teaching cell | `15-C8` lesson 04 (optimizers) |
-| `torch.fft.fftfreq`, `torch.fft.fft2`, `torch.meshgrid` | r2-001 p04 solution | Teaching cell | `B2-024`, the lesson on spectral/PDE fields (Task 1 names the notebook) |
+| `torch.fft.fftfreq`, `torch.fft.fft2`, `torch.meshgrid` | r2-001 p04 solution (FFT texture features) | Teaching cell | `B2-024/lessons/04-semi-supervised-pseudo-labeling.ipynb` (feature step); `torch.meshgrid` may instead go in lesson 05 §3 "grid operator" |
 | `numpy.pad` | r1-001 p05 solution | Teaching cell | `01-F1` lesson on arrays (`lessons/01-arrays-and-indexing.ipynb`) |
 | `sklearn.preprocessing.RobustScaler` | r1-001 p09 solution | Teaching cell | `09-C4` lesson 02 (kNN and scaling), next to `StandardScaler` |
 | `shutil.copy2`, `subprocess.run` | r1-001 p09 solution, infrastructure | Rule-1 comment in the solution only; not exam content | — |
@@ -188,7 +190,7 @@ Any further prose-mandated callee that Task 1 finds is added to this table and r
 Some tests read notebook source by cell index, or match literal substrings: the Plan 019 marker tests, mutation targets, and statement-contract tests.
 
 - Task 1 records which notebooks and cells are referenced this way.
-- The protected notebook `book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb` is not edited. Its path matches the guard's protected "token" category, and its only exception is the byte-pinned Plan 031 rename. Its book-first callees are explained in the C5 card's "New in this unit" part instead. The check accepts that for this one path, which is listed in the waivers file with reason `guard-protected`; it does not count toward the cap.
+- The protected notebook `book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb` is not edited. Its path matches the guard's protected "token" category, and its only exception is the byte-pinned Plan 031 rename. Its book-first callees are explained in the C5 card's "New in this unit" part instead. The check accepts that for this one path, which is listed in the waivers file with reason `guard-protected`; it does not count toward the cap. Unit-first reminders still apply in C5's other notebooks.
 - An added comment must never land inside a substring that a test or mutation target matches. Where it would, the comment goes in a block above the statement. Tests are not edited to accommodate comments.
 
 ### D9 — Dispatch and batching
@@ -205,13 +207,13 @@ Some tests read notebook source by cell index, or match literal substrings: the 
 
 - [ ] **Task 1 — Inventory.**
   - Remap the survey to the post-031 paths.
-  - Run the check in report mode and record real per-rule counts per unit and book.
-  - Scan statement prose for prose-mandated callees (D6) and fill in the B2-024 notebook name.
+  - Run the check in report mode and record real per-rule counts per unit and book. Report the rule-2 count for `size`, `dtype` and `device` separately, so the list can be trimmed if it reads as noise.
+  - Scan statement prose for prose-mandated callees (D6).
   - List cell-index and substring couplings (D8).
   - Settle the semantic-keyword, graduated and no-reminder lists, and record them in this plan.
 - [ ] **Task 2 — Tooling.**
   - `tools/checks/api_comments.py`, the baseline and waiver YAMLs, and `scripts/verify-comment-only.py`.
-  - Tests (D4), `cli.py` registration, the `ci-local.sh` step-5 loop, and `ci_scope.py` routing.
+  - Tests (D4), `cli.py` `SUBCOMMANDS` registration, and the `ci-local.sh` step-5 loop.
   - The check starts in report mode (prints, exits 0). Task 5 switches it to enforcing.
 - [ ] **Task 3 — Annotate** units in teaching order with rules 1–4: F1 first, then the rest of Book 1, then Book 2, then the mock tests (rule 1 in statements and solutions; the D6 infrastructure comments).
 - [ ] **Task 4 — Cards and teaching cells.** Add the API cards (D3) and the D6 teaching cells, then regenerate the material inventories and course structure with their tools.
@@ -254,6 +256,18 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
   - [FIXED] M2: the harness exemption. Resolved: it is outside first use, restricted by location, and has a block form for boilerplate (D1 rule 4).
   - [FIXED] S1: rule-2 trigger set (D1). S2: D6 table, including prose-mandated callees. S3: the statement restrictions plus the gate reads every statement comment (D4, D7, Task 6). S4: the waiver denominator (D4). S5: the markdown window before and after, backticked exact names outside LaTeX, and reuse of `tolerance.py` (D4). S6: wiring, the verifier not in `ci-local.sh`, and fingerprints (D4, D5, Task 5).
   - [FIXED] N1: no-reminder list. N2: an 80-column inline limit, readable wrapping in place of "no overfull lines". N3: fresh ids and `nbformat.validate`. N4: the bridge notebook's order. N5: F1 as the first batch. N6: `.view` and `ModuleList` reclassified as prose-mandated.
+
+### Round 2
+
+- `[sol]` REJECT.
+  - [FIXED] Must Fix: index preservation in D5(d) contradicted the D6 insertion. Now only index-referenced cells keep their indices.
+  - [FIXED] Must Fix: the CLI registry is `SUBCOMMANDS`.
+  - [FIXED] Should Fix: scope interface. The check runs over the whole book in step 5; `ci_scope.py` is unchanged.
+- `[fable]` APPROVE WITH NITS. All round-1 findings resolved.
+  - [FIXED] S1: the statement rule is base-free, with identifier extraction defined (D4).
+  - [FIXED] S2: the mock harness location is narrowed to paper-provided setup and answer-pin cells (D1 rule 4).
+  - [FIXED] Nits: the B2-024 owner is named; D5(d) reworded; the `.view` notebook named; `size`/`dtype`/`device` counted separately; C5 reminders still apply.
+- `[self]` APPROVE.
 
 ## Implementation notes
 
