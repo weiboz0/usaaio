@@ -270,6 +270,19 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ### Round 3
 
+- `[sol]` REJECT on card accuracy after scanning all 50 cards:
+  - [FIXED] C7 `torch.as_tensor`: "reused without copying" is now qualified with "with the same dtype and device".
+  - [FIXED] C8 `.cpu`: no longer called "a copy"; it now says "copied there if it is elsewhere".
+  - [FIXED] Nit B2-020 `.data_ptr`: qualified to non-empty tensors.
+  - `[self]` follow-up sweep of every added copy, sharing or in-place claim in comments and cards:
+    - `.to` is qualified as "the same tensor if nothing changes";
+    - the r2-001 p01 `.view` comment now reads "needs a stride-compatible shape";
+    - the C8 p16 and B2-024 p16 `.cpu` comments no longer say copy;
+    - the rest (`.clone`, `np.pad`, `np.tril`, `.masked_fill`, `.expand`, `.astype`, `np.sort`) were checked as accurate.
+  - Material inventories regenerated. The check, the verifier, the training mutations (5/5), the affected notebooks and their tests (139) pass.
+
+### Round 4
+
 - `[sol]` REJECT.
   - [FIXED] Must Fix: index preservation in D5(d) contradicted the D6 insertion. Now only index-referenced cells keep their indices.
   - [FIXED] Must Fix: the CLI registry is `SUBCOMMANDS`.

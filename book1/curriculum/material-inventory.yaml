@@ -34985,7 +34985,7 @@ notebooks:
   api_tokens: []
 - path: units/13-C7-pytorch/lesson.ipynb
   kind: notebook
-  semantic_sha256: b026b31eee62c61fb5ddf28003504ef9cec282cb70f1d042b051232b3f15937a
+  semantic_sha256: 352defc4f53d9125bbb8f484db899a66afca9a0a62c8cd6b3b9d83d3bdbbfb0a
   anchors:
   - anchor: 'units/13-C7-pytorch/lesson.ipynb :: C7-pytorch — PyTorch: Tensors, Modules, and Manual-Weight Networks (Unit
       Overview) > How to study this unit :: cell 1'
@@ -37320,7 +37320,7 @@ notebooks:
   - torch.from_numpy
 - path: units/13-C7-pytorch/review.ipynb
   kind: notebook
-  semantic_sha256: 41728a76eff5d840cf81545b154bf712f863f1a64acdd1d68a4c090c335fc436
+  semantic_sha256: 8811c27445e67d15e64bfb228d4153d248d1ecba9b8ae379878ad96ff9dbcd02
   anchors:
   - anchor: 'units/13-C7-pytorch/review.ipynb :: C7-pytorch — Review :: cell 1'
     heading_path:
@@ -40066,7 +40066,7 @@ notebooks:
   api_tokens: []
 - path: units/15-C8-neural-training/lesson.ipynb
   kind: notebook
-  semantic_sha256: 1c46cc01bea558f5e698b17e5a1a7ae0432fac1990f1b3104f815ac7c7706a87
+  semantic_sha256: 2c5e5870566de228f626b9c538dc96a7403259ed38d7d9517a0c64e4df8b38c5
   anchors:
   - anchor: 'units/15-C8-neural-training/lesson.ipynb :: C8-neural-training — Losses, Gradients, and Training (Unit Overview)
       > Forward link :: cell 1'
@@ -42003,7 +42003,7 @@ notebooks:
   - torch.set_default_dtype
 - path: units/15-C8-neural-training/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 29a5281da8d1495a388b64e5770e44da7f90de3de16467f7d64ed3d31488df88
+  semantic_sha256: ea953ec96a06bb574cc9af8ed2c0da9e7104fc50dc00a4af200a2739d0bc1e87
   anchors:
   - anchor: 'units/15-C8-neural-training/practice/p16_solution.ipynb :: C8-neural-training — Practice p16 — Solution :: cell
       1'
@@ -42752,7 +42752,7 @@ notebooks:
   - torch.use_deterministic_algorithms
 - path: units/15-C8-neural-training/review.ipynb
   kind: notebook
-  semantic_sha256: cb5758f046bd1f30a8d4557bb1195a7d5f9399452ed0e93fb6148443615c31d6
+  semantic_sha256: 8e30ecd15d9ffbe8be78617dae4984eaf93252ca94cc4236113e9e3e68add190
   anchors:
   - anchor: 'units/15-C8-neural-training/review.ipynb :: C8-neural-training — Review :: cell 1'
     heading_path:

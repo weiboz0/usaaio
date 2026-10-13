@@ -779,7 +779,7 @@ notebooks:
   - torch.set_num_threads
 - path: mocktests/r2-001/solutions/p01_solution.ipynb
   kind: notebook
-  semantic_sha256: 40ad5e22d8598efbb0aa4b794f6da26b5477aa6e172339788399f1ca0c6e4a87
+  semantic_sha256: 59d2b3d61905b072ca16caa35ff4005a9ea4b9339c325204a4083e9e6876fcb1
   anchors:
   - anchor: 'mocktests/r2-001/solutions/p01_solution.ipynb :: r2-001 Problem 1 — Solution (programming Parts 1.11–1.13) ::
       cell 1'
@@ -4044,7 +4044,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/lesson.ipynb
   kind: notebook
-  semantic_sha256: e739656c66a1ac8eadcc1adaf77d50db9c1058cdede9c6bbd2d617cdf9626127
+  semantic_sha256: a1ded8210b0ba6bb6abf210e18b2fc69322e0f6ea5c88e29924fb572509a2d22
   anchors:
   - anchor: 'units/B2-020-language-transformers/lesson.ipynb :: B2-020 — Language Transformers :: cell 1'
     heading_path:
@@ -6571,7 +6571,7 @@ notebooks:
   - value.detach
 - path: units/B2-020-language-transformers/review.ipynb
   kind: notebook
-  semantic_sha256: 8be154e8c91ee8f1ae0b070f6d77807a11bde3bad059c2dc61a19c1429ffe08c
+  semantic_sha256: c0e9f0628b4e814c0615b66c5e15be912c9bde91fe79d1eecab7b6345f914cb8
   anchors:
   - anchor: 'units/B2-020-language-transformers/review.ipynb :: B2-020 — Review and Self-Quiz :: cell 1'
     heading_path:
@@ -18153,7 +18153,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb
   kind: notebook
-  semantic_sha256: 8b5ff23bfb72701e266de272a89d8b2026fde6da38ad1b32e775a6aab81301b4
+  semantic_sha256: 26f649079e5707549fec6067ce12cf54cd33005f6e14f700f14cad9c96b9c7d0
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p16_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p16 — Solution :: cell 1'
