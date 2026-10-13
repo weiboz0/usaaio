@@ -4044,7 +4044,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/lesson.ipynb
   kind: notebook
-  semantic_sha256: 55b58f6f6b70d69cfa8599bd158dbae0fceaadaaacd4945648ad75ff3fcd2dee
+  semantic_sha256: e739656c66a1ac8eadcc1adaf77d50db9c1058cdede9c6bbd2d617cdf9626127
   anchors:
   - anchor: 'units/B2-020-language-transformers/lesson.ipynb :: B2-020 — Language Transformers :: cell 1'
     heading_path:
@@ -5005,7 +5005,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-020-language-transformers/practice/p07_solution.ipynb
   kind: notebook
-  semantic_sha256: 7ace8432f703a2c26cadf5e26abbfc2d91322f1c0d1ed46a5790f88d542aca56
+  semantic_sha256: 7928f7a11eb3e7b7fd338bf7b8638b22f34193aa964f39fa6e3e19a10764bf0e
   anchors:
   - anchor: 'units/B2-020-language-transformers/practice/p07_solution.ipynb :: B2-020-language-transformers — Practice p07
       — Solution :: cell 1'
@@ -6571,7 +6571,7 @@ notebooks:
   - value.detach
 - path: units/B2-020-language-transformers/review.ipynb
   kind: notebook
-  semantic_sha256: 533722182c965e0dc3ae434837eeb6fbf9cf5c057d4b71a222b5c806ecd0a8ea
+  semantic_sha256: 8be154e8c91ee8f1ae0b070f6d77807a11bde3bad059c2dc61a19c1429ffe08c
   anchors:
   - anchor: 'units/B2-020-language-transformers/review.ipynb :: B2-020 — Review and Self-Quiz :: cell 1'
     heading_path:
@@ -8841,7 +8841,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-022-probabilistic-latent-models/lesson.ipynb
   kind: notebook
-  semantic_sha256: df8fda0fba1e162b2d48759f8aa5f684c588c3d8f3f0b4efa1e74da3284b75ea
+  semantic_sha256: 3cfa6105e095821ca29d908f4fa7d8c08a5164669b99e5e71c7ef865c3571245
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lesson.ipynb :: B2-022 — Probabilistic Latent Models :: cell 1'
     heading_path:
@@ -9106,7 +9106,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb
   kind: notebook
-  semantic_sha256: b34f8d3ce8948a9b947bea3376b2c3e0336e7506949a225a6a10f9bf813cb28c
+  semantic_sha256: 3edf3c4eb3c6cf52c8da3f89df3bf0090e977b8879df4ab26dfdb52c92d79ad1
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
       :: cell 1'
@@ -10155,7 +10155,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb
   kind: notebook
-  semantic_sha256: e1e30af3395da10fa28d615f7f009ec1753b7d7f6923ac46af56328f9468a1d1
+  semantic_sha256: 0a572406c664243bd375cc7538306dc61a9dc24d3e52663aae9dbc4c7a3cc49c
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p08_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p08 — Solution :: cell 1'
@@ -10974,7 +10974,7 @@ notebooks:
   - z.item
 - path: units/B2-022-probabilistic-latent-models/practice/p17.ipynb
   kind: notebook
-  semantic_sha256: 313a0f845e159e9a02c51457e8ba32a2f9383582c795fdd0373075656a3144b1
+  semantic_sha256: f41c567e03d6c305ff04b78f109ae7848bd2af0b50829ce124fc9dcece4300dd
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17.ipynb :: B2-022 — Practice p17 > Task :: cell 1'
     heading_path:
@@ -11012,7 +11012,7 @@ notebooks:
   - torch.set_num_threads
 - path: units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb
   kind: notebook
-  semantic_sha256: 462a1d76635ef559516a17fbc7077de76b0b2890eb3c138a8789374d4f1b08ea
+  semantic_sha256: 02a4eba29530c7a5e449e4e1281756178e100883c3913188466d9dd28829f431
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/practice/p17_solution.ipynb :: B2-022-probabilistic-latent-models —
       Practice p17 — Solution :: cell 1'
@@ -11958,7 +11958,7 @@ notebooks:
   - z.sum
 - path: units/B2-022-probabilistic-latent-models/review.ipynb
   kind: notebook
-  semantic_sha256: 994878d485c0d5c95f667c145f02b96ef23b8597a0832683c65deda9203698d5
+  semantic_sha256: 0325f815e3389bfebf5275a87cf412912c99d2f6f14c9641d326e1b512a35fdb
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/review.ipynb :: B2-022 — Review and Self-Quiz :: cell 1'
     heading_path:
@@ -12011,7 +12011,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-023-generative-models-diffusion/lesson.ipynb
   kind: notebook
-  semantic_sha256: 134acfe0ffd777cfaccdd396f5b92d2bde29283c4174097bbdf632bfba930ca3
+  semantic_sha256: 1d5a485204aef916fa96e19d05d6ef03b093022ea124c7534602bb399859b4b3
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/lesson.ipynb :: B2-023 — Generative Models and Diffusion :: cell 1'
     heading_path:
@@ -12277,7 +12277,7 @@ notebooks:
   - torch.zeros_like
 - path: units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb
   kind: notebook
-  semantic_sha256: 08c54eb0a6ca658fe0b7a7a32ee0b0b104a4ab5b5338a2689ce8bdbcf73d9e19
+  semantic_sha256: 004e9c9cdd503334d2fe2b355561201ef24cbf8ea9dc2773862a5c1ded3285ab
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/lessons/02-training-and-diagnosing-gans.ipynb :: B2-023 — Session 2:
       Training and Diagnosing GANs :: cell 1'
@@ -15542,7 +15542,7 @@ notebooks:
   - z0_repaired.std
 - path: units/B2-023-generative-models-diffusion/review.ipynb
   kind: notebook
-  semantic_sha256: 5e918959fb16feba0bb419f55320f988c7fc10ae9eb66515150c0e9d101ea5e7
+  semantic_sha256: f017ad930f4e1b612a428b4307633147c0b53b17b58c8efaea24b890186cfbab
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/review.ipynb :: B2-023 — Review and Self-Quiz :: cell 1'
     heading_path:
@@ -15593,7 +15593,7 @@ notebooks:
   api_tokens: []
 - path: units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb
   kind: notebook
-  semantic_sha256: 6a2c70dbbfb0606c683cc89ed198df1191418b8957f8e04cbac58260b0a996aa
+  semantic_sha256: 8866571541f0f86b8579724d6ce0342867e8a1fae57a79fac167a55b34f5f14b
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lesson.ipynb :: B2-024 — GPU Workflow and Scientific-ML Capstone :: cell
       1'
@@ -15753,7 +15753,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb
   kind: notebook
-  semantic_sha256: 9f698b176a56f42f87ca3c2d15095a2f27b8084849d054f05f390abdf33d2092
+  semantic_sha256: 4a3eb9b3cfce7ddbb9beea692a74175f81a3c5dcd4ef82eb87739be82f739830
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/01-gpu-workflow-on-colab-l4.ipynb :: B2-024 — Session 1: The
       GPU Workflow on Colab L4 :: cell 1'
@@ -16327,7 +16327,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb
   kind: notebook
-  semantic_sha256: f85eb2b7d1bd5faad88bca4edfbb02295c09271ca4069d10bfa3e0f51e571c9e
+  semantic_sha256: fd92cc074a71fb904abe9a7de0c14811480a4f9d0293220ab498838db43f04d2
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/lessons/05-scientific-inverse-problems.ipynb :: B2-024 — Session 5: Scientific
       Inverse Problems :: cell 1'
@@ -16925,7 +16925,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb
   kind: notebook
-  semantic_sha256: 528b1a07f19167de47bcc0766c072c090e7f3696fa6280f8f23c9fba772c85e3
+  semantic_sha256: 21ea7fff0f7c77119c26c2518ab541861de5a083e2e9c3b1d20516e08a1de6cb
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06.ipynb :: B2-024 — Practice p06 > Task :: cell 1'
     heading_path:
@@ -16972,7 +16972,7 @@ notebooks:
   - torch.zeros
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb
   kind: notebook
-  semantic_sha256: 78d0bfbdb1faf94f078d3f20269c02f3b91f8277da0d774b441de0dba1de8d68
+  semantic_sha256: 4621e164772cb7e29e5096386838dc0afcf2f650e1f5bb2a24faab7b047ebf20
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p06_solution.ipynb :: B2-024-gpu-scientific-ml-capstone — Practice
       p06 — Solution :: cell 1'
@@ -19995,7 +19995,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-024-gpu-scientific-ml-capstone/review.ipynb
   kind: notebook
-  semantic_sha256: 53016dce8b1c43f7d0928427deb23e0cbe6a374589f58b5605ee4c24897bc8f5
+  semantic_sha256: d9c4bb68a1ae7838f2e739bb6e015c9a520da7539af4a05776b50929c1c74e81
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/review.ipynb :: B2-024 — Review and Self-Quiz :: cell 1'
     heading_path:

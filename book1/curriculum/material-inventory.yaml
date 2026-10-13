@@ -1570,7 +1570,7 @@ notebooks:
   - torch.tensor
 - path: mocktests/r1-001/problems/p09.ipynb
   kind: notebook
-  semantic_sha256: bdf16930f0101f6ade95ed54851eeaa21f48d36b3d715a05a4bf371c0c291aca
+  semantic_sha256: ad534b25709c98a4c20ee15d779832fbc702df715e5afdf0cd7f91891a21b29d
   anchors:
   - anchor: 'mocktests/r1-001/problems/p09.ipynb :: Problem 9. > Urban Street-Tree Health :: cell 1'
     heading_path:
@@ -2483,7 +2483,7 @@ notebooks:
   - y.value_counts
 - path: units/01-F1-scientific-python/lesson.ipynb
   kind: notebook
-  semantic_sha256: e268b244162633ad97c58722b94e155fd94dd6c7238fd5478244d996c41daef3
+  semantic_sha256: 40ae841f4af164c904897ead8791696f076a08d3cc7d5d4c4606be8eff9ed768
   anchors:
   - anchor: 'units/01-F1-scientific-python/lesson.ipynb :: F1-scientific-python — Unit Overview > After this unit :: cell
       1'
@@ -7488,7 +7488,7 @@ notebooks:
   - sns.histplot
 - path: units/01-F1-scientific-python/review.ipynb
   kind: notebook
-  semantic_sha256: 863aa9e493bff1f7f20819766e57146592f2b584ee8c12c5d3b6bfb064aa7e1b
+  semantic_sha256: 53bd069324f1fd7a5d604b24f4e2b5a86a0ae92a58ba84de9bcffaf2636f6283
   anchors:
   - anchor: 'units/01-F1-scientific-python/review.ipynb :: F1-scientific-python — Review :: cell 1'
     heading_path:
@@ -7564,7 +7564,7 @@ notebooks:
   - np.where
 - path: units/02-F2-vectors/lesson.ipynb
   kind: notebook
-  semantic_sha256: 15539237cdb95fa105882bb9188993e881b625be3a82cc3fba7e454ad17c5a0a
+  semantic_sha256: a14b0c4b57aaac1a03174488abbfefddaf84a00abca682c408b1db740a27fbd6
   anchors:
   - anchor: 'units/02-F2-vectors/lesson.ipynb :: F2-vectors — Vectors, Norms, and Projections (Unit Overview) > How to study
       this unit :: cell 1'
@@ -10975,7 +10975,7 @@ notebooks:
   - np.sum
 - path: units/02-F2-vectors/review.ipynb
   kind: notebook
-  semantic_sha256: 886575337f0f3578944ab303935be0cd7f2929c76d5fc35cb97873fa1623a54a
+  semantic_sha256: ae895f8263e0ddb657812de736151b0048a143c6baa63b0ad46b52d017246559
   anchors:
   - anchor: 'units/02-F2-vectors/review.ipynb :: F2-vectors — Review :: cell 1'
     heading_path:
@@ -11010,7 +11010,7 @@ notebooks:
   api_tokens: []
 - path: units/03-F3-multivar-calculus/lesson.ipynb
   kind: notebook
-  semantic_sha256: b302c6131740637076019a6ffca9b3f9f2b750c032e0eb1e0e5a2fd6122a48f8
+  semantic_sha256: 1bd54d5edf2fc0e6857676504303884f7471b88594898139929fe6ede5828141
   anchors:
   - anchor: 'units/03-F3-multivar-calculus/lesson.ipynb :: F3-multivar-calculus — Partials, Gradients, and the Chain Rule
       (Unit Overview) > How to study this unit :: cell 1'
@@ -12763,7 +12763,7 @@ notebooks:
   - np.tanh
 - path: units/03-F3-multivar-calculus/review.ipynb
   kind: notebook
-  semantic_sha256: 1875d6dede5b08df8b701d50e35e8baa4737d7b436626d91401cc92d6a41f657
+  semantic_sha256: d0a79f12b6b6bf1361822e64fde1b1312478a7e084245d8caebd49216a569de3
   anchors:
   - anchor: 'units/03-F3-multivar-calculus/review.ipynb :: F3-multivar-calculus — Review :: cell 1'
     heading_path:
@@ -12797,7 +12797,7 @@ notebooks:
   api_tokens: []
 - path: units/04-F4-matrices/lesson.ipynb
   kind: notebook
-  semantic_sha256: af45024ef10ae6eecc41d82080a1d48cf0dcbe775a7abe2bcd08a1c2e94f3054
+  semantic_sha256: 1539a39f60b3956ba91e9d2972d66acbd096e028c35893a36018dc12f445b6aa
   anchors:
   - anchor: 'units/04-F4-matrices/lesson.ipynb :: F4-matrices — Matrices as Maps, Products, and Rank (Unit Overview) > How
       to study this unit :: cell 1'
@@ -14105,7 +14105,7 @@ notebooks:
   - rng.uniform
 - path: units/04-F4-matrices/practice/p10_solution.ipynb
   kind: notebook
-  semantic_sha256: 3ccb7e741f823e8e00d0318a12c28165addb3340258ee47d001a2d12629340a4
+  semantic_sha256: cb4777a7df97a53d69b0dc8a82d7d7b8faea4d55b736ac3ca6a009fbb1e3f2bc
   anchors:
   - anchor: 'units/04-F4-matrices/practice/p10_solution.ipynb :: F4-matrices — Practice p10 — Solution :: cell 1'
     heading_path:
@@ -14849,7 +14849,7 @@ notebooks:
   api_tokens: []
 - path: units/04-F4-matrices/review.ipynb
   kind: notebook
-  semantic_sha256: 7da30796851c1aa0b932cfe1093c183676f84fa2819367e172d882c804d4d293
+  semantic_sha256: bba816398bbbc922c8d839159502025b70acf7e876f9b063be60a9ac665f6c91
   anchors:
   - anchor: 'units/04-F4-matrices/review.ipynb :: F4-matrices — Review :: cell 1'
     heading_path:
@@ -14884,7 +14884,7 @@ notebooks:
   api_tokens: []
 - path: units/05-F5-probability/lesson.ipynb
   kind: notebook
-  semantic_sha256: 0373d1b6d92b06f97ada26ba44bf0bb9b5e1b26fd1030fba62bd770080702561
+  semantic_sha256: 43a0057c43464251420dbc652ae74107004aa19a26e2a5da6e4f1ea63985a386
   anchors:
   - anchor: 'units/05-F5-probability/lesson.ipynb :: F5-probability — Unit Overview > How to study :: cell 1'
     heading_path:
@@ -17553,7 +17553,7 @@ notebooks:
   - success_counts.sum
 - path: units/05-F5-probability/review.ipynb
   kind: notebook
-  semantic_sha256: c17964f3f3835403d1e3c8933220b81d5215efd29f4b56a2070506f8e06250a3
+  semantic_sha256: d21a7e5be986b9bc2a09557074029a6e470abaccb3ec67166bac46af9d10d375
   anchors:
   - anchor: 'units/05-F5-probability/review.ipynb :: F5-probability — Review :: cell 1'
     heading_path:
@@ -17619,7 +17619,7 @@ notebooks:
   - np.isclose
 - path: units/06-C1-ml-fundamentals/lesson.ipynb
   kind: notebook
-  semantic_sha256: 2aeca57772ccc91fd1a352b04ed036a13a29fb7d45d379761cf6eca95d43b18f
+  semantic_sha256: e8c6e7b1fff6d1753def193f0e75e088177b12d0a9aa84df5a5e190bb4ebf88d
   anchors:
   - anchor: 'units/06-C1-ml-fundamentals/lesson.ipynb :: C1-ml-fundamentals — Machine Learning Fundamentals (Unit Overview)
       > Conventions :: cell 1'
@@ -20589,7 +20589,7 @@ notebooks:
   api_tokens: []
 - path: units/06-C1-ml-fundamentals/review.ipynb
   kind: notebook
-  semantic_sha256: d71d11edd1188c71375408595184bb457a9d57f95c67cf024bb4291a7e7ad0de
+  semantic_sha256: 485a01f7cdfd3a0bf3cdbe303dd61d60f9b9ded044b0da78437ba4b16fb2d9d7
   anchors:
   - anchor: 'units/06-C1-ml-fundamentals/review.ipynb :: C1-ml-fundamentals — Unit Review :: cell 1'
     heading_path:
@@ -20649,7 +20649,7 @@ notebooks:
   - np.round
 - path: units/07-C2-linear-models/lesson.ipynb
   kind: notebook
-  semantic_sha256: 9dd626b9a7042fa1618da3746d27babdf9ccc146a3c4059a342a86acd31d75d1
+  semantic_sha256: 1fba037a14736d697c0285742a490a857887f6fe76a5d8e0c6b1e0a353b653fc
   anchors:
   - anchor: 'units/07-C2-linear-models/lesson.ipynb :: C2-linear-models — Linear Models, Closed-Form OLS, and Regularization
       > How to study :: cell 1'
@@ -23149,7 +23149,7 @@ notebooks:
   - np.max
 - path: units/07-C2-linear-models/review.ipynb
   kind: notebook
-  semantic_sha256: fd033e9be7485702bc26de578d6377f8589686931942a5b425313a138117cfd1
+  semantic_sha256: 0cd54cafb72aa35f8a64a8e9eb65a7e48a0587461401b819b2db11d109569fe3
   anchors:
   - anchor: 'units/07-C2-linear-models/review.ipynb :: C2-linear-models — Review :: cell 1'
     heading_path:
@@ -23183,7 +23183,7 @@ notebooks:
   api_tokens: []
 - path: units/08-C3-gradient-descent/lesson.ipynb
   kind: notebook
-  semantic_sha256: 334a78be43bc3ccb17a6a5da3a0724af55f64ef086469863ffe351ed878e29a5
+  semantic_sha256: 06c148fe1c5dbe491d194f1b445b150eb146c074ec3d7f571b57e07da4e14720
   anchors:
   - anchor: 'units/08-C3-gradient-descent/lesson.ipynb :: C3-gradient-descent — Optimization by Gradient Descent (Unit Overview)
       > How to study :: cell 1'
@@ -25098,7 +25098,7 @@ notebooks:
   - value.strip
 - path: units/08-C3-gradient-descent/review.ipynb
   kind: notebook
-  semantic_sha256: 512089138869bb95490e8ff054d1aaa50b291d5d1bedfcd69bb2730fff9d33ee
+  semantic_sha256: f6cebe555999be5d64bdcc669c53f5bb3ac6be5a091acaa8c8d2313900dca8ac
   anchors:
   - anchor: 'units/08-C3-gradient-descent/review.ipynb :: C3-gradient-descent — Review :: cell 1'
     heading_path:
@@ -25137,7 +25137,7 @@ notebooks:
   api_tokens: []
 - path: units/09-C4-classical-ml-practice/lesson.ipynb
   kind: notebook
-  semantic_sha256: 8c628a88aadd48ee252c43f8429e6b2eb9cf0a5e713dea43c27255836460e1de
+  semantic_sha256: 49401508c983675c41d94b9140305ede1ccf1914e551e9cd393cc995cc2b2022
   anchors:
   - anchor: 'units/09-C4-classical-ml-practice/lesson.ipynb :: C4-classical-ml-practice — Classical ML Practice with sklearn
       and pandas (Unit Overview) > How to study this unit :: cell 1'
@@ -27629,7 +27629,7 @@ notebooks:
   - leaked_object.strip
 - path: units/09-C4-classical-ml-practice/review.ipynb
   kind: notebook
-  semantic_sha256: 3f0d2e0c0c261e89f540d65a2f2e593519ecd0d2f93926bfbbddedad226faa3c
+  semantic_sha256: d2d82d29e5ee0b9474aaa8bc8c91a15ee2278f8cb583af0365964d02b58f0111
   anchors:
   - anchor: 'units/09-C4-classical-ml-practice/review.ipynb :: C4-classical-ml-practice — Review :: cell 1'
     heading_path:
@@ -27686,7 +27686,7 @@ notebooks:
   api_tokens: []
 - path: units/10-C5-embeddings/lesson.ipynb
   kind: notebook
-  semantic_sha256: 5ce67a43b24b2c4a5a2c7f163324783092e799bc9ea31f116654fa37b8321d25
+  semantic_sha256: 5535c5e42f387b99fa1c46a51e615b9a5d24847a50674f273620f880add54ee8
   anchors:
   - anchor: 'units/10-C5-embeddings/lesson.ipynb :: C5-embeddings — Words as Vectors: Embeddings, Similarity, Retrieval (Unit
       Overview) > How to study this unit :: cell 1'
@@ -29897,7 +29897,7 @@ notebooks:
   - similarities.copy
 - path: units/10-C5-embeddings/review.ipynb
   kind: notebook
-  semantic_sha256: 47a5b2380da6976728d02475d19a3f3b55fc452ec03c2321322d332efe558597
+  semantic_sha256: 5fdf54e43ff777c8f02e23f5aa91d9905b90eb3a1feac753e7d396dc4e001b99
   anchors:
   - anchor: 'units/10-C5-embeddings/review.ipynb :: C5-embeddings — Review :: cell 1'
     heading_path:
@@ -34985,7 +34985,7 @@ notebooks:
   api_tokens: []
 - path: units/13-C7-pytorch/lesson.ipynb
   kind: notebook
-  semantic_sha256: 3e3022674d78ece718b7843ad31e49ecec864cb2aea261ea905cf88c161f5049
+  semantic_sha256: b026b31eee62c61fb5ddf28003504ef9cec282cb70f1d042b051232b3f15937a
   anchors:
   - anchor: 'units/13-C7-pytorch/lesson.ipynb :: C7-pytorch — PyTorch: Tensors, Modules, and Manual-Weight Networks (Unit
       Overview) > How to study this unit :: cell 1'
@@ -35019,7 +35019,7 @@ notebooks:
   api_tokens: []
 - path: units/13-C7-pytorch/lessons/01-tensors-and-inheritance.ipynb
   kind: notebook
-  semantic_sha256: 9e570959044557a0957fdfca07b3396396b3e62eda30a029db576884c6306750
+  semantic_sha256: c992a7d979d78900048717581573ac49630ea5bdebb6fdea19080c33974e4e53
   anchors:
   - anchor: 'units/13-C7-pytorch/lessons/01-tensors-and-inheritance.ipynb :: C7-pytorch — Session 1: Torch Tensors and Python
       Inheritance :: cell 1'
@@ -35318,6 +35318,7 @@ notebooks:
   - bad.apply
   - bad.label
   - d.forward
+  - flat.contiguous
   - flat.view
   - k.mean
   - k.to
@@ -37319,7 +37320,7 @@ notebooks:
   - torch.from_numpy
 - path: units/13-C7-pytorch/review.ipynb
   kind: notebook
-  semantic_sha256: 7a2f91028488426aa9d6cde2cb6c525e3c78d89088adbcfbd6767c70da394623
+  semantic_sha256: 41728a76eff5d840cf81545b154bf712f863f1a64acdd1d68a4c090c335fc436
   anchors:
   - anchor: 'units/13-C7-pytorch/review.ipynb :: C7-pytorch — Review :: cell 1'
     heading_path:
@@ -37359,7 +37360,7 @@ notebooks:
   - torch.set_default_dtype
 - path: units/14-F7-kernels-convex-optimization/lesson.ipynb
   kind: notebook
-  semantic_sha256: 6d789166faa9ac70f846dd671ac5e2723ea851cae621d6829cc9dfd41b040d59
+  semantic_sha256: b48b4ecf1d86776e7cd25f0aaf64d0d9c6e17eb4e281816eb6ca91a671a08dc7
   anchors:
   - anchor: 'units/14-F7-kernels-convex-optimization/lesson.ipynb :: F7-kernels-convex-optimization — Kernels, Convexity,
       and Certificates :: cell 1'
@@ -40008,7 +40009,7 @@ notebooks:
   - np.isclose
 - path: units/14-F7-kernels-convex-optimization/review.ipynb
   kind: notebook
-  semantic_sha256: 5381eb662029e2064672a1d4295b225bf27628472fe10814fea2d85c65181b9b
+  semantic_sha256: 012c8e74b22e021696c3e3b6d1a75cd86f5789f8e4beb5925199bc225d1152e7
   anchors:
   - anchor: 'units/14-F7-kernels-convex-optimization/review.ipynb :: F7-kernels-convex-optimization — Systemic Review :: cell
       1'
@@ -40065,7 +40066,7 @@ notebooks:
   api_tokens: []
 - path: units/15-C8-neural-training/lesson.ipynb
   kind: notebook
-  semantic_sha256: 69f6608274c3048ff477f1bba573c05b341cdac1e226f2aec8e4373e4f920c4c
+  semantic_sha256: 1c46cc01bea558f5e698b17e5a1a7ae0432fac1990f1b3104f815ac7c7706a87
   anchors:
   - anchor: 'units/15-C8-neural-training/lesson.ipynb :: C8-neural-training — Losses, Gradients, and Training (Unit Overview)
       > Forward link :: cell 1'
@@ -42751,7 +42752,7 @@ notebooks:
   - torch.use_deterministic_algorithms
 - path: units/15-C8-neural-training/review.ipynb
   kind: notebook
-  semantic_sha256: 0a8d2232deb72b6a3e888b1a3aa7e7893d2eb2a9df7ce5a92dbb03745608dbfc
+  semantic_sha256: cb5758f046bd1f30a8d4557bb1195a7d5f9399452ed0e93fb6148443615c31d6
   anchors:
   - anchor: 'units/15-C8-neural-training/review.ipynb :: C8-neural-training — Review :: cell 1'
     heading_path:
@@ -42811,7 +42812,7 @@ notebooks:
   - torch.set_default_dtype
 - path: units/16-C9-dimensionality-reduction/lesson.ipynb
   kind: notebook
-  semantic_sha256: c7245deb3c96ef3230956852e1e3945c973c3b7a93de599c8730215776c647b0
+  semantic_sha256: ddd15e962f1146a6490071c3e88a6526b01fb9f33a329d5371d5a68a843f359d
   anchors:
   - anchor: 'units/16-C9-dimensionality-reduction/lesson.ipynb :: C9-dimensionality-reduction — Dimensionality Reduction (Unit
       Overview) > How to study :: cell 1'
@@ -46174,7 +46175,7 @@ notebooks:
   - self.transform
 - path: units/16-C9-dimensionality-reduction/review.ipynb
   kind: notebook
-  semantic_sha256: 775d6a534ac89027eba603d48074acd19e7e2297060352c670b5e96ed77e5b42
+  semantic_sha256: f1146f5f3cd83c3acfc8973395f9537ca43d62c2b27e65f81e11ea3bcaa89916
   anchors:
   - anchor: 'units/16-C9-dimensionality-reduction/review.ipynb :: C9-dimensionality-reduction — Review :: cell 1'
     heading_path:
@@ -46210,7 +46211,7 @@ notebooks:
   api_tokens: []
 - path: units/17-C10-cnn-transfer/lesson.ipynb
   kind: notebook
-  semantic_sha256: d0baf4db3e662a685f4725010a51beadd33db7561ab017dced4afe3d7874cd00
+  semantic_sha256: 15fb126e8abc809f543203ef14f6e5f4e79975fa57cdd1130d2b7d9355663498
   anchors:
   - anchor: 'units/17-C10-cnn-transfer/lesson.ipynb :: C10-cnn-transfer — CNNs, Transfer Learning, and CNN Training > How
       to study :: cell 1'
@@ -49710,7 +49711,7 @@ notebooks:
   - trunk.train
 - path: units/17-C10-cnn-transfer/review.ipynb
   kind: notebook
-  semantic_sha256: ff43d7a05289e10f81f888c0c9671610c5b5855645e5064367801fa2a93ed1e4
+  semantic_sha256: 10485db41030e43a31a693c36793546b52f8fc67dc2322a04dd5eef1f4ac3537
   anchors:
   - anchor: 'units/17-C10-cnn-transfer/review.ipynb :: C10-cnn-transfer — Review > Answers :: cell 1'
     heading_path:
@@ -52638,7 +52639,7 @@ notebooks:
   api_tokens: []
 - path: units/19-C12-classical-models/lesson.ipynb
   kind: notebook
-  semantic_sha256: b0c6c74a28ef3af8c50acee4370dc089d0fc712d89959259a44dc6bebcaffbda
+  semantic_sha256: 2e47805bf369c2b7dc07c18a2ce523dc955fa607f53b492bd6883de2553ca19b
   anchors:
   - anchor: 'units/19-C12-classical-models/lesson.ipynb :: C12-classical-models — Classical Supervised and Unsupervised Models
       (Unit Overview) > Reproducibility contract :: cell 1'
@@ -55504,7 +55505,7 @@ notebooks:
   - trace.append
 - path: units/19-C12-classical-models/review.ipynb
   kind: notebook
-  semantic_sha256: db211785b457b5c185497d64d0f29719511d4200c99c50a07d42d5ed425f7ea1
+  semantic_sha256: f2993e2192e67c78968e11a6aaa62c9c5f5cf00fe4cedb943f8d9330e50acef8
   anchors:
   - anchor: 'units/19-C12-classical-models/review.ipynb :: C12-classical-models — Review :: cell 1'
     heading_path:
