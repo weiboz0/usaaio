@@ -113,9 +113,10 @@ A comment that does not name the callee or keyword does not count. This closes t
 - an unexplained rule 1, 2 or 3 site;
 - a misplaced `# Checks:` marker;
 - a card mismatch (D3);
-- in statement notebooks, any rule-2-only comment, and any comment in a statement code cell (pre-existing or added) that names an identifier the student must define. In statement notebooks only rules 1 and 3 apply, and each added comment is one line (D7).
+- in statement notebooks, any rule-2-only comment, and any comment the check counts as call evidence (D4 (a)/(b)) that names an identifier the student must define. In statement notebooks only rules 1 and 3 apply, and each added comment is one line (D7).
+  Pre-existing scaffold instructions such as `# YOUR CODE HERE (call standardize)` (C4 p08) are not call evidence, so they are untouched by this rule. The stricter rule, that no *added* statement comment may name a required identifier, is enforced by `scripts/verify-comment-only.py` (D5(f)), which knows which comments are new.
   Required identifiers are extracted from the statement: names in `` `def name(` `` or `` `class Name` `` spans; backticked names after "Implement", "Define" or "Write"; and `def`/`class` stubs whose body is `...`, `pass` or `raise NotImplementedError`.
-  No current Book 1 statement comment names such an identifier, so this base-free rule can be enforced on `main`.
+  The same extractor is shared by the check and the verifier.
 
 **Waivers:**
 - Waivers live in `tools/checks/api_comments_waivers.yaml`, as path, cell, callee and a one-line reason.
@@ -149,6 +150,7 @@ A comment that does not name the callee or keyword does not count. This closes t
   - D3 cards are appended at the end. D6 teaching cells are inserted only after the last index-referenced cell of their notebook.
   - New cells get fresh ids, and `nbformat.validate` passes.
   - Student notebooks keep empty outputs.
+- **(f) No hints in statements:** in statement and mock-statement notebooks, every added comment is one line and names no identifier the student must define (D4's extractor).
 - **(e) Data and seeds untouched:** data, seeds and answer keys are covered by the existing generated-artifact `--check`s, solution execution and mutation checks.
 
 The verifier runs in Task 5 and in the content gate. It is not added to `ci-local.sh`, because on `main` after the squash merge it has no base to compare against.
@@ -268,6 +270,12 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
   - [FIXED] S2: the mock harness location is narrowed to paper-provided setup and answer-pin cells (D1 rule 4).
   - [FIXED] Nits: the B2-024 owner is named; D5(d) reworded; the `.view` notebook named; `size`/`dtype`/`device` counted separately; C5 reminders still apply.
 - `[self]` APPROVE.
+
+### Round 3
+
+- `[sol]` REJECT.
+  - [FIXED] Blocker: the base-free identifier rule failed on an existing scaffold comment, `# YOUR CODE HERE (call standardize)` in C4 p08 line 58, and the plan's "no existing comment" claim was false. The check's rule is narrowed to comments it counts as call evidence. The full no-added-hint rule moves to the base-aware verifier (D5(f)). The false claim is removed.
+  - Round-2 items verified resolved.
 
 ## Implementation notes
 
