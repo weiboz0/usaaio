@@ -1,0 +1,22 @@
+# Plan 032 (D4, D8): waivers for tools/checks/api_comments.py.
+#
+# Each entry: path (repo-relative notebook), cell (0-based index, or "*"), callee (key, or "*"),
+# reason (one line). Waivers count against the cap in api_comments_baseline.yaml, except
+# entries with reason `guard-protected` (D8), which do not count toward it.
+waivers:
+  # D8: the Plan 031 guard protects this notebook ("token" category). Its book-first callees
+  # are explained in the C5 card's "New in this unit" part; reminders and new-signature sites
+  # inside it are waived.
+  - path: book1/units/10-C5-embeddings/lessons/01-tokens-and-embeddings.ipynb
+    cell: "*"
+    callee: "*"
+    reason: guard-protected
+  # D8: B2-020 whole-function test literals (count 1) take no comment inside them.
+  - path: book2/units/B2-020-language-transformers/practice/p11_solution.ipynb
+    cell: 2
+    callee: torch.full_like
+    reason: inside a whole-function test literal; explained in the B2-020 API card
+  - path: book2/units/B2-020-language-transformers/practice/p20_solution.ipynb
+    cell: 3
+    callee: .canonical_encoder_state_hash
+    reason: local data-module helper inside a test literal

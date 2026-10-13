@@ -7,6 +7,7 @@ from collections.abc import Callable
 import tools
 from tools.books import load_book_catalog, validate_book_root
 from tools.checks.answerkey import check_answerkey
+from tools.checks.api_comments import check_api_comments
 from tools.checks.blueprint import check_blueprint
 from tools.checks.coverage import check_coverage
 from tools.checks.hygiene import check_hygiene
@@ -42,6 +43,10 @@ SUBCOMMANDS: dict[str, tuple[str, CheckFn | None]] = {
     "unit-order-check": (
         "verify Book 1 unit folders follow the declared teaching order",
         check_unit_order,
+    ),
+    "api-comments-check": (
+        "verify library calls are explained where students first meet them",
+        check_api_comments,
     ),
     "new-mocktest": ("scaffold a mock test from the blueprint", None),
 }

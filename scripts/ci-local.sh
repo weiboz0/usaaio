@@ -122,7 +122,7 @@ uv run python scripts/verify-register.py --book book1
 
 step "5/9 per-book checks"
 for book in "${BOOK_IDS[@]}"; do
-  for c in prereq-check coverage-check scope-check schedule-check tolerance-check hygiene-check blueprint-check overlap-scan answerkey-check layer-boundary-check unit-order-check; do
+  for c in prereq-check coverage-check scope-check schedule-check tolerance-check hygiene-check blueprint-check overlap-scan answerkey-check layer-boundary-check unit-order-check api-comments-check; do
     echo "running [$book]: $c"
     uv run usaaio-tools --book "$book" "$c" || { rc=$?; [[ $rc -eq 3 ]] || exit "$rc"; }
   done
