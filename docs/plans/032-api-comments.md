@@ -296,6 +296,11 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ### Round 6
 
+- `[sol]` APPROVE (4ca67f7 verified).
+- `[fable]` APPROVE (round 2; the later rounds changed only card and comment wording that sol reviewed).
+- `[self]` APPROVE.
+- **Gate passed** (3/3, no `[OPEN]` items).
+
 - `[sol]` REJECT.
   - [FIXED] Must Fix: index preservation in D5(d) contradicted the D6 insertion. Now only index-referenced cells keep their indices.
   - [FIXED] Must Fix: the CLI registry is `SUBCOMMANDS`.
