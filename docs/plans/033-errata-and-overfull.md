@@ -72,34 +72,55 @@ Causes, from mapping each box to its TeX source:
 
 ### D2 — Item 2 fix
 
-- Replace "The **Kullback–Leibler divergence** of $Q$ from $P$ is" with "The **Kullback–Leibler divergence**, the extra expected log loss from using $Q$ when the data follow $P$, is".
-  This is the back-matter wording, and the rest of the cell stays byte-identical.
+- Replace "The **Kullback–Leibler divergence** of $Q$ from $P$ is" with "The **Kullback–Leibler divergence** is".
+  The displayed formula follows, and the next sentence already gives the direction in the back-matter sense ("the average extra log-loss you pay for believing $Q$ when outcomes really come from $P$"). Removing the ambiguous phrase therefore removes the conflict without repeating that sentence. The rest of the cell stays byte-identical.
 - Add `book2/units/B2-022-probabilistic-latent-models/ERRATA.md`.
 - `tests/test_b2_022_statements.py` lists this lesson. The implementer confirms that no test pins the replaced phrase, and updates such a test only if one does.
 
 ### D3 — Item 3: fix at the publisher, guard in the audit
 
-Fix the causes once in the shared publishing code, not cell by cell, so that future content inherits the fix.
+Fix the causes once in the shared publishing code (`tools/publish_theme/panels.lua`), not cell by cell, so that future content inherits the fix.
+`panels.lua` is shared with `tools/publish_pdf.py` (syllabus, handouts and mock papers), so the change applies there too.
 
-- **(a)** In `tools/publish_theme/panels.lua`, add a `Table` filter for LaTeX. When a table has 3 or more columns and every column has the default width, it assigns relative widths in proportion to each column's longest cell, with a floor per column, and the widths sum to the line width. Pandoc then emits `p` columns, which wrap. Tables that already have explicit widths are untouched.
-- **(b)** In the `Code` filter, also allow a break after `.` when a letter or digit follows. Inside table cells only, also allow a break before `.` and `(`. If a fragment still cannot fit, typeset `\texttt` in table cells at `\small`, via a table-scoped wrapper rather than a global font change.
-- **(c)** In the `Str` filter, inside table cells only, allow a break inside a run of 10 or more digits.
-  The printed characters are unchanged, and nothing is rounded.
-- **Content edits are a fallback only.** They may change markdown table layout (separator-line dash counts) and nothing else: no words or numbers change. Each such edit is listed in the post-execution report.
+- **Table scope.** Pandoc's default traversal visits a cell's `Code` and `Str` inlines before it calls `Table`, so a `Table` callback cannot flag cells for the existing `Code` filter in time.
+  - The fix is a new first filter table, prepended to the list that `panels.lua` returns: `{Table = function(t) … t:walk{Code = table_code, Str = table_str} … end}`.
+  - `table_code` and `table_str` turn table-cell inlines into `RawInline` LaTeX themselves, so the later filter's `Code` never sees them.
+  - Inlines outside tables go through the existing filter unchanged, apart from the global `.` rule below.
+  - Tests run `quarto pandoc` (pandoc 3.4), not the system `pandoc`, and skip when Quarto is absent.
+- **(a) Width for natural-width tables that would overflow.**
+  - The `Table` callback assigns relative column widths only when two things hold:
+    - every column has the default width;
+    - the estimated natural width overflows: the sum, over columns, of the longest cell's character count, times 0.5 em at 10 pt, exceeds the text width (about 392 pt).
+  - Widths are proportional to each column's longest cell, with a floor of 15% per column, and sum to 1. Pandoc then emits wrapping `p` columns.
+  - Tables that fit today keep their natural width, and tables with explicit widths are untouched.
+  - This targets the only `in alignment` family in the logs: C9 p18, 9 boxes across the editions.
+- **(b) Break points in code.**
+  - **Everywhere:** allow a break after `.` when a letter or digit follows. For example, `np.linalg.eig` may now break as `np.` / `linalg` in running prose. This is accepted and listed under D4.
+  - **In table cells only:** also allow a break before `.` and `(`, after `[`, and before `[` and `]`. This covers `labels[heldout][:48]`.
+  - **In table cells only, always:** typeset code as `{\small\texttt{…}}`. The rule is deterministic, so there is no "if it still does not fit" condition.
+- **(c) Plain text in table cells.**
+  - The table-scoped `Str` rule allows a break after `/` and `-` when a letter or digit follows. This covers file names written as plain text, such as C2's escaped-backtick `` `lessons/02-normal-equations-rank-pseudoinverse.ipynb` ``.
+  - It allows a break inside a run of 10 or more digits only as a last resort, after (a), (b) and the dash fallback below.
+  - For the B2-024 p12 float tables, the preferred fix is separator dashes or `\small`, because a mid-number break with no continuation mark is ambiguous in an answer table. The report says which fix each table used.
+  - The printed characters never change, and nothing is rounded.
+- **Content edits are a fallback only.** They may change separator-line dash counts in a markdown table. They may also unescape a stray `` \` `` so that the text inside is code, as in the C2 overview. Words and numbers never change, and each edit is listed in the post-execution report.
 - **Guard.**
-  - `tools/publish_audit.py` parses each edition's `latex-audit.log`. It reports the count of overfull `\hbox`es and the widest box, with its TeX line and chapter.
-  - It fails when any box exceeds `audit.overfull_max_pt` from `<book>/publication.yaml`, set to `5` for both books. `5` is chosen because boxes under 5 pt are not noticeable at the edition's margin width.
-  - Scoped publish checks apply the same rule to their render.
+  - `tools/publish_audit.py` parses each rendered edition's `latex-audit.log` inside the existing per-project loop, so scoped `build/publish-check` renders get the same rule. `build-book.sh` overwrites the log on each pass, so the parsed log is the final pass.
+  - It reports the count of overfull `\hbox`es and the widest box with its TeX line. The chapter is found by scanning the kept `.tex` backwards from that line for `\chapter{…}`.
+  - It fails when any box exceeds `audit.overfull_max_pt`, a key in `<book>/publication.yaml` set to `5` for both books. Boxes under 5 pt are not noticeable at the edition's margin.
+  - `tools/books.py` `_AUDIT_KEYS` gains the key. `publication_config_errors` validates it as a positive number; a missing key or `0` disables the check, mirroring `page_warning`.
+  - It fails when a rendered edition has no `latex-audit.log`, so a missing log cannot bypass the threshold.
+  - The `build-pdf.sh` logs (`build/pdf/**/*.log`) are also parsed against the same threshold.
 - **Acceptance.**
-  - After the fix, every edition of both books has no overfull box over 5 pt.
-  - The total count of boxes over 2 pt is reported before and after.
-  - The `build-pdf.sh` PDFs stay at zero.
-- **No page-count drift beyond ±2%** per edition. Larger drift means a filter is over-reaching, and the implementer reports it.
+  - Every edition of both books, and every `build-pdf.sh` PDF, has no overfull box over 5 pt.
+  - The count of boxes over 2 pt is reported before and after.
+  - No edition's page count drifts beyond ±2%. Larger drift means a filter is over-reaching, and the implementer reports it.
 
 ### D4 — What does not change
 
 - Code cells, answers, data, seeds and statement wording, other than the two erratum sentences.
 - The editions' structure, edition table, theme fonts and page geometry.
+- Accepted visible changes: inline code may break after `.` anywhere, code in table cells is set at `\small`, and overflowing natural-width tables wrap.
 
 ## Implementation tasks
 
@@ -113,14 +134,15 @@ Fix the causes once in the shared publishing code, not cell by cell, so that fut
 - [ ] **Task 2 — Publisher fixes and guard (D3).** Opus tooling subagent.
   - Make the Lua filter changes. Add the `publish_audit` overfull parser and threshold, and the `audit.overfull_max_pt` key in both `publication.yaml` files.
   - Unit tests in `tests/` for:
-    - the table-width assignment (pandoc on a markdown fixture: `lll` becomes `p` columns; explicit widths are preserved);
-    - the new code break points (`a.b`, and the table-only rules);
+    - the table-width assignment (`quarto pandoc` on a markdown fixture: an overflowing `lll` table becomes `p` columns; a table that fits keeps `l`; explicit widths are preserved);
+    - the new code break points (`a.b`, the table-only `.`/`(`/`[`/`]` rules, `\small` in cells; plain-text `/` and `-` breaks in cells);
     - the digit-run breaks;
-    - the audit parser and threshold: pass, fail, the widest box reported, and the missing-key default.
+    - the audit parser and threshold: pass, fail, the widest box reported, the missing-key default, a missing log (fails), and `books.py` validation of the new key (accepts a positive number, rejects zero, negative and non-numeric values);
+    - prose and code outside tables are unchanged by the filter.
   - Rebuild both books' editions, and record the before and after table of D3 buckets plus page counts in this plan.
 - [ ] **Task 3 — Verification phase.**
   - `scripts/ci-local.sh --all-books` is ALL GREEN on a clean tip, including the publish audits with the new guard.
-  - Render the pages for the C9 p18 table, a unit-overview session table and the B2-024 p12 table, before and after the fix, and inspect them. The tables must sit inside the margin and stay readable.
+  - Render the pages for the C9 p18 table, the F6 unit-overview session table (`np.linalg.eig*`), the C2 overview row, the r2-001 p04 table and the B2-024 p12 table, before and after the fix, and inspect them. The tables must sit inside the margin and stay readable.
   - Each content-gate reviewer gets the page images and the diff.
 - [ ] **Task 4 — Post-execution report, `TODO.md` (move the three items to done), PR, `pre-merge-guard --pr`, squash-merge.**
 
@@ -132,6 +154,22 @@ Fix the causes once in the shared publishing code, not cell by cell, so that fut
 - This plan ships no new units or mock tests. Task 3 is its verification phase.
 
 ## Plan Review
+
+Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
+
+### Round 1
+
+- `[self]` APPROVE WITH NITS. [FIXED] `panels.lua` is shared with `publish_pdf.py`, so the handout, syllabus and mock PDFs are in the acceptance criteria.
+- `[sol]` REJECT. Errata diagnosis: Item 1 CONFIRMED (six spans; no other cell among 5,285 scanned); Item 2 CONFIRMED.
+  - [FIXED] Must Fix: `tools/books.py` `_AUDIT_KEYS` must accept and validate `overfull_max_pt` (D3 Guard, Task 2 tests).
+  - [FIXED] Must Fix: the table-scope mechanism is now named. A prepended filter table whose `Table` callback walks the cells, because inlines are visited before `Table` (D3).
+  - [FIXED] Should Fix: a missing `latex-audit.log` fails the guard.
+- `[fable]` APPROVE WITH NITS, conditional on its Must Fix items.
+  - [FIXED] M1: `_AUDIT_KEYS` (same as sol).
+  - [FIXED] M2: rules did not cover all boxes over 5 pt. Added `[`/`]` code breaks in cells, plain-text `/`/`-` breaks in cells, and the escaped-backtick fallback (D3 (b), (c)).
+  - [FIXED] M3: table-scope mechanism (same as sol).
+  - [FIXED] S4: `\small` in cells is unconditional. S5: (a) applies only to overflowing default-width tables. S6: the digit break is the last resort, and dashes or `\small` are preferred for the float tables. S7: a missing key or `0` disables the check. S8: tests use `quarto pandoc`.
+  - [FIXED] N9: the chapter comes from the kept `.tex`. N10: `build-pdf` logs are parsed too. N11: scoped renders are covered by the per-project loop. N12: the F6 table is added to the inspected pages. The D2 duplication nit is taken: the sentence becomes "The **Kullback–Leibler divergence** is".
 
 ## Implementation notes
 
