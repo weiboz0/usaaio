@@ -91,7 +91,7 @@ Fix the causes once in the shared publishing code (`tools/publish_theme/panels.l
   - The `Table` callback assigns relative column widths only when two things hold:
     - every column has the default width;
     - the estimated natural width overflows: the sum, over columns, of the longest cell's character count, times 0.6 em at 10 pt, exceeds the text width (about 392 pt). Over-estimating only gives a fitting table `p` columns, which is the safe direction.
-  - Widths are proportional to each column's longest cell, with a floor of `min(0.15, 1/ncols)` per column, renormalized to sum to 1. Pandoc then emits wrapping `p` columns.
+  - Widths are proportional to each column's longest cell, with a floor of `min(0.15, 0.5/ncols)` per column, renormalized to sum to 1. The `0.5/ncols` cap leaves half the width to the proportional share, so wide tables do not collapse to equal widths. Pandoc then emits wrapping `p` columns.
   - Tables that fit today keep their natural width, and tables with explicit widths are untouched.
   - This targets the only `in alignment` family in the logs: C9 p18, 9 boxes across the editions.
 - **(b) Break points in code.**
@@ -120,7 +120,7 @@ Fix the causes once in the shared publishing code (`tools/publish_theme/panels.l
 
 - Code cells, answers, data, seeds and statement wording, other than the two erratum sentences.
 - The editions' structure, edition table, theme fonts and page geometry.
-- Accepted visible changes: inline code may break after `.` anywhere, code in table cells is set at `\small`, and overflowing natural-width tables wrap.
+- Accepted visible changes: inline code may break after `.` anywhere, code in table cells is set at `\small`, and overflowing natural-width tables wrap. If the digit-run break ships, long digit runs in table cells may also break.
 
 ## Implementation tasks
 
@@ -136,7 +136,7 @@ Fix the causes once in the shared publishing code (`tools/publish_theme/panels.l
   - Unit tests in `tests/` for:
     - the table-width assignment (`quarto pandoc` on a markdown fixture: an overflowing `lll` table becomes `p` columns; a table that fits keeps `l`; explicit widths are preserved);
     - the new code break points (`a.b`, the table-only `.`/`(`/`[`/`]` rules, `\small` in cells; plain-text `/` and `-` breaks in cells);
-    - the digit-run breaks;
+    - only if the digit-run break ships (D3 (c)): its book-wide rule. If it does not ship, the report records that and no test is added;
     - a wide table: the 9-column C8 p20 table and a 12-column fixture get feasible widths that sum to 1;
     - a `build/pdf` log with a planted `Overfull \hbox (6pt too wide)` fails the audit;
     - the audit parser and threshold: pass, fail, the widest box reported, the missing-key default, a missing log (fails), and `books.py` validation of the new key (accepts a positive number, rejects zero, negative and non-numeric values);
@@ -144,7 +144,7 @@ Fix the causes once in the shared publishing code (`tools/publish_theme/panels.l
   - Rebuild both books' editions, and record the before and after table of D3 buckets plus page counts in this plan.
 - [ ] **Task 3 — Verification phase.**
   - `scripts/ci-local.sh --all-books` is ALL GREEN on a clean tip, including the publish audits with the new guard.
-  - Render the pages for the C9 p18 table, the F6 unit-overview session table (`np.linalg.eig*`), the C2 overview row, the r2-001 p04 table and the B2-024 p12 table, before and after the fix, and inspect them. The tables must sit inside the margin and stay readable.
+  - Render the pages for the C9 p18 table, the F6 unit-overview session table (`np.linalg.eig*`), the C2 overview row, the r2-001 p04 table, the 9-column C8 p20 table and the B2-024 p12 table, before and after the fix, and inspect them. The tables must sit inside the margin and stay readable.
   - Each content-gate reviewer gets the page images and the diff.
 - [ ] **Task 4 — Post-execution report, `TODO.md` (move the three items to done), PR, `pre-merge-guard --pr`, squash-merge.**
 
@@ -183,6 +183,15 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
   - [FIXED] Must Fix: the 15% floor was infeasible for wide tables (the 9-column C8 p20 table). The floor is now `min(0.15, 1/ncols)`, renormalized, with a wide-table test.
   - [FIXED] Should Fix: zero had two meanings. Now a missing key disables the check, and zero is a config error.
   - [FIXED] Should Fix: a planted `build/pdf` log fixture is in the Task 2 tests.
+
+### Round 3
+
+- `[fable]` APPROVE. No open findings.
+- `[sol]` APPROVE WITH NITS.
+  - [FIXED] Should Fix: with 7 or more columns, the `1/ncols` floor forced equal widths. The floor is now `min(0.15, 0.5/ncols)`, and C8 p20 is added to the rendered-page check.
+  - [FIXED] Nit: both outcomes of the digit-run decision are explicit in the Task 2 tests and in D4.
+- `[self]` APPROVE.
+- **Gate passed** (3/3, no `[OPEN]` items). The 2-way errata diagnosis (inline plus `[sol]`) is CONFIRMED for both items.
 
 ## Implementation notes
 
