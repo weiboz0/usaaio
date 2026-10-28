@@ -195,6 +195,54 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
 
 ## Implementation notes
 
+### Task 1 — Errata (1a4870f, inline)
+
+- C11 p12 solution: the six spans now use `\(…\)`; no other byte of the cell changed. The notebook executes clean.
+- B2-022 lesson 02: the sentence is now "The **Kullback–Leibler divergence** is"; the notebook executes clean.
+- Both units gained `ERRATA.md`. `tests/test_b2_022_statements.py` pins the unit's exact file list, so it now expects `ERRATA.md` (61 files). No test pinned the replaced phrase.
+
+### Task 2 — Publisher fixes and guard (5f7ee98, Opus)
+
+- `panels.lua`:
+  - A prepended `Table` filter assigns widths to overflowing default-width tables, using a 6 pt-per-character estimate against 392 pt and a floor of `min(0.15, 0.5/ncols)` applied by repeated filling.
+  - Table cells set code as `{\small\texttt{…}}` with the table-only break points, and plain text breaks after `/`, and after `-` with a letter or digit on both sides.
+  - The global code rule breaks after `.`.
+- `books.py` `_AUDIT_KEYS` validation; `publish_audit.py` rule 7 `check_overfull`, covering editions, scoped checks and the `build/pdf` logs; `audit.overfull_max_pt: 5` in both books.
+- **Digit-run break: not shipped.** No box over 5 pt survived without it, and a test pins the decision.
+- **Deviations:**
+  - The global and table `.` rules skip a `.` between two digits, so `lr=0.05` never splits into `lr=0.` / `05`. Tested.
+  - `theme.tex` gains `\DeclareTOCStyleEntry[pagenumberwidth=4em]{part}{part}`. Without it, the bold "Mock Tests" part entry in the table of contents made a 5.62 pt box (book1 teacher-vol3) and a 4.89 pt box (book2 teacher). This widens the page-number box only.
+- **Content fallback edits (no words or numbers changed):**
+  - C2 `lesson.ipynb` overview: unescaped `` \` ``, three rows;
+  - B2-023 lessons/03 SNR table separator dashes;
+  - B2-024 `p12.ipynb` table separator dashes.
+- Both material inventories regenerated.
+
+Before/after overfull buckets (> 40 / 10–40 / 2–10 / ≤ 2 pt), from a full rebuild of both books on the final code:
+
+| Edition | Before | After |
+|---|---|---|
+| book1 student-print | 3/11/12/9 | 0/0/1/1 |
+| book1 student-vol1, teacher-vol1 | 0/5/4/2 | 0/0/0/0 |
+| book1 student-vol2, teacher-vol2 | 0/3/7/5 | 0/0/0/0 |
+| book1 student-vol3 | 3/3/1/2 | 0/0/1/1 |
+| book1 teacher-vol3 | 3/3/2/2 | 0/0/1/1 |
+| book2 student-print, student | 0/9/9/5 | 0/0/5/7 |
+| book2 teacher | 0/14/23/10 | 0/0/11/11 |
+| answer keys, 31 build-pdf logs | 0 | 0 |
+
+The widest remaining boxes are 3.82 pt (book1) and 4.81 pt (book2).
+
+Page counts: book1 student-print 1024 → 1023 and student-vol2 470 → 468; book2 teacher 938 → 936; every other edition is unchanged (all within ±0.5%).
+
+Tests:
+- new `tests/test_publish_theme_tables.py` (10 tests, through `quarto pandoc`);
+- 6 rule-7 tests in `test_publish_audit.py`;
+- 10 config cases in `test_publication_config.py`;
+- the related suites pass (327 + 89).
+
+Page images, before and after, in `scratchpad/p033-pages/`: C9 p18, F6 overview, C2 overview, C8 p20, B2-024 p12, r2-001 p04.
+
 ## Content Review
 
 ## Post-execution report
