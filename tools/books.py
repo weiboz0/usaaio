@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -676,7 +677,7 @@ _CHAPTER_OPTIONAL_KEYS = frozenset({"head"})
 _SELECTOR_KEYS = frozenset({"set", "type", "difficulty"})
 _VOLUME_KEYS = frozenset({"title", "first", "last"})
 _VOLUMES_KEYS = frozenset({"editions", "parts"})
-_AUDIT_KEYS = frozenset({"page_warning"})
+_AUDIT_KEYS = frozenset({"page_warning", "overfull_max_pt"})
 _MOCKTEST_ID = re.compile(r"r\d+-\d{3}\Z")
 # The edition names (tools.publish.EDITIONS holds their profiles and must use exactly these).
 EDITION_NAMES = ("student-print", "student", "answer-key", "teacher")
@@ -950,6 +951,11 @@ def _parse_publication_config(
         page_warning = audit.get("page_warning")
         if page_warning is not None and (type(page_warning) is not int or page_warning <= 0):
             errors.append(f"{where}: audit.page_warning must be a positive integer")
+        # Plan 033 D3: the widest overfull \hbox an edition or build-pdf PDF may keep, in pt.
+        # Missing disables the check (report only); zero, negative, infinite or non-numeric is an error.
+        overfull = audit.get("overfull_max_pt", None)
+        if "overfull_max_pt" in audit and (type(overfull) not in (int, float) or not 0 < overfull < math.inf):
+            errors.append(f"{where}: audit.overfull_max_pt must be a positive finite number")
 
     if errors:
         return None, errors

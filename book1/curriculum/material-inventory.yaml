@@ -20649,7 +20649,7 @@ notebooks:
   - np.round
 - path: units/07-C2-linear-models/lesson.ipynb
   kind: notebook
-  semantic_sha256: 6bedc4d99567a4112254d0d6e40c2cecce3753540d519d2794a16eeea2022c0a
+  semantic_sha256: 597b9a32641c9053d66c6befc8fde93641816eb177408e754ff41d7facea4a58
   anchors:
   - anchor: 'units/07-C2-linear-models/lesson.ipynb :: C2-linear-models — Linear Models, Closed-Form OLS, and Regularization
       > How to study :: cell 1'
@@ -51348,7 +51348,7 @@ notebooks:
   - rng.integers
 - path: units/18-C11-competition-craft/practice/p12_solution.ipynb
   kind: notebook
-  semantic_sha256: d1f65264714d04a092da825725c6563fa7840f8b613ce72541487d1d16b9d60a
+  semantic_sha256: 7827ac1250208949b41cb560d54505694f11357bbe6b06307e48f7df001c6943
   anchors:
   - anchor: 'units/18-C11-competition-craft/practice/p12_solution.ipynb :: C11-competition-craft — Practice p12 — Solution
       :: cell 1'

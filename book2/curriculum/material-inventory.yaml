@@ -9106,7 +9106,7 @@ notebooks:
   - torch.tensor
 - path: units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb
   kind: notebook
-  semantic_sha256: 3edf3c4eb3c6cf52c8da3f89df3bf0090e977b8879df4ab26dfdb52c92d79ad1
+  semantic_sha256: 8e2b7bb752d8753c8f0645c275e6da0b96e4c6b85f1d249bfdf91d7664c0837f
   anchors:
   - anchor: 'units/B2-022-probabilistic-latent-models/lessons/02-kl-divergence.ipynb :: B2-022 — Session 2: KL Divergence
       :: cell 1'
@@ -12401,7 +12401,7 @@ notebooks:
   - trace.append
 - path: units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb
   kind: notebook
-  semantic_sha256: 5aca6fe54208dbd54a3e4a0fd415ef1a781237799cff90a38db2a63d9a66cedd
+  semantic_sha256: 98d355e7ac69e495c926bf56621be71147a09fe47cae159c27db3674b0e1db2f
   anchors:
   - anchor: 'units/B2-023-generative-models-diffusion/lessons/03-diffusion-forward-process.ipynb :: B2-023 — Session 3: The
       Diffusion Forward Process :: cell 1'
@@ -17711,7 +17711,7 @@ notebooks:
   - wrong.tolist
 - path: units/B2-024-gpu-scientific-ml-capstone/practice/p12.ipynb
   kind: notebook
-  semantic_sha256: 709b57efe3e2b05fe99c2d46df2129bf3fdd726ef97b75813fdf3117e8a162de
+  semantic_sha256: c97b6382258865623ed97ee779034eb4916e0ee8145630dd2a8c2195dc677439
   anchors:
   - anchor: 'units/B2-024-gpu-scientific-ml-capstone/practice/p12.ipynb :: B2-024 — Practice p12 > Task :: cell 1'
     heading_path:

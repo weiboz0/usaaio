@@ -28,6 +28,7 @@ The old-to-new table is [docs/unit-renumbering.md](docs/unit-renumbering.md).
 - [x] 022 — C12 p20 K-means near-tie erratum (deterministic lowest-seed rule)
 - [x] 023 — historical Plan 019 cutover contract (pinned commit proof plus archive-safe structural fallback)
 - [x] 025 — clean-archive CI contract (historyless resources explicit; real checkout guard preserved)
+- [x] 033 — errata C11 p12 solution delimiters and B2-022 KL wording; publisher table-width and break fixes; `publish_audit` overfull guard (5 pt)
 - [x] 032 — explanatory comments for library calls (option C tiers), `api-comments-check` CI check, per-unit API cards, mock-only callees taught
 - [x] 031 — Book 1 units in teaching order: `NN-` folder prefixes and F/C codes renumbered (docs/unit-renumbering.md)
 - [x] 030 — py4kids-style book editions: student-print, student, answer key and teacher PDFs, plus syllabus, handouts and mock-test papers and solutions, for both books
@@ -38,10 +39,6 @@ The old-to-new table is [docs/unit-renumbering.md](docs/unit-renumbering.md).
 - [x] 026 — py4kids 3-way review roster and Opus dispatch; deferred-policy test clock pinned
 
 ## Deferred, with a named owner plan still to be written
-
-- [ ] **Erratum: C11 (old C10) `p12_solution.ipynb` lost math delimiters.** Its prose has `(A_j=\frac1{50}\sum…)` where `\(…\)` was intended, so the Plan 030 editions print the LaTeX literally (they are read with `-raw_tex`). Fix the delimiters through the errata lifecycle.
-- [ ] **Erratum review: KL direction wording in B2-022 `lessons/02-kl-divergence.ipynb`.** It says "divergence of $Q$ from $P$" for $\mathrm{KL}(P\|Q)$. Align it with the back-matter wording ("extra expected log loss from using $Q$ when the data follow $P$").
-- [ ] **Overfull lines in the editions (Plan 030).** Three `lll` longtables in one C9 practice are about 51 pt too wide. Book 2's Teacher's Edition has 47 small overfull boxes (≤ 40 pt), mostly inline code in narrow table cells.
 
 - [x] **Execute the remaining Plan 015 content tranches.** Done: Plans 020, 021, 027, 028, 029 shipped B2-020…B2-024 and Plan 024 shipped r2-001.
 - [x] **Unit capacity: C10 (old C7) and C6 (old C5).** Plan 017 resolves the decision substantively: C10 gains a

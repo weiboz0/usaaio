@@ -24,6 +24,11 @@ Rules:
 5. Glossary: every concept the (in-scope) units introduce has a glossary entry, and every entry
    carries `<!-- concept: <id> -->`.
 6. Page counts are reported; over `audit.page_warning` is a warning.
+7. Overfull lines (Plan 033 D3): every rendered edition's final `latex-audit.log` and every
+   `build/pdf/**/*.log` is parsed for overfull `\\hbox`es. The count and the widest box (its TeX
+   line, and the chapter found by scanning the kept `.tex` backwards for `\\chapter{`) are
+   reported; a box wider than `audit.overfull_max_pt` is an error (no key: report only), and a
+   rendered edition without a `latex-audit.log` is an error.
 
 Independence: the allowed-block rule table, the source classification, the answer-region parser,
 the selected-answer evaluation and the scaffold patterns are this module's own. It imports only
@@ -746,6 +751,71 @@ def check_logs(result: AuditResult, logs: Iterable[Path]) -> None:
                 break
 
 
+OVERFULL = re.compile(r"^Overfull \\hbox \((\d+(?:\.\d+)?)pt too wide\) "
+                      r"(?:in (?:paragraph|alignment) at lines (\d+)--\d+|detected at line (\d+)"
+                      r"|has occurred while \\output is active)")
+CHAPTER = re.compile(r"\\chapter\*?(?:\[[^\]]*\])?\{")
+
+
+@dataclass(frozen=True)
+class OverfullBox:
+    width: float
+    line: int
+    detected: bool  # "detected at line": the line of a file the .tex reads (.toc, .ind), not the .tex
+
+
+def overfull_boxes(text: str) -> list[OverfullBox]:
+    boxes = []
+    for line in text.splitlines():
+        match = OVERFULL.match(line)
+        if match:
+            # "has occurred while \output is active" (a running header or footer) has no line: 0.
+            boxes.append(OverfullBox(float(match[1]), int(match[2] or match[3] or 0),
+                                     match[2] is None))
+    return boxes
+
+
+def tex_chapter(tex: Path, line: int) -> str | None:
+    """The title of the `\\chapter` in force at `line` of `tex` (scanning backwards)."""
+    if not tex.is_file():
+        return None
+    lines = tex.read_text(encoding="utf-8", errors="replace").splitlines()
+    for index in range(min(line, len(lines)) - 1, -1, -1):
+        match = CHAPTER.search(lines[index])
+        if not match:
+            continue
+        text, depth = lines[index][match.end():], 1
+        for position, char in enumerate(text):
+            depth += {"{": 1, "}": -1}.get(char, 0)
+            if depth == 0:
+                return text[:position]
+        return text
+    return None
+
+
+def check_overfull(result: AuditResult, log: Path, tex: Path, label: str,
+                   limit: float | None) -> None:
+    """Rule 7: report the overfull boxes of one LaTeX log; fail on any wider than `limit`."""
+    boxes = overfull_boxes(log.read_text(encoding="utf-8", errors="replace"))
+    if not boxes:
+        result.info.append(f"{label}: 0 overfull \\hbox")
+        return
+    widest = max(boxes, key=lambda box: box.width)
+    if widest.detected:
+        where = f"line {widest.line} of a file {tex.name} reads"
+    else:
+        chapter = tex_chapter(tex, widest.line)
+        where = f"{tex.name}:{widest.line}" + (f" (chapter {chapter!r})" if chapter else "")
+    over_two = sum(box.width > 2 for box in boxes)
+    result.info.append(f"{label}: {len(boxes)} overfull \\hbox ({over_two} over 2 pt), widest "
+                       f"{widest.width:g} pt at {where}")
+    if limit is not None:
+        over = [box for box in boxes if box.width > limit]
+        if over:
+            result.error(f"{label}: {len(over)} overfull \\hbox over audit.overfull_max_pt "
+                         f"{limit:g} pt; widest {widest.width:g} pt at {where}")
+
+
 LEAKED_COMMAND = re.compile(
     r"\\textbackslash(?:\{\})?\s*(printindex|pubchapterlabel|chaptermark|pageref|index)\b")
 PDF_COMMAND = re.compile(r"\\(printindex|pubchapterlabel|chaptermark|pageref)\b")
@@ -860,6 +930,8 @@ def audit(repo_root: Path, book_id: str, *, units: list[str] | None = None,
     prints = fingerprints(book, config, selected, cache)
     base = book.root / "build" / ("publish" if scope.mode == "full" else "publish-check")
     page_warning = int(config.audit.get("page_warning", 0) or 0)
+    overfull_limit = config.audit.get("overfull_max_pt")
+    overfull_limit = float(overfull_limit) if overfull_limit is not None else None
     for name, (edition, body_units, tests) in expected_projects(book, config, scope).items():
         project = base / name
         if not project.is_dir():
@@ -897,6 +969,12 @@ def audit(repo_root: Path, book_id: str, *, units: list[str] | None = None,
         if stem:
             check_scaffold_tex(result, project, stem, AUDIT_EDITIONS[edition]["index"])
             check_references(result, project / f"{stem}.log")
+            audit_log = project / "latex-audit.log"
+            if audit_log.is_file():
+                check_overfull(result, audit_log, project / f"{stem}.tex", name, overfull_limit)
+            else:
+                result.error(f"{name}: latex-audit.log missing (the overfull check needs the "
+                             "final draft-mode log)")
             pages = page_count(project, stem)
             result.info.append(f"{name}: {pages} pages")
             if pages and page_warning and pages > page_warning:
@@ -904,6 +982,10 @@ def audit(repo_root: Path, book_id: str, *, units: list[str] | None = None,
     pdf_logs = sorted((book.root / "build" / "pdf").rglob("*.log")) \
         if (book.root / "build" / "pdf").is_dir() else []
     check_logs(result, pdf_logs)
+    for log in pdf_logs:
+        check_overfull(result, log, log.with_suffix(".tex"),
+                       f"build/pdf/{log.relative_to(book.root / 'build' / 'pdf').as_posix()}",
+                       overfull_limit)
     return result
 
 
