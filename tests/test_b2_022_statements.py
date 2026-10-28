@@ -70,6 +70,7 @@ SOLUTIONS = [f"practice/p{number:02}_solution.ipynb" for number in range(1, 25)]
 NOTEBOOKS = ["lesson.ipynb", "review.ipynb", *LESSONS, *STATEMENTS, *SOLUTIONS]
 EXPECTED_FILES = {
     "manifest.yaml",
+    "ERRATA.md",  # Plan 033 KL-wording erratum
     "data/latent_data.py",
     "data/latent_datasets.json",
     "scripts/generate_latent_data.py",
@@ -147,14 +148,14 @@ def _source(relative: str, *, kind: str | None = None) -> str:
     )
 
 
-def test_exact_60_file_inventory_is_regular_nonsymlink_and_cache_free() -> None:
+def test_exact_61_file_inventory_is_regular_nonsymlink_and_cache_free() -> None:
     actual = {
         path.relative_to(UNIT).as_posix()
         for path in UNIT.rglob("*")
         if path.is_file() or path.is_symlink()
     }
     assert actual == EXPECTED_FILES
-    assert len(actual) == 60
+    assert len(actual) == 61
     assert not any(
         "__pycache__" in path.parts or path.suffix == ".pyc" for path in UNIT.rglob("*")
     )
