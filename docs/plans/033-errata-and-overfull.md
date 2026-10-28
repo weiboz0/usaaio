@@ -260,3 +260,41 @@ Roster: `[self]` (Opus 5.5 inline), `[sol]` (codex gpt-6-sol, read-only), `[fabl
 - **Gate passed** (3/3, no `[OPEN]` items).
 
 ## Post-execution report
+
+Shipped 2026-10-28 on `feature/plan-033-errata-and-overfull`.
+
+### What changed
+
+- **Errata.** C11 `practice/p12_solution.ipynb` regains its six `\(…\)` delimiters, and the B2-022 KL lesson drops the ambiguous "of $Q$ from $P$". Each unit has an `ERRATA.md`. No answer, code or data changed.
+- **Publisher.** `panels.lua` assigns widths to overflowing default-width tables, adds table-scoped break points and `\small` code in table cells, and keeps decimals whole. `theme.tex` widens the page-number box of part entries in the table of contents.
+- **Guard.** `publish_audit` rule 7 fails on any overfull `\hbox` over `audit.overfull_max_pt` (5 pt in both books). It covers editions, scoped checks and `build-pdf` logs, and fails when a log is missing. `books.py` validates the key as a positive finite number.
+- **Content fallback (layout only).** C2 overview backticks, and the separator dashes of two tables (B2-023 lessons/03, B2-024 p12).
+
+### Verification
+
+- `scripts/ci-local.sh --all-books` on a22463b: **ALL GREEN**.
+  - Main suite: 1856 passed.
+  - Scoped suites: 20, 34, 46, 50, 52 and 13 passed.
+  - `pre-merge-guard: OK`.
+- Publish audits pass under the new guard. The widest remaining box is 3.82 pt in Book 1 (C8) and 4.81 pt in Book 2 (B2-024); every answer key and `build-pdf` PDF has 0.
+- Page counts:
+
+  | Book | Edition | Pages |
+  |---|---|---:|
+  | Book 1 | student-print | 1023 |
+  | Book 1 | student vol1 / vol2 / vol3 | 560 / 468 / 464 |
+  | Book 1 | answer key | 125 |
+  | Book 1 | teacher vol1 / vol2 / vol3 | 738 / 600 / 718 |
+  | Book 2 | student-print | 444 |
+  | Book 2 | student | 552 |
+  | Book 2 | answer key | 46 |
+  | Book 2 | teacher | 936 |
+
+- Plan gate passed in round 3; content gate passed in round 1. The errata diagnosis was confirmed by the inline review and by `[sol]`.
+
+### Deviations and lessons
+
+- Decimal numbers never break at `.`, and the table-of-contents part-entry fix was added. Both are recorded in the Implementation notes.
+- The digit-run break was not needed and was not shipped.
+- The guard proved itself in review: widening the B2-024 `config` column (N1) overflowed the neighbouring `scores` column, and the scoped audit failed at 14.96 pt, so the change was reverted.
+- Following the Plan 032 lesson, the content gate ran before the final CI, so CI ran once.
