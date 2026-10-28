@@ -752,7 +752,8 @@ def check_logs(result: AuditResult, logs: Iterable[Path]) -> None:
 
 
 OVERFULL = re.compile(r"^Overfull \\hbox \((\d+(?:\.\d+)?)pt too wide\) "
-                      r"(?:in (?:paragraph|alignment) at lines (\d+)--\d+|detected at line (\d+))")
+                      r"(?:in (?:paragraph|alignment) at lines (\d+)--\d+|detected at line (\d+)"
+                      r"|has occurred while \\output is active)")
 CHAPTER = re.compile(r"\\chapter\*?(?:\[[^\]]*\])?\{")
 
 
@@ -768,7 +769,8 @@ def overfull_boxes(text: str) -> list[OverfullBox]:
     for line in text.splitlines():
         match = OVERFULL.match(line)
         if match:
-            boxes.append(OverfullBox(float(match[1]), int(match[2] or match[3]),
+            # "has occurred while \output is active" (a running header or footer) has no line: 0.
+            boxes.append(OverfullBox(float(match[1]), int(match[2] or match[3] or 0),
                                      match[2] is None))
     return boxes
 

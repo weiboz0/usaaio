@@ -206,11 +206,11 @@ def test_overfull_max_pt_accepts_a_positive_number_or_no_key(tmp_path: Path, val
     assert publication_config_errors(_repo(tmp_path, _config(audit=audit)), "book1") == []
 
 
-@pytest.mark.parametrize("value", [0, -3, 0.0, "5", True, [5], float("nan")])
+@pytest.mark.parametrize("value", [0, -3, 0.0, "5", True, [5], float("nan"), float("inf")])
 def test_overfull_max_pt_rejects_zero_negative_and_non_numeric(tmp_path: Path, value: object) -> None:
     config = _config(audit={"page_warning": 1200, "overfull_max_pt": value})
     errors = publication_config_errors(_repo(tmp_path, config), "book1")
-    assert errors == ["book1/publication.yaml: audit.overfull_max_pt must be a positive number"]
+    assert errors == ["book1/publication.yaml: audit.overfull_max_pt must be a positive finite number"]
 
 
 def test_volumes_must_be_contiguous_and_cover_every_chapter(tmp_path: Path) -> None:

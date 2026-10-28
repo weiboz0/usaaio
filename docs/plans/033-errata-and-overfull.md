@@ -245,4 +245,18 @@ Page images, before and after, in `scratchpad/p033-pages/`: C9 p18, F6 overview,
 
 ## Content Review
 
+Roster: `[self]` (Opus 5.5 inline), `[sol]` (codex gpt-6-sol, read-only), `[fable]` (Fable 5, read-only). Inputs: `git diff 8747b7c..HEAD` and the before/after page images in `scratchpad/p033-pages/`.
+
+### Round 1
+
+- `[self]` APPROVE. The fallback diffs change only separator dashes and three backtick escapes. The C9 p18 and B2-024 p12 after-pages sit inside the margin.
+- `[sol]` APPROVE WITH NITS. A pandoc probe confirmed table scope, widths, break rules and special-character escaping; rule 7 parsed 52 of 52 log entries.
+  - [FIXED] Nit: `overfull_max_pt: .inf` passed validation. It is now rejected as not finite, with a test case.
+- `[fable]` APPROVE WITH NITS. 68 tests rerun; all 12 logs and 14 page images checked; nothing worse than before.
+  - [WONTFIX] N1: the B2-024 p12 `config` column wraps `lr=` / `0.1`. Widening it (12 dashes, `scores` 27) made the `scores` cells overflow: the scoped audit failed at 14.96 pt, so the guard works. The original separator is kept; the column reads correctly.
+  - [WONTFIX] N2: the plain-text `-` rule could split `1e-05` or an ISO date in a table cell. The reviewer's scan of every table row found none; the risk is latent only, and the 5 pt guard catches any overflow.
+  - [WONTFIX] N3: `t:walk` also visits table captions. The books have none.
+  - [FIXED] N4: the overfull regex now also matches `has occurred while \output is active` (running header or footer), reported with line 0, with a test.
+- **Gate passed** (3/3, no `[OPEN]` items).
+
 ## Post-execution report

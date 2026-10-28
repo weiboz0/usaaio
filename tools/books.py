@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -951,10 +952,10 @@ def _parse_publication_config(
         if page_warning is not None and (type(page_warning) is not int or page_warning <= 0):
             errors.append(f"{where}: audit.page_warning must be a positive integer")
         # Plan 033 D3: the widest overfull \hbox an edition or build-pdf PDF may keep, in pt.
-        # Missing disables the check (report only); zero, negative or non-numeric is an error.
+        # Missing disables the check (report only); zero, negative, infinite or non-numeric is an error.
         overfull = audit.get("overfull_max_pt", None)
-        if "overfull_max_pt" in audit and (type(overfull) not in (int, float) or not overfull > 0):
-            errors.append(f"{where}: audit.overfull_max_pt must be a positive number")
+        if "overfull_max_pt" in audit and (type(overfull) not in (int, float) or not 0 < overfull < math.inf):
+            errors.append(f"{where}: audit.overfull_max_pt must be a positive finite number")
 
     if errors:
         return None, errors

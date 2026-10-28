@@ -347,6 +347,14 @@ def test_overfull_box_detected_in_a_read_file_is_measured(built: Path) -> None:
                in error for error in _errors(built))
 
 
+def test_overfull_box_in_a_running_header_is_measured(built: Path) -> None:
+    _set_overfull_max(built, 5)
+    project = _project(built, "teacher")
+    (project / "latex-audit.log").write_text(
+        "Overfull \\hbox (7.5pt too wide) has occurred while \\output is active\n")
+    assert any("teacher: 1 overfull" in error for error in _errors(built))
+
+
 def test_missing_overfull_key_reports_only(built: Path) -> None:
     _set_overfull_max(built, None)
     _plant_overfull(_project(built, "teacher"), [60.0])
