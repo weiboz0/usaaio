@@ -28,5 +28,7 @@
 \automark[section]{chapter}
 \emergencystretch=3em
 \DeclareTOCStyleEntries[pagenumberwidth=4em,rightindent=5em]{tocline}{chapter,section}
+% Plan 033: a part entry's three-digit page number (bold, 12 pt) fits its box.
+\DeclareTOCStyleEntry[pagenumberwidth=4em]{part}{part}
 \sloppy
 \AtBeginDocument{\date{@EDITION@}}

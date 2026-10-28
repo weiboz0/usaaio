@@ -1,4 +1,4 @@
-"""Plan 030 Task 5: the publication audit (tools/publish_audit.py), rules 1-6, on a fixture book."""
+"""Plan 030 Task 5 and Plan 033: the publication audit (tools/publish_audit.py), rules 1-7, on a\nfixture book."""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ def _render_stub(projects) -> None:
     """Stand in for the LaTeX render: a clean draft-mode log and a page count per project."""
     for project in projects:
         (project.path / f"{project.output_stem}.log").write_text("clean log\n", encoding="utf-8")
+        (project.path / "latex-audit.log").write_text("clean log\n", encoding="utf-8")
         tex = "\\begin{document}\n"
         if project.index:
             tex += "\\printindex\n"
@@ -293,3 +294,80 @@ def test_publisher_command_printed_as_text_and_missing_index(built: Path) -> Non
     assert any("index edition has no \\printindex" in error for error in errors)
     (project / "book1-student-print.ind").unlink()
     assert any("has no Index chapter" in error for error in _errors(built))
+
+
+# --- rule 7: overfull boxes (Plan 033 D3) --------------------------------------------------------
+
+
+def _set_overfull_max(repo: Path, value: object) -> None:
+    config = yaml.safe_load((repo / "book1/publication.yaml").read_text())
+    if value is None:
+        config["audit"].pop("overfull_max_pt", None)
+    else:
+        config["audit"]["overfull_max_pt"] = value
+    write_yaml(repo / "book1/publication.yaml", config)
+
+
+def _plant_overfull(project: Path, widths: list[float]) -> None:
+    """A final draft-mode log with overfull boxes at TeX lines 3, 4, ...; and a kept .tex whose
+    chapter starts at line 2."""
+    stem = next(project.glob("*.tex")).stem
+    (project / f"{stem}.tex").write_text(
+        "\\begin{document}\n\\chapter*{Planted {Chapter} Title}\\label{ch-x}\n"
+        + "text\n" * len(widths) + "\\printindex\n", encoding="utf-8")
+    (project / "latex-audit.log").write_text("".join(
+        f"Overfull \\hbox ({width}pt too wide) in paragraph at lines {3 + i}--{3 + i}\n"
+        f"\\TU/FiraMono(2)/m/n/10 something\n" for i, width in enumerate(widths)))
+
+
+def test_overfull_boxes_under_the_threshold_pass_and_are_reported(built: Path) -> None:
+    _set_overfull_max(built, 5)
+    _plant_overfull(_project(built, "student"), [1.5, 4.9, 3.25])
+    result = audit(built, "book1")
+    assert result.errors == []
+    assert ("student: 3 overfull \\hbox (2 over 2 pt), widest 4.9 pt at book1-student.tex:4 "
+            "(chapter 'Planted {Chapter} Title')") in result.info
+    assert "teacher: 0 overfull \\hbox" in result.info
+
+
+def test_overfull_box_over_the_threshold_fails_with_the_widest_box(built: Path) -> None:
+    _set_overfull_max(built, 5)
+    _plant_overfull(_project(built, "teacher"), [6.0, 51.48883, 2.0])
+    errors = _errors(built)
+    assert ("teacher: 2 overfull \\hbox over audit.overfull_max_pt 5 pt; widest 51.4888 pt at "
+            "book1-teacher.tex:4 (chapter 'Planted {Chapter} Title')") in errors
+
+
+def test_overfull_box_detected_in_a_read_file_is_measured(built: Path) -> None:
+    _set_overfull_max(built, 5)
+    project = _project(built, "teacher")
+    (project / "latex-audit.log").write_text(
+        "(./book1-teacher.toc\nOverfull \\hbox (5.61996pt too wide) detected at line 950\n")
+    assert any("teacher: 1 overfull" in error and "line 950 of a file book1-teacher.tex reads"
+               in error for error in _errors(built))
+
+
+def test_missing_overfull_key_reports_only(built: Path) -> None:
+    _set_overfull_max(built, None)
+    _plant_overfull(_project(built, "teacher"), [60.0])
+    result = audit(built, "book1")
+    assert result.errors == []
+    assert any(line.startswith("teacher: 1 overfull \\hbox (1 over 2 pt), widest 60 pt")
+               for line in result.info)
+
+
+def test_rendered_edition_without_latex_audit_log_fails(built: Path) -> None:
+    (_project(built, "answer-key") / "latex-audit.log").unlink()
+    assert any("answer-key: latex-audit.log missing" in error for error in _errors(built))
+
+
+def test_planted_overfull_box_in_a_build_pdf_log_fails(built: Path) -> None:
+    _set_overfull_max(built, 5)
+    log = built / "book1/build/pdf/handouts/U1-alpha.log"
+    log.parent.mkdir(parents=True)
+    log.write_text("Overfull \\hbox (6pt too wide) in paragraph at lines 12--14\n")
+    errors = _errors(built)
+    assert any(error.startswith("build/pdf/handouts/U1-alpha.log: 1 overfull \\hbox over "
+                                "audit.overfull_max_pt 5 pt; widest 6 pt") for error in errors)
+    log.write_text("Overfull \\hbox (4pt too wide) in paragraph at lines 12--14\n")
+    assert _errors(built) == []

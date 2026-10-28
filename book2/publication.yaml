@@ -24,3 +24,5 @@ mocktests: [r2-001]
 audit:
   # Page counts are recorded; an edition PDF over this many pages is a warning only.
   page_warning: 1200
+  # The widest overfull line (\hbox) an edition or build-pdf PDF may keep, in pt (Plan 033).
+  overfull_max_pt: 5
