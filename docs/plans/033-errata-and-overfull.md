@@ -90,8 +90,8 @@ Fix the causes once in the shared publishing code (`tools/publish_theme/panels.l
 - **(a) Width for natural-width tables that would overflow.**
   - The `Table` callback assigns relative column widths only when two things hold:
     - every column has the default width;
-    - the estimated natural width overflows: the sum, over columns, of the longest cell's character count, times 0.5 em at 10 pt, exceeds the text width (about 392 pt).
-  - Widths are proportional to each column's longest cell, with a floor of 15% per column, and sum to 1. Pandoc then emits wrapping `p` columns.
+    - the estimated natural width overflows: the sum, over columns, of the longest cell's character count, times 0.6 em at 10 pt, exceeds the text width (about 392 pt). Over-estimating only gives a fitting table `p` columns, which is the safe direction.
+  - Widths are proportional to each column's longest cell, with a floor of `min(0.15, 1/ncols)` per column, renormalized to sum to 1. Pandoc then emits wrapping `p` columns.
   - Tables that fit today keep their natural width, and tables with explicit widths are untouched.
   - This targets the only `in alignment` family in the logs: C9 p18, 9 boxes across the editions.
 - **(b) Break points in code.**
@@ -99,8 +99,8 @@ Fix the causes once in the shared publishing code (`tools/publish_theme/panels.l
   - **In table cells only:** also allow a break before `.` and `(`, after `[`, and before `[` and `]`. This covers `labels[heldout][:48]`.
   - **In table cells only, always:** typeset code as `{\small\texttt{…}}`. The rule is deterministic, so there is no "if it still does not fit" condition.
 - **(c) Plain text in table cells.**
-  - The table-scoped `Str` rule allows a break after `/` and `-` when a letter or digit follows. This covers file names written as plain text, such as C2's escaped-backtick `` `lessons/02-normal-equations-rank-pseudoinverse.ipynb` ``.
-  - It allows a break inside a run of 10 or more digits only as a last resort, after (a), (b) and the dash fallback below.
+  - The table-scoped `Str` rule allows a break after `/` when a letter or digit follows, and after `-` only with a letter or digit on both sides, so a leading minus is never stranded. This covers file names written as plain text, such as C2's escaped-backtick `` `lessons/02-normal-equations-rank-pseudoinverse.ipynb` ``.
+  - **Digit-run break: a shipping decision, not a per-table rule.** It ships only if a box over 5 pt survives (a), (b), `\small` and the dash fallback. If it ships, it applies to every table cell in both books, breaking inside runs of 10 or more digits, and is listed under D4. Otherwise it is left out, and the report says so.
   - For the B2-024 p12 float tables, the preferred fix is separator dashes or `\small`, because a mid-number break with no continuation mark is ambiguous in an answer table. The report says which fix each table used.
   - The printed characters never change, and nothing is rounded.
 - **Content edits are a fallback only.** They may change separator-line dash counts in a markdown table. They may also unescape a stray `` \` `` so that the text inside is code, as in the C2 overview. Words and numbers never change, and each edit is listed in the post-execution report.
@@ -108,9 +108,9 @@ Fix the causes once in the shared publishing code (`tools/publish_theme/panels.l
   - `tools/publish_audit.py` parses each rendered edition's `latex-audit.log` inside the existing per-project loop, so scoped `build/publish-check` renders get the same rule. `build-book.sh` overwrites the log on each pass, so the parsed log is the final pass.
   - It reports the count of overfull `\hbox`es and the widest box with its TeX line. The chapter is found by scanning the kept `.tex` backwards from that line for `\chapter{…}`.
   - It fails when any box exceeds `audit.overfull_max_pt`, a key in `<book>/publication.yaml` set to `5` for both books. Boxes under 5 pt are not noticeable at the edition's margin.
-  - `tools/books.py` `_AUDIT_KEYS` gains the key. `publication_config_errors` validates it as a positive number; a missing key or `0` disables the check, mirroring `page_warning`.
+  - `tools/books.py` `_AUDIT_KEYS` gains the key. `publication_config_errors` validates it as a positive number when present: zero, negative and non-numeric values are config errors. A missing key disables the check (report only).
   - It fails when a rendered edition has no `latex-audit.log`, so a missing log cannot bypass the threshold.
-  - The `build-pdf.sh` logs (`build/pdf/**/*.log`) are also parsed against the same threshold.
+  - The `build-pdf.sh` logs (`build/pdf/**/*.log`) are also parsed against the same threshold. The implementer confirms that those logs record `Overfull` lines (not a batch/quiet run), and a test fixture with a planted `Overfull \hbox (6pt too wide)` in a `build/pdf` log must fail.
 - **Acceptance.**
   - Every edition of both books, and every `build-pdf.sh` PDF, has no overfull box over 5 pt.
   - The count of boxes over 2 pt is reported before and after.
@@ -137,6 +137,8 @@ Fix the causes once in the shared publishing code (`tools/publish_theme/panels.l
     - the table-width assignment (`quarto pandoc` on a markdown fixture: an overflowing `lll` table becomes `p` columns; a table that fits keeps `l`; explicit widths are preserved);
     - the new code break points (`a.b`, the table-only `.`/`(`/`[`/`]` rules, `\small` in cells; plain-text `/` and `-` breaks in cells);
     - the digit-run breaks;
+    - a wide table: the 9-column C8 p20 table and a 12-column fixture get feasible widths that sum to 1;
+    - a `build/pdf` log with a planted `Overfull \hbox (6pt too wide)` fails the audit;
     - the audit parser and threshold: pass, fail, the widest box reported, the missing-key default, a missing log (fails), and `books.py` validation of the new key (accepts a positive number, rejects zero, negative and non-numeric values);
     - prose and code outside tables are unchanged by the filter.
   - Rebuild both books' editions, and record the before and after table of D3 buckets plus page counts in this plan.
@@ -170,6 +172,17 @@ Roster: 3-way (`[self]` / `[sol]` / `[fable]`).
   - [FIXED] M3: table-scope mechanism (same as sol).
   - [FIXED] S4: `\small` in cells is unconditional. S5: (a) applies only to overflowing default-width tables. S6: the digit break is the last resort, and dashes or `\small` are preferred for the float tables. S7: a missing key or `0` disables the check. S8: tests use `quarto pandoc`.
   - [FIXED] N9: the chapter comes from the kept `.tex`. N10: `build-pdf` logs are parsed too. N11: scoped renders are covered by the per-project loop. N12: the F6 table is added to the inspected pages. The D2 duplication nit is taken: the sentence becomes "The **Kullback–Leibler divergence** is".
+
+### Round 2
+
+- `[fable]` APPROVE WITH NITS. All round-1 findings are resolved.
+  - [FIXED] S: the digit-run break is a ship-or-not decision, applied book-wide if shipped (D3 (c)).
+  - [FIXED] S: the column floor is `min(0.15, 1/ncols)`, renormalized (7-column B2-023 table).
+  - [FIXED] Nits: a leading minus is never stranded; the estimate uses 0.6 em; a planted fixture proves that the `build-pdf` logs are measured.
+- `[sol]` REJECT on 85c7d0a. Round-1 items resolved; diagnosis verdicts unchanged.
+  - [FIXED] Must Fix: the 15% floor was infeasible for wide tables (the 9-column C8 p20 table). The floor is now `min(0.15, 1/ncols)`, renormalized, with a wide-table test.
+  - [FIXED] Should Fix: zero had two meanings. Now a missing key disables the check, and zero is a config error.
+  - [FIXED] Should Fix: a planted `build/pdf` log fixture is in the Task 2 tests.
 
 ## Implementation notes
 
